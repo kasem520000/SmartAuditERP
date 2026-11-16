@@ -1,0 +1,199 @@
+﻿<Window x:Name="UpdaterWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="SmartAuditUpdater.MainWindow"
+        Title="تحديث البرنامج"
+        Width="580" Height="540"
+        WindowStartupLocation="CenterScreen"
+        FlowDirection="RightToLeft"
+        Background="White"
+        FontFamily="Segoe UI, Tahoma, Arial"
+        ResizeMode="NoResize"
+        Closing="Window_Closing">
+
+    <Window.Resources>
+
+        <LinearGradientBrush x:Key="HeaderBrush"
+                             StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#007ACC" Offset="0"/>
+            <GradientStop Color="#005A9E" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="SuccessBrush"
+                             StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#2CC36B" Offset="0"/>
+            <GradientStop Color="#1B8E4A" Offset="1"/>
+        </LinearGradientBrush>
+
+        <LinearGradientBrush x:Key="ErrorBrush"
+                             StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#E35656" Offset="0"/>
+            <GradientStop Color="#B92F2F" Offset="1"/>
+        </LinearGradientBrush>
+
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+
+        <!-- ═══ الهيدر ═══ -->
+        <Border Grid.Row="0"
+                Background="{StaticResource HeaderBrush}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="60"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Margin="20,0">
+                    <TextBlock x:Name="txtTitle"
+                               Text="جارٍ تحديث البرنامج..."
+                               Foreground="White"
+                               FontSize="18" FontWeight="Bold"/>
+                    <TextBlock x:Name="txtSubTitle"
+                               Text="يرجى الانتظار وعدم إغلاق هذه النافذة"
+                               Foreground="#B0CFFF"
+                               FontSize="11" Margin="0,3,0,0"/>
+                </StackPanel>
+
+                <TextBlock Grid.Column="1"
+                           x:Name="txtHeaderIcon"
+                           Text="⚙️"
+                           FontSize="30"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"/>
+            </Grid>
+        </Border>
+
+        <!-- ═══ الخطوة الحالية ═══ -->
+        <Border Grid.Row="1"
+                Background="#F0F4FF"
+                Padding="20,10"
+                Margin="0,0,0,0">
+            <TextBlock x:Name="txtStep"
+                       Text="التهيئة..."
+                       FontSize="13" FontWeight="Bold"
+                       Foreground="#1B2642"/>
+        </Border>
+
+        <!-- ═══ شريط التقدم ═══ -->
+        <Grid Grid.Row="2" Margin="20,14,20,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <ProgressBar x:Name="prgBar"
+                             Height="28"
+                             Minimum="0" Maximum="100"
+                             Value="0">
+                    <ProgressBar.Style>
+                        <Style TargetType="ProgressBar">
+                            <Setter Property="Background"
+                                    Value="#E0E0E0"/>
+                            <Setter Property="Foreground"
+                                    Value="#007ACC"/>
+                        </Style>
+                    </ProgressBar.Style>
+                </ProgressBar>
+                <TextBlock x:Name="txtPercent"
+                           Text="0%"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"
+                           FontWeight="Bold"
+                           Foreground="White"
+                           FontSize="12"/>
+            </Grid>
+
+            <TextBlock Grid.Row="1"
+                       x:Name="txtStatus"
+                       Text=""
+                       Foreground="#555"
+                       FontSize="11"
+                       Margin="0,6,0,0"/>
+
+            <TextBlock Grid.Row="2"
+                       x:Name="txtDetails"
+                       Text=""
+                       Foreground="#888"
+                       FontSize="10"
+                       Margin="0,3,0,0"/>
+        </Grid>
+
+        <!-- ═══ فاصل ═══ -->
+        <Border Grid.Row="3"
+                Height="1"
+                Background="#DDD"
+                Margin="20,12,20,0"/>
+
+        <!-- ═══ سجل العمليات ═══ -->
+        <Border Grid.Row="4"
+                Margin="20,10,20,0"
+                BorderBrush="#DDD"
+                BorderThickness="1"
+                CornerRadius="4">
+            <ScrollViewer x:Name="logScroll"
+                          VerticalScrollBarVisibility="Auto">
+                <TextBlock x:Name="txtLog"
+                           Background="#1E1E1E"
+                           Foreground="#00FF00"
+                           FontFamily="Consolas"
+                           FontSize="10"
+                           Padding="10"
+                           TextWrapping="Wrap"/>
+            </ScrollViewer>
+        </Border>
+
+        <!-- ═══ الفوتر ═══ -->
+        <Border Grid.Row="5"
+                Background="#F5F5F5"
+                BorderBrush="#DDD"
+                BorderThickness="0,1,0,0">
+            <Button x:Name="btnClose"
+                    Content="🚀 إغلاق وتشغيل البرنامج"
+                    Width="240" Height="38"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontSize="13" FontWeight="Bold"
+                    Foreground="White"
+                    IsEnabled="False"
+                    Click="BtnClose_Click">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bd"
+                                Background="{StaticResource SuccessBrush}"
+                                CornerRadius="8"
+                                Opacity="0.5">
+                            <ContentPresenter
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsEnabled" Value="True">
+                                <Setter TargetName="Bd"
+                                        Property="Opacity" Value="1"/>
+                                <Setter TargetName="Bd"
+                                        Property="Cursor" Value="Hand"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bd"
+                                        Property="Opacity" Value="0.85"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+        </Border>
+    </Grid>
+</Window>

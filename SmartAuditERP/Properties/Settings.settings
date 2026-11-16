@@ -1,0 +1,60 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="SmartAuditERP.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="StockDBConnectionString" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;Data Source=.\sqlexpress;Initial Catalog=TerraficDB;Integrated Security=True&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Data Source=.\sqlexpress;Initial Catalog=TerraficDB;Integrated Security=True</Value>
+    </Setting>
+    <Setting Name="CrystalLite_cloud_auditorerp_update_CashierApp" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://update.auditorerp.cloud/CashierApp/CashierApp.asmx</Value>
+    </Setting>
+    <Setting Name="IsLicensed" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="LicenseFeatures" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">00000</Value>
+    </Setting>
+    <Setting Name="LicenseID" Type="System.String" Scope="Application">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="TimBakup" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)">03/11/2024 13:17:00</Value>
+    </Setting>
+    <Setting Name="_PathBackup" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="LastDailyCheckDate" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)">2025-01-01</Value>
+    </Setting>
+    <Setting Name="DocsRootPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Application.StartupPath\Documents</Value>
+    </Setting>
+    <Setting Name="ExchangeDBConnectionString" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;Data Source=.\sqlexpress;Initial Catalog=TerraficDB;Integrated Security=True&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Data Source=.\sqlexpress;Initial Catalog=TerraficDB;Integrated Security=True</Value>
+    </Setting>
+    <Setting Name="TerraficDBConnectionString" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;Data Source=.\sqlexpress;Initial Catalog=TerraficDB;Integrated Security=True&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Data Source=.\sqlexpress;Initial Catalog=TerraficDB;Integrated Security=True</Value>
+    </Setting>
+    <Setting Name="Barcode" Type="System.Char" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="QTY" Type="System.Decimal" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
