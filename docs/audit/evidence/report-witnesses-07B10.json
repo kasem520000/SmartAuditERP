@@ -1,0 +1,1210 @@
+{
+  "phase": "7B10-partial-static-audit",
+  "method": "independent manual contrasts plus bounded inert-source observations, not ERP tests",
+  "illustration_count": 20,
+  "static_lexical_contract_check_count": 20,
+  "illustrations": [
+    {
+      "id": "ALG7B10-01",
+      "title": "Unsigned value sum disagrees with the signed movement contract",
+      "finding_ids": "P7-111",
+      "hand_selected_inputs": {
+        "rows": [
+          {
+            "value": 100,
+            "commission": 10,
+            "sign": 1
+          },
+          {
+            "value": 40,
+            "commission": 4,
+            "sign": -1
+          },
+          {
+            "value": 10,
+            "commission": 1,
+            "sign": -1
+          }
+        ],
+        "upstream_gate_isolated_not_fixed": true
+      },
+      "manual_observation_model": {
+        "value": 150,
+        "commission": 5
+      },
+      "independent_reference": {
+        "value": 50,
+        "commission": 5
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:279-290;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:309-343;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:375-398;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:482-510;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:781-796;SmartAuditERP/Class_WPF/SalesManRowItem.cs:10-24",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY. No C#/SQL/WPF/Office execution/translation, deployment schema/alias/data/ACL/policy/commission/GL acceptance or certification. The upstream worker/WPF gate P7-054 is NOT assumed resolved: downstream fixtures isolate well-formed rows/criteria without claiming the normal UI reached them. Notes compatibility is not assumed in deployment. No real data, secrets, exports, consumer/formula interpreter or shell."
+    },
+    {
+      "id": "ALG7B10-02",
+      "title": "A sale-only population is counterevidence to an unconditional total difference",
+      "finding_ids": "P7-111",
+      "hand_selected_inputs": {
+        "value": 100,
+        "sign": 1,
+        "gross_vs_net_policy_requires_label": true
+      },
+      "manual_observation_model": {
+        "unsigned_total": 100,
+        "signed_total": 100
+      },
+      "independent_reference": {
+        "unsigned_total": 100,
+        "signed_total": 100
+      },
+      "difference_expected": false,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:482-510;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:781-796",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY. No C#/SQL/WPF/Office execution/translation, deployment schema/alias/data/ACL/policy/commission/GL acceptance or certification. The upstream worker/WPF gate P7-054 is NOT assumed resolved: downstream fixtures isolate well-formed rows/criteria without claiming the normal UI reached them. Notes compatibility is not assumed in deployment. No real data, secrets, exports, consumer/formula interpreter or shell."
+    },
+    {
+      "id": "ALG7B10-03",
+      "title": "All-period has different invoice and receipt membership in the same request",
+      "finding_ids": "P7-112",
+      "hand_selected_inputs": {
+        "all_period": true,
+        "invoice_periods": [
+          "old",
+          "today"
+        ],
+        "receipt_periods": [
+          "old",
+          "today"
+        ],
+        "control_dates": "today"
+      },
+      "manual_observation_model": {
+        "invoice_periods": [
+          "old",
+          "today"
+        ],
+        "receipt_periods": [
+          "today"
+        ]
+      },
+      "independent_reference": {
+        "invoice_periods": [
+          "old",
+          "today"
+        ],
+        "receipt_periods": [
+          "old",
+          "today"
+        ]
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:189-218;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:401-439",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY. No C#/SQL/WPF/Office execution/translation, deployment schema/alias/data/ACL/policy/commission/GL acceptance or certification. The upstream worker/WPF gate P7-054 is NOT assumed resolved: downstream fixtures isolate well-formed rows/criteria without claiming the normal UI reached them. Notes compatibility is not assumed in deployment. No real data, secrets, exports, consumer/formula interpreter or shell."
+    },
+    {
+      "id": "ALG7B10-04",
+      "title": "A deliberately restricted period is not the all-period split",
+      "finding_ids": "P7-112",
+      "hand_selected_inputs": {
+        "all_period": false,
+        "selected_period": "today",
+        "endpoint_effect_isolated": true
+      },
+      "manual_observation_model": {
+        "invoice_periods": [
+          "today"
+        ],
+        "receipt_periods": [
+          "today"
+        ]
+      },
+      "independent_reference": {
+        "invoice_periods": [
+          "today"
+        ],
+        "receipt_periods": [
+          "today"
+        ]
+      },
+      "difference_expected": false,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:189-218;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:411-439",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY. No C#/SQL/WPF/Office execution/translation, deployment schema/alias/data/ACL/policy/commission/GL acceptance or certification. The upstream worker/WPF gate P7-054 is NOT assumed resolved: downstream fixtures isolate well-formed rows/criteria without claiming the normal UI reached them. Notes compatibility is not assumed in deployment. No real data, secrets, exports, consumer/formula interpreter or shell."
+    },
+    {
+      "id": "ALG7B10-05",
+      "title": "Local reader and writer request different relation names",
+      "finding_ids": "P7-113",
+      "hand_selected_inputs": {
+        "reader": "Notes",
+        "writer": "CreditDeptNotes",
+        "supplied_DDL": "CreditDeptNotes",
+        "deployed_alias": "unknown"
+      },
+      "manual_observation_model": {
+        "local_relation_names_match": false
+      },
+      "independent_reference": {
+        "local_relation_names_match": true
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:351-359;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:558-566;SmartAuditERP/Form_WPF/frmDebtNote.xaml.cs:670-709;SmartAuditERP/Properties/Resources.resx:1366-1387",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY. No C#/SQL/WPF/Office execution/translation, deployment schema/alias/data/ACL/policy/commission/GL acceptance or certification. The upstream worker/WPF gate P7-054 is NOT assumed resolved: downstream fixtures isolate well-formed rows/criteria without claiming the normal UI reached them. Notes compatibility is not assumed in deployment. No real data, secrets, exports, consumer/formula interpreter or shell."
+    },
+    {
+      "id": "ALG7B10-06",
+      "title": "An externally verified compatible alias would be a separate conditional contract",
+      "finding_ids": "P7-113;H7B10-02",
+      "hand_selected_inputs": {
+        "hypothetical_alias_maps_to_writer": true,
+        "actually_observed_in_deployment": false,
+        "SQL_not_executed": true
+      },
+      "manual_observation_model": {
+        "local_name_difference": true,
+        "runtime_failure_necessarily_proven": false
+      },
+      "independent_reference": {
+        "local_name_difference": true,
+        "runtime_failure_necessarily_proven": false
+      },
+      "difference_expected": false,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:351-398;SmartAuditERP/Form_WPF/frmDebtNote.xaml.cs:670-709",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY. No C#/SQL/WPF/Office execution/translation, deployment schema/alias/data/ACL/policy/commission/GL acceptance or certification. The upstream worker/WPF gate P7-054 is NOT assumed resolved: downstream fixtures isolate well-formed rows/criteria without claiming the normal UI reached them. Notes compatibility is not assumed in deployment. No real data, secrets, exports, consumer/formula interpreter or shell."
+    },
+    {
+      "id": "ALG7B10-07",
+      "title": "Invoice branch filtering does not filter receipt rows",
+      "finding_ids": "P2-010",
+      "hand_selected_inputs": {
+        "current_branch": 1,
+        "invoice_branches": [
+          1,
+          2
+        ],
+        "receipt_branches": [
+          1,
+          2
+        ],
+        "same_salesman": 7
+      },
+      "manual_observation_model": {
+        "invoice_branches": [
+          1
+        ],
+        "receipt_branches": [
+          1,
+          2
+        ]
+      },
+      "independent_reference": {
+        "invoice_branches": [
+          1
+        ],
+        "receipt_branches": [
+          1
+        ]
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:189-208;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:411-439;SmartAuditERP/Properties/Resources.resx:1512-1532",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY. No C#/SQL/WPF/Office execution/translation, deployment schema/alias/data/ACL/policy/commission/GL acceptance or certification. The upstream worker/WPF gate P7-054 is NOT assumed resolved: downstream fixtures isolate well-formed rows/criteria without claiming the normal UI reached them. Notes compatibility is not assumed in deployment. No real data, secrets, exports, consumer/formula interpreter or shell."
+    },
+    {
+      "id": "ALG7B10-08",
+      "title": "An inclusive next-midnight endpoint includes a following-day row",
+      "finding_ids": "P3-023",
+      "hand_selected_inputs": {
+        "selected_end": "2026-01-01",
+        "row": "2026-01-02T00:00:00",
+        "typed_parameters": true
+      },
+      "manual_observation_model": {
+        "included": true
+      },
+      "independent_reference": {
+        "included": false
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:189-218;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:420-436",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY. No C#/SQL/WPF/Office execution/translation, deployment schema/alias/data/ACL/policy/commission/GL acceptance or certification. The upstream worker/WPF gate P7-054 is NOT assumed resolved: downstream fixtures isolate well-formed rows/criteria without claiming the normal UI reached them. Notes compatibility is not assumed in deployment. No real data, secrets, exports, consumer/formula interpreter or shell."
+    },
+    {
+      "id": "ALG7B10-09",
+      "title": "Base-unit cost times entered pack quantity understates the dimensional reference",
+      "finding_ids": "P7-041",
+      "hand_selected_inputs": {
+        "entered_quantity": 2,
+        "equality": 12,
+        "base_unit_cost": 5,
+        "cost_contract_assumed_for_fixture": true
+      },
+      "manual_observation_model": {
+        "total_cost": 10
+      },
+      "independent_reference": {
+        "total_cost": 120
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs:270-287;SmartAuditERP/Class/InvoiceOper.cs:1593-1612;SmartAuditERP/Class/InvoiceOper.cs:4301-4316;SmartAuditERP/Class/ItemOper.cs:196-211;SmartAuditERP/Class/ItemOper.cs:1390-1404",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY. No C#/SQL/WPF/Office execution/translation, deployment schema/alias/data/ACL/policy/commission/GL acceptance or certification. The upstream worker/WPF gate P7-054 is NOT assumed resolved: downstream fixtures isolate well-formed rows/criteria without claiming the normal UI reached them. Notes compatibility is not assumed in deployment. No real data, secrets, exports, consumer/formula interpreter or shell."
+    },
+    {
+      "id": "ALG7B10-10",
+      "title": "Unit equality one is counterevidence to always-different unit cost totals",
+      "finding_ids": "P7-041",
+      "hand_selected_inputs": {
+        "entered_quantity": 2,
+        "equality": 1,
+        "base_unit_cost": 5
+      },
+      "manual_observation_model": {
+        "total_cost": 10
+      },
+      "independent_reference": {
+        "total_cost": 10
+      },
+      "difference_expected": false,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs:270-287;SmartAuditERP/Class/InvoiceOper.cs:1593-1612",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY. No C#/SQL/WPF/Office execution/translation, deployment schema/alias/data/ACL/policy/commission/GL acceptance or certification. The upstream worker/WPF gate P7-054 is NOT assumed resolved: downstream fixtures isolate well-formed rows/criteria without claiming the normal UI reached them. Notes compatibility is not assumed in deployment. No real data, secrets, exports, consumer/formula interpreter or shell."
+    },
+    {
+      "id": "ALG7B10-11",
+      "title": "Live print dates can label previously captured rows",
+      "finding_ids": "P7-045",
+      "hand_selected_inputs": {
+        "result_period": "A",
+        "controls_now": "B",
+        "reload_performed": false
+      },
+      "manual_observation_model": {
+        "rows_period": "A",
+        "print_header_period": "B"
+      },
+      "independent_reference": {
+        "rows_period": "A",
+        "print_header_period": "A"
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:149-174;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:649-681;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:824-830",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY. No C#/SQL/WPF/Office execution/translation, deployment schema/alias/data/ACL/policy/commission/GL acceptance or certification. The upstream worker/WPF gate P7-054 is NOT assumed resolved: downstream fixtures isolate well-formed rows/criteria without claiming the normal UI reached them. Notes compatibility is not assumed in deployment. No real data, secrets, exports, consumer/formula interpreter or shell."
+    },
+    {
+      "id": "ALG7B10-12",
+      "title": "A swallowed late-source error is not an empty successful source",
+      "finding_ids": "P7-046",
+      "hand_selected_inputs": {
+        "invoice_rows": [
+          100
+        ],
+        "receipt5_rows": [
+          50
+        ],
+        "receipt7_failed": true,
+        "not_a_SQL_failure_injection": true
+      },
+      "manual_observation_model": {
+        "published_total": 150,
+        "source_health": "unlabelled"
+      },
+      "independent_reference": {
+        "published_total": 150,
+        "source_health": "explicit-partial-or-blocked"
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:158-174;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:411-475",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY. No C#/SQL/WPF/Office execution/translation, deployment schema/alias/data/ACL/policy/commission/GL acceptance or certification. The upstream worker/WPF gate P7-054 is NOT assumed resolved: downstream fixtures isolate well-formed rows/criteria without claiming the normal UI reached them. Notes compatibility is not assumed in deployment. No real data, secrets, exports, consumer/formula interpreter or shell."
+    },
+    {
+      "id": "ALG7B10-13",
+      "title": "The upstream worker control-read gate must remain visible",
+      "finding_ids": "P7-054",
+      "hand_selected_inputs": {
+        "hand_selected_event_sequence": [
+          "Task.Run",
+          "read-chkAll",
+          "catch"
+        ],
+        "WPF_not_run": true
+      },
+      "manual_observation_model": {
+        "request_from_ui_snapshot": false,
+        "downstream_population_established": false
+      },
+      "independent_reference": {
+        "request_from_ui_snapshot": true,
+        "downstream_population_established": false
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:141-201;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:411-436",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY. No C#/SQL/WPF/Office execution/translation, deployment schema/alias/data/ACL/policy/commission/GL acceptance or certification. The upstream worker/WPF gate P7-054 is NOT assumed resolved: downstream fixtures isolate well-formed rows/criteria without claiming the normal UI reached them. Notes compatibility is not assumed in deployment. No real data, secrets, exports, consumer/formula interpreter or shell."
+    },
+    {
+      "id": "ALG7B10-14",
+      "title": "A local-number route can select the wrong first global identity",
+      "finding_ids": "P7-061",
+      "hand_selected_inputs": {
+        "rows": [
+          {
+            "gid": "A-7",
+            "local": 7,
+            "branch": 1
+          },
+          {
+            "gid": "B-7",
+            "local": 7,
+            "branch": 2
+          }
+        ],
+        "selected": {
+          "gid": "B-7",
+          "local": 7,
+          "branch": 2
+        },
+        "first_row_order_is_only_fixture": true
+      },
+      "manual_observation_model": {
+        "open_gid": "A-7"
+      },
+      "independent_reference": {
+        "open_gid": "B-7"
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Class_WPF/SalesManRowItem.cs:10-24;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:517-570;SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:473-520;SmartAuditERP/Form_WPF/frmSandQ.xaml.cs:624-660;SmartAuditERP/Form_WPF/frmSandQD.xaml.cs:618-651;SmartAuditERP/Properties/Resources.resx:1012-1017",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY. No C#/SQL/WPF/Office execution/translation, deployment schema/alias/data/ACL/policy/commission/GL acceptance or certification. The upstream worker/WPF gate P7-054 is NOT assumed resolved: downstream fixtures isolate well-formed rows/criteria without claiming the normal UI reached them. Notes compatibility is not assumed in deployment. No real data, secrets, exports, consumer/formula interpreter or shell."
+    },
+    {
+      "id": "ALG7B10-15",
+      "title": "A VAT-free receipt115 is not a tax-inclusive115 invoice",
+      "finding_ids": "P7-069",
+      "hand_selected_inputs": {
+        "Payment": 115,
+        "VAT": 0,
+        "NetVal": 115
+      },
+      "manual_observation_model": {
+        "display_value": 100.0
+      },
+      "independent_reference": {
+        "display_value": 115
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:450-469;SmartAuditERP/Form_WPF/frmSandQ.xaml.cs:891-916;SmartAuditERP/Form_WPF/frmSandQD.xaml.cs:928-944",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY. No C#/SQL/WPF/Office execution/translation, deployment schema/alias/data/ACL/policy/commission/GL acceptance or certification. The upstream worker/WPF gate P7-054 is NOT assumed resolved: downstream fixtures isolate well-formed rows/criteria without claiming the normal UI reached them. Notes compatibility is not assumed in deployment. No real data, secrets, exports, consumer/formula interpreter or shell."
+    },
+    {
+      "id": "ALG7B10-16",
+      "title": "Editing text without resolving a new item keeps a prior selected id",
+      "finding_ids": "P7-085",
+      "hand_selected_inputs": {
+        "prior_selected_id": 1,
+        "text_now": "B",
+        "Enter_pressed": false,
+        "item_B_id": 2
+      },
+      "manual_observation_model": {
+        "queried_id": 1,
+        "visible_text": "B"
+      },
+      "independent_reference": {
+        "queried_id": 2,
+        "visible_text": "B"
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs:132-148;SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs:604-623;SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs:674-710;SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml:321-341",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY. No C#/SQL/WPF/Office execution/translation, deployment schema/alias/data/ACL/policy/commission/GL acceptance or certification. The upstream worker/WPF gate P7-054 is NOT assumed resolved: downstream fixtures isolate well-formed rows/criteria without claiming the normal UI reached them. Notes compatibility is not assumed in deployment. No real data, secrets, exports, consumer/formula interpreter or shell."
+    },
+    {
+      "id": "ALG7B10-17",
+      "title": "A current VAT-inclusion setting can reinterpret a saved excluded-price invoice",
+      "finding_ids": "P7-095",
+      "hand_selected_inputs": {
+        "saved_price_includes_vat": false,
+        "current_setting_includes_vat": true,
+        "line_total": 100,
+        "tax": 15
+      },
+      "manual_observation_model": {
+        "base": 85
+      },
+      "independent_reference": {
+        "base": 100
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:120-131;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:249-273;SmartAuditERP/Class/InvoiceOper.cs:1557-1564;SmartAuditERP/Properties/Resources.resx:986-994",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY. No C#/SQL/WPF/Office execution/translation, deployment schema/alias/data/ACL/policy/commission/GL acceptance or certification. The upstream worker/WPF gate P7-054 is NOT assumed resolved: downstream fixtures isolate well-formed rows/criteria without claiming the normal UI reached them. Notes compatibility is not assumed in deployment. No real data, secrets, exports, consumer/formula interpreter or shell."
+    },
+    {
+      "id": "ALG7B10-18",
+      "title": "A visible POS row has no matching route in the current string switch",
+      "finding_ids": "P1-033",
+      "hand_selected_inputs": {
+        "process_label": "فاتورة نقطة بيع",
+        "row_action_visible": true
+      },
+      "manual_observation_model": {
+        "route": "no-matching-case"
+      },
+      "independent_reference": {
+        "route": "typed-POS-route-or-explicit-unavailable"
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:279-290;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:517-570;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml:495-510",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY. No C#/SQL/WPF/Office execution/translation, deployment schema/alias/data/ACL/policy/commission/GL acceptance or certification. The upstream worker/WPF gate P7-054 is NOT assumed resolved: downstream fixtures isolate well-formed rows/criteria without claiming the normal UI reached them. Notes compatibility is not assumed in deployment. No real data, secrets, exports, consumer/formula interpreter or shell."
+    },
+    {
+      "id": "ALG7B10-19",
+      "title": "Quoted CSV needs quote escaping even when an embedded comma is quoted",
+      "finding_ids": "P7-048;H7B10-04",
+      "hand_selected_inputs": {
+        "manually_constructed_line": "\"1\",\"CODE\",\"A\"Q\", \"1.00\",\"5.00\",\"10.00\",\"5.00\",\"100%\"",
+        "original_label": "A\"Q",
+        "formula_interpreter_used": false
+      },
+      "manual_observation_model": {
+        "label_round_trips": false
+      },
+      "independent_reference": {
+        "label_round_trips": true
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs:561-584",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY. No C#/SQL/WPF/Office execution/translation, deployment schema/alias/data/ACL/policy/commission/GL acceptance or certification. The upstream worker/WPF gate P7-054 is NOT assumed resolved: downstream fixtures isolate well-formed rows/criteria without claiming the normal UI reached them. Notes compatibility is not assumed in deployment. No real data, secrets, exports, consumer/formula interpreter or shell."
+    },
+    {
+      "id": "ALG7B10-20",
+      "title": "Typed XLSX and helper finalization are counterevidence to copying CSV/finalization claims",
+      "finding_ids": "H7B10-04",
+      "hand_selected_inputs": {
+        "hand_selected_events": [
+          "typed-cell-assignment",
+          "SaveAs",
+          "helper-using-dispose",
+          "return",
+          "launch"
+        ],
+        "actual_export_or_shell_executed": false,
+        "library_formula_policy_not_certified": true
+      },
+      "manual_observation_model": {
+        "format": "XLSX",
+        "amount_kind": "numeric",
+        "finalization_before_launch": true
+      },
+      "independent_reference": {
+        "format": "XLSX",
+        "amount_kind": "numeric",
+        "finalization_before_launch": true
+      },
+      "difference_expected": false,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:694-714;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:720-739;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:751-770;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:807-811",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY. No C#/SQL/WPF/Office execution/translation, deployment schema/alias/data/ACL/policy/commission/GL acceptance or certification. The upstream worker/WPF gate P7-054 is NOT assumed resolved: downstream fixtures isolate well-formed rows/criteria without claiming the normal UI reached them. Notes compatibility is not assumed in deployment. No real data, secrets, exports, consumer/formula interpreter or shell."
+    }
+  ],
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B10-01",
+      "title": "Return/note signs exist, value total ignores them while commissions honor them",
+      "finding_ids": "P7-111",
+      "documented_observation": "The local amount total is unsigned, not proof of financial settlement or an actual exported workbook; upstream WPF gate remains.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:279-290;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:325-343;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:381-398;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:482-510;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:781-796;SmartAuditERP/Class_WPF/SalesManRowItem.cs:10-24",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only. Not a semantic callgraph, deployed schema/view/synonym/permission/availability proof, SQL/WPF rendering, complete child review, financial acceptance or measured latency/leak/index judgment. No application execution."
+    },
+    {
+      "id": "ST7B10-02",
+      "title": "All-period only suppresses the invoice date predicate; receipt calls always bind dates",
+      "finding_ids": "P7-112",
+      "documented_observation": "This is a within-request source population split, distinct from the inclusive endpoint and post-display criteria drift.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:56-64;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:158-166;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:181-218;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:401-439;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:824-830;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml:282-309",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only. Not a semantic callgraph, deployed schema/view/synonym/permission/availability proof, SQL/WPF rendering, complete child review, financial acceptance or measured latency/leak/index judgment. No application execution."
+    },
+    {
+      "id": "ST7B10-03",
+      "title": "Notes reader/route differ from CreditDeptNotes writer and selected supplied DDL",
+      "finding_ids": "P7-113",
+      "documented_observation": "Confirmed LOCAL name mismatch only: no assertion that a deployed compatibility view/synonym is absent, and no SQL executed.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:351-359;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:391-398;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:558-566;SmartAuditERP/Form_WPF/frmDebtNote.xaml.cs:670-709;SmartAuditERP/Properties/Resources.resx:1366-1387",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only. Not a semantic callgraph, deployed schema/view/synonym/permission/availability proof, SQL/WPF rendering, complete child review, financial acceptance or measured latency/leak/index judgment. No application execution."
+    },
+    {
+      "id": "ST7B10-04",
+      "title": "Task.Run encloses readers with direct WPF dependency-property access",
+      "finding_ids": "P7-054",
+      "documented_observation": "Dispatcher-wrapped date reads/row additions do not wrap these reads. This upstream gate must not be assumed fixed to claim downstream runtime occurrence.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:141-201;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:228-243;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:411-436",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only. Not a semantic callgraph, deployed schema/view/synonym/permission/availability proof, SQL/WPF rendering, complete child review, financial acceptance or measured latency/leak/index judgment. No application execution."
+    },
+    {
+      "id": "ST7B10-05",
+      "title": "Typed dates still have an inclusive next-day endpoint",
+      "finding_ids": "P3-023",
+      "documented_observation": "Typing and interval closure are independent; no SQL culture/date/timezone acceptance executed.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:189-218;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:420-436",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only. Not a semantic callgraph, deployed schema/view/synonym/permission/availability proof, SQL/WPF rendering, complete child review, financial acceptance or measured latency/leak/index judgment. No application execution."
+    },
+    {
+      "id": "ST7B10-06",
+      "title": "Invoice BranchNo predicate has no corresponding receipt branch predicate",
+      "finding_ids": "P2-010",
+      "documented_observation": "Local predicate gap does not prove global absence of external row-level/session authorization.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:189-208;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:411-439;SmartAuditERP/Properties/Resources.resx:1512-1532",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only. Not a semantic callgraph, deployed schema/view/synonym/permission/availability proof, SQL/WPF rendering, complete child review, financial acceptance or measured latency/leak/index judgment. No application execution."
+    },
+    {
+      "id": "ST7B10-07",
+      "title": "Receipt115 conversion conflicts with the selected VAT0 writer contracts",
+      "finding_ids": "P7-069",
+      "documented_observation": "The report base uses a fixed divisor; commission base and possible invoice/receipt double counting require policy, not a new defect per percentage expression.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:450-469;SmartAuditERP/Form_WPF/frmSandQ.xaml.cs:891-916;SmartAuditERP/Form_WPF/frmSandQD.xaml.cs:928-944",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only. Not a semantic callgraph, deployed schema/view/synonym/permission/availability proof, SQL/WPF rendering, complete child review, financial acceptance or measured latency/leak/index judgment. No application execution."
+    },
+    {
+      "id": "ST7B10-08",
+      "title": "Salesman report reads current type2 VAT inclusion, ignoring the saved invoice flag",
+      "finding_ids": "P7-095",
+      "documented_observation": "The saved header flag exists in the local writer/schema. A current setting is not a historical tax-policy certificate.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:120-131;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:249-273;SmartAuditERP/Class/InvoiceOper.cs:1557-1564;SmartAuditERP/Properties/Resources.resx:986-994",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only. Not a semantic callgraph, deployed schema/view/synonym/permission/availability proof, SQL/WPF rendering, complete child review, financial acceptance or measured latency/leak/index judgment. No application execution."
+    },
+    {
+      "id": "ST7B10-09",
+      "title": "Profit cost expression uses val1 while writer/binder retain base quantity and per-base cost",
+      "finding_ids": "P7-041",
+      "documented_observation": "Dimensional root P7-041 is extended, not renumbered. Cost policy/source P4-006 and misleading cost label P7-039 are separate existing roots.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs:270-287;SmartAuditERP/Class/InvoiceOper.cs:1593-1612;SmartAuditERP/Class/InvoiceOper.cs:4301-4316;SmartAuditERP/Class/ItemOper.cs:196-211;SmartAuditERP/Class/ItemOper.cs:1390-1404",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only. Not a semantic callgraph, deployed schema/view/synonym/permission/availability proof, SQL/WPF rendering, complete child review, financial acceptance or measured latency/leak/index judgment. No application execution."
+    },
+    {
+      "id": "ST7B10-10",
+      "title": "Editable item text has KeyDown resolution but Show uses the retained SelectedId",
+      "finding_ids": "P7-085",
+      "documented_observation": "Editing without Enter can leave a stale identity; same prior root as profit-details, no new finding for a copied handler.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs:132-148;SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs:604-623;SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs:674-710;SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml:321-341",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only. Not a semantic callgraph, deployed schema/view/synonym/permission/availability proof, SQL/WPF rendering, complete child review, financial acceptance or measured latency/leak/index judgment. No application execution."
+    },
+    {
+      "id": "ST7B10-11",
+      "title": "Report dates are read live while rows remain the stored collection",
+      "finding_ids": "P7-045",
+      "documented_observation": "Source-query criteria and printed criteria are not a frozen snapshot; the external template is not available to certify the final paper.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:149-174;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:649-681;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:824-830",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only. Not a semantic callgraph, deployed schema/view/synonym/permission/availability proof, SQL/WPF rendering, complete child review, financial acceptance or measured latency/leak/index judgment. No application execution."
+    },
+    {
+      "id": "ST7B10-12",
+      "title": "Late-source catches/zero helpers do not produce explicit source health",
+      "finding_ids": "P7-046",
+      "documented_observation": "Failure-as-zero/partial publication extends the historical failure-state root; no live database fault injection and no automatic P7-107 claim.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:158-174;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:391-398;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:470-475;SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs:294-312;SmartAuditERP/Form_WPF/frmRptSalesInPeriod.xaml.cs:185-199",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only. Not a semantic callgraph, deployed schema/view/synonym/permission/availability proof, SQL/WPF rendering, complete child review, financial acceptance or measured latency/leak/index judgment. No application execution."
+    },
+    {
+      "id": "ST7B10-13",
+      "title": "Salesman DTO drops global keys; selected child readers take the first result row",
+      "finding_ids": "P7-061",
+      "documented_observation": "Global identity acquisition inside a child does not repair selection of the wrong first row. The fixture is conditional on matching local numbers, not a deployed collision observation.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Class_WPF/SalesManRowItem.cs:10-24;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:517-570;SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:496-520;SmartAuditERP/Form_WPF/frmSandQ.xaml.cs:644-660;SmartAuditERP/Form_WPF/frmSandQD.xaml.cs:635-651",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only. Not a semantic callgraph, deployed schema/view/synonym/permission/availability proof, SQL/WPF rendering, complete child review, financial acceptance or measured latency/leak/index judgment. No application execution."
+    },
+    {
+      "id": "ST7B10-14",
+      "title": "Two POS labels are produced but neither is a case in the visible row action",
+      "finding_ids": "P1-033",
+      "documented_observation": "The missing POS route is an extension under functional incompleteness, not proof that the report print renderer or all row actions are empty.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:279-290;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:517-570;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml:495-510",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only. Not a semantic callgraph, deployed schema/view/synonym/permission/availability proof, SQL/WPF rendering, complete child review, financial acceptance or measured latency/leak/index judgment. No application execution."
+    },
+    {
+      "id": "ST7B10-15",
+      "title": "These report print paths really load REPX and call print/preview",
+      "finding_ids": "P1-004;H7B10-04",
+      "documented_observation": "Unlike the prior SummaryQ stub, all three have renderer calls. Deployed templates, effective settings/copies/flags and output consumers remain unresolved, not globally absent.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:581-655;SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs:470-539;SmartAuditERP/Form_WPF/frmRptSalesInPeriod.xaml.cs:359-435",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only. Not a semantic callgraph, deployed schema/view/synonym/permission/availability proof, SQL/WPF rendering, complete child review, financial acceptance or measured latency/leak/index judgment. No application execution."
+    },
+    {
+      "id": "ST7B10-16",
+      "title": "New-window entries differ in local Apply; one disabled menu is counterevidence",
+      "finding_ids": "P1-013;H7B10-05",
+      "documented_observation": "Potential remains potential: no deployed role/server bypass or blanket absence of permission from an isolated caller slice. New instances do not extend static/Close by themselves.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Home.xaml.cs:3542-3544;SmartAuditERP/Home.xaml.cs:3604-3611;SmartAuditERP/Home.xaml:482-490;SmartAuditERP/Form_WPF/frmSalesMen.xaml.cs:269-280;SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs:652-665;SmartAuditERP/Class/MainClass.cs:418-455",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only. Not a semantic callgraph, deployed schema/view/synonym/permission/availability proof, SQL/WPF rendering, complete child review, financial acceptance or measured latency/leak/index judgment. No application execution."
+    },
+    {
+      "id": "ST7B10-17",
+      "title": "B1 roots remain and the deferred-payment binding actually matches its DTO",
+      "finding_ids": "H7B10-03;P7-038;P7-039;P7-040;P7-042",
+      "documented_observation": "Rechecks are not new findings, and IsPostpone is not a fabricated spelling mismatch. Different tab grains/taxes/discounts require reconciliation, not forced equal totals.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs:203-250;SmartAuditERP/Form_WPF/frmRptSalesInPeriod.xaml.cs:119-150;SmartAuditERP/Form_WPF/frmRptSalesInPeriod.xaml.cs:238-268;SmartAuditERP/Form_WPF/frmRptSalesInPeriod.xaml.cs:325-355;SmartAuditERP/Form_WPF/frmRptSalesInPeriod.xaml:441-443;SmartAuditERP/Class_WPF/SaleItemRow.cs:17-32",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only. Not a semantic callgraph, deployed schema/view/synonym/permission/availability proof, SQL/WPF rendering, complete child review, financial acceptance or measured latency/leak/index judgment. No application execution."
+    },
+    {
+      "id": "ST7B10-18",
+      "title": "Profit detail handoff carries an item id, not the parent date/safe criteria",
+      "finding_ids": "H7B10-03",
+      "documented_observation": "A deliberate all-history drilldown may be valid; its scope must be stated. Selected child ranges are not whole-child, authorization or financial certification.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs:652-665;SmartAuditERP/Form_WPF/frmItemsDetails.xaml.cs:25-55;SmartAuditERP/Form_WPF/frmItemsDetails.xaml.cs:74-101;SmartAuditERP/Form_WPF/frmItemsDetails.xaml:1-16",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only. Not a semantic callgraph, deployed schema/view/synonym/permission/availability proof, SQL/WPF rendering, complete child review, financial acceptance or measured latency/leak/index judgment. No application execution."
+    },
+    {
+      "id": "ST7B10-19",
+      "title": "ClosedXML writes typed XLSX cells and helper using finalizes before caller launch",
+      "finding_ids": "H7B10-04",
+      "documented_observation": "The caller invokes shell only after the helper returns/disposes; no P7-108 extension. Typed .Value assignments are not CSV syntax, nor a certification of every library/consumer formula policy.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:694-714;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:720-739;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:751-770;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:807-811",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only. Not a semantic callgraph, deployed schema/view/synonym/permission/availability proof, SQL/WPF rendering, complete child review, financial acceptance or measured latency/leak/index judgment. No application execution."
+    },
+    {
+      "id": "ST7B10-20",
+      "title": "Known CSV paths use csv extensions and unescaped quoted text, not fake XLSX",
+      "finding_ids": "P7-048;P7-049;H7B10-04",
+      "documented_observation": "Historical CSV escaping/consumer roots remain, not new extensions from rereading identical B1 ranges. No Office/formula/shell/actual export run; no P7-050 extension for matching CSV extension/content.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs:546-591;SmartAuditERP/Form_WPF/frmRptSalesInPeriod.xaml.cs:437-491",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only. Not a semantic callgraph, deployed schema/view/synonym/permission/availability proof, SQL/WPF rendering, complete child review, financial acceptance or measured latency/leak/index judgment. No application execution."
+    }
+  ],
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 1557,
+      "end": 1564,
+      "selected_text_sha256": "d6f820fbed1a3590285ded0bb6010a8220af7e19d9548f8a2707ffbb757bb74f"
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 1593,
+      "end": 1612,
+      "selected_text_sha256": "19df02783cc8ba6cc0e7186fc1e8d4671e7693aa696dbe8809253c5587da5d6e"
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 4301,
+      "end": 4316,
+      "selected_text_sha256": "fc56aede99c0017c7302b7db6d059f420d2bc7f2b0eb0230228cf7b136e2d03a"
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "start": 196,
+      "end": 211,
+      "selected_text_sha256": "c7b3264eba312e4eb0557a88e22d6ddf108aa94a9ec6ed85198dc6ca87589b92"
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "start": 1390,
+      "end": 1404,
+      "selected_text_sha256": "d08c2295fe1497dadaee9de9010b9cbb23e57c846e702db30a51a57f26eb4ca0"
+    },
+    {
+      "path": "SmartAuditERP/Class/MainClass.cs",
+      "start": 418,
+      "end": 455,
+      "selected_text_sha256": "68d3b06509c2db64018b49cb0829a7932dae49615a1078fc9ded6856b095761d"
+    },
+    {
+      "path": "SmartAuditERP/Class_WPF/SaleItemRow.cs",
+      "start": 17,
+      "end": 32,
+      "selected_text_sha256": "c65ab3bbe079e6b188a5b6c21efc054a4c3d1ab3ef8d82c3c63cbc31fc042b62"
+    },
+    {
+      "path": "SmartAuditERP/Class_WPF/SalesManRowItem.cs",
+      "start": 10,
+      "end": 24,
+      "selected_text_sha256": "3a16edbe838ab545336d8d236fa3bc9a1b6ee4dd1ba4b71134c5fd24bd9c2acb"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmDebtNote.xaml.cs",
+      "start": 670,
+      "end": 709,
+      "selected_text_sha256": "df72201b235467408aa7dea8edb8a95066faf95b6ff56c4552fbfde7ad341996"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml",
+      "start": 282,
+      "end": 309,
+      "selected_text_sha256": "d09ea6436bd7858b8f4b179891627aa7a78cd37f64cc3345627026724238dcd4"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml",
+      "start": 495,
+      "end": 510,
+      "selected_text_sha256": "03486143eb9aa97db2df92b702c79e3023cab7b77dcdfe7c44a0c18fbe0fc6aa"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 56,
+      "end": 64,
+      "selected_text_sha256": "b64df6353e4fd46c7b5a57a0c398db757ea72ceb7b44c10957216ba2e92a9fa9"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 120,
+      "end": 131,
+      "selected_text_sha256": "1c7df0d24c4ad31ca081eba3c7403efa34fb413edb3926f3039c07ce1a56adc7"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 141,
+      "end": 201,
+      "selected_text_sha256": "4fe06150a9439f894a15de87414a337f7c6cc51c6f5717510c20844e74459936"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 149,
+      "end": 174,
+      "selected_text_sha256": "5ac97f0b276fb044783f0d1d1ab048e6b0c10f9ed8314df3881ba67d27511c89"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 158,
+      "end": 166,
+      "selected_text_sha256": "dc247fa1a3269c1b3ea4afcf0efd741b1b2c6dc066a3b31cf7db9f4c865f0b03"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 158,
+      "end": 174,
+      "selected_text_sha256": "72f52d8ec0ba630ae6f6bc89f36273ee55cd8e14dd822c24f9862bb3c8fbf4ae"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 181,
+      "end": 218,
+      "selected_text_sha256": "bc95d27c7f918ba7851b67d3bfb34bfd4d71f09075d8d876f7694bd4aaf9be8a"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 189,
+      "end": 208,
+      "selected_text_sha256": "51175057519f5951f7a48eca52d0b868a10ea9e41fad2681a640ddaac8c74c46"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 189,
+      "end": 218,
+      "selected_text_sha256": "30eb310bd6787159090256d5f244feb11636567327630588899ce0cf7db6cc45"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 228,
+      "end": 243,
+      "selected_text_sha256": "2f61689dfd3be42f9546d520bab556b11d74815e2cace5a9d19a49464f31be4d"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 249,
+      "end": 273,
+      "selected_text_sha256": "7f2738c7dc7556d72758a3c793a3037064849364bec44e72ac93dbf97d3b6dd4"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 279,
+      "end": 290,
+      "selected_text_sha256": "c515de6b176fe3bb2cb9d22ab6cc3fa5f18d2af87763fc54fb94ac6862060a62"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 325,
+      "end": 343,
+      "selected_text_sha256": "4b11067255728ffbb21e644b5da659bd8e038382f2d4fc4d342f303ba68abdc4"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 351,
+      "end": 359,
+      "selected_text_sha256": "be58c6552e418b086c590a70df36d51645e0bdc8e29c139909e76e3ebae03c2b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 381,
+      "end": 398,
+      "selected_text_sha256": "e12ddda580a66008a66bb3c2fcd54788558e6bdc79ef5b258b81d37a5c28b897"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 391,
+      "end": 398,
+      "selected_text_sha256": "5c5e772f31851d1af85de690d097a50d1b08130d8d39195269afecb0a4c02c2c"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 401,
+      "end": 439,
+      "selected_text_sha256": "4fa86b2cdd018afca13eb36910d3453aefea5a93f3bf8252f6555a3b0cbceb61"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 411,
+      "end": 436,
+      "selected_text_sha256": "a1f56d4e97a397a84699fd59a35f0ca0375aa82c4f4ae94796cedc76f804c917"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 411,
+      "end": 439,
+      "selected_text_sha256": "1f918e5124f204bbf159387904e1f819a8c4ec0bdf2d1ad63cb8421c5058118d"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 420,
+      "end": 436,
+      "selected_text_sha256": "18cc2bdc686dd61a21dea85d7b9a0d29fe0eaf4b3f59f8713ea6c9f744b57627"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 450,
+      "end": 469,
+      "selected_text_sha256": "71584e828e770806446b68bcd49c089dfca2de91d779b1710ab7236d1f182844"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 470,
+      "end": 475,
+      "selected_text_sha256": "e93568d5d811faae834403473b2ee98dadd6ea3a93f0f571a48c927333771680"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 482,
+      "end": 510,
+      "selected_text_sha256": "3cff8907f5b29e54e11a2a7c3224c6ba8e5d38fb838039ae6766cf07758aa581"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 517,
+      "end": 570,
+      "selected_text_sha256": "6234ac4b4cb22e38eae9a3c32f93d015e35b6935f1a4c1940a8dafdaa358e324"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 558,
+      "end": 566,
+      "selected_text_sha256": "7119fc2601a34cf142d6284eabca527b3484ba4c92714a1fd6fa927fa5111125"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 581,
+      "end": 655,
+      "selected_text_sha256": "c7f5cbe180240fc622a2a971bc5506aef491933078651c29f04b2aeb5a75e03a"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 649,
+      "end": 681,
+      "selected_text_sha256": "574bed4d2d3a3eade5a910ee433ed437af9613d58b1622a334983aa40c2e57dd"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 694,
+      "end": 714,
+      "selected_text_sha256": "b9e45ab59a03e28c062629662ad3d86a074dc0cc3191edaada700d310a89e203"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 720,
+      "end": 739,
+      "selected_text_sha256": "0b2fd58f58a34498e9dafbe1cf16435772a6c01bdf3bce9f3c3583bedeabaa85"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 751,
+      "end": 770,
+      "selected_text_sha256": "9d0dd9e765b020b92dc5b9cf92edd0563d27ce6f5a26b548912a1464d065dbb0"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 781,
+      "end": 796,
+      "selected_text_sha256": "3583f055d3cffabd621e93bbf4c12f4f901a47eafcaf58b162cff1eb5a69460e"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 807,
+      "end": 811,
+      "selected_text_sha256": "68de054e6c92c362a4cbd4a7b8a2fb6010f1d0a5e3441850f6a83f1707633569"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs",
+      "start": 824,
+      "end": 830,
+      "selected_text_sha256": "8a232d7014097bb92aca0e79b4581bb5d1906d6cd90ece0022d938252f3a67ee"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsDetails.xaml",
+      "start": 1,
+      "end": 16,
+      "selected_text_sha256": "fffec0394e2e95ff7106c3e9d61df777e4709d69d8cc7b911cf9de0f483a403a"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsDetails.xaml.cs",
+      "start": 25,
+      "end": 55,
+      "selected_text_sha256": "20e3d8f56c7af6a36a876edb4cd8c5aa29ca65de45c63e085c13dcf3c78e3327"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsDetails.xaml.cs",
+      "start": 74,
+      "end": 101,
+      "selected_text_sha256": "9a41ee4c65264b975a63fbdb49471df5a9d5da3c8f75ecc12d9b31b435972a1b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml",
+      "start": 321,
+      "end": 341,
+      "selected_text_sha256": "97528ac729c8248290ff282b4b38177b6d309937618bb4aaaa89790ed17f3f80"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs",
+      "start": 132,
+      "end": 148,
+      "selected_text_sha256": "9b9f5aee183d218a49e1a1ec3dda5c37fa393d0b7ba63523884d43d72e1c8d08"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs",
+      "start": 203,
+      "end": 250,
+      "selected_text_sha256": "a64529fd31e142e4bee39de09f613f73f096e422cb13235c3ac4eed6b59ca8af"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs",
+      "start": 270,
+      "end": 287,
+      "selected_text_sha256": "4b1ef9d81ab01fe963b578dade9ebfcd11de5d88412f1c651a5287c21e763db6"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs",
+      "start": 294,
+      "end": 312,
+      "selected_text_sha256": "09ef8bbe0a56f746bad2a9239b00d01685fcc46e9df319666a9876205e98d51b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs",
+      "start": 470,
+      "end": 539,
+      "selected_text_sha256": "71268096e6d97b8c0be486b5ef8363eb8e1b6e6181ca17ea098abbf0de468d50"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs",
+      "start": 546,
+      "end": 591,
+      "selected_text_sha256": "162487cbe157ec319c7e6d9346e2c723b1e8da58a36f110d4262e0950745dd62"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs",
+      "start": 604,
+      "end": 623,
+      "selected_text_sha256": "d56a5970c2499767cfecbf1030345528b436253937a6f36f38646f94dae8c27d"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs",
+      "start": 652,
+      "end": 665,
+      "selected_text_sha256": "31222edd16393a2421e840e970a0ec4943f3424e9b5c3fcfa3fea851d883f9e2"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs",
+      "start": 674,
+      "end": 710,
+      "selected_text_sha256": "535e14b98d748a9ec8da4ce3af7eb1f35330eaffccc6852bc252d29ea8a74154"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSalesInPeriod.xaml",
+      "start": 441,
+      "end": 443,
+      "selected_text_sha256": "3bfb40fb115bb503ebbe33edc52251ba8b6a5defc592553a7a31fdc45b9482ea"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSalesInPeriod.xaml.cs",
+      "start": 119,
+      "end": 150,
+      "selected_text_sha256": "9161fd4fef8bd04cf2e53c4e3d80cf4d6614b95c8615b0074261d0f16cf897fa"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSalesInPeriod.xaml.cs",
+      "start": 185,
+      "end": 199,
+      "selected_text_sha256": "7c906adbc8780970049c897080f5b4de6822c2072f89b3de92c41761df43715a"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSalesInPeriod.xaml.cs",
+      "start": 238,
+      "end": 268,
+      "selected_text_sha256": "5ce005f53a680a7c5aab7c03ad8cd434fafcba5f6d9725e6a1d7cf5502f21731"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSalesInPeriod.xaml.cs",
+      "start": 325,
+      "end": 355,
+      "selected_text_sha256": "b2ae5bb72ac4b2179737467e45395c22ca0c42e7c3475d72df7d0a43d628ec32"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSalesInPeriod.xaml.cs",
+      "start": 359,
+      "end": 435,
+      "selected_text_sha256": "630b8872e6512e476442fb213b461fede0f3a4861bb310b55ffd46428e88adaf"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSalesInPeriod.xaml.cs",
+      "start": 437,
+      "end": 491,
+      "selected_text_sha256": "7a2619f6a3b26b72192b7eed1191ca26eae0bab1c0040351e4b52bfa6c533e4b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs",
+      "start": 496,
+      "end": 520,
+      "selected_text_sha256": "38ace94bb2a1fcbbf83d1bec47203ea6bb24fee073b8cb46bcb7c481fbf8e569"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSalesMen.xaml.cs",
+      "start": 269,
+      "end": 280,
+      "selected_text_sha256": "8ca1f73d75d3c41ff21e19cf8a655c4eec03856cd95e462ad3928a5981f657d5"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandQ.xaml.cs",
+      "start": 644,
+      "end": 660,
+      "selected_text_sha256": "c5f4d57b8c359172656a08ae709df4a7322642701b9114a7542c939b4473608a"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandQ.xaml.cs",
+      "start": 891,
+      "end": 916,
+      "selected_text_sha256": "96017ff37a364936de21734c9fd70d20b07aa5bda6c6c0a9d7049781932662b6"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandQD.xaml.cs",
+      "start": 635,
+      "end": 651,
+      "selected_text_sha256": "f53023995fd267a5da1a9cd11c211d694c8503adfaadd37f7e7f2162e0573141"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandQD.xaml.cs",
+      "start": 928,
+      "end": 944,
+      "selected_text_sha256": "d17f3c84b042055a02c4738c5ffb67ce71b342c42d136351b675513fa2c59b2a"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml",
+      "start": 482,
+      "end": 490,
+      "selected_text_sha256": "a79a8cea61ed8cd89b0b29dfcf3d7dced256fc2a790c34ae18a8474b4409f3fa"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "start": 3542,
+      "end": 3544,
+      "selected_text_sha256": "5f2f5a949877873b387133041f52d9866635be407513ba1be0d8d58d9fb1105b"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "start": 3604,
+      "end": 3611,
+      "selected_text_sha256": "e7c5d5a950d539d2f5a283fc56f293730cddbcb404093fe7c3169b9f4e336334"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 986,
+      "end": 994,
+      "selected_text_sha256": "716a9cf4c2cb7fb5dc7aaff749e36e71bf162486e0cbb63ce3093535643bfa9f"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 1366,
+      "end": 1387,
+      "selected_text_sha256": "2d6ff6ef446589b2a6cb5402cd9d2d0e9436b979c95253ef2bb45b636444fb02"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 1512,
+      "end": 1532,
+      "selected_text_sha256": "fe09761edfdf17ba3798b1374d184ccf0cefc12a4851478bb43e02c2356138c0"
+    }
+  ],
+  "application_code_imported_or_executed": false,
+  "application_remediation_performed": false,
+  "real_business_or_secret_data_used": false,
+  "spreadsheet_or_formula_interpreter_executed": false,
+  "upstream_thread_gate_not_assumed_resolved": true,
+  "notes_compatibility_not_assumed_in_deployment": true,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "errors": []
+}

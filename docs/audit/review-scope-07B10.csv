@@ -1,0 +1,24 @@
+path,review_state,ranges,focus
+SmartAuditERP/Class/InvoiceOper.cs,selected-static-source-slices-not-runtime-certified,1548-1564;1582-1620;4289-4316,كاتب علم VAT وكميات/تكلفة البند و binder تكلفة فقط؛ لا كل حفظ/GL.
+SmartAuditERP/Class/ItemOper.cs,selected-static-source-slices-not-runtime-certified,154-183;196-211;1390-1407,عقد تكلفة الأساس وكمية الإدخال ووحدة العبوة؛ لا كل تسعير/تقريب.
+SmartAuditERP/Class/MainClass.cs,selected-static-source-slices-not-runtime-certified,45-49;418-455,مصنع اتصال وحارس visual-tree بالاسم فقط؛ لا كل جلسة/موارد/تفويض.
+SmartAuditERP/Class_WPF/ItemProfitRow.cs,selected-static-source-slices-not-runtime-certified,1-35,DTO الأرباح؛ إعادة قراءة عقد معروف لا ميزة جديدة.
+SmartAuditERP/Class_WPF/SaleItemRow.cs,selected-static-source-slices-not-runtime-certified,1-33,DTO تبويبي الفترة؛ IsPostpone مطابق للـ XAML.
+SmartAuditERP/Class_WPF/SalesManRowItem.cs,selected-static-source-slices-not-runtime-certified,1-28,DTO المندوب والاتجاه/فقد GlobalID فقط؛ ليس snapshot عمولة.
+SmartAuditERP/Form_WPF/frmDebtNote.xaml.cs,selected-static-source-slices-not-runtime-certified,210-268;670-709,قراءة أول إشعار وكاتب CreditDeptNotes فقط؛ لا كل الترحيل أو الحذف/ACL.
+SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml,selected-static-source-slices-not-runtime-certified,1-654,جسم/XAML محلي كامل فقط؛ لا كل caller/child/template/schema/ACL/نشر/قبول. أرباح/حركة الفترة لهما 7B1 سابقة فلا يعاد عدها.
+SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs,selected-static-source-slices-not-runtime-certified,1-859,جسم/XAML محلي كامل فقط؛ لا كل caller/child/template/schema/ACL/نشر/قبول. أرباح/حركة الفترة لهما 7B1 سابقة فلا يعاد عدها.
+SmartAuditERP/Form_WPF/frmItemsDetails.xaml,selected-static-source-slices-not-runtime-certified,1-16,وصل Loaded فقط؛ لا كل XAML/إتاحة.
+SmartAuditERP/Form_WPF/frmItemsDetails.xaml.cs,selected-static-source-slices-not-runtime-certified,25-101,هوية SelectedId وLoaded واستعلام التفاصيل فقط؛ لا طفل كامل أو أداء.
+SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml,selected-static-source-slices-not-runtime-certified,1-644,جسم/XAML محلي كامل فقط؛ لا كل caller/child/template/schema/ACL/نشر/قبول. أرباح/حركة الفترة لهما 7B1 سابقة فلا يعاد عدها.
+SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs,selected-static-source-slices-not-runtime-certified,1-715,جسم/XAML محلي كامل فقط؛ لا كل caller/child/template/schema/ACL/نشر/قبول. أرباح/حركة الفترة لهما 7B1 سابقة فلا يعاد عدها.
+SmartAuditERP/Form_WPF/frmRptSalesInPeriod.xaml,selected-static-source-slices-not-runtime-certified,1-566,جسم/XAML محلي كامل فقط؛ لا كل caller/child/template/schema/ACL/نشر/قبول. أرباح/حركة الفترة لهما 7B1 سابقة فلا يعاد عدها.
+SmartAuditERP/Form_WPF/frmRptSalesInPeriod.xaml.cs,selected-static-source-slices-not-runtime-certified,1-588,جسم/XAML محلي كامل فقط؛ لا كل caller/child/template/schema/ACL/نشر/قبول. أرباح/حركة الفترة لهما 7B1 سابقة فلا يعاد عدها.
+SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs,selected-static-source-slices-not-runtime-certified,473-534,Navigate وأول صف وهوية الفاتورة فقط؛ لا كل المحرر/الحفظ.
+SmartAuditERP/Form_WPF/frmSalesMen.xaml,selected-static-source-slices-not-runtime-certified,212-225;272-277,حقول العمولة وزر المدخل فقط؛ لا UI/صلاحيات كاملة.
+SmartAuditERP/Form_WPF/frmSalesMen.xaml.cs,selected-static-source-slices-not-runtime-certified,157-180;269-280,كاتب نسب العمولات ومدخل تقرير المندوبين فقط، لا البحث/الحذف/كل الشاشة.
+SmartAuditERP/Form_WPF/frmSandQ.xaml.cs,selected-static-source-slices-not-runtime-certified,624-698;891-939,Navigate/ReadData وعقد Payment/VAT/NetVal/branch فقط؛ لا كل سند5 أوGL.
+SmartAuditERP/Form_WPF/frmSandQD.xaml.cs,selected-static-source-slices-not-runtime-certified,618-680;928-965,Navigate/ReadData وعقد Receipt7/branch/NetVal فقط؛ لا كل سند7 أوGL.
+SmartAuditERP/Home.xaml,selected-static-source-slices-not-runtime-certified,482-490,القوائم وحالة تعطيل حركة الفترة؛ لا صلاحية نشر.
+SmartAuditERP/Home.xaml.cs,selected-static-source-slices-not-runtime-certified,3542-3544;3604-3611,مداخل new reports وApply قبل Show لحركة الفترة فقط؛ لا كل Home/ACL.
+SmartAuditERP/Properties/Resources.resx,selected-static-source-slices-not-runtime-certified,954-1017;1023-1058;1366-1387;1496-1532;1807-1818,DDL محلي Inv/Inv_Sub/الإشعار/Receipts/salesmen فقط؛ لا كل 144533 سطر أو schema نشر/alias.
