@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
-"""Read-only audit consistency through PARTIAL7B10, NOT ERP acceptance.
+"""Read-only audit consistency through PARTIAL7B11; NEVER ERP acceptance.
 
-Stdlib/local read-only Git, independent manual/bounded lexical models and
-synthetic documentation-checker tests only. DefaultB10 validates frozen
-7A200/B1223/B2237/B3248/B4261/B5266/B6270/B7276/B8280/B9282 using OWN
-exact registry/index inputs IN MEMORY, then additive current285. All prior
-reports/helpers/genuine checks/baselines stay byte-protected. Historical
-2..6/A/B1..B9 CLI modes remain; current metrics are not archived byte replay.
-Source10ba is the original827 application path/hash reference. Entrya254 is
-the already completed B9 docs-only push, not a new push or source rebaseline.
-Archived B9 checkout3612700 and B8 checkout10ba stay genuine observations.
-7B/7 remain partial;7B11 announced,7C not started,8 unauthorized. The upstream
-salesman worker/WPF gate and unresolved Notes compatibility remain explicit.
-No ERP import/build/C#/SQL/WPF/Office/COM/device/provider/network/binary/formula
-or actual export/shell execution. Never writes baseline/checks/evidence.
+Stdlib/Git/manual/lexical/synthetic documentary checks only. Historical2..6 and
+A/B1..B10 receive OWN frozen registries/exact indexes IN MEMORY; B10 also gets
+its original CRLF bytes at one exact logical path via a local Path subclass.
+No protected helper/report/stdout edit or global pathlib patch. Protect315 prior
+artifacts,285 historical cores/ALLnext_phase/evidence prefixes and G01..140;
+current287 has two LOCAL findings and14 declared tails. Source10ba/original827
+path+hash reference differs from docs-only entry1fbac9e (already pushed B10).
+Archived B10 checkouta254, B9checkout3612700 and B8checkout10ba stay genuine.
+Default aggregate P3-022 is not assumed fixed; supplied SQL is not certified
+as deployed. Additive arithmetic erratum2*5=10 vs2*12*5=120 leaves B10 intact.
+7B/7 partial;7B12 announced,7C unstarted,8 unauthorized. No application import,
+build/C#/SQL/WPF/Office/COM/REPX/device/provider/formula/actual export/shell,
+remediation, real data/secrets, acceptance or operational measurements.
+Never writes baseline/checks/evidence.
 """
 from __future__ import annotations
 
@@ -233,7 +234,7 @@ def recompute(relative_json: str, script: str) -> tuple[dict, bool]:
     return saved, match
 
 
-def main(through: int, phase7_part: str = "B10") -> int:
+def main(through: int, phase7_part: str = "B11") -> int:
     head, branch = git("rev-parse", "HEAD"), git("branch", "--show-current")
     from audit_source_identity import inspect_identity
     source_identity, identity_errors = inspect_identity(HEAD, git)
@@ -1129,44 +1130,48 @@ def main(through: int, phase7_part: str = "B10") -> int:
     if through == 7:
         report["phase_7A_historical_input_mode"] = "frozen200-and-protected7A-artifacts-not-current-shared-indexes"
         report["validation"]["limit"] += " Historical7A current-checker recomputation is not a claim of byte-identical reproduction of the original checks-07 metrics."
-        if phase7_part in {"B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10"}:
+        if phase7_part in {"B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10", "B11"}:
             from validate_financial_report_part import validate_frozen_b1
             prov7b2, frozen223 = provenance("evidence/provenance-07B2.json", 110, 223)
             validate_frozen_b1(sys.modules[__name__], report, prov7b, frozen200, prov7b2, frozen223)
-            if phase7_part in {"B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10"}:
+            if phase7_part in {"B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10", "B11"}:
                 from validate_commercial_report_part import validate_frozen_b2
                 prov7b3, frozen237 = provenance("evidence/provenance-07B3.json", 132, 237)
                 validate_frozen_b2(sys.modules[__name__], report, prov7b2, frozen223, prov7b, prov7b3, frozen237)
-                if phase7_part in {"B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10"}:
+                if phase7_part in {"B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10", "B11"}:
                     from validate_invoice_analysis_part import validate_frozen_b3
                     prov7b4, frozen248 = provenance("evidence/provenance-07B4.json", 155, 248)
                     validate_frozen_b3(sys.modules[__name__], report, prov7b3, frozen237, prov7b4, frozen248)
-                    if phase7_part in {"B4", "B5", "B6", "B7", "B8", "B9", "B10"}:
+                    if phase7_part in {"B4", "B5", "B6", "B7", "B8", "B9", "B10", "B11"}:
                         from validate_sales_report_part import validate_frozen_b4
                         prov7b5, frozen261 = provenance("evidence/provenance-07B5.json", 178, 261)
                         validate_frozen_b4(sys.modules[__name__], report, prov7b4, frozen248, prov7b5, frozen261)
-                        if phase7_part in {"B5", "B6", "B7", "B8", "B9", "B10"}:
+                        if phase7_part in {"B5", "B6", "B7", "B8", "B9", "B10", "B11"}:
                             from validate_pos_totals_part import validate_frozen_b5
                             prov7b6, frozen266 = provenance("evidence/provenance-07B6.json", 199, 266)
                             validate_frozen_b5(sys.modules[__name__], report, prov7b5, frozen261, prov7b6, frozen266)
-                            if phase7_part in {"B6", "B7", "B8", "B9", "B10"}:
+                            if phase7_part in {"B6", "B7", "B8", "B9", "B10", "B11"}:
                                 from validate_financial_controls_part import validate_frozen_b6
                                 prov7b7, frozen270 = provenance("evidence/provenance-07B7.json", 223, 270)
                                 validate_frozen_b6(sys.modules[__name__], report, prov7b6, frozen266, prov7b7, frozen270)
-                                if phase7_part in {"B7", "B8", "B9", "B10"}:
+                                if phase7_part in {"B7", "B8", "B9", "B10", "B11"}:
                                     from validate_decision_summary_part import validate_frozen_b7
                                     prov7b8, frozen276 = provenance("evidence/provenance-07B8.json", 246, 276)
                                     validate_frozen_b7(sys.modules[__name__], report, prov7b7, frozen270, prov7b8, frozen276)
-                                    if phase7_part in {"B8", "B9", "B10"}:
+                                    if phase7_part in {"B8", "B9", "B10", "B11"}:
                                         from validate_receipt_payroll_part import validate_frozen_b8
                                         prov7b9, frozen280 = provenance("evidence/provenance-07B9.json", 269, 280)
                                         validate_frozen_b8(sys.modules[__name__], report, prov7b8, frozen276, prov7b9, frozen280)
-                                        if phase7_part in {"B9", "B10"}:
-                                            from validate_salesman_contract_part import validate_frozen_b9, extend_salesman_contracts
+                                        if phase7_part in {"B9", "B10", "B11"}:
+                                            from validate_salesman_contract_part import validate_frozen_b9
                                             prov7b10, frozen282 = provenance("evidence/provenance-07B10.json", 292, 282)
                                             validate_frozen_b9(sys.modules[__name__], report, prov7b9, frozen280, prov7b10, frozen282)
-                                            if phase7_part == "B10":
-                                                extend_salesman_contracts(sys.modules[__name__], report, prov7b10, frozen282)
+                                            if phase7_part in {"B10", "B11"}:
+                                                from validate_statement_contract_part import validate_frozen_b10, extend_statement_contracts
+                                                prov7b11, frozen285 = provenance("evidence/provenance-07B11.json", 315, 285)
+                                                validate_frozen_b10(sys.modules[__name__], report, prov7b10, frozen282, prov7b11, frozen285)
+                                                if phase7_part == "B11":
+                                                    extend_statement_contracts(sys.modules[__name__], report, prov7b11, frozen285)
     # New-part checks increment the same counters/errors without writing files.
     report["validation"]["source_range_references_checked_including_repeats"] = REFERENCE_COUNT
     report["validation"]["local_markdown_links_checked_including_repeats"] = LINK_COUNT
@@ -1177,8 +1182,8 @@ def main(through: int, phase7_part: str = "B10") -> int:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--through-phase", type=int, choices=(2, 3, 4, 5, 6, 7), default=7,
-                        help="Default7 is7A+B1+B2+B3+B4+B5+B6+B7+B8+B9+B10 partial;2..6 use frozen historical inputs")
-    parser.add_argument("--phase7-part", choices=("A", "B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10"), default="B10",
-                        help="For7: A=frozen200; B1=frozen223; B2=frozen237; B3=frozen248; B4=frozen261; B5=frozen266; B6=frozen270; B7=frozen276; B8=frozen280; B9=frozen282 (each own exact shared indexes); B10(default)=current285.7B11 announced;7C not started;8 unauthorized")
+                        help="Default7 is7A+B1..B11 partial;2..6 use frozen historical inputs")
+    parser.add_argument("--phase7-part", choices=("A", "B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10", "B11"), default="B11",
+                        help="For7: A=frozen200; B1=frozen223; B2=frozen237; B3=frozen248; B4=frozen261; B5=frozen266; B6=frozen270; B7=frozen276; B8=frozen280; B9=frozen282; B10=frozen285 incl original CRLF bytes (each own exact indexes IN MEMORY); B11(default)=current287.7B12 announced;7C not started;8 unauthorized")
     args = parser.parse_args()
     sys.exit(main(args.through_phase, args.phase7_part))

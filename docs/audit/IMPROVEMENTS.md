@@ -1,10 +1,12 @@
 # النواقص والإضافات المقترحة
 
-**تحديث بعد1–6 و7A/B1–B10؛ مرجع التدقيق2026-11-16. جميع285 نتيجة مفتوحة، وG01–140 مجموعات توصية لا140 نتيجة أخرى.** لا معالجة تطبيق أو تشغيل/قياس/قبولERP. نجح سابقاً دفع297 ملف تدقيق حتىB9 إلى`a2541ed204e62493f93cfb811ba5f81ad3206942`. عند الاستئناف طوبقت297 وثيقة مع الدفع الموجود ثمfast-forward للفرع نفسه؛ لا دفع/التزام جديد أوreset/force/rebaseline. مصدر10ba215 و827path/hash ثابتة. checksB9 checkout3612700 وB8checkout10ba أصليان ولا يعادان لتوحيدmetadata.
+**تحديث بعد 1–6 و 7A/B1–B11؛ مرجع التدقيق 2026-11-16. جميع 287 نتيجة مفتوحة؛G01–146 مجموعات توصية لا 146 نتيجة أخرى.** لا معالجة تطبيق أو تشغيل/قياس/قبول ERP. دفع B10 مكتمل عند `1fbac9e34ede90396f212bd03390a1a737c351e6` بجميع 320 وثيقة؛ الاستئناف طابق 320 ثم fast-forward لنفس الفرع دون commit/push جديد أو reset/force/rebaseline. مصدر 10ba215 و 827path/hash ثابتة؛checksB10 checkouta254/B9checkout3612700/B8checkout10ba أصلية ولا يعاد stdout لتوحيد metadata.
 
-أحدث[PHASE-07B10](PHASE-07B10.md) و[عقود المصادر](SALESMAN-REPORT-CONTRACTS-07B10.md) يضيفان3 متوسطةconfirmed محلياً و13 ذيلاً. **7B/7 غير مكتملتين؛7B11 معلنة،7C لم تبدأ، والمرحلة8 غير مأذونة.** بوابةworker/WPF سابقة لصفوف المندوبين؛ Notes/CreditDeptNotes عدم تطابق القارئ مع الكاتب/DDL المحلي، لا غيابview/synonym نشر مؤكد. أمثلة الصافي والفترة والتكلفة لا تصلحGL ولا تعبر حاجزاً أعلى.
+أحدث [PHASE-07B11](PHASE-07B11.md) و[عقود الكشفين والقيود](ACCOUNT-STATEMENT-CONTRACTS-07B11.md) يضيفان High/Medium confirmed محليتين و 14 ذيلاً؛ **7B/7 غير مكتملتين،7B12 معلنة،7C لم تبدأ،8 غير مأذونة.** P3-022 بوابة التجميع الافتراضي غير الفارغ لم تحل؛SP المرفق ليس إجراء نشر مصدقاً. DB الطلب الثاني P7-115 يختلف عن لقطة printP7-045؛ لا GL أو أثر مالي حقيقي من النموذج.
 
-**صفوفG01–134 التاريخية محفوظة حرفياً**؛ تضافG135–140 فقط. فقرات الأقسام التاريخية وأعدادها وبواقيها تصف وقت تسليمها. تحمي[provenance292](evidence/provenance-07B10.json) و[frozen282](evidence/findings-through-07B9.csv) و[exactB9indexes](evidence/shared-indexes-through-07B9.json) التاريخ وأدواته وchecksه؛ كل282core وكلnext_phase وبادئات الدليل و13 ذيلاً معلناً. الساعة المشاهدة منفصلة عن مرجع16نوفمبر؛current metadata ليستbyte-replay أو إذن معالجة.
+**G01–140 التاريخية محفوظة حرفياً**؛ تضاف G141–146 فقط. فقرات وأعداد وبواقي الأقسام القديمة تصف وقت تسليمها. [provenance315](evidence/provenance-07B11.json) و[frozen285](evidence/findings-through-07B10.csv) و[exactB10indexes](evidence/shared-indexes-through-07B10.json) تحفظ التاريخ/helpers/checks؛285core وكل next_phase وبادئات الدليل+14tail فقط. B10 يتلقى CRLFbytes والصفوف وفهارسه في الذاكرة دون patch عالمي أو قرص أو تحرير محمي. الساعة المشاهدة منفصلة عن مرجع 16 نوفمبر؛ لا byte-replay أو إذن 8.
+
+**تصويب إضافي، لا rewrite لـ G138/EX7B10-06:** قال الشرح 20 مقابل 120؛ الصحيح **2×5=10 مقابل 2×12×5=120** عند qty2/equality12/basecost5؛witnessB10 أصلاً10. يحتفظ الأرشيف بالنص الأصلي ويضاف التصويب هنا/G144/B11witness. المدقق الهيكلي لا يصادق كل نثر حسابي تاريخي.
 
 ## 1. إضافات ذات أولوية — تاريخ كل صف محفوظ
 
@@ -364,3 +366,19 @@
 | G-140 | بوابة7B11/7C وإذن8 وحفظ التاريخ دون إغلاق اسمي | H7B10-06؛scope23/union381 ومكمل446، و98/52 مرشحات أسماء. لا إعادة عد7B1 من قراءة الأرباح/الفترة. | حاجز قبل إغلاق7:قدرة×شاشة×implementation×test أو استبعاد مسند/أجزاء؛7B11 معلنة و7C لم تبدأ و8 غير مأذونة. احفظ292artifact/282core وكلnext_phase وG01–134 و827hashes وchecksB9 الأصلي؛source10ba/entrya254 لاrebaseline أوreplay مصطنع، ولاindex/leak/latency من نص؛P7B10T-25–26. |
 
 **لا معالجة أو قبولERP أوSQL/WPF/Office/صيغة/shell/تصدير فعلي أو قياس/SQLplans.** بوابةworker لم تعالج وNotes alias لم تحسم؛ سياسة العمولة/GL ووحدة التكلفة والمستهلك تحتاج عقوداً. [التحقق الفعلي وحدوده](VALIDATION-07B10.md) و[بوابات7B11/7C/8](PLAN.md) يفصلان236 checker case عن26 خطة غير منفذة. حفظ التوثيق ودفعه لا يجيزان تشغيل التطبيق أو إصلاحه.
+
+
+### إضافات 7B11 — G141–146
+
+ست مجموعات اقتراح وعقد، **لا ست نتائج إضافية ولا علاج منفذ**. [FE23](evidence/feature-implementation-matrix-07B11.csv)، [INV23](evidence/report-invariants-07B11.csv)، [RC6](evidence/report-reconciliation-07B11.csv)، [plans25](evidence/acceptance-tests-07B11.csv):كل 25 not-executed؛20 نموذجاً و 20 ملاحظة نصية و 266synthetic لمدقق وثائق، لا ERP أو إذن 8.
+
+| المعرف | النقص أو الإضافة | التصنيف والدليل | الأولوية ومعيار قبول مبدئي |
+|---|---|---|---|
+| G-141 | أهلية GL معتمدة للحالة والحذف في السابق والحركة | P7-114 و H7B11-01؛ نصا SP المرفقان بلا state1 خلاف المفصل؛ سياسة audit-all وإجراء النشر مطلوبان. يكمل G26/86/87. | عالٍ:معتمد 100 وملغى 40→100 للوضع التشغيلي، والمحذوف مستبعد؛audit-all مستقل وموسوم إن أجيز. طابق branch/leaf/period/currency/grain قبل المجاميع؛ لا SP نشر مفترض أو فرق GL للموازنة؛P7B11T-01–02/19. |
+| G-142 | طلب سنة مستقل بهوية DB لا علم عالمي مستهلك | P7-115 و H7B11-02؛Show2 قد يقرأ CURRENT مع اختيار PAST، مختلف عن P7-045. يكمل G19/83/86. | متوسط/عالٍ للمصدر:اشتقاق اختيار موثوق لكل طلب واتصال scoped و DBidentity/version ومؤسسة وحساب وفرع ولواحق lookup/child/output؛PAST/PAST لا تصير PAST/CURRENT؛P7B11T-03–04/14/20. |
+| G-143 | عقد projection وإشارة وحدود وقت ونوع canonical | P3-021/022/023 و P7-099 و P2-010 و H7B11-01؛defaultaggregate غير الفارغ محجوب قبل الرصيد؛14/15/16 ليست مرتجعات 21/22/23، و id/BranchId عقد. | عالٍ لصحة القراءة:mapper/schema متفقان،D−C داخلي موحد والدائن 200+50→250 لا 150؛half-open مع تمييز اليوم والوقت الحر،typeID لا ترتيب الخيار، و mapping فرع معتمد؛period-only ليس closing؛P7B11T-10–13/18–19. |
+| G-144 | تصويب حسابي إضافي وحدود التدقيق الهيكلي دون تحرير التاريخ | شرح EX7B10-06/G138 قال 20؛witnessB10 كان 10. يكمل G138 ولا يمس صفه أو تقريراً أو checks قديمة. | توثيق إضافي فقط:2×5=10 محلياً و 2×12×5=120 مرجعياً، وعند equality1 كلاهما 10. لا archive_rewritten ولا شهادة بكل جملة من hash/link checker؛P7B11T-25 و ALG7B11-20؛كل قبول ERP غير منفذ. |
+| G-145 | هوية طلب ولقطة و child وقدرة إخراج وصلاحية فعلية | P1-004/011/013/030/033 و P7-045/046/061/085 و H7B11-03/04/05؛Excelstub مقابل typedXLSX حقيقي؛EntryOperbranch/Apply/menu/new شواهد. | متوسط/عالٍ:حساب محلول و SQL بمعلمات،rows/totals/criteria/DB/health ذرياً؛الفشل ليس zero و empty لا تحتفظ oldtotals؛GlobalID/type/branch/DB وتفويض كل حد وطفل. قدرة صريحة وملف مكتمل قبل success/launch و manifest/DTO/settings/consumer موثوقة؛لا اتهام CSV/finalization أو server-bypass تلقائي؛P7B11T-05–09/14–17/21–23. |
+| G-146 | بوابة 7B12/7C وإذن 8 وحماية 315 دون إغلاق من أسماء أو أسطر | H7B11-06؛scope21/16overlap/5new→union386 ومكمل 441؛98/52 فرز لا feature-count، و 3 من 16 جسماً ذا مقاطع قديمة لا تغلق كل عقد. | حاجز إغلاق 7:قدرة×شاشة×implementation×test أو استبعاد مسند/أجزاء؛احفظ 315artifact و 285core/ALLnext_phase/G01–140 و 827hashes وثلاث freezes و stdoutB10 genuine. B10bytes/rows/indexes في الذاكرة لا rebaseline؛7B12 معلنة و 7C لم تبدأ و 8 غير مأذونة، لا index/leak/latency من نص؛P7B11T-24–25. |
+
+[التحقق الفعلي وحدوده](VALIDATION-07B11.md) و[الخطة](PLAN.md):25 خطة قبول غير منفذة و 30synthetic جديدة لمدقق وثائق؛ لا SQL/WPF/Office/صيغة أو طباعة/تصدير/Process.Start أو خدمة أو معالجة أو قياس. P3-022 قائمة و P7-114 على نص مرفق؛ السياسة ومخطط النشر والقالب والدور عقود مطلوبة. لا اكتمال 7B/7 أو بدء 7C/8.

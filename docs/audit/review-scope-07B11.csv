@@ -1,0 +1,22 @@
+path,review_state,ranges,focus
+SmartAuditERP/Class/Accounting.cs,selected-static-source-slices-not-runtime-certified,1-14,تعريف BranchCondition المحلي فقط؛ لا كل القوائم المالية.
+SmartAuditERP/Class/Common.cs,selected-static-source-slices-not-runtime-certified,429-446,اسم EntryTypes من ConnObj؛ ليست كتابة GL أو قبول أداء.
+SmartAuditERP/Class/EntryOper.cs,selected-static-source-slices-not-runtime-certified,854-914;1021-1194,كاتب state/branch والفتح من GlobalID ثم رقم+فرع وشواهد موجه السند/المستند؛ لا كل الترحيل أو التفويض.
+SmartAuditERP/Class/InvoiceOper.cs,selected-static-source-slices-not-runtime-certified,1532-1551;2004-2025,عقد كتابة EntryID وbranch في Inv فقط؛ لا كل المصدر الضريبي/البنود/التكلفة.
+SmartAuditERP/Class/MainClass.cs,selected-static-source-slices-not-runtime-certified,39-49;115-123;418-455,مصنع اتصال وflag السنة السابقة وحارس visual-tree بالاسم؛ لا دورة كل الموارد/جلسة أو تفويض خادم.
+SmartAuditERP/Class/RestrictionData.cs,selected-static-source-slices-not-runtime-certified,1-172,DTO طباعة مشترك مقروء بنص cp1256 fallback؛ لا تصديق encoding المترجم أو قالب خارجي.
+SmartAuditERP/Class/User.cs,selected-static-source-slices-not-runtime-certified,45-115,BranchCondition وصلاحية ShowBranchsAccounts ذات المسافة فقط؛ لا إثبات تفويض نشر.
+SmartAuditERP/Form_WPF/FrmNewEntry.xaml.cs,selected-static-source-slices-not-runtime-certified,168-203;257-278,طفل القيد يقرأ GlobalID من الصف وNavigate الوارد؛ لا كامل المحرر أو الحفظ/التفويض.
+SmartAuditERP/Form_WPF/frmAccountBalance.xaml,selected-static-source-slices-not-runtime-certified,1-303,الجسم/XAML المحلي كامل ضمن عقد الكشف/القيود؛ المقاطع السابقة لا تعد نتائج جديدة؛ لا كل caller/child/template/schema/ACL/نشر أو قبول.
+SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs,selected-static-source-slices-not-runtime-certified,1-902,الجسم/XAML المحلي كامل ضمن عقد الكشف/القيود؛ المقاطع السابقة لا تعد نتائج جديدة؛ لا كل caller/child/template/schema/ACL/نشر أو قبول.
+SmartAuditERP/Form_WPF/frmAccountSrch.xaml,selected-static-source-slices-not-runtime-certified,1-16,تعريف child/KeyDown فقط؛ لا كل XAML أو وصول الطفل.
+SmartAuditERP/Form_WPF/frmAccountSrch.xaml.cs,selected-static-source-slices-not-runtime-certified,1-102;185-208,شرط نوع2 والفرع وبناء استعلام المنتقي وConfirmSelection؛ لا طفل كامل أو كل event/فلتر.
+SmartAuditERP/Form_WPF/frmAccountsStatement.xaml,selected-static-source-slices-not-runtime-certified,1-368,الجسم/XAML المحلي كامل ضمن عقد الكشف/القيود؛ المقاطع السابقة لا تعد نتائج جديدة؛ لا كل caller/child/template/schema/ACL/نشر أو قبول.
+SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs,selected-static-source-slices-not-runtime-certified,1-977,الجسم/XAML المحلي كامل ضمن عقد الكشف/القيود؛ المقاطع السابقة لا تعد نتائج جديدة؛ لا كل caller/child/template/schema/ACL/نشر أو قبول.
+SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs,selected-static-source-slices-not-runtime-certified,481-502,Navigate إلى BindingInvoice فقط؛ لا كل محرر أو حفظ المشتريات.
+SmartAuditERP/Form_WPF/frmInvSale.xaml.cs,selected-static-source-slices-not-runtime-certified,1643-1660,Navigate إلى BindingInvoice وغياب نتيجة يعيد نموذجاً جديداً؛ لا كل حفظ البيع.
+SmartAuditERP/Form_WPF/frmRptEntries.xaml,selected-static-source-slices-not-runtime-certified,1-752,الجسم/XAML المحلي كامل ضمن عقد الكشف/القيود؛ المقاطع السابقة لا تعد نتائج جديدة؛ لا كل caller/child/template/schema/ACL/نشر أو قبول.
+SmartAuditERP/Form_WPF/frmRptEntries.xaml.cs,selected-static-source-slices-not-runtime-certified,1-789,الجسم/XAML المحلي كامل ضمن عقد الكشف/القيود؛ المقاطع السابقة لا تعد نتائج جديدة؛ لا كل caller/child/template/schema/ACL/نشر أو قبول.
+SmartAuditERP/Home.xaml,selected-static-source-slices-not-runtime-certified,329-340,menu للكشف الرئيسي والمعطل للمفصل/القيود كشاهد إتاحة مقابل؛ لا حكم نشر شامل.
+SmartAuditERP/Home.xaml.cs,selected-static-source-slices-not-runtime-certified,80-89;2582-2615,مرجع static للقيود ومداخل جديدة للكشفين مع Apply-before-Show لبعضها؛ لا كل Home أو إثبات صلاحية تشغيل.
+SmartAuditERP/Properties/Resources.resx,selected-static-source-slices-not-runtime-certified,38-60;242-276;782-787;954-1017;1538-1575;3371-3401;4644-4810;50225-50381,DDL/seed وعقدا GetAccountStatement المرفقان وYear_Previews فقط؛ لا كل resx أو قاعدة نشر أو view/synonym/خطةSQL.
