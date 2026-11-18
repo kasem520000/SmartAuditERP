@@ -1,0 +1,1089 @@
+{
+  "phase": "7B6-partial-static-audit",
+  "purpose": "Independent manual documentary illustrations and bounded literal observations, not ERP acceptance",
+  "application_code_imported_or_executed": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "application_remediation_performed": false,
+  "real_business_or_secret_data_used": false,
+  "spreadsheet_or_formula_interpreter_executed": false,
+  "illustration_count": 20,
+  "static_lexical_contract_check_count": 20,
+  "illustrations": [
+    {
+      "id": "ALG7B6-01",
+      "title": "Stored inclusive price cannot become exclusive due to a current setting",
+      "finding_ids": "P7-095",
+      "hand_selected_inputs": {
+        "stored_inclusive": true,
+        "current_inclusive": false,
+        "quantity": 1,
+        "price": 115,
+        "line_discount": 0,
+        "VAT": 15,
+        "extra_tax": 0
+      },
+      "manual_observation_model": {
+        "base": 115,
+        "total": 130
+      },
+      "independent_reference": {
+        "base": 100,
+        "total": 115
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:177-193;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:211-256;SmartAuditERP/Class/InvoiceObj.cs:169-178;SmartAuditERP/Class/InvoiceOper.cs:1560-1564",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected manual documentary model only, not C#/SQL execution/translation, deployed data, business-policy certification, financial/GL acceptance or WPF/Office rendering. Source tuples and arithmetic are illustrations, not program outputs; build/schema/DTO/authorization/return-writer gates remain. No scripts/formulas/spreadsheets/provider/device executed."
+    },
+    {
+      "id": "ALG7B6-02",
+      "title": "Reverse current/stored flags changes the historical basis too",
+      "finding_ids": "P7-095",
+      "hand_selected_inputs": {
+        "stored_inclusive": false,
+        "current_inclusive": true,
+        "quantity": 1,
+        "price": 100,
+        "VAT": 15
+      },
+      "manual_observation_model": {
+        "base": 85,
+        "total": 100
+      },
+      "independent_reference": {
+        "base": 100,
+        "total": 115
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:242-256;SmartAuditERP/Class/InvoiceOper.cs:3271-3277",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected manual documentary model only, not C#/SQL execution/translation, deployed data, business-policy certification, financial/GL acceptance or WPF/Office rendering. Source tuples and arithmetic are illustrations, not program outputs; build/schema/DTO/authorization/return-writer gates remain. No scripts/formulas/spreadsheets/provider/device executed."
+    },
+    {
+      "id": "ALG7B6-03",
+      "title": "Rounding quantity is a calculation loss, not only N2 formatting",
+      "finding_ids": "P7-096",
+      "hand_selected_inputs": {
+        "quantity": "0.004",
+        "unit_price": "1000",
+        "discount": 0,
+        "VAT": 0,
+        "midpoint_case": false
+      },
+      "manual_observation_model": {
+        "projected_quantity": "0.00",
+        "gross": "0.00",
+        "raw_net": "4.000"
+      },
+      "independent_reference": {
+        "required_gross": "4.000",
+        "raw_quantity": "0.004",
+        "raw_net": "4.000"
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:177-193;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:242-275;SmartAuditERP/Class/InvoiceOper.cs:1593-1597",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected manual documentary model only, not C#/SQL execution/translation, deployed data, business-policy certification, financial/GL acceptance or WPF/Office rendering. Source tuples and arithmetic are illustrations, not program outputs; build/schema/DTO/authorization/return-writer gates remain. No scripts/formulas/spreadsheets/provider/device executed."
+    },
+    {
+      "id": "ALG7B6-04",
+      "title": "Splitting the same quantity changes rounded-quantity gross",
+      "finding_ids": "P7-096",
+      "hand_selected_inputs": {
+        "whole": "1.2346",
+        "halves": [
+          "0.6173",
+          "0.6173"
+        ],
+        "price": "100"
+      },
+      "manual_observation_model": {
+        "one_line": "123.00",
+        "two_lines": "124.00"
+      },
+      "independent_reference": {
+        "one_line": "123.46",
+        "two_lines": "123.46"
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:242-275;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:308-344",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected manual documentary model only, not C#/SQL execution/translation, deployed data, business-policy certification, financial/GL acceptance or WPF/Office rendering. Source tuples and arithmetic are illustrations, not program outputs; build/schema/DTO/authorization/return-writer gates remain. No scripts/formulas/spreadsheets/provider/device executed."
+    },
+    {
+      "id": "ALG7B6-05",
+      "title": "A missing unused template blocks a local document builder",
+      "finding_ids": "P7-097",
+      "hand_selected_inputs": {
+        "rows_nonempty": true,
+        "renderer_contract": "FlowDocument",
+        "repx_exists": false,
+        "application_executed": false
+      },
+      "manual_observation_model": {
+        "template_gate": "return-before-builder"
+      },
+      "independent_reference": {
+        "required_gate": "only-dependencies-consumed-by-approved-renderer"
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:482-512;SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs:289-316",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected manual documentary model only, not C#/SQL execution/translation, deployed data, business-policy certification, financial/GL acceptance or WPF/Office rendering. Source tuples and arithmetic are illustrations, not program outputs; build/schema/DTO/authorization/return-writer gates remain. No scripts/formulas/spreadsheets/provider/device executed."
+    },
+    {
+      "id": "ALG7B6-06",
+      "title": "Presence does not establish consumption or template validity",
+      "finding_ids": "P7-097",
+      "hand_selected_inputs": {
+        "rows_nonempty": true,
+        "exists_gate": true,
+        "template_bytes_executed": false
+      },
+      "manual_observation_model": {
+        "local_document_builder": "FlowDocument",
+        "template_content_read": false
+      },
+      "independent_reference": {
+        "local_document_builder": "FlowDocument",
+        "template_content_read": false
+      },
+      "difference_expected": false,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:505-535;SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs:310-350",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected manual documentary model only, not C#/SQL execution/translation, deployed data, business-policy certification, financial/GL acceptance or WPF/Office rendering. Source tuples and arithmetic are illustrations, not program outputs; build/schema/DTO/authorization/return-writer gates remain. No scripts/formulas/spreadsheets/provider/device executed."
+    },
+    {
+      "id": "ALG7B6-07",
+      "title": "A literal business name needs HTML text-node encoding",
+      "finding_ids": "P7-098",
+      "hand_selected_inputs": {
+        "name": "صنف <b>خاص</b> & عرض",
+        "html_consumer_executed": false
+      },
+      "manual_observation_model": {
+        "manual_raw_cell": "<td>صنف <b>خاص</b> & عرض</td>"
+      },
+      "independent_reference": {
+        "required_encoded_cell": "<td>صنف &lt;b&gt;خاص&lt;/b&gt; &amp; عرض</td>"
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:730-767;SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs:260-286",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected manual documentary model only, not C#/SQL execution/translation, deployed data, business-policy certification, financial/GL acceptance or WPF/Office rendering. Source tuples and arithmetic are illustrations, not program outputs; build/schema/DTO/authorization/return-writer gates remain. No scripts/formulas/spreadsheets/provider/device executed."
+    },
+    {
+      "id": "ALG7B6-08",
+      "title": "A closing-cell sequence remains markup without an encoder",
+      "finding_ids": "P7-098",
+      "hand_selected_inputs": {
+        "name": "</td><td>زائد",
+        "scripts_or_formulas": false
+      },
+      "manual_observation_model": {
+        "manual_cell": "<td></td><td>زائد</td>"
+      },
+      "independent_reference": {
+        "required_literal_text_cell": "<td>&lt;/td&gt;&lt;td&gt;زائد</td>"
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:748-765;SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs:274-281",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected manual documentary model only, not C#/SQL execution/translation, deployed data, business-policy certification, financial/GL acceptance or WPF/Office rendering. Source tuples and arithmetic are illustrations, not program outputs; build/schema/DTO/authorization/return-writer gates remain. No scripts/formulas/spreadsheets/provider/device executed."
+    },
+    {
+      "id": "ALG7B6-09",
+      "title": "Head procedure is not document type in the Acts columns",
+      "finding_ids": "P7-084",
+      "hand_selected_inputs": {
+        "purchase": 100,
+        "purchase_return": 20,
+        "sale": 60,
+        "sale_return": 10,
+        "unit_factor": 1,
+        "tuples": "purchase1/1/1;returnPurchase1/2/2;sale2/1/2;returnSale2/2/1",
+        "return_writer_not_executed": true
+      },
+      "manual_observation_model": {
+        "purchases": 40,
+        "sales": -10
+      },
+      "independent_reference": {
+        "purchases": 80,
+        "sales": 50
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmActsInvTotal.xaml.cs:245-310;SmartAuditERP/Properties/Resources.resx:3028-3046;SmartAuditERP/Class/InvoiceOper.cs:1528-1531;SmartAuditERP/Class/InvoiceOper.cs:1583-1585",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected manual documentary model only, not C#/SQL execution/translation, deployed data, business-policy certification, financial/GL acceptance or WPF/Office rendering. Source tuples and arithmetic are illustrations, not program outputs; build/schema/DTO/authorization/return-writer gates remain. No scripts/formulas/spreadsheets/provider/device executed."
+    },
+    {
+      "id": "ALG7B6-10",
+      "title": "No document-type predicate can admit a non-trade movement",
+      "finding_ids": "P7-084",
+      "hand_selected_inputs": {
+        "previous_fixture": "100,20,60,10",
+        "goods_receipt_type": 4,
+        "head_proc": 1,
+        "line_impact": 1,
+        "amount": 7,
+        "same_customer_act": true
+      },
+      "manual_observation_model": {
+        "purchases": 47,
+        "sales": -10
+      },
+      "independent_reference": {
+        "purchases": 80,
+        "sales": 50
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmActsInvTotal.xaml.cs:258-270;SmartAuditERP/Properties/Resources.resx:3048-3052",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected manual documentary model only, not C#/SQL execution/translation, deployed data, business-policy certification, financial/GL acceptance or WPF/Office rendering. Source tuples and arithmetic are illustrations, not program outputs; build/schema/DTO/authorization/return-writer gates remain. No scripts/formulas/spreadsheets/provider/device executed."
+    },
+    {
+      "id": "ALG7B6-11",
+      "title": "Base quantity cannot price a pack at its selling-unit price",
+      "finding_ids": "P7-041",
+      "hand_selected_inputs": {
+        "sales_quantity": 1,
+        "base_factor": 10,
+        "sales_unit_price": 50
+      },
+      "manual_observation_model": {
+        "amount": 500
+      },
+      "independent_reference": {
+        "amount": 50
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmActsInvTotal.xaml.cs:258-270;SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs:128-153;SmartAuditERP/Class/InvoiceOper.cs:1593-1598;SmartAuditERP/Class/ItemOper.cs:1394-1407",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected manual documentary model only, not C#/SQL execution/translation, deployed data, business-policy certification, financial/GL acceptance or WPF/Office rendering. Source tuples and arithmetic are illustrations, not program outputs; build/schema/DTO/authorization/return-writer gates remain. No scripts/formulas/spreadsheets/provider/device executed."
+    },
+    {
+      "id": "ALG7B6-12",
+      "title": "Unit factor one is local counterevidence, not full validation",
+      "finding_ids": "P7-041",
+      "hand_selected_inputs": {
+        "sales_quantity": 1,
+        "base_factor": 1,
+        "sales_unit_price": 50
+      },
+      "manual_observation_model": {
+        "amount": 50
+      },
+      "independent_reference": {
+        "amount": 50
+      },
+      "difference_expected": false,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs:128-153;SmartAuditERP/Class/InvoiceOper.cs:1593-1598",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected manual documentary model only, not C#/SQL execution/translation, deployed data, business-policy certification, financial/GL acceptance or WPF/Office rendering. Source tuples and arithmetic are illustrations, not program outputs; build/schema/DTO/authorization/return-writer gates remain. No scripts/formulas/spreadsheets/provider/device executed."
+    },
+    {
+      "id": "ALG7B6-13",
+      "title": "Net quantity zero can retain a monetary residual",
+      "finding_ids": "P7-040",
+      "hand_selected_inputs": {
+        "purchase_qty": 1,
+        "purchase_amount": 100,
+        "return_qty": 1,
+        "return_amount": 80,
+        "no_sales": true
+      },
+      "manual_observation_model": {
+        "net_quantity": 0,
+        "admitted": false,
+        "included_amount": 0
+      },
+      "independent_reference": {
+        "net_quantity": 0,
+        "admitted_or_explicitly_reconciled": true,
+        "monetary_residual": 20
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs:155-181",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected manual documentary model only, not C#/SQL execution/translation, deployed data, business-policy certification, financial/GL acceptance or WPF/Office rendering. Source tuples and arithmetic are illustrations, not program outputs; build/schema/DTO/authorization/return-writer gates remain. No scripts/formulas/spreadsheets/provider/device executed."
+    },
+    {
+      "id": "ALG7B6-14",
+      "title": "Local invoice number and type can identify two different branches",
+      "finding_ids": "P7-061;P2-010",
+      "hand_selected_inputs": {
+        "rows": [
+          {
+            "branch": "A",
+            "id": 7,
+            "type": 3,
+            "proc": 1,
+            "global_id": "A7"
+          },
+          {
+            "branch": "B",
+            "id": 7,
+            "type": 3,
+            "proc": 1,
+            "global_id": "B7"
+          }
+        ],
+        "clicked": "B7",
+        "sql_order_unasserted": true
+      },
+      "manual_observation_model": {
+        "predicate_tuple": [
+          3,
+          1,
+          7
+        ],
+        "candidate_global_ids": [
+          "A7",
+          "B7"
+        ]
+      },
+      "independent_reference": {
+        "required_exactly_one_global_id": "B7"
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:277-278;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:373-409;SmartAuditERP/Class/InvoiceOper.cs:3229-3244",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected manual documentary model only, not C#/SQL execution/translation, deployed data, business-policy certification, financial/GL acceptance or WPF/Office rendering. Source tuples and arithmetic are illustrations, not program outputs; build/schema/DTO/authorization/return-writer gates remain. No scripts/formulas/spreadsheets/provider/device executed."
+    },
+    {
+      "id": "ALG7B6-15",
+      "title": "Inclusive next-midnight is not a half-open day boundary",
+      "finding_ids": "P3-023",
+      "hand_selected_inputs": {
+        "from_date": "2026-01-01T00:00:00",
+        "to_plus24": "2026-01-02T00:00:00",
+        "event": "2026-01-02T00:00:00"
+      },
+      "manual_observation_model": {
+        "included": true
+      },
+      "independent_reference": {
+        "included": false
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:168-199;SmartAuditERP/Form_WPF/frmActsInvTotal.xaml.cs:177-178;SmartAuditERP/Form_WPF/frmActsInvTotal.xaml.cs:258-269;SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs:102-108",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected manual documentary model only, not C#/SQL execution/translation, deployed data, business-policy certification, financial/GL acceptance or WPF/Office rendering. Source tuples and arithmetic are illustrations, not program outputs; build/schema/DTO/authorization/return-writer gates remain. No scripts/formulas/spreadsheets/provider/device executed."
+    },
+    {
+      "id": "ALG7B6-16",
+      "title": "Selecting a user changes a control, not an absent predicate",
+      "finding_ids": "P7-080",
+      "hand_selected_inputs": {
+        "rows_users": [
+          "A",
+          "B"
+        ],
+        "user_control": "A",
+        "all_users": false,
+        "SQL_user_predicate": false
+      },
+      "manual_observation_model": {
+        "eligible_users": [
+          "A",
+          "B"
+        ]
+      },
+      "independent_reference": {
+        "required_users": [
+          "A"
+        ]
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:166-199;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:351-368;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml:238-250",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected manual documentary model only, not C#/SQL execution/translation, deployed data, business-policy certification, financial/GL acceptance or WPF/Office rendering. Source tuples and arithmetic are illustrations, not program outputs; build/schema/DTO/authorization/return-writer gates remain. No scripts/formulas/spreadsheets/provider/device executed."
+    },
+    {
+      "id": "ALG7B6-17",
+      "title": "CSV wrapping quotes does not escape internal quotes",
+      "finding_ids": "P7-048",
+      "hand_selected_inputs": {
+        "text": "صنف \"مميز\"",
+        "manual_cell": "\"صنف \"مميز\"\""
+      },
+      "manual_observation_model": {
+        "decoded": "صنف مميز\"\""
+      },
+      "independent_reference": {
+        "decoded": "صنف \"مميز\""
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:700-727",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected manual documentary model only, not C#/SQL execution/translation, deployed data, business-policy certification, financial/GL acceptance or WPF/Office rendering. Source tuples and arithmetic are illustrations, not program outputs; build/schema/DTO/authorization/return-writer gates remain. No scripts/formulas/spreadsheets/provider/device executed."
+    },
+    {
+      "id": "ALG7B6-18",
+      "title": "Live period labels can disagree with an earlier result",
+      "finding_ids": "P7-045",
+      "hand_selected_inputs": {
+        "loaded_period": "A",
+        "rows": [
+          100
+        ],
+        "controls_now": "B",
+        "requery": false
+      },
+      "manual_observation_model": {
+        "rows": [
+          100
+        ],
+        "printed_period": "B"
+      },
+      "independent_reference": {
+        "rows": [
+          100
+        ],
+        "printed_period": "A-or-block-dirty-output"
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:560-570;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:590-618;SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs:373-380",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected manual documentary model only, not C#/SQL execution/translation, deployed data, business-policy certification, financial/GL acceptance or WPF/Office rendering. Source tuples and arithmetic are illustrations, not program outputs; build/schema/DTO/authorization/return-writer gates remain. No scripts/formulas/spreadsheets/provider/device executed."
+    },
+    {
+      "id": "ALG7B6-19",
+      "title": "A failed aggregate default is not a measured zero",
+      "finding_ids": "P7-046",
+      "hand_selected_inputs": {
+        "purchase_source": "success100",
+        "sale_source": "error",
+        "acceptance_not_executed": true
+      },
+      "manual_observation_model": {
+        "purchases": 100,
+        "sales": 0,
+        "status": "no-partial-state"
+      },
+      "independent_reference": {
+        "status": "partial-or-failed",
+        "final_output": "blocked-or-explicitly-nonfinal"
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs:198-222;SmartAuditERP/Form_WPF/frmActsInvTotal.xaml.cs:308-316;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:285-294",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected manual documentary model only, not C#/SQL execution/translation, deployed data, business-policy certification, financial/GL acceptance or WPF/Office rendering. Source tuples and arithmetic are illustrations, not program outputs; build/schema/DTO/authorization/return-writer gates remain. No scripts/formulas/spreadsheets/provider/device executed."
+    },
+    {
+      "id": "ALG7B6-20",
+      "title": "Detailed POS local cards explicitly subtract returns",
+      "finding_ids": "P7-095;P7-096",
+      "hand_selected_inputs": {
+        "sale": 100,
+        "return_amount": 20,
+        "projection_errors_isolated": true,
+        "renderer_not_executed": true
+      },
+      "manual_observation_model": {
+        "signed_total": 80,
+        "explicit_summary_copied": true
+      },
+      "independent_reference": {
+        "signed_total": 80,
+        "explicit_summary_copied": true
+      },
+      "difference_expected": false,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:308-344;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:615-618",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected manual documentary model only, not C#/SQL execution/translation, deployed data, business-policy certification, financial/GL acceptance or WPF/Office rendering. Source tuples and arithmetic are illustrations, not program outputs; build/schema/DTO/authorization/return-writer gates remain. No scripts/formulas/spreadsheets/provider/device executed."
+    }
+  ],
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B6-01",
+      "title": "POS projection omits the stored flag and uses a new current settings object",
+      "finding_ids": "P7-095",
+      "documented_observation": "Header flag is not selected; a settings-reading object decides the two projections. No claim about deployed settings or migrations.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:177-193;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:211-256;SmartAuditERP/Class/InvoiceObj.cs:169-178",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph/SQL/schema/WPF/renderer verification or whole-feature coverage. Application code is not executed."
+    },
+    {
+      "id": "ST7B6-02",
+      "title": "The writer and another reader keep a historical PriceIncVAT",
+      "finding_ids": "P7-095",
+      "documented_observation": "The header flag exists in the supplied DDL, is persisted and is read elsewhere; its historical meaning is not only inferred from a name.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:1560-1564;SmartAuditERP/Class/InvoiceOper.cs:3271-3277;SmartAuditERP/Properties/Resources.resx:986-994",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph/SQL/schema/WPF/renderer verification or whole-feature coverage. Application code is not executed."
+    },
+    {
+      "id": "ST7B6-03",
+      "title": "Raw SQL amount coexists with rounded quantity times price",
+      "finding_ids": "P7-096",
+      "documented_observation": "Two amount bases are explicit in a single projection. This is not only DataGrid N2 formatting or an integer cost denominator.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:177-193;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:242-275",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph/SQL/schema/WPF/renderer verification or whole-feature coverage. Application code is not executed."
+    },
+    {
+      "id": "ST7B6-04",
+      "title": "Both output gates test a file and then build FlowDocument",
+      "finding_ids": "P7-097",
+      "documented_observation": "The selected file is gated, not loaded by these output bodies. No REPX or WPF renderer was invoked.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:482-535;SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs:289-350",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph/SQL/schema/WPF/renderer verification or whole-feature coverage. Application code is not executed."
+    },
+    {
+      "id": "ST7B6-05",
+      "title": "Signed POS summary values are copied to the local document",
+      "finding_ids": "P7-095;P7-096",
+      "documented_observation": "Counterevidence: detailed POS copies its signed summary directly, not B5 temporary GridView SummaryText. Nkd actually loops PrintNo; no blanket setting/summary-loss claim.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:308-344;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:615-618;SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs:338-346",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph/SQL/schema/WPF/renderer verification or whole-feature coverage. Application code is not executed."
+    },
+    {
+      "id": "ST7B6-06",
+      "title": "HTML exporters interpolate text without a text-node encoder",
+      "finding_ids": "P7-098",
+      "documented_observation": "Source strings enter literal HTML cells. Missing HTML encoding is confirmed; script/formula/consumer execution and universal Excel rejection are not asserted.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:730-767;SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs:260-286",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph/SQL/schema/WPF/renderer verification or whole-feature coverage. Application code is not executed."
+    },
+    {
+      "id": "ST7B6-07",
+      "title": "CSV POS quotes cells but does not double internal quotes",
+      "finding_ids": "P7-048;P7-049",
+      "documented_observation": "Quotes in a wrapped source value are not escaped here; shell-opening and formula safety are separate, still potential consumer questions.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:700-727;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:683-693",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph/SQL/schema/WPF/renderer verification or whole-feature coverage. Application code is not executed."
+    },
+    {
+      "id": "ST7B6-08",
+      "title": "Nkd ignores CSV format choice while POS has a real csv branch",
+      "finding_ids": "P7-050",
+      "documented_observation": "Nkd always serializes HTML under either offered extension. POS distinguishes csv; .xls HTML may be a legacy consumer contract, not proven universally invalid.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs:242-255;SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs:260-265;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:679-690",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph/SQL/schema/WPF/renderer verification or whole-feature coverage. Application code is not executed."
+    },
+    {
+      "id": "ST7B6-09",
+      "title": "Writer distinguishes head procedure, document type and line inventory impact",
+      "finding_ids": "P7-084;P7-041",
+      "documented_observation": "The three code domains and two quantities are distinct locally. Fixtures do not assert the linked-return writer P4-001 produced compliant data.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:1526-1534;SmartAuditERP/Class/InvoiceOper.cs:1583-1598;SmartAuditERP/Properties/Resources.resx:3028-3046",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph/SQL/schema/WPF/renderer verification or whole-feature coverage. Application code is not executed."
+    },
+    {
+      "id": "ST7B6-10",
+      "title": "Acts binds purchase or sale to head proc_type without document type",
+      "finding_ids": "P7-084",
+      "documented_observation": "The predicate conflates the code domains and swaps line direction under one head procedure; this extends the existing report type/direction root, not a new finding ID.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmActsInvTotal.xaml.cs:245-310",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph/SQL/schema/WPF/renderer verification or whole-feature coverage. Application code is not executed."
+    },
+    {
+      "id": "ST7B6-11",
+      "title": "Six Nkd amount sources and Acts use base quantity times unit price",
+      "finding_ids": "P7-041",
+      "documented_observation": "Writer contract confirms a base/selling-unit mismatch; it is not established only by similar column names or a choice of cost policy.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs:128-153;SmartAuditERP/Form_WPF/frmActsInvTotal.xaml.cs:258-270;SmartAuditERP/Class/InvoiceOper.cs:1593-1598;SmartAuditERP/Class/ItemOper.cs:1394-1407",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph/SQL/schema/WPF/renderer verification or whole-feature coverage. Application code is not executed."
+    },
+    {
+      "id": "ST7B6-12",
+      "title": "Nkd existence gate checks net quantities before adding money",
+      "finding_ids": "P7-040",
+      "documented_observation": "Zero quantity can hide a nonzero monetary residual under the local gate; policy and independent reconciliation remain explicit prerequisites.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs:155-181",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph/SQL/schema/WPF/renderer verification or whole-feature coverage. Application code is not executed."
+    },
+    {
+      "id": "ST7B6-13",
+      "title": "Aggregate errors can silently default to zero",
+      "finding_ids": "P7-046",
+      "documented_observation": "Nkd swallows errors and Acts returns0 after logging; POS catch does not publish a typed failed/partial result. No injected ERP failure or observed production loss.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs:198-222;SmartAuditERP/Form_WPF/frmActsInvTotal.xaml.cs:308-316;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:292-296",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph/SQL/schema/WPF/renderer verification or whole-feature coverage. Application code is not executed."
+    },
+    {
+      "id": "ST7B6-14",
+      "title": "Acts uses Dispatcher and disables criteria while awaiting work",
+      "finding_ids": "P7-084",
+      "documented_observation": "Counterevidence to a blanket cross-thread-control claim: selected reads are explicitly dispatched and controls disabled. Other lifecycle/cancellation work is not certified.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmActsInvTotal.xaml.cs:110-130;SmartAuditERP/Form_WPF/frmActsInvTotal.xaml.cs:168-194;SmartAuditERP/Form_WPF/frmActsInvTotal.xaml.cs:326-335",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph/SQL/schema/WPF/renderer verification or whole-feature coverage. Application code is not executed."
+    },
+    {
+      "id": "ST7B6-15",
+      "title": "Offered user and time controls are not read by the POS query builder",
+      "finding_ids": "P7-080",
+      "documented_observation": "The user and time criteria are real offered controls; item-search methods are not promoted to a visible filter absent from this XAML.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:157-217;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:351-368;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml:238-250;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml:278-315",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph/SQL/schema/WPF/renderer verification or whole-feature coverage. Application code is not executed."
+    },
+    {
+      "id": "ST7B6-16",
+      "title": "All three use an inclusive end after adding24h",
+      "finding_ids": "P3-023",
+      "documented_observation": "Half-open period membership is not implemented by the inclusive predicate; the manual boundary uses explicit midnight inputs, not assumed DatePicker time behavior.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:168-199;SmartAuditERP/Form_WPF/frmActsInvTotal.xaml.cs:177-178;SmartAuditERP/Form_WPF/frmActsInvTotal.xaml.cs:258-269;SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs:102-108;SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs:202-209",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph/SQL/schema/WPF/renderer verification or whole-feature coverage. Application code is not executed."
+    },
+    {
+      "id": "ST7B6-17",
+      "title": "POS loses global ID before a first-row local-number reload",
+      "finding_ids": "P7-061;P2-010",
+      "documented_observation": "The report join has GlobalID but its row discards it; the editor executes the supplied query and reads a row. No particular SQL result order or injection from an int column is asserted.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:177-193;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:277-278;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:373-409;SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs:1861-1878;SmartAuditERP/Class/InvoiceOper.cs:3229-3244",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph/SQL/schema/WPF/renderer verification or whole-feature coverage. Application code is not executed."
+    },
+    {
+      "id": "ST7B6-18",
+      "title": "Static Nkd Home lifecycle differs from new-instance launcher",
+      "finding_ids": "P1-013;P1-030",
+      "documented_observation": "Home Nkd has an existing permission call and retained instance, unlike the local launcher; no actual visual-tree result or centralized authorization absence is proved.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Home.xaml.cs:137-138;SmartAuditERP/Home.xaml.cs:2906-2913;SmartAuditERP/Home.xaml.cs:3627-3633;SmartAuditERP/Form_WPF/frmNkdFoundRpt.xaml.cs:19-46;SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs:469-475",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph/SQL/schema/WPF/renderer verification or whole-feature coverage. Application code is not executed."
+    },
+    {
+      "id": "ST7B6-19",
+      "title": "Acts output buttons are wired to TODO messages; POS search remains orphan code",
+      "finding_ids": "P1-033",
+      "documented_observation": "Visible output placeholders extend an old root; unbound item-search code is not a visible broken search button or an extra finding per handler.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmActsInvTotal.xaml.cs:360-403;SmartAuditERP/Form_WPF/frmActsInvTotal.xaml:146-158;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:441-466;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml:1-642",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph/SQL/schema/WPF/renderer verification or whole-feature coverage. Application code is not executed."
+    },
+    {
+      "id": "ST7B6-20",
+      "title": "Source query repetition and live captions are leads, not runtime metrics",
+      "finding_ids": "P7-045;H7B6-05",
+      "documented_observation": "Local repeated I/O, live control captions and a success-path close are observed. No index/latency/leak or full resource/lifecycle proof is inferred;7C remains not started.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:191-217;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:560-570;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:775-831;SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs:128-153;SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs:373-380;SmartAuditERP/Form_WPF/frmActsInvTotal.xaml.cs:273-316",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph/SQL/schema/WPF/renderer verification or whole-feature coverage. Application code is not executed."
+    }
+  ],
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Class/InvoiceObj.cs",
+      "start": 169,
+      "end": 178,
+      "selected_text_sha256": "2aefc784f477742c47f5cc8387c18448e0a4dcf8a93c30f694f98d6a21bac693"
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 1526,
+      "end": 1534,
+      "selected_text_sha256": "5b28d19de9e19f355e437fc212d50461afd74cd051271c8ea8fef88ad12d76e5"
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 1560,
+      "end": 1564,
+      "selected_text_sha256": "8ed6a1ab7ae9dc4b8fa3afee9558568cdc95fffc32f052fe27499df37861fb01"
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 1583,
+      "end": 1598,
+      "selected_text_sha256": "085b72d44415f0d89f463983d28cdce62c65e6123adc02a12b4697385625559c"
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 1593,
+      "end": 1598,
+      "selected_text_sha256": "d654d5342a1575502923328f0454736070126cdf0ead5a2d43151cca12f8dd75"
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 3229,
+      "end": 3244,
+      "selected_text_sha256": "f7acfc4d417798f141b48c6c7e7241cd83d3d522a65966a36cd582a46ab3e542"
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 3271,
+      "end": 3277,
+      "selected_text_sha256": "6a66f13f780bbf41a46b1f97a3c8e6a573d0a4b6dbfc3270945200a35ee9fc91"
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "start": 1394,
+      "end": 1407,
+      "selected_text_sha256": "4cbdfe6a70d841e266db75621ac86054168a2650b2cf7c333375278a194f26ec"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmActsInvTotal.xaml",
+      "start": 146,
+      "end": 158,
+      "selected_text_sha256": "4c8265f5516c39ed0346f4a778994de93c99cb82f89601d4e3ac38ccf9cf75fa"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmActsInvTotal.xaml.cs",
+      "start": 110,
+      "end": 130,
+      "selected_text_sha256": "c91d3ec0907c1015aacee2494691b04b7edad78078609a85a309ad5d00dbb4e4"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmActsInvTotal.xaml.cs",
+      "start": 168,
+      "end": 194,
+      "selected_text_sha256": "90fc2ba13b780fcc12d03d815d40701db2e5931a80df8350423c5a87c1ea9ff2"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmActsInvTotal.xaml.cs",
+      "start": 177,
+      "end": 178,
+      "selected_text_sha256": "437e009b948829cdf69d58d3a403d5e63e12a47284e168f9b9400ae3531ab541"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmActsInvTotal.xaml.cs",
+      "start": 245,
+      "end": 310,
+      "selected_text_sha256": "be52f262183861fb207b22ccb54e23a7d567b4da71b3d53893321f7b3489471b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmActsInvTotal.xaml.cs",
+      "start": 258,
+      "end": 269,
+      "selected_text_sha256": "2576d46274fca7e6b2bccfba57b73157cb45b2ceead6e7c2fc70883558986940"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmActsInvTotal.xaml.cs",
+      "start": 258,
+      "end": 270,
+      "selected_text_sha256": "fbdce75b9b4afda22496e13f9603f4aae51d12f71a3119287e64875e1a38bde2"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmActsInvTotal.xaml.cs",
+      "start": 273,
+      "end": 316,
+      "selected_text_sha256": "04b663f044e6e0d4a4260334ae8626e19025919d71a7eac77847102a6df62bda"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmActsInvTotal.xaml.cs",
+      "start": 308,
+      "end": 316,
+      "selected_text_sha256": "9a135bd06590aa2d2635369ee15cff64fde9f5dd86ca7ee7b4a16798d2093838"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmActsInvTotal.xaml.cs",
+      "start": 326,
+      "end": 335,
+      "selected_text_sha256": "f9f55c86d51ff24bb3ceb7bdccaf6f76eff7c7b55333f59e1079a4edfa335c2e"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmActsInvTotal.xaml.cs",
+      "start": 360,
+      "end": 403,
+      "selected_text_sha256": "5e753cc0222166d9101f474c19cc619a7b6225fccef630d73494493b2cf66848"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+      "start": 1861,
+      "end": 1878,
+      "selected_text_sha256": "8fae0db4171e9af882e9ac0e40b61a6215a8e41a896688168c3cd9153771de01"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml",
+      "start": 1,
+      "end": 642,
+      "selected_text_sha256": "20357fadb1165ec83fb09407b4b6736b4cd86050b96f8e1d06a9f203ee7eb063"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml",
+      "start": 238,
+      "end": 250,
+      "selected_text_sha256": "8a4dc21bb049db50264de7d03944599f3cbaebf3e1eabd7d09e9e0186af3c739"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml",
+      "start": 278,
+      "end": 315,
+      "selected_text_sha256": "85949216571f7e760e60a0f20547d8df67f72aecf165918d2c33e3266f8ba599"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs",
+      "start": 157,
+      "end": 217,
+      "selected_text_sha256": "79a70054dc76ac81475f7896db3ce12c2ce0b5127f9158f47e9b95b14a5130e7"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs",
+      "start": 168,
+      "end": 199,
+      "selected_text_sha256": "95d89f92392d69ecb7e2c87630d2386775357969d7828300270a3e8931c18230"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs",
+      "start": 177,
+      "end": 193,
+      "selected_text_sha256": "72c6b2161c2cb395ab8ca335cf36d122e698646ee7ee10c6d451cec01f51bb25"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs",
+      "start": 191,
+      "end": 217,
+      "selected_text_sha256": "64047e9794e10af593596354f24b5cc4733f31f632db37cb2dbcc1eb7b0cb57c"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs",
+      "start": 211,
+      "end": 256,
+      "selected_text_sha256": "ada78d5b2cc67d1f5ffdedcfc14741f88ac48d06ac469d6000daa8428c927f72"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs",
+      "start": 242,
+      "end": 275,
+      "selected_text_sha256": "2aa7e0fe7bb08acf0fcece9648d2759dca89230fadf6c18682deda4e42214329"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs",
+      "start": 277,
+      "end": 278,
+      "selected_text_sha256": "4c1054cf92b717db6325905ea9f995d0897c7e63481a7e8705a97e9a75edb2fe"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs",
+      "start": 292,
+      "end": 296,
+      "selected_text_sha256": "44dd5d3afd362735e08354d07c82fae3e218b3334bfd31f5325adabaf5161e93"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs",
+      "start": 308,
+      "end": 344,
+      "selected_text_sha256": "cceb044939085ae79541fc6174cb692073a49e1ae1dd439eb06bdfd2321fb790"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs",
+      "start": 351,
+      "end": 368,
+      "selected_text_sha256": "e4507cbb9db0dc80b9c36ff47062040af77d62bff3cf1533293d4a647613da94"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs",
+      "start": 373,
+      "end": 409,
+      "selected_text_sha256": "ecd370f417056ec5b9d12fe913d14eb14a2a54f4005cc06dd6c8dfcb55624db1"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs",
+      "start": 441,
+      "end": 466,
+      "selected_text_sha256": "ac72a9da5aa5bbdc0cf866df25dc9eb253909b3ba645e8c63b6cdc81345bef89"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs",
+      "start": 482,
+      "end": 535,
+      "selected_text_sha256": "e7cca3fbe7362aa0cea21204bf66995d8698adcb35bb9851c1603df159a5a87c"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs",
+      "start": 560,
+      "end": 570,
+      "selected_text_sha256": "98b9594f9c4ada30c1c99ae19f76e71f738b7fc0b4c156fa175e3d67985598ea"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs",
+      "start": 615,
+      "end": 618,
+      "selected_text_sha256": "4e4623ddd4dd6aa2566415aa412ba94d3860ea3258ce7a3ad6fb1f1a8ddda906"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs",
+      "start": 679,
+      "end": 690,
+      "selected_text_sha256": "1761abfe4322c7edb1cd856baecbc4f80d37e5bcc7252cc5418c65cffddbecd3"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs",
+      "start": 683,
+      "end": 693,
+      "selected_text_sha256": "f6c6100e5672e0b5c6b18905bd07af30f9f84ce690aedfedb1fa2de93ff7416f"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs",
+      "start": 700,
+      "end": 727,
+      "selected_text_sha256": "5a8b7e01d23fe4787f17747865d31dc6b02b83b02113074e492b7aaa02d685cf"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs",
+      "start": 730,
+      "end": 767,
+      "selected_text_sha256": "3dcf683c8e8579a9b6f292554fd1292286f5b3ddbbeebf4b2ac33429c00d8643"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs",
+      "start": 775,
+      "end": 831,
+      "selected_text_sha256": "7bdcb785d2175c896f567fccb1b25f8aad7d62f76a7d00a9b3bf0aef2386c507"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmNkdFoundRpt.xaml.cs",
+      "start": 19,
+      "end": 46,
+      "selected_text_sha256": "3636742a232efae15b9477c382e1db54036eba1d4ef657fa65a534a0dcbd340f"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs",
+      "start": 102,
+      "end": 108,
+      "selected_text_sha256": "c0089f454dee8e8f48eb339da09a87b17631199218f9f29befd412d4dd7f4bb0"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs",
+      "start": 128,
+      "end": 153,
+      "selected_text_sha256": "14c485fb400325303be8bbce4498f81b1e8ce6a03896288760dac7b8ca2492ad"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs",
+      "start": 155,
+      "end": 181,
+      "selected_text_sha256": "996dd774a81fd9f95702cc9496b1b3a924e7fcd01c51abd9e3f45583abc79bb3"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs",
+      "start": 198,
+      "end": 222,
+      "selected_text_sha256": "de6a38d07e1c099044af7b00f175d287e929188e0e36ccb0f7e8bb4092abae13"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs",
+      "start": 202,
+      "end": 209,
+      "selected_text_sha256": "31494abb22d345221d17a3e2cfea3813e94e84a8be1c529d7623b4e396351873"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs",
+      "start": 242,
+      "end": 255,
+      "selected_text_sha256": "0755b70e5cc2a576de921e1b94400f7f838cedfada28c87919d048439fba4712"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs",
+      "start": 260,
+      "end": 265,
+      "selected_text_sha256": "9359bd560ccc6549beda9fb131453cd54bab9609c2f36937377030eb2ea4ffdb"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs",
+      "start": 260,
+      "end": 286,
+      "selected_text_sha256": "dc241e2ec4171dcadf1491ff95e3b76cc48adb8d15068eb223b7be89f0dfdb4d"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs",
+      "start": 289,
+      "end": 350,
+      "selected_text_sha256": "b397df0eac5a3aa99611a62b766c7047296f8f635b14a21f21a8e2effe901392"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs",
+      "start": 338,
+      "end": 346,
+      "selected_text_sha256": "66210a2ee2b72db6b674bc487e270490729e49bf1f6a1278476ddf39d9be58e2"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs",
+      "start": 373,
+      "end": 380,
+      "selected_text_sha256": "f4a6ddc67e11529367de1b171d8a7617d3c757e2ae0deeb3c5d6d9daedb6f4e9"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs",
+      "start": 469,
+      "end": 475,
+      "selected_text_sha256": "f1bd987a833cbd29c0eac5b3eb56a10492708ee4dc384e6d0032cbb059867e4e"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "start": 137,
+      "end": 138,
+      "selected_text_sha256": "8b3905427155628d8c8cd1bd11e12d51357f53fb87f7c517e7e612d3e22e8fec"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "start": 2906,
+      "end": 2913,
+      "selected_text_sha256": "a8d53a0f65061ff0744249e4ef5417dcccf3ec33f65e29fb846ea4ceb3998672"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "start": 3627,
+      "end": 3633,
+      "selected_text_sha256": "95fe65669794111db700383a1725c126d74ad1af4d99558f51dd8838afa8a69f"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 986,
+      "end": 994,
+      "selected_text_sha256": "716a9cf4c2cb7fb5dc7aaff749e36e71bf162486e0cbb63ce3093535643bfa9f"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 3028,
+      "end": 3046,
+      "selected_text_sha256": "cefd257b111102ddd15fa1c9ff6d9983d42fd45e81feee4f54824a5410fd185c"
+    }
+  ]
+}

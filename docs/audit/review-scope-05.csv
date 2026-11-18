@@ -1,0 +1,55 @@
+path,review_state,ranges,focus
+SmartAuditERP/Class/ConnectBroker.cs,selected-static-path-review,1-120,Client allocation/connect/Ping/static context; lifecycle and transport dedup P1-014
+SmartAuditERP/Class/Sync.cs,selected-static-path-review,1-205;214-505;540-695;768-816,"Selected config, periodic import/post/cloud queue partition/cleanup, cursor and customer-code result; no provider execution"
+SmartAuditERP/Class/SyncOperation.cs,selected-static-path-review,1-272,"Master/cloud downloads, stock path, ignored save results and watermarks; local stock helper read only"
+SmartAuditERP/Class/SendData.cs,selected-static-path-review,150-194;522-571;624-784;889-971;1383-1443;1765-1785;1803-1839,"Selected serializers/envelope, Itemid/InvGlobalID replay, publish topic/QoS/retain; not complete serializer review"
+SmartAuditERP/Class/ReceivedData.cs,selected-static-path-review,29-689;1006-1388;1542-1608;1653-1691,"Subscription/dispatch/decrypt; selected items/serial/customer, permission/user/branch, invoice/entry detail and receipt writers; not every receiver"
+SmartAuditERP/Class/EntityOperations.cs,selected-static-path-review,15-96;304-357;632-795;897-1204;1272-1366;1442-1525;1588-1628;1737-1828,Selected branch/resource/product/customer/account/employee and ProductStocks download writers; transaction and delete semantics
+SmartAuditERP/Class/ClosingReport.cs,selected-static-path-review,1-104,Caller-visible fetch status and transactional header/sub replacement; no claim server tenant/branch policy
+SmartAuditERP/Class/InvoiceOper.cs,selected-static-path-review,1945-2207;2252-2314;2647-2741;2872-2902;4419-4497,"Online import local result/Android link, posted identities, sync result and guarded deletion publish; not all invoice accounting"
+SmartAuditERP/Class/EntryOper.cs,selected-static-path-review,850-935;941-1017;1264-1301;1364-1395,"Local/import transaction and upsert/result, canonical ID generation, outgoing entry sync"
+SmartAuditERP/Class/ReceiptOper.cs,selected-static-path-review,518-692,Selected outgoing receipt/GL routing and online import local commit/link/result
+SmartAuditERP/Class/StoredQueries.cs,selected-static-path-review,6-10;16-24,"Literal invoice and GL/receipt SQL contracts; read only, external schema not certified"
+SmartAuditERP/Class/Inventory.cs,selected-static-path-review,150-187;266-315;595-669,Cloud snapshot reader/current-quantity writer and branch stock exporter/unit identity; cache semantics conditional on DTO
+SmartAuditERP/Class/ItemOper.cs,selected-static-path-review,2251-2338,Selected product/units online download and deletion field handling; no complete item engine review
+SmartAuditERP/Home.xaml.cs,selected-static-path-review,345-387;445-486;614-622;737-744;1672-1791;2415-2451;3772-3800,"Actual timers/clicks/initialization and reachable sync forms; async lifetime/green status, no UI execution"
+SmartAuditERP/Home.xaml,selected-event-metadata-review,624;647-651;1016-1020,"Selected menu/button binding metadata only, no visual-tree/rendering claim"
+SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs,selected-static-path-review,990-1052,Selected MQTT settings propagation and initial connect/status; secrets not copied
+SmartAuditERP/Form_WPF/frmSettings.xaml.cs,selected-static-path-review,2319-2388;3832-3943,Sync mode/interval and MQTT save/reload context; not full settings review
+SmartAuditERP/Form_WPF/FrmSyncMQtt.xaml.cs,selected-static-path-review,1-230,Manual publishing/subscribe UI with new-Home gate; wrong serial serializer and bulk contract conditional
+SmartAuditERP/Form_WPF/FrmSyncMQtt.xaml,selected-event-metadata-review,245-258,Selected upload/download event bindings only
+SmartAuditERP/Form_WPF/frmmanagementSync.xaml.cs,selected-static-path-review,1-387,Live manual master upload/download; local result/async/echo and unproven authority
+SmartAuditERP/Form_WPF/frmmanagementSync.xaml,selected-event-metadata-review,214-230,Selected upload/download bindings only
+SmartAuditERP/Form_WPF/frmInvsSyncStatus.xaml.cs,selected-static-path-review,455-601;632-662;950-1005,"Selective API/cloud/broker posting, clear scope and explicit status override, bulk topic shape"
+SmartAuditERP/Form_WPF/frmInvsSyncStatus.xaml,selected-event-metadata-review,429-437;710-721,Selected status override/sync binding metadata only
+SmartAuditERP/Form_WPF/frmEntriesSyncStatus.xaml.cs,selected-static-path-review,909-1025;1050-1087;1130-1149,"API-ready manual path and premature status, broker gate/bulk legacy publication"
+SmartAuditERP/Form_WPF/frmEntriesSyncStatus.xaml,selected-event-metadata-review,529-536,Selected sync binding only
+SmartAuditERP/Form_WPF/frmReceiptsSyncStatus.xaml.cs,selected-static-path-review,405-490;626-658,"Manual API/broker path and status before result, bulk legacy topics"
+SmartAuditERP/Form_WPF/frmReceiptsSyncStatus.xaml,selected-event-metadata-review,651-660,Selected sync binding only
+SmartAuditERP/Form_WPF/frmStocksSync.xaml.cs,selected-static-path-review,150-221;292-321,ProductStocks view and actual download/export callbacks; SetStatus/report completeness deferred7
+SmartAuditERP/Form_WPF/frmStocksSync.xaml,selected-event-metadata-review,520-538,Selected stock update/upload binding only
+SmartAuditERP/Form_WPF/FrmSyncSettings.xaml.cs,selected-static-path-review,1-163,Alternate settings helper read; no active caller established; not assumed current UI path
+SmartAuditERP/Form_WPF/FrmSyncInv.xaml.cs,selected-static-path-review,1-196,"Alternate importer read; ignored bool and cleanup candidate gated by unproven caller, not counted as active defect"
+SmartAuditERP/Class/GetCustFromAndroid.cs,selected-static-path-review,1-69,SignalR helper read; repository caller search did not establish StartConnection call; not live pipeline evidence
+SmartAuditERP/Class/GetDataAPI.cs,selected-static-path-review,1-22,"Legacy HTTP helper read only, PM example caller; no ingestion authority inferred"
+SmartAuditERP/Form_WPF/frmNewProjectPM.xaml.cs,selected-static-path-review,38-49,"Only located legacy GetDataAPI example call, unawaited; not active sync contract"
+SmartAuditERP/Form_WPF/frmItems.xaml.cs,selected-static-path-review,1123-1165;2134-2155,"Commit then sync/queue gate, retained per-item topics, ItemIdOff file writer"
+SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs,selected-static-path-review,1355-1399;2702-2732,Selected post-save API/MQTT/new-Home gate and JSON outbox writer
+SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs,selected-static-path-review,2168-2211;2269-2288;2289-2359;2362-2393;2729-2764,Selected cloud-first/local-success/cache/MQTT/async worker invocation and close publisher; no new close certification
+SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs,selected-static-path-review,999-1027;1112-1145,Selected sync caller and file writer only; side-save defects remain P4-019
+SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs,selected-static-path-review,925-951;1064-1088,Selected bare-topic/fallback JSON queue; stocktake lifecycle remains P4-017/018
+SmartAuditERP/Form_WPF/frmInvSale.xaml.cs,selected-static-path-review,1932-1940;2483-2499,Actual API post guard and uncalled AddInvLocally helper; no automatic assumption MQTT writer active
+SmartAuditERP/Class/ItemIdOff.cs,selected-static-path-review,1-8,Local DTO/placeholder fields only; no external AuditorAPI DTO semantics inferred
+SmartAuditERP/Class/ListItems.cs,selected-static-path-review,1-70,Local DTO/placeholder fields only; no external AuditorAPI DTO semantics inferred
+SmartAuditERP/Class/InvGLobalIDOff.cs,selected-static-path-review,1-12,Local DTO/placeholder fields only; no external AuditorAPI DTO semantics inferred
+SmartAuditERP/Class/EntryGlobalIDOff.cs,selected-static-path-review,1-10,Local DTO/placeholder fields only; no external AuditorAPI DTO semantics inferred
+SmartAuditERP/Class/ListSyncOffMQt.cs,selected-static-path-review,1-7,Local DTO/placeholder fields only; no external AuditorAPI DTO semantics inferred
+SmartAuditERP/Class/ListSyncDataAuditorManager.cs,selected-static-path-review,1-25,Local DTO/placeholder fields only; no external AuditorAPI DTO semantics inferred
+SmartAuditERP/Class/ListInvoice.cs,selected-static-path-review,1-122,Local DTO/placeholder fields only; no external AuditorAPI DTO semantics inferred
+SmartAuditERP/Class/listInvSub.cs,selected-static-path-review,1-62,Local DTO/placeholder fields only; no external AuditorAPI DTO semantics inferred
+SmartAuditERP/Class/ListEntry.cs,selected-static-path-review,1-32,Local DTO/placeholder fields only; no external AuditorAPI DTO semantics inferred
+SmartAuditERP/Class/ListEntrySub.cs,selected-static-path-review,1-22,Local DTO/placeholder fields only; no external AuditorAPI DTO semantics inferred
+SmartAuditERP/Class/ListOperationPermission.cs,selected-static-path-review,1-24,Local DTO/placeholder fields only; no external AuditorAPI DTO semantics inferred
+SmartAuditERP/Class/ItemSerialNo.cs,selected-static-path-review,1-14,Local DTO/placeholder fields only; no external AuditorAPI DTO semantics inferred
+SmartAuditERP/SmartAuditERP.csproj,selected-reference-metadata-review,29-31;74-79;92-94;149-151,"External reference metadata for AuditorAPI, M2Mqtt, Newtonsoft, SignalR, Ws_Auditor; no load/execute"
+SmartAuditERP/Properties/Resources.resx,selected-static-path-review,954-966;1178-1191;2453-2474;3932-3948;4214-4224;48668-48690;48901-48934;49309-49321,"Selected literal DDL/stock SQL and settings metadata, not full resx or deployed SQL review"

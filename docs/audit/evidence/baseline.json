@@ -1,0 +1,725 @@
+{
+  "audit_date_utc": "2026-11-16",
+  "source_head_at_collection": "10ba215152f722c8808aea0bb672c1d1d4d9d711",
+  "branch": "arena/94ae8414-smartauditerp",
+  "scope": "Git-tracked SmartAuditERP.sln and the two project trees; excludes audit documentation",
+  "method": "Offline metadata and lexical inspection only; no C# compilation, runtime, SQL, binary loading or network access",
+  "environment": {
+    "os": "Linux",
+    "machine": "x86_64",
+    "python": "3.11.2",
+    "dotnet_available": false,
+    "msbuild_available": false
+  },
+  "statistics": {
+    "tracked_project_files": 827,
+    "tracked_project_bytes": 29128444,
+    "source_files_excluding_bin_obj": 754,
+    "source_lines_including_comments_and_designer": 394029,
+    "cs_files": 477,
+    "cs_lines": 247236,
+    "xaml_files": 277,
+    "xaml_lines": 146793,
+    "wpf_form_xaml_files": 271,
+    "tracked_generated_files": 62,
+    "tracked_generated_bytes": 899590,
+    "bin_files": 10,
+    "obj_files": 52,
+    "manually_scoped_files": 52
+  },
+  "source_non_utf8_paths": [
+    "SmartAuditERP/Class/DgvAccount2.cs",
+    "SmartAuditERP/Class/FormPermission.cs",
+    "SmartAuditERP/Class/RestrictionData.cs",
+    "SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs"
+  ],
+  "xml": {
+    "examined": 285,
+    "parse_errors": [],
+    "limit": "Well-formed XML only; not WPF binding, resource-type or event-handler validation"
+  },
+  "xaml_codebehind_name_check": {
+    "classes": 277,
+    "mismatches": [],
+    "duplicate_classes": {},
+    "limit": "Class/namespace name presence only, not compilation or inheritance correctness"
+  },
+  "projects": [
+    {
+      "path": "SmartAuditERP/SmartAuditERP.csproj",
+      "properties": {
+        "OutputType": "WinExe",
+        "TargetFramework": "net8.0-windows",
+        "UseWPF": "true",
+        "Platforms": "AnyCPU;x86"
+      }
+    },
+    {
+      "path": "SmartAuditUpdater/SmartAuditUpdater.csproj",
+      "properties": {
+        "OutputType": "WinExe",
+        "TargetFramework": "net8.0-windows",
+        "Nullable": "enable",
+        "ImplicitUsings": "enable",
+        "UseWPF": "true"
+      }
+    }
+  ],
+  "package_references": [
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "name": "ClosedXML",
+      "version": "0.105.0"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "name": "DevExpress.Data",
+      "version": "25.2.3"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "name": "DevExpress.Images",
+      "version": "25.2.3"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "name": "DevExpress.Reporting.Core",
+      "version": "25.2.3"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "name": "DevExpress.Win.Design",
+      "version": "25.2.3"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "name": "DevExpress.Wpf.Core",
+      "version": "25.2.3"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "name": "DevExpress.Wpf.ExpressionEditor",
+      "version": "25.2.3"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "name": "DevExpress.Wpf.Grid.Core",
+      "version": "25.2.3"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "name": "DevExpress.Wpf.ThemesLW",
+      "version": "25.2.3"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "name": "Nancy",
+      "version": "2.0.0"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "name": "System.Management",
+      "version": "10.0.7"
+    }
+  ],
+  "assembly_references": [
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "AuditorAPI",
+      "hint_kind": "relative-external",
+      "hint_filename": "AuditorAPI.exe"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "BouncyCastle.Crypto",
+      "hint_kind": "relative-external",
+      "hint_filename": "BouncyCastle.Crypto.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "drHamiedNotify",
+      "hint_kind": "relative-external",
+      "hint_filename": "drHamiedNotify.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "EASendMail",
+      "hint_kind": "relative-external",
+      "hint_filename": "EASendMail.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "ECRPaymentsAPI",
+      "hint_kind": "relative-external",
+      "hint_filename": "ECRPaymentsAPI.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "ETA_Invoice",
+      "hint_kind": "relative-external",
+      "hint_filename": "ETA_Invoice.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "ExcelDataReader",
+      "hint_kind": "relative-external",
+      "hint_filename": "ExcelDataReader.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "ExcelDataReader.DataSet",
+      "hint_kind": "relative-external",
+      "hint_filename": "ExcelDataReader.DataSet.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "FastMember",
+      "hint_kind": "relative-external",
+      "hint_filename": "FastMember.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "FontAwesome.Sharp",
+      "hint_kind": "relative-external",
+      "hint_filename": "FontAwesome.Sharp.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "GenCode128",
+      "hint_kind": "relative-external",
+      "hint_filename": "GenCode128.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "ICSharpCode.SharpZipLib",
+      "hint_kind": "relative-external",
+      "hint_filename": "ICSharpCode.SharpZipLib.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "itextsharp",
+      "hint_kind": "relative-external",
+      "hint_filename": "itextsharp.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "JWT",
+      "hint_kind": "relative-external",
+      "hint_filename": "JWT.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "log4net",
+      "hint_kind": "relative-external",
+      "hint_filename": "log4net.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "M2Mqtt.Net",
+      "hint_kind": "relative-external",
+      "hint_filename": "M2Mqtt.Net.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "Microsoft.AspNet.SignalR.Client",
+      "hint_kind": "relative-external",
+      "hint_filename": "Microsoft.AspNet.SignalR.Client.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "Microsoft.SqlServer.ConnectionInfo",
+      "hint_kind": "relative-external",
+      "hint_filename": "Microsoft.SqlServer.ConnectionInfo.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "Microsoft.SqlServer.ConnectionInfoExtended",
+      "hint_kind": "relative-external",
+      "hint_filename": "Microsoft.SqlServer.ConnectionInfoExtended.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "Microsoft.VisualBasic.PowerPacks.Vs",
+      "hint_kind": "relative-external",
+      "hint_filename": "Microsoft.VisualBasic.PowerPacks.Vs.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "neoleapconnector",
+      "hint_kind": "relative-external",
+      "hint_filename": "neoleapconnector.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "Newtonsoft.Json",
+      "hint_kind": "relative-external",
+      "hint_filename": "Newtonsoft.Json.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "PdfSharp",
+      "hint_kind": "relative-external",
+      "hint_filename": "PdfSharp.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "PdfSharp.Charting",
+      "hint_kind": "relative-external",
+      "hint_filename": "PdfSharp.Charting.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "Pkcs11Interop",
+      "hint_kind": "relative-external",
+      "hint_filename": "Pkcs11Interop.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "QLicense",
+      "hint_kind": "relative-external",
+      "hint_filename": "QLicense.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "QRCoder",
+      "hint_kind": "relative-external",
+      "hint_filename": "QRCoder.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "RestSharp",
+      "hint_kind": "relative-external",
+      "hint_filename": "RestSharp.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "saxon-he-10.8",
+      "hint_kind": "relative-external",
+      "hint_filename": "saxon-he-10.8.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "saxon-he-api-10.8",
+      "hint_kind": "relative-external",
+      "hint_filename": "saxon-he-api-10.8.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "System.Data.SqlClient",
+      "hint_kind": "absolute-developer-profile",
+      "hint_filename": "System.Data.SqlClient.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "System.Net.Http.Extensions",
+      "hint_kind": "relative-external",
+      "hint_filename": "System.Net.Http.Extensions.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "System.Net.Http.Formatting",
+      "hint_kind": "relative-external",
+      "hint_filename": "System.Net.Http.Formatting.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "System.Net.Http.Primitives",
+      "hint_kind": "relative-external",
+      "hint_filename": "System.Net.Http.Primitives.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "Twilio",
+      "hint_kind": "relative-external",
+      "hint_filename": "Twilio.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "UtilitiesProj",
+      "hint_kind": "relative-external",
+      "hint_filename": "UtilitiesProj.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "WebDriver",
+      "hint_kind": "relative-external",
+      "hint_filename": "WebDriver.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "WebDriver.Support",
+      "hint_kind": "relative-external",
+      "hint_filename": "WebDriver.Support.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "websocket-sharp",
+      "hint_kind": "relative-external",
+      "hint_filename": "websocket-sharp.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "WhatsAppApi",
+      "hint_kind": "relative-external",
+      "hint_filename": "WhatsAppApi.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "Ws_Auditor",
+      "hint_kind": "relative-external",
+      "hint_filename": "Ws_Auditor.dll"
+    },
+    {
+      "project": "SmartAuditERP/SmartAuditERP.csproj",
+      "assembly": "ZatcaIntegrationSDK",
+      "hint_kind": "relative-external",
+      "hint_filename": "ZatcaIntegrationSDK.dll"
+    }
+  ],
+  "repository_asset_observations": {
+    "root_gitignore_present": false,
+    "version_txt_present": false,
+    "log4net_config_present": false,
+    "repx_templates": 0,
+    "versioned_github_workflows": "",
+    "test_projects_by_project_manifest": []
+  },
+  "sql_resources_metadata_only": [
+    {
+      "name": "CrystalLiteDB",
+      "resx_entry_line": 30,
+      "lines": 5001,
+      "characters": 273123,
+      "uppercase_GO_occurrences": 778,
+      "nonstandalone_GO_resource_lines": [
+        1029,
+        2685,
+        2783,
+        2785,
+        2787,
+        2833,
+        2837
+      ]
+    },
+    {
+      "name": "AlterDb",
+      "resx_entry_line": 45969,
+      "lines": 5285,
+      "characters": 233438,
+      "uppercase_GO_occurrences": 545,
+      "nonstandalone_GO_resource_lines": [
+        1237
+      ]
+    }
+  ],
+  "lexical_indicators_not_findings": {
+    "sql_adapter": {
+      "occurrences": 1959,
+      "files": 255
+    },
+    "sql_command": {
+      "occurrences": 1344,
+      "files": 174
+    },
+    "begin_transaction": {
+      "occurrences": 79,
+      "files": 48
+    },
+    "empty_click_handler": {
+      "occurrences": 54,
+      "files": 18
+    }
+  },
+  "empty_click_handler_candidates_not_all_confirmed_missing_features": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmCashVoucherPM.xaml.cs",
+      "line": 765,
+      "method": "btnPrint_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmClientPM.xaml.cs",
+      "line": 704,
+      "method": "btnPrint_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItems.xaml.cs",
+      "line": 1892,
+      "method": "btnPrint_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmNewProjectPM.xaml.cs",
+      "line": 133,
+      "method": "btnNew_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmNewProjectPM.xaml.cs",
+      "line": 134,
+      "method": "btnSave_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmNewProjectPM.xaml.cs",
+      "line": 135,
+      "method": "btnDelete_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmNewProjectPM.xaml.cs",
+      "line": 136,
+      "method": "btnPrint_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmNewProjectPM.xaml.cs",
+      "line": 137,
+      "method": "btnFirst_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmNewProjectPM.xaml.cs",
+      "line": 138,
+      "method": "btnPrevious_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmNewProjectPM.xaml.cs",
+      "line": 139,
+      "method": "btnNext_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmNewProjectPM.xaml.cs",
+      "line": 140,
+      "method": "btnLast_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmNkdTotSalePurchActCust.xaml.cs",
+      "line": 268,
+      "method": "btnPreview_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmNkdTotSalePurchActCust.xaml.cs",
+      "line": 269,
+      "method": "btnPrint_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPOS.xaml.cs",
+      "line": 2916,
+      "method": "StripClientLastItem_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPOS.xaml.cs",
+      "line": 2917,
+      "method": "StripLastItem_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPOS.xaml.cs",
+      "line": 2934,
+      "method": "stripImport_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPOS.xaml.cs",
+      "line": 2935,
+      "method": "stripExport_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPOS.xaml.cs",
+      "line": 2936,
+      "method": "btnInvProfit_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPaymentVoucher.xaml.cs",
+      "line": 387,
+      "method": "btnPrint_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPersonsDealWith.xaml.cs",
+      "line": 193,
+      "method": "btnPrint_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmProjCyclePM.xaml.cs",
+      "line": 858,
+      "method": "btnPrevious_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmProjCyclePM.xaml.cs",
+      "line": 859,
+      "method": "btnNext_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmProjCyclePM.xaml.cs",
+      "line": 860,
+      "method": "btnLast_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmProjCyclePM.xaml.cs",
+      "line": 861,
+      "method": "btnSave_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmProjCyclePM.xaml.cs",
+      "line": 862,
+      "method": "btnPrint_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmProjCyclePM.xaml.cs",
+      "line": 863,
+      "method": "btnDelete_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmProjCyclePM.xaml.cs",
+      "line": 864,
+      "method": "btnNew_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmProjectStagesPM.xaml.cs",
+      "line": 367,
+      "method": "btnPrint_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmProjectStagesPM.xaml.cs",
+      "line": 369,
+      "method": "btnFirst_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmProjectStagesPM.xaml.cs",
+      "line": 370,
+      "method": "btnPrevious_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmProjectStagesPM.xaml.cs",
+      "line": 371,
+      "method": "btnNext_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmProjectStagesPM.xaml.cs",
+      "line": 372,
+      "method": "btnLast_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmProjectStagesPM.xaml.cs",
+      "line": 374,
+      "method": "btnDelete_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs",
+      "line": 2056,
+      "method": "btnInsertLinkedInv_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs",
+      "line": 2086,
+      "method": "stripImport_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs",
+      "line": 2087,
+      "method": "stripExport_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs",
+      "line": 2088,
+      "method": "btnCustomizeDisplay_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmQueueM.xaml.cs",
+      "line": 443,
+      "method": "btnPrint_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmQueueM.xaml.cs",
+      "line": 444,
+      "method": "btnFirst_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmQueueM.xaml.cs",
+      "line": 445,
+      "method": "btnPrevious_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmQueueM.xaml.cs",
+      "line": 446,
+      "method": "btnNext_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmQueueM.xaml.cs",
+      "line": 447,
+      "method": "btnLast_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRequirementPM.xaml.cs",
+      "line": 360,
+      "method": "btnPrint_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRequirementPM.xaml.cs",
+      "line": 362,
+      "method": "btnDelete_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs",
+      "line": 4104,
+      "method": "Label1_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmTreasury.xaml.cs",
+      "line": 332,
+      "method": "btnPrint_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmUnits.xaml.cs",
+      "line": 300,
+      "method": "btnPrint_Click"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frminvoice.xaml.cs",
+      "line": 2513,
+      "method": "btnQuantity_Click"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "line": 3776,
+      "method": "ToolStripMenuItemRestorData_Click"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "line": 3785,
+      "method": "ToolStripMenuItemsallahSetting_Click"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "line": 3805,
+      "method": "StripEgyUploadedInvoice_Click"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "line": 3878,
+      "method": "ToolStripListProductsalla_Click"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "line": 3880,
+      "method": "ToolStripMenuItemGetOrderSallah_Click"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "line": 3882,
+      "method": "ToolStripMenuItemSallaSafes_Click"
+    }
+  ],
+  "not_implemented_exception_locations_not_automatically_defects": [
+    {
+      "path": "SmartAuditERP/Class_WPF/BoolToStatusConverter.cs",
+      "line": 16
+    }
+  ],
+  "narrow_static_corroboration_not_exploit_tests": {
+    "P1-007_privileged_server_role_command_present": true,
+    "P1-007_sa_enable_command_present": true,
+    "P1-008_fixed_password_validator_present": true,
+    "P1-009_password_assigned_to_serialized_startup_data": true,
+    "P1-012_no_permission_row_returns_without_deny": true,
+    "legacy_items_permission_alias_present_not_itself_a_defect": true,
+    "P1-013_visual_tree_traversal_used_for_permissions": true,
+    "P1-014_mqtt_explicitly_insecure": true,
+    "P1-015_ftp_upload_and_literal_credential_constructor_present": true,
+    "P1-021_download_failure_early_return_present": true,
+    "P1-022_copy_failure_only_logged": true,
+    "P1-027_migration_error_counter_present": true
+  }
+}

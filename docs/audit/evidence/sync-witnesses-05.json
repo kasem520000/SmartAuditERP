@@ -1,0 +1,440 @@
+{
+  "audit_date_utc": "2026-11-16",
+  "source_head": "10ba215152f722c8808aea0bb672c1d1d4d9d711",
+  "method": "Independent manually transcribed Python state/string/clock illustrations plus separately labelled bounded literal-source lexical checks; NOT ERP acceptance tests",
+  "application_code_imported_or_executed": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "application_remediation_performed": false,
+  "illustration_count": 12,
+  "illustrations": [
+    {
+      "id": "ALG5-01",
+      "title": "Different queue member names",
+      "finding_ids": [
+        "P5-003"
+      ],
+      "manually_transcribed_inputs": {
+        "itemid": 42
+      },
+      "calculated_observation": {
+        "requested_item": 42,
+        "manually_modelled_id_default": 0
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Python dictionary/default illustration only, not Newtonsoft contract resolution or ERP serialization execution.",
+      "evidence": "SmartAuditERP/Class/ItemIdOff.cs:1-8;SmartAuditERP/Class/ListItems.cs:6-10;SmartAuditERP/Class/SendData.cs:715-724"
+    },
+    {
+      "id": "ALG5-02",
+      "title": "Text prefix is not origin-branch equality",
+      "finding_ids": [
+        "P5-011"
+      ],
+      "manually_transcribed_inputs": {
+        "local_branch_text": "1",
+        "identifiers": [
+          "10-8",
+          "1-8",
+          "700-1-8",
+          "100-10-8"
+        ]
+      },
+      "calculated_observation": {
+        "10-8": true,
+        "1-8": true,
+        "700-1-8": false,
+        "100-10-8": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "ASCII prefix counterexamples only; no DTO parser, broker ACL, ID-generation SQL or real tenant data used.",
+      "evidence": "SmartAuditERP/Class/ReceivedData.cs:1171-1176;SmartAuditERP/Class/InvoiceOper.cs:2887-2896"
+    },
+    {
+      "id": "ALG5-03",
+      "title": "Global marker replacement mutates JSON values",
+      "finding_ids": [
+        "P5-010"
+      ],
+      "manually_transcribed_inputs": {
+        "synthetic_marker": "QZ",
+        "synthetic_payload": "{\"note\":\"INV-QZ-OK\"}"
+      },
+      "calculated_observation": {
+        "global_replace": {
+          "note": "INV--OK"
+        },
+        "prefix_only": {
+          "note": "INV-QZ-OK"
+        }
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "No AESencDEC, encryption, key, MAC or actual payload inspected or executed; string operation illustration only.",
+      "evidence": "SmartAuditERP/Class/ReceivedData.cs:350-357;SmartAuditERP/Class/SendData.cs:559-561"
+    },
+    {
+      "id": "ALG5-04",
+      "title": "Reset inside the permission-row loop",
+      "finding_ids": [
+        "P5-013"
+      ],
+      "manually_transcribed_inputs": {
+        "operations": [
+          9,
+          10
+        ]
+      },
+      "calculated_observation": {
+        "forward": [
+          {
+            "operation": 10,
+            "activated": true
+          }
+        ],
+        "reversed": [
+          {
+            "operation": 9,
+            "activated": true
+          }
+        ]
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "List model of the stated delete/disable/insert ordering, not SQL identity, constraint or authorization-engine execution.",
+      "evidence": "SmartAuditERP/Class/ReceivedData.cs:1053-1072"
+    },
+    {
+      "id": "ALG5-05",
+      "title": "Bare topic matches wildcard but lacks parser segment",
+      "finding_ids": [
+        "P5-007"
+      ],
+      "manually_transcribed_inputs": {
+        "filters": [
+          "CInv/#",
+          "Centry/#"
+        ],
+        "topics": [
+          "CInv",
+          "CEntry"
+        ]
+      },
+      "calculated_observation": {
+        "bare_matches_Inv_hash": true,
+        "bare_segment_count": 1,
+        "uppercase_Entry_matches_lowercase": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Limited manually stated MQTT matching rule, NOT a broker/protocol conformance suite, M2Mqtt invocation, or packet trace.",
+      "evidence": "SmartAuditERP/Class/ReceivedData.cs:79-90;SmartAuditERP/Class/ReceivedData.cs:158-164;SmartAuditERP/Class/SendData.cs:738-776"
+    },
+    {
+      "id": "ALG5-06",
+      "title": "One retained slot is not a delta backlog",
+      "finding_ids": [
+        "P5-009"
+      ],
+      "manually_transcribed_inputs": {
+        "publish_order": [
+          "delta A",
+          "delta B"
+        ],
+        "same_topic": "CItems"
+      },
+      "calculated_observation": {
+        "CItems": {
+          "id": "B",
+          "version": 3
+        }
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Single-slot state model under ordinary retained semantics, not proof a deployed broker discarded active deliveries or lacks a separate resnapshot service.",
+      "evidence": "SmartAuditERP/Class/SendData.cs:676-691"
+    },
+    {
+      "id": "ALG5-07",
+      "title": "Whole-file write and clear counterexample schedules",
+      "finding_ids": [
+        "P5-004"
+      ],
+      "manually_transcribed_inputs": {
+        "initial": [
+          "a"
+        ],
+        "writer_a_read_then_append": [
+          "a",
+          "x"
+        ],
+        "writer_b_read_then_append": [
+          "a",
+          "y"
+        ],
+        "sender_read": [
+          "a"
+        ],
+        "new_file_before_clear": [
+          "a",
+          "z"
+        ]
+      },
+      "calculated_observation": {
+        "last_whole_write": [
+          "a",
+          "y"
+        ],
+        "after_clear": []
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Two stipulated interleavings only, not a filesystem crash test or evidence of real concurrent ERP processes; no files written.",
+      "evidence": "SmartAuditERP/Form_WPF/frmItems.xaml.cs:2142-2155;SmartAuditERP/Class/SendData.cs:715-725"
+    },
+    {
+      "id": "ALG5-08",
+      "title": "Autocommit replacement and empty-child ambiguity",
+      "finding_ids": [
+        "P5-012"
+      ],
+      "manually_transcribed_inputs": {
+        "before": [
+          "old1",
+          "old2"
+        ],
+        "incoming": [
+          "new1",
+          "new2"
+        ],
+        "empty_incoming": []
+      },
+      "calculated_observation": {
+        "after_delete": [],
+        "after_failure": [
+          "new1"
+        ],
+        "after_empty": [
+          "old1",
+          "old2"
+        ]
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Manually transcribed sequential list effects only, not SQL/rollback/trigger behavior or proof of financial imbalance on deployed data.",
+      "evidence": "SmartAuditERP/Class/ReceivedData.cs:1250-1272;SmartAuditERP/Class/ReceivedData.cs:1313-1349"
+    },
+    {
+      "id": "ALG5-09",
+      "title": "Inverted freshness and conditional local-now cursor gap",
+      "finding_ids": [
+        "P5-017",
+        "P5-018"
+      ],
+      "manually_transcribed_inputs": {
+        "synthetic_now": "2026-01-01T12:00:00+00:00",
+        "fetched_at": "2026-01-01T12:00:00+00:00",
+        "change_after_that_entity_fetch": "2026-01-01T12:01:00+00:00",
+        "later_checkpoint": "2026-01-01T12:02:00+00:00"
+      },
+      "calculated_observation": {
+        "fresh_gate": true,
+        "stale_gate": false,
+        "change_is_behind_new_checkpoint": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Datetime ordering only. Actual skipping additionally needs a server updated-since/snapshot contract, inclusivity and clock behavior; no ERP/API execution.",
+      "evidence": "SmartAuditERP/Class/Sync.cs:479-487;SmartAuditERP/Class/SyncOperation.cs:232-248"
+    },
+    {
+      "id": "ALG5-10",
+      "title": "Stock append and skipped empty replacement",
+      "finding_ids": [
+        "P5-023"
+      ],
+      "manually_transcribed_inputs": {
+        "snapshot": {
+          "product": 42,
+          "branch": 2,
+          "warehouse": 3,
+          "unit": 7,
+          "quantity": 10
+        }
+      },
+      "calculated_observation": {
+        "active_noncloud_row_count_after_two_calls": 2,
+        "cloud_old_rows_if_empty_not_applied": 1
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Model assumes successful inserts into the supplied no-unique-key shape; deployed constraints may reject rather than accumulate. No SQL or stock recalculation executed.",
+      "evidence": "SmartAuditERP/Class/EntityOperations.cs:914-939;SmartAuditERP/Class/SyncOperation.cs:141-145;SmartAuditERP/Properties/Resources.resx:3932-3940"
+    },
+    {
+      "id": "ALG5-11",
+      "title": "N whole-batch customer echo invocations",
+      "finding_ids": [
+        "P5-022"
+      ],
+      "manually_transcribed_inputs": {
+        "customers": 3
+      },
+      "calculated_observation": {
+        "modelled_calls": 3,
+        "rows_carried_across_calls": 9
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Counts payload elements in the described branch only; not N squared inserted server rows, not observed traffic, and not proof of an endless echo loop.",
+      "evidence": "SmartAuditERP/Class/EntityOperations.cs:1174-1182"
+    },
+    {
+      "id": "ALG5-12",
+      "title": "Conditional cleanup of a rejected cloud batch",
+      "finding_ids": [
+        "P5-026"
+      ],
+      "manually_transcribed_inputs": {
+        "to_send": [
+          "A",
+          "B"
+        ],
+        "remaining": [
+          "C"
+        ],
+        "assumption": "CLearfiles clears this queue and no SQL rebuild intervenes"
+      },
+      "calculated_observation": {
+        "after_assumed_clear_restore": [
+          "C"
+        ]
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Counterexample under an explicit external SDK assumption only. Does not inspect or execute InvoiceCRUD.CLearfiles, AddinvoicesLocally or server idempotency/rebuild.",
+      "evidence": "SmartAuditERP/Class/Sync.cs:644-685"
+    }
+  ],
+  "static_lexical_contract_check_count": 5,
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST5-01",
+      "title": "Queue/read member spellings",
+      "finding_ids": [
+        "P5-003"
+      ],
+      "lexical_observation": {
+        "queue_member": "itemid",
+        "reader_type": "List<ListItems>",
+        "read_member": "item.id"
+      },
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Literal member/type spellings only, no Newtonsoft runtime contract resolver or converter certification.",
+      "evidence": "SmartAuditERP/Class/ItemIdOff.cs:1-8;SmartAuditERP/Class/ListItems.cs:6-10;SmartAuditERP/Class/SendData.cs:715-724"
+    },
+    {
+      "id": "ST5-02",
+      "title": "Literal subscription/dispatch set differences",
+      "finding_ids": [
+        "P5-008"
+      ],
+      "lexical_observation": {
+        "oper_subscribed": [
+          "Customers",
+          "AccountCust",
+          "AccountIndex",
+          "CasherClosed",
+          "CasherClosed_Sub",
+          "Inv/#",
+          "InvSub/#",
+          "entry/#",
+          "entryDetails/#",
+          "Receipts/#",
+          "CasherClosed/#",
+          "CasherClosed_Sub/#"
+        ],
+        "oper_cases": [
+          "Inv",
+          "InvSub",
+          "entry",
+          "entryDetails",
+          "Receipts",
+          "CasherClosed",
+          "CasherClosed_Sub"
+        ],
+        "selected_missing_oper_cases": [
+          "AccountCust",
+          "AccountIndex",
+          "Customers"
+        ],
+        "selected_missing_definition_subscriptions": [
+          "Offer",
+          "OfferClient",
+          "OfferItem",
+          "Safe"
+        ]
+      },
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Regex over selected literal arrays/cases only; not a complete C# event analyzer. Other loaded handlers can incidentally process some topics; broker ACL/external subscribers unknown.",
+      "evidence": "SmartAuditERP/Class/ReceivedData.cs:51-113;SmartAuditERP/Class/ReceivedData.cs:147-259"
+    },
+    {
+      "id": "ST5-03",
+      "title": "Stock warehouse argument occurs in declarations only",
+      "finding_ids": [
+        "P5-024"
+      ],
+      "lexical_observation": {
+        "inventory_token_count_per_literal_procedure": [
+          1,
+          1
+        ],
+        "body_has_inventory_id": [
+          false,
+          false
+        ]
+      },
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical argument/name counts in supplied SQL resource text only; not deployed procedure/schema or SQL execution, collation, plan or constraint analysis.",
+      "evidence": "SmartAuditERP/Properties/Resources.resx:4214-4224;SmartAuditERP/Properties/Resources.resx:49311-49321"
+    },
+    {
+      "id": "ST5-04",
+      "title": "Selected outcome/await tokens",
+      "finding_ids": [
+        "P5-029"
+      ],
+      "lexical_observation": {
+        "noncloud_has_return_result": true,
+        "noncloud_has_result_true_assignment": false,
+        "entry_call_has_await": false,
+        "http_slice_checks_status_token": false
+      },
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Presence/absence of tokens in explicitly bounded slices, not control-flow proof for all methods, actual HTTP outcomes or successful GL posting.",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:2717-2740;SmartAuditERP/Class/Sync.cs:798-815"
+    },
+    {
+      "id": "ST5-05",
+      "title": "Serial predicate binding versus write binding",
+      "finding_ids": [
+        "P5-014"
+      ],
+      "lexical_observation": {
+        "existence_ItemId_binding": "itemSerialNo.Id",
+        "write_ItemId_binding": "itemSerialNo.ItemId"
+      },
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Literal field mismatch only; no serial policy, IDENTITY/unique constraints, deployed SQL, insert or duplicate replay executed.",
+      "evidence": "SmartAuditERP/Class/ReceivedData.cs:620-628"
+    }
+  ]
+}

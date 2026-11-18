@@ -1,0 +1,262 @@
+{
+  "audit_date_utc": "2026-11-16",
+  "method": "Independent manually transcribed algebra only; NOT source/application/runtime acceptance tests",
+  "illustration_count": 8,
+  "illustrations": [
+    {
+      "id": "ALG3-01",
+      "title": "Unconditional period allowance",
+      "finding_ids": [
+        "P3-001"
+      ],
+      "evidence": "SmartAuditERP/Class/Common.cs:1289-1301",
+      "inputs": {
+        "is_within_period": [
+          false,
+          true,
+          false
+        ]
+      },
+      "transcribed_equation_result": {
+        "before_start": true,
+        "inside": true,
+        "after_end": true
+      },
+      "reference_or_invariant": {
+        "allow_only_inside_open_period": [
+          false,
+          true,
+          false
+        ]
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Boolean equivalence only; connection/UI/date parsing not exercised."
+    },
+    {
+      "id": "ALG3-02",
+      "title": "Nonpositive receipt produces an empty line list",
+      "finding_ids": [
+        "P3-002"
+      ],
+      "evidence": "SmartAuditERP/Class/ReceiptOper.cs:44-138;SmartAuditERP/Class/EntryOper.cs:898-920",
+      "inputs": {
+        "payment": [
+          "0",
+          "-1",
+          "100"
+        ],
+        "VAT": "0"
+      },
+      "transcribed_equation_result": {
+        "line_counts_under_the_positive_payment_condition": {
+          "0": 0,
+          "-1": 0,
+          "100": 2
+        }
+      },
+      "reference_or_invariant": {
+        "nonpositive_cash_receipt": "Reject before any write, unless explicitly modelled as a different document"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Models the branch/list only; it does not persist or prove a deployed database accepts an empty journal."
+    },
+    {
+      "id": "ALG3-03",
+      "title": "Rounded equality is not equality of stored raw values",
+      "finding_ids": [
+        "P3-007"
+      ],
+      "evidence": "SmartAuditERP/Form_WPF/FrmNewEntry.xaml.cs:729-740;SmartAuditERP/Form_WPF/FrmNewEntry.xaml.cs:780-791;SmartAuditERP/Class/EntryOper.cs:904-905",
+      "inputs": {
+        "debit": "100.001",
+        "credit": "100.004"
+      },
+      "transcribed_equation_result": {
+        "equal_after_two_decimal_rounding": true,
+        "raw_difference": "-0.003"
+      },
+      "reference_or_invariant": {
+        "required": "Balance the amounts actually quantized and stored under an approved currency policy"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Decimal illustration, not a simulation of every .NET double/provider/midpoint or currency policy."
+    },
+    {
+      "id": "ALG3-04",
+      "title": "Reclose VAT direction",
+      "finding_ids": [
+        "P3-012",
+        "P3-002"
+      ],
+      "evidence": "SmartAuditERP/Class/EntryOper.cs:44-55;SmartAuditERP/Class/EntryOper.cs:433-487;SmartAuditERP/Class/EntryOper.cs:603-608;SmartAuditERP/Class/EntryOper.cs:637-655;SmartAuditERP/Class/EntryOper.cs:686-693;SmartAuditERP/Class/EntryOper.cs:754-795",
+      "inputs": {
+        "InvoiceType": 3,
+        "ProcType": 1,
+        "PayType": 1,
+        "PaymentStatus": 1,
+        "Cash": "115",
+        "InvTotal": "100",
+        "VAT": "15",
+        "CashierBalance": "115",
+        "other_monetary_fields": "0"
+      },
+      "transcribed_equation_result": {
+        "lines": [
+          {
+            "role": "cash_sales",
+            "debit": "115",
+            "credit": "0"
+          },
+          {
+            "role": "sales",
+            "debit": "0",
+            "credit": "100"
+          },
+          {
+            "role": "VAT_through_positive_AddAccount",
+            "debit": "15",
+            "credit": "0"
+          },
+          {
+            "role": "cash_settlement",
+            "debit": "0",
+            "credit": "115"
+          },
+          {
+            "role": "closing_custody",
+            "debit": "115",
+            "credit": "0"
+          }
+        ],
+        "debit_sum": "245",
+        "credit_sum": "215",
+        "difference": "30"
+      },
+      "reference_or_invariant": {
+        "required_difference": "0",
+        "VAT_on_positive_sale": "credit"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Transcribes only this minimal, valid-account scenario; database lookups, DTO constructors and save are not run."
+    },
+    {
+      "id": "ALG3-05",
+      "title": "Reclose standard-network refund is added",
+      "finding_ids": [
+        "P3-013",
+        "P3-002"
+      ],
+      "evidence": "SmartAuditERP/Class/EntryOper.cs:489-548;SmartAuditERP/Class/EntryOper.cs:610-618;SmartAuditERP/Class/EntryOper.cs:637-674",
+      "inputs": {
+        "InvoiceType": 3,
+        "PayType": 2,
+        "BankId": 1,
+        "PaymentStatus": 1,
+        "sale_ProcType": 1,
+        "refund_ProcType": 2,
+        "sale_InvTotal_and_Mada": "100",
+        "refund_InvTotal_and_Mada": "20",
+        "CashierBalance": "0",
+        "cash_VAT_and_other_amounts": "0"
+      },
+      "transcribed_equation_result": {
+        "bank_debit": "120",
+        "return_debit": "20",
+        "sales_credit": "100",
+        "debit_sum": "140",
+        "credit_sum": "100",
+        "difference": "40"
+      },
+      "reference_or_invariant": {
+        "bank_net_debit": "80",
+        "required_difference": "0"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Minimal standard-bank path only, not an assertion that every bank-ID path has the same error."
+    },
+    {
+      "id": "ALG3-06",
+      "title": "Trial-balance carryforward lost on parent/secondary-only rows",
+      "finding_ids": [
+        "P3-019"
+      ],
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:292-344;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:396-448;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:455-486",
+      "inputs": {
+        "prior_debit": "100",
+        "opening_entries_in_interval": "0",
+        "current_movement": "0",
+        "previous_balance_requested": true
+      },
+      "transcribed_equation_result": {
+        "leaf_final": "100",
+        "parent_final": "0",
+        "secondary_only_final": "0"
+      },
+      "reference_or_invariant": {
+        "all_views_final": "100"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "One leaf and its parent; does not exercise tree construction, SQL or WPF rendering."
+    },
+    {
+      "id": "ALG3-07",
+      "title": "Income table ignores contra revenue; KPI counts subtotal twice",
+      "finding_ids": [
+        "P3-020"
+      ],
+      "evidence": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:295-316;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:423-464;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:601-605",
+      "inputs": {
+        "4100001_credit": "1000",
+        "4100002_debit": "100",
+        "4100003_debit": "50",
+        "inventory_purchases_expenses_and_other_revenue": "0"
+      },
+      "transcribed_equation_result": {
+        "table_net_sales": "1000",
+        "revenue_KPI": "2150"
+      },
+      "reference_or_invariant": {
+        "correct_net_sales": "850"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Uses the report's stated contra-account meanings; all other P&L components zero to isolate the two equations."
+    },
+    {
+      "id": "ALG3-08",
+      "title": "Liability running-balance convention changes midstream",
+      "finding_ids": [
+        "P3-021"
+      ],
+      "evidence": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs:195-239;SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs:262-274;SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs:348-368",
+      "inputs": {
+        "account_prefix": "2",
+        "prior_credit": "100",
+        "new_credit": "50"
+      },
+      "transcribed_equation_result": {
+        "carried_D_minus_C": "-100",
+        "after_new_C_minus_D": "-50",
+        "shown_magnitude": "50",
+        "no_prior_positive_credit_label": "مدين"
+      },
+      "reference_or_invariant": {
+        "final_magnitude": "150",
+        "nature": "دائن"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Algebra/display-label illustration, not a rendering or account-statement acceptance test."
+    }
+  ],
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "application_code_imported_or_executed": false,
+  "note": "Passed assertions mean the illustrations are arithmetically self-consistent, not that the ERP passed or failed an executed test."
+}

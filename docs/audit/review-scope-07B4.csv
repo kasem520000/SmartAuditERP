@@ -1,0 +1,19 @@
+path,review_state,ranges,focus
+SmartAuditERP/Class/Common.cs,selected-static-source-slices-not-runtime-certified,133-153,GetStoreName يقرأSafes بمعامل؛ لاكلCommonأوالسياسات.
+SmartAuditERP/Class/InventoryData.cs,selected-static-source-slices-not-runtime-certified,1-303,نموذجInventoryData المحلي للمقارنةالصريحةلحقولالطباعة؛ لاDTOخارجيأوتوافقUtilitiesProj/قالب.
+SmartAuditERP/Class/InvoiceOper.cs,selected-static-source-slices-not-runtime-certified,160-192;1528-1626;4203-4272,عقدكتابةنوع/اتجاه/كمية/سعروVAT/ExtraVATومواقع، وخريطةInvoiceDGV→Invoice؛ لاالأسرارأوكلالكاتبوGL.
+SmartAuditERP/Class/ItemOper.cs,selected-static-source-slices-not-runtime-certified,1365-1413;1473-1508;1630-1643,عقدكميةالأساسوسعروحدةالبيعوالخصم، وتجميعVATوExtraVATمنفصلينوصافيالرأس؛ لااعتمادالسياسةأوكلالمتصلين.
+SmartAuditERP/Class/LoadData.cs,selected-static-source-slices-not-runtime-certified,12-25,Invertories(EmpNo) يقرأSafes/Safe_Emps؛ لاسلامةعضوياتمنشورةأوكلresourceACL.
+SmartAuditERP/Class/Report.cs,selected-static-source-slices-not-runtime-certified,380-462;531-608,جسراBindToData القائمانGridView/DataTable وnull/توقعأعمدة؛ لاكلالمحركأوREPXأواختبارطابعة.
+SmartAuditERP/Class_WPF/ItemProfitRow_ProfitDetails.cs,selected-static-source-slices-not-runtime-certified,1-25,DTO المحلي للأرباحفقط: GlobalID/اسمونوعالإشارةوتكلفةوحدةوإجمالي؛ لانوعمستندرقميللتوجيه.
+SmartAuditERP/Form_WPF/frmRptInvAnalysis.xaml,selected-static-source-slices-not-runtime-certified,1-13;245-562;597-812,XAML وظيفي: أحداث/الأبعاد/منتقياالتاريخوالمرشحاتوأزرارالإخراجوالأعمدةوالبطاقاتفقط؛ لامراجعةكلStyle/قابليةوصول/قياسرسم.
+SmartAuditERP/Form_WPF/frmRptInvAnalysis.xaml.cs,selected-static-source-slices-not-runtime-certified,1-2147,جسمC# المحلي كاملاً: ثمانيةأبعادومصادرتكلفةوفلاترومجاميعومخرجاتونموذجصف؛ لاكلقالب/مستخدم/نشر/قبول. حواجزالخيطوالإتاحةموثقة.
+SmartAuditERP/Form_WPF/frmRptInvNotfic.xaml,selected-static-source-slices-not-runtime-certified,1-15;190-519;543-695,جدولالإشعاراتوالضريبةوالهويةوTagوأزرارالفتحوالملخصوالإخراجومعاييرالنوع/المستخدم/الفترة؛ لاكلStyles.
+SmartAuditERP/Form_WPF/frmRptInvNotfic.xaml.cs,selected-static-source-slices-not-runtime-certified,1-813,جسمالإشعاراتكاملاً: نوعومعاييروربطInv/Inv_Sub/UsersوالضريبةوالملخصوdrillوCSVوجسرطباعة؛ لاعقدمنشورأوقالبموثوق.
+SmartAuditERP/Form_WPF/frmRptInvPurchaseDetails.xaml,selected-static-source-slices-not-runtime-certified,1-14;177-447;485-837;858-916,مرشحاتالمشتريات/نوعالعمليةالمخفيوالكلوالأعمدةبمافيهاالمخفيةوالأزرار/المجاميع؛ لاكلالتنسيق/الإتاحة.
+SmartAuditERP/Form_WPF/frmRptInvPurchaseDetails.xaml.cs,selected-static-source-slices-not-runtime-certified,1-1171,جسمالمشترياتكاملاً: UI snapshotوالعاملوقائمةالصفوفوJOINوالمجاميعوالعرض/إعادةالمظهروالطباعةوالتصدير؛ يكملمقاطعB1 ولايعيدتصنيفهاأويقرتنفيذاً.
+SmartAuditERP/Form_WPF/frmRptItemsProfitDetails.xaml,selected-static-source-slices-not-runtime-certified,1-13;246-375;408-643;653-763,معاييرالمخزنوالصنفوالوقت، bindings وهويةالصفوالتكلفة/الإجماليوملخصاتوأزرار؛ لاكلresources/RTL/DPI.
+SmartAuditERP/Form_WPF/frmRptItemsProfitDetails.xaml.cs,selected-static-source-slices-not-runtime-certified,1-862,جسمالأرباحالتفصيليةكاملاً: هوية/بحثوبنودوتكلفةوضريبةوإشارةومجاميعوفتحومصدرطباعةوCSV؛ لاصحةالكاتبأوسياسةالتكلفةأوREPX.
+SmartAuditERP/Home.xaml,selected-static-source-slices-not-runtime-certified,378-384;423-430;468-484,مواضعمداخلB4 ومعطلتحليلالمبيعاتأولياً؛ لاشجرةالقوائمكلهاأوإثباتإتاحةمفوضة.
+SmartAuditERP/Home.xaml.cs,selected-static-source-slices-not-runtime-certified,2898-2904;3104-3112;3126-3153;3426-3433;3543-3543,مداخلأجسامB4 المحددةومنطقالصلاحية/التوقيتفقط؛ ليسكلHomeأوأبناءالنوافذ.
+SmartAuditERP/Properties/Resources.resx,selected-static-source-slices-not-runtime-certified,954-1074;1629-1641;1992-2005;3026-3081,DDL المرفقInv/Inv_Sub/InvTypes/Safes/Stocks وseedالأنواع/الاتجاهات؛ لامخططنشرمثبتأوكلAlterDb. اختلافاسمتسميةإشعار22عقدغيرمحسوم.

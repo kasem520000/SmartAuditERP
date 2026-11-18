@@ -1,0 +1,14 @@
+path,review_state,ranges,focus
+SmartAuditERP/Class/InvoiceObj.cs,selected-static-source-slices-not-runtime-certified,113-178;292-299,مصدر PriceIncVAT من SettingGeneral الحالي و IsInput من InvTypes؛ لا كل الإعدادات/الكاتب.
+SmartAuditERP/Class/InvoiceOper.cs,selected-static-source-slices-not-runtime-certified,1526-1624;3219-3312,عقد حقول الرأس والبند ووحداتهما وflag الشمول التاريخي، وبداية BindingInvoice التي تستهلك SQL المستدعي؛ لا كل حفظ/فتح/ترحيل.
+SmartAuditERP/Class/ItemOper.cs,selected-static-source-slices-not-runtime-certified,1365-1508;1630-1643,حساب كمية الأساس وسعر وحدة البيع و sum/خصم/ضريبة/Net المستقل؛ لا سياسة كاملة للعروض أو الاستقطاع.
+SmartAuditERP/Form_WPF/frmActsInvTotal.xaml,selected-static-source-slices-not-runtime-certified,1-315,XAML المحلي كاملاً لربط معايير/جدول/مجاميع وأزرار جهات العمل؛ لا render/RTL/وصول مقبول.
+SmartAuditERP/Form_WPF/frmActsInvTotal.xaml.cs,selected-static-source-slices-not-runtime-certified,1-431,جسم تقرير جهات العمل كاملاً:مصادر/أنواع/اتجاه/أخطاء/Dispatcher و placeholder الإخراج؛ لا كل كاتب/جهة أو تنفيذ.
+SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs,selected-static-source-slices-not-runtime-certified,1855-1880,Navigate المحلي:BindingInvoice يستهلك SQL المرسل ثم يربط النموذج؛ لا بقية محرر POS أو حفظه.
+SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml,selected-static-source-slices-not-runtime-certified,1-642,XAML المحلي كاملاً:معيار مستخدم وفترة/وقت وجدول/مجاميع وفتح ومخرج؛ البحث عن الصنف ليس control ظاهراً هنا.
+SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs,selected-static-source-slices-not-runtime-certified,1-866,جسم تفاصيل أصناف POS المختلف كاملاً:قارئ/معايير/flag/دقة/ملخص/هوية/FlowDocument/CSV/HTML؛ لا كل caller أو محرر مصدر.
+SmartAuditERP/Form_WPF/frmNkdFoundRpt.xaml.cs,selected-static-source-slices-not-runtime-certified,1-51,launcher الطفلين كاملاً؛ لا ترقية أي طفل آخر من قراءة اسمه.
+SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml,selected-static-source-slices-not-runtime-certified,1-317,XAML المحلي كاملاً لمدخل فترة/مبالغ/كميات ومخرج؛ لا كل موارد التطبيق أو قبول لوحة مفاتيح/ثقافة.
+SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs,selected-static-source-slices-not-runtime-certified,1-497,جسم إجمالي البيع/الشراء كاملاً:ستة مجاميع/وحدة/شرط كمية/فشل/HTML و FlowDocument وإعدادات؛ لا تصديق سياسة المقياس.
+SmartAuditERP/Home.xaml.cs,selected-static-source-slices-not-runtime-certified,137-138;2906-2913;3627-3633,مرجع Nkd static ومدخل Home الذي يطبق صلاحياته مقابل مدخل تفاصيل POS المباشر؛ لا كل Home أو قائمة XAML.
+SmartAuditERP/Properties/Resources.resx,selected-static-source-slices-not-runtime-certified,954-1074;3026-3081,DDL Inv/Inv_Sub وكتالوج InvTypes المرفق؛ يميز النوع وإجراء الرأس واتجاه السطر. لا دليل مخطط منشور أو تنفيذ ترقية.

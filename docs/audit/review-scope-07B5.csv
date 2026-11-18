@@ -1,0 +1,27 @@
+path,review_state,ranges,focus
+SmartAuditERP/Class/Common.cs,selected-static-source-slices-not-runtime-certified,133-153,GetStoreName يقرأ Safes بمعامل؛ لا كل Common أو سياسات المصدر.
+SmartAuditERP/Class/EntryOper.cs,selected-static-source-slices-not-runtime-certified,62-302;850-937,ربط فاتورة لقيد وحفظه المشترك المحددان فقط؛ لا دورة المحاسبة كاملة أو تنفيذها.
+SmartAuditERP/Class/InventoryData.cs,selected-static-source-slices-not-runtime-certified,1-303,DTO محلي InventoryData كاملاً؛ لا يثبت عقد DTO الخارجي InvoiceTxt أو ToDataTable أو قالب.
+SmartAuditERP/Class/InvoiceOper.cs,selected-static-source-slices-not-runtime-certified,1528-1572;1593-1598;1687-1776;3007-3146;4203-4272;4498-4588;4592-4616;4675-4752;4773-4825,مقاطع الكاتب/دفعات/محمل إعادة القيد وعقد المبالغ والحالة والوحدة، ومسارات تتيح الجزئي؛ لا كل SaveInvoice أو توافق النسخ.
+SmartAuditERP/Class/ItemOper.cs,selected-static-source-slices-not-runtime-certified,1365-1413;1473-1508;1630-1643,وحدة الكمية/السعر والخصم وتراكم VAT/ExtraVAT/Net؛ لا جميع حسابات وعروض الصنف.
+SmartAuditERP/Class/LoadData.cs,selected-static-source-slices-not-runtime-certified,12-26,قائمة Safes بحسب الموظف في Invertories فقط؛ لا عقد تفويض التقرير.
+SmartAuditERP/Class/Report.cs,selected-static-source-slices-not-runtime-certified,380-462;531-608,عقدا projection GridView/DataTable المحليان، خصوصاً SummaryText؛ لا كل Print أو REPX/مكتبة UtilitiesProj.
+SmartAuditERP/Class_WPF/ItemSalesPosRow.cs,selected-static-source-slices-not-runtime-certified,1-15,نموذج ItemSalesPosRow المحلي كاملاً؛ لا اعتماد معادلاته أو بياناته.
+SmartAuditERP/Class_WPF/ItemSalesRow.cs,selected-static-source-slices-not-runtime-certified,1-14,نموذج ItemSalesRow المحلي كاملاً؛ لا افتراض عقد خارجي مفقود.
+SmartAuditERP/Form_WPF/FrmRptSalesChart.xaml.cs,selected-static-source-slices-not-runtime-certified,407-456,caller واحد للتفاصيل/التجميعي من الرسم وترتيب showInvoice قبل Show؛ لا بقية الرسم من جديد.
+SmartAuditERP/Form_WPF/frmPOSBill.xaml.cs,selected-static-source-slices-not-runtime-certified,437-580,SaveRes مختار يحفظ مبلغاً نقدياً مستقلاً عن Net وحالة الدفع؛ لا بقية الحوار أو تكامل المزود.
+SmartAuditERP/Form_WPF/frmPOSPay.xaml.cs,selected-static-source-slices-not-runtime-certified,395-514,SaveRes مختار يميز السداد والحالة والمبالغ؛ مراجعة مصدر لا إجازة Geidea أو تنفيذها.
+SmartAuditERP/Form_WPF/frmRptInvSalesDetails.xaml,selected-static-source-slices-not-runtime-certified,1-13;276-566;605-1093;1105-1140,مقاطع functional XAML:Loaded ومعايير/ربط صفوف ومجاميع وأوامر محددة فقط؛ لا كل Styles/موارد أو render/RTL/وصول عام.
+SmartAuditERP/Form_WPF/frmRptInvSalesDetails.xaml.cs,selected-static-source-slices-not-runtime-certified,1-1514,جسم التقرير العام:معايير/قارئ/ضريبة/ملخص/أوامر تعديل/تصدير/فتح/جسر طباعة؛ لا كل الكاتب أو callers أو نشر.
+SmartAuditERP/Form_WPF/frmRptInvSalesDetailsPos.xaml,selected-static-source-slices-not-runtime-certified,1-13;254-411;476-774;796-894;909-939,مقاطع functional XAML:Loaded ومعايير/ربط صفوف ومجاميع وأوامر محددة فقط؛ لا كل Styles/موارد أو render/RTL/وصول عام.
+SmartAuditERP/Form_WPF/frmRptInvSalesDetailsPos.xaml.cs,selected-static-source-slices-not-runtime-certified,1-896,جسم قائمة POS:معايير/أهلية/دفع/ملخص/فتح/CSV/GridView مؤقت؛ لا اعتماد قالب أو مزود.
+SmartAuditERP/Form_WPF/frmRptInvSalesDetailsPosAndroid.xaml,selected-static-source-slices-not-runtime-certified,1-13;270-551;613-901;925-1019;1035-1065,مقاطع functional XAML:Loaded ومعايير/ربط صفوف ومجاميع وأوامر محددة فقط؛ لا كل Styles/موارد أو render/RTL/وصول عام.
+SmartAuditERP/Form_WPF/frmRptInvSalesDetailsPosAndroid.xaml.cs,selected-static-source-slices-not-runtime-certified,1-986,جسم قائمة Android:مصدر الفترة/ضريبة/فرع/دفع/صفوف/فتح ومخرج؛ لا اعتماد sync/نشر أو DTO.
+SmartAuditERP/Form_WPF/frmRptItemsSalesDetails.xaml,selected-static-source-slices-not-runtime-certified,1-14;249-431;465-633;661-686,مقاطع functional XAML:Loaded ومعايير/ربط صفوف ومجاميع وأوامر محددة فقط؛ لا كل Styles/موارد أو render/RTL/وصول عام.
+SmartAuditERP/Form_WPF/frmRptItemsSalesDetails.xaml.cs,selected-static-source-slices-not-runtime-certified,1-731,جسم تجميعي البيع/الشراء:أهلية الحركة/وحدة/خصم/هوية/ملخص/مصدر طباعة/CSV.
+SmartAuditERP/Form_WPF/frmRptItemsSalesDetailsPOS.xaml,selected-static-source-slices-not-runtime-certified,1-14;237-341;373-484;495-534;560-585,مقاطع functional XAML:Loaded ومعايير/ربط صفوف ومجاميع وأوامر محددة فقط؛ لا كل Styles/موارد أو render/RTL/وصول عام.
+SmartAuditERP/Form_WPF/frmRptItemsSalesDetailsPOS.xaml.cs,selected-static-source-slices-not-runtime-certified,1-497,جسم تجميعي POS:أهلية المستند/الحذف/فرع/قيمة/ملخص/ضريبة إضافية حالية/مخرج.
+SmartAuditERP/Form_WPF/frmSrchClient.xaml,selected-static-source-slices-not-runtime-certified,1-16;155-168,ربط Escape/Loaded وزر إغلاق الحوار فقط؛ لا بقية XAML/Styles.
+SmartAuditERP/Form_WPF/frmSrchClient.xaml.cs,selected-static-source-slices-not-runtime-certified,1-335,حوار بحث العميل المحلي كاملاً لدورة اختيار/إغلاق/نتيجة افتراضية، وplaceholder الإضافة؛ ليس كل عميل/صلاحية أو قبول واجهة.
+SmartAuditERP/Home.xaml.cs,selected-static-source-slices-not-runtime-certified,236-237;3158-3177;3492-3539;3620-3639,مداخل شراء/بيع/POS/Android ومرجع static؛ قراءة اسم frmItemsalesdetailsPos لا تغطي جسمه المؤجل7B6.
+SmartAuditERP/Properties/Resources.resx,selected-static-source-slices-not-runtime-certified,954-1074;3026-3081;3851-3895;48830-48848,DDL المرفق للرؤوس والبنود وكتالوج النوع وجدول الدفعات ودفعة FreeVATSales مختارة؛ لا مخطط نشر أو تنفيذ ترقية مثبت.

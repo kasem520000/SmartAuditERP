@@ -1,0 +1,61 @@
+path,review_state,ranges,focus
+SmartAuditERP/App.xaml,full-static-security-review,1-8,Empty application resources corroborate missing permission-tree template
+SmartAuditERP/App.xaml.cs,full-static-security-review,1-22,Theme-only initialization; no permission-tree template injection
+SmartAuditERP/Class/Accounting.cs,full-static-security-review,1-233,Security context of caller-provided branch and static branch predicate; not accounting correctness certification
+SmartAuditERP/Class/Common.cs,scoped-security-review,269-326;692-732;901-945;1183-1302;1435-1513;2076-2092,Parameterized and interpolated lookups; AllowEdit default allow; UI editing helper; logging trust boundary; financial-period lead only
+SmartAuditERP/Class/ConnectBroker.cs,full-static-security-review,1-120,MQTT transport and client-ID-only connection; P1 expansion only
+SmartAuditERP/Class/EntityOperations.cs,scoped-security-review,1442-1527,Bank persistence source-to-sink sample; parameterization is not authorization
+SmartAuditERP/Class/EntryOper.cs,scoped-security-review,1406-1470,Attachment import/query and root paths; transaction/collision leads for later phase
+SmartAuditERP/Class/FormPermission.cs,full-static-security-review,1-350,Full source read with cp1256 fallback; parameter binding and fail-open defaults; visual discovery; create/edit mapping
+SmartAuditERP/Class/InvoiceOper.cs,scoped-security-review,1310-1856;2652-2697;5405-5488,Save boundary and resource validation; parameterized persistence and unparameterized identifier deletes; cloud principal sink; attachment copy/query
+SmartAuditERP/Class/ListUsers.cs,full-static-security-review,1-20,Credential-bearing synchronization DTO
+SmartAuditERP/Class/LoadData.cs,full-static-security-review,1-110,User resource assignments; privileged numeric identities; branch intersection absent from resource lookups
+SmartAuditERP/Class/MainClass.cs,scoped-security-review,19-78;331-624;652-734;899-915,Global identity and shared SQL connection; permission resolver and named UI controls; no application execution
+SmartAuditERP/Class/ReceiptOper.cs,scoped-security-review,159-249;373-408;740-812,Save/delete security samples and branch predicates; attachment file and metadata operations; not complete accounting transaction audit
+SmartAuditERP/Class/ReceivedData.cs,scoped-security-review,21-29;263-310;1086-1135,Definition-topic decrypt/dispatch and parameterized user writes; server ACL/authentication not available
+SmartAuditERP/Class/SendData.cs,scoped-security-review,33-35;889-925;938-961,Credential fields serialized before application-level encryption; metadata only for key assignments; no secrets copied
+SmartAuditERP/Class/Session.cs,full-static-security-review,1-32,WhatsApp-specific session helper; not an ERP authentication session abstraction
+SmartAuditERP/Class/SupportTicketApiClient.cs,full-static-security-review,1-226,Outbound personal data and attachment contract; HTTPS caller; backend ownership controls unverified
+SmartAuditERP/Class/Sync.cs,scoped-security-review,64-145;625-663,Cloud URL configuration source and stale-principal upload sink; not full synchronization audit
+SmartAuditERP/Class/User.cs,full-static-security-review,1-166,Operation flags; reset defaults; default warehouse and treasury; cloud principal holder
+SmartAuditERP/Form_WPF/FormCreateTicket.xaml,binding-metadata-and-scoped-review,308;434-439;534-542,Connected upload/clear/chooser commands
+SmartAuditERP/Form_WPF/FormCreateTicket.xaml.cs,full-static-security-review,1-213,Static attachment selection; clear/success lifecycle; outbound consent boundary
+SmartAuditERP/Form_WPF/FrmNewEntry.xaml,binding-metadata-and-scoped-review,66-69;264,Read-only GlobalID source qualification; no direct user-text SQL-injection conclusion
+SmartAuditERP/Form_WPF/FrmNewEntry.xaml.cs,scoped-security-review,147-158;181-193;347-359;645-655,GlobalID internal and search/DB sources; unparameterized delete retained as unresolved second-order flow
+SmartAuditERP/Form_WPF/frmAccountsDirectory.xaml.cs,scoped-security-review,1-170;240-285;527-671;830-860,Unscoped account listing; active-branch balance helper distinction; alternate CRUD navigation
+SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs,scoped-security-review,1-227;381,Existing branch restrictions as positive counterexample; selected lookup index
+SmartAuditERP/Form_WPF/frmAddUsers.xaml,binding-metadata-and-scoped-review,270-297;385-440,Unrestricted PIN text and Enter event; row permission button; hidden password column
+SmartAuditERP/Form_WPF/frmAddUsers.xaml.cs,scoped-security-review,1-538;543-548,Identity administration; duplicate checks; create/update/delete; raw SQL checks; alternate save and permission editor path
+SmartAuditERP/Form_WPF/frmBackupRstore.xaml,binding-metadata-and-scoped-review,99-124;144-194;214-239;273-280;313-339,Distinct nonstandard action names and read-only file chooser metadata
+SmartAuditERP/Form_WPF/frmBackupRstore.xaml.cs,scoped-security-review,1-178;189-302;382-544;611-635,Backup and restore authorization/SQL/transport boundary; settings privilege check; destructive restore path
+SmartAuditERP/Form_WPF/frmBanks.xaml.cs,scoped-security-review,90-217,Save handler and call into EntityOperations; form/model branch inputs
+SmartAuditERP/Form_WPF/frmChangePwd.xaml.cs,full-static-security-review,1-115,Current-user password read/update; credential and SQL-injection expansion of P1
+SmartAuditERP/Form_WPF/frmCheckPwd.xaml,binding-metadata-and-scoped-review,205-206;229-231,Close action and unrestricted password keyboard binding
+SmartAuditERP/Form_WPF/frmCheckPwd.xaml.cs,scoped-security-review,13-158;245-301,Operation approval queries; redacted fixed-gate branches; retry and result handling
+SmartAuditERP/Form_WPF/frmCustomers.xaml.cs,scoped-security-review,350-390;397-450;736-804;1320-1395;1675-1740;1747-1810;1831-1836,User text SQL source-to-sink; tax helper; attachment object type; file copy and parameterized metadata
+SmartAuditERP/Form_WPF/frmDataRecycling.xaml.cs,scoped-security-review,218-262;284-366;439-614,Duplicated privileged SQL setup; dynamic SQL and imported user/permission scope; no external opening caller verified
+SmartAuditERP/Form_WPF/frmEmployees.xaml.cs,scoped-security-review,706-758,Deletion blocked by active user and invoices; retirement workflow scope
+SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs,scoped-security-review,241-263;482-548;1942-1968,POS default resources consumed; cloud stock principal; conditional edit guard
+SmartAuditERP/Form_WPF/frmInvSale.xaml,binding-metadata-and-scoped-review,1186-1187,Active import/view-document event wiring
+SmartAuditERP/Form_WPF/frmInvSale.xaml.cs,scoped-security-review,90-216;470-535;1504-1575;1727-1768;1805-1920;2532-2557;3034-3126,Resource loading; payload branch; explicit edit guard; save route; attachment DataView contract
+SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs,scoped-security-review,267-400,Search-result identity binding; parameterized date slice and typed branch predicate; Cond callers not exhaustively traced
+SmartAuditERP/Form_WPF/frmLogOut.xaml.cs,full-static-security-review,1-98,Lock/logout/switch actions; WinForms-only enumeration; no WPF cleanup
+SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml,binding-metadata-and-scoped-review,194-197;225-239;322-325,All-branches chooser and named export/print actions
+SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs,scoped-security-review,94-160;214-307;347-403;496-548;560-632,Report branch choices and aggregates; auto-load and export; not recalculation verification
+SmartAuditERP/Form_WPF/frmOperPermission.xaml.cs,full-static-security-review,1-145,Operation approval password maintenance; global operation deletion semantics require business policy
+SmartAuditERP/Form_WPF/frmSandSD.xaml.cs,scoped-security-review,879-942,Reachable DocumentItem viewer path; document import filter and parent context
+SmartAuditERP/Form_WPF/frmSecurityPnl.xaml.cs,scoped-security-review,13-166,Numeric entry and asynchronous quick-login state; separate instances
+SmartAuditERP/Form_WPF/frmServerSetting.xaml.cs,scoped-security-review,74-92,SQL transport builder rechecked; original P1 privileged setup remains under P1 evidence
+SmartAuditERP/Form_WPF/frmTreasury.xaml.cs,scoped-security-review,35-291,Treasury selection across branches; save/update handler; assignment rewrite; no runtime data changes
+SmartAuditERP/Form_WPF/frmUserLogin.xaml,binding-metadata-and-scoped-review,1-18;585-595,"Borderless window and closing/key hooks; Exit calls application shutdown, not ordinary cancellation"
+SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs,scoped-security-review,25-535;574-765;813-1011,All identity variants; redacted support branch; credentials serialization; connection and branch load; switch and cloud fallback
+SmartAuditERP/Form_WPF/frmUsersPermissions.xaml,binding-metadata-and-scoped-review,1-52;122-159;188-304;411-416,Tree has no hierarchical template or checkbox binding; operation controls and plaintext password display
+SmartAuditERP/Form_WPF/frmUsersPermissions.xaml.cs,full-static-security-review,1-715,Grant editor selection/load/save/delete and model; no runtime UI rendering
+SmartAuditERP/Form_WPF/frmlock.xaml,binding-metadata-and-scoped-review,1-17;130-139;158-168,Window event metadata and password/advanced-login binding
+SmartAuditERP/Form_WPF/frmlock.xaml.cs,full-static-security-review,1-232,Unlock query; result contract; advanced login fallback and window lifecycle
+SmartAuditERP/Form_WPF/frmshowdocument.xaml,binding-metadata-and-scoped-review,90-145,Active double-click and delete bindings with DocumentItem/DataRowView tags
+SmartAuditERP/Form_WPF/frmshowdocument.xaml.cs,full-static-security-review,1-154,Open/delete result types; file path trust; document-wide delete and collection mismatch
+SmartAuditERP/Home.xaml,binding-metadata-and-scoped-review,305-340;746-832,Menu and quick-button metadata; initial visibility and enabled state
+SmartAuditERP/Home.xaml.cs,scoped-security-review,405-439;530-561;978-1055;1109-1153;1159-1372;2475-2487;2657-2667;3220-3269;3313-3323;3683-3693;3765;3780-3781;3887-3976,Caller chains; login outcome; lock; per-user menus and quick actions; cached admin entrypoint index
+SmartAuditERP/Properties/Resources.resx,schema-excerpt-and-metadata,704-708;1619-1623;1982-1986;2149-2179;46035;51219-51228,Selected identity/assignment schema; SQL metadata searches for uniqueness and locks; no SQL executed or object deserialization
+SmartAuditERP/SmartAuditERP.csproj,dependency-metadata-review,1-80,Framework/dependency boundary; external auth/crypto/server libraries not loaded

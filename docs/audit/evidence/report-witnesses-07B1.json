@@ -1,0 +1,572 @@
+{
+  "phase": "7B1-partial-static-audit",
+  "audit_reference_date_utc": "2026-11-16",
+  "method": "Manually transcribed synthetic illustrations plus separately labelled bounded literal-source checks; NOT application tests",
+  "application_code_imported_or_executed": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "application_remediation_performed": false,
+  "real_business_or_secret_data_used": false,
+  "spreadsheet_or_formula_interpreter_executed": false,
+  "illustration_count": 19,
+  "static_lexical_contract_check_count": 11,
+  "illustrations": [
+    {
+      "id": "ALG7B-01",
+      "name": "فروع عدد النسخ عند مدخل المحرك",
+      "finding_ids": "P7-030",
+      "evidence": "SmartAuditERP/Class/Print.cs:195-218",
+      "synthetic_model": {
+        "mode_1_count_to_model_requests": {
+          "-1": 1,
+          "0": 1,
+          "1": 1,
+          "3": 3
+        },
+        "mode_2_zero_copies_model_print_requests": 0
+      },
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "نسخ يدوي لقرار if/else فقط؛ لا طابعة ولا فشل قالب أو callback، وحراس بعض المستدعين قد تمنع وصول الصفر."
+    },
+    {
+      "id": "ALG7B-02",
+      "name": "بتر الكسر مقابل تقريب مبلغ موحد",
+      "finding_ids": "P7-034",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:550-577",
+      "synthetic_model": {
+        "synthetic_input_text": "1.999",
+        "literal_two_character_fraction": "99",
+        "two_digit_half_up_reference": "2.00"
+      },
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "Python string/Decimal على نص مفترض عند حد split؛ لا VB Conversions أو صياغة لغوية كاملة. Print الرئيسي قد يقرب Net قبل الاستدعاء."
+    },
+    {
+      "id": "ALG7B-03",
+      "name": "فاصل عشري مختلف لا ينتج جزء كسر عند split بالنقطة",
+      "finding_ids": "P7-034",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:550-577",
+      "synthetic_model": {
+        "synthetic_decimal_comma_text": "12,25",
+        "parts_after_literal_dot_split": [
+          "12,25"
+        ],
+        "fraction_branch_condition": false
+      },
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "يثبت حد الفصل النصي في النموذج فقط، لا نتيجة parsing أو Floor أو ثقافة Windows فعلية ولا قائمة الثقافات المدعومة."
+    },
+    {
+      "id": "ALG7B-04",
+      "name": "اختلاف فروع أسماء الرمز نفسه",
+      "finding_ids": "P7-035",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:972-1169",
+      "synthetic_model": {
+        "synthetic_numeric_code": 12,
+        "arabic_explicit_branch": "جنيه مصري",
+        "english_fallback_branch": "Riyal"
+      },
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "كتالوج فرعي منقول يدوياً من الأرقام المحلية، لا استخراج enum أو عقد DLL أو مصادقة أسماء قانونية لكل العملات."
+    },
+    {
+      "id": "ALG7B-05",
+      "name": "حاصل ضرب بجدول فارغ يخفي باركود الجدول الآخر",
+      "finding_ids": "P7-036",
+      "evidence": "SmartAuditERP/Form_WPF/frmMultiBarcode.xaml.cs:75-98",
+      "synthetic_model": {
+        "unit_rows": 1,
+        "alternative_rows": 0,
+        "cartesian_match_count": 0,
+        "independent_unit_exists": true
+      },
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "جبر مجموعات/قوائم مستقلة، لا SQL Server أو collation أو constraint؛ قيد نشر خارجي قد يمنع INSERT لاحقاً."
+    },
+    {
+      "id": "ALG7B-06",
+      "name": "سعر تعريف الصنف لا يساوي سعر وحدة الرمز",
+      "finding_ids": "P7-037",
+      "evidence": "SmartAuditERP/Form_WPF/frmPrintBarcode.xaml.cs:215-241;SmartAuditERP/Class/Common.cs:560-578",
+      "synthetic_model": {
+        "synthetic_base_price": "10",
+        "synthetic_scanned_pack_price": "100",
+        "model_label_from_base": "10"
+      },
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "عينة أسعار اصطناعية عند مدخل DTO؛ لا ماسح/ضريبة أو تطبيق فعلي. مسار الوحدة اليدوي يقرأ IU.sale وهو counterexample."
+    },
+    {
+      "id": "ALG7B-07",
+      "name": "خصم POS المضاعف عند خرج helper",
+      "finding_ids": "P7-038",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs:183-231",
+      "synthetic_model": {
+        "helper_gross": "100",
+        "helper_discount": "10",
+        "header_share": "0",
+        "cost": "60",
+        "model_net": "80",
+        "model_profit": "20",
+        "single_discount_net": "90",
+        "single_discount_profit": "30"
+      },
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "مدخل عند مخرجات GetSaleData مفترض سليم، لا فحص صحة SQL/VAT/تكلفة تاريخية أو نجاح حفظ مستند."
+    },
+    {
+      "id": "ALG7B-08",
+      "name": "إجمالي لا متوسط وحدة",
+      "finding_ids": "P7-039",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs:236-250;SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml:463-470",
+      "synthetic_model": {
+        "quantity": "10",
+        "unit_cost": "3",
+        "model_labeled_average_field": "30",
+        "actual_fixture_unit_cost": "3"
+      },
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "معنى حقل المثال فقط؛ لا weighted-average inventory policy أو قالب REPX اختبر."
+    },
+    {
+      "id": "ALG7B-09",
+      "name": "مرتجع فقط لا يمر شرط وجود البيع",
+      "finding_ids": "P7-040",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptSalesInPeriod.xaml.cs:119-150",
+      "synthetic_model": {
+        "sale_quantity": "0",
+        "return_quantity": "2",
+        "model_row_included": false,
+        "signed_reference_quantity": "-2",
+        "signed_reference_value": "-60"
+      },
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "قرار نموذج مستقل؛ لا تنفيذ SELECT أو إرجاع أصلي أو مقارنة tot_net مع مبلغ قبل الضريبة بلا تسوية."
+    },
+    {
+      "id": "ALG7B-10",
+      "name": "كمية الأساس مضروبة بسعر العبوة",
+      "finding_ids": "P7-041",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptSalesInPeriod.xaml.cs:169-176;SmartAuditERP/Class/InvoiceOper.cs:1592-1599",
+      "synthetic_model": {
+        "val_base": "12",
+        "val1_entry": "1",
+        "exchange_price_per_pack": "120",
+        "model_value": "1440",
+        "unit_consistent_value": "120"
+      },
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "عقد val/val1 من الكاتب المقروء ومثال أحادي السطر؛ لا يعني SUM(val1) جمعاً صحيحاً لوحدات مختلفة أو ربحاً معتمداً."
+    },
+    {
+      "id": "ALG7B-11",
+      "name": "المجموع بعد Clear من تبويب آخر",
+      "finding_ids": "P7-042",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptSalesInPeriod.xaml.cs:282-296;SmartAuditERP/Form_WPF/frmRptSalesInPeriod.xaml.cs:325-355",
+      "synthetic_model": {
+        "post_clear_and_invoice_load_fields": {
+          "items_total": "",
+          "invoice_total": "100.00"
+        },
+        "model_SumSell": ""
+      },
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "قواميس تمثل الإسناد فقط؛ لا WPF أو binding/layout أو جمع القالب الخارجي."
+    },
+    {
+      "id": "ALG7B-12",
+      "name": "قسمة جزء صفر ضريبة بمعدل رأس آخر وخصمه المهمل",
+      "finding_ids": "P7-043",
+      "evidence": "SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml.cs:345-420",
+      "synthetic_model": {
+        "synthetic_zero_tax_line_gross": "100",
+        "header_rate": "0.15",
+        "model_inclusive_exempt_base_4dp": "86.9565",
+        "reference_zero_rate_line_base": "100",
+        "all_exempt_header_discount": "10",
+        "model_NOTAX_after_header_discount": "100",
+        "discounted_reference_if_policy_applies": "90"
+      },
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "عينتان منفصلتان منقولتان يدوياً، لا فئة ضريبية قانونية أو توزيع خصم متعدد المعدلات معتمد أو SQL/VB نفذ."
+    },
+    {
+      "id": "ALG7B-13",
+      "name": "المكون المعفى خارج الإجمالي المسمى",
+      "finding_ids": "P7-044",
+      "evidence": "SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml.cs:557-563;SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml.cs:649-655",
+      "synthetic_model": {
+        "model_total": "100",
+        "sum_of_fixture_components": "150",
+        "reference_exempt_vat": "0"
+      },
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "مثال جمع أساس فقط؛ لا إضافة VAT إلى أساس أو حكم بأن netVAT يتغير بالمعفى دائماً."
+    },
+    {
+      "id": "ALG7B-14",
+      "name": "هوية معايير جديدة ونشر جزئي قبل فشل مصدر",
+      "finding_ids": "P7-045;P7-046",
+      "evidence": "SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml.cs:492-524;SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml.cs:650-675;SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml.cs:700-749",
+      "synthetic_model": {
+        "old_fixture": {
+          "criteria": "A",
+          "sales": 100,
+          "purchases": 40,
+          "net_vat": 9
+        },
+        "manually_modeled_after_sales_update_and_later_failure": {
+          "criteria": "B",
+          "sales": 200,
+          "purchases": 40,
+          "net_vat": 9
+        }
+      },
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "انتقالات قاموس اصطناعي لا C#/dispatcher/SQL أو fault injection حقيقي؛ P7-045 تغيير معايير بعد عرض، و046 فشل داخل عرض، جذران متميزان."
+    },
+    {
+      "id": "ALG7B-15",
+      "name": "نسبة في حقل مبلغ وأصفار غير مشتقة",
+      "finding_ids": "P7-047",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptInvPurchaseDetails.xaml.cs:869-878;SmartAuditERP/Class/Report.cs:583-594",
+      "synthetic_model": {
+        "fixture_rate_percent": "5",
+        "fixture_base": "200",
+        "fixture_extra_amount": "10",
+        "model_ExtraVAT_from_rate": "5",
+        "fixture_VAT": "30",
+        "model_TotalTax_literal": "0",
+        "model_SummaryPaid_literal": "0"
+      },
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "نموذج projection فقط لا أن كل الفواتير ذات5% أو أن ExtraVAT/الدفعات حُمّلت سليماً من المصدر؛ القيم غير المحملة ليست صفراً مثبتاً."
+    },
+    {
+      "id": "ALG7B-16",
+      "name": "بنية ملف محدد الفواصل من دون ترميز الخلايا",
+      "finding_ids": "P7-048",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs:561-584;SmartAuditERP/Form_WPF/frmRptInvSalesDetailsPos.xaml.cs:668-691;SmartAuditERP/Form_WPF/frmRptInvPurchaseDetails.xaml.cs:912-937",
+      "synthetic_model": {
+        "naive_internal_quote_rejected_by_python_csv_strict": true,
+        "synthetic_three_fields_with_unquoted_thousands_actual_fields": 4,
+        "tsv_embedded_newline_model_lines": 3
+      },
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "قارئ Python stdlib لنصوص مولدة بيد التدقيق فقط، لا إعادة تنفيذ writer C# ولا اختبار Excel/الأجهزة. CSV محاط صحيحاً يحفظ الفاصلة المجردة وهو counterexample."
+    },
+    {
+      "id": "ALG7B-17",
+      "name": "اقتباس CSV لا يمحو بادئة الصيغة",
+      "finding_ids": "P7-049",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs:561-591",
+      "synthetic_model": {
+        "benign_synthetic_text_only": "=1+1",
+        "prefix_survives_csv_decoding": true,
+        "spreadsheet_opened_or_evaluated": false
+      },
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "لا eval أو قارئ جداول أو shell/شبكة؛ بقاء بادئة نصية ليس exploit أو إثبات أن قارئاً معيناً سيفعلها مع ProtectedView."
+    },
+    {
+      "id": "ALG7B-18",
+      "name": "بايتات TSV ليست حزمة XLSX",
+      "finding_ids": "P7-050",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptInvPurchaseDetails.xaml.cs:882-937",
+      "synthetic_model": {
+        "synthetic_selected_extension": ".xlsx",
+        "model_writer_kind": "UTF8 tab-delimited text",
+        "synthetic_bytes_are_zip_container": false
+      },
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "فحص محايد لعينة bytes اصطناعية لا ملف ERP مولداً أو رفض/تحذير Excel مرصوداً؛ لا يثبت أمن ZIP من مجرد صيغته."
+    },
+    {
+      "id": "ALG7B-19",
+      "name": "إجمالي التأجير الشامل لا يساوي أساسه قبل الضريبة",
+      "finding_ids": "P7-051",
+      "evidence": "SmartAuditERP/Form_WPF/frminvoice.xaml.cs:722-755;SmartAuditERP/Form_WPF/frminvoice.xaml.cs:1624-1650;SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml.cs:524-563",
+      "synthetic_model": {
+        "synthetic_net_rent_base": "100",
+        "tax": "15",
+        "writer_tot_net_from_NetVal": "115",
+        "model_report_rent_base": "115",
+        "reported_tax_from_separate_column": "15"
+      },
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "كاتب/قارئ منقولان يدوياً لعينة بلا خصم/تأمين/إضافات؛ لا دورة حفظ أو SQL نفذت. خطأ الأساس لا يعني ضريبة مستحقة ثانية لأن التقرير يجمع tax المنفصلة."
+    }
+  ],
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B-01",
+      "name": "حدود فرع نسخ الطباعة",
+      "finding_ids": "P7-030;P7-031",
+      "evidence": "SmartAuditERP/Class/Print.cs:195-221",
+      "observations": {
+        "positive_count_guard_present": true,
+        "preview_guard_present": true,
+        "fallthrough_print_present": true,
+        "exception_handler_without_message_or_return": true
+      },
+      "source_application_executed": false,
+      "documented_text_observation_matches": true,
+      "limit": "مطابقة نصية محدودة لا تنفيذ للقرار أو printer runtime."
+    },
+    {
+      "id": "ST7B-02",
+      "name": "caller معاينة وربط فيه أوامر سيريال",
+      "finding_ids": "P7-029",
+      "evidence": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:904-909;SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:1199-1227",
+      "observations": {
+        "view_calls_builder_before_report": true,
+        "serial_delete_inside_builder": true,
+        "serial_insert_helper_call": true
+      },
+      "source_application_executed": false,
+      "documented_text_observation_matches": true,
+      "limit": "شواهد حرفية موجبة داخل المقاطع، لا callgraph شامل أو تشغيل SQL/إثبات فشل نشر."
+    },
+    {
+      "id": "ST7B-03",
+      "name": "خصم POS والمعادلة النهائية",
+      "finding_ids": "P7-038",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs:183-231",
+      "observations": {
+        "pos_double_discount": true,
+        "subtract_accumulated_discount": true
+      },
+      "source_application_executed": false,
+      "documented_text_observation_matches": true,
+      "limit": "اسم helper وقيم SQL لا ينفذان؛ المثال المالي يعلن حد مدخله."
+    },
+    {
+      "id": "ST7B-04",
+      "name": "معاملات الكاتب مقابل مبلغ التقرير",
+      "finding_ids": "P7-041",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:1592-1599;SmartAuditERP/Form_WPF/frmRptSalesInPeriod.xaml.cs:163-176",
+      "observations": {
+        "val_primary": true,
+        "val1_entry": true,
+        "price_entry": true,
+        "query_uses_val_times_price": true
+      },
+      "source_application_executed": false,
+      "documented_text_observation_matches": true,
+      "limit": "فحص أسماء/تعابير حرفية مع عقود محلية فقط لا تنفيذ command binding/SQL."
+    },
+    {
+      "id": "ST7B-05",
+      "name": "قسمة الرأس لا تحرس NOTAX وخصم الرأس يحرس TAXED",
+      "finding_ids": "P7-043",
+      "evidence": "SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml.cs:345-420",
+      "observations": {
+        "notax_clause": true,
+        "header_rate_division": true,
+        "header_discount_taxed_only": true
+      },
+      "source_application_executed": false,
+      "documented_text_observation_matches": true,
+      "limit": "وجود تعابير محددة لا إثبات صحة كل فرع أو legal category أو query result."
+    },
+    {
+      "id": "ST7B-06",
+      "name": "مكونات إجماليي الأساس لا تسمي حقلي المعفى",
+      "finding_ids": "P7-044",
+      "evidence": "SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml.cs:557-563;SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml.cs:649-655",
+      "observations": {
+        "sales_formula_components": true,
+        "sales_exempt_not_in_this_expression": true,
+        "purchase_formula_components": true,
+        "purchase_exempt_not_in_this_expression": true
+      },
+      "source_application_executed": false,
+      "documented_text_observation_matches": true,
+      "limit": "الغياب داخل expression معلوم الحدود فقط، لا غياب وظيفة/فئة من كامل البرنامج."
+    },
+    {
+      "id": "ST7B-07",
+      "name": "إسقاط نسبة وأصفار للخرج",
+      "finding_ids": "P7-047",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptInvPurchaseDetails.xaml.cs:869-878;SmartAuditERP/Class/Report.cs:583-594",
+      "observations": {
+        "rate_in_row_position": true,
+        "three_zero_literals": true,
+        "summary_extra_zero": true,
+        "summary_paid_zero": true
+      },
+      "source_application_executed": false,
+      "documented_text_observation_matches": true,
+      "limit": "العقد الموضعـي يراجع مع الأعمدة المعلنة؛ لا إثبات قالب خارجي أو تحميل كامل لكل الفواتير."
+    },
+    {
+      "id": "ST7B-08",
+      "name": "خيار XLSX يمر إلى writer نص Tab",
+      "finding_ids": "P7-050",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptInvPurchaseDetails.xaml.cs:882-937",
+      "observations": {
+        "xlsx_filter_present": true,
+        "same_tsv_call": true,
+        "tab_delimiter": true,
+        "utf8_file_write": true
+      },
+      "source_application_executed": false,
+      "documented_text_observation_matches": true,
+      "limit": "موجب نصياً في متصل/كاتب محدود لا تجربة قارئ Excel أو تحقق كامل OfficeOpenXML."
+    },
+    {
+      "id": "ST7B-09",
+      "name": "اختزال تفاصيل السيريال/الدفعة",
+      "finding_ids": "P7-033",
+      "evidence": "SmartAuditERP/Class/Print.cs:670-673;SmartAuditERP/Class/Print.cs:946-965",
+      "observations": {
+        "loop_over_details": true,
+        "single_serial_assignment": true,
+        "item_scoped_detail_query": true,
+        "first_read_only_in_cut": true
+      },
+      "source_application_executed": false,
+      "documented_text_observation_matches": true,
+      "limit": "لا شمول لكل query/DTO خارجي أو إثبات نتيجة ORDER بلا SQL؛ هذه تعابير موجبة محددة."
+    },
+    {
+      "id": "ST7B-10",
+      "name": "عقد اسم قالب باركود بمقدمتَي RLM",
+      "finding_ids": "P1-004",
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsBarcode.xaml.cs:367-383",
+      "observations": {
+        "two_RLM_literal_before_Barcode2": true,
+        "file_exists_is_checked": true
+      },
+      "source_application_executed": false,
+      "documented_text_observation_matches": true,
+      "limit": "حروف U+200F موجودة في الاسم الحرفي؛ ليست دليلاً على فشل ملف نشر غائب عن المستودع ولا افتراض ASCII للاسم الصحيح."
+    },
+    {
+      "id": "ST7B-11",
+      "name": "مصدر NetVal الشامل وكاتب tot_net وقارئه إلى الأساس",
+      "finding_ids": "P7-051",
+      "evidence": "SmartAuditERP/Form_WPF/frminvoice.xaml.cs:722-755;SmartAuditERP/Form_WPF/frminvoice.xaml.cs:1624-1650;SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml.cs:524-535",
+      "observations": {
+        "net_includes_tax": true,
+        "gross_parameter_from_NetVal": true,
+        "rent_report_uses_tot_net": true
+      },
+      "source_application_executed": false,
+      "documented_text_observation_matches": true,
+      "limit": "مطابقة نصية موجبة محدودة لا تنفيذ للكاتب أو إثبات عبور حواجز الحفظ أو صحة كل كاتب آخر لـRentInvoice."
+    }
+  ],
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Class/Print.cs",
+      "start": 195,
+      "end": 221
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs",
+      "start": 904,
+      "end": 909
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs",
+      "start": 1199,
+      "end": 1227
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs",
+      "start": 183,
+      "end": 231
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 1592,
+      "end": 1599
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSalesInPeriod.xaml.cs",
+      "start": 163,
+      "end": 176
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml.cs",
+      "start": 345,
+      "end": 420
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml.cs",
+      "start": 557,
+      "end": 563
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml.cs",
+      "start": 649,
+      "end": 655
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptInvPurchaseDetails.xaml.cs",
+      "start": 869,
+      "end": 878
+    },
+    {
+      "path": "SmartAuditERP/Class/Report.cs",
+      "start": 583,
+      "end": 594
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptInvPurchaseDetails.xaml.cs",
+      "start": 882,
+      "end": 937
+    },
+    {
+      "path": "SmartAuditERP/Class/Print.cs",
+      "start": 670,
+      "end": 673
+    },
+    {
+      "path": "SmartAuditERP/Class/Print.cs",
+      "start": 946,
+      "end": 965
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsBarcode.xaml.cs",
+      "start": 367,
+      "end": 383
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frminvoice.xaml.cs",
+      "start": 722,
+      "end": 755
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frminvoice.xaml.cs",
+      "start": 1624,
+      "end": 1650
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml.cs",
+      "start": 524,
+      "end": 535
+    }
+  ],
+  "limit": "All assertions are about audit-owned Python values or literal text slices. No C#/VB/SQL/WPF/DevExpress/REPX/driver/provider behavior was executed or certified."
+}

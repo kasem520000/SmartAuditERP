@@ -1,0 +1,429 @@
+{
+  "audit_date_utc": "2026-11-16",
+  "through_phase": 4,
+  "method": "Independent manually transcribed illustrations plus separately labelled literal-source parameter name sets; NOT ERP/C#/SQL tests",
+  "illustration_count": 12,
+  "illustrations": [
+    {
+      "id": "ALG4-01",
+      "finding_ids": [
+        "P4-001",
+        "P4-002"
+      ],
+      "kind": "independent-manually-transcribed-illustration",
+      "title": "Signed line movement, not header names",
+      "inputs": {
+        "quantity_base": "1",
+        "line_effect_retained": 2
+      },
+      "illustrated_source_rule": {
+        "linked_pos_return_delta": "-1",
+        "held_sale_delta_if_saved": "-1"
+      },
+      "comparison_rule": {
+        "return_delta": "1",
+        "nonmoving_hold_delta": "0"
+      },
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs:2503-2534;SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs:2627-2649;SmartAuditERP/Properties/Resources.resx:48019-48023",
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "Manual signs only; no DTO, caller, SQL, hold reservation policy or commit executed."
+    },
+    {
+      "id": "ALG4-02",
+      "finding_ids": [
+        "P4-003"
+      ],
+      "kind": "independent-manually-transcribed-illustration",
+      "title": "Header discount with old line tax",
+      "inputs": {
+        "line_base": "100",
+        "header_discount": "10",
+        "vat_rate": "0.15",
+        "price_includes_vat": false
+      },
+      "illustrated_source_rule": {
+        "header_vat": "13.50",
+        "header_net": "103.50",
+        "line_vat": "15.00",
+        "line_total": "100",
+        "detailed_net_minus_old_vat": "88.50"
+      },
+      "comparison_rule": {
+        "consistent_line_base": "90",
+        "consistent_line_vat": "13.50"
+      },
+      "evidence": "SmartAuditERP/Class/ItemOper.cs:1533-1643;SmartAuditERP/Class/InvoiceOper.cs:2399-2422",
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "One line, exclusive VAT, no extra tax/offers/withholding/rounding; no binder or ledger run."
+    },
+    {
+      "id": "ALG4-03",
+      "finding_ids": [
+        "P4-004"
+      ],
+      "kind": "independent-manually-transcribed-illustration",
+      "title": "Withholding removed by final assignment",
+      "inputs": {
+        "discounted_base": "90",
+        "vat": "13.50",
+        "existing_line_withholding": "2"
+      },
+      "illustrated_source_rule": {
+        "line_net_before_final_assignment": "101.50",
+        "header_net_after_assignment": "103.50"
+      },
+      "comparison_rule": {
+        "header_equals_sum_line_net_under_same_withholding_rule": "101.50"
+      },
+      "evidence": "SmartAuditERP/Class/ItemOper.cs:1621-1642",
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "Does not select the legally correct withholding basis after discount or call ETA; internal arithmetic only."
+    },
+    {
+      "id": "ALG4-04",
+      "finding_ids": [
+        "P4-005"
+      ],
+      "kind": "independent-manually-transcribed-illustration",
+      "title": "Sum of prefixes versus total profit",
+      "inputs": {
+        "isolated_line_margins": [
+          "10",
+          "20"
+        ]
+      },
+      "illustrated_source_rule": {
+        "forward_order": "40",
+        "reversed_order": "50"
+      },
+      "comparison_rule": {
+        "order_independent_margin_sum": "30"
+      },
+      "evidence": "SmartAuditERP/Class/ItemOper.cs:1494-1505",
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "Ignores discounts/tax/cost lookup; does not prove which report consumes saved InvProfit."
+    },
+    {
+      "id": "ALG4-05",
+      "finding_ids": [
+        "P4-007"
+      ],
+      "kind": "independent-manually-transcribed-illustration",
+      "title": "Incoming sales return at exchange price in average",
+      "inputs": {
+        "purchase_base_qty": "10",
+        "purchase_unit_cost": "6",
+        "return_base_qty": "1",
+        "return_exchange_price": "10"
+      },
+      "illustrated_source_rule": {
+        "illustrated_average": "6.363636363636363636363636364"
+      },
+      "comparison_rule": {
+        "if_original_cost_return_policy": "6"
+      },
+      "evidence": "SmartAuditERP/Properties/Resources.resx:48246-48250",
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "Conditional valuation policy example; not moving-average/FIFO implementation or deployed SQL execution."
+    },
+    {
+      "id": "ALG4-06",
+      "finding_ids": [
+        "P4-009"
+      ],
+      "kind": "independent-manually-transcribed-illustration",
+      "title": "Projected aggregate deduplication after warehouse omitted",
+      "inputs": {
+        "per_store_projected_rows_without_store": [
+          [
+            "1",
+            "10",
+            "100"
+          ],
+          [
+            "1",
+            "10",
+            "100"
+          ],
+          [
+            "1",
+            "10",
+            "200"
+          ]
+        ]
+      },
+      "illustrated_source_rule": {
+        "union_quantity": "20",
+        "union_average": "15"
+      },
+      "comparison_rule": {
+        "union_all_quantity": "30",
+        "union_all_average": "13.33333333333333333333333333"
+      },
+      "evidence": "SmartAuditERP/Properties/Resources.resx:48019-48021;SmartAuditERP/Properties/Resources.resx:48246-48250",
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "Python set/list illustration of exact projected equal rows; no SQL NULL/float/collation/query-plan emulation."
+    },
+    {
+      "id": "ALG4-07",
+      "finding_ids": [
+        "P4-011"
+      ],
+      "kind": "independent-manually-transcribed-illustration",
+      "title": "Repeated aliased composite expansion",
+      "inputs": {
+        "parent_item": 10,
+        "one_leaf_component": 20
+      },
+      "illustrated_source_rule": {
+        "legacy_items_before_first_expansion": 1,
+        "after_one_mapping": 2,
+        "after_second_mapping": 3
+      },
+      "comparison_rule": {
+        "pure_idempotent_expansion_row_count": 2
+      },
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:4332-4409",
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "One leaf BOM manually modeled; no actual DB, external DTO setter, recursion or save behavior executed."
+    },
+    {
+      "id": "ALG4-08",
+      "finding_ids": [
+        "P4-013"
+      ],
+      "kind": "independent-manually-transcribed-illustration",
+      "title": "Item-only selection keeps both original lines",
+      "inputs": {
+        "selected_line": "item1/box/qty1",
+        "second_original_line": "item1/piece/qty5"
+      },
+      "illustrated_source_rule": {
+        "retained_count": 2,
+        "retained_quantities": [
+          "1",
+          "1"
+        ]
+      },
+      "comparison_rule": {
+        "only_selected_original_line_retained": 1
+      },
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:315-348",
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "Manual mutation rule; no WPF selection/binding/DTO validation or persistence run."
+    },
+    {
+      "id": "ALG4-09",
+      "finding_ids": [
+        "P4-014"
+      ],
+      "kind": "independent-manually-transcribed-illustration",
+      "title": "Two stale snapshots without atomic reservation",
+      "inputs": {
+        "initial_stock": "1",
+        "a_reads": "1",
+        "b_reads": "1",
+        "each_requests": "1"
+      },
+      "illustrated_source_rule": {
+        "a_local_check": true,
+        "b_local_check": true,
+        "if_both_committed_stock": "-1"
+      },
+      "comparison_rule": {
+        "with_negative_stock_forbidden_successful_sales_max": 1
+      },
+      "evidence": "SmartAuditERP/Class/ItemOper.cs:1829-1902;SmartAuditERP/Class/InvoiceOper.cs:1580-1628",
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "Abstract schedule only, not a concurrency test; assumes no server reservation/trigger and both saves succeed."
+    },
+    {
+      "id": "ALG4-10",
+      "finding_ids": [
+        "P4-015",
+        "P4-016"
+      ],
+      "kind": "independent-manually-transcribed-illustration",
+      "title": "Local cancel mutation and no-dialog refund disagreement",
+      "inputs": {
+        "existing_paid_invoice": "50",
+        "new_refund_net": "50"
+      },
+      "illustrated_source_rule": {
+        "paid_after_open_then_cancel_rule": "0",
+        "refund_payment_row_paid": "50",
+        "refund_header_paid": "0"
+      },
+      "comparison_rule": {
+        "cancel_preserves_header": "50",
+        "refund_header_matches_approved_rows": true
+      },
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:4682-4707;SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs:2056-2076",
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "Two isolated state illustrations; no actual modal, provider transaction, SQL insert or refund attempted."
+    },
+    {
+      "id": "ALG4-11",
+      "finding_ids": [
+        "P4-022"
+      ],
+      "kind": "independent-manually-transcribed-illustration",
+      "title": "Unit event versus quantity event",
+      "inputs": {
+        "product_equality": "12",
+        "component_equality": "1",
+        "component_base_qty": "2",
+        "production_qty": "3"
+      },
+      "illustrated_source_rule": {
+        "unit_event_qty": "72",
+        "quantity_event_qty": "6"
+      },
+      "comparison_rule": {
+        "event_order_should_not_change_quantity": true
+      },
+      "evidence": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:518-573",
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "No correct BOM basis selected; UI/source arithmetic only; actual production save is blocked by P4-020."
+    },
+    {
+      "id": "ALG4-12",
+      "finding_ids": [
+        "P4-023"
+      ],
+      "kind": "independent-manually-transcribed-illustration",
+      "title": "Delivery quantity basis and full-after-partial",
+      "inputs": {
+        "invoice_selected_unit_qty": "2",
+        "unit_equality": "12",
+        "previous_delivered_in_selected_units": "1"
+      },
+      "illustrated_source_rule": {
+        "partial_loader_value_tagged_with_selected_unit": "24",
+        "direct_full_value": "2",
+        "if_full_added_after_partial_cumulative": "3"
+      },
+      "comparison_rule": {
+        "selected_unit_total_max": "2",
+        "remaining_selected_qty": "1"
+      },
+      "evidence": "SmartAuditERP/Form_WPF/frmInvItemsDeliveries.xaml.cs:161-172;SmartAuditERP/Form_WPF/frmInvoiceDeliveries.xaml.cs:717-733",
+      "source_application_executed": false,
+      "illustration_assertions_passed": true,
+      "limit": "Manual quantities only; no WPF, unit interpretation, delivered status filter or SQL test executed."
+    }
+  ],
+  "static_parameter_contract_check_count": 4,
+  "static_parameter_contract_checks": [
+    {
+      "id": "ST4-01",
+      "finding_ids": [
+        "P4-020"
+      ],
+      "query_field": "InsertInv",
+      "command_variable": "cmd",
+      "inspection_kind": "lexical-literal-name-set-difference",
+      "required_unique_parameter_names": 53,
+      "supplied_unique_parameter_names": 51,
+      "missing_required_parameters_casefolded": [
+        "balance_previews",
+        "totalwithholdingtax"
+      ],
+      "extra_parameters_not_claimed_as_errors": [],
+      "documented_set_difference_matches": true,
+      "evidence": "SmartAuditERP/Class/StoredQueries.cs:6;SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:1358-1423",
+      "source_application_executed": false,
+      "limit": "Text-only fixed source ranges; whitespace/case normalized. No C#/SQL parse, parameter type/null checking, dynamic branches or deployed command execution."
+    },
+    {
+      "id": "ST4-02",
+      "finding_ids": [
+        "P4-020"
+      ],
+      "query_field": "UpdateInv",
+      "command_variable": "cmd",
+      "inspection_kind": "lexical-literal-name-set-difference",
+      "required_unique_parameter_names": 47,
+      "supplied_unique_parameter_names": 51,
+      "missing_required_parameters_casefolded": [
+        "balance_previews",
+        "totalwithholdingtax"
+      ],
+      "extra_parameters_not_claimed_as_errors": [
+        "branch",
+        "invoicehash",
+        "is_buy",
+        "qrcode",
+        "uuid",
+        "zatcasent"
+      ],
+      "documented_set_difference_matches": true,
+      "evidence": "SmartAuditERP/Class/StoredQueries.cs:8;SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:1358-1423",
+      "source_application_executed": false,
+      "limit": "Text-only fixed source ranges; whitespace/case normalized. No C#/SQL parse, parameter type/null checking, dynamic branches or deployed command execution."
+    },
+    {
+      "id": "ST4-03",
+      "finding_ids": [
+        "P4-020"
+      ],
+      "query_field": "InsertInvSub",
+      "command_variable": "subCmd",
+      "inspection_kind": "lexical-literal-name-set-difference",
+      "required_unique_parameter_names": 26,
+      "supplied_unique_parameter_names": 23,
+      "missing_required_parameters_casefolded": [
+        "itemadditionaltax",
+        "itemadditionaltaxperc",
+        "withholdingtax",
+        "withholdingtaxperc"
+      ],
+      "extra_parameters_not_claimed_as_errors": [
+        "branchid"
+      ],
+      "documented_set_difference_matches": true,
+      "evidence": "SmartAuditERP/Class/StoredQueries.cs:10;SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:1430-1458",
+      "source_application_executed": false,
+      "limit": "Text-only fixed source ranges; whitespace/case normalized. No C#/SQL parse, parameter type/null checking, dynamic branches or deployed command execution."
+    },
+    {
+      "id": "ST4-04",
+      "finding_ids": [
+        "P4-020"
+      ],
+      "query_field": "InsertInvSub",
+      "command_variable": "compCmd",
+      "inspection_kind": "lexical-literal-name-set-difference",
+      "required_unique_parameter_names": 26,
+      "supplied_unique_parameter_names": 25,
+      "missing_required_parameters_casefolded": [
+        "itempricewithoutvat",
+        "withholdingtax",
+        "withholdingtaxperc"
+      ],
+      "extra_parameters_not_claimed_as_errors": [
+        "branchid",
+        "cloudid"
+      ],
+      "documented_set_difference_matches": true,
+      "evidence": "SmartAuditERP/Class/StoredQueries.cs:10;SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:1465-1495",
+      "source_application_executed": false,
+      "limit": "Text-only fixed source ranges; whitespace/case normalized. No C#/SQL parse, parameter type/null checking, dynamic branches or deployed command execution."
+    }
+  ],
+  "application_code_imported_or_executed": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "application_remediation_performed": false
+}

@@ -1,0 +1,126 @@
+{
+  "audit_date_utc": "2026-11-16",
+  "through_phase": 4,
+  "source_head": "10ba215152f722c8808aea0bb672c1d1d4d9d711",
+  "branch": "arena/94ae8414-smartauditerp",
+  "registry_used": "findings.csv",
+  "method": "Offline source hashes and audit-document consistency; phase>=3 independent manually transcribed illustrations; phase4 separate literal-source parameter name sets. NOT build, ERP/C#/SQL acceptance, exploit, provider/network or binary execution",
+  "original_project_hashes_matching": 827,
+  "scope_files": {
+    "review-scope.csv": 52,
+    "review-scope-02.csv": 60,
+    "review-scope-03.csv": 50,
+    "review-scope-04.csv": 48,
+    "historical_phase_1_2_union": 92,
+    "historical_phase_1_2_3_union": 127,
+    "phase_3_overlap_with_prior_union": 15,
+    "phase_4_overlap_with_prior_union": 15,
+    "phase_4_new_paths": 33,
+    "unique_union_not_line_or_execution_coverage": 160
+  },
+  "findings": {
+    "phase_1": 33,
+    "phase_2": 16,
+    "phase_3": 25,
+    "phase_4": 32,
+    "total_open_not_remediated": 106,
+    "severity": {
+      "High": 69,
+      "Medium": 34,
+      "Low": 1,
+      "Critical": 2
+    },
+    "certainty": {
+      "repository-gap": 5,
+      "potential": 14,
+      "confirmed": 87
+    }
+  },
+  "phase_2_historical_evidence": {
+    "frozen_registry": "evidence/findings-through-02.csv",
+    "frozen_registry_sha256_matches": true,
+    "earlier_report_evidence_artifacts_hash_checked": 14,
+    "historical_check_record_overwritten": false,
+    "evidence_extensions_during_phase_3_without_reclassification": [
+      "P1-033"
+    ]
+  },
+  "phase_3_historical_evidence": {
+    "frozen_registry": "evidence/findings-through-03.csv",
+    "frozen_registry_sha256_matches": true,
+    "earlier_report_evidence_artifacts_hash_checked": 26,
+    "historical_check_record_overwritten": false,
+    "current_registry_evidence_extensions_without_reclassification": [
+      "P1-033",
+      "P3-003",
+      "P3-005",
+      "P3-006"
+    ]
+  },
+  "evidence_rows": {
+    "phase_2_identity_flows": 12,
+    "phase_2_authorization_scenarios": 21,
+    "phase_2_sql_trace_groups_not_vulnerabilities": 26,
+    "phase_2_sql_classification": {
+      "unparameterized-user-text": 13,
+      "parameterized-slice": 9,
+      "controlled-or-typed-slice": 3,
+      "derived-source-unresolved": 1
+    },
+    "phase_2_unexecuted_acceptance_plans": 24,
+    "phase_3_accounting_invariants_not_passed_tests": 20,
+    "phase_3_document_lifecycles": 16,
+    "phase_3_unexecuted_acceptance_plans": 35,
+    "phase_3_independent_algebra_illustrations_not_erp_tests": 8,
+    "phase_3_illustrations_recomputed_match_saved": true,
+    "phase_4_inventory_invariants_not_passed_tests": 25,
+    "phase_4_document_state_financial_inventory_effect_rows": 40,
+    "phase_4_unexecuted_acceptance_plans": 60,
+    "phase_4_independent_illustrations_not_erp_tests": 12,
+    "phase_4_static_parameter_name_set_checks_not_sql_tests": 4,
+    "phase_4_illustrations_and_text_checks_recomputed_match_saved": true
+  },
+  "validation": {
+    "source_range_references_checked_including_repeats": 2945,
+    "local_markdown_links_checked_including_repeats": 147,
+    "audit_only_python_tools_syntax_checked": [
+      "collect_baseline.py",
+      "validate_audit.py",
+      "check_financial_witnesses.py",
+      "check_inventory_witnesses.py"
+    ],
+    "errors": [],
+    "limit": "Bounds, IDs, links, selected-range inclusion, hash continuity and audit-only illustration/text recomputation; NOT semantic/financial certification, deployed-schema checks, WPF rendering or acceptance execution. Output record not self-hashed."
+  },
+  "historical_artifact_sha256": {
+    "PHASE-01.md": "2566950e50bbdf1bfeaca2a186c10b4ac70d7f661853a8ca24931ea492deaf55",
+    "VALIDATION.md": "b99b6fae9e95ee7b6040c39fe8fb258bac546c2b83ac22e403879734e49f9a92",
+    "review-scope.csv": "e8054a02a5a78fe2e43043fc02497514ae5a7bf06d8b52bb1f3554fdeaec5ae8",
+    "PHASE-02.md": "cc17061e8df2759ac89b4923a02299e7a59f889fb8b87dbe49fb1ee3161a2862",
+    "IDENTITY-AUTHORIZATION-02.md": "7e0a94cce5751e71c58b5e77920d6c2bdb766e210896576992f1c8c768f0ff70",
+    "VALIDATION-02.md": "e787928cbe8bd0da03592a55da32e11b5d59f905adb087df48818e979e7db693",
+    "review-scope-02.csv": "62f0b0ddcce395fc73f71c5dcd651919b89d8542ea2e59bf17d69eaf5a1fec43",
+    "PHASE-03.md": "a1595297adbb2aaef2f9e7ced202b5f407bfe5df650282ec4090b2f9fd783792",
+    "ACCOUNTING-INTEGRITY-03.md": "cd203e3afc1c95cf747f8b29e4930a8c82d7d5f5b394e4bb15e8cf94a4e3f935",
+    "VALIDATION-03.md": "23e4e0d27ed93d5300942c817cb3cfaf6c9cb20a4cb3703af3b9ed6e9c24dc6a",
+    "review-scope-03.csv": "30bb1b9d3af682e9ed1dc337e326747be3c58ac15cf0403ed1213378e82616c0",
+    "evidence/baseline.json": "ffbd103ca6aacefc790250db3743255d011d0c43234680500204a5e0c687d2d8",
+    "evidence/inventory.csv": "5bbe91d0be5fd2ff5f9862a6d8dc59643dda35ce6401b8ce7fe784bc2f27b3e0",
+    "evidence/identity-flows-02.csv": "cbf96bd0cdb80b3dd37e74380c2e9ed8f11359742ad85eb6e0c8fa343bacb916",
+    "evidence/authorization-matrix-02.csv": "a62454dbf754dbf5b562d33e5c85c62fca4fde84fae9a46c97bfa49e18d392d1",
+    "evidence/sql-source-sink-02.csv": "f1c2237957c98b6f52bd88d4e940b1cfa849296b430f64a30498b32641e3cc76",
+    "evidence/acceptance-tests-02.csv": "311af399cb62886a4bf469abfe1fe515bd555290a23a4073e09a74159f4ba211",
+    "evidence/checks-02.json": "c934166516dd265632664cb1e3003157d913688403d20a5bce56b19600f5bbbf",
+    "evidence/accounting-invariants-03.csv": "727f0eb796cb48ade35e11ae15e0809f142cca75ef16ff39d09605fd801b26bb",
+    "evidence/document-lifecycle-03.csv": "0f0a4f2fb602758ad667457fb5b4358cd2e43060c90f83a7ec25637c0602e35b",
+    "evidence/acceptance-tests-03.csv": "45a173aca50e2abfbf2afa4c1e44b2a9c6fbb574e3b75bb4ff06f3d96b06e82b",
+    "evidence/arithmetic-witnesses-03.json": "708e855a9808cb375876d2258b758ba54c8219364048c1f9b3a05bc47f1f2eb8",
+    "evidence/checks-03.json": "318b6a94d2a6930614d1926139c1b6c7927abaeae18edba40b9f62b5cba83248",
+    "evidence/provenance-03.json": "8baeb6a6e4ea2a81e7fd2ae8be97047dac2f65d10598840334a1c47e90e805eb",
+    "evidence/findings-through-02.csv": "9a0e80ccea1055039b8cb9d0cfc94726c235f1b384060f248f04140dcae3e2d5",
+    "tools/check_financial_witnesses.py": "a33a5547c749b3988d34b8b3e5b9729ff844596cf6b6f5df9b57abf9efdadd54"
+  },
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "application_remediation_performed": false
+}

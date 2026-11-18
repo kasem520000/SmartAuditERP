@@ -1,0 +1,1116 @@
+{
+  "phase": "7B8-partial-static-audit",
+  "purpose": "Independent documentary illustrations and bounded literal observations, not ERP/SQL/WPF/IO/consumer/SDK acceptance",
+  "application_code_imported_or_executed": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "application_remediation_performed": false,
+  "real_business_or_secret_data_used": false,
+  "spreadsheet_or_formula_interpreter_executed": false,
+  "illustration_count": 20,
+  "static_lexical_contract_check_count": 20,
+  "illustrations": [
+    {
+      "id": "ALG7B8-01",
+      "title": "Language changes the group ID set rather than only the label",
+      "finding_ids": "P7-105",
+      "hand_selected_inputs": {
+        "parent": {
+          "id": 10,
+          "type": 1
+        },
+        "leaf": {
+          "id": 20,
+          "type": 2
+        },
+        "names_present_in_both_languages": true,
+        "Loaded_only": true
+      },
+      "manual_observation_model": {
+        "ar_ids": [
+          20
+        ],
+        "en_ids": [
+          10,
+          20
+        ]
+      },
+      "independent_reference": {
+        "ar_ids": [
+          20
+        ],
+        "en_ids": [
+          20
+        ]
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:110-117;SmartAuditERP/Form_WPF/frmItemCategory.xaml.cs:355-365;SmartAuditERP/Form_WPF/frmItemCategory.xaml.cs:399-419",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast only, NOT C#/SQL/WPF execution/translation, ERP output, event scheduling/IO/CSV consumer acceptance, deployed data or schema, business/GL/privacy/authorization certification. DecisionHelp calculation effects are CONDITIONAL on passing its earlier UI-thread-affinity gate and isolating other source/type/writer gates. Tuple/list/NULL/event-order models are not runtime observations. No Office/formula/SDK/COM/provider/device/process/shell executed; P7-108 remains potential."
+    },
+    {
+      "id": "ALG7B8-02",
+      "title": "A group criterion is actually read; not every control is ignored",
+      "finding_ids": "P7-105;P7-080",
+      "hand_selected_inputs": {
+        "selected_group": 20,
+        "item_group": 20,
+        "thread_gate_isolated": true
+      },
+      "manual_observation_model": {
+        "group_predicate": "Grpcode=20",
+        "matches": true
+      },
+      "independent_reference": {
+        "group_predicate": "Grpcode=20",
+        "matches": true
+      },
+      "difference_expected": false,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:180-187",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast only, NOT C#/SQL/WPF execution/translation, ERP output, event scheduling/IO/CSV consumer acceptance, deployed data or schema, business/GL/privacy/authorization certification. DecisionHelp calculation effects are CONDITIONAL on passing its earlier UI-thread-affinity gate and isolating other source/type/writer gates. Tuple/list/NULL/event-order models are not runtime observations. No Office/formula/SDK/COM/provider/device/process/shell executed; P7-108 remains potential."
+    },
+    {
+      "id": "ALG7B8-03",
+      "title": "A missing VAT is normalized differently in components and net",
+      "finding_ids": "P7-106",
+      "hand_selected_inputs": {
+        "Payment": 100,
+        "VAT": null,
+        "supplied_DDL_allows_NULL": true,
+        "NULL_as_zero_is_display_policy": true
+      },
+      "manual_observation_model": {
+        "display_payment": 100,
+        "display_VAT": 0,
+        "net_after_NULL_sum_mapping": 0
+      },
+      "independent_reference": {
+        "display_payment": 100,
+        "display_VAT": 0,
+        "net": 100
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:173-195;SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:211-249;SmartAuditERP/Properties/Resources.resx:1505-1507;SmartAuditERP/Class_WPF/ReceiptSummaryItem.cs:13-15",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast only, NOT C#/SQL/WPF execution/translation, ERP output, event scheduling/IO/CSV consumer acceptance, deployed data or schema, business/GL/privacy/authorization certification. DecisionHelp calculation effects are CONDITIONAL on passing its earlier UI-thread-affinity gate and isolating other source/type/writer gates. Tuple/list/NULL/event-order models are not runtime observations. No Office/formula/SDK/COM/provider/device/process/shell executed; P7-108 remains potential."
+    },
+    {
+      "id": "ALG7B8-04",
+      "title": "Non-NULL component addition is counterevidence to an unconditional failure",
+      "finding_ids": "P7-106",
+      "hand_selected_inputs": {
+        "Payment": 100,
+        "VAT": 15
+      },
+      "manual_observation_model": {
+        "payment": 100,
+        "VAT": 15,
+        "net": 115
+      },
+      "independent_reference": {
+        "payment": 100,
+        "VAT": 15,
+        "net": 115
+      },
+      "difference_expected": false,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:173-195;SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:211-249",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast only, NOT C#/SQL/WPF execution/translation, ERP output, event scheduling/IO/CSV consumer acceptance, deployed data or schema, business/GL/privacy/authorization certification. DecisionHelp calculation effects are CONDITIONAL on passing its earlier UI-thread-affinity gate and isolating other source/type/writer gates. Tuple/list/NULL/event-order models are not runtime observations. No Office/formula/SDK/COM/provider/device/process/shell executed; P7-108 remains potential."
+    },
+    {
+      "id": "ALG7B8-05",
+      "title": "A missing Payment also needs a consistent missing-data policy",
+      "finding_ids": "P7-106",
+      "hand_selected_inputs": {
+        "Payment": null,
+        "VAT": 15,
+        "NetVal_source_decision_unresolved": true
+      },
+      "manual_observation_model": {
+        "display_payment": 0,
+        "display_VAT": 15,
+        "net_after_NULL_sum_mapping": 0
+      },
+      "independent_reference": {
+        "display_payment": 0,
+        "display_VAT": 15,
+        "net": 15
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:211-249;SmartAuditERP/Properties/Resources.resx:1505-1507;SmartAuditERP/Class/ReceiptOper.cs:206-218",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast only, NOT C#/SQL/WPF execution/translation, ERP output, event scheduling/IO/CSV consumer acceptance, deployed data or schema, business/GL/privacy/authorization certification. DecisionHelp calculation effects are CONDITIONAL on passing its earlier UI-thread-affinity gate and isolating other source/type/writer gates. Tuple/list/NULL/event-order models are not runtime observations. No Office/formula/SDK/COM/provider/device/process/shell executed; P7-108 remains potential."
+    },
+    {
+      "id": "ALG7B8-06",
+      "title": "Two successful sequential fills can still append mixed request batches",
+      "finding_ids": "P7-107",
+      "hand_selected_inputs": {
+        "schedule": [
+          "clearA",
+          "clearB",
+          "fillA-complete",
+          "appendA",
+          "fillB-complete",
+          "appendB"
+        ],
+        "A_ids": [
+          1
+        ],
+        "B_ids": [
+          2
+        ],
+        "latest_request": "B",
+        "overlapping_SQL_readers_required": false,
+        "MARS_assumed": false
+      },
+      "manual_observation_model": {
+        "published_ids": [
+          1,
+          2
+        ]
+      },
+      "independent_reference": {
+        "published_ids": [
+          2
+        ]
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmrptUsersRecords.xaml.cs:62-101;SmartAuditERP/Form_WPF/frmrptUsersRecords.xaml:178-183",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast only, NOT C#/SQL/WPF execution/translation, ERP output, event scheduling/IO/CSV consumer acceptance, deployed data or schema, business/GL/privacy/authorization certification. DecisionHelp calculation effects are CONDITIONAL on passing its earlier UI-thread-affinity gate and isolating other source/type/writer gates. Tuple/list/NULL/event-order models are not runtime observations. No Office/formula/SDK/COM/provider/device/process/shell executed; P7-108 remains potential."
+    },
+    {
+      "id": "ALG7B8-07",
+      "title": "A single successful request publishes its own batch",
+      "finding_ids": "P7-107",
+      "hand_selected_inputs": {
+        "schedule": [
+          "clearA",
+          "fillA-complete",
+          "appendA"
+        ],
+        "A_ids": [
+          1
+        ]
+      },
+      "manual_observation_model": {
+        "published_ids": [
+          1
+        ]
+      },
+      "independent_reference": {
+        "published_ids": [
+          1
+        ]
+      },
+      "difference_expected": false,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmrptUsersRecords.xaml.cs:62-101",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast only, NOT C#/SQL/WPF execution/translation, ERP output, event scheduling/IO/CSV consumer acceptance, deployed data or schema, business/GL/privacy/authorization certification. DecisionHelp calculation effects are CONDITIONAL on passing its earlier UI-thread-affinity gate and isolating other source/type/writer gates. Tuple/list/NULL/event-order models are not runtime observations. No Office/formula/SDK/COM/provider/device/process/shell executed; P7-108 remains potential."
+    },
+    {
+      "id": "ALG7B8-08",
+      "title": "Launching before finalization is an ordering risk, not a measured partial file",
+      "finding_ids": "P7-108",
+      "hand_selected_inputs": {
+        "source_events": [
+          "write-buffered",
+          "launch",
+          "finalize-at-scope-end"
+        ],
+        "consumer_timing_not_measured": true
+      },
+      "manual_observation_model": {
+        "finalized_before_launch": false
+      },
+      "independent_reference": {
+        "finalized_before_launch": true
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmrptUsersRecords.xaml.cs:137-165",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast only, NOT C#/SQL/WPF execution/translation, ERP output, event scheduling/IO/CSV consumer acceptance, deployed data or schema, business/GL/privacy/authorization certification. DecisionHelp calculation effects are CONDITIONAL on passing its earlier UI-thread-affinity gate and isolating other source/type/writer gates. Tuple/list/NULL/event-order models are not runtime observations. No Office/formula/SDK/COM/provider/device/process/shell executed; P7-108 remains potential."
+    },
+    {
+      "id": "ALG7B8-09",
+      "title": "The receipt exporter closes its using block before launch",
+      "finding_ids": "P7-108",
+      "hand_selected_inputs": {
+        "source_events": [
+          "write",
+          "finalize-block-end",
+          "launch"
+        ],
+        "not_a_claim_about_Office_or_actual_IO": true
+      },
+      "manual_observation_model": {
+        "finalized_before_launch": true
+      },
+      "independent_reference": {
+        "finalized_before_launch": true
+      },
+      "difference_expected": false,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:274-291",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast only, NOT C#/SQL/WPF execution/translation, ERP output, event scheduling/IO/CSV consumer acceptance, deployed data or schema, business/GL/privacy/authorization certification. DecisionHelp calculation effects are CONDITIONAL on passing its earlier UI-thread-affinity gate and isolating other source/type/writer gates. Tuple/list/NULL/event-order models are not runtime observations. No Office/formula/SDK/COM/provider/device/process/shell executed; P7-108 remains potential."
+    },
+    {
+      "id": "ALG7B8-10",
+      "title": "Different surrogate and branch keys require a mapping decision",
+      "finding_ids": "P2-010",
+      "hand_selected_inputs": {
+        "lookup_id": 1,
+        "canonical_BranchId": 7,
+        "receipt_BranchID": 7,
+        "keys_differ_only_in_fixture": true
+      },
+      "manual_observation_model": {
+        "query_value": 1,
+        "receipt_G1_selected": false
+      },
+      "independent_reference": {
+        "query_value": 7,
+        "receipt_G1_selected": true
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:103-125;SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:158-193;SmartAuditERP/Form_WPF/frmSandQD.xaml.cs:281-298;SmartAuditERP/Properties/Resources.resx:242-275",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast only, NOT C#/SQL/WPF execution/translation, ERP output, event scheduling/IO/CSV consumer acceptance, deployed data or schema, business/GL/privacy/authorization certification. DecisionHelp calculation effects are CONDITIONAL on passing its earlier UI-thread-affinity gate and isolating other source/type/writer gates. Tuple/list/NULL/event-order models are not runtime observations. No Office/formula/SDK/COM/provider/device/process/shell executed; P7-108 remains potential."
+    },
+    {
+      "id": "ALG7B8-11",
+      "title": "An inclusive next-midnight bound admits one instant too many",
+      "finding_ids": "P3-023",
+      "hand_selected_inputs": {
+        "end_of_selected_day_exclusive": "2026-01-02T00:00:00",
+        "row_at": "2026-01-02T00:00:00"
+      },
+      "manual_observation_model": {
+        "included": true
+      },
+      "independent_reference": {
+        "included": false
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:168-171;SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:195-205",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast only, NOT C#/SQL/WPF execution/translation, ERP output, event scheduling/IO/CSV consumer acceptance, deployed data or schema, business/GL/privacy/authorization certification. DecisionHelp calculation effects are CONDITIONAL on passing its earlier UI-thread-affinity gate and isolating other source/type/writer gates. Tuple/list/NULL/event-order models are not runtime observations. No Office/formula/SDK/COM/provider/device/process/shell executed; P7-108 remains potential."
+    },
+    {
+      "id": "ALG7B8-12",
+      "title": "A sale-return-only item can have a nonzero balance but no admitted row",
+      "finding_ids": "P7-040",
+      "hand_selected_inputs": {
+        "sale_return_qty": 20,
+        "other_movements": 0,
+        "thread_type_writer_gates_isolated": true
+      },
+      "manual_observation_model": {
+        "hasMovement": false,
+        "admitted_balance": 0
+      },
+      "independent_reference": {
+        "hasMovement": true,
+        "admitted_balance": 20
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:217-246",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast only, NOT C#/SQL/WPF execution/translation, ERP output, event scheduling/IO/CSV consumer acceptance, deployed data or schema, business/GL/privacy/authorization certification. DecisionHelp calculation effects are CONDITIONAL on passing its earlier UI-thread-affinity gate and isolating other source/type/writer gates. Tuple/list/NULL/event-order models are not runtime observations. No Office/formula/SDK/COM/provider/device/process/shell executed; P7-108 remains potential."
+    },
+    {
+      "id": "ALG7B8-13",
+      "title": "A store predicate omitted from one source admits another store",
+      "finding_ids": "P7-080",
+      "hand_selected_inputs": {
+        "selected_store": "A",
+        "A_qty": 2,
+        "B_qty": 8,
+        "one_verified_adjustment_source": true,
+        "other_errors_isolated": true
+      },
+      "manual_observation_model": {
+        "selected_store_label": "A",
+        "source_qty": 10
+      },
+      "independent_reference": {
+        "selected_store_label": "A",
+        "source_qty": 2
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:195-198;SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:224-227;SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:304-305",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast only, NOT C#/SQL/WPF execution/translation, ERP output, event scheduling/IO/CSV consumer acceptance, deployed data or schema, business/GL/privacy/authorization certification. DecisionHelp calculation effects are CONDITIONAL on passing its earlier UI-thread-affinity gate and isolating other source/type/writer gates. Tuple/list/NULL/event-order models are not runtime observations. No Office/formula/SDK/COM/provider/device/process/shell executed; P7-108 remains potential."
+    },
+    {
+      "id": "ALG7B8-14",
+      "title": "Adjustment and transfer code labels are reversed against the supplied catalogue",
+      "finding_ids": "P7-056",
+      "hand_selected_inputs": {
+        "supplied_codes": {
+          "adjustment": 7,
+          "transfer": 8
+        },
+        "thread_gate_isolated": true
+      },
+      "manual_observation_model": {
+        "adjustment_code": 8,
+        "transfer_code": 7
+      },
+      "independent_reference": {
+        "adjustment_code": 7,
+        "transfer_code": 8
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:224-227;SmartAuditERP/Properties/Resources.resx:3058-3064",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast only, NOT C#/SQL/WPF execution/translation, ERP output, event scheduling/IO/CSV consumer acceptance, deployed data or schema, business/GL/privacy/authorization certification. DecisionHelp calculation effects are CONDITIONAL on passing its earlier UI-thread-affinity gate and isolating other source/type/writer gates. Tuple/list/NULL/event-order models are not runtime observations. No Office/formula/SDK/COM/provider/device/process/shell executed; P7-108 remains potential."
+    },
+    {
+      "id": "ALG7B8-15",
+      "title": "Omitting a declared production source cannot prove a complete balance",
+      "finding_ids": "P7-057",
+      "hand_selected_inputs": {
+        "verified_production_only_base_qty": 5,
+        "scope_includes_production": true,
+        "other_gates_isolated": true
+      },
+      "manual_observation_model": {
+        "admitted_source_types": [
+          9,
+          1,
+          2,
+          3,
+          8,
+          7
+        ],
+        "production_qty": 0
+      },
+      "independent_reference": {
+        "required_type": 6,
+        "production_qty": 5
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:217-227;SmartAuditERP/Properties/Resources.resx:3054-3056",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast only, NOT C#/SQL/WPF execution/translation, ERP output, event scheduling/IO/CSV consumer acceptance, deployed data or schema, business/GL/privacy/authorization certification. DecisionHelp calculation effects are CONDITIONAL on passing its earlier UI-thread-affinity gate and isolating other source/type/writer gates. Tuple/list/NULL/event-order models are not runtime observations. No Office/formula/SDK/COM/provider/device/process/shell executed; P7-108 remains potential."
+    },
+    {
+      "id": "ALG7B8-16",
+      "title": "POS-only movement is named rent and absent from the admission gate",
+      "finding_ids": "P7-084;P7-040",
+      "hand_selected_inputs": {
+        "POS_type": 3,
+        "proc": 1,
+        "base_qty": 10,
+        "other_movement": 0,
+        "writer_and_thread_gates_isolated": true
+      },
+      "manual_observation_model": {
+        "local_name": "rentOutcome",
+        "row_admitted": false
+      },
+      "independent_reference": {
+        "local_name": "POS",
+        "row_admitted": true
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:217-246;SmartAuditERP/Properties/Resources.resx:3036-3040",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast only, NOT C#/SQL/WPF execution/translation, ERP output, event scheduling/IO/CSV consumer acceptance, deployed data or schema, business/GL/privacy/authorization certification. DecisionHelp calculation effects are CONDITIONAL on passing its earlier UI-thread-affinity gate and isolating other source/type/writer gates. Tuple/list/NULL/event-order models are not runtime observations. No Office/formula/SDK/COM/provider/device/process/shell executed; P7-108 remains potential."
+    },
+    {
+      "id": "ALG7B8-17",
+      "title": "N2 grouping delimiters split a manually assembled nine-column CSV row",
+      "finding_ids": "P7-048",
+      "hand_selected_inputs": {
+        "manual_row": "1,7,D,1,000.00,0.00,1,000.00,B,note,type",
+        "Payment": 1000,
+        "VAT": 0,
+        "net": 1000,
+        "grouping_culture_fixture": true,
+        "no_spreadsheet_consumer": true
+      },
+      "manual_observation_model": {
+        "parsed_cell_count": 11
+      },
+      "independent_reference": {
+        "parsed_cell_count": 9
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:278-286",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast only, NOT C#/SQL/WPF execution/translation, ERP output, event scheduling/IO/CSV consumer acceptance, deployed data or schema, business/GL/privacy/authorization certification. DecisionHelp calculation effects are CONDITIONAL on passing its earlier UI-thread-affinity gate and isolating other source/type/writer gates. Tuple/list/NULL/event-order models are not runtime observations. No Office/formula/SDK/COM/provider/device/process/shell executed; P7-108 remains potential."
+    },
+    {
+      "id": "ALG7B8-18",
+      "title": "Wrapping a message without doubling its quotes loses literal roundtrip",
+      "finding_ids": "P7-048",
+      "hand_selected_inputs": {
+        "original_message": "O\"K",
+        "manual_row": "1,D,pc,\"O\"K\",Emp",
+        "stdlib_parser_is_not_an_Office_contract": true
+      },
+      "manual_observation_model": {
+        "roundtrip_message": "OK\""
+      },
+      "independent_reference": {
+        "roundtrip_message": "O\"K"
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmrptUsersRecords.xaml.cs:146-155",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast only, NOT C#/SQL/WPF execution/translation, ERP output, event scheduling/IO/CSV consumer acceptance, deployed data or schema, business/GL/privacy/authorization certification. DecisionHelp calculation effects are CONDITIONAL on passing its earlier UI-thread-affinity gate and isolating other source/type/writer gates. Tuple/list/NULL/event-order models are not runtime observations. No Office/formula/SDK/COM/provider/device/process/shell executed; P7-108 remains potential."
+    },
+    {
+      "id": "ALG7B8-19",
+      "title": "Live headers are not the criteria of a previously built result",
+      "finding_ids": "P7-045",
+      "hand_selected_inputs": {
+        "data_criteria": "A",
+        "current_controls": "B",
+        "data_available_only_after_thread_gate": true
+      },
+      "manual_observation_model": {
+        "data_criteria": "A",
+        "header_criteria": "B"
+      },
+      "independent_reference": {
+        "data_criteria": "A",
+        "header_criteria": "A"
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:403-419;SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:492-518",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast only, NOT C#/SQL/WPF execution/translation, ERP output, event scheduling/IO/CSV consumer acceptance, deployed data or schema, business/GL/privacy/authorization certification. DecisionHelp calculation effects are CONDITIONAL on passing its earlier UI-thread-affinity gate and isolating other source/type/writer gates. Tuple/list/NULL/event-order models are not runtime observations. No Office/formula/SDK/COM/provider/device/process/shell executed; P7-108 remains potential."
+    },
+    {
+      "id": "ALG7B8-20",
+      "title": "An exception mapped to zero and old cards are not a successful new result",
+      "finding_ids": "P7-046",
+      "hand_selected_inputs": {
+        "previous_cards": "A100",
+        "request_B_fill_failed": true,
+        "one_DH_source_failed": true,
+        "no_fault_injection_executed": true
+      },
+      "manual_observation_model": {
+        "SummaryD_rows": [],
+        "SummaryD_cards": "A100",
+        "DH_failed_source": 0
+      },
+      "independent_reference": {
+        "SummaryD_request": "failed-B-or-explicit-last-A",
+        "DH_failed_source": "error-not-zero"
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:133-134;SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:207-249;SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:288-320",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast only, NOT C#/SQL/WPF execution/translation, ERP output, event scheduling/IO/CSV consumer acceptance, deployed data or schema, business/GL/privacy/authorization certification. DecisionHelp calculation effects are CONDITIONAL on passing its earlier UI-thread-affinity gate and isolating other source/type/writer gates. Tuple/list/NULL/event-order models are not runtime observations. No Office/formula/SDK/COM/provider/device/process/shell executed; P7-108 remains potential."
+    }
+  ],
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B8-01",
+      "title": "Group eligibility differs by language and a writer distinguishes parent/leaf",
+      "finding_ids": "P7-105",
+      "documented_observation": "The two loader query strings differ in WHERE eligibility; the selected writer makes type a structural distinction, not merely a label. Loaded-level comparison does not need CalcStock to run.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:110-117;SmartAuditERP/Form_WPF/frmItems.xaml.cs:421-441;SmartAuditERP/Form_WPF/frmItemCategory.xaml.cs:355-365;SmartAuditERP/Form_WPF/frmItemCategory.xaml.cs:399-419",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph, SQL execution/parser, schema deployment, ACL, identity mapping, lifecycle/latency/leak proof, WPF/SDK/CSV consumer verification or whole-feature coverage. Application code not imported or executed."
+    },
+    {
+      "id": "ST7B8-02",
+      "title": "The stock query aggregates base quantity, despite amount labels",
+      "finding_ids": "P7-039;H7B8-01",
+      "documented_observation": "val and val1 have distinct writer assignments. No price multiplication in this selected query: no automatic P7-041 extension or GL-value interpretation.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:290-305;SmartAuditERP/Form_WPF/frmDecisionHelp.xaml:372-391;SmartAuditERP/Class/InvoiceOper.cs:1593-1598",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph, SQL execution/parser, schema deployment, ACL, identity mapping, lifecycle/latency/leak proof, WPF/SDK/CSV consumer verification or whole-feature coverage. Application code not imported or executed."
+    },
+    {
+      "id": "ST7B8-03",
+      "title": "The worker starts before it directly reads WPF filter controls",
+      "finding_ids": "P7-054",
+      "documented_observation": "The normal Show path has an earlier WPF thread-affinity blocker. Later Dispatcher result/progress wrappers do not snapshot or marshal these first reads; downstream calculation witnesses are conditional.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:426-445;SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:174-198;SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:270-276",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph, SQL execution/parser, schema deployment, ACL, identity mapping, lifecycle/latency/leak proof, WPF/SDK/CSV consumer verification or whole-feature coverage. Application code not imported or executed."
+    },
+    {
+      "id": "ST7B8-04",
+      "title": "Return and POS variables are not all in hasMovement",
+      "finding_ids": "P7-040;P7-084",
+      "documented_observation": "Code3 is a POS catalogue row, not proof of a deployed rent-specific subtype; the local gate excludes return-only/POS-only fixtures after isolating earlier thread/type/writer gates.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:217-246;SmartAuditERP/Properties/Resources.resx:3036-3040",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph, SQL execution/parser, schema deployment, ACL, identity mapping, lifecycle/latency/leak proof, WPF/SDK/CSV consumer verification or whole-feature coverage. Application code not imported or executed."
+    },
+    {
+      "id": "ST7B8-05",
+      "title": "Store criteria are passed to seven queries, not the four adjustment/transfer calls",
+      "finding_ids": "P7-080",
+      "documented_observation": "This is a specific source propagation gap. Item/group controls really are read; no blanket ignored-criteria claim or new finding per query.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:195-198;SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:217-227;SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:304-305",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph, SQL execution/parser, schema deployment, ACL, identity mapping, lifecycle/latency/leak proof, WPF/SDK/CSV consumer verification or whole-feature coverage. Application code not imported or executed."
+    },
+    {
+      "id": "ST7B8-06",
+      "title": "The selected type list swaps7/8 and has no production6 call",
+      "finding_ids": "P7-056;P7-057",
+      "documented_observation": "Supplied catalogue/source mismatch only; types4/5/20 also need a declared inclusion/exclusion contract. No SQL or production-balance execution.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:217-227;SmartAuditERP/Properties/Resources.resx:3054-3064",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph, SQL execution/parser, schema deployment, ACL, identity mapping, lifecycle/latency/leak proof, WPF/SDK/CSV consumer verification or whole-feature coverage. Application code not imported or executed."
+    },
+    {
+      "id": "ST7B8-07",
+      "title": "NULL SQL addition and independent zero mapping disagree with displayed components",
+      "finding_ids": "P7-106",
+      "documented_observation": "The supplied DDL permits missing components; DgvNet is stored independently. Actual deployed NULL rows and the approved NULL/NetVal policy are not established here.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:173-195;SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:211-249;SmartAuditERP/Class_WPF/ReceiptSummaryItem.cs:13-15;SmartAuditERP/Properties/Resources.resx:1505-1507",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph, SQL execution/parser, schema deployment, ACL, identity mapping, lifecycle/latency/leak proof, WPF/SDK/CSV consumer verification or whole-feature coverage. Application code not imported or executed."
+    },
+    {
+      "id": "ST7B8-08",
+      "title": "The branch lookup/receipt writer key differs from the report JOIN domain",
+      "finding_ids": "P2-010",
+      "documented_observation": "Both branch fields exist in supplied DDL. Divergent key values or duplicate/null canonical keys are conditional data/schema contracts, not proven deployment contents.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:103-125;SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:158-193;SmartAuditERP/Form_WPF/frmSandQD.xaml.cs:281-298;SmartAuditERP/Class/ReceiptOper.cs:206-218;SmartAuditERP/Properties/Resources.resx:242-275",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph, SQL execution/parser, schema deployment, ACL, identity mapping, lifecycle/latency/leak proof, WPF/SDK/CSV consumer verification or whole-feature coverage. Application code not imported or executed."
+    },
+    {
+      "id": "ST7B8-09",
+      "title": "DateTime parameters use an inclusive next-day bound",
+      "finding_ids": "P3-023",
+      "documented_observation": "Typed DateTime is counterevidence to a culture-string assertion, but does not remove the inclusive-next-midnight defect.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:168-171;SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:195-205",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph, SQL execution/parser, schema deployment, ACL, identity mapping, lifecycle/latency/leak proof, WPF/SDK/CSV consumer verification or whole-feature coverage. Application code not imported or executed."
+    },
+    {
+      "id": "ST7B8-10",
+      "title": "Receipt printing is a wired stub, not a report-load implementation",
+      "finding_ids": "P1-033;P1-004",
+      "documented_observation": "A template-presence check plus an empty status call does not print. This is an extension of the placeholder root, not a per-button finding or a FlowDocument/DTO-loss claim.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:259-261;SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:396-424;SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:436-436",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph, SQL execution/parser, schema deployment, ACL, identity mapping, lifecycle/latency/leak proof, WPF/SDK/CSV consumer verification or whole-feature coverage. Application code not imported or executed."
+    },
+    {
+      "id": "ST7B8-11",
+      "title": "Receipt detail dispatch preserves GlobalID plus numeric type",
+      "finding_ids": "P1-013;H7B8-02",
+      "documented_observation": "Counterevidence to blanket P7-061 local-number-only navigation. A missing local Apply in this slice does not establish absence of child/server authorization or certify full child lifecycle/save.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:316-340",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph, SQL execution/parser, schema deployment, ACL, identity mapping, lifecycle/latency/leak proof, WPF/SDK/CSV consumer verification or whole-feature coverage. Application code not imported or executed."
+    },
+    {
+      "id": "ST7B8-12",
+      "title": "Log publication clears before await and appends to the shared list afterwards",
+      "finding_ids": "P7-107",
+      "documented_observation": "A manually scheduled pair of successful fills can merge batches. No overlapping-reader success/MARS or measured runtime race is asserted; a generation/single-flight publication contract is missing locally.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmrptUsersRecords.xaml.cs:18-29;SmartAuditERP/Form_WPF/frmrptUsersRecords.xaml.cs:62-109;SmartAuditERP/Form_WPF/frmrptUsersRecords.xaml.cs:121-126;SmartAuditERP/Form_WPF/frmrptUsersRecords.xaml:178-183;SmartAuditERP/Form_WPF/frmrptUsersRecords.xaml:68-101",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph, SQL execution/parser, schema deployment, ACL, identity mapping, lifecycle/latency/leak proof, WPF/SDK/CSV consumer verification or whole-feature coverage. Application code not imported or executed."
+    },
+    {
+      "id": "ST7B8-13",
+      "title": "Log controls are read before Task.Run and rows are published through Dispatcher",
+      "finding_ids": "P7-107;H7B8-05",
+      "documented_observation": "Counterevidence to applying P7-054 to the log window. UI-affinity correctness does not give a shared result collection ownership per request.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmrptUsersRecords.xaml.cs:62-101",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph, SQL execution/parser, schema deployment, ACL, identity mapping, lifecycle/latency/leak proof, WPF/SDK/CSV consumer verification or whole-feature coverage. Application code not imported or executed."
+    },
+    {
+      "id": "ST7B8-14",
+      "title": "Log shell launch precedes writer scope end; receipt CSV closes a using block first",
+      "finding_ids": "P7-108",
+      "documented_observation": "Local event ordering is certain; partial/locked consumer read is potential and timing/platform-dependent. No writer, process, filesystem export, shell or Office was executed by this checker.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmrptUsersRecords.xaml.cs:137-165;SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:274-291",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph, SQL execution/parser, schema deployment, ACL, identity mapping, lifecycle/latency/leak proof, WPF/SDK/CSV consumer verification or whole-feature coverage. Application code not imported or executed."
+    },
+    {
+      "id": "ST7B8-15",
+      "title": "Receipt N2 fields and log quotes lack a complete local CSV encoding path",
+      "finding_ids": "P7-048",
+      "documented_observation": "The selected raw/quote-wrapped concatenations do not perform CSV roundtrip encoding; parser witnesses illustrate syntax only, not consumer active-content safety.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:278-286;SmartAuditERP/Form_WPF/frmrptUsersRecords.xaml.cs:146-155",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph, SQL execution/parser, schema deployment, ACL, identity mapping, lifecycle/latency/leak proof, WPF/SDK/CSV consumer verification or whole-feature coverage. Application code not imported or executed."
+    },
+    {
+      "id": "ST7B8-16",
+      "title": "CSV exporters launch a shell while text-safety remains a separate contract",
+      "finding_ids": "P7-049;H7B8-04",
+      "documented_observation": "Potential consumer-formula boundary is not resolved by syntax or close-before-launch. No analogous formula behavior is attributed to DecisionHelp SDK XLSX without its consumer contract.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:274-291;SmartAuditERP/Form_WPF/frmrptUsersRecords.xaml.cs:137-165",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph, SQL execution/parser, schema deployment, ACL, identity mapping, lifecycle/latency/leak proof, WPF/SDK/CSV consumer verification or whole-feature coverage. Application code not imported or executed."
+    },
+    {
+      "id": "ST7B8-17",
+      "title": "DecisionHelp reads live header criteria and actually loads three REPX files",
+      "finding_ids": "P7-045;P1-004;H7B8-04",
+      "documented_observation": "Counterevidence to a blanket no-REPX-load claim. Header/footer flags are loaded but not routed locally here; external template behavior/settings semantics and immutable criteria still need contracts.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:492-581;SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:144-171",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph, SQL execution/parser, schema deployment, ACL, identity mapping, lifecycle/latency/leak proof, WPF/SDK/CSV consumer verification or whole-feature coverage. Application code not imported or executed."
+    },
+    {
+      "id": "ST7B8-18",
+      "title": "Two Home instances are retained while log windows are constructed per launcher",
+      "finding_ids": "P1-030;P1-013",
+      "documented_observation": "Current-layer alias frmUsersRecords means actual frmrptUsersRecords, not a fourth screen. Menu enablement/roles are unresolved; retained closed-instance lifecycle differs from new-per-open logs.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Home.xaml.cs:92-93;SmartAuditERP/Home.xaml.cs:122-123;SmartAuditERP/Home.xaml.cs:2592-2597;SmartAuditERP/Home.xaml.cs:2922-2927;SmartAuditERP/Home.xaml.cs:3648-3648;SmartAuditERP/Home.xaml:330-333;SmartAuditERP/Home.xaml:383-386;SmartAuditERP/Home.xaml:530-533;SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:70-72;SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:255-258",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph, SQL execution/parser, schema deployment, ACL, identity mapping, lifecycle/latency/leak proof, WPF/SDK/CSV consumer verification or whole-feature coverage. Application code not imported or executed."
+    },
+    {
+      "id": "ST7B8-19",
+      "title": "Selected log producers assign EmpNo, while identity origins and appender configuration differ",
+      "finding_ids": "H7B8-03;P1-004",
+      "documented_observation": "There are actual producer callsites, not proof that logging has no implementation. CloudUserID-to-Employees.id equivalence, all event/thread paths, external appender parameter mapping, durability and privacy remain unresolved.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:42-43;SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:239-246;SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:419-425;SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:489-494;SmartAuditERP/Class/Common.cs:2076-2093;SmartAuditERP/Form_WPF/frmSandQD.xaml.cs:1002-1006",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph, SQL execution/parser, schema deployment, ACL, identity mapping, lifecycle/latency/leak proof, WPF/SDK/CSV consumer verification or whole-feature coverage. Application code not imported or executed."
+    },
+    {
+      "id": "ST7B8-20",
+      "title": "Log reader and supplied employee/log schema need an identity/scope contract, not a latency verdict",
+      "finding_ids": "H7B8-03;H7B8-05",
+      "documented_observation": "No date/order/paging/branch predicate is local in this reader. Scope/retention/authorization/completeness are policy/external contracts, not proof of server bypass, tampering, data loss or measured performance/index/leak behavior.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmrptUsersRecords.xaml.cs:38-52;SmartAuditERP/Form_WPF/frmrptUsersRecords.xaml.cs:62-101;SmartAuditERP/Properties/Resources.resx:714-751;SmartAuditERP/Properties/Resources.resx:3957-3971;SmartAuditERP/Class_WPF/UserLogRow.cs:1-11",
+      "source_application_executed": false,
+      "limit": "Bounded lexical/structural source-text observation only, not semantic call-graph, SQL execution/parser, schema deployment, ACL, identity mapping, lifecycle/latency/leak proof, WPF/SDK/CSV consumer verification or whole-feature coverage. Application code not imported or executed."
+    }
+  ],
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Class/Common.cs",
+      "start": 2076,
+      "end": 2093,
+      "selected_text_sha256": "6e195fcee143e86407bc2a83509c7fba74c8cb4843472ef708560515512bfbcd"
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 1593,
+      "end": 1598,
+      "selected_text_sha256": "d654d5342a1575502923328f0454736070126cdf0ead5a2d43151cca12f8dd75"
+    },
+    {
+      "path": "SmartAuditERP/Class/ReceiptOper.cs",
+      "start": 206,
+      "end": 218,
+      "selected_text_sha256": "f5f4f780defff2355ca69566fbcc73ad5b978829539420a1bde92c9fb1dde033"
+    },
+    {
+      "path": "SmartAuditERP/Class_WPF/ReceiptSummaryItem.cs",
+      "start": 13,
+      "end": 15,
+      "selected_text_sha256": "d2aa1ae2f64633629db0e21d17b09ac438fa7b5e452ac7e964702bfd3be1cf29"
+    },
+    {
+      "path": "SmartAuditERP/Class_WPF/UserLogRow.cs",
+      "start": 1,
+      "end": 11,
+      "selected_text_sha256": "b92a7853de9e13706083d10adfdbbd32d6411da64dfb3c51326fda297a4790d6"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml",
+      "start": 372,
+      "end": 391,
+      "selected_text_sha256": "b70a15a61380acf1b4a04b3ff0cf6942485acba51dcd9e87ca94a57a4f43dcd0"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs",
+      "start": 70,
+      "end": 72,
+      "selected_text_sha256": "d36a16650138efec15e062f2a8a55c46395f5e5e6814375b759bfcaaace01efc"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs",
+      "start": 110,
+      "end": 117,
+      "selected_text_sha256": "d45ae6d65d6962d1bd170f73dc106279b05d7a4189445054fd964b61e11e4bcb"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs",
+      "start": 144,
+      "end": 171,
+      "selected_text_sha256": "3d1ff2dcef1f482b2c82c0b45c0af448e37ff47129e01dc0da68e2c644a175a2"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs",
+      "start": 174,
+      "end": 198,
+      "selected_text_sha256": "e1d4bc7023c650382ee788a19376be2aa0a6e1e6ef928223f5d90064bd6aba74"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs",
+      "start": 195,
+      "end": 198,
+      "selected_text_sha256": "b0e70f73205daf1d549183902ab7d568812a9bbe0ad3c8135b5afcf458cbe369"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs",
+      "start": 217,
+      "end": 227,
+      "selected_text_sha256": "1da2809864f410afa6f7d9672e6dc52b776cf94d80ffab525463a8e98d06f3e8"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs",
+      "start": 217,
+      "end": 246,
+      "selected_text_sha256": "8781193646fb40009bb8d0243e7706678f87e53eba6695b73f3425a28a70f94c"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs",
+      "start": 270,
+      "end": 276,
+      "selected_text_sha256": "3cc6382023a79ca1b5f095d80ca20cb920c3d17cc6eb4ae73f2a0aa35bd05d14"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs",
+      "start": 290,
+      "end": 305,
+      "selected_text_sha256": "2e25be51752bf6700a544f41197b9a4fc5c7eca9b7e0de61b9132d0cec502290"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs",
+      "start": 304,
+      "end": 305,
+      "selected_text_sha256": "c55b0a6fd89241593b384444d6cd5a4aebd519f6db185819b931080d4667a444"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs",
+      "start": 426,
+      "end": 445,
+      "selected_text_sha256": "f16fa2317d070939678bd241aec1fc12d69175f03e2b56967997797d7321a616"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs",
+      "start": 492,
+      "end": 581,
+      "selected_text_sha256": "90e1f70dfc64d0a569adaff03c79ad4e871b46a48b61cbb2f579b5b43fa320b5"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemCategory.xaml.cs",
+      "start": 355,
+      "end": 365,
+      "selected_text_sha256": "b5526e7942030af383cb5d83bbf87b7fc80b7a9698fb5c4627610fd1830d3068"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemCategory.xaml.cs",
+      "start": 399,
+      "end": 419,
+      "selected_text_sha256": "d20e1350b2b5a49388069dd2fc2673e004f96de3586bca7c65e781ccae2684b0"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItems.xaml.cs",
+      "start": 421,
+      "end": 441,
+      "selected_text_sha256": "743bcfc4e6f989794d906050d7d2e00c07471e2de0428d50ebdbca17e2a15d24"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandQD.xaml.cs",
+      "start": 281,
+      "end": 298,
+      "selected_text_sha256": "8a5c4dc6cf0241769332d098b9e6187daaab989158f415f96be63bcf9585bf41"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandQD.xaml.cs",
+      "start": 1002,
+      "end": 1006,
+      "selected_text_sha256": "53133e90eb61308e3b4fdf5970fcfe6acb66cdd4ef288ceed0fd592186e53c38"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs",
+      "start": 103,
+      "end": 125,
+      "selected_text_sha256": "6ab492b1cfe75f7482fb5cbbcf86d70438ed2c159960e2ee67f27cdc541ccd1a"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs",
+      "start": 158,
+      "end": 193,
+      "selected_text_sha256": "d30bcd2fdafddd53b1235dead976ebad4d29054b1c82e20058ec49000de123aa"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs",
+      "start": 168,
+      "end": 171,
+      "selected_text_sha256": "4b69fb3fa4a01060f02b430402eab666da9a71e9f8d625f94f59f94a88d99c31"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs",
+      "start": 173,
+      "end": 195,
+      "selected_text_sha256": "521d4cbe62eded63b186d018c139feceec7a94374173279904085c8ee9d2f254"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs",
+      "start": 195,
+      "end": 205,
+      "selected_text_sha256": "ad01d80a5ccb9ed282644963d2c44a9b01bb30a0d8a13b08b44f45f42b3e1f28"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs",
+      "start": 211,
+      "end": 249,
+      "selected_text_sha256": "1896c0a1e588720cc4fc3a603a4467ace9e257c74f7dd69fb67816223355bfc1"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs",
+      "start": 255,
+      "end": 258,
+      "selected_text_sha256": "ffd3df781b91ccb4dd6ca8327db5eea3c8aa7fcabc4176bfff85c983c7a0da96"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs",
+      "start": 259,
+      "end": 261,
+      "selected_text_sha256": "0e1cbe916db3f3d864d3fea948619bb446ab5f7eff41494aaaba742afbb53ca9"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs",
+      "start": 274,
+      "end": 291,
+      "selected_text_sha256": "9006d2e95bbebf96f18724a46869519935cda5c9bd56d9fa5ef04a1d5f0c2113"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs",
+      "start": 278,
+      "end": 286,
+      "selected_text_sha256": "ec985aff4a9d207431f7d6a9c0c5f4d1f26b6a9fc0cf5d6834115dc13f9f1938"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs",
+      "start": 316,
+      "end": 340,
+      "selected_text_sha256": "10cfa3fb0589cff27c544ca31cc2e4c009dcab75a8b3247e65c1990f0cb0937b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs",
+      "start": 396,
+      "end": 424,
+      "selected_text_sha256": "54eafd494db7366187be39c58bd6c3cd3076de5ab2a4cf8e6be5cf1370650929"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs",
+      "start": 436,
+      "end": 436,
+      "selected_text_sha256": "286d1f44431e1084043e5a16ff4c62f8fff0bae8fbb43a3bde55451967b083c4"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+      "start": 42,
+      "end": 43,
+      "selected_text_sha256": "f9b1bb73ed5511784af76030922a73ce97a26cbe958a2a33314ba33e6ea15073"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+      "start": 239,
+      "end": 246,
+      "selected_text_sha256": "c2e429b4263ffa271c8f93f0ab59c01918a5a6d02a89a62cf3dd0e6d85255d24"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+      "start": 419,
+      "end": 425,
+      "selected_text_sha256": "1d61ca94ef92c2412e9e793683e3e1cd15f35493081b6367837354ed9237d6cd"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+      "start": 489,
+      "end": 494,
+      "selected_text_sha256": "745011033520a80e73ab666980aae2db39bd04d91ecf0aea2ff42d10439f22a5"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmrptUsersRecords.xaml",
+      "start": 68,
+      "end": 101,
+      "selected_text_sha256": "b7857f0fbc72ca8377acb5d076800addf274fd1db3991afefcb0cdf6d72e220b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmrptUsersRecords.xaml",
+      "start": 178,
+      "end": 183,
+      "selected_text_sha256": "188c6ea951f5fd4fc99125e44f97b118e58a7c09fdf2a4d652a0f9b7bbb28f75"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmrptUsersRecords.xaml.cs",
+      "start": 18,
+      "end": 29,
+      "selected_text_sha256": "54c5a37d23b5b8eb6999d3f43ab7a6d3fb0cbbc1eef839740aedf01f98ea3571"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmrptUsersRecords.xaml.cs",
+      "start": 38,
+      "end": 52,
+      "selected_text_sha256": "a98777803c260f3aae06a442a198065ea3cf699ae5e968774f6ca4f73bc1721f"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmrptUsersRecords.xaml.cs",
+      "start": 62,
+      "end": 101,
+      "selected_text_sha256": "d55cec0f23ee77819424e3dbe2145b1758a78c238143578ebdb8778cb77f423b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmrptUsersRecords.xaml.cs",
+      "start": 62,
+      "end": 109,
+      "selected_text_sha256": "42160d5d1ea246990cece5280be6453d01db258b45bf159961f237a003d97ba7"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmrptUsersRecords.xaml.cs",
+      "start": 121,
+      "end": 126,
+      "selected_text_sha256": "89ee332cc9e36f7e4664272260f46639f848d04b24d3781b15462683c779b93d"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmrptUsersRecords.xaml.cs",
+      "start": 137,
+      "end": 165,
+      "selected_text_sha256": "48a0cb90c04ac66a323daabe8ac13396eb680920008545ac1fe31b6629326eda"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmrptUsersRecords.xaml.cs",
+      "start": 146,
+      "end": 155,
+      "selected_text_sha256": "2e50f2dfbb569c6e26c2b3b7897d7a8b87d032856d3656fa2d122e0dcf0cff95"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml",
+      "start": 330,
+      "end": 333,
+      "selected_text_sha256": "e6194bc145a0cdad5d402c7ace4688290c219cb77fc06582d1b733056ceab9f8"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml",
+      "start": 383,
+      "end": 386,
+      "selected_text_sha256": "39cf4b0b128f3183cef367b4806d1bd205a8f316a6ce55928bffe2f9493373bc"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml",
+      "start": 530,
+      "end": 533,
+      "selected_text_sha256": "a0f52a8c2468ec10a69296d542c249eb022ae51f5e7a3c2976666789ac7dc5c9"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "start": 92,
+      "end": 93,
+      "selected_text_sha256": "81b9413959116f27380ca1af8ad851b2e320fac6c80700a36f8409b5c867cfb5"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "start": 122,
+      "end": 123,
+      "selected_text_sha256": "718fe91e37daf7a86bec191b5f217c6c5003f5642b0b874f8fe338ba4291eee0"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "start": 2592,
+      "end": 2597,
+      "selected_text_sha256": "07ac383e915f4d4ad747fc989f2283a846ad310a317146f4a3870c4fc85df00f"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "start": 2922,
+      "end": 2927,
+      "selected_text_sha256": "000ab3d87d46d47fc4a1fbba2fac7dbef5c980aa93b265bf530dd84f491e4cdc"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "start": 3648,
+      "end": 3648,
+      "selected_text_sha256": "580492783cf78501d49575cc843562a69588312d7f31084b035708acfa19dec6"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 242,
+      "end": 275,
+      "selected_text_sha256": "2af1cb8bee8bfd81243364ad4df7545085301d4d2d7c2b595d37fc7c578b9861"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 714,
+      "end": 751,
+      "selected_text_sha256": "3562d368a072163f26ae8c80c29cb8a40840e87d4d52cf14b4f49df77a02fc75"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 1505,
+      "end": 1507,
+      "selected_text_sha256": "1787326e87cc1e303549857c494516182d9e53e9a1e265042f63a8a579fd0d8e"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 3036,
+      "end": 3040,
+      "selected_text_sha256": "a75b4b333adef9298e1ea57d6b8ebbfdd1650f87b6ea4a363dda9cd173bc903d"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 3054,
+      "end": 3064,
+      "selected_text_sha256": "1c383c687b586d5821e84f68fc0254724ca68525e404dcb7f3645727eb920b8d"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 3957,
+      "end": 3971,
+      "selected_text_sha256": "46c0c9ab4f7e09048191262bd0a19c8b084803c1668e405b6e7a3912b6e47046"
+    }
+  ]
+}

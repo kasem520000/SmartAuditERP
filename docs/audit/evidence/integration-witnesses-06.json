@@ -1,0 +1,484 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "method": "Independent synthetic manually transcribed illustrations plus separately labelled bounded literal-source checks; NOT ERP/SDK/provider acceptance or compliance certification",
+  "application_code_imported_or_executed": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "application_remediation_performed": false,
+  "secrets_or_real_provider_payloads_used": false,
+  "illustration_count": 14,
+  "illustrations": [
+    {
+      "id": "ALG6-01",
+      "title": "Different VAT predicates",
+      "finding_ids": [
+        "P6-001"
+      ],
+      "manually_transcribed_inputs": {
+        "synthetic_vat_text": "123"
+      },
+      "calculated_observation": {
+        "tax_gate": false,
+        "helper_standard": true,
+        "shape_gate_can_accept_nonnumeric_text": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "ASCII predicate transcription only. Not Customer DTO, SQL, taxpayer validation or a real invoice-type decision.",
+      "evidence": "SmartAuditERP/Class/ZatcaService.cs:78-124;SmartAuditERP/Class/InvoiceOper.cs:5211-5243"
+    },
+    {
+      "id": "ALG6-02",
+      "title": "Two positive rates share one allowance object",
+      "finding_ids": [
+        "P6-003"
+      ],
+      "manually_transcribed_inputs": {
+        "synthetic_rate_share_pairs": [
+          [
+            "5",
+            "2"
+          ],
+          [
+            "15",
+            "3"
+          ]
+        ]
+      },
+      "calculated_observation": {
+        "bucket_amount": "5",
+        "last_rate": "15"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Two stipulated positive-rate groups; not proof the business uses mixed rates or that an SDK serializes the object unchanged.",
+      "evidence": "SmartAuditERP/Class/ZatcaService.cs:231-263"
+    },
+    {
+      "id": "ALG6-03",
+      "title": "Early quantity/price rounding and midpoint distinction",
+      "finding_ids": [
+        "P6-004"
+      ],
+      "manually_transcribed_inputs": {
+        "quantity": "1.234",
+        "price": "10.126",
+        "exact_decimal_midpoint": "1.005"
+      },
+      "calculated_observation": {
+        "rounded_final_amount": "12.50",
+        "early_rounded_inputs_amount": "12.46",
+        "exact_decimal_half_even": "1.00",
+        "exact_decimal_half_up": "1.01"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Exact Python Decimal illustration, NOT .NET double-to-decimal, Math.Round binary midpoint behavior, SDK arithmetic or tax approval.",
+      "evidence": "SmartAuditERP/Class/ZatcaService.cs:277-342"
+    },
+    {
+      "id": "ALG6-04",
+      "title": "Per-type previous number under a shared issuing unit assumption",
+      "finding_ids": [
+        "P6-005"
+      ],
+      "manually_transcribed_inputs": {
+        "stipulated_unit_is_shared": true,
+        "issued": [
+          {
+            "scope": "Sale",
+            "number": 40,
+            "uuid": "synthetic-a"
+          },
+          {
+            "scope": "Return",
+            "number": 7,
+            "uuid": "synthetic-b"
+          }
+        ],
+        "next_sale_no": 41
+      },
+      "calculated_observation": {
+        "last_unit_document": "synthetic-b",
+        "number_minus_one_same_type": "synthetic-a"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Conditional list model only; EGS/POS boundaries, numbering policy, actual hashes and external UUID generation are unresolved.",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:5276-5323;SmartAuditERP/Class/ZatcaService.cs:116-124"
+    },
+    {
+      "id": "ALG6-05",
+      "title": "No-error predicate is not an explicit accepted-state predicate",
+      "finding_ids": [
+        "P6-006"
+      ],
+      "manually_transcribed_inputs": {
+        "error_message": null,
+        "error_messages": [],
+        "status": "PENDING_SYNTHETIC"
+      },
+      "calculated_observation": {
+        "no_errors": true,
+        "explicit_accepted": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "A synthetic response shape, not a claim the SDK can emit it or that its defaults have been executed.",
+      "evidence": "SmartAuditERP/Class/ZatcaService.cs:379-417;SmartAuditERP/Form_WPF/frmZatcaSetting.xaml.cs:900-909"
+    },
+    {
+      "id": "ALG6-06",
+      "title": "ETA invoice quantity can become zero while value is nonzero",
+      "finding_ids": [
+        "P6-013"
+      ],
+      "manually_transcribed_inputs": {
+        "quantity": "0.4",
+        "price": "10"
+      },
+      "calculated_observation": {
+        "integer_rounded_quantity": 0,
+        "original_quantity_sales": "4.0"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Arithmetic transcription for an unambiguous non-midpoint input; not execution of the external InvoiceLine setter or wire serializer.",
+      "evidence": "SmartAuditERP/Class/EtaService.cs:34-58"
+    },
+    {
+      "id": "ALG6-07",
+      "title": "Reference comparison becomes Boolean text",
+      "finding_ids": [
+        "P6-014"
+      ],
+      "manually_transcribed_inputs": {
+        "reference": "SYNTHETIC-ORIGINAL-17"
+      },
+      "calculated_observation": {
+        "modelled_boolean_text": "False"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Python Boolean spelling illustrates the comparison, not a call to Microsoft.VisualBasic Conversions or SDK reference normalization.",
+      "evidence": "SmartAuditERP/Class/EtaService.cs:171-186"
+    },
+    {
+      "id": "ALG6-08",
+      "title": "Date truncation and a literal Z are not UTC conversion",
+      "finding_ids": [
+        "P6-015"
+      ],
+      "manually_transcribed_inputs": {
+        "synthetic_original": "2026-01-02T01:25:00+03:00"
+      },
+      "calculated_observation": {
+        "actual_utc_in_illustration": "2026-01-01T22:25:00+00:00",
+        "date_only_labelled_utc": "2026-01-02T00:00:00+00:00"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Stipulated offset and exact datetime illustration only; no machine clock, C# culture/Kind, timezone database or receipt serializer tested.",
+      "evidence": "SmartAuditERP/Class/EtaService.cs:179-182;SmartAuditERP/Class/EtaReciptService.cs:100-105"
+    },
+    {
+      "id": "ALG6-09",
+      "title": "Opposite local Boolean outcome contracts",
+      "finding_ids": [
+        "P6-016",
+        "P6-017"
+      ],
+      "manually_transcribed_inputs": {
+        "synthetic_sdk_status": "SYNTHETIC_NON_SUCCESS",
+        "nonexception_path": true
+      },
+      "calculated_observation": {
+        "receipt": {
+          "uuid_update_branch": false,
+          "returned": true
+        },
+        "invoice_local_default_return": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Manual control-flow summary only; the SDK status string is NOT assumed to be raw HTTP. No API call, tables or persistence executed.",
+      "evidence": "SmartAuditERP/Class/EtaService.cs:248-299;SmartAuditERP/Class/EtaReciptService.cs:217-234"
+    },
+    {
+      "id": "ALG6-10",
+      "title": "Receipt pre-tax line total versus final ERP Net",
+      "finding_ids": [
+        "P6-018"
+      ],
+      "manually_transcribed_inputs": {
+        "synthetic_line_net": "100",
+        "vat": "15",
+        "discount": "0"
+      },
+      "calculated_observation": {
+        "erp_final_net": "115",
+        "header_net_from_adapter": "115",
+        "sum_line_net": "100"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "A minimal stipulated financial fixture; not evidence of actual DTO recalculation, serialized payload, ETA rejection or accounting certification.",
+      "evidence": "SmartAuditERP/Class/EtaReciptService.cs:28-61;SmartAuditERP/Class/EtaReciptService.cs:108-149;SmartAuditERP/Class/InvoiceOper.cs:4189-4221"
+    },
+    {
+      "id": "ALG6-11",
+      "title": "Conditional remote side effect before a local rejection",
+      "finding_ids": [
+        "P6-020",
+        "P6-021"
+      ],
+      "manually_transcribed_inputs": {
+        "stipulated_schedule": [
+          "remote_approved",
+          "late_local_amount_check_failed",
+          "user_retries"
+        ],
+        "external_dedup_assumed_absent_for_example_only": true
+      },
+      "calculated_observation": {
+        "possible_attempts_in_this_schedule": 2
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Hypothetical schedule, NOT a double-charge proof, actual terminal invocation, vendor idempotency result or concurrency test.",
+      "evidence": "SmartAuditERP/Form_WPF/frmPOSBill.xaml.cs:460-519;SmartAuditERP/Form_WPF/frmPOSPay.xaml.cs:428-464"
+    },
+    {
+      "id": "ALG6-12",
+      "title": "Empty mapping selection skips the replacement block",
+      "finding_ids": [
+        "P6-023"
+      ],
+      "manually_transcribed_inputs": {
+        "old_rows": [
+          "synthetic-bank-mapping"
+        ],
+        "ui_rows_after_deleting_last": []
+      },
+      "calculated_observation": {
+        "modelled_saved_rows": [
+          "synthetic-bank-mapping"
+        ]
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Sequential list effect only, not SQL constraints/transactions/triggers, cloud routing or an actual account mapping change.",
+      "evidence": "SmartAuditERP/Form_WPF/frmCloudPaymentSetting.xaml.cs:249-260;SmartAuditERP/Form_WPF/frmCloudPaymentSetting.xaml.cs:310-345"
+    },
+    {
+      "id": "ALG6-13",
+      "title": "Fixed last-verified fallback does not advance",
+      "finding_ids": [
+        "P6-027"
+      ],
+      "manually_transcribed_inputs": {
+        "anchor": "2026-01-01T00:00:00",
+        "expiry": "2026-01-05T00:00:00",
+        "stipulated_later_time": "2026-01-20T00:00:00",
+        "ntp_result": null
+      },
+      "calculated_observation": {
+        "selected_comparison_time": "2026-01-01T00:00:00",
+        "expired_against_anchor": false,
+        "expired_against_later": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Stipulated cache and failed-NTP branch only; no real license, AES/hash generation, file modification, clock/NTP operation or entitlement bypass executed.",
+      "evidence": "SmartAuditERP/Class/DeviceLicenseManager.cs:226-246;SmartAuditERP/Class/DeviceLicenseManager.cs:391-419"
+    },
+    {
+      "id": "ALG6-14",
+      "title": "Prefix-only phone transformation",
+      "finding_ids": [
+        "P6-032"
+      ],
+      "manually_transcribed_inputs": {
+        "synthetic_unusable_phone_markers": [
+          "+9665XXXXXXXX",
+          "+9677XXXXXXXX",
+          "009665XXXXXXXX"
+        ]
+      },
+      "calculated_observation": {
+        "+9665XXXXXXXX": "966+9665XXXXXXXX",
+        "+9677XXXXXXXX": "966+9677XXXXXXXX",
+        "009665XXXXXXXX": "9669665XXXXXXXX"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Text markers deliberately not dialable; not E.164 validation, WhatsApp URL handling, contact existence or actual misdelivery.",
+      "evidence": "SmartAuditERP/Class/WhatsAppSender.cs:107-118"
+    }
+  ],
+  "static_lexical_contract_check_count": 7,
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST6-01",
+      "title": "Ticket details object is discarded at the local boundary",
+      "finding_ids": [
+        "P6-024"
+      ],
+      "literal_text_observation": {
+        "discarded_expression_present": true,
+        "success_object_without_ticket_present": true,
+        "ticket_auto_property_without_initializer_present": true
+      },
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Literal source observation, not JSON deserialization or UI/NRE execution; remote response schema is unknown.",
+      "evidence": "SmartAuditERP/Class/SupportTicketApiClient.cs:120-149;SmartAuditERP/Class/TicketDetailsResponse.cs:1-8"
+    },
+    {
+      "id": "ST6-02",
+      "title": "Fresh ZATCA credential INSERT text shapes",
+      "finding_ids": [
+        "P6-011"
+      ],
+      "literal_text_observation": [
+        {
+          "branch": "PCSID fresh branch",
+          "column_count": 8,
+          "value_count": 7,
+          "required_parameter_names": [
+            "@CSID",
+            "@P_CSID",
+            "@P_RequestID",
+            "@P_Secret",
+            "@RequestID",
+            "@Secret"
+          ],
+          "supplied_parameter_names": [
+            "@P_CSID",
+            "@P_RequestID",
+            "@P_Secret"
+          ],
+          "unbound_parameter_names": [
+            "@CSID",
+            "@RequestID",
+            "@Secret"
+          ]
+        },
+        {
+          "branch": "import fresh branch",
+          "column_count": 8,
+          "value_count": 7,
+          "required_parameter_names": [
+            "@CSID",
+            "@P_CSID",
+            "@P_RequestID",
+            "@P_Secret",
+            "@RequestID",
+            "@Secret"
+          ],
+          "supplied_parameter_names": [
+            "@CSID",
+            "@P_CSID",
+            "@P_RequestID",
+            "@P_Secret",
+            "@RequestID",
+            "@Secret"
+          ],
+          "unbound_parameter_names": []
+        }
+      ],
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Bounded string/parameter-name extraction only, not SQL parsing/execution, schema/ABI checking, reachability of count==0 or a migration test. No credential values emitted.",
+      "evidence": "SmartAuditERP/Form_WPF/frmZatcaSetting.xaml.cs:350-370;SmartAuditERP/Form_WPF/frmZatcaSetting.xaml.cs:1056-1081"
+    },
+    {
+      "id": "ST6-03",
+      "title": "Different ETA local return contracts",
+      "finding_ids": [
+        "P6-016",
+        "P6-017"
+      ],
+      "literal_text_observation": {
+        "invoice_result_true_assignment_count": 0,
+        "invoice_default_result_present": true,
+        "receipt_true_return_after_status_block_present": true
+      },
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Literal selected-method observation only; external SDK control flow, enums, HTTP semantics and actual tables not executed.",
+      "evidence": "SmartAuditERP/Class/EtaService.cs:20-300;SmartAuditERP/Class/EtaReciptService.cs:217-234"
+    },
+    {
+      "id": "ST6-04",
+      "title": "Terminal call and selected validation textual order",
+      "finding_ids": [
+        "P6-020",
+        "P6-021"
+      ],
+      "literal_text_observation": {
+        "bill_await_pay_before_multi_amount_gate": true,
+        "bill_old_pay_before_positive_net_gate": true,
+        "pay_old_pay_before_multi_amount_gate": true,
+        "pay_has_prior_rem_guard": true
+      },
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Text order in selected methods, not WPF event/interleaving analysis, vendor approval or proof every input reaches these branches. Prior rem guard explicitly retained.",
+      "evidence": "SmartAuditERP/Form_WPF/frmPOSBill.xaml.cs:437-519;SmartAuditERP/Form_WPF/frmPOSPay.xaml.cs:402-464"
+    },
+    {
+      "id": "ST6-05",
+      "title": "Manual flag has a real contract consumer",
+      "finding_ids": [
+        "P6-002"
+      ],
+      "literal_text_observation": {
+        "ordinary_InvoiceOper_flag_occurrences": 0,
+        "contract_uses_flag_in_send_gate": true,
+        "setting_exists": true
+      },
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Bounded lexical presence/absence, not proof of global non-use, runtime cache behavior or all external/reflection-based readers.",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:1473-1495;SmartAuditERP/Class/InvoiceOper.cs:1854-1884;SmartAuditERP/Class/InvoiceOperContract.cs:911-926;SmartAuditERP/Class/MainSetting.cs:12-18"
+    },
+    {
+      "id": "ST6-06",
+      "title": "Direct-call search separates sample/unused helpers from active test caller",
+      "finding_ids": [
+        "P6-021",
+        "P6-022",
+        "P6-029",
+        "P6-030"
+      ],
+      "literal_text_observation": {
+        "new_FrmSallah_direct": 0,
+        "new_SallaAuth_direct": 0,
+        "dot_ConnectGeidea_call": 0,
+        "dot_ProcessSale_call": 0,
+        "dot_TestConnection_call": 1
+      },
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Regex over tracked C# only (including comments), NOT semantic call graph, complete-file manual review, external/reflective/generated caller exclusion or runtime reachability certification.",
+      "evidence": "SmartAuditERP/Class/Geidea.cs:1-58;SmartAuditERP/Class/NeoleapService.cs:23-83;SmartAuditERP/Class/SallaAuth.cs:10-33;SmartAuditERP/Form_WPF/FrmSallah.xaml.cs:30-35;SmartAuditERP/Home.xaml.cs:3877-3886;SmartAuditERP/Form_WPF/frmSettings.xaml.cs:4047-4066"
+    },
+    {
+      "id": "ST6-07",
+      "title": "Conditional Android double dispatch with ordinary-path counterexample",
+      "finding_ids": [
+        "P6-035"
+      ],
+      "literal_text_observation": {
+        "android_send_call_text_count_in_selected_branch": 2,
+        "android_case3_send_then_break_present": true,
+        "ordinary_case3_send_then_return_present": true
+      },
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Branch text only; Type==3, printer/report/ActiveAuto/internet and earlier lifecycle guards are required. Not SMTP or report execution, nor a claim every close sends twice.",
+      "evidence": "SmartAuditERP/Form_WPF/ClosShiftAndroid.xaml.cs:1732-1764;SmartAuditERP/Form_WPF/frmCloseShift.xaml.cs:1579-1586"
+    }
+  ]
+}
