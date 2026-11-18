@@ -1,0 +1,966 @@
+{
+  "phase": "7B9-partial-static-audit",
+  "method": "independent manual contrasts plus bounded lexical source observations, not ERP execution",
+  "illustration_count": 18,
+  "static_lexical_contract_check_count": 18,
+  "illustrations": [
+    {
+      "id": "ALG7B9-01",
+      "title": "Invalid month silently leaves the manual period predicate empty",
+      "finding_ids": "P7-109",
+      "hand_selected_inputs": {
+        "all_period": false,
+        "year": "2026",
+        "month": "abc",
+        "rows_by_month": [
+          10,
+          11
+        ]
+      },
+      "manual_observation_model": {
+        "predicate": "",
+        "selected_months": [
+          10,
+          11
+        ]
+      },
+      "independent_reference": {
+        "outcome": "invalid-period-no-request"
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptSalary.xaml.cs:57-88;SmartAuditERP/Form_WPF/frmRptSalary.xaml:181-225",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY, not C#/SQL/WPF execution/translation, deployment data/schema/ACL, business/policy/financial/GL certification or ERP acceptance. User multiplicity/schema occurrence remains conditional and P7-110 POTENTIAL; UI lookup/update is counterevidence to always-duplicate accounts. NULL/period/row/event fixtures are not runtime observations. Accrual child initialization/private-source/binder gates persist. No real data, secrets, file export, Office/formula interpreter, SDK/COM/device/provider/process/shell executed."
+    },
+    {
+      "id": "ALG7B9-02",
+      "title": "A valid selected month has a predicate, not an unconditional all-period failure",
+      "finding_ids": "P7-109",
+      "hand_selected_inputs": {
+        "all_period": false,
+        "year": 2026,
+        "month": 11
+      },
+      "manual_observation_model": {
+        "selected_year": 2026,
+        "selected_month": 11
+      },
+      "independent_reference": {
+        "selected_year": 2026,
+        "selected_month": 11
+      },
+      "difference_expected": false,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptSalary.xaml.cs:63-86",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY, not C#/SQL/WPF execution/translation, deployment data/schema/ACL, business/policy/financial/GL certification or ERP acceptance. User multiplicity/schema occurrence remains conditional and P7-110 POTENTIAL; UI lookup/update is counterevidence to always-duplicate accounts. NULL/period/row/event fixtures are not runtime observations. Accrual child initialization/private-source/binder gates persist. No real data, secrets, file export, Office/formula interpreter, SDK/COM/device/provider/process/shell executed."
+    },
+    {
+      "id": "ALG7B9-03",
+      "title": "Explicit all-period is distinct from a failed restricted-period parse",
+      "finding_ids": "P7-109",
+      "hand_selected_inputs": {
+        "all_period": true,
+        "year": "",
+        "month": ""
+      },
+      "manual_observation_model": {
+        "period_restriction": null
+      },
+      "independent_reference": {
+        "period_restriction": null
+      },
+      "difference_expected": false,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptSalary.xaml.cs:63-86",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY, not C#/SQL/WPF execution/translation, deployment data/schema/ACL, business/policy/financial/GL certification or ERP acceptance. User multiplicity/schema occurrence remains conditional and P7-110 POTENTIAL; UI lookup/update is counterevidence to always-duplicate accounts. NULL/period/row/event fixtures are not runtime observations. Accrual child initialization/private-source/binder gates persist. No real data, secrets, file export, Office/formula interpreter, SDK/COM/device/provider/process/shell executed."
+    },
+    {
+      "id": "ALG7B9-04",
+      "title": "A nonunique employee-name join can duplicate one receipt amount",
+      "finding_ids": "P7-110",
+      "hand_selected_inputs": {
+        "receipts": [
+          {
+            "gid": "G1",
+            "emp": 7,
+            "payment": 100
+          }
+        ],
+        "users": [
+          {
+            "id": 11,
+            "emp": 7,
+            "deleted": false
+          },
+          {
+            "id": 12,
+            "emp": 7,
+            "deleted": false
+          }
+        ],
+        "deployed_multiplicity_not_observed": true
+      },
+      "manual_observation_model": {
+        "row_count": 2,
+        "total": 200
+      },
+      "independent_reference": {
+        "row_count": 1,
+        "total": 100
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:233-251;SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:277-315;SmartAuditERP/Properties/Resources.resx:2166-2179",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY, not C#/SQL/WPF execution/translation, deployment data/schema/ACL, business/policy/financial/GL certification or ERP acceptance. User multiplicity/schema occurrence remains conditional and P7-110 POTENTIAL; UI lookup/update is counterevidence to always-duplicate accounts. NULL/period/row/event fixtures are not runtime observations. Accrual child initialization/private-source/binder gates persist. No real data, secrets, file export, Office/formula interpreter, SDK/COM/device/provider/process/shell executed."
+    },
+    {
+      "id": "ALG7B9-05",
+      "title": "A genuinely unique user per employee is counterevidence",
+      "finding_ids": "P7-110",
+      "hand_selected_inputs": {
+        "receipt": "G1",
+        "Payment": 100,
+        "matching_user_rows": 1,
+        "UI_lookup_update_intent": true
+      },
+      "manual_observation_model": {
+        "row_count": 1,
+        "total": 100
+      },
+      "independent_reference": {
+        "row_count": 1,
+        "total": 100
+      },
+      "difference_expected": false,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:242-251;SmartAuditERP/Form_WPF/frmAddUsers.xaml.cs:210-249",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY, not C#/SQL/WPF execution/translation, deployment data/schema/ACL, business/policy/financial/GL certification or ERP acceptance. User multiplicity/schema occurrence remains conditional and P7-110 POTENTIAL; UI lookup/update is counterevidence to always-duplicate accounts. NULL/period/row/event fixtures are not runtime observations. Accrual child initialization/private-source/binder gates persist. No real data, secrets, file export, Office/formula interpreter, SDK/COM/device/provider/process/shell executed."
+    },
+    {
+      "id": "ALG7B9-06",
+      "title": "An unfiltered deleted account can also multiply the conditional fixture",
+      "finding_ids": "P7-110",
+      "hand_selected_inputs": {
+        "users": [
+          {
+            "id": 11,
+            "emp": 7,
+            "deleted": false
+          },
+          {
+            "id": 12,
+            "emp": 7,
+            "deleted": true
+          }
+        ],
+        "Payment": 100,
+        "not_production_data": true
+      },
+      "manual_observation_model": {
+        "joined_rows": 2,
+        "total": 200
+      },
+      "independent_reference": {
+        "receipt_rows": 1,
+        "total": 100
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:242-251;SmartAuditERP/Properties/Resources.resx:2166-2179",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY, not C#/SQL/WPF execution/translation, deployment data/schema/ACL, business/policy/financial/GL certification or ERP acceptance. User multiplicity/schema occurrence remains conditional and P7-110 POTENTIAL; UI lookup/update is counterevidence to always-duplicate accounts. NULL/period/row/event fixtures are not runtime observations. Accrual child initialization/private-source/binder gates persist. No real data, secrets, file export, Office/formula interpreter, SDK/COM/device/provider/process/shell executed."
+    },
+    {
+      "id": "ALG7B9-07",
+      "title": "Surrogate branch id and canonical branch key need not coincide",
+      "finding_ids": "P2-010",
+      "hand_selected_inputs": {
+        "combo_id": 1,
+        "BranchId": 7,
+        "receipt_BranchID": 7,
+        "keys_differ_only_in_fixture": true
+      },
+      "manual_observation_model": {
+        "filter_value": 1,
+        "receipt_selected": false
+      },
+      "independent_reference": {
+        "filter_value": 7,
+        "receipt_selected": true
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:80-100;SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:196-199;SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:350-362;SmartAuditERP/Properties/Resources.resx:242-275",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY, not C#/SQL/WPF execution/translation, deployment data/schema/ACL, business/policy/financial/GL certification or ERP acceptance. User multiplicity/schema occurrence remains conditional and P7-110 POTENTIAL; UI lookup/update is counterevidence to always-duplicate accounts. NULL/period/row/event fixtures are not runtime observations. Accrual child initialization/private-source/binder gates persist. No real data, secrets, file export, Office/formula interpreter, SDK/COM/device/provider/process/shell executed."
+    },
+    {
+      "id": "ALG7B9-08",
+      "title": "SummaryQ half-open typed upper bound excludes next midnight",
+      "finding_ids": "P3-023",
+      "hand_selected_inputs": {
+        "row_time": "2026-01-02T00:00:00",
+        "upper_bound": "2026-01-02T00:00:00"
+      },
+      "manual_observation_model": {
+        "included": false
+      },
+      "independent_reference": {
+        "included": false
+      },
+      "difference_expected": false,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:214-224;SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:256-267",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY, not C#/SQL/WPF execution/translation, deployment data/schema/ACL, business/policy/financial/GL certification or ERP acceptance. User multiplicity/schema occurrence remains conditional and P7-110 POTENTIAL; UI lookup/update is counterevidence to always-duplicate accounts. NULL/period/row/event fixtures are not runtime observations. Accrual child initialization/private-source/binder gates persist. No real data, secrets, file export, Office/formula interpreter, SDK/COM/device/provider/process/shell executed."
+    },
+    {
+      "id": "ALG7B9-09",
+      "title": "Accrual report midnight end excludes selected-day noon if parsed as intended",
+      "finding_ids": "P3-023",
+      "hand_selected_inputs": {
+        "selected_end_day": "2026-01-01T00:00:00",
+        "row": "2026-01-01T12:00:00",
+        "SQL_parsing_assumed_correct_for_fixture": true
+      },
+      "manual_observation_model": {
+        "included": false
+      },
+      "independent_reference": {
+        "included": true
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptReseved.xaml.cs:188-199",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY, not C#/SQL/WPF execution/translation, deployment data/schema/ACL, business/policy/financial/GL certification or ERP acceptance. User multiplicity/schema occurrence remains conditional and P7-110 POTENTIAL; UI lookup/update is counterevidence to always-duplicate accounts. NULL/period/row/event fixtures are not runtime observations. Accrual child initialization/private-source/binder gates persist. No real data, secrets, file export, Office/formula interpreter, SDK/COM/device/provider/process/shell executed."
+    },
+    {
+      "id": "ALG7B9-10",
+      "title": "Recomputed payroll display can disagree with the stored salary net",
+      "finding_ids": "P7-006",
+      "hand_selected_inputs": {
+        "basic": 100,
+        "housing": 20,
+        "travel": 5,
+        "add": 0,
+        "sub": 0,
+        "stored_salary_net": 100,
+        "writer_bug_isolated": true
+      },
+      "manual_observation_model": {
+        "report_net": 125,
+        "editor_loaded_net": 100
+      },
+      "independent_reference": {
+        "report_net": 125,
+        "editor_loaded_net": 125
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptSalary.xaml.cs:96-121;SmartAuditERP/Form_WPF/frmSalaryPay.xaml.cs:359-398;SmartAuditERP/Form_WPF/frmSalaryPay.xaml.cs:471-487",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY, not C#/SQL/WPF execution/translation, deployment data/schema/ACL, business/policy/financial/GL certification or ERP acceptance. User multiplicity/schema occurrence remains conditional and P7-110 POTENTIAL; UI lookup/update is counterevidence to always-duplicate accounts. NULL/period/row/event fixtures are not runtime observations. Accrual child initialization/private-source/binder gates persist. No real data, secrets, file export, Office/formula interpreter, SDK/COM/device/provider/process/shell executed."
+    },
+    {
+      "id": "ALG7B9-11",
+      "title": "A failed nullable conversion after clear is not a new complete result",
+      "finding_ids": "P7-046",
+      "hand_selected_inputs": {
+        "previous_total": 100,
+        "request_B_Houses": null,
+        "DDL_permits_NULL": true,
+        "no_CSharp_conversion_executed": true
+      },
+      "manual_observation_model": {
+        "new_rows": [],
+        "display_total": 100,
+        "state": "unlabelled"
+      },
+      "independent_reference": {
+        "state": "failed-B-or-explicit-last-A",
+        "new_complete_result": false
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptSalary.xaml.cs:57-61;SmartAuditERP/Form_WPF/frmRptSalary.xaml.cs:92-127;SmartAuditERP/Properties/Resources.resx:1785-1793",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY, not C#/SQL/WPF execution/translation, deployment data/schema/ACL, business/policy/financial/GL certification or ERP acceptance. User multiplicity/schema occurrence remains conditional and P7-110 POTENTIAL; UI lookup/update is counterevidence to always-duplicate accounts. NULL/period/row/event fixtures are not runtime observations. Accrual child initialization/private-source/binder gates persist. No real data, secrets, file export, Office/formula interpreter, SDK/COM/device/provider/process/shell executed."
+    },
+    {
+      "id": "ALG7B9-12",
+      "title": "A visible DataView is not the child private save collection",
+      "finding_ids": "P7-002",
+      "hand_selected_inputs": {
+        "report_rows": [
+          {
+            "Emp": 7
+          }
+        ],
+        "report_GlobalID": "G1",
+        "child_loaded_clears_ids": true
+      },
+      "manual_observation_model": {
+        "visible_rows": 1,
+        "private_selected_rows": 0,
+        "child_GlobalID": ""
+      },
+      "independent_reference": {
+        "visible_rows": 1,
+        "private_selected_rows": 1,
+        "child_GlobalID": "G1"
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptReseved.xaml.cs:155-168;SmartAuditERP/Form_WPF/FrmReseved.xaml.cs:37-104;SmartAuditERP/Form_WPF/FrmReseved.xaml.cs:355-370",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY, not C#/SQL/WPF execution/translation, deployment data/schema/ACL, business/policy/financial/GL certification or ERP acceptance. User multiplicity/schema occurrence remains conditional and P7-110 POTENTIAL; UI lookup/update is counterevidence to always-duplicate accounts. NULL/period/row/event fixtures are not runtime observations. Accrual child initialization/private-source/binder gates persist. No real data, secrets, file export, Office/formula interpreter, SDK/COM/device/provider/process/shell executed."
+    },
+    {
+      "id": "ALG7B9-13",
+      "title": "Manually grouped N2 amount splits the eleven-column CSV schema",
+      "finding_ids": "P7-048",
+      "hand_selected_inputs": {
+        "manual_row": "1,1,000.00,D,7,type,client,cash,sales,note,branch,user",
+        "intended_amount": 1000,
+        "intended_columns": 11,
+        "grouping_culture_fixture": true
+      },
+      "manual_observation_model": {
+        "parsed_columns": 12
+      },
+      "independent_reference": {
+        "parsed_columns": 11
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:396-410",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY, not C#/SQL/WPF execution/translation, deployment data/schema/ACL, business/policy/financial/GL certification or ERP acceptance. User multiplicity/schema occurrence remains conditional and P7-110 POTENTIAL; UI lookup/update is counterevidence to always-duplicate accounts. NULL/period/row/event fixtures are not runtime observations. Accrual child initialization/private-source/binder gates persist. No real data, secrets, file export, Office/formula interpreter, SDK/COM/device/provider/process/shell executed."
+    },
+    {
+      "id": "ALG7B9-14",
+      "title": "An unencoded comma in a client label also changes the CSV row shape",
+      "finding_ids": "P7-048",
+      "hand_selected_inputs": {
+        "client": "A,B",
+        "manual_row": "1,100.00,D,7,type,A,B,cash,sales,note,branch,user",
+        "Office_not_used": true
+      },
+      "manual_observation_model": {
+        "parsed_columns": 12
+      },
+      "independent_reference": {
+        "parsed_columns": 11
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:400-410",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY, not C#/SQL/WPF execution/translation, deployment data/schema/ACL, business/policy/financial/GL certification or ERP acceptance. User multiplicity/schema occurrence remains conditional and P7-110 POTENTIAL; UI lookup/update is counterevidence to always-duplicate accounts. NULL/period/row/event fixtures are not runtime observations. Accrual child initialization/private-source/binder gates persist. No real data, secrets, file export, Office/formula interpreter, SDK/COM/device/provider/process/shell executed."
+    },
+    {
+      "id": "ALG7B9-15",
+      "title": "CSV syntax, finalization and inactive text are separate requirements",
+      "finding_ids": "P7-049",
+      "hand_selected_inputs": {
+        "literal_cell": "=INERT_FIXTURE",
+        "formula_engine_executed": false,
+        "consumer_policy_unresolved": true
+      },
+      "manual_observation_model": {
+        "inactive_text_guarantee": "unresolved"
+      },
+      "independent_reference": {
+        "inactive_text_guarantee": "approved-consumer-contract-required"
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:400-414",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY, not C#/SQL/WPF execution/translation, deployment data/schema/ACL, business/policy/financial/GL certification or ERP acceptance. User multiplicity/schema occurrence remains conditional and P7-110 POTENTIAL; UI lookup/update is counterevidence to always-duplicate accounts. NULL/period/row/event fixtures are not runtime observations. Accrual child initialization/private-source/binder gates persist. No real data, secrets, file export, Office/formula interpreter, SDK/COM/device/provider/process/shell executed."
+    },
+    {
+      "id": "ALG7B9-16",
+      "title": "SummaryQ finalizes a using block before launching a consumer",
+      "finding_ids": "P7-108",
+      "hand_selected_inputs": {
+        "manual_events": [
+          "write",
+          "end-using-block",
+          "launch"
+        ],
+        "actual_IO_or_shell_executed": false
+      },
+      "manual_observation_model": {
+        "finalized_before_launch": true
+      },
+      "independent_reference": {
+        "finalized_before_launch": true
+      },
+      "difference_expected": false,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:396-414",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY, not C#/SQL/WPF execution/translation, deployment data/schema/ACL, business/policy/financial/GL certification or ERP acceptance. User multiplicity/schema occurrence remains conditional and P7-110 POTENTIAL; UI lookup/update is counterevidence to always-duplicate accounts. NULL/period/row/event fixtures are not runtime observations. Accrual child initialization/private-source/binder gates persist. No real data, secrets, file export, Office/formula interpreter, SDK/COM/device/provider/process/shell executed."
+    },
+    {
+      "id": "ALG7B9-17",
+      "title": "The implemented type5 route carries GlobalID plus type",
+      "finding_ids": "P7-061",
+      "hand_selected_inputs": {
+        "receipts": [
+          {
+            "no": 7,
+            "gid": "A",
+            "type": 5
+          },
+          {
+            "no": 7,
+            "gid": "B",
+            "type": 5
+          }
+        ],
+        "chosen_gid": "B"
+      },
+      "manual_observation_model": {
+        "selected_gid": "B",
+        "type": 5
+      },
+      "independent_reference": {
+        "selected_gid": "B",
+        "type": 5
+      },
+      "difference_expected": false,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:424-435;SmartAuditERP/Form_WPF/frmSandQ.xaml.cs:624-663",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY, not C#/SQL/WPF execution/translation, deployment data/schema/ACL, business/policy/financial/GL certification or ERP acceptance. User multiplicity/schema occurrence remains conditional and P7-110 POTENTIAL; UI lookup/update is counterevidence to always-duplicate accounts. NULL/period/row/event fixtures are not runtime observations. Accrual child initialization/private-source/binder gates persist. No real data, secrets, file export, Office/formula interpreter, SDK/COM/device/provider/process/shell executed."
+    },
+    {
+      "id": "ALG7B9-18",
+      "title": "A nullable missing employee account is a preparation gate before child handoff",
+      "finding_ids": "P7-002;H7B9-03",
+      "hand_selected_inputs": {
+        "employee_account": null,
+        "SQL_NULL_fallback": "",
+        "CSharp_not_executed": true,
+        "Accounts_Index_Code_in_local_DDL": "int"
+      },
+      "manual_observation_model": {
+        "empty_account_has_valid_int_identity": false,
+        "child_handoff_ready": false
+      },
+      "independent_reference": {
+        "outcome": "explicit-unknown-account-policy-before-handoff"
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptReseved.xaml.cs:107-150;SmartAuditERP/Properties/Resources.resx:38-58;SmartAuditERP/Properties/Resources.resx:734-749",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast ONLY, not C#/SQL/WPF execution/translation, deployment data/schema/ACL, business/policy/financial/GL certification or ERP acceptance. User multiplicity/schema occurrence remains conditional and P7-110 POTENTIAL; UI lookup/update is counterevidence to always-duplicate accounts. NULL/period/row/event fixtures are not runtime observations. Accrual child initialization/private-source/binder gates persist. No real data, secrets, file export, Office/formula interpreter, SDK/COM/device/provider/process/shell executed."
+    }
+  ],
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B9-01",
+      "title": "Payroll restricted period adds a predicate only inside both successful parses",
+      "finding_ids": "P7-109",
+      "documented_observation": "The invalid restricted-period path has no rejection before SQL construction. Numeric out-of-range month13 is a different validation case, not proof of a missing predicate.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptSalary.xaml.cs:57-88",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only, not semantic callgraph, SQL/parser execution, deployed constraints/identity, authorization bypass, WPF rendering/lifecycle/GL verification or latency/leak/index measurement. Application not imported or executed."
+    },
+    {
+      "id": "ST7B9-02",
+      "title": "Free month/year text and whole-period switch are wired to Show",
+      "finding_ids": "P7-109",
+      "documented_observation": "Text inputs can hold unparsable or empty values after disabling all-period. No UI rendering or input automation executed.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptSalary.xaml:181-225;SmartAuditERP/Form_WPF/frmRptSalary.xaml.cs:44-50",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only, not semantic callgraph, SQL/parser execution, deployed constraints/identity, authorization bypass, WPF rendering/lifecycle/GL verification or latency/leak/index measurement. Application not imported or executed."
+    },
+    {
+      "id": "ST7B9-03",
+      "title": "SummaryQ joins users on employee and sums every materialized row",
+      "finding_ids": "P7-110",
+      "documented_observation": "Conditional multiplicity transfers to both rows and total; deployed duplicate users or absent external uniqueness have not been established.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:233-251;SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:277-315",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only, not semantic callgraph, SQL/parser execution, deployed constraints/identity, authorization bypass, WPF rendering/lifecycle/GL verification or latency/leak/index measurement. Application not imported or executed."
+    },
+    {
+      "id": "ST7B9-04",
+      "title": "Local users DDL keys id while user editor searches and updates the employee match",
+      "finding_ids": "P7-110",
+      "documented_observation": "Editor intent is counterevidence to claiming duplicate active users always occur. Query cardinality still requires a deployed contract; potential is not promoted by the fixture.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Properties/Resources.resx:2166-2179;SmartAuditERP/Form_WPF/frmAddUsers.xaml.cs:210-249",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only, not semantic callgraph, SQL/parser execution, deployed constraints/identity, authorization bypass, WPF rendering/lifecycle/GL verification or latency/leak/index measurement. Application not imported or executed."
+    },
+    {
+      "id": "ST7B9-05",
+      "title": "Branch lookup/id mapping and account branch column require a schema contract",
+      "finding_ids": "P2-010",
+      "documented_observation": "The selected account Code comes from an int column/noneditable lookup: interpolation alone is not a proven reachable SQL-injection extension. Branch/Acc_branch mismatch is a local schema gate, not deployment proof.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:80-117;SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:196-207;SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:350-362;SmartAuditERP/Properties/Resources.resx:38-58",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only, not semantic callgraph, SQL/parser execution, deployed constraints/identity, authorization bypass, WPF rendering/lifecycle/GL verification or latency/leak/index measurement. Application not imported or executed."
+    },
+    {
+      "id": "ST7B9-06",
+      "title": "Payroll report queries do not add a local authorized branch predicate",
+      "finding_ids": "P2-010",
+      "documented_observation": "Reading/labeling a branch is not a BranchScope intersection. No inference of a deployed role/server bypass or global absence of authorization.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptSalary.xaml.cs:75-86;SmartAuditERP/Form_WPF/frmRptReseved.xaml.cs:62-68",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only, not semantic callgraph, SQL/parser execution, deployed constraints/identity, authorization bypass, WPF rendering/lifecycle/GL verification or latency/leak/index measurement. Application not imported or executed."
+    },
+    {
+      "id": "ST7B9-07",
+      "title": "SummaryQ half-open DateTime parameters contrast with accrual short date strings",
+      "finding_ids": "P3-023",
+      "documented_observation": "Do not apply the midnight defect to the correct SummaryQ bound. SQL language/culture for the text predicate remains an additional contract, not an executed SQL test.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:214-224;SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:256-267;SmartAuditERP/Form_WPF/frmRptReseved.xaml.cs:188-199",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only, not semantic callgraph, SQL/parser execution, deployed constraints/identity, authorization bypass, WPF rendering/lifecycle/GL verification or latency/leak/index measurement. Application not imported or executed."
+    },
+    {
+      "id": "ST7B9-08",
+      "title": "Salary display recomputes net but child reader loads stored salary_net",
+      "finding_ids": "P7-006",
+      "documented_observation": "Display recomputation is not a writer remediation, disbursement proof or GL reconciliation. Occurrence and approved source of truth require independent acceptance.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptSalary.xaml.cs:75-121;SmartAuditERP/Form_WPF/frmSalaryPay.xaml.cs:359-398",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only, not semantic callgraph, SQL/parser execution, deployed constraints/identity, authorization bypass, WPF rendering/lifecycle/GL verification or latency/leak/index measurement. Application not imported or executed."
+    },
+    {
+      "id": "ST7B9-09",
+      "title": "Accrual report assigns DataView/IDs before Show and child Loaded clears state",
+      "finding_ids": "P7-002",
+      "documented_observation": "A visible report DataView is not the save collection, and Loaded occurs after these assignments. No runtime event dispatch or save/binder executed.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptReseved.xaml.cs:155-168;SmartAuditERP/Form_WPF/FrmReseved.xaml.cs:37-104;SmartAuditERP/Form_WPF/FrmReseved.xaml.cs:355-370;SmartAuditERP/Form_WPF/FrmReseved.xaml:329-357",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only, not semantic callgraph, SQL/parser execution, deployed constraints/identity, authorization bypass, WPF rendering/lifecycle/GL verification or latency/leak/index measurement. Application not imported or executed."
+    },
+    {
+      "id": "ST7B9-10",
+      "title": "Accrual preparation normalizes missing account to empty then converts to int",
+      "finding_ids": "P7-002;H7B9-03",
+      "documented_observation": "Missing/orphan employee account can block before child handoff. This is documented under that preparation/handoff contract, not an additional conversion finding or an assertion that alphanumeric account codes are valid in Accounts_Index.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptReseved.xaml.cs:107-150;SmartAuditERP/Properties/Resources.resx:734-749;SmartAuditERP/Properties/Resources.resx:38-58",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only, not semantic callgraph, SQL/parser execution, deployed constraints/identity, authorization bypass, WPF rendering/lifecycle/GL verification or latency/leak/index measurement. Application not imported or executed."
+    },
+    {
+      "id": "ST7B9-11",
+      "title": "SummaryQ print buttons and settings reach a template check with no renderer",
+      "finding_ids": "P1-033;P1-004",
+      "documented_observation": "A file-existence condition alone does not render. No fake REPX, print result or FlowDocument-loss claim is invented.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:145-168;SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:376-378;SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:514-545",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only, not semantic callgraph, SQL/parser execution, deployed constraints/identity, authorization bypass, WPF rendering/lifecycle/GL verification or latency/leak/index measurement. Application not imported or executed."
+    },
+    {
+      "id": "ST7B9-12",
+      "title": "Salary explicitly reports print and preview as unavailable",
+      "finding_ids": "P1-033",
+      "documented_observation": "An explicitly unavailable capability is not an implemented renderer or a new finding per button. Requirement/disposition is retained under the historical command root.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptSalary.xaml.cs:165-180;SmartAuditERP/Form_WPF/frmRptSalary.xaml:475-485",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only, not semantic callgraph, SQL/parser execution, deployed constraints/identity, authorization bypass, WPF rendering/lifecycle/GL verification or latency/leak/index measurement. Application not imported or executed."
+    },
+    {
+      "id": "ST7B9-13",
+      "title": "Type5 routes by GlobalID; type6 and10 launches are only comments/messages",
+      "finding_ids": "P1-033;P7-061",
+      "documented_observation": "Counterevidence to a local-number-only type5 navigation claim. Commented child code is not execution/coverage of suppliers or Android.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:424-451",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only, not semantic callgraph, SQL/parser execution, deployed constraints/identity, authorization bypass, WPF rendering/lifecycle/GL verification or latency/leak/index measurement. Application not imported or executed."
+    },
+    {
+      "id": "ST7B9-14",
+      "title": "CSV has raw N2 fields but correctly closes a using block before launch",
+      "finding_ids": "P7-048;P7-049;P7-108",
+      "documented_observation": "CSV syntax and consumer active-content risks remain distinct; correct closure is counterevidence to P7-108 here. No actual export, reader, shell or spreadsheet used.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:396-414",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only, not semantic callgraph, SQL/parser execution, deployed constraints/identity, authorization bypass, WPF rendering/lifecycle/GL verification or latency/leak/index measurement. Application not imported or executed."
+    },
+    {
+      "id": "ST7B9-15",
+      "title": "Home caches all three parents and their exit handlers Close them",
+      "finding_ids": "P1-030",
+      "documented_observation": "The existing lifecycle root extends to these parents; new child instances and the separate Hide path are not automatically the same defect.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Home.xaml.cs:125-126;SmartAuditERP/Home.xaml.cs:176-177;SmartAuditERP/Home.xaml.cs:242-243;SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:374-374;SmartAuditERP/Form_WPF/frmRptSalary.xaml.cs:166-167;SmartAuditERP/Form_WPF/frmRptReseved.xaml.cs:202-203",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only, not semantic callgraph, SQL/parser execution, deployed constraints/identity, authorization bypass, WPF rendering/lifecycle/GL verification or latency/leak/index measurement. Application not imported or executed."
+    },
+    {
+      "id": "ST7B9-16",
+      "title": "Home applies permission before Show; menu enablement and child guards remain separate",
+      "finding_ids": "P1-013",
+      "documented_observation": "Local snippets do not certify all WPF/server permission paths or prove a bypass/actual production access. Historical potential classification is preserved.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Home.xaml.cs:3037-3043;SmartAuditERP/Home.xaml.cs:3369-3375;SmartAuditERP/Home.xaml.cs:3645-3646;SmartAuditERP/Home.xaml:414-416;SmartAuditERP/Home.xaml:461-463;SmartAuditERP/Home.xaml:525-531;SmartAuditERP/Form_WPF/frmRptSalary.xaml.cs:129-155;SmartAuditERP/Form_WPF/frmRptReseved.xaml.cs:155-168",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only, not semantic callgraph, SQL/parser execution, deployed constraints/identity, authorization bypass, WPF rendering/lifecycle/GL verification or latency/leak/index measurement. Application not imported or executed."
+    },
+    {
+      "id": "ST7B9-17",
+      "title": "Synchronous Show clears rows before fill and updates total after row conversion",
+      "finding_ids": "P7-046",
+      "documented_observation": "The local failure-state issue is not P7-054 worker control access or P7-107 two asynchronous successful requests. Sync/N+1 structure is not a latency/leak measurement.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:174-322;SmartAuditERP/Form_WPF/frmRptSalary.xaml.cs:57-127",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only, not semantic callgraph, SQL/parser execution, deployed constraints/identity, authorization bypass, WPF rendering/lifecycle/GL verification or latency/leak/index measurement. Application not imported or executed."
+    },
+    {
+      "id": "ST7B9-18",
+      "title": "DTOs retain typed keys and selected receipt writer uses employee identity",
+      "finding_ids": "H7B9-01;H7B9-02",
+      "documented_observation": "SalaryPay.id is a primary key in the selected DDL, not proof of a branch-local duplicate number. Selected writer EmpNo matches an employee-oriented join contract; every producer, authorization and GL relation is not certified.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Class_WPF/StockSyncItem.cs:21-37;SmartAuditERP/Class_WPF/SalaryRow.cs:1-16;SmartAuditERP/Class_WPF/ResevedRow.cs:1-15;SmartAuditERP/Form_WPF/frmSandQ.xaml.cs:914-929;SmartAuditERP/Properties/Resources.resx:1778-1800",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert source text only, not semantic callgraph, SQL/parser execution, deployed constraints/identity, authorization bypass, WPF rendering/lifecycle/GL verification or latency/leak/index measurement. Application not imported or executed."
+    }
+  ],
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Class_WPF/ResevedRow.cs",
+      "start": 1,
+      "end": 15,
+      "selected_text_sha256": "c4a38931670bf699bc846f72d1e8d655bbc41e6e7ee5e235b49d27ac472e8a13"
+    },
+    {
+      "path": "SmartAuditERP/Class_WPF/SalaryRow.cs",
+      "start": 1,
+      "end": 16,
+      "selected_text_sha256": "7c66cae47c78337522a95ba03c0d63dc99e542b27c9bfa5cd032fa018ae94db2"
+    },
+    {
+      "path": "SmartAuditERP/Class_WPF/StockSyncItem.cs",
+      "start": 21,
+      "end": 37,
+      "selected_text_sha256": "68de42bb688794ed4c2a4d328f3c01bf08e193ab99a487f21d5e831341348814"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/FrmReseved.xaml",
+      "start": 329,
+      "end": 357,
+      "selected_text_sha256": "40bb6e71a9e1dc70197e39f2420ed6c3bc47d48db7694ba1f3d606a9c1e6fb37"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/FrmReseved.xaml.cs",
+      "start": 37,
+      "end": 104,
+      "selected_text_sha256": "6f0d89365933354be99efc1c3a5460f8892a2bd238092cb2209433790cf4f241"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/FrmReseved.xaml.cs",
+      "start": 355,
+      "end": 370,
+      "selected_text_sha256": "a82c454ae5ef70c169e71b431568a33f2a2690be4d528345c8789adffa6ddff4"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmAddUsers.xaml.cs",
+      "start": 210,
+      "end": 249,
+      "selected_text_sha256": "0de045fa83b98835691950e6596b02573f18a44c724ca51ef7174f4dcbd89d4e"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptReseved.xaml.cs",
+      "start": 62,
+      "end": 68,
+      "selected_text_sha256": "62066337d7987024a220830b7928f0f5cc441b0aa4e3ea895a776ee6a2eda832"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptReseved.xaml.cs",
+      "start": 107,
+      "end": 150,
+      "selected_text_sha256": "92b00c57c777369d5fad3eaaa07690af325bd74d58f2abe90ccd8d9aff08ccf3"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptReseved.xaml.cs",
+      "start": 155,
+      "end": 168,
+      "selected_text_sha256": "85c1559cceef5ad8d99b3c7920f79c2fa933a90150608f5fda180f5966cff7a3"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptReseved.xaml.cs",
+      "start": 188,
+      "end": 199,
+      "selected_text_sha256": "d1d401ab976744a9ad41a7ba1743dd9d07b06f9af608bb6eb8dbcc0b245958ac"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptReseved.xaml.cs",
+      "start": 202,
+      "end": 203,
+      "selected_text_sha256": "58712623c8b3934edc388df871b814af2400fa95804e00a0a934cf93efd64b1a"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSalary.xaml",
+      "start": 181,
+      "end": 225,
+      "selected_text_sha256": "4c5b8d700381b329f014ae1ca7d90820cbbb4b13cdbf3ed06c6f414769e591a3"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSalary.xaml",
+      "start": 475,
+      "end": 485,
+      "selected_text_sha256": "3f7950318520a959528687c5961ca6428b4ca10bae63842b37bd7cb2184ad830"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSalary.xaml.cs",
+      "start": 44,
+      "end": 50,
+      "selected_text_sha256": "5b689324fda99704c1f70c1d7ef6bca10be16087c59dc158e9cb4b82d3ecbf30"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSalary.xaml.cs",
+      "start": 57,
+      "end": 88,
+      "selected_text_sha256": "c5a3b94942a137689ba628d8b26ec9e0e4e15590c6fe43509eb864b980c4cb1a"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSalary.xaml.cs",
+      "start": 57,
+      "end": 127,
+      "selected_text_sha256": "b0656ad2d640e69826a76c2deebb8a3ec2b6930a9054ec305bb03f5e65f65ea5"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSalary.xaml.cs",
+      "start": 75,
+      "end": 86,
+      "selected_text_sha256": "9c8ebf94bdaae067272d7235f28f13a430910f4985a31dd0e472231703b471a7"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSalary.xaml.cs",
+      "start": 75,
+      "end": 121,
+      "selected_text_sha256": "5d91d882ef1241f7989abde5c9ee3957f6f58203260366a93ca5db3856d2843f"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSalary.xaml.cs",
+      "start": 129,
+      "end": 155,
+      "selected_text_sha256": "9f323ce8e26ba9f5bbac67b4a8f7705be55cceaff9b3c5ef553a0d79f90d6590"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSalary.xaml.cs",
+      "start": 165,
+      "end": 180,
+      "selected_text_sha256": "479177fb845c098a4e26a26dccdc03d922f30603f3f16ec8e05cb47c6376921e"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSalary.xaml.cs",
+      "start": 166,
+      "end": 167,
+      "selected_text_sha256": "58712623c8b3934edc388df871b814af2400fa95804e00a0a934cf93efd64b1a"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSalaryPay.xaml.cs",
+      "start": 359,
+      "end": 398,
+      "selected_text_sha256": "0ea99e00ef6f776204178acfecb05d838fa5f7700c648e7190d4843e1c952b09"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandQ.xaml.cs",
+      "start": 914,
+      "end": 929,
+      "selected_text_sha256": "7ce76ab474d7b4aba5d66724e4c905212eb42e23b876205d1711f54d554bc131"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs",
+      "start": 80,
+      "end": 117,
+      "selected_text_sha256": "98e9cc851392cd1aae79c2159010f61fbc10059d0578245c84cd0a5dafb1d3f3"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs",
+      "start": 145,
+      "end": 168,
+      "selected_text_sha256": "277046705740e262f3ea38b15574953f516bf35f16c8bdf8dcc3c5f1da474919"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs",
+      "start": 174,
+      "end": 322,
+      "selected_text_sha256": "0cf7d65392e5ec3df243eefb4c2d0b401d66373242256b8335aa4d413cded6fd"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs",
+      "start": 196,
+      "end": 207,
+      "selected_text_sha256": "3390d389cfcdb3446cdb17857261ed153dcf4c606a94afb427136403de26f732"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs",
+      "start": 214,
+      "end": 224,
+      "selected_text_sha256": "aaf260bc77011cad0677b546d91dfb209de92dab3d4d3b111695ac65f314f162"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs",
+      "start": 233,
+      "end": 251,
+      "selected_text_sha256": "7e08591dceaf6b926911435bc74d864537f3a584c43505751c45ef07773ef938"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs",
+      "start": 256,
+      "end": 267,
+      "selected_text_sha256": "f517252aaf51b97d12176cece7a202d0fa41d247a2c5398374a14d58aaf42f69"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs",
+      "start": 277,
+      "end": 315,
+      "selected_text_sha256": "2b8e11ff64ee29467f754ad994a93393695dc56877d65ae5a0bedda3692d8e87"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs",
+      "start": 350,
+      "end": 362,
+      "selected_text_sha256": "b06030d3b04e9f36b1147e995f200e33ab3fc959cd9b7b48f1c78125b82a07c7"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs",
+      "start": 374,
+      "end": 374,
+      "selected_text_sha256": "12e1913586a5dc69d1ac868c7a7a04420d3a1a73619fb70a1ab99894ce3a9438"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs",
+      "start": 376,
+      "end": 378,
+      "selected_text_sha256": "0e1cbe916db3f3d864d3fea948619bb446ab5f7eff41494aaaba742afbb53ca9"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs",
+      "start": 396,
+      "end": 414,
+      "selected_text_sha256": "d5c6ec86786adc767a759f78fa238bf50d1cf2f0136dc3ebb41e9a70c234e056"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs",
+      "start": 424,
+      "end": 451,
+      "selected_text_sha256": "8fef28678cf6b50bdba39f7caa9ff26b8c1fea378e5f9b907843db0f1fad2135"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs",
+      "start": 514,
+      "end": 545,
+      "selected_text_sha256": "53705bd8b5c52d3b9bc2768cd9c066e5338a6dc95e2bf07b1beac5c005c2c8b6"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml",
+      "start": 414,
+      "end": 416,
+      "selected_text_sha256": "efe5661ade0dbba564db7e2bc148f75edd4c72a39e14035f038dfac48541ace1"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml",
+      "start": 461,
+      "end": 463,
+      "selected_text_sha256": "255d951e20b0045730841f71df395e37e091b963889a2932222a9a1cada580b2"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml",
+      "start": 525,
+      "end": 531,
+      "selected_text_sha256": "cf580eb0814adb34691d78485fbb4fb9f145a3746e85401b72345f9c85a86b32"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "start": 125,
+      "end": 126,
+      "selected_text_sha256": "281c389c98aadb84615e6128986b699891384bfd56e0b186969ea16fd145db90"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "start": 176,
+      "end": 177,
+      "selected_text_sha256": "ce3dbca71cfda4933fd8648cfbc9e152c7ddb4f60a0ecf5108a18b0a21ed3023"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "start": 242,
+      "end": 243,
+      "selected_text_sha256": "7038de86c6894dee94f2b57b3f2531ba682ba0ea3551ccc2ae6e6871fc2435cf"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "start": 3037,
+      "end": 3043,
+      "selected_text_sha256": "5ca68d0431ff8fbd746aefa864442889a9a1fda495f8909a7ff7d6ddd0bba11e"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "start": 3369,
+      "end": 3375,
+      "selected_text_sha256": "d32dc1cd94cf74d726d67d5aac175fc20761d6f5777afea4c6ebcb0da00175fd"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "start": 3645,
+      "end": 3646,
+      "selected_text_sha256": "212aae174f76ad61fb58859a6c36b5a349b97cdf8063e2e4b380918adbae203e"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 38,
+      "end": 58,
+      "selected_text_sha256": "84a3a14787d39647e7c61207e525cf539d48bc7e03497a10b0f16185f5bf5451"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 734,
+      "end": 749,
+      "selected_text_sha256": "29ac55230be67fb2d38f5cc0dc405b4e0b80585bccb4feec8a53aec81e862cd7"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 1778,
+      "end": 1800,
+      "selected_text_sha256": "4b50b5a9b311cf8eb05efd87dcc9146e6f9756e8f7e1d4e4a04e041522be5179"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 2166,
+      "end": 2179,
+      "selected_text_sha256": "2a38b2da92ed4dbe6e4287fa0ce4474730c64a531e716ea41be13c150ed52217"
+    }
+  ],
+  "application_code_imported_or_executed": false,
+  "application_remediation_performed": false,
+  "real_business_or_secret_data_used": false,
+  "spreadsheet_or_formula_interpreter_executed": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "errors": []
+}

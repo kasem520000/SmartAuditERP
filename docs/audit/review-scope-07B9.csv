@@ -1,0 +1,20 @@
+path,review_state,ranges,focus
+SmartAuditERP/Class/MainClass.cs,selected-static-source-slices-not-runtime-certified,45-49,مصنع اتصالجديد فقط؛ لاكلملكية/تسريبموارد.
+SmartAuditERP/Class/Reseved.cs,selected-static-source-slices-not-runtime-certified,268-345,binderالقديمDataRow وبوابةNULL فقط؛ لاكلSaveReceipt1 أوقبولقيد.
+SmartAuditERP/Class_WPF/ResevedRow.cs,selected-static-source-slices-not-runtime-certified,1-15,DTO رأس تقرير الاستحقاق فقط.
+SmartAuditERP/Class_WPF/SalaryRow.cs,selected-static-source-slices-not-runtime-certified,1-16,DTO صف تقرير الرواتب؛ ليس SalaryRow المتداخل فيFrmReseved.
+SmartAuditERP/Class_WPF/StockSyncItem.cs,selected-static-source-slices-not-runtime-certified,21-37,ReceiptQItem فقط داخل ملفStockSyncItem؛ لا بقية مزامنة المخزون.
+SmartAuditERP/Form_WPF/FrmReseved.xaml,selected-static-source-slices-not-runtime-certified,329-357,بدايةGrid واختيارIsSelected مقابلDataViewفقط، لاكلواجهته.
+SmartAuditERP/Form_WPF/FrmReseved.xaml.cs,selected-static-source-slices-not-runtime-certified,37-104;355-429;888-907,المصدر الداخلي وLoaded/CLR والجزء المختار منsave ونوعصفه؛ لا بقية محرر الاستحقاق أوترحيله.
+SmartAuditERP/Form_WPF/frmAddUsers.xaml.cs,selected-static-source-slices-not-runtime-certified,210-249,شاهد مقابل:lookupبالموظف ثمinsert/update؛ لا بيانات/كلمات مرور فعلية ولا إغلاقكلالهوية.
+SmartAuditERP/Form_WPF/frmRptReseved.xaml,selected-static-source-slices-not-runtime-certified,1-394,جسم/XAML محلي كامل لـfrmRptReseved فقط؛ لا كل caller/child/template/schema/ACL أونشر/قبول. Reseved هنا استحقاق رواتب لاحجز بحري.
+SmartAuditERP/Form_WPF/frmRptReseved.xaml.cs,selected-static-source-slices-not-runtime-certified,1-226,جسم/XAML محلي كامل لـfrmRptReseved فقط؛ لا كل caller/child/template/schema/ACL أونشر/قبول. Reseved هنا استحقاق رواتب لاحجز بحري.
+SmartAuditERP/Form_WPF/frmRptSalary.xaml,selected-static-source-slices-not-runtime-certified,1-490,جسم/XAML محلي كامل لـfrmRptSalary فقط؛ لا كل caller/child/template/schema/ACL أونشر/قبول. Reseved هنا استحقاق رواتب لاحجز بحري.
+SmartAuditERP/Form_WPF/frmRptSalary.xaml.cs,selected-static-source-slices-not-runtime-certified,1-191,جسم/XAML محلي كامل لـfrmRptSalary فقط؛ لا كل caller/child/template/schema/ACL أونشر/قبول. Reseved هنا استحقاق رواتب لاحجز بحري.
+SmartAuditERP/Form_WPF/frmSalaryPay.xaml.cs,selected-static-source-slices-not-runtime-certified,340-354;359-398;471-487;531-553,RecalcNet وNavigate/ReadData ومقاطع writerالصافي/الهوية فقط؛ لا دورة صرف كاملة أوGL.
+SmartAuditERP/Form_WPF/frmSandQ.xaml.cs,selected-static-source-slices-not-runtime-certified,624-683;914-929,Navigate/ReadData وهوية كاتب سند5 فقط، لاحفظ/تعديل/حذف أوتفويض الطفل كله.
+SmartAuditERP/Form_WPF/frmSummaryQ.xaml,selected-static-source-slices-not-runtime-certified,1-587,جسم/XAML محلي كامل لـfrmSummaryQ فقط؛ لا كل caller/child/template/schema/ACL أونشر/قبول. Reseved هنا استحقاق رواتب لاحجز بحري.
+SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs,selected-static-source-slices-not-runtime-certified,1-559,جسم/XAML محلي كامل لـfrmSummaryQ فقط؛ لا كل caller/child/template/schema/ACL أونشر/قبول. Reseved هنا استحقاق رواتب لاحجز بحري.
+SmartAuditERP/Home.xaml,selected-static-source-slices-not-runtime-certified,414-416;461-463;525-531,ربط قوائم السندات والرواتب وحالاتIsEnabled فقط؛ لا إتاحة دور منشور.
+SmartAuditERP/Home.xaml.cs,selected-static-source-slices-not-runtime-certified,125-126;176-177;242-243;3037-3043;3369-3375;3643-3646,static refs ومداخل التقارير/المحررين وتطبيقApplyقبلShow فقط؛ لا كلHome أوACL.
+SmartAuditERP/Properties/Resources.resx,selected-static-source-slices-not-runtime-certified,38-58;242-275;714-751;1496-1532;1778-1800;2166-2179;4523-4554,DDL محلي للحساب/الفرع/الموظف/السند/SalaryPay/Users/Salary_Res/details؛ لاكلschema/ترحيلات أوبياناتنشر.
