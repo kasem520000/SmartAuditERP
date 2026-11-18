@@ -1,0 +1,18 @@
+path,review_state,ranges,focus
+SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs,selected-static-source-slices-not-runtime-certified,1-905,الجسم المحلي الكامل لقائمة الدخل الجديدة: المعايير والأستاذ والمخزون والبطاقات وDTO وCSV وREPX؛ لا كل feature أو نشر.
+SmartAuditERP/Form_WPF/IncomeStatementForm.xaml,selected-static-source-slices-not-runtime-certified,1-677,XAML الأب الجديد كاملاً؛ أحداث وأسماء وملخصات وقنوات. لا rendering أو قبول accessibility/RTL في7C.
+SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs,selected-static-source-slices-not-runtime-certified,1-638,جسم قائمة الدخل التحليلية كاملاً؛ FinalAcc2 والفترة والفرع والمخزون وحقول افتتاحي غير موصولة وCSV/REPX.
+SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml,selected-static-source-slices-not-runtime-certified,1-511,XAML التحليلية كاملاً؛ أسماء فعلية وغياب txtFirstVal محلياً. لا نفي namescope ديناميكي في كل نشر.
+SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs,selected-static-source-slices-not-runtime-certified,1-691,جسم الميزانية كاملاً؛ FinalAcc1 والتجميع وoverride الصفر والإقفال المحلي وHTML/FlowDocument وبوابةREPX.
+SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml,selected-static-source-slices-not-runtime-certified,1-324,XAML الميزانية كاملاً؛ افتراضيات الكل وتحديد المخزون وأحداث المخرج.
+SmartAuditERP/Class_WPF/IncomeStatementRow.cs,selected-static-source-slices-not-runtime-certified,1-32,نموذج الصف الجديد كاملاً؛ مبلغ decimal وتصنيف وكود وملاحظات ولون، لا DTO طباعة تلقائي.
+SmartAuditERP/Class/RestrictionData.cs,selected-static-source-slices-not-runtime-certified,1-172,DTO مالي مشترك كامل بقراءة cp1256 fallback فقط دون تحويل ترميز؛ وجود الحقول لا يثبت تصديرها.
+SmartAuditERP/Class/Inventory.cs,selected-static-source-slices-not-runtime-certified,462-487;504-530,InventoryCost وbranch/date/output ومساعد الفشل→0؛ InventoryCostForBalanceSheet موجود لكنه ليس استدعاء الآباء هنا.
+SmartAuditERP/Class/Accounting.cs,selected-static-source-slices-not-runtime-certified,1-14,تعريف BranchCondition فقط؛ whitespace ليست بمفردها تجاوز تفويض.
+SmartAuditERP/Class/User.cs,selected-static-source-slices-not-runtime-certified,108-114,ShowBranchsAccounts يضع whitespace؛ دليل مضاد لتعميم تقييد قائمة فرع على أنه سياسة إذن.
+SmartAuditERP/Class/MainClass.cs,selected-static-source-slices-not-runtime-certified,324-455,Apply قبل Show وأسماءTag وvisual-tree/print وDoApplyUserSett؛ لا تفويض نشر أو إثبات وصول زر.
+SmartAuditERP/Home.xaml.cs,selected-static-source-slices-not-runtime-certified,324-341;2669-2704,callers الثلاثة وtype/Tag قبل Show؛ CurrentUICulture لا يثبت CurrentCulture للأرقام.
+SmartAuditERP/Home.xaml,selected-static-source-slices-not-runtime-certified,335-345,قائمة الجديدة بلا تعطيل افتراضي صريح والأخريان معطلتان؛ لا إثبات إتاحتهما بعد تحميل إذن نشر.
+SmartAuditERP/Form_WPF/frmSafeGrd.xaml.cs,selected-static-source-slices-not-runtime-certified,1-95;374-520;631-661;752-757,مقاطع طفل الجرد: constructor/collection ومصادر كلفة وempty-sum0 واعتماد/إلغاء. لا كل الطفل أو قبول مخططه.
+SmartAuditERP/Form_WPF/frmSafeGrd.xaml,selected-static-source-slices-not-runtime-certified,1-13;284-306;819-844,اسم/حدث الطفل والمستودع وزر الاعتماد Collapsed الذي يظهره الأب؛ لا وراثة تغطية الطفل.
+SmartAuditERP/Properties/Resources.resx,selected-static-source-slices-not-runtime-certified,242-276;2607-2607;2630-2654;48166-48209,DDL الفروع وseed دليل/FinalAcc وتعريفا InventoryCost CREATE/ALTER المحليان، لا شهادة مخطط أو تعريف نشر.

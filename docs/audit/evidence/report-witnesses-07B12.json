@@ -1,0 +1,1199 @@
+{
+  "phase": "7B12-partial-static-audit",
+  "application_code_imported_or_executed": false,
+  "application_remediation_performed": false,
+  "real_business_or_secret_data_used": false,
+  "spreadsheet_or_formula_interpreter_executed": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "default_aggregate_gate_not_assumed_resolved": true,
+  "supplied_sql_not_certified_deployed": true,
+  "stock_child_schema_not_assumed_resolved": true,
+  "manual_metric_models_not_financial_acceptance": true,
+  "retained_additive_B10_arithmetic_erratum": {
+    "entered_quantity": 2,
+    "equality": 12,
+    "base_unit_cost": 5,
+    "local_cost": 10,
+    "reference_cost": 120,
+    "archive_rewritten": false
+  },
+  "illustration_count": 22,
+  "static_lexical_contract_check_count": 22,
+  "illustrations": [
+    {
+      "id": "ALG7B12-01",
+      "title": "CSV writer changes effective path while caller reports and opens the XLSX choice",
+      "finding_ids": "P7-116",
+      "hand_selected_inputs": {
+        "chosen_path": "report.xlsx",
+        "write_succeeds_assumed": true,
+        "actual_filesystem": false
+      },
+      "manual_observation_model": {
+        "written": "report.csv",
+        "displayed": "report.xlsx",
+        "opened": "report.xlsx"
+      },
+      "independent_reference": {
+        "written": "report.csv",
+        "displayed": "report.csv",
+        "opened": "report.csv"
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:707-765;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml:654-660",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast, not execution/translation of financial C#/SQL or WPF/REPX/Office, financial/policy/deployed-schema/ACL acceptance or remediation. Stock-child P4-030 is NOT assumed fixed; a valid approved-zero model isolates the sentinel cause, not certify an empty child as valid. Prior statement aggregate P3-022 remains in its own parent. Supplied SQL is not certified deployed. No real data/secrets, actual exports, formula/HTML interpreter, printer or shell. No measured index/leak/latency."
+    },
+    {
+      "id": "ALG7B12-02",
+      "title": "An existing chosen XLSX can remain the old candidate despite a successful new CSV write",
+      "finding_ids": "P7-116",
+      "hand_selected_inputs": {
+        "chosen_file_preexists_assumed": true,
+        "chosen_generation": "OLD",
+        "effective_generation": "NEW",
+        "actual_shell": false
+      },
+      "manual_observation_model": {
+        "opened_path": "report.xlsx",
+        "opened_generation": "OLD"
+      },
+      "independent_reference": {
+        "opened_path": "report.csv",
+        "opened_generation": "NEW"
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:726-740;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:748-765",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast, not execution/translation of financial C#/SQL or WPF/REPX/Office, financial/policy/deployed-schema/ACL acceptance or remediation. Stock-child P4-030 is NOT assumed fixed; a valid approved-zero model isolates the sentinel cause, not certify an empty child as valid. Prior statement aggregate P3-022 remains in its own parent. Supplied SQL is not certified deployed. No real data/secrets, actual exports, formula/HTML interpreter, printer or shell. No measured index/leak/latency."
+    },
+    {
+      "id": "ALG7B12-03",
+      "title": "Approved zero is replaced by auto stock because numeric zero doubles as unset",
+      "finding_ids": "P7-117",
+      "hand_selected_inputs": {
+        "approved": true,
+        "valid_zero_assumed": true,
+        "stock": 0,
+        "auto_value": 50,
+        "child_schema_gate_isolated_not_fixed": true
+      },
+      "manual_observation_model": {
+        "stock": 50
+      },
+      "independent_reference": {
+        "stock": 0
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:317-319;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:417-433;SmartAuditERP/Form_WPF/frmSafeGrd.xaml.cs:752-757",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast, not execution/translation of financial C#/SQL or WPF/REPX/Office, financial/policy/deployed-schema/ACL acceptance or remediation. Stock-child P4-030 is NOT assumed fixed; a valid approved-zero model isolates the sentinel cause, not certify an empty child as valid. Prior statement aggregate P3-022 remains in its own parent. Supplied SQL is not certified deployed. No real data/secrets, actual exports, formula/HTML interpreter, printer or shell. No measured index/leak/latency."
+    },
+    {
+      "id": "ALG7B12-04",
+      "title": "A nonzero override works and a cancelled new child does not replace it",
+      "finding_ids": "P7-117",
+      "hand_selected_inputs": {
+        "prior_approved_value": 20,
+        "child_approved": false,
+        "child_default_value": 0,
+        "auto_value": 50
+      },
+      "manual_observation_model": {
+        "stock": 20,
+        "source": "prior-approved"
+      },
+      "independent_reference": {
+        "stock": 20,
+        "source": "prior-approved"
+      },
+      "difference_expected": false,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:317-319;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:417-433;SmartAuditERP/Form_WPF/frmSafeGrd.xaml.cs:42-59",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast, not execution/translation of financial C#/SQL or WPF/REPX/Office, financial/policy/deployed-schema/ACL acceptance or remediation. Stock-child P4-030 is NOT assumed fixed; a valid approved-zero model isolates the sentinel cause, not certify an empty child as valid. Prior statement aggregate P3-022 remains in its own parent. Supplied SQL is not certified deployed. No real data/secrets, actual exports, formula/HTML interpreter, printer or shell. No measured index/leak/latency."
+    },
+    {
+      "id": "ALG7B12-05",
+      "title": "ABS returns/discounts plus a synthetic net-sales row inflate the revenue card",
+      "finding_ids": "P3-020",
+      "hand_selected_inputs": {
+        "sale_credit": 100,
+        "return_debit": 20,
+        "discount_debit": 5,
+        "other_metrics_isolated": true
+      },
+      "manual_observation_model": {
+        "net_sales_row": 100,
+        "revenue_card": 225
+      },
+      "independent_reference": {
+        "net_sales_row": 75,
+        "revenue_card": 75
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:295-316;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:408-464;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:597-605",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast, not execution/translation of financial C#/SQL or WPF/REPX/Office, financial/policy/deployed-schema/ACL acceptance or remediation. Stock-child P4-030 is NOT assumed fixed; a valid approved-zero model isolates the sentinel cause, not certify an empty child as valid. Prior statement aggregate P3-022 remains in its own parent. Supplied SQL is not certified deployed. No real data/secrets, actual exports, formula/HTML interpreter, printer or shell. No measured index/leak/latency."
+    },
+    {
+      "id": "ALG7B12-06",
+      "title": "Legitimate zero COGS triggers fallback that sums detail and summary layers",
+      "finding_ids": "P3-020",
+      "hand_selected_inputs": {
+        "opening": 0,
+        "purchases": 30,
+        "available": 30,
+        "closing_stock": 30,
+        "cogs": 0,
+        "raw_closing_GL_rows_absent": true
+      },
+      "manual_observation_model": {
+        "cogs_card": 90
+      },
+      "independent_reference": {
+        "cogs_card": 0
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:329-369;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:606-618",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast, not execution/translation of financial C#/SQL or WPF/REPX/Office, financial/policy/deployed-schema/ACL acceptance or remediation. Stock-child P4-030 is NOT assumed fixed; a valid approved-zero model isolates the sentinel cause, not certify an empty child as valid. Prior statement aggregate P3-022 remains in its own parent. Supplied SQL is not certified deployed. No real data/secrets, actual exports, formula/HTML interpreter, printer or shell. No measured index/leak/latency."
+    },
+    {
+      "id": "ALG7B12-07",
+      "title": "Expense and other-revenue prefixes can make cards disagree with the final net row",
+      "finding_ids": "P3-020",
+      "hand_selected_inputs": {
+        "revenue_isolated_and_aligned": 100,
+        "cogs": 0,
+        "expense31": 10,
+        "expense33": 20,
+        "other_revenue42": 5,
+        "duplicate_revenue_gate_isolated": true
+      },
+      "manual_observation_model": {
+        "expense_card": 10,
+        "net_card": 90
+      },
+      "independent_reference": {
+        "expense_card": 30,
+        "net_card": 75
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:377-399;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:492-497;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:622-631",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast, not execution/translation of financial C#/SQL or WPF/REPX/Office, financial/policy/deployed-schema/ACL acceptance or remediation. Stock-child P4-030 is NOT assumed fixed; a valid approved-zero model isolates the sentinel cause, not certify an empty child as valid. Prior statement aggregate P3-022 remains in its own parent. Supplied SQL is not certified deployed. No real data/secrets, actual exports, formula/HTML interpreter, printer or shell. No measured index/leak/latency."
+    },
+    {
+      "id": "ALG7B12-08",
+      "title": "All-branch GL can be paired with only the current branch stock value",
+      "finding_ids": "P7-065",
+      "hand_selected_inputs": {
+        "all_branches": true,
+        "current_branch": 1,
+        "stock_by_branch": {
+          "1": 50,
+          "2": 70
+        },
+        "branch_mapping_aligned_assumed": true
+      },
+      "manual_observation_model": {
+        "GL_branch_set": [
+          1,
+          2
+        ],
+        "stock_value": 50
+      },
+      "independent_reference": {
+        "GL_branch_set": [
+          1,
+          2
+        ],
+        "stock_value": 120
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:187-195;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:672-689;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:220-236;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:371-406;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:196-207;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:317-319",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast, not execution/translation of financial C#/SQL or WPF/REPX/Office, financial/policy/deployed-schema/ACL acceptance or remediation. Stock-child P4-030 is NOT assumed fixed; a valid approved-zero model isolates the sentinel cause, not certify an empty child as valid. Prior statement aggregate P3-022 remains in its own parent. Supplied SQL is not certified deployed. No real data/secrets, actual exports, formula/HTML interpreter, printer or shell. No measured index/leak/latency."
+    },
+    {
+      "id": "ALG7B12-09",
+      "title": "Opening-stock fallback lacks the selected branch and period predicates",
+      "finding_ids": "P7-065;H7B12-02",
+      "hand_selected_inputs": {
+        "selected_branch": 1,
+        "GL_opening": 0,
+        "opening_invoices": [
+          {
+            "branch": 1,
+            "value": 10
+          },
+          {
+            "branch": 2,
+            "value": 20
+          }
+        ],
+        "all_eligible_non_deleted_assumed": true
+      },
+      "manual_observation_model": {
+        "opening": 30
+      },
+      "independent_reference": {
+        "opening": 10
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:318-327;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:649-670",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast, not execution/translation of financial C#/SQL or WPF/REPX/Office, financial/policy/deployed-schema/ACL acceptance or remediation. Stock-child P4-030 is NOT assumed fixed; a valid approved-zero model isolates the sentinel cause, not certify an empty child as valid. Prior statement aggregate P3-022 remains in its own parent. Supplied SQL is not certified deployed. No real data/secrets, actual exports, formula/HTML interpreter, printer or shell. No measured index/leak/latency."
+    },
+    {
+      "id": "ALG7B12-10",
+      "title": "Period-only balance-sheet GL does not reconstruct nonzero opening balances",
+      "finding_ids": "P3-019",
+      "hand_selected_inputs": {
+        "opening_asset": 100,
+        "opening_liability": 100,
+        "movement": 0,
+        "stock": 0,
+        "closing_policy_assumed": true
+      },
+      "manual_observation_model": {
+        "asset": 0,
+        "liability": 0
+      },
+      "independent_reference": {
+        "asset": 100,
+        "liability": 100
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:193-230;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:334-395",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast, not execution/translation of financial C#/SQL or WPF/REPX/Office, financial/policy/deployed-schema/ACL acceptance or remediation. Stock-child P4-030 is NOT assumed fixed; a valid approved-zero model isolates the sentinel cause, not certify an empty child as valid. Prior statement aggregate P3-022 remains in its own parent. Supplied SQL is not certified deployed. No real data/secrets, actual exports, formula/HTML interpreter, printer or shell. No measured index/leak/latency."
+    },
+    {
+      "id": "ALG7B12-11",
+      "title": "Inclusive23:59 still excludes the final30seconds of a whole-day policy",
+      "finding_ids": "P3-023",
+      "hand_selected_inputs": {
+        "row": "2026-01-01T23:59:30",
+        "entered_end": "2026-01-01T23:59:00",
+        "policy": "whole-day"
+      },
+      "manual_observation_model": {
+        "included": false
+      },
+      "independent_reference": {
+        "included": true
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:178-185;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:413-415;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:176-189;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:216-218;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:193-203",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast, not execution/translation of financial C#/SQL or WPF/REPX/Office, financial/policy/deployed-schema/ACL acceptance or remediation. Stock-child P4-030 is NOT assumed fixed; a valid approved-zero model isolates the sentinel cause, not certify an empty child as valid. Prior statement aggregate P3-022 remains in its own parent. Supplied SQL is not certified deployed. No real data/secrets, actual exports, formula/HTML interpreter, printer or shell. No measured index/leak/latency."
+    },
+    {
+      "id": "ALG7B12-12",
+      "title": "Supplied valuation ignores its date while an independent as-of membership excludes later movement",
+      "finding_ids": "P4-008",
+      "hand_selected_inputs": {
+        "before_value": 50,
+        "later_change": 20,
+        "report_date_precedes_later": true,
+        "supplied_not_deployed": true
+      },
+      "manual_observation_model": {
+        "valuation": 70
+      },
+      "independent_reference": {
+        "valuation": 50
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Class/Inventory.cs:462-472;SmartAuditERP/Properties/Resources.resx:48166-48209",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast, not execution/translation of financial C#/SQL or WPF/REPX/Office, financial/policy/deployed-schema/ACL acceptance or remediation. Stock-child P4-030 is NOT assumed fixed; a valid approved-zero model isolates the sentinel cause, not certify an empty child as valid. Prior statement aggregate P3-022 remains in its own parent. Supplied SQL is not certified deployed. No real data/secrets, actual exports, formula/HTML interpreter, printer or shell. No measured index/leak/latency."
+    },
+    {
+      "id": "ALG7B12-13",
+      "title": "Failed valuation returning zero can masquerade as a higher profit",
+      "finding_ids": "P7-046",
+      "hand_selected_inputs": {
+        "revenue": 100,
+        "cost_before_closing": 60,
+        "valuation_failed": true,
+        "no_SQL_fault_injection": true
+      },
+      "manual_observation_model": {
+        "profit": 40,
+        "health": "not-labelled"
+      },
+      "independent_reference": {
+        "profit": null,
+        "health": "failed-stock-source"
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Class/Inventory.cs:504-530;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:672-691;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:332-364",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast, not execution/translation of financial C#/SQL or WPF/REPX/Office, financial/policy/deployed-schema/ACL acceptance or remediation. Stock-child P4-030 is NOT assumed fixed; a valid approved-zero model isolates the sentinel cause, not certify an empty child as valid. Prior statement aggregate P3-022 remains in its own parent. Supplied SQL is not certified deployed. No real data/secrets, actual exports, formula/HTML interpreter, printer or shell. No measured index/leak/latency."
+    },
+    {
+      "id": "ALG7B12-14",
+      "title": "Clearing rows and cards before a failed GL query counters an always-stale-result claim",
+      "finding_ids": "P7-046",
+      "hand_selected_inputs": {
+        "previous_rows": [
+          "OLD"
+        ],
+        "next_GL_result": null,
+        "stock_failure_case_separate": true
+      },
+      "manual_observation_model": {
+        "published_rows": [],
+        "card_value": 0
+      },
+      "independent_reference": {
+        "published_rows": [],
+        "card_value": 0
+      },
+      "difference_expected": false,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:170-207;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:588-595;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:183-194",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast, not execution/translation of financial C#/SQL or WPF/REPX/Office, financial/policy/deployed-schema/ACL acceptance or remediation. Stock-child P4-030 is NOT assumed fixed; a valid approved-zero model isolates the sentinel cause, not certify an empty child as valid. Prior statement aggregate P3-022 remains in its own parent. Supplied SQL is not certified deployed. No real data/secrets, actual exports, formula/HTML interpreter, printer or shell. No measured index/leak/latency."
+    },
+    {
+      "id": "ALG7B12-15",
+      "title": "Live print dates can label rows loaded for an earlier period",
+      "finding_ids": "P7-045",
+      "hand_selected_inputs": {
+        "loaded_period": "A",
+        "controls_now": "B",
+        "reload": false,
+        "actual_template_not_loaded": true
+      },
+      "manual_observation_model": {
+        "rows": "A",
+        "DTO_period": "B"
+      },
+      "independent_reference": {
+        "rows": "A",
+        "DTO_period": "A"
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:833-860;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:500-530",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast, not execution/translation of financial C#/SQL or WPF/REPX/Office, financial/policy/deployed-schema/ACL acceptance or remediation. Stock-child P4-030 is NOT assumed fixed; a valid approved-zero model isolates the sentinel cause, not certify an empty child as valid. Prior statement aggregate P3-022 remains in its own parent. Supplied SQL is not certified deployed. No real data/secrets, actual exports, formula/HTML interpreter, printer or shell. No measured index/leak/latency."
+    },
+    {
+      "id": "ALG7B12-16",
+      "title": "N2 thousands and embedded quotes need real CSV field encoding",
+      "finding_ids": "P7-048",
+      "hand_selected_inputs": {
+        "formatted_amount": "1,234.50",
+        "account_name": "A,\"B\"",
+        "actual_export": false,
+        "current_UI_culture_does_not_fix_numeric_culture": true
+      },
+      "manual_observation_model": {
+        "encoded_line": "A,\"B\",1,234.50",
+        "amount_field_count": 2
+      },
+      "independent_reference": {
+        "encoded_line": "\"A,\"\"B\"\"\",\"1,234.50\"",
+        "amount_field_count": 1
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:748-765;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:472-497;SmartAuditERP/Home.xaml.cs:337-341",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast, not execution/translation of financial C#/SQL or WPF/REPX/Office, financial/policy/deployed-schema/ACL acceptance or remediation. Stock-child P4-030 is NOT assumed fixed; a valid approved-zero model isolates the sentinel cause, not certify an empty child as valid. Prior statement aggregate P3-022 remains in its own parent. Supplied SQL is not certified deployed. No real data/secrets, actual exports, formula/HTML interpreter, printer or shell. No measured index/leak/latency."
+    },
+    {
+      "id": "ALG7B12-17",
+      "title": "CSV quoting alone does not establish a text-only spreadsheet-cell policy",
+      "finding_ids": "P7-049",
+      "hand_selected_inputs": {
+        "untrusted_prefix": "=",
+        "only_inert_prefix_no_formula": true,
+        "consumer_behavior_not_executed": true
+      },
+      "manual_observation_model": {
+        "text_cell_policy_declared": false
+      },
+      "independent_reference": {
+        "text_cell_policy_declared": true
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:748-765;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:472-497",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast, not execution/translation of financial C#/SQL or WPF/REPX/Office, financial/policy/deployed-schema/ACL acceptance or remediation. Stock-child P4-030 is NOT assumed fixed; a valid approved-zero model isolates the sentinel cause, not certify an empty child as valid. Prior statement aggregate P3-022 remains in its own parent. Supplied SQL is not certified deployed. No real data/secrets, actual exports, formula/HTML interpreter, printer or shell. No measured index/leak/latency."
+    },
+    {
+      "id": "ALG7B12-18",
+      "title": "Balance-sheet export writes HTML for either XLS or CSV labels at the same chosen path",
+      "finding_ids": "P7-050",
+      "hand_selected_inputs": {
+        "chosen_paths": [
+          "report.xls",
+          "report.csv"
+        ],
+        "actual_IO": false
+      },
+      "manual_observation_model": {
+        "effective_kinds": [
+          "HTML",
+          "HTML"
+        ]
+      },
+      "independent_reference": {
+        "effective_kinds": [
+          "XLS",
+          "CSV"
+        ]
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:441-490",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast, not execution/translation of financial C#/SQL or WPF/REPX/Office, financial/policy/deployed-schema/ACL acceptance or remediation. Stock-child P4-030 is NOT assumed fixed; a valid approved-zero model isolates the sentinel cause, not certify an empty child as valid. Prior statement aggregate P3-022 remains in its own parent. Supplied SQL is not certified deployed. No real data/secrets, actual exports, formula/HTML interpreter, printer or shell. No measured index/leak/latency."
+    },
+    {
+      "id": "ALG7B12-19",
+      "title": "Raw HTML cell interpolation differs from escaped account text",
+      "finding_ids": "P7-098",
+      "hand_selected_inputs": {
+        "account_name": "A&B<value>",
+        "html_interpreter_executed": false
+      },
+      "manual_observation_model": {
+        "cell": "<td>A&B<value></td>"
+      },
+      "independent_reference": {
+        "cell": "<td>A&amp;B&lt;value&gt;</td>"
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:469-490",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast, not execution/translation of financial C#/SQL or WPF/REPX/Office, financial/policy/deployed-schema/ACL acceptance or remediation. Stock-child P4-030 is NOT assumed fixed; a valid approved-zero model isolates the sentinel cause, not certify an empty child as valid. Prior statement aggregate P3-022 remains in its own parent. Supplied SQL is not certified deployed. No real data/secrets, actual exports, formula/HTML interpreter, printer or shell. No measured index/leak/latency."
+    },
+    {
+      "id": "ALG7B12-20",
+      "title": "An unused REPX existence gate blocks an otherwise local document route",
+      "finding_ids": "P7-097",
+      "hand_selected_inputs": {
+        "rows_present": true,
+        "repx_exists": false,
+        "renderer": "FlowDocument",
+        "actual_WPF": false
+      },
+      "manual_observation_model": {
+        "local_document_route_allowed": false
+      },
+      "independent_reference": {
+        "local_document_route_allowed": true
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:493-558;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:560-610",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast, not execution/translation of financial C#/SQL or WPF/REPX/Office, financial/policy/deployed-schema/ACL acceptance or remediation. Stock-child P4-030 is NOT assumed fixed; a valid approved-zero model isolates the sentinel cause, not certify an empty child as valid. Prior statement aggregate P3-022 remains in its own parent. Supplied SQL is not certified deployed. No real data/secrets, actual exports, formula/HTML interpreter, printer or shell. No measured index/leak/latency."
+    },
+    {
+      "id": "ALG7B12-21",
+      "title": "Calculated opening stock targets absent local XAML names and is not consumed by totals",
+      "finding_ids": "P1-033",
+      "hand_selected_inputs": {
+        "calculated_first_stock": 20,
+        "local_xaml_names_contain_txtFirstVal": false,
+        "successful_query_assumed": true,
+        "policy_amount_not_certified": true
+      },
+      "manual_observation_model": {
+        "bound_value": null,
+        "total_consumer_exists": false
+      },
+      "independent_reference": {
+        "bound_value": 20,
+        "total_consumer_exists": true
+      },
+      "difference_expected": true,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:332-340;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:395-441;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:604-609;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml:1-511",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast, not execution/translation of financial C#/SQL or WPF/REPX/Office, financial/policy/deployed-schema/ACL acceptance or remediation. Stock-child P4-030 is NOT assumed fixed; a valid approved-zero model isolates the sentinel cause, not certify an empty child as valid. Prior statement aggregate P3-022 remains in its own parent. Supplied SQL is not certified deployed. No real data/secrets, actual exports, formula/HTML interpreter, printer or shell. No measured index/leak/latency."
+    },
+    {
+      "id": "ALG7B12-22",
+      "title": "A balancing P&L plug makes totals equal without proving source completeness",
+      "finding_ids": "H7B12-01;P3-019;P7-046",
+      "hand_selected_inputs": {
+        "raw_debit": 100,
+        "raw_credit": 80,
+        "plug": 20,
+        "eligibility_or_opening_not_established": true
+      },
+      "manual_observation_model": {
+        "debit": 100,
+        "credit": 100,
+        "source_completeness": "not-established"
+      },
+      "independent_reference": {
+        "debit": 100,
+        "credit": 100,
+        "source_completeness": "not-established"
+      },
+      "difference_expected": false,
+      "illustration_assertions_passed": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:354-395;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:332-364",
+      "source_application_executed": false,
+      "limit": "Independent hand-selected documentary contrast, not execution/translation of financial C#/SQL or WPF/REPX/Office, financial/policy/deployed-schema/ACL acceptance or remediation. Stock-child P4-030 is NOT assumed fixed; a valid approved-zero model isolates the sentinel cause, not certify an empty child as valid. Prior statement aggregate P3-022 remains in its own parent. Supplied SQL is not certified deployed. No real data/secrets, actual exports, formula/HTML interpreter, printer or shell. No measured index/leak/latency."
+    }
+  ],
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B12-01",
+      "title": "New-income writer changes path but caller reports and launches the original choice",
+      "finding_ids": "P7-116",
+      "documented_observation": "Local output-identity defect, distinct from wrong bytes at one path or an empty export stub. Actual file existence and shell behavior not observed.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:707-765;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml:654-660",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert text only, not semantic callgraph/deployed schema or role/availability proof, WPF rendering, whole-child review, financial acceptance, operational measurement or application execution."
+    },
+    {
+      "id": "ST7B12-02",
+      "title": "Approved child scalar is consumed only when numerically nonzero",
+      "finding_ids": "P7-117",
+      "documented_observation": "has-override is not separate from zero. Valid-zero behavior is isolated; no assumption that every empty child is financially acceptable or schema-valid.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:27-31;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:317-319;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:417-433;SmartAuditERP/Form_WPF/frmSafeGrd.xaml.cs:752-757;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml:228-232;SmartAuditERP/Form_WPF/frmSafeGrd.xaml:832-838",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert text only, not semantic callgraph/deployed schema or role/availability proof, WPF rendering, whole-child review, financial acceptance, operational measurement or application execution."
+    },
+    {
+      "id": "ST7B12-03",
+      "title": "Child starts with empty collection and false approval; approve sums while close does not approve",
+      "finding_ids": "P7-117;H7B12-02",
+      "documented_observation": "A scalar zero is representable at child approval; policy must reject invalid empty explicitly or preserve legitimate zero, not silently replace it.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmSafeGrd.xaml.cs:42-59;SmartAuditERP/Form_WPF/frmSafeGrd.xaml.cs:641-660;SmartAuditERP/Form_WPF/frmSafeGrd.xaml.cs:752-757;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:417-433",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert text only, not semantic callgraph/deployed schema or role/availability proof, WPF rendering, whole-child review, financial acceptance, operational measurement or application execution."
+    },
+    {
+      "id": "ST7B12-04",
+      "title": "All three GL report sources have local state/deletion eligibility and bounded date parameters",
+      "finding_ids": "H7B12-01",
+      "documented_observation": "Positive source eligibility/parameter evidence: do not copy prior parent-statement missing-state or aggregate/worker gates into these synchronous parents.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:408-446;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:470-509;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:226-242;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:198-229",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert text only, not semantic callgraph/deployed schema or role/availability proof, WPF rendering, whole-child review, financial acceptance, operational measurement or application execution."
+    },
+    {
+      "id": "ST7B12-05",
+      "title": "ABS group balances feed synthetic net-sales and a card that also sums the details",
+      "finding_ids": "P3-020",
+      "documented_observation": "Existing sign/row-grain root; does not claim all amounts or actual deployed policy are as modeled.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:295-316;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:408-464;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:597-605",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert text only, not semantic callgraph/deployed schema or role/availability proof, WPF rendering, whole-child review, financial acceptance, operational measurement or application execution."
+    },
+    {
+      "id": "ST7B12-06",
+      "title": "Zero COGS activates a sum of every cost-category layer",
+      "finding_ids": "P3-020",
+      "documented_observation": "Zero is not a missing measure; synthetic detail/summary rows are not independent additive cost entries.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:329-369;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:606-618",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert text only, not semantic callgraph/deployed schema or role/availability proof, WPF rendering, whole-child review, financial acceptance, operational measurement or application execution."
+    },
+    {
+      "id": "ST7B12-07",
+      "title": "Expense groups33to39 and revenue42 differ between table and cards",
+      "finding_ids": "P3-020",
+      "documented_observation": "Same P3-020 aggregation/metric-lineage root; another card does not create another finding.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:377-399;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:492-497;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:622-631",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert text only, not semantic callgraph/deployed schema or role/availability proof, WPF rendering, whole-child review, financial acceptance, operational measurement or application execution."
+    },
+    {
+      "id": "ST7B12-08",
+      "title": "All-branch GL and current-branch closing stock use different branch decisions",
+      "finding_ids": "P7-065",
+      "documented_observation": "Branch-set mismatch under an all-branches policy, not proof of unauthorized rows or semantics of every -1 parameter in deployment.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:187-195;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:672-689;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:220-236;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:371-390;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:196-207;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:317-319",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert text only, not semantic callgraph/deployed schema or role/availability proof, WPF rendering, whole-child review, financial acceptance, operational measurement or application execution."
+    },
+    {
+      "id": "ST7B12-09",
+      "title": "New-income opening fallback is invoked when nonpositive GL opening and lacks branch/date predicates",
+      "finding_ids": "P7-065;H7B12-02",
+      "documented_observation": "Deleted filter exists; branch/date alignment and definition of opening still require policy. Old-income GetOpenstock is a different, locally unused method.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:318-327;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:649-670",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert text only, not semantic callgraph/deployed schema or role/availability proof, WPF rendering, whole-child review, financial acceptance, operational measurement or application execution."
+    },
+    {
+      "id": "ST7B12-10",
+      "title": "Balance-sheet GL is period-only and its P&L plug precedes balanced indication",
+      "finding_ids": "P3-019;H7B12-01",
+      "documented_observation": "A selected-period branch lacks separate previous GL here. A plug is not a trial-balance validation or proof of closing-policy correctness.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:193-230;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:354-395;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml:198-206",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert text only, not semantic callgraph/deployed schema or role/availability proof, WPF rendering, whole-child review, financial acceptance, operational measurement or application execution."
+    },
+    {
+      "id": "ST7B12-11",
+      "title": "Default23:59 and inclusive BETWEEN differ from a half-open whole-day interval",
+      "finding_ids": "P3-023",
+      "documented_observation": "Whole-day and explicit-time contracts must be separated; inclusive00seconds does not include the final minute as a whole.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:96-102;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:178-185;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:413-415;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:176-189;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:216-218;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:193-203;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:406-411",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert text only, not semantic callgraph/deployed schema or role/availability proof, WPF rendering, whole-child review, financial acceptance, operational measurement or application execution."
+    },
+    {
+      "id": "ST7B12-12",
+      "title": "Parents call InventoryCost whose supplied CREATE/ALTER declare but do not use date",
+      "finding_ids": "P4-008",
+      "documented_observation": "Date is passed by C#; both selected supplied definitions only declare it. This is not deployed-procedure certification.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:672-689;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:371-390;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:317-319;SmartAuditERP/Class/Inventory.cs:462-487;SmartAuditERP/Properties/Resources.resx:48166-48209",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert text only, not semantic callgraph/deployed schema or role/availability proof, WPF rendering, whole-child review, financial acceptance, operational measurement or application execution."
+    },
+    {
+      "id": "ST7B12-13",
+      "title": "Shared valuation helper catches to zero while report computes profit and balanced state",
+      "finding_ids": "P7-046",
+      "documented_observation": "Failure-as-zero is a source-health root. Clearing rows/totals before query is counterevidence to a blanket stale-result claim, not a fix for valuation health.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Class/Inventory.cs:504-530;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:672-691;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:332-368;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:183-194",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert text only, not semantic callgraph/deployed schema or role/availability proof, WPF rendering, whole-child review, financial acceptance, operational measurement or application execution."
+    },
+    {
+      "id": "ST7B12-14",
+      "title": "Print DTOs read current date controls but omit some new-row semantic dimensions",
+      "finding_ids": "P7-045;P1-004;H7B12-03",
+      "documented_observation": "Local data-shape and snapshot gap; external template behavior is unresolved, not a proven lost printed metric.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:833-860;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:500-530;SmartAuditERP/Class_WPF/IncomeStatementRow.cs:1-32;SmartAuditERP/Class/RestrictionData.cs:1-172",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert text only, not semantic callgraph/deployed schema or role/availability proof, WPF rendering, whole-child review, financial acceptance, operational measurement or application execution."
+    },
+    {
+      "id": "ST7B12-15",
+      "title": "CSV interpolation has no quote doubling; old CSV uses unquoted N2",
+      "finding_ids": "P7-048",
+      "documented_observation": "Quotes/thousands/current numeric culture need an actual CSV contract. UI language alone is not numeric-format evidence.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:748-765;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:472-497;SmartAuditERP/Home.xaml.cs:337-341",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert text only, not semantic callgraph/deployed schema or role/availability proof, WPF rendering, whole-child review, financial acceptance, operational measurement or application execution."
+    },
+    {
+      "id": "ST7B12-16",
+      "title": "New export writer finalizes inside using before caller success and optional shell",
+      "finding_ids": "P7-116;P7-048;H7B12-03",
+      "documented_observation": "Positive finalization/order evidence, not an unfinished-writer finding copied from a different report; actual I/O was not performed.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:726-765;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:483-491",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert text only, not semantic callgraph/deployed schema or role/availability proof, WPF rendering, whole-child review, financial acceptance, operational measurement or application execution."
+    },
+    {
+      "id": "ST7B12-17",
+      "title": "Account names and notes are written directly without a declared text-cell policy",
+      "finding_ids": "P7-049",
+      "documented_observation": "Potential spreadsheet-formula interpretation depends on untrusted source and consumer. Text comparison is not formula/HTML execution or an XLSX-wide claim.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:748-765;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:472-497;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:469-490",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert text only, not semantic callgraph/deployed schema or role/availability proof, WPF rendering, whole-child review, financial acceptance, operational measurement or application execution."
+    },
+    {
+      "id": "ST7B12-18",
+      "title": "Balance-sheet XLS/CSV choices both call the same HTML writer",
+      "finding_ids": "P7-050",
+      "documented_observation": "Same chosen path but mismatched format, distinct from new-income changed-path P7-116.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:441-490",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert text only, not semantic callgraph/deployed schema or role/availability proof, WPF rendering, whole-child review, financial acceptance, operational measurement or application execution."
+    },
+    {
+      "id": "ST7B12-19",
+      "title": "HTML interpolates raw text while FlowDocument places it in Run",
+      "finding_ids": "P7-098",
+      "documented_observation": "Raw HTML root is not automatically a FlowDocument markup parser or proof of consumer compromise.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:469-490;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:560-610;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:626-635",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert text only, not semantic callgraph/deployed schema or role/availability proof, WPF rendering, whole-child review, financial acceptance, operational measurement or application execution."
+    },
+    {
+      "id": "ST7B12-20",
+      "title": "Balance-sheet checks but never loads REPX; the two income parents actually load REPX",
+      "finding_ids": "P7-097;P1-004",
+      "documented_observation": "Renderer-specific dependency/capability contract; no claim that every template is absent from deployment.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:493-558;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:767-831;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:532-603",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert text only, not semantic callgraph/deployed schema or role/availability proof, WPF rendering, whole-child review, financial acceptance, operational measurement or application execution."
+    },
+    {
+      "id": "ST7B12-21",
+      "title": "Old-income opening-stock targets are absent from local XAML and unused by totals",
+      "finding_ids": "P1-033;H7B12-02",
+      "documented_observation": "Bounded missing data-binding/consumer gap under P1-033; does not invent an approved opening-stock policy or certify every dynamic deployment namescope.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:332-340;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:395-441;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:604-609;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml:1-511",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert text only, not semantic callgraph/deployed schema or role/availability proof, WPF rendering, whole-child review, financial acceptance, operational measurement or application execution."
+    },
+    {
+      "id": "ST7B12-22",
+      "title": "Home uses fresh windows and Apply-before-Show with one default-enabled and two disabled entries",
+      "finding_ids": "P1-013;P2-010;H7B12-04",
+      "documented_observation": "Local visual-tree/name/child limits remain potential. Disabled menu and Apply/new are counterevidence, not deployed ACL/availability certification.",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Home.xaml.cs:2669-2704;SmartAuditERP/Home.xaml:335-345;SmartAuditERP/Class/MainClass.cs:349-455;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:417-433",
+      "source_application_executed": false,
+      "limit": "Bounded literal/structural observation of inert text only, not semantic callgraph/deployed schema or role/availability proof, WPF rendering, whole-child review, financial acceptance, operational measurement or application execution."
+    }
+  ],
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Class/Inventory.cs",
+      "start": 462,
+      "end": 487,
+      "selected_text_sha256": "c399264127be2d7df331c556627ca3ea5f0476c5ac248646bd49d19b13af3de8"
+    },
+    {
+      "path": "SmartAuditERP/Class/Inventory.cs",
+      "start": 504,
+      "end": 530,
+      "selected_text_sha256": "4e318dec88c0b04d1b1f24f66fc2e83751a3be55a1ad7796a036f12a093c676b"
+    },
+    {
+      "path": "SmartAuditERP/Class/MainClass.cs",
+      "start": 349,
+      "end": 455,
+      "selected_text_sha256": "22209098067d4acedc1d32a593a2835ebc1cc85f17d97def4106b09050f1d127"
+    },
+    {
+      "path": "SmartAuditERP/Class/RestrictionData.cs",
+      "start": 1,
+      "end": 172,
+      "selected_text_sha256": "8d72a82c4b3f6305622d6f92a43d5c973f723d45832739e32624cae6cf158e7b"
+    },
+    {
+      "path": "SmartAuditERP/Class_WPF/IncomeStatementRow.cs",
+      "start": 1,
+      "end": 32,
+      "selected_text_sha256": "25b2830427255dc9080f2c47e7d5b8f6741e9a4a41f22598b55db04539eca9ca"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml",
+      "start": 654,
+      "end": 660,
+      "selected_text_sha256": "c72c5f980a57bcc3c6db32f10854600439c9c3b2c1efc9d22b2d379d0cdcce3a"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs",
+      "start": 96,
+      "end": 102,
+      "selected_text_sha256": "2a3c9daa85fd04d7824b07d60f5e4736e724b7504c4457a02b26a7f8801b97d8"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs",
+      "start": 178,
+      "end": 185,
+      "selected_text_sha256": "249a0f59b70be32eeb3226567fd718c9e31f9dd61553323548e9da66b880023e"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs",
+      "start": 187,
+      "end": 195,
+      "selected_text_sha256": "bbfa11961e66c5900e027ce9058b9204397b7a58cb28f67961dad89a2d3c0dfe"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs",
+      "start": 295,
+      "end": 316,
+      "selected_text_sha256": "976e364f04ad07af25a9c784fe4643a83adf2609d5444cad00f8bf3c02ed979a"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs",
+      "start": 318,
+      "end": 327,
+      "selected_text_sha256": "74c699f7ae28579a4787ae6e1f564363e60d7ecee509af58cb1e93de09cc288b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs",
+      "start": 329,
+      "end": 369,
+      "selected_text_sha256": "523e2807fff5790214f8fe796eaafa60ec775095323029ccc9d1694818526415"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs",
+      "start": 377,
+      "end": 399,
+      "selected_text_sha256": "5f75e5b5eb874abf071a637e342ff65a3af59ab2e7c849e1bda0531cc1ad3788"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs",
+      "start": 408,
+      "end": 446,
+      "selected_text_sha256": "f6f860072c89cedcd056b19dbafba2abedb00c734a5eec3ea0376c9d870411ed"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs",
+      "start": 408,
+      "end": 464,
+      "selected_text_sha256": "2856d7ab8a4741a24be602d588e0d84cf6b79ea4a9562ed94a985bb1f1c2710b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs",
+      "start": 413,
+      "end": 415,
+      "selected_text_sha256": "9b645fce1c19ff21f1383d6794827d2834f33ade09450fa2c3380c8ac48bd5cb"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs",
+      "start": 470,
+      "end": 509,
+      "selected_text_sha256": "5a4074b560df772b9c79df7ecf6763da4dd237531fbfa3d894aeef39d96ffc5c"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs",
+      "start": 492,
+      "end": 497,
+      "selected_text_sha256": "fdc5b8225bcde2ea899bdc5e5f2cac23a1c1f06b3e2fa4c83b5082573a3ea611"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs",
+      "start": 597,
+      "end": 605,
+      "selected_text_sha256": "bf27b167e333895ceec32ec01bdf4b29aebe8fc7de814764b96e8c0d6fd2f977"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs",
+      "start": 606,
+      "end": 618,
+      "selected_text_sha256": "c084a0414c2e26f4a6867cd78ce43793698f47682279321b1c9eab8997b25171"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs",
+      "start": 622,
+      "end": 631,
+      "selected_text_sha256": "223cf1b45d8485b0b05da75ae278e959561281c67932c2b7d8e2fbb62e7bbf62"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs",
+      "start": 649,
+      "end": 670,
+      "selected_text_sha256": "3876715bf1cfe1f9b69c584463e18cd911976bfd78473d08c36a9783e15bb3fa"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs",
+      "start": 672,
+      "end": 689,
+      "selected_text_sha256": "86158a79b5ebeda2bba221f16643710ebc0e184b69f90c1cadb2f0e25062af77"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs",
+      "start": 672,
+      "end": 691,
+      "selected_text_sha256": "a459f3e2f85029c09e9c00beae2b1d3fbe5a066a540f99a9adfaf22b770ba573"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs",
+      "start": 707,
+      "end": 765,
+      "selected_text_sha256": "1717d6166fb5871ba126e94a4af15d4064983cbfcda8e30da4632ccca74cf7e6"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs",
+      "start": 726,
+      "end": 765,
+      "selected_text_sha256": "ac3c27acddfd59fbb748661209821501df85122a84345168935a4edf9693bdbc"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs",
+      "start": 748,
+      "end": 765,
+      "selected_text_sha256": "5c28dc916705c97c7e6073ce1708f47ec8234bd7d1b81863814096ff3d9dfce3"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs",
+      "start": 767,
+      "end": 831,
+      "selected_text_sha256": "9d39f58f2001dd07cfb9850d2068092a827084ba3cbd27b917bd6c3f53358f2c"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs",
+      "start": 833,
+      "end": 860,
+      "selected_text_sha256": "2886c4c048b3bc8cdae1eff38e4368176a56dd89fb1a9fb8d7597f9ca4ff17a4"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml",
+      "start": 198,
+      "end": 206,
+      "selected_text_sha256": "cd46e8eb64a95b9fc1cf8b8f7baebb05b76f65c9ae6babc75d4df06e9ccc577c"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml",
+      "start": 228,
+      "end": 232,
+      "selected_text_sha256": "9bb3be4009bf1c3d90f6637972e451ff6fd2add98415cc3857ba7a2e4310eebf"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs",
+      "start": 27,
+      "end": 31,
+      "selected_text_sha256": "dc6052fb36ee573feb43fc9f74405567444ac66bac9301582fb3c59b235e0a90"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs",
+      "start": 183,
+      "end": 194,
+      "selected_text_sha256": "2a0e3318b5fb2381e6fb21c9a96537a325ecd7dd94f388bb82f586b5551dd68f"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs",
+      "start": 193,
+      "end": 203,
+      "selected_text_sha256": "bfac9e766ef312e2350a01071e76b52660ef82bb1324bb5da996818b72b06689"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs",
+      "start": 193,
+      "end": 230,
+      "selected_text_sha256": "6e529025afa2df82616a4f9fbc586f5c479dcd6ec15f5a9b5dfc37196da74dbb"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs",
+      "start": 196,
+      "end": 207,
+      "selected_text_sha256": "7c9f85dd55da019097f8e164c191c15c2bddb4a9c3bf5b08e1b74c04c1b74b52"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs",
+      "start": 198,
+      "end": 229,
+      "selected_text_sha256": "33c3efbe82d886b44d663df2ff5acefb57a92ade46549173ec3891dfafd9643e"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs",
+      "start": 317,
+      "end": 319,
+      "selected_text_sha256": "3f59782f8e6e26e1d7d5c419a04f2c29ea9f01b54b435415d0e16ec61a537e9a"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs",
+      "start": 354,
+      "end": 395,
+      "selected_text_sha256": "eb5152f850e9a70e2d09feda3e29e48e817dedf421b7e611d647436998125989"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs",
+      "start": 406,
+      "end": 411,
+      "selected_text_sha256": "e007d2e20b45335ba6fa410915133bdc05f218d23635d695048c142e2f3f4ecf"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs",
+      "start": 417,
+      "end": 433,
+      "selected_text_sha256": "20ee950d40aac93936bdb654d8e30a65da56ffb88c1340b9a6548799b96b3632"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs",
+      "start": 441,
+      "end": 490,
+      "selected_text_sha256": "b92709c6c4e1e59e88615fdfe536ec3d6ed7079eb35a6e53cb3333ac4bda2631"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs",
+      "start": 469,
+      "end": 490,
+      "selected_text_sha256": "cf6ed745d1d106d6e09361e2829b4a988870e5178915d28ded6c6fd88cf261a9"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs",
+      "start": 493,
+      "end": 558,
+      "selected_text_sha256": "dd3d2a8f31a9f8f3807cff07f7436316877fef4a3ecf4940fdbda292065cc34b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs",
+      "start": 560,
+      "end": 610,
+      "selected_text_sha256": "3ccd1282a0e167bdac3fc36bbce946b2a30b46b29f5bfec8bfdf4a6afb0efdc2"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs",
+      "start": 626,
+      "end": 635,
+      "selected_text_sha256": "2ef7f5e8794033eea90636eb2a1a50a7eea6f0eb7ecbc3147fb39a54024d215f"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml",
+      "start": 1,
+      "end": 511,
+      "selected_text_sha256": "3f0cd601570bbab6c735e48046e004d9109ecb6b9d69c7a1a2b6e7f63fb2e90a"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs",
+      "start": 176,
+      "end": 189,
+      "selected_text_sha256": "fd43b88b84efa3c78a231e8c2ca06ef2f67dc4693a52e8422894a16c791a9c18"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs",
+      "start": 216,
+      "end": 218,
+      "selected_text_sha256": "d02ae7bf491928128872c5c0a3afe7b10f89027f98f63e40f3f91a1083ddf3df"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs",
+      "start": 220,
+      "end": 236,
+      "selected_text_sha256": "be61bc0d4b5c70ac9aef448564834c5f78171e4724bae744bfa3d8585a7f0636"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs",
+      "start": 226,
+      "end": 242,
+      "selected_text_sha256": "60057656093e7c789c69910d828d7d8ab1522f0bf93152333e9314b66ae4faf0"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs",
+      "start": 332,
+      "end": 340,
+      "selected_text_sha256": "8b5a4187bed56ac42e8e03e4f9e1d45b5e9b06f67528fdca4f2738e028d19b58"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs",
+      "start": 332,
+      "end": 368,
+      "selected_text_sha256": "6b19acaa60cb917525429a13f7c5aa798d2eb3dfe33e10b10133899fd6f347b5"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs",
+      "start": 371,
+      "end": 390,
+      "selected_text_sha256": "52c791843c05a83b34ad7e226d7c8047859d35d3f032644a77b12787f42f3293"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs",
+      "start": 395,
+      "end": 441,
+      "selected_text_sha256": "cad093b391242ef402870283040466122e86d5e526a8f577d3ccfda6414f6888"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs",
+      "start": 472,
+      "end": 497,
+      "selected_text_sha256": "f60f9544fcdf5af508cdd21d318fc3edc7a2f83d6c1ef210667d583dfe6c62cc"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs",
+      "start": 483,
+      "end": 491,
+      "selected_text_sha256": "5c8fd1c4bcf42dacc4224e4543e2006cf9d081f925b0260b4f476c6bb670eb24"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs",
+      "start": 500,
+      "end": 530,
+      "selected_text_sha256": "3d92d0da75f8ead2356664915af74c4a0a651b05a493b98fc9e3dc38acca682a"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs",
+      "start": 532,
+      "end": 603,
+      "selected_text_sha256": "5d5122738a925ee76b6d5775347dfd74d91c9c9fead6943d3539168ba0893ec7"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs",
+      "start": 604,
+      "end": 609,
+      "selected_text_sha256": "6eab797e681e8971e58cfc9224c3d00279e4c915cf5e2cf3b325a9b85391e758"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSafeGrd.xaml",
+      "start": 832,
+      "end": 838,
+      "selected_text_sha256": "ed9a77b6019f1d7bd1cbc3a25bcd3629059c9a68a486f661b748274a3926ff15"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSafeGrd.xaml.cs",
+      "start": 42,
+      "end": 59,
+      "selected_text_sha256": "0b14cdae0d83f848cbda293e1eb323eaca838487bbe2bff0aeb6bb234228d9b9"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSafeGrd.xaml.cs",
+      "start": 641,
+      "end": 660,
+      "selected_text_sha256": "93b5b15cd9c0bc3019b513a0912b5445ed085cf9bfff8f4b123064b4bb7702d4"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSafeGrd.xaml.cs",
+      "start": 752,
+      "end": 757,
+      "selected_text_sha256": "f2a6470f90f3085680e92ef294e56d5df37ab6f2ad4606aa02fbd384818faa14"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml",
+      "start": 335,
+      "end": 345,
+      "selected_text_sha256": "9bd056503c03a0c2ee73b3a936c4d42c0f6027aa9c7b5900eae91964eedd451f"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "start": 337,
+      "end": 341,
+      "selected_text_sha256": "79ccd169a43ad643aa7c214fd22c0fe8e141594e6c55851aafb56a409499a783"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "start": 2669,
+      "end": 2704,
+      "selected_text_sha256": "585290cf0167f2541479da5d096ddfc997ddc84df14bc54cb970acba032c2dcd"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 48166,
+      "end": 48209,
+      "selected_text_sha256": "b7ac5db90cf7330c14720d58b2413ce360c8dd9bce6320c89e0acb6630d50b10"
+    }
+  ],
+  "errors": []
+}
