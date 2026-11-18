@@ -1,0 +1,927 @@
+{
+  "phase": "7B2-partial-static-audit",
+  "audit_reference_date_utc": "2026-11-16",
+  "method": "Independent manually transcribed fixtures plus explicitly bounded literal-source observations; no ERP acceptance.",
+  "illustration_count": 22,
+  "static_lexical_contract_check_count": 14,
+  "illustrations": [
+    {
+      "id": "ALG7B2-01",
+      "finding_ids": "P7-052",
+      "title": "Unrelated ancestor accepted; detail is only one level",
+      "synthetic_inputs": {
+        "parents": {
+          "10": 0,
+          "11": 10,
+          "111": 11,
+          "90": 0,
+          "99": 90
+        },
+        "selected": 10,
+        "foreign_node": 99
+      },
+      "transcribed_rule_result": {
+        "foreign_parent_result": 90,
+        "accepted": true,
+        "detail_scope": [
+          11
+        ]
+      },
+      "independent_contract_reference": {
+        "foreign_accepted": false,
+        "subtree": [
+          10,
+          11,
+          111
+        ]
+      },
+      "evidence": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:198-234;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:273-291;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:421-450;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:487-505",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Self postings depend on policy; this fixture demonstrates unrelated acceptance and missing transitive descendants, not cycles. Python fixture only; not C#/SQL/WPF or financial acceptance."
+    },
+    {
+      "id": "ALG7B2-02",
+      "finding_ids": "P7-053",
+      "title": "First opening reused across accounts; opening-only row absent",
+      "synthetic_inputs": {
+        "opening": [
+          [
+            "CC1",
+            "A",
+            100
+          ],
+          [
+            "CC1",
+            "B",
+            200
+          ],
+          [
+            "CC2",
+            "C",
+            300
+          ]
+        ],
+        "movements": [
+          [
+            "CC1",
+            "A",
+            10
+          ],
+          [
+            "CC1",
+            "B",
+            20
+          ]
+        ]
+      },
+      "transcribed_rule_result": {
+        "closings": [
+          110,
+          120
+        ],
+        "opening_only_rows": 0
+      },
+      "independent_contract_reference": {
+        "closings": [
+          110,
+          220
+        ],
+        "opening_only_rows": 1
+      },
+      "evidence": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:315-376;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:437-473;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:487-559",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Chosen first-row order is explicit; SQL order is not guaranteed. This is not summing running balance columns. Python fixture only; not C#/SQL/WPF or financial acceptance."
+    },
+    {
+      "id": "ALG7B2-03",
+      "finding_ids": "P7-055",
+      "title": "Null bridge has no path carrying two loaded rows",
+      "synthetic_inputs": {
+        "loaded_rows": [
+          {
+            "InvoiceNo": 1
+          },
+          {
+            "InvoiceNo": 2
+          }
+        ],
+        "argument": null
+      },
+      "transcribed_rule_result": {
+        "returned_tables": []
+      },
+      "independent_contract_reference": {
+        "required_loaded_count": 2
+      },
+      "evidence": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs:697-743;SmartAuditERP/Class/Report.cs:380-406;SmartAuditERP/Class/Report.cs:451-462;SmartAuditERP/Class/Report.cs:531-553;SmartAuditERP/Class/Report.cs:597-608",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Transcribed catch return only. Does not choose between GridView/DataTable overloads or assert successful compilation/printing; ambiguity may block first. Python fixture only; not C#/SQL/WPF or financial acceptance."
+    },
+    {
+      "id": "ALG7B2-04",
+      "finding_ids": "P7-056",
+      "title": "Swapped adjustment/transfer columns with net counterevidence",
+      "synthetic_inputs": {
+        "type7_input": 5,
+        "type8_input": 6
+      },
+      "transcribed_rule_result": {
+        "transfer_in": 5,
+        "adjustment_in": 6,
+        "net": 11
+      },
+      "independent_contract_reference": {
+        "transfer_in": 6,
+        "adjustment_in": 5,
+        "net": 11
+      },
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:232-252;SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:280-294;SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml:649-700;SmartAuditERP/Properties/Resources.resx:3054-3064;SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs:798-809;SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs:852-865;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:909-927",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Net equality is retained as counterevidence to a blanket stock-total inversion claim. Python fixture only; not C#/SQL/WPF or financial acceptance."
+    },
+    {
+      "id": "ALG7B2-05",
+      "finding_ids": "P7-057",
+      "title": "Production consumption omitted from aggregate quantity",
+      "synthetic_inputs": {
+        "movements": [
+          [
+            1,
+            10
+          ],
+          [
+            6,
+            -3
+          ]
+        ],
+        "enumerated_types": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          7,
+          8,
+          9
+        ]
+      },
+      "transcribed_rule_result": {
+        "quantity": 10,
+        "production_only_included": false
+      },
+      "independent_contract_reference": {
+        "quantity": 7,
+        "production_only_included": true
+      },
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:232-266;SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:1360-1366;SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:1425-1479;SmartAuditERP/Properties/Resources.resx:3054-3056",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "A valid persisted row is assumed; does not execute or establish success of the production writer with prior P4-020 barriers. Python fixture only; not C#/SQL/WPF or financial acceptance."
+    },
+    {
+      "id": "ALG7B2-06",
+      "finding_ids": "P7-058",
+      "title": "Ignored selected customer does not narrow quantities",
+      "synthetic_inputs": {
+        "rows": [
+          [
+            "A",
+            3
+          ],
+          [
+            "B",
+            7
+          ]
+        ],
+        "selection": "A"
+      },
+      "transcribed_rule_result": 10,
+      "independent_contract_reference": 3,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:187-205;SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:312-347;SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:889-943;SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml:410-446",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Query omission only. An earlier Items/ItemsSource barrier, analogous to the historical P7-027 invariant, can block real selection; it is not counted as another new defect here. Python fixture only; not C#/SQL/WPF or financial acceptance."
+    },
+    {
+      "id": "ALG7B2-07",
+      "finding_ids": "P7-059",
+      "title": "Latest option uses ascending first row",
+      "synthetic_inputs": [
+        "2026-01-01",
+        "2026-01-09"
+      ],
+      "transcribed_rule_result": [
+        "2026-01-01"
+      ],
+      "independent_contract_reference": [
+        "2026-01-09"
+      ],
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:239-266;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:289-304;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:745-758;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml:355-366",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Distinct dates; no assumed tie ordering or SQL execution. Python fixture only; not C#/SQL/WPF or financial acceptance."
+    },
+    {
+      "id": "ALG7B2-08",
+      "finding_ids": "P7-060",
+      "title": "Component uses header production input direction",
+      "synthetic_inputs": {
+        "invtype": 6,
+        "header_proc": 1,
+        "sub_proc": 2,
+        "qty": 3
+      },
+      "transcribed_rule_result": 3,
+      "independent_contract_reference": -3,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:289-356;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:434-449;SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:1360-1366;SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:1425-1479;SmartAuditERP/Properties/Resources.resx:3054-3060",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Seed semantics must match deployment; a valid persisted production component is assumed. Python fixture only; not C#/SQL/WPF or financial acceptance."
+    },
+    {
+      "id": "ALG7B2-09",
+      "finding_ids": "P7-061",
+      "title": "Local-number lookup is non-unique and localized case has no English route",
+      "synthetic_inputs": {
+        "docs": [
+          {
+            "id": 42,
+            "branch": 1,
+            "gid": "G1"
+          },
+          {
+            "id": 42,
+            "branch": 2,
+            "gid": "G2"
+          }
+        ],
+        "display_en": "Sale invoice"
+      },
+      "transcribed_rule_result": {
+        "candidate_gids": [
+          "G1",
+          "G2"
+        ],
+        "english_case_found": false
+      },
+      "independent_contract_reference": {
+        "required_gid": "G2",
+        "route_by_type_not_display": true
+      },
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:289-304;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:359-387;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:1011-1172;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml:708-724;SmartAuditERP/Class_WPF/ItemActivityRow_ActivityDetailed.cs:13-39",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "No row order, actual opened branch or server authorization outcome is asserted. Python fixture only; not C#/SQL/WPF or financial acceptance."
+    },
+    {
+      "id": "ALG7B2-10",
+      "finding_ids": "P7-062",
+      "title": "Intraday opening gap excludes same-day earlier cash movement",
+      "synthetic_inputs": {
+        "events": [
+          [
+            "2026-01-01T23:00:00",
+            100
+          ],
+          [
+            "2026-01-02T09:00:00",
+            20
+          ],
+          [
+            "2026-01-02T11:00:00",
+            -5
+          ]
+        ],
+        "start": "2026-01-02T10:00:00"
+      },
+      "transcribed_rule_result": 95,
+      "independent_contract_reference": 115,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:184-223;SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:245-266;SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:279-302;SmartAuditERP/Form_WPF/frmRptKhzna.xaml:270-308",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "No SQL timezone, culture conversion or cash-account lookup execution is assumed; start00:00 is a counterexample without this gap. Python fixture only; not C#/SQL/WPF or financial acceptance."
+    },
+    {
+      "id": "ALG7B2-11",
+      "finding_ids": "P7-063",
+      "title": "Number-labelled export cell takes notes",
+      "synthetic_inputs": {
+        "InvoiceNo": 42,
+        "InvNote": "استلام رف3"
+      },
+      "transcribed_rule_result": "استلام رف3",
+      "independent_contract_reference": 42,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs:657-667;SmartAuditERP/Class/InvoiceOper.cs:3725-3746;SmartAuditERP/Form_WPF/frmRptInventory.xaml:370-409",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Does not infer missing InvoiceTxt.InvNo property or external alias behavior. Python fixture only; not C#/SQL/WPF or financial acceptance."
+    },
+    {
+      "id": "ALG7B2-12",
+      "finding_ids": "P7-064",
+      "title": "Date-ordered next with id cursor skips chronological last",
+      "synthetic_inputs": [
+        [
+          1,
+          3
+        ],
+        [
+          2,
+          1
+        ],
+        [
+          3,
+          2
+        ]
+      ],
+      "transcribed_rule_result": [
+        2,
+        3
+      ],
+      "independent_contract_reference": [
+        2,
+        3,
+        1
+      ],
+      "evidence": "SmartAuditERP/Form_WPF/frmRptEntries.xaml.cs:161-169;SmartAuditERP/Form_WPF/frmRptEntries.xaml.cs:328-340;SmartAuditERP/Form_WPF/frmRptEntries.xaml:702-725",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Dates do not follow IDs in this explicit fixture; monotonic dates can hide the problem. Python fixture only; not C#/SQL/WPF or financial acceptance."
+    },
+    {
+      "id": "ALG7B2-13",
+      "finding_ids": "P7-065",
+      "title": "All-branch GL with current-branch-only stock",
+      "synthetic_inputs": {
+        "1": 100,
+        "2": 200
+      },
+      "transcribed_rule_result": {
+        "gl_scope": [
+          1,
+          2
+        ],
+        "stock_scope": [
+          1
+        ],
+        "stock_value": 100
+      },
+      "independent_contract_reference": {
+        "gl_scope": [
+          1,
+          2
+        ],
+        "stock_scope": [
+          1,
+          2
+        ],
+        "stock_value": 300
+      },
+      "evidence": "SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:220-236;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:332-406;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:194-230;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:304-322;SmartAuditERP/Class/Inventory.cs:462-472;SmartAuditERP/Properties/Resources.resx:48189-48209;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml:208-220;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml:212-225",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Financial periodic/perpetual policy and manual _Stock override remain separate; this models branch-set mismatch only. Python fixture only; not C#/SQL/WPF or financial acceptance."
+    },
+    {
+      "id": "ALG7B2-14",
+      "finding_ids": "P3-019",
+      "title": "Period-only closing omits pre-period ordinary movement",
+      "synthetic_inputs": {
+        "opening_before": 100,
+        "ordinary_before": 20,
+        "in_period": -5
+      },
+      "transcribed_rule_result": -5,
+      "independent_contract_reference": 115,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs:248-297;SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs:393-421;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:315-351;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:196-230",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Required closing/as-of meaning must be agreed; a movement-only metric has a different contract. Python fixture only; not C#/SQL/WPF or financial acceptance."
+    },
+    {
+      "id": "ALG7B2-15",
+      "finding_ids": "P3-023",
+      "title": "Inclusive date-only vs inclusive next-midnight boundaries",
+      "synthetic_inputs": {
+        "date_to": "2026-01-02T00:00:00",
+        "late": "2026-01-02T23:59:59",
+        "nextmid": "2026-01-03T00:00:00"
+      },
+      "transcribed_rule_result": {
+        "aggregate_includes_late": false,
+        "detail_includes_nextmid": true
+      },
+      "independent_contract_reference": {
+        "aggregate_includes_late": true,
+        "detail_includes_nextmid": false
+      },
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:195-198;SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:339-345;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:263-266;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:306-312;SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:188-200;SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:314-321;SmartAuditERP/Form_WPF/frmRptKhzna.xaml:291-299",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "No SQL DATETIME precision or timezone execution; hour/minute contracts need separate acceptance. Python fixture only; not C#/SQL/WPF or financial acceptance."
+    },
+    {
+      "id": "ALG7B2-16",
+      "finding_ids": "P4-007",
+      "title": "Base-quantity weighted pack price is not base-unit average",
+      "synthetic_inputs": {
+        "baseqty": 12,
+        "packprice": 120,
+        "equality": 12
+      },
+      "transcribed_rule_result": 120.0,
+      "independent_contract_reference": 10.0,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:264-266;SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:363-427",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Unit convention is inherited from frozen inventory evidence; does not establish a complete chosen costing policy. Python fixture only; not C#/SQL/WPF or financial acceptance."
+    },
+    {
+      "id": "ALG7B2-17",
+      "finding_ids": "P7-048",
+      "title": "Unquoted N2 thousands separator creates an extra CSV field",
+      "synthetic_inputs": {
+        "raw": "id,amount\n1,1,000.50\n"
+      },
+      "transcribed_rule_result": [
+        [
+          "id",
+          "amount"
+        ],
+        [
+          "1",
+          "1",
+          "000.50"
+        ]
+      ],
+      "independent_contract_reference": {
+        "header_columns": 2,
+        "required_data_columns": 2
+      },
+      "evidence": "SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs:489-509;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:668-692;SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:397-417;SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs:657-668;SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:749-761;SmartAuditERP/Form_WPF/frmRptItemsExpiration.xaml.cs:341-364",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Specific unquoted writer/en-style format example only; a correctly quoted comma/newline is not inherently broken. Python fixture only; not C#/SQL/WPF or financial acceptance."
+    },
+    {
+      "id": "ALG7B2-18",
+      "finding_ids": "P7-050",
+      "title": "CSV bytes do not become an XLSX container by renaming",
+      "synthetic_inputs": {
+        "extension": ".xlsx",
+        "bytes_hex": "726f772c616d6f756e740a312c31302e30300a"
+      },
+      "transcribed_rule_result": {
+        "starts_with_zip_signature": false
+      },
+      "independent_contract_reference": {
+        "requires_valid_office_open_xml_container": true
+      },
+      "evidence": "SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:390-417",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "A signature alone would not certify XLSX validity either; no Office application or file launch performed. Python fixture only; not C#/SQL/WPF or financial acceptance."
+    },
+    {
+      "id": "ALG7B2-19",
+      "finding_ids": "P7-046",
+      "title": "Empty result early-return leaves previous cards",
+      "synthetic_inputs": {
+        "old_total": 100,
+        "new_rows": []
+      },
+      "transcribed_rule_result": 100,
+      "independent_contract_reference": 0,
+      "evidence": "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs:310-327;SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:348-361;SmartAuditERP/Form_WPF/frmRptItemsExpiration.xaml.cs:153-159",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Control-flow illustration only; no DataBinding or rendered WPF observation. Python fixture only; not C#/SQL/WPF or financial acceptance."
+    },
+    {
+      "id": "ALG7B2-20",
+      "finding_ids": "P7-045",
+      "title": "Cached rowsA labelled from current criteriaB",
+      "synthetic_inputs": {
+        "loaded_query": "A",
+        "current_controls": "B"
+      },
+      "transcribed_rule_result": {
+        "row_snapshot": "A",
+        "caption_snapshot": "B"
+      },
+      "independent_contract_reference": {
+        "row_snapshot": "A",
+        "caption_snapshot": "A"
+      },
+      "evidence": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:705-749;SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs:518-551;SmartAuditERP/Form_WPF/frmRptItemsExpiration.xaml.cs:269-296",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Does not assume any absent event handler outside the explicitly selected report paths. Python fixture only; not C#/SQL/WPF or financial acceptance."
+    },
+    {
+      "id": "ALG7B2-21",
+      "finding_ids": "P4-009",
+      "title": "Counterevidence: expiry UNION retains distinct store identity",
+      "synthetic_inputs": [
+        [
+          "item",
+          1,
+          "2027-01-01",
+          5
+        ],
+        [
+          "item",
+          2,
+          "2027-01-01",
+          5
+        ]
+      ],
+      "transcribed_rule_result": {
+        "retained_with_store": 2,
+        "if_projected_away": 1
+      },
+      "independent_contract_reference": {
+        "expiry_distinct_store_rows": 2
+      },
+      "evidence": "SmartAuditERP/Properties/Resources.resx:3724-3736",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Counterevidence only, not a new extension to P4-009 or proof every UNION path is safe. Python fixture only; not C#/SQL/WPF or financial acceptance."
+    },
+    {
+      "id": "ALG7B2-22",
+      "finding_ids": "H7B2-02",
+      "title": "DATEDIFF labels require a boundary-versus-duration display contract",
+      "synthetic_inputs": {
+        "from": "2026-12-31T00:00:00",
+        "to": "2027-01-01T00:00:00"
+      },
+      "transcribed_rule_result": {
+        "year_boundaries": 1,
+        "month_boundaries": 1,
+        "days": 1
+      },
+      "independent_contract_reference": {
+        "elapsed_days": 1,
+        "complete_elapsed_years": 0
+      },
+      "evidence": "SmartAuditERP/Properties/Resources.resx:3724-3736",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Not a numbered defect: independent DATEDIFF measures may be intended. No SQL executed. Python fixture only; not C#/SQL/WPF or financial acceptance."
+    }
+  ],
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B2-01",
+      "finding_ids": "P7-052",
+      "title": "Inverted ancestor predicate and leaf-only source filter",
+      "observations": {
+        "not_equal": true,
+        "assign_parent": true,
+        "leaf_filter": true
+      },
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:198-234;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:273-291;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:421-450;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:487-505",
+      "source_application_executed": false,
+      "limit": "Bounded literal observation only; no overload resolution, semantic/callgraph completeness, UI rendering, deployed data or execution inferred."
+    },
+    {
+      "id": "ST7B2-02",
+      "finding_ids": "P7-053",
+      "title": "Movement-led rows and first CC-only opening match",
+      "observations": {
+        "movement_loop": true,
+        "cc_match": true,
+        "first_only": true
+      },
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:315-376;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:437-473;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:487-559",
+      "source_application_executed": false,
+      "limit": "Bounded literal observation only; no overload resolution, semantic/callgraph completeness, UI rendering, deployed data or execution inferred."
+    },
+    {
+      "id": "ST7B2-03",
+      "finding_ids": "P7-054",
+      "title": "Worker executes method that reads WPF controls",
+      "observations": {
+        "task_run": true,
+        "control_read": true,
+        "some_dispatcher_exists": true
+      },
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs:319-417;SmartAuditERP/Form_WPF/frmRptInventory.xaml:252-264",
+      "source_application_executed": false,
+      "limit": "Bounded literal observation only; no overload resolution, semantic/callgraph completeness, UI rendering, deployed data or execution inferred."
+    },
+    {
+      "id": "ST7B2-04",
+      "finding_ids": "P7-055",
+      "title": "Null actual argument and both non-null collection contracts",
+      "observations": {
+        "null_argument": true,
+        "grid_deref": true,
+        "table_deref": true
+      },
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs:697-743;SmartAuditERP/Class/Report.cs:380-406;SmartAuditERP/Class/Report.cs:451-462;SmartAuditERP/Class/Report.cs:531-553;SmartAuditERP/Class/Report.cs:597-608",
+      "source_application_executed": false,
+      "limit": "Bounded literal observation only; no overload resolution, semantic/callgraph completeness, UI rendering, deployed data or execution inferred."
+    },
+    {
+      "id": "ST7B2-05",
+      "finding_ids": "P7-056",
+      "title": "Type7 in transfer variables, type8 in adjustment variables",
+      "observations": {
+        "trans_7": true,
+        "adjust_8": true,
+        "seed_adjust": true,
+        "seed_transfer": true
+      },
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:232-252;SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:280-294;SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml:649-700;SmartAuditERP/Properties/Resources.resx:3054-3064;SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs:798-809;SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs:852-865;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:909-927",
+      "source_application_executed": false,
+      "limit": "Bounded literal observation only; no overload resolution, semantic/callgraph completeness, UI rendering, deployed data or execution inferred."
+    },
+    {
+      "id": "ST7B2-06",
+      "finding_ids": "P7-057",
+      "title": "Complete selected thirteen-call enumeration omits type6",
+      "observations": {
+        "thirteen_calls": true,
+        "exact_order": true,
+        "none6_in_this_enumeration": true
+      },
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:232-266;SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:1360-1366;SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:1425-1479;SmartAuditERP/Properties/Resources.resx:3054-3056",
+      "source_application_executed": false,
+      "limit": "Bounded literal observation only; no overload resolution, semantic/callgraph completeness, UI rendering, deployed data or execution inferred."
+    },
+    {
+      "id": "ST7B2-07",
+      "finding_ids": "P7-058",
+      "title": "Empty client predicate and earlier Items/ItemsSource barrier, not a second finding",
+      "observations": {
+        "empty_branch_comment": true,
+        "items_source_assignment": true,
+        "nine_static_items": true
+      },
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:187-205;SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:312-347;SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:889-943;SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml:410-446",
+      "source_application_executed": false,
+      "limit": "Bounded literal observation only; no overload resolution, semantic/callgraph completeness, UI rendering, deployed data or execution inferred."
+    },
+    {
+      "id": "ST7B2-08",
+      "finding_ids": "P7-059",
+      "title": "Last-process TOP1 combines with ascending order",
+      "observations": {
+        "top1": true,
+        "ascending": true
+      },
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:239-266;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:289-304;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:745-758;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml:355-366",
+      "source_application_executed": false,
+      "limit": "Bounded literal observation only; no overload resolution, semantic/callgraph completeness, UI rendering, deployed data or execution inferred."
+    },
+    {
+      "id": "ST7B2-09",
+      "finding_ids": "P7-060",
+      "title": "Only type7 switches to detail direction; component sub2",
+      "observations": {
+        "only7_condition": true,
+        "header_else": true,
+        "component_out": true
+      },
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:289-356;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:434-449;SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:1360-1366;SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:1425-1479;SmartAuditERP/Properties/Resources.resx:3054-3060",
+      "source_application_executed": false,
+      "limit": "Bounded literal observation only; no overload resolution, semantic/callgraph completeness, UI rendering, deployed data or execution inferred."
+    },
+    {
+      "id": "ST7B2-10",
+      "finding_ids": "P7-061",
+      "title": "Selected row SQL/localized route and display-language choice",
+      "observations": {
+        "local_id_selected": true,
+        "arabic_case": true,
+        "id_route": true,
+        "english_display": true
+      },
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:289-304;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:359-387;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:1011-1172;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml:708-724;SmartAuditERP/Class_WPF/ItemActivityRow_ActivityDetailed.cs:13-39",
+      "source_application_executed": false,
+      "limit": "Bounded literal observation only; no overload resolution, semantic/callgraph completeness, UI rendering, deployed data or execution inferred."
+    },
+    {
+      "id": "ST7B2-11",
+      "finding_ids": "P7-062",
+      "title": "Previous receives date string but period receives dt1",
+      "observations": {
+        "intraday_start": true,
+        "previous_date_string": true,
+        "period_dt1": true
+      },
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:184-223;SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:245-266;SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:279-302;SmartAuditERP/Form_WPF/frmRptKhzna.xaml:270-308",
+      "source_application_executed": false,
+      "limit": "Bounded literal observation only; no overload resolution, semantic/callgraph completeness, UI rendering, deployed data or execution inferred."
+    },
+    {
+      "id": "ST7B2-12",
+      "finding_ids": "P7-063",
+      "title": "Number header maps InvNote whose producer reads notes",
+      "observations": {
+        "number_header": true,
+        "note_in_first_column": true,
+        "number_producer": true,
+        "note_producer": true
+      },
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs:657-667;SmartAuditERP/Class/InvoiceOper.cs:3725-3746;SmartAuditERP/Form_WPF/frmRptInventory.xaml:370-409",
+      "source_application_executed": false,
+      "limit": "Bounded literal observation only; no overload resolution, semantic/callgraph completeness, UI rendering, deployed data or execution inferred."
+    },
+    {
+      "id": "ST7B2-13",
+      "finding_ids": "P7-064",
+      "title": "ID cursor and date ordering literal pair",
+      "observations": {
+        "previous": true,
+        "next": true
+      },
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptEntries.xaml.cs:161-169;SmartAuditERP/Form_WPF/frmRptEntries.xaml.cs:328-340;SmartAuditERP/Form_WPF/frmRptEntries.xaml:702-725",
+      "source_application_executed": false,
+      "limit": "Bounded literal observation only; no overload resolution, semantic/callgraph completeness, UI rendering, deployed data or execution inferred."
+    },
+    {
+      "id": "ST7B2-14",
+      "finding_ids": "P7-065",
+      "title": "All-branch GL differs from current-branch stock parameter",
+      "observations": {
+        "gl_checkbox": true,
+        "stock_current_branch": true,
+        "balance_fallback": true,
+        "sp_equality": true
+      },
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:220-236;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:332-406;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:194-230;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:304-322;SmartAuditERP/Class/Inventory.cs:462-472;SmartAuditERP/Properties/Resources.resx:48189-48209;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml:208-220;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml:212-225",
+      "source_application_executed": false,
+      "limit": "Bounded literal observation only; no overload resolution, semantic/callgraph completeness, UI rendering, deployed data or execution inferred."
+    }
+  ],
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs",
+      "start": 198,
+      "end": 234
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs",
+      "start": 421,
+      "end": 450
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs",
+      "start": 487,
+      "end": 505
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs",
+      "start": 319,
+      "end": 376
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs",
+      "start": 731,
+      "end": 743
+    },
+    {
+      "path": "SmartAuditERP/Class/Report.cs",
+      "start": 380,
+      "end": 406
+    },
+    {
+      "path": "SmartAuditERP/Class/Report.cs",
+      "start": 531,
+      "end": 553
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs",
+      "start": 232,
+      "end": 252
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 3054,
+      "end": 3064
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs",
+      "start": 232,
+      "end": 244
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs",
+      "start": 200,
+      "end": 205
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs",
+      "start": 922,
+      "end": 943
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml",
+      "start": 432,
+      "end": 445
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "start": 263,
+      "end": 304
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "start": 324,
+      "end": 335
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "start": 1460,
+      "end": 1475
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "start": 289,
+      "end": 304
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "start": 1034,
+      "end": 1058
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "start": 359,
+      "end": 369
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs",
+      "start": 189,
+      "end": 223
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs",
+      "start": 254,
+      "end": 257
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs",
+      "start": 657,
+      "end": 667
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 3725,
+      "end": 3746
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptEntries.xaml.cs",
+      "start": 328,
+      "end": 340
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs",
+      "start": 220,
+      "end": 236
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs",
+      "start": 366,
+      "end": 384
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs",
+      "start": 304,
+      "end": 322
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 48189,
+      "end": 48209
+    }
+  ],
+  "application_code_imported_or_executed": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "spreadsheet_or_formula_interpreter_executed": false,
+  "application_remediation_performed": false,
+  "real_business_or_secret_data_used": false,
+  "limit": "Even all assertions true do not establish source semantics, branch policy, deployed schema, a successful build, application behavior or financial/operational/compliance acceptance."
+}

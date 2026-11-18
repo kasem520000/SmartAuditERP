@@ -1,0 +1,681 @@
+{
+  "phase": "7B3-partial-static-audit",
+  "audit_reference_date_utc": "2026-11-16",
+  "application_code_imported_or_executed": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "application_remediation_performed": false,
+  "real_business_or_secret_data_used": false,
+  "spreadsheet_or_formula_interpreter_executed": false,
+  "illustration_count": 20,
+  "static_lexical_contract_check_count": 16,
+  "illustrations": [
+    {
+      "id": "ALG7B3-01",
+      "title": "Requested type versus fixed two-type population",
+      "finding_ids": "P7-066",
+      "evidence": "SmartAuditERP/Properties/Resources.resx:4030-4079",
+      "manually_transcribed_observed_model": {
+        "type2": "300",
+        "type3": "300"
+      },
+      "independent_reference_model": {
+        "2": "100",
+        "3": "200"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Independent manual transcription only; not C#/SQL/WPF/DTO/rendering or deployed-policy acceptance."
+    },
+    {
+      "id": "ALG7B3-02",
+      "title": "Deleted sales and deleted return still participate",
+      "finding_ids": "P7-067",
+      "evidence": "SmartAuditERP/Properties/Resources.resx:3974-4079",
+      "manually_transcribed_observed_model": "130",
+      "independent_reference_model": "100",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Independent manual transcription only; not C#/SQL/WPF/DTO/rendering or deployed-policy acceptance."
+    },
+    {
+      "id": "ALG7B3-03",
+      "title": "First real selection is not the all sentinel",
+      "finding_ids": "P7-068",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptSalesByCategory.xaml.cs:149-195",
+      "manually_transcribed_observed_model": "100",
+      "independent_reference_model": "30",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Independent manual transcription only; not C#/SQL/WPF/DTO/rendering or deployed-policy acceptance."
+    },
+    {
+      "id": "ALG7B3-04",
+      "title": "Zero-rate item is assigned fifteen percent",
+      "finding_ids": "P7-069",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptSalesByCategory.xaml.cs:205-230",
+      "manually_transcribed_observed_model": {
+        "tax": "15.00",
+        "net": "115.00"
+      },
+      "independent_reference_model": {
+        "tax": "0",
+        "net": "100"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Independent manual transcription only; not C#/SQL/WPF/DTO/rendering or deployed-policy acceptance."
+    },
+    {
+      "id": "ALG7B3-05",
+      "title": "Mixed historical tax rates cannot be replaced by one rate",
+      "finding_ids": "P7-069",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptSalesByCategory.xaml.cs:205-230",
+      "manually_transcribed_observed_model": "45.00",
+      "independent_reference_model": "20.00",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Independent manual transcription only; not C#/SQL/WPF/DTO/rendering or deployed-policy acceptance."
+    },
+    {
+      "id": "ALG7B3-06",
+      "title": "Discount share must include the line amount",
+      "finding_ids": "P7-070",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptSalesByCategory.xaml.cs:205-248;SmartAuditERP/Properties/Resources.resx:4393-4453",
+      "manually_transcribed_observed_model": {
+        "share": "1",
+        "base": "99"
+      },
+      "independent_reference_model": {
+        "share": "10",
+        "base": "90"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Independent manual transcription only; not C#/SQL/WPF/DTO/rendering or deployed-policy acceptance."
+    },
+    {
+      "id": "ALG7B3-07",
+      "title": "Splitting the same quantity changes the transcribed discount",
+      "finding_ids": "P7-070",
+      "evidence": "SmartAuditERP/Properties/Resources.resx:4393-4453",
+      "manually_transcribed_observed_model": {
+        "one_line": "1",
+        "ten_lines": "10"
+      },
+      "independent_reference_model": {
+        "either_shape": "10"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Independent manual transcription only; not C#/SQL/WPF/DTO/rendering or deployed-policy acceptance."
+    },
+    {
+      "id": "ALG7B3-08",
+      "title": "One header cannot carry three unspecified detail identities",
+      "finding_ids": "P7-071",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptSalesByCategory.xaml.cs:490-524",
+      "manually_transcribed_observed_model": {
+        "header_objects": 1,
+        "specified_detail_ids": []
+      },
+      "independent_reference_model": {
+        "detail_ids": [
+          1,
+          2,
+          3
+        ]
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Manual projection shape only. External ToDataTable/InventoryData/REPX behavior is not executed or guessed."
+    },
+    {
+      "id": "ALG7B3-09",
+      "title": "Production reader and supplied column contract disagree",
+      "finding_ids": "P7-072",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptProducedItems.xaml.cs:168-228;SmartAuditERP/Properties/Resources.resx:1023-1060",
+      "manually_transcribed_observed_model": {
+        "requested": "ComponentId",
+        "contract_contains_it": false
+      },
+      "independent_reference_model": {
+        "component_column": "ItemId",
+        "parent_column": "ProductId"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Independent manual transcription only; not C#/SQL/WPF/DTO/rendering or deployed-policy acceptance."
+    },
+    {
+      "id": "ALG7B3-10",
+      "title": "Empty Cond leaves both rental periods in the source",
+      "finding_ids": "P7-073",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptRentInvoices.xaml.cs:161-209;SmartAuditERP/Form_WPF/frmRptRentInvoices.xaml.cs:585-591",
+      "manually_transcribed_observed_model": {
+        "cond": "",
+        "amount": "300"
+      },
+      "independent_reference_model": {
+        "selected_period": "A",
+        "amount": "100"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Independent manual transcription only; not C#/SQL/WPF/DTO/rendering or deployed-policy acceptance."
+    },
+    {
+      "id": "ALG7B3-11",
+      "title": "A normal apostrophe is syntax unless represented as a literal",
+      "finding_ids": "P7-074",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptRentInvoices.xaml.cs:285-335",
+      "manually_transcribed_observed_model": "cust LIKE '%O'Neil%'",
+      "independent_reference_model": "cust LIKE '%O''Neil%'",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "String construction/count only, NOT execution of DataView or SQL and NOT an exploit or complete LIKE encoder."
+    },
+    {
+      "id": "ALG7B3-12",
+      "title": "Editable item text is not an ItemId selection",
+      "finding_ids": "P7-075",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptSerialNo.xaml:228-261;SmartAuditERP/Form_WPF/frmRptSerialNo.xaml.cs:291-304",
+      "manually_transcribed_observed_model": {
+        "all_items": false,
+        "name_enabled": true,
+        "code_enabled": true,
+        "search_enabled": false,
+        "selected_id": null
+      },
+      "independent_reference_model": {
+        "search_enabled": true,
+        "selected_id": "validated positive identity or explicit refusal"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Manually transcribed local state; does not run WPF, permission hooks or command routing."
+    },
+    {
+      "id": "ALG7B3-13",
+      "title": "Table name is not a source column for the user predicate",
+      "finding_ids": "P7-076",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptSalesByCategory.xaml.cs:173-177;SmartAuditERP/Properties/Resources.resx:954-1060;SmartAuditERP/Properties/Resources.resx:1614-1623",
+      "manually_transcribed_observed_model": {
+        "requested_column": "Safe_Emps",
+        "in_contract": false
+      },
+      "independent_reference_model": {
+        "writer_column": "sales_emp",
+        "identity_semantics": "unresolved external contract"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Independent manual transcription only; not C#/SQL/WPF/DTO/rendering or deployed-policy acceptance."
+    },
+    {
+      "id": "ALG7B3-14",
+      "title": "Initial branch zero becomes database null, not selected branch",
+      "finding_ids": "P2-010",
+      "evidence": "SmartAuditERP/Form_WPF/FrmRptSalesChart.xaml.cs:38-53;SmartAuditERP/Form_WPF/FrmRptSalesChart.xaml.cs:279-283",
+      "manually_transcribed_observed_model": {
+        "branch_argument": 0,
+        "database_value": null
+      },
+      "independent_reference_model": {
+        "branch_scope": "authorized set, not unconditional all"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Independent manual transcription only; not C#/SQL/WPF/DTO/rendering or deployed-policy acceptance."
+    },
+    {
+      "id": "ALG7B3-15",
+      "title": "All-branch receipts minus one-branch issues creates a phantom serial balance",
+      "finding_ids": "P4-029",
+      "evidence": "SmartAuditERP/Properties/Resources.resx:4277-4335",
+      "manually_transcribed_observed_model": {
+        "branch_A_balance": "9",
+        "positive_filter_keeps_it": true
+      },
+      "independent_reference_model": {
+        "branch_A_balance": "0",
+        "positive_filter_keeps_it": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Independent manual transcription only; not C#/SQL/WPF/DTO/rendering or deployed-policy acceptance."
+    },
+    {
+      "id": "ALG7B3-16",
+      "title": "Primary quantity times selling-unit price repeats a known unit root",
+      "finding_ids": "P7-041",
+      "evidence": "SmartAuditERP/Properties/Resources.resx:4015-4020;SmartAuditERP/Class/InvoiceOper.cs:1594-1597",
+      "manually_transcribed_observed_model": "500",
+      "independent_reference_model": "50",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Independent manual transcription only; not C#/SQL/WPF/DTO/rendering or deployed-policy acceptance."
+    },
+    {
+      "id": "ALG7B3-17",
+      "title": "Calendar month and final fractional second need exclusive boundaries",
+      "finding_ids": "P3-023",
+      "evidence": "SmartAuditERP/Form_WPF/FrmRptSalesChart.xaml.cs:399-411;SmartAuditERP/Form_WPF/frmRptDailySales.xaml.cs:126-137",
+      "manually_transcribed_observed_model": {
+        "last_day_noon_included": false,
+        "last_fractional_second_included": false
+      },
+      "independent_reference_model": {
+        "both_in_same_selected_day_or_month": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Independent manual transcription only; not C#/SQL/WPF/DTO/rendering or deployed-policy acceptance."
+    },
+    {
+      "id": "ALG7B3-18",
+      "title": "Empty reload can leave visible total from the old result",
+      "finding_ids": "P7-046",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptDailySales.xaml.cs:112-118;SmartAuditERP/Form_WPF/frmRptDailySales.xaml.cs:153-159;SmartAuditERP/Form_WPF/frmRptDailySales.xaml.cs:193-200",
+      "manually_transcribed_observed_model": {
+        "new_rows": [],
+        "new_internal_total": 0,
+        "visible_total": 100
+      },
+      "independent_reference_model": {
+        "new_rows": [],
+        "visible_total": 0
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Independent manual transcription only; not C#/SQL/WPF/DTO/rendering or deployed-policy acceptance."
+    },
+    {
+      "id": "ALG7B3-19",
+      "title": "CSV group separator and unescaped embedded quote break cell structure",
+      "finding_ids": "P7-048",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptDailySales.xaml.cs:208-230;SmartAuditERP/Form_WPF/frmRptRentInvoices.xaml.cs:504-520",
+      "manually_transcribed_observed_model": {
+        "header_cells": 2,
+        "data_cells": 3,
+        "wrapped_quote_rejected_by_python_csv": true
+      },
+      "independent_reference_model": {
+        "data_cells": 2,
+        "literal_quote_preserved": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Python stdlib csv on synthetic text only; NOT Office, a formula interpreter, actual ERP output or a claim that every reader handles every dialect identically."
+    },
+    {
+      "id": "ALG7B3-20",
+      "title": "Live controls can label a previously loaded snapshot with a new period",
+      "finding_ids": "P7-045",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptDailySales.xaml.cs:239-272",
+      "manually_transcribed_observed_model": {
+        "loaded_period": "A",
+        "header_from_controls": "B"
+      },
+      "independent_reference_model": {
+        "header_period": "A or explicitly dirty/blocked"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Independent manual transcription only; not C#/SQL/WPF/DTO/rendering or deployed-policy acceptance."
+    }
+  ],
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B3-01",
+      "title": "Type is declared but fixed sales/POS filters appear in both script variants",
+      "finding_ids": "P7-066",
+      "evidence": "SmartAuditERP/Properties/Resources.resx:4030-4079;SmartAuditERP/Properties/Resources.resx:49049-49096",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Bounded literal-source observation only, not a C#/SQL parser, call-graph, deployment or execution proof."
+    },
+    {
+      "id": "ST7B3-02",
+      "title": "No delete predicate in these four bounded procedure bodies",
+      "finding_ids": "P7-067",
+      "evidence": "SmartAuditERP/Properties/Resources.resx:3974-4079;SmartAuditERP/Properties/Resources.resx:48999-49096",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Bounded literal-source observation only, not a C#/SQL parser, call-graph, deployment or execution proof."
+    },
+    {
+      "id": "ST7B3-03",
+      "title": "Three >0 guards with DataView loaders, not inserted all sentinels",
+      "finding_ids": "P7-068",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptSalesByCategory.xaml.cs:95-195",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Bounded literal-source observation only, not a C#/SQL parser, call-graph, deployment or execution proof."
+    },
+    {
+      "id": "ST7B3-04",
+      "title": "Literal 0.15 and 1.15, not stored tax fields, in monetary query",
+      "finding_ids": "P7-069",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptSalesByCategory.xaml.cs:205-248",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Bounded literal-source observation only, not a C#/SQL parser, call-graph, deployment or execution proof."
+    },
+    {
+      "id": "ST7B3-05",
+      "title": "Unit-price-only share and distinct denominator-zero guards",
+      "finding_ids": "P7-070",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptSalesByCategory.xaml.cs:205-248;SmartAuditERP/Properties/Resources.resx:4393-4453;SmartAuditERP/Properties/Resources.resx:49644-49776",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Bounded literal-source observation only, not a C#/SQL parser, call-graph, deployment or execution proof."
+    },
+    {
+      "id": "ST7B3-06",
+      "title": "Print projection creates one header and never enumerates results",
+      "finding_ids": "P7-071",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptSalesByCategory.xaml.cs:490-524",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Bounded literal-source observation only, not a C#/SQL parser, call-graph, deployment or execution proof."
+    },
+    {
+      "id": "ST7B3-07",
+      "title": "ComponentId belongs to catalog here, not supplied movement table contract",
+      "finding_ids": "P7-072",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptProducedItems.xaml.cs:168-228;SmartAuditERP/Properties/Resources.resx:1023-1060;SmartAuditERP/Properties/Resources.resx:487-504;SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:1461-1499",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Bounded literal-source observation only, not a C#/SQL parser, call-graph, deployment or execution proof."
+    },
+    {
+      "id": "ST7B3-08",
+      "title": "Rental date handler definitions have no local XAML/programmatic subscription",
+      "finding_ids": "P7-073",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptRentInvoices.xaml.cs:1-717;SmartAuditERP/Form_WPF/frmRptRentInvoices.xaml:223-346",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Bounded literal-source observation only, not a C#/SQL parser, call-graph, deployment or execution proof."
+    },
+    {
+      "id": "ST7B3-09",
+      "title": "Raw text enters RowFilter expressions without a literal encoder",
+      "finding_ids": "P7-074",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptRentInvoices.xaml.cs:285-335",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Bounded literal-source observation only, not a C#/SQL parser, call-graph, deployment or execution proof."
+    },
+    {
+      "id": "ST7B3-10",
+      "title": "Item toggle enables text only, not the locally disabled search button",
+      "finding_ids": "P7-075",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptSerialNo.xaml:228-261;SmartAuditERP/Form_WPF/frmRptSerialNo.xaml.cs:291-304;SmartAuditERP/Form_WPF/frmRptSerialNoSummary.xaml:227-259;SmartAuditERP/Form_WPF/frmRptSerialNoSummary.xaml.cs:157-169",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Bounded literal-source observation only, not a C#/SQL parser, call-graph, deployment or execution proof."
+    },
+    {
+      "id": "ST7B3-11",
+      "title": "Safe_Emps predicate differs from supplied source columns and writer",
+      "finding_ids": "P7-076",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptSalesByCategory.xaml.cs:132-177;SmartAuditERP/Properties/Resources.resx:439-479;SmartAuditERP/Properties/Resources.resx:954-1060;SmartAuditERP/Properties/Resources.resx:1614-1623;SmartAuditERP/Class/InvoiceOper.cs:1531-1545",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Bounded literal-source observation only, not a C#/SQL parser, call-graph, deployment or execution proof."
+    },
+    {
+      "id": "ST7B3-12",
+      "title": "Branch policy code exists, but initial four loaders receive zero",
+      "finding_ids": "P2-010",
+      "evidence": "SmartAuditERP/Form_WPF/FrmRptSalesChart.xaml.cs:38-95;SmartAuditERP/Form_WPF/FrmRptSalesChart.xaml.cs:279-283",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Bounded literal-source observation only, not a C#/SQL parser, call-graph, deployment or execution proof."
+    },
+    {
+      "id": "ST7B3-13",
+      "title": "Selected branch occurs only in outgoing half of serial summary",
+      "finding_ids": "P4-029",
+      "evidence": "SmartAuditERP/Properties/Resources.resx:4277-4335",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Bounded literal-source observation only, not a C#/SQL parser, call-graph, deployment or execution proof."
+    },
+    {
+      "id": "ST7B3-14",
+      "title": "Task.Run source reads controls and receipt condition lacks branch/user",
+      "finding_ids": "P7-054;P2-010;P3-023",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptDailyProcess.xaml.cs:196-257;SmartAuditERP/Form_WPF/frmRptDailyProcess.xaml.cs:401-412",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Bounded literal-source observation only, not a C#/SQL parser, call-graph, deployment or execution proof."
+    },
+    {
+      "id": "ST7B3-15",
+      "title": "Counterevidence: monthly/daily supplied sources do filter deletion and type",
+      "finding_ids": "P7-066;P7-067",
+      "evidence": "SmartAuditERP/Properties/Resources.resx:4085-4103;SmartAuditERP/Properties/Resources.resx:3612-3625",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Bounded literal-source observation only, not a C#/SQL parser, call-graph, deployment or execution proof."
+    },
+    {
+      "id": "ST7B3-16",
+      "title": "Counterevidence: serial drill preserves GlobalID and numeric type/proc",
+      "finding_ids": "P7-061",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptSerialNo.xaml.cs:121-141;SmartAuditERP/Form_WPF/frmRptSerialNo.xaml.cs:177-277",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Bounded literal-source observation only, not a C#/SQL parser, call-graph, deployment or execution proof."
+    }
+  ],
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 1531,
+      "end": 1545,
+      "selected_text_sha256": "1b63918e9cf8184f6a9d0fac33f9e103bd4f1978c492997d2c531f9a1a8d1aac"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/FrmRptSalesChart.xaml.cs",
+      "start": 38,
+      "end": 95,
+      "selected_text_sha256": "844143a78b551affb5899ae32a9e7a68232d95d5a0ae47dc65134961dd25526a"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/FrmRptSalesChart.xaml.cs",
+      "start": 279,
+      "end": 283,
+      "selected_text_sha256": "aca5bb4e94aa8ac9a2e3e760c042ff179e63e5704b95bffed513e2f18df74ff3"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "start": 1461,
+      "end": 1499,
+      "selected_text_sha256": "44a8a1b9e450a56d81ee0047597100b129ecfef7dde7fd9b1accaa1328714de2"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptDailyProcess.xaml.cs",
+      "start": 196,
+      "end": 257,
+      "selected_text_sha256": "76613efe10172f963fe507365743951f37cc335a36045c6c9a63d18ccb435e69"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptDailyProcess.xaml.cs",
+      "start": 401,
+      "end": 412,
+      "selected_text_sha256": "dbbd374bb1182a0a25b5a943cea33abc00e9e4776c347ad74fac2be297a3d160"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptProducedItems.xaml.cs",
+      "start": 168,
+      "end": 228,
+      "selected_text_sha256": "f24ada623017cef7ec31e381b10f8c6d9cb63cb365a2787d3fb0c98021a21018"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptRentInvoices.xaml",
+      "start": 223,
+      "end": 346,
+      "selected_text_sha256": "36db1036bb463069e07898083e3a5e01bf07a593884ab997e31a7a5a44e48d2a"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptRentInvoices.xaml.cs",
+      "start": 1,
+      "end": 717,
+      "selected_text_sha256": "69cd012641a1ec9c89db128e09765d08e8eca9b55c96a10c3306b8591ba4910a"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptRentInvoices.xaml.cs",
+      "start": 285,
+      "end": 335,
+      "selected_text_sha256": "edda22cec298778e9ba1540160c81ec4772e16f0cc906243eb75eac514ce9354"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSalesByCategory.xaml.cs",
+      "start": 95,
+      "end": 195,
+      "selected_text_sha256": "18fa2862d6aae242139da9bcd3f4633cb0b473bc533f171d6e4b75e591109d83"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSalesByCategory.xaml.cs",
+      "start": 132,
+      "end": 177,
+      "selected_text_sha256": "c014707bab9f628351cf5ecbacb6aeefc574ea73ce22796d67a3add94b02c464"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSalesByCategory.xaml.cs",
+      "start": 205,
+      "end": 248,
+      "selected_text_sha256": "13dcd9dbeca6394b91f09b1f874f2467ac84580d471ad0224ebadb3d5196b761"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSalesByCategory.xaml.cs",
+      "start": 490,
+      "end": 524,
+      "selected_text_sha256": "809a6714071f07d59d4436abb5d1590d788b61836f90a763012994c97658205b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSerialNo.xaml",
+      "start": 228,
+      "end": 261,
+      "selected_text_sha256": "d4f57a90c85b44446343507bac56670e1d8680655983edd047bc002d132c2d64"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSerialNo.xaml.cs",
+      "start": 121,
+      "end": 141,
+      "selected_text_sha256": "c0030446f467ac1f2e8b426330144265c3546b9ffa13ccff589c761bd69ab91e"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSerialNo.xaml.cs",
+      "start": 177,
+      "end": 277,
+      "selected_text_sha256": "b5cf29ed802fb99947f828c49104519e6baf60aaf20db00dd723da3a7eb40634"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSerialNo.xaml.cs",
+      "start": 291,
+      "end": 304,
+      "selected_text_sha256": "677e98edec3ee19bd9f349703ceac2f18ceaf15364f428a1eafd0a15cf442a46"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSerialNoSummary.xaml",
+      "start": 227,
+      "end": 259,
+      "selected_text_sha256": "5187e21a687c770a964a97df87fa7b0772189e4aa050f35b547cc144d4efaf2e"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSerialNoSummary.xaml.cs",
+      "start": 157,
+      "end": 169,
+      "selected_text_sha256": "43f14d32b4ebee03e6b3d0da6c84521e8d8dcee67dbd99c27d3a1d2de9a58c8c"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 439,
+      "end": 479,
+      "selected_text_sha256": "596fb309d992ca8badad338c41dbd3fabc212df0815600f9845b7eaa7788d38a"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 487,
+      "end": 504,
+      "selected_text_sha256": "a648b0bb4cb4bb226cf8395fa09ba163b44177116b091c12497b858b7670989f"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 954,
+      "end": 1060,
+      "selected_text_sha256": "559bd4a1b529a36869e11120105876b223846901e8acee6eaba23e9e89314421"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 1023,
+      "end": 1060,
+      "selected_text_sha256": "238af5105b75bfbf7b40f85ebdfd731d2fc061aa2ead4be642485e6ebb565165"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 1614,
+      "end": 1623,
+      "selected_text_sha256": "7f57db0cfdbaf3203ddf0fb779bce2a8f9566208def15eef44f0e7b6dda14ba1"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 3612,
+      "end": 3625,
+      "selected_text_sha256": "32f3869a77151c330d27bc00ecc3f3bf7eda3a3a3feef5a4fee7be0228127f5c"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 3974,
+      "end": 4079,
+      "selected_text_sha256": "7f9bdb47b05b9dbe3f45832793379b570200e1e06acba4adc02cc7ce3dab9946"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 4030,
+      "end": 4079,
+      "selected_text_sha256": "5c0b6ecb0d57da58fe20178c0525af5e9d28d8697d28114cf6705c75e348017a"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 4085,
+      "end": 4103,
+      "selected_text_sha256": "1d343503bf1208c8b675074e0d5da7214df636bef5da47ef18fd2690df6a3491"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 4277,
+      "end": 4335,
+      "selected_text_sha256": "d8fd7edd02882f6620bc934957ae9111d305570597582c4b185d4893231e97f0"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 4393,
+      "end": 4453,
+      "selected_text_sha256": "aabdd89a8917646f0202588a4e6dd58ae8554139bdc4d8755694281928abe02b"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 48999,
+      "end": 49096,
+      "selected_text_sha256": "0489b9efb79775af5993321c5def1822bf157574fbdd4f1a5b5b91f2f209b14e"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 49049,
+      "end": 49096,
+      "selected_text_sha256": "1ef22f056764426233be51b02d1c2fc320e24cbae05c82e9e6345dd6421647de"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 49644,
+      "end": 49776,
+      "selected_text_sha256": "e8b1400d90d45b921dc5ca92d73a6eb540d0543e4b09d96b33959b5656e15efc"
+    }
+  ],
+  "limit": "Manual independent synthetic models plus separately bounded literal observations; not production impact, runtime acceptance, deployed SQL/DTO/template or all-path semantic coverage. No evidence file is written by this tool."
+}

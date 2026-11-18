@@ -1,0 +1,51 @@
+path,review_state,ranges,focus
+SmartAuditERP/Class/Accounting.cs,full-static-financial-review,1-233,Ledger functions and synthetic inventory/profit balance-sheet adjustments; valuation policy not certified
+SmartAuditERP/Class/AccountingPeriod.cs,model-metadata-review,1-18,Period DTO metadata
+SmartAuditERP/Class/AccountingPeriodManager.cs,full-static-financial-review,1-255,Active manager; overlap/activation/close/reopen/date guard and missing posting call sites
+SmartAuditERP/Class/AccountingPeriodManager2.cs,full-static-financial-review,1-198,Alternative manager read; no callers observed; not treated as an active posting defect
+SmartAuditERP/Class/Bank.cs,full-static-financial-review,1-49,Stored Acc_Code ignored; name mapping and fallback
+SmartAuditERP/Class/Bond.cs,full-static-financial-review,1-149,"Report/display DTO, not a posting service"
+SmartAuditERP/Class/Common.cs,scoped-financial-review,289-324;692-718;1272-1302,Name mapping; branch-aware balance counterexample; unconditional period-date allowance
+SmartAuditERP/Class/Customer.cs,scoped-financial-review,1-96,"Counterparty model account resolved by name, not stored identity"
+SmartAuditERP/Class/DgvAccount.cs,full-static-financial-review,1-22,Unrestricted double journal monetary properties
+SmartAuditERP/Class/DgvAccount2.cs,full-static-financial-review,1-42,Read-only cp1256 fallback; opening-entry amounts/properties
+SmartAuditERP/Class/EntryOper.cs,scoped-financial-review,1-398;404-935;1264-1341;1347-1358;1401-1475,"Invoice/receipt and reclose binding; common write boundary; identity allocation; not full sync audit; separate attachment I/O/SQL ownership only, not a complete attachment security audit"
+SmartAuditERP/Class/InvoiceOper.cs,financial-contract-excerpt,1310-1340;1829-1908;1945-1974;2101-2154,SaveInvoice(null) explicitly commits; contrasts with SaveReceipt(null). ReadInvoiceOnline is a distinct method; remaining invoice/sync cycle deferred.
+SmartAuditERP/Class/LoadData.cs,scoped-financial-review,1-106,Account resources and CC selection vs write-time attribution; P2 isolation not recounted
+SmartAuditERP/Class/ReceiptOper.cs,scoped-financial-review,1-298;373-464,Live receipt binder and save/delete/numbering; null branch and transaction composition
+SmartAuditERP/Class/StoredQueries.cs,sql-contract-excerpt,16-32,Entry and receipt insert/update column/parameter contracts; not all operational SQL
+SmartAuditERP/Class/Treasury.cs,full-static-financial-review,1-45,Stored Acc_Code ignored; name mapping and fallback
+SmartAuditERP/Form_WPF/ClosShiftAndroid.xaml.cs,scoped-financial-review,186-490;1195-1238;1349-1438,"Alternative real close path; journal and invoice marks use other transactions/connections. Minimal VAT-side counterexample, not a full close/sync audit."
+SmartAuditERP/Form_WPF/FrmAccountingPeriods.xaml.cs,scoped-financial-review,1-335;389-431,Active period UI close/reopen/activation/delete confirmations; no blanket absence of guards
+SmartAuditERP/Form_WPF/FrmBond.xaml.cs,scoped-identity-exclusion,17-92,Search/report UI identity only; not assumed to be a money-transfer posting service
+SmartAuditERP/Form_WPF/FrmIntialRestraiction.xaml.cs,scoped-financial-review,98-151;234-275;342-503;740-800,"Opening journal balance check, save/edit/delete and import; no centralized period gate"
+SmartAuditERP/Form_WPF/FrmNewEntry.xaml,xaml-contract-review,255-273;304-366,Read-only journal ID; hidden branch; editable account and double amount binding
+SmartAuditERP/Form_WPF/FrmNewEntry.xaml.cs,scoped-financial-review,1-225;481-566;607-837;843-861;1010-1049,"Manual journal create/edit/delete, balance validation and raw import path"
+SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs,scoped-financial-review,170-243;280-530;597-694,"Active P&L report signed/absolute accounts, subtotal composition, KPI and stock-policy boundary"
+SmartAuditERP/Form_WPF/Period.xaml.cs,scoped-identity-exclusion,1-154,Rental-duration selector using RentPeriod/RentPeriodSub; not accounting-period enforcement.
+SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs,scoped-financial-review,163-388,"Ledger debit/credit convention, carryforward and aggregate column contract"
+SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs,scoped-financial-review,190-343,Parent-account statement date pipeline and supplied stored procedure contract
+SmartAuditERP/Form_WPF/frmAddPeriod.xaml.cs,scoped-identity-exclusion,290-365,"Rental tariff-period save, not accounting-period lock; excluded from financial conclusions"
+SmartAuditERP/Form_WPF/frmCloseShift.xaml.cs,scoped-financial-review,523-560;1190-1310;1785-1995;2084-2313,"Actual close entry point, reclose mutations/transactions, employee shortage and query construction"
+SmartAuditERP/Form_WPF/frmCreditNote.xaml,xaml-contract-review,248-260,Editable note-date contract
+SmartAuditERP/Form_WPF/frmCreditNote.xaml.cs,scoped-financial-review,457-505;512-742,Supplier note journal/tax and independent transactions; cancellation and header-date contract
+SmartAuditERP/Form_WPF/frmDebtNote.xaml,xaml-contract-review,280-284,Editable note-date contract
+SmartAuditERP/Form_WPF/frmDebtNote.xaml.cs,scoped-financial-review,233-257;633-871,"Customer note journal, stored account lookup, update date and cancellation"
+SmartAuditERP/Form_WPF/frmInvSale.xaml.cs,scoped-financial-review,2412-2464,Explicit sale history method is a counterexample to global absence of history; invocation/invoice cycle phase 4
+SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs,scoped-financial-review,200-528,"Filtered trial balance leaf, previous balance, secondary-only mode, parent rollup and sums"
+SmartAuditERP/Form_WPF/frmPayBank.xaml.cs,scoped-selector-review,14-148,Bank selector contract; no bank reconciliation inferred
+SmartAuditERP/Form_WPF/frmReGenerateEntries.xaml.cs,scoped-financial-review,206-289;311-358,Entry regeneration calls common writer without an independent period/version check
+SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs,scoped-financial-review,782-827;887-925;954-1049;1368-1508,Inventory-adjustment posting/approval/cancel boundary only; quantity/cost correctness explicitly phase 4
+SmartAuditERP/Form_WPF/frmSafesTransfer.xaml.cs,scoped-financial-review,1-115;596-732,"Warehouse transfer, not a cash-transfer service; inventory state machine deferred to phase 4"
+SmartAuditERP/Form_WPF/frmSandD.xaml.cs,scoped-financial-review,719-886;926-958,Supplier payment core create/edit/cheque/transfer construction; cancellation resolves to shared helper
+SmartAuditERP/Form_WPF/frmSandQ.xaml.cs,scoped-financial-review,49-74;155-174;778-1039,Customer receipt direct persistence identity/ledger gaps and document-type scope
+SmartAuditERP/Form_WPF/frmSandQAndroid.xaml,xaml-binding-excerpt,726-738,Delete button event binding only; active navigation to this alternative screen not established
+SmartAuditERP/Form_WPF/frmSandQAndroid.xaml.cs,scoped-financial-review,529-710;746-764,Alternative receipt binder/save; delete handler only displays success without DB mutation. No active navigation caller observed; not an audited Android API.
+SmartAuditERP/Form_WPF/frmSandQD.xaml,xaml-contract-review,344-366,Collection amount binding metadata
+SmartAuditERP/Form_WPF/frmSandQD.xaml.cs,scoped-financial-review,137-165;801-1086,"General collection receipt generation, binder and cancellation; not every bulk import"
+SmartAuditERP/Form_WPF/frmSandSD.xaml,xaml-contract-review,350-367,Disabled branch selector counterexample and unconstrained value input
+SmartAuditERP/Form_WPF/frmSandSD.xaml.cs,scoped-financial-review,123-156;266-295;565-860;1021-1114,General payment receipt entry creation/edit/delete and ID/account mapping
+SmartAuditERP/Form_WPF/frmSandVAT.xaml.cs,scoped-financial-review,21-68;675-879;1008-1032,"Tax receipt amount guards, insert/update/delete contracts and VAT display equations"
+SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs,scoped-caller-exclusion,436-463,Commented Android-labelled receipt navigation and placeholder message; no reachability proof
+SmartAuditERP/Home.xaml.cs,scoped-financial-review,233-234;2550-2581;2655-2698;3314-3367;3478-3493;3692-3722;3769-3775,"Reachability of financial commands, close predicate semantics, separate alternate close menu"
+SmartAuditERP/Properties/Resources.resx,schema-excerpt-and-metadata,38-58;757-773;1366-1387;1496-1618;3682-3701;4651-4753;47774-47809;47877-47912;48069-48081;48109-48122;50226-50379;51203-51229,Finance table/function/procedure and legacy migration excerpts plus finance-constraint/trigger metadata search; no SQL executed

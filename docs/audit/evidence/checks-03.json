@@ -1,0 +1,84 @@
+{
+  "audit_date_utc": "2026-11-16",
+  "through_phase": 3,
+  "source_head": "10ba215152f722c8808aea0bb672c1d1d4d9d711",
+  "branch": "arena/94ae8414-smartauditerp",
+  "method": "Offline source hashes, audit-document consistency and (phase 3 only) independent manually transcribed algebra; not a build, ERP/C#/SQL acceptance test, exploit, network or binary execution",
+  "original_project_hashes_matching": 827,
+  "scope_files": {
+    "review-scope.csv": 52,
+    "review-scope-02.csv": 60,
+    "review-scope-03.csv": 50,
+    "historical_phase_1_2_union": 92,
+    "phase_3_overlap_with_prior_union": 15,
+    "unique_union_not_line_or_execution_coverage": 127
+  },
+  "findings": {
+    "phase_1": 33,
+    "phase_2": 16,
+    "phase_3": 25,
+    "total_open_not_remediated": 74,
+    "severity": {
+      "High": 45,
+      "Medium": 26,
+      "Low": 1,
+      "Critical": 2
+    },
+    "certainty": {
+      "repository-gap": 5,
+      "potential": 11,
+      "confirmed": 58
+    }
+  },
+  "phase_2_historical_evidence": {
+    "frozen_registry": "evidence/findings-through-02.csv",
+    "frozen_registry_sha256_matches": true,
+    "earlier_report_evidence_artifacts_hash_checked": 14,
+    "historical_check_record_overwritten": false,
+    "current_registry_evidence_extensions_without_reclassification": [
+      "P1-033"
+    ]
+  },
+  "evidence_rows": {
+    "phase_2_identity_flows": 12,
+    "phase_2_authorization_scenarios": 21,
+    "phase_2_sql_trace_groups_not_vulnerabilities": 26,
+    "phase_2_sql_classification": {
+      "unparameterized-user-text": 13,
+      "parameterized-slice": 9,
+      "controlled-or-typed-slice": 3,
+      "derived-source-unresolved": 1
+    },
+    "phase_2_unexecuted_acceptance_plans": 24,
+    "phase_3_accounting_invariants_not_passed_tests": 20,
+    "phase_3_document_lifecycles": 16,
+    "phase_3_unexecuted_acceptance_plans": 35,
+    "phase_3_independent_algebra_illustrations_not_erp_tests": 8,
+    "phase_3_illustrations_recomputed_match_saved": true
+  },
+  "validation": {
+    "source_range_references_checked_including_repeats": 1437,
+    "local_markdown_links_checked_including_repeats": 99,
+    "errors": [],
+    "limit": "Bounds, IDs, links, hash continuity and independent illustration arithmetic only; not semantic/financial certification, deployed-schema checks, WPF rendering or acceptance execution. Output record not self-hashed."
+  },
+  "historical_artifact_sha256": {
+    "PHASE-01.md": "2566950e50bbdf1bfeaca2a186c10b4ac70d7f661853a8ca24931ea492deaf55",
+    "VALIDATION.md": "b99b6fae9e95ee7b6040c39fe8fb258bac546c2b83ac22e403879734e49f9a92",
+    "review-scope.csv": "e8054a02a5a78fe2e43043fc02497514ae5a7bf06d8b52bb1f3554fdeaec5ae8",
+    "evidence/baseline.json": "ffbd103ca6aacefc790250db3743255d011d0c43234680500204a5e0c687d2d8",
+    "evidence/inventory.csv": "5bbe91d0be5fd2ff5f9862a6d8dc59643dda35ce6401b8ce7fe784bc2f27b3e0",
+    "PHASE-02.md": "cc17061e8df2759ac89b4923a02299e7a59f889fb8b87dbe49fb1ee3161a2862",
+    "IDENTITY-AUTHORIZATION-02.md": "7e0a94cce5751e71c58b5e77920d6c2bdb766e210896576992f1c8c768f0ff70",
+    "VALIDATION-02.md": "e787928cbe8bd0da03592a55da32e11b5d59f905adb087df48818e979e7db693",
+    "review-scope-02.csv": "62f0b0ddcce395fc73f71c5dcd651919b89d8542ea2e59bf17d69eaf5a1fec43",
+    "evidence/identity-flows-02.csv": "cbf96bd0cdb80b3dd37e74380c2e9ed8f11359742ad85eb6e0c8fa343bacb916",
+    "evidence/authorization-matrix-02.csv": "a62454dbf754dbf5b562d33e5c85c62fca4fde84fae9a46c97bfa49e18d392d1",
+    "evidence/sql-source-sink-02.csv": "f1c2237957c98b6f52bd88d4e940b1cfa849296b430f64a30498b32641e3cc76",
+    "evidence/acceptance-tests-02.csv": "311af399cb62886a4bf469abfe1fe515bd555290a23a4073e09a74159f4ba211",
+    "evidence/checks-02.json": "c934166516dd265632664cb1e3003157d913688403d20a5bce56b19600f5bbbf"
+  },
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "application_remediation_performed": false
+}

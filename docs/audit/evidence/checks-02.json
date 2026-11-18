@@ -1,0 +1,56 @@
+{
+  "audit_date_utc": "2026-11-16",
+  "source_head": "10ba215152f722c8808aea0bb672c1d1d4d9d711",
+  "branch": "arena/94ae8414-smartauditerp",
+  "method": "Offline source-hash and audit-document consistency checks only; not C# tests, exploit tests, SQL, network, or binary execution",
+  "original_project_hashes_matching": 827,
+  "scope_files": {
+    "phase_1_historical": 52,
+    "phase_2": 60,
+    "unique_union_not_line_or_execution_coverage": 92
+  },
+  "findings": {
+    "phase_1": 33,
+    "phase_2_new": 16,
+    "total_open_not_remediated": 49,
+    "severity": {
+      "High": 27,
+      "Medium": 19,
+      "Low": 1,
+      "Critical": 2
+    },
+    "certainty": {
+      "repository-gap": 5,
+      "potential": 9,
+      "confirmed": 35
+    }
+  },
+  "evidence_rows": {
+    "identity_flows": 12,
+    "authorization_scenarios": 21,
+    "sql_trace_groups_not_independent_vulnerabilities": 26,
+    "sql_classification": {
+      "unparameterized-user-text": 13,
+      "parameterized-slice": 9,
+      "controlled-or-typed-slice": 3,
+      "derived-source-unresolved": 1
+    },
+    "proposed_acceptance_scenarios_all_unexecuted": 24
+  },
+  "validation": {
+    "source_range_references_checked_including_repeats": 616,
+    "local_markdown_links_checked_including_repeats": 53,
+    "errors": [],
+    "limit": "Reference bounds, hashes, IDs and links only; not semantic correctness or WPF bindings. The output record is not self-hashed."
+  },
+  "phase_1_historical_artifact_sha256": {
+    "PHASE-01.md": "2566950e50bbdf1bfeaca2a186c10b4ac70d7f661853a8ca24931ea492deaf55",
+    "VALIDATION.md": "b99b6fae9e95ee7b6040c39fe8fb258bac546c2b83ac22e403879734e49f9a92",
+    "review-scope.csv": "e8054a02a5a78fe2e43043fc02497514ae5a7bf06d8b52bb1f3554fdeaec5ae8",
+    "evidence/baseline.json": "ffbd103ca6aacefc790250db3743255d011d0c43234680500204a5e0c687d2d8",
+    "evidence/inventory.csv": "5bbe91d0be5fd2ff5f9862a6d8dc59643dda35ce6401b8ce7fe784bc2f27b3e0"
+  },
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "application_remediation_performed": false
+}

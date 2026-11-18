@@ -1,0 +1,53 @@
+path,review_state,ranges,focus
+SmartAuditERP.sln,full-static-review,1-41,Solution composition and configuration
+SmartAuditERP/SmartAuditERP.csproj,full-static-review,1-184,Target framework and dependencies and packaging
+SmartAuditUpdater/SmartAuditUpdater.csproj,full-static-review,1-11,Updater identity and framework
+SmartAuditERP/SmartAuditERP.csproj.user,full-static-review,1-24,Machine-specific project metadata
+SmartAuditUpdater/SmartAuditUpdater.csproj.user,full-static-review,1-4,Machine-specific project metadata
+SmartAuditERP/App.config,full-static-review,1-3,Empty configuration
+SmartAuditERP/App.xaml,full-static-review,1-8,Startup URI
+SmartAuditERP/App.xaml.cs,full-static-review,1-22,Application startup
+SmartAuditERP/MainWindow.xaml.cs,full-static-review,1-28,Unused alternate entry window
+SmartAuditUpdater/App.xaml,full-static-review,1-9,Updater entry window
+SmartAuditUpdater/App.xaml.cs,full-static-review,1-14,Updater application class
+SmartAuditUpdater/MainWindow.xaml.cs,full-static-review,1-575,Entire download and backup and installation state machine
+SmartAuditUpdater/MainWindow.xaml,scoped-static-review,1-28;159-177,Closing handler and window configuration
+SmartAuditERP/Updates/UpdateNotification.xaml.cs,full-static-review,1-67,Update consent and display
+SmartAuditERP/Updates/UpdateNotification.xaml,scoped-static-review,1-28;145-182,Class and update button wiring
+SmartAuditERP/Updates/SecureVault.cs,full-static-review,1-32,Repository identifiers only; no access token found in this class
+SmartAuditERP/Updates/VersionInfo.cs,full-static-review,1-20,Version model
+SmartAuditERP/Models/AppUpdateInfo.cs,full-static-review,1-16,Release metadata model
+SmartAuditERP/Home.xaml,scoped-static-review,1-85,Window entry events and resource metadata
+SmartAuditERP/Home.xaml.cs,scoped-static-review,1-60;195-505;630-739;970-1045;1159-1220;1795-2312;2474-2500;2745-2757,Startup and authentication routing and migration and release checking and cached windows
+SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs,scoped-static-review,1-640;818-900,Login and settings persistence and connections
+SmartAuditERP/Form_WPF/frmSecurityPnl.xaml.cs,scoped-static-review,1-120,Quick PIN login instance and completion handling
+SmartAuditERP/Form_WPF/frmServerSetting.xaml.cs,scoped-static-review,74-92;192-266;384-599;713-743,Server setup privileges and connection selection and migration
+SmartAuditERP/Form_WPF/frmCheckPwd.xaml.cs,scoped-static-review,64-174,Fixed privileged challenges; literals deliberately omitted from audit outputs
+SmartAuditERP/Form_WPF/frmLogServerSettings.xaml.cs,full-static-review,1-88,Fixed credential gate
+SmartAuditERP/Form_WPF/FrmUpdate.xaml.cs,full-static-review,1-287,Legacy update wizard and license mutation
+SmartAuditERP/Form_WPF/frmChangePwd.xaml.cs,full-static-review,1-115,Plaintext read and unsafe password update SQL
+SmartAuditERP/Form_WPF/frmAddUsers.xaml.cs,scoped-static-review,215-255,User password writes and window instance sample
+SmartAuditERP/Form_WPF/frmBackupRstore.xaml.cs,scoped-static-review,119-181;685-726,Backup upload call path and FTP transport
+SmartAuditERP/Form_WPF/frmTreasury.xaml.cs,scoped-static-review,320-333;415-424,Empty print callback and closing lifecycle
+SmartAuditERP/Form_WPF/frmTreasury.xaml,scoped-static-review,438-448,Button event wiring only
+SmartAuditERP/Form_WPF/frmAccountsTree.xaml.cs,scoped-static-review,1043-1045,Closed cached window lifecycle example
+SmartAuditERP/Form_WPF/frmNewProjectPM.xaml.cs,scoped-static-review,115-150,Explicit empty business actions
+SmartAuditERP/Form_WPF/frmNewProjectPM.xaml,scoped-static-review,234-236,Empty business action wiring
+SmartAuditERP/Form_WPF/frmItems.xaml.cs,scoped-static-review,1892,Empty print callback only
+SmartAuditERP/Form_WPF/frmItems.xaml,scoped-static-review,1421-1433,Print and save event wiring only
+SmartAuditERP/Form_WPF/frmUnits.xaml.cs,scoped-static-review,300,Empty print callback only
+SmartAuditERP/Form_WPF/frmUnits.xaml,scoped-static-review,340-350,Button event wiring only
+SmartAuditERP/Class/MainClass.cs,scoped-static-review,1-150;325-462,Connection factory and global session and permission rules
+SmartAuditERP/Class/Common.cs,scoped-static-review,2060-2200,Logging configuration and version loading
+SmartAuditERP/Class/StoredQueries.cs,scoped-static-review,38-40,DB version ledger schema and insertion
+SmartAuditERP/Class/ConnectBroker.cs,full-static-review,1-120,Connectivity and MQTT security configuration
+SmartAuditERP/Class/Sync.cs,scoped-static-review,1-80,Cloud and offline configuration inventory only
+SmartAuditERP/Class/Session.cs,full-static-review,1-32,WhatsApp session entry inventory
+SmartAuditERP/Class/StartupData.cs,full-static-review,1-40,Persisted settings schema
+SmartAuditERP/Class/MainSetting.cs,full-static-review,1-20,Integration switches inventory
+SmartAuditERP/Class/User.cs,full-static-review,1-166,Permission state and session inventory; complete authorization audit deferred
+SmartAuditERP/Class/Print.cs,scoped-static-review,169;181;204,External report layout dependencies only
+SmartAuditERP/Class/Report.cs,scoped-static-review,486;495,External report layout dependencies only
+SmartAuditERP/Properties/Resources.resx,scoped-static-review,30;2154-2184;2837;3311-3325;45969;46398-46453;47186-47233,SQL resource metadata and selected account schema and seeds and GO boundaries; NOT full schema review
+SmartAuditERP/Properties/Resources.Designer.cs,scoped-static-review,1-120;355-390,Resource names and types; serialized images not loaded
+SmartAuditUpdater/bin/Release/net8.0-windows/SmartAuditUpdater.runtimeconfig.json,metadata-review,1-19,Runtime prerequisites only; binary outputs not executed

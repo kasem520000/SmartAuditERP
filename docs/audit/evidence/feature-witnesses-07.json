@@ -1,0 +1,525 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "phase": "7A-partial-static-audit",
+  "method": "Independent manually transcribed Python illustrations and separate bounded literal-source checks; NOT ERP/SQL/WPF/COM/SDK tests",
+  "application_code_imported_or_executed": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "application_remediation_performed": false,
+  "secrets_or_real_employee_or_device_data_used": false,
+  "illustration_count": 12,
+  "static_lexical_contract_check_count": 8,
+  "illustrations": [
+    {
+      "id": "ALG7-01",
+      "title": "Typed row mismatch can take the null-entry success branch",
+      "finding_ids": [
+        "P7-001"
+      ],
+      "manually_transcribed_inputs": {
+        "selected_type_tags": [
+          "nested-SalaryRow",
+          "nested-SalaryRow"
+        ],
+        "binder_expected_tag": "DataRow",
+        "stipulated_binder_result": "null"
+      },
+      "calculated_observation": {
+        "symbolic_contract_compatible": false,
+        "entry_save_guard_entered": false,
+        "caller_checks_boolean": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Symbolic type/branch model only, not .NET casting, exception, WPF or SQL execution; persistence is conditional on schema and preceding writes.",
+      "evidence": "SmartAuditERP/Form_WPF/FrmReseved.xaml.cs:355-429;SmartAuditERP/Class/Reseved.cs:227-244;SmartAuditERP/Class/Reseved.cs:295-345"
+    },
+    {
+      "id": "ALG7-02",
+      "title": "Reload omission preserves the default employee identifier",
+      "finding_ids": [
+        "P7-003"
+      ],
+      "manually_transcribed_inputs": {
+        "synthetic_source_employee_id": 42,
+        "initializer_does_not_assign_Emp": true
+      },
+      "calculated_observation": {
+        "row_Emp": 0,
+        "validation_rows": 0,
+        "no_row_helper_return": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Dictionary/default illustration, not DTO setters, a deployed employee0/FK, a selected WPF row, payroll SQL or production corruption.",
+      "evidence": "SmartAuditERP/Form_WPF/FrmReseved.xaml.cs:493-531;SmartAuditERP/Form_WPF/FrmReseved.xaml.cs:698-711;SmartAuditERP/Form_WPF/FrmReseved.xaml.cs:791-804;SmartAuditERP/Form_WPF/FrmReseved.xaml.cs:889-904"
+    },
+    {
+      "id": "ALG7-03",
+      "title": "Editable components disagree with a stale saved net",
+      "finding_ids": [
+        "P7-006"
+      ],
+      "manually_transcribed_inputs": {
+        "basic": "100",
+        "independent_add_edit": "20",
+        "independent_sub_edit": "15",
+        "old_net": "100"
+      },
+      "calculated_observation": {
+        "expected_after_add": "120",
+        "expected_after_sub": "85",
+        "net_if_no_recalculation": "100"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Exact Decimal fixtures, not C# culture/binary arithmetic, WPF events, SQL writes or an actual financial payment.",
+      "evidence": "SmartAuditERP/Form_WPF/frmSalaryPay.xaml:328-355;SmartAuditERP/Form_WPF/frmSalaryPay.xaml.cs:340-354;SmartAuditERP/Form_WPF/frmSalaryPay.xaml.cs:531-547"
+    },
+    {
+      "id": "ALG7-04",
+      "title": "Clearing fields is not resetting edit identity",
+      "finding_ids": [
+        "P7-007",
+        "P7-023"
+      ],
+      "manually_transcribed_inputs": {
+        "clear_form_code": -1,
+        "stipulated_subsequent_MAX": 7,
+        "booking_loaded_code": 7
+      },
+      "calculated_observation": {
+        "add_sub_next_operation": "UPDATE",
+        "booking_code_after_automatic_clear": 7
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Sequential editor-state transcription only; no concurrent SQL, actual MAX allocation, WPF button presses or overwrite performed. Explicit Booking New is a counterexample that resets Code.",
+      "evidence": "SmartAuditERP/Form_WPF/frmEmpSalaryAddSub.xaml.cs:417-421;SmartAuditERP/Form_WPF/frmEmpSalaryAddSub.xaml.cs:830-844;SmartAuditERP/Form_WPF/frmEmpSalaryAddSub.xaml.cs:882-897;SmartAuditERP/Form_WPF/frmBookingM.xaml.cs:502-530;SmartAuditERP/Form_WPF/frmBookingM.xaml.cs:738-741;SmartAuditERP/Form_WPF/frmBookingM.xaml.cs:1146-1153"
+    },
+    {
+      "id": "ALG7-05",
+      "title": "Business number used as primary key targets a different head",
+      "finding_ids": [
+        "P7-010"
+      ],
+      "manually_transcribed_inputs": {
+        "synthetic_contracts": [
+          {
+            "Contr_id": 10,
+            "ContrNo": 77
+          },
+          {
+            "Contr_id": 77,
+            "ContrNo": 90
+          }
+        ],
+        "opened_business_number": 77
+      },
+      "calculated_observation": {
+        "intended_primary_ids": [
+          10
+        ],
+        "primary_ids_matched_by_update": [
+          77
+        ]
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Two stipulated distinct keys, not deployed numbering/constraints/triggers or a SQL update. Equality in a small database can mask this mismatch.",
+      "evidence": "SmartAuditERP/Form_WPF/frmContractPM.xaml.cs:449-470;SmartAuditERP/Form_WPF/frmContractPM.xaml.cs:649-659;SmartAuditERP/Class/StoredQueries.cs:24-24;SmartAuditERP/Properties/Resources.resx:46883-46912"
+    },
+    {
+      "id": "ALG7-06",
+      "title": "Re-saving two terms can append two more projects",
+      "finding_ids": [
+        "P7-011"
+      ],
+      "manually_transcribed_inputs": {
+        "existing_project_ids": [
+          101,
+          102
+        ],
+        "term_count": 2,
+        "stipulated_commit_on_compatible_schema": true
+      },
+      "calculated_observation": {
+        "project_ids_after_unconditional_inserts": [
+          101,
+          102,
+          103,
+          104
+        ],
+        "old_links_still_point_to": [
+          101,
+          102
+        ]
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "List model conditional on reaching Commit and a compatible schema; P7-014 can block actual inserts. Not evidence of duplicated projects in a deployment.",
+      "evidence": "SmartAuditERP/Form_WPF/frmContractPM.xaml.cs:685-701;SmartAuditERP/Form_WPF/frmContractPM.xaml.cs:835-866"
+    },
+    {
+      "id": "ALG7-07",
+      "title": "Reloaded term net and saved header tax do not match components",
+      "finding_ids": [
+        "P7-012",
+        "P7-013"
+      ],
+      "manually_transcribed_inputs": {
+        "quantity": "10",
+        "unit_price": "100",
+        "line_VAT_amount": "150"
+      },
+      "calculated_observation": {
+        "total": "1000",
+        "reloaded_price_plus_vat": "250",
+        "required_total_plus_vat": "1150",
+        "forced_header_VAT": "0"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Exact Decimal counterexample with a VAT amount, not a legal tax-rate decision, .NET calculation/property setters, SQL, a report or compliance certification.",
+      "evidence": "SmartAuditERP/Form_WPF/frmContractPM.xaml.cs:494-517;SmartAuditERP/Form_WPF/frmContractPM.xaml.cs:677-684"
+    },
+    {
+      "id": "ALG7-08",
+      "title": "One status code has conflicting semantic consumers",
+      "finding_ids": [
+        "P7-015"
+      ],
+      "manually_transcribed_inputs": {
+        "transcribed_seed": {
+          "3": "in-progress",
+          "4": "closed"
+        },
+        "accreditation_status": 3,
+        "cycle_closed_constant": 3
+      },
+      "calculated_observation": {
+        "seed_meaning_after_accreditation": "in-progress",
+        "cycle_considers_it_closed": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Seed/consumer symbol model, not the deployed PM_Status lookup, a project transition, closed-state UI rendering or a migration test.",
+      "evidence": "SmartAuditERP/Properties/Resources.resx:47111-47117;SmartAuditERP/Form_WPF/frmAssignProjectPM.xaml.cs:849-855;SmartAuditERP/Form_WPF/frmProjCyclePM.xaml.cs:299-309;SmartAuditERP/Form_WPF/frmProjCyclePM.xaml.cs:800-805"
+    },
+    {
+      "id": "ALG7-09",
+      "title": "Empty loops pass while a seventh configured stage is not displayed",
+      "finding_ids": [
+        "P7-016",
+        "P7-017"
+      ],
+      "manually_transcribed_inputs": {
+        "configured_stage_ids": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "fixed_button_slots": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "independent_empty_plan": []
+      },
+      "calculated_observation": {
+        "displayed_stage_ids": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "unreachable_configured_stage_ids": [
+          7
+        ],
+        "empty_all_result": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Python loop/list illustration, not WPF layout or actual stage approval. Sequential versus parallel business policy and valid empty project types require an explicit contract.",
+      "evidence": "SmartAuditERP/Form_WPF/frmProjCyclePM.xaml.cs:299-309;SmartAuditERP/Form_WPF/frmProjCyclePM.xaml.cs:374-391;SmartAuditERP/Form_WPF/frmProjCyclePM.xaml:350-375;SmartAuditERP/Form_WPF/frmProjectStagesPM.xaml.cs:424-439"
+    },
+    {
+      "id": "ALG7-10",
+      "title": "Commit followed by failed clear requires ingestion idempotency",
+      "finding_ids": [
+        "P7-009"
+      ],
+      "manually_transcribed_inputs": {
+        "device_batch": [
+          "synthetic-event-A",
+          "synthetic-event-B",
+          "synthetic-event-C"
+        ],
+        "stipulated_clear_result": false,
+        "stipulated_replay": true
+      },
+      "calculated_observation": {
+        "rows_without_inbox_after_two_reads": 6,
+        "unique_event_count": 3
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Conditional list schedule only; no device/COM or SQL. SDK replay semantics, external triggers and a reliable event identity remain unresolved. Commit precedes clear; no pre-commit erasure claim.",
+      "evidence": "SmartAuditERP/Class/FingerPrintDevice.cs:73-106;SmartAuditERP/Properties/Resources.resx:3515-3539"
+    },
+    {
+      "id": "ALG7-11",
+      "title": "An active-row display count is not the inserted booking identity",
+      "finding_ids": [
+        "P7-022"
+      ],
+      "manually_transcribed_inputs": {
+        "active_booking_ids": [
+          1,
+          5
+        ],
+        "stipulated_SQL_next_identity": 6
+      },
+      "calculated_observation": {
+        "display_number": 3,
+        "addition_parent_if_taken_from_display": 3,
+        "real_parent_under_stipulation": 6
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Stipulated identity-gap example only, not SQL identity allocation or proof of orphan/foreign booking rows; no missing stored-procedure return contract assumed.",
+      "evidence": "SmartAuditERP/Form_WPF/frmBookingM.xaml.cs:241-269;SmartAuditERP/Form_WPF/frmBookingM.xaml.cs:661-674;SmartAuditERP/Form_WPF/frmBookingM.xaml.cs:711-735;SmartAuditERP/Properties/Resources.resx:159-178"
+    },
+    {
+      "id": "ALG7-12",
+      "title": "Day-wide exit update rewrites previously recorded entry modes",
+      "finding_ids": [
+        "P7-026"
+      ],
+      "manually_transcribed_inputs": {
+        "same_boat_same_day_events": [
+          {
+            "event": 1,
+            "mode": 0
+          },
+          {
+            "event": 2,
+            "mode": 1
+          },
+          {
+            "event": 3,
+            "mode": 0
+          }
+        ],
+        "manual_exit_sets_mode": 1
+      },
+      "calculated_observation": {
+        "events_after_day_predicate": [
+          {
+            "event": 1,
+            "mode": 1
+          },
+          {
+            "event": 2,
+            "mode": 1
+          },
+          {
+            "event": 3,
+            "mode": 1
+          }
+        ],
+        "changed_prior_entry_count": 2
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "List/predicate illustration, not Attendance SQL or payroll attendance. The inspected consumer is marine; no employee identity relationship is inferred.",
+      "evidence": "SmartAuditERP/Form_WPF/frmAttendM.xaml.cs:554-588;SmartAuditERP/Form_WPF/frmHoldM.xaml.cs:470-500"
+    }
+  ],
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7-01",
+      "title": "Accrual row tags, cast and nullable entry guard in selected text",
+      "finding_ids": [
+        "P7-001"
+      ],
+      "literal_text_observation": {
+        "caller_collects_rows": true,
+        "caller_uses_SalaryRow_loop": true,
+        "binder_contains_DataRow_cast": true,
+        "binder_returns_null_on_catch": true,
+        "entry_save_is_conditional_on_nonnull": true
+      },
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Bounded literal presence, not type checking, .NET exception or transaction execution. Semantic trace and limitations are in the report.",
+      "evidence": "SmartAuditERP/Form_WPF/FrmReseved.xaml.cs:355-429;SmartAuditERP/Class/Reseved.cs:227-244;SmartAuditERP/Class/Reseved.cs:268-345"
+    },
+    {
+      "id": "ST7-02",
+      "title": "Both selected reload initializers omit Emp",
+      "finding_ids": [
+        "P7-003"
+      ],
+      "literal_text_observation": {
+        "Emp_assignment_absent_in_each_initializer": [
+          true,
+          true
+        ],
+        "Empnam_present_in_each_initializer": [
+          true,
+          true
+        ]
+      },
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Absence only in the two declared initializer slices, not a global data-flow proof or evaluation of external DTO/default/FK behavior.",
+      "evidence": "SmartAuditERP/Form_WPF/FrmReseved.xaml.cs:698-711;SmartAuditERP/Form_WPF/FrmReseved.xaml.cs:791-804"
+    },
+    {
+      "id": "ST7-03",
+      "title": "SalaryPay writer uses the field without a local financial writer call",
+      "finding_ids": [
+        "P7-004"
+      ],
+      "literal_text_observation": {
+        "SalaryPay_write_text_present": true,
+        "EntryOper_or_ReceiptOper_text_present_in_save": false,
+        "EntryGlobalID_Field_reset_present_in_CLR": false
+      },
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Local selected-method text only. Does not rule out database triggers or services outside the repository, and makes no collateral-deletion claim about ReceiptOper.",
+      "evidence": "SmartAuditERP/Form_WPF/frmSalaryPay.xaml.cs:89-118;SmartAuditERP/Form_WPF/frmSalaryPay.xaml.cs:427-566"
+    },
+    {
+      "id": "ST7-04",
+      "title": "Salary component event declarations have different recalc wiring",
+      "finding_ids": [
+        "P7-006"
+      ],
+      "literal_text_observation": {
+        "has_TextChanged_in_selected_TextBox": {
+          "txtTotSalary": true,
+          "TxtHous": true,
+          "TxtTravel": true,
+          "txtSalaryAdd": false,
+          "txtSalarySub": false
+        }
+      },
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Selected XAML declaration check only, not a WPF event/style/rendering test or a global binding analysis; the full local code-behind was separately reviewed.",
+      "evidence": "SmartAuditERP/Form_WPF/frmSalaryPay.xaml:328-355"
+    },
+    {
+      "id": "ST7-05",
+      "title": "Contract primary-id parameter and forced zero tax in selected text",
+      "finding_ids": [
+        "P7-010",
+        "P7-012"
+      ],
+      "literal_text_observation": {
+        "read_uses_ContrNo": true,
+        "update_binds_Contr_id_to_currentCode": true,
+        "update_where_uses_Contr_id": true,
+        "header_VAT_parameter_is_zero": true
+      },
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Literal selected C#/SQL strings, not a SQL parser, data update, deployed schema or tax certification.",
+      "evidence": "SmartAuditERP/Form_WPF/frmContractPM.xaml.cs:449-470;SmartAuditERP/Form_WPF/frmContractPM.xaml.cs:649-659;SmartAuditERP/Form_WPF/frmContractPM.xaml.cs:677-684;SmartAuditERP/Class/StoredQueries.cs:24-24"
+    },
+    {
+      "id": "ST7-06",
+      "title": "Supplied requirement-detail DDL differs from selected readers",
+      "finding_ids": [
+        "P7-021"
+      ],
+      "literal_text_observation": {
+        "declared_columns": [
+          "RequirNo",
+          "TermPk",
+          "Quntity",
+          "price",
+          "Reff_No",
+          "status"
+        ],
+        "primary_key_columns": [
+          "RequirNo"
+        ],
+        "reader_requests_IsDeleted": true
+      },
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Bounded embedded-DDL/text-name extraction only, not SQL parsing or proof that a deployed schema lacks a later external migration/trigger.",
+      "evidence": "SmartAuditERP/Properties/Resources.resx:47160-47177;SmartAuditERP/Form_WPF/frmRequirementPM.xaml.cs:278-306"
+    },
+    {
+      "id": "ST7-07",
+      "title": "Hold entry-detail caller omits a required shared SQL parameter",
+      "finding_ids": [
+        "P4-020",
+        "P4-025"
+      ],
+      "literal_text_observation": {
+        "required_parameter_names": [
+          "@acc_no",
+          "@branch",
+          "@cccode",
+          "@credit",
+          "@dept",
+          "@entryglobalid",
+          "@notes",
+          "@res_id",
+          "@salesman"
+        ],
+        "supplied_parameter_names": [
+          "@acc_no",
+          "@branch",
+          "@cccode",
+          "@credit",
+          "@dept",
+          "@entryglobalid",
+          "@notes",
+          "@res_id"
+        ],
+        "required_minus_supplied": [
+          "@salesman"
+        ]
+      },
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Parameter-name set difference only. Not SQL execution or an assessment of every type/length/path. False success is the existing P4-025 root, not a new phase7 finding.",
+      "evidence": "SmartAuditERP/Class/StoredQueries.cs:20-20;SmartAuditERP/Form_WPF/frmHoldM.xaml.cs:428-446"
+    },
+    {
+      "id": "ST7-08",
+      "title": "Biometric text keeps commit before clear but re-enable before finally",
+      "finding_ids": [
+        "P7-008",
+        "P7-009"
+      ],
+      "literal_text_observation": {
+        "commit_before_clear": true,
+        "enable_true_text_before_finally": true,
+        "EnableDevice_present_in_finally_slice": false,
+        "open_and_begin_precede_try": true
+      },
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Textual order/absence only; SDK Boolean semantics, actual disabling/replay/normal exhaustion, exceptions and device recovery are untested. Closing SQL ordinarily rolls back uncommitted work.",
+      "evidence": "SmartAuditERP/Class/FingerPrintDevice.cs:48-120"
+    }
+  ],
+  "limit": "Passing audit-owned assertions only documents these stipulated examples/text observations; no build, runtime acceptance, actual data mutation, deployed-incident or financial/compliance certification."
+}

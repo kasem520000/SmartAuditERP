@@ -1,0 +1,49 @@
+path,review_state,ranges,focus
+SmartAuditERP/Class/Accounting.cs,selected-static-path-review,128-155,Call to InventoryCost with balance-sheet date; P3 accounting otherwise preserved
+SmartAuditERP/Class/EntityOperations.cs,selected-static-path-review,210-241,Selected Offer parent writer only; other sync/entity methods deferred to5
+SmartAuditERP/Class/Inventory.cs,selected-static-path-review,1-353;447-534,"Stock procedure routing, mutable cache updates and valuation adapters; no proven live ItemsStock consumer"
+SmartAuditERP/Class/InvoiceData.cs,selected-static-path-review,1-65,Presentation/export field contract selected metadata only
+SmartAuditERP/Class/InvoiceObj.cs,selected-static-path-review,1-331,"Invoice setting/default model, type/state impact from InvTypes; external enums not inferred"
+SmartAuditERP/Class/InvoiceOper.cs,selected-static-path-review,798-971;1310-1913;2386-2435;2872-2903;3151-3181;3366-3505;3941-4014;4040-4822;5009-5184,"Actual shared invoice callers/save/edit/delete, line impacts, cost/composites, return/payment paths; providers deferred"
+SmartAuditERP/Class/InvoiceOperContract.cs,selected-static-path-review,26-184;468-895;990-1445;2087-2245,Separate contract tables/binder/writer/partial-selection path; not legal retention policy certification
+SmartAuditERP/Class/ItemComponent.cs,selected-static-path-review,1-23,Local component DTO metadata
+SmartAuditERP/Class/ItemOper.cs,selected-static-path-review,30-33;154-391;497-997;1047-1645;1829-2134;2158-2245,Units/prices/customer prices/offers/calculations/barcode/availability/cost/delivery writer; no C# or SQL execution
+SmartAuditERP/Class/ItemOpercontract.cs,selected-static-path-review,514-552;610-680;762-852,Calculation duplication and contract derived fields reset; selected slices not whole-file
+SmartAuditERP/Class/ItemSerialNo.cs,selected-static-path-review,1-14,Local serial DTO metadata; not external InvoiceItem.Equals
+SmartAuditERP/Class/Print.cs,selected-static-path-review,516-540;625-678,Invoice print payload consumes line quantities/tax/cost/contract fields; no rendering/printer run
+SmartAuditERP/Class/StoredQueries.cs,selected-static-path-review,1-51,SQL literal metadata and source command contracts only
+SmartAuditERP/Class_WPF/AdjustItemRow.cs,selected-static-path-review,1-116,Stocktake row properties and recalculation notifications
+SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs,selected-static-path-review,672-691,"InventoryCost as-of date caller only, earlier P3 report preserved"
+SmartAuditERP/Form_WPF/frmImportDataGeneral.xaml.cs,selected-static-path-review,996-1058,Actual invoice file mapping validation and returned quantity/price/unit values only
+SmartAuditERP/Form_WPF/frmImportInvoice.xaml.cs,selected-static-path-review,120-212;371-389,Existing invoice import chooser; not confused with Excel mapper
+SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs,selected-static-path-review,515-552,Additional alternative invoice report launch path
+SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs,selected-static-path-review,484-650;710-739;1495-1510,"Goods in/out/beginning/order route and local SaveInvoice(null), cost correction; no policy assertion about mandatory GL"
+SmartAuditERP/Form_WPF/frmInvItemsDeliveries.xaml.cs,selected-static-path-review,96-309,Partial deliveries unit/remaining ceiling/query/save result; independent warehouse semantics not assumed
+SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs,selected-static-path-review,1920-2397;2440-2492;2501-2687;2884-2898;2984-3003;3099-3131,Active POS movement/state/payment/hold/local save and import; no payment-provider certification
+SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs,selected-static-path-review,1014-1038;1196-1340;1476-1516;1610-1623;2315-2368,"Active purchase/return/save button asymmetry, import and print; cost caller slices"
+SmartAuditERP/Form_WPF/frmInvSale.xaml.cs,selected-static-path-review,1250-1275;1684-1924;1998-2048;2394-2464;2548-2593;2720-2885;3228-3296;3348-3373,Active sale/linked returns/quotation/conversion/payment/save/import/print paths
+SmartAuditERP/Form_WPF/frmInvSumByType.xaml.cs,selected-static-path-review,272-319,Alternative sales/purchase/POS launch reachability from invoice summary
+SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs,selected-static-path-review,797-1046;1526-1569;1912-1986,Active send/receive/approve and alternative SavePrint; independent outcomes and cost correction
+SmartAuditERP/Form_WPF/frmInvoiceDeliveries.xaml.cs,selected-static-path-review,257-312;641-761,"Delivery event callers, selected/whole invoice quantities and outcome handling"
+SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs,selected-static-path-review,1-60;97-181;188-363,Original/contract row query and selected/all result mutation/cancellation
+SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs,selected-static-path-review,266-303;603-619,Source invoice selection and dialog result only
+SmartAuditERP/Form_WPF/frmItemSerialNo.xaml.cs,selected-static-path-review,91-143;183-201;420-556;674-801,Serial availability/selection/clearing/duplicate checks and error behavior
+SmartAuditERP/Form_WPF/frmItemUnits.xaml.cs,selected-static-path-review,1-219,"Unit dialog load/equality/price selection; metadata and callers, no WPF run"
+SmartAuditERP/Form_WPF/frmItems.xaml.cs,selected-static-path-review,742-847;1004-1094;1620-1651;1884-1892,"Units/prices/master save/empty print handler slices, no full item CRUD certification"
+SmartAuditERP/Form_WPF/frmPOS.xaml.cs,selected-static-path-review,2075-2167;2187-2246,Report-reachable alternative POS mapping/print/identity slices; not whole legacy POS certification
+SmartAuditERP/Form_WPF/frmPOSBill.xaml.cs,selected-static-path-review,269-362;434-581;751-813,"Local bill/payment mutations, confirmation/cancellation and list replacement; gateway internals deferred6"
+SmartAuditERP/Form_WPF/frmPOSPay.xaml.cs,selected-static-path-review,302-514,Alternative POS payment local total/list/header mutations; no device run
+SmartAuditERP/Form_WPF/frmProductionOrder.xaml,selected-xaml-event-wiring,339-343;369-372;877-906,Selected unit/quantity/save event wiring only
+SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs,selected-static-path-review,299-445;472-630;879-1018;1057-1187;1271-1535;1770-1810,Production entry/update/unit conversion/BOM command contracts; save blocked by missing parameter names
+SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs,selected-static-path-review,507-528;553-635,Reachability of production and stocktake from inventory report; loader contract follow-up
+SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs,selected-static-path-review,1114-1145,Production/consumption/transfer drilldown caller reachability
+SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs,selected-static-path-review,210-228;468-546;651-781;908-1049;1096-1207;1368-1508,Draft/approve/cancel/delete and actual SaveAndPrint path; unused ExecuteAdjustment not substituted
+SmartAuditERP/Form_WPF/frmSafeGrd.xaml.cs,selected-static-path-review,299-368;438-487,Inventory report unit/cost option and supplied column contract
+SmartAuditERP/Form_WPF/frmSafesTransfer.xaml.cs,symbol-and-reachability-metadata-only,1-32,Legacy form symbol/constructor metadata and explicit caller search only; active route is frmInventoryTransfer
+SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs,selected-static-path-review,1375-1567;1911-1970,Report-reachable legacy purchase/save/binder slice; cp1256 read-only fallback
+SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs,selected-static-path-review,767-842;921-1168;1711-1842,Report-reachable alternative sales UI/save and separate rounding/calculation path
+SmartAuditERP/Form_WPF/frmUnits.xaml.cs,selected-static-path-review,294-305,Unit print handler existing incomplete feature evidence only
+SmartAuditERP/Form_WPF/frmcontract.xaml.cs,selected-static-path-review,155-233;989-1131;2072-2119;2164-2472,Contract entry/retention display/save/partial-return/print path; legal/accounting policy unresolved
+SmartAuditERP/Form_WPF/frminvoice.xaml.cs,selected-static-path-review,1412-1718;1911-1946,Marine rental save/failure flags and subsequent Attendance movement
+SmartAuditERP/Home.xaml.cs,selected-static-path-review,2763-2844;3247-3260;3271-3309;3433-3470;3672-3679,Active sales/purchase/POS/transfer/stocktake/delivery/rental launch routes; no direct production route established
+SmartAuditERP/Properties/Resources.resx,selected-static-path-review,521-532;954-1058;3028-3076;3859-3874;48010-48023;48189-48210;48222-48271,"Supplied schema, type seeds and stock/cost procedures; not deployed schema or enum value proof"
