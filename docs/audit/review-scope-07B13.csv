@@ -1,0 +1,20 @@
+path,review_state,ranges,focus
+SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs,selected-static-source-slices-not-runtime-certified,1-896,الجسم المحلي وXAML كاملان في7B13: المعايير والحبيبة والشجرة والافتتاحي والطفل والمخرج. C# لثلاثة من الأربعة كان كاملاً فيB2؛ لا إعادة عد القراءة الأولى أو ادعاء كل feature/نشر.
+SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml,selected-static-source-slices-not-runtime-certified,1-361,الجسم المحلي وXAML كاملان في7B13: المعايير والحبيبة والشجرة والافتتاحي والطفل والمخرج. C# لثلاثة من الأربعة كان كاملاً فيB2؛ لا إعادة عد القراءة الأولى أو ادعاء كل feature/نشر.
+SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs,selected-static-source-slices-not-runtime-certified,1-663,الجسم المحلي وXAML كاملان في7B13: المعايير والحبيبة والشجرة والافتتاحي والطفل والمخرج. C# لثلاثة من الأربعة كان كاملاً فيB2؛ لا إعادة عد القراءة الأولى أو ادعاء كل feature/نشر.
+SmartAuditERP/Form_WPF/frmRptBalances.xaml,selected-static-source-slices-not-runtime-certified,1-541,الجسم المحلي وXAML كاملان في7B13: المعايير والحبيبة والشجرة والافتتاحي والطفل والمخرج. C# لثلاثة من الأربعة كان كاملاً فيB2؛ لا إعادة عد القراءة الأولى أو ادعاء كل feature/نشر.
+SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs,selected-static-source-slices-not-runtime-certified,1-843,الجسم المحلي وXAML كاملان في7B13: المعايير والحبيبة والشجرة والافتتاحي والطفل والمخرج. C# لثلاثة من الأربعة كان كاملاً فيB2؛ لا إعادة عد القراءة الأولى أو ادعاء كل feature/نشر.
+SmartAuditERP/Form_WPF/frmRptCostCenter.xaml,selected-static-source-slices-not-runtime-certified,1-561,الجسم المحلي وXAML كاملان في7B13: المعايير والحبيبة والشجرة والافتتاحي والطفل والمخرج. C# لثلاثة من الأربعة كان كاملاً فيB2؛ لا إعادة عد القراءة الأولى أو ادعاء كل feature/نشر.
+SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs,selected-static-source-slices-not-runtime-certified,1-539,الجسم المحلي وXAML كاملان في7B13: المعايير والحبيبة والشجرة والافتتاحي والطفل والمخرج. C# لثلاثة من الأربعة كان كاملاً فيB2؛ لا إعادة عد القراءة الأولى أو ادعاء كل feature/نشر.
+SmartAuditERP/Form_WPF/frmRptKhzna.xaml,selected-static-source-slices-not-runtime-certified,1-559,الجسم المحلي وXAML كاملان في7B13: المعايير والحبيبة والشجرة والافتتاحي والطفل والمخرج. C# لثلاثة من الأربعة كان كاملاً فيB2؛ لا إعادة عد القراءة الأولى أو ادعاء كل feature/نشر.
+SmartAuditERP/Class/RestrictionData.cs,selected-static-source-slices-not-runtime-certified,1-172,DTO مشترك كامل بقراءة cp1256 fallback فقط بلا تحويل ترميز؛ ليس قالباً خارجياً.
+SmartAuditERP/Class_WPF/KhznaRow.cs,selected-static-source-slices-not-runtime-certified,1-17,نموذج صف الصندوق كاملاً؛ مسار جديد على دفتر النطاق، لا ميزة مكتملة.
+SmartAuditERP/Home.xaml.cs,selected-static-source-slices-not-runtime-certified,89-100;2616-2667,Home callers: ثلاثة new وstatic للصندوق؛ Apply قبل Show؛ لا إعادة قراءة Home كله.
+SmartAuditERP/Home.xaml,selected-static-source-slices-not-runtime-certified,330-345,قوائم الآباء الأربعة disabled صراحة؛ لا إثبات نشر أو إتاحة.
+SmartAuditERP/Class/MainClass.cs,selected-static-source-slices-not-runtime-certified,324-455,DoApply stub وvisual-tree/tag وأسماء الأوامر؛ لا تصديق التفويض الفعلي.
+SmartAuditERP/Class/Accounting.cs,selected-static-source-slices-not-runtime-certified,1-14,تعريف BranchCondition فقط؛ whitespace ليست تجاوزاً بمفردها.
+SmartAuditERP/Class/User.cs,selected-static-source-slices-not-runtime-certified,108-114,ShowBranchsAccounts يضع whitespace؛ شاهد مقابل.
+SmartAuditERP/Class/EntryOper.cs,selected-static-source-slices-not-runtime-certified,1023-1154,مقطع router يأخذ GlobalID ويسترجع branch ثم يفتح طفلاً؛ لا كل router أو كل طفل.
+SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs,selected-static-source-slices-not-runtime-certified,25-103;167-250,طفل كشف الحساب: Loaded والمعايير والمصدر حتى projection؛ P3-022 السابقة باقية، لا كل الطفل.
+SmartAuditERP/Form_WPF/frmAccountBalance.xaml,selected-static-source-slices-not-runtime-certified,105-141,افتراضيات aggregate/all والفرع في الطفل؛ لا وراثة تغطية من الأب.
+SmartAuditERP/Properties/Resources.resx,selected-static-source-slices-not-runtime-certified,38-58;242-276;632-647;1538-1573;1992-2005,DDL حساب/فرع/مركز/قيد/صندوق منتقى؛ ليس مخطط نشر أو خطة تنفيذ مصادقاً عليها.

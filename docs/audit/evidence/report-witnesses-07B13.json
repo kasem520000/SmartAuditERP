@@ -1,0 +1,966 @@
+{
+  "phase": "7B13-partial-static-audit",
+  "application_code_imported_or_executed": false,
+  "application_remediation_performed": false,
+  "real_business_or_secret_data_used": false,
+  "spreadsheet_or_formula_interpreter_executed": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "default_aggregate_gate_not_assumed_resolved": true,
+  "supplied_sql_not_certified_deployed": true,
+  "progress_categories_not_wholly_unread_counts": true,
+  "illustration_count": 20,
+  "static_lexical_contract_check_count": 20,
+  "illustrations": [
+    {
+      "id": "ALG7B13-01",
+      "title": "المستويان2 و3 يعيدان الجذر والأبناء المباشرين فقط",
+      "finding_ids": "P7-118",
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:540-568;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml:194-198",
+      "illustration_assertions_passed": true,
+      "details": {
+        "local_level2": [
+          1,
+          11
+        ],
+        "local_level3": [
+          1,
+          11
+        ],
+        "reference_level3": [
+          1,
+          11,
+          111
+        ],
+        "all_button_counterevidence": [
+          1,
+          11,
+          111,
+          1111
+        ]
+      },
+      "source_application_executed": false,
+      "limit": "تصوير يدوي مستقل لعقد محدود، لا ترجمة أو تشغيل C#/SQL/WPF/REPX/Office أو قبول ERP/مال/ACL. بيانات خيالية ونصوص خاملة فقط، لا ملفات تصدير فعلية أو طابعة أو shell أو مفسر HTML/صيغة. لا كل caller/child/template/deployment. P3-022 باقية، والمخطط المرفق ليس شهادة نشر. أعداد العمق والمسارات مجموعات تنظيم لا نسبة اكتمال أو جلسات مضمونة."
+    },
+    {
+      "id": "ALG7B13-02",
+      "title": "الإسقاط المحلي10 حقول مقابل12 في الجدول وHTML",
+      "finding_ids": "P7-119",
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:635-667;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:794-830;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml:280-293",
+      "illustration_assertions_passed": true,
+      "details": {
+        "grid_and_html_fields_with_identity": 12,
+        "flow_document_fields_with_identity": 10,
+        "missing": [
+          "previousD",
+          "previousC"
+        ],
+        "previous_example": 100,
+        "closing_example": 100
+      },
+      "source_application_executed": false,
+      "limit": "تصوير يدوي مستقل لعقد محدود، لا ترجمة أو تشغيل C#/SQL/WPF/REPX/Office أو قبول ERP/مال/ACL. بيانات خيالية ونصوص خاملة فقط، لا ملفات تصدير فعلية أو طابعة أو shell أو مفسر HTML/صيغة. لا كل caller/child/template/deployment. P3-022 باقية، والمخطط المرفق ليس شهادة نشر. أعداد العمق والمسارات مجموعات تنظيم لا نسبة اكتمال أو جلسات مضمونة."
+    },
+    {
+      "id": "ALG7B13-03",
+      "title": "السابق موجود في الورقة ويسقط من إقفال الأب والمسار الفرعي فقط",
+      "finding_ids": "P3-019",
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:323-345;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:396-448;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:455-486",
+      "illustration_assertions_passed": true,
+      "details": {
+        "leaf_final": 50,
+        "parent_final": 10,
+        "secondary_previous": 0,
+        "reference_final": 50,
+        "period_specific_previous_enabled_assumed": true
+      },
+      "source_application_executed": false,
+      "limit": "تصوير يدوي مستقل لعقد محدود، لا ترجمة أو تشغيل C#/SQL/WPF/REPX/Office أو قبول ERP/مال/ACL. بيانات خيالية ونصوص خاملة فقط، لا ملفات تصدير فعلية أو طابعة أو shell أو مفسر HTML/صيغة. لا كل caller/child/template/deployment. P3-022 باقية، والمخطط المرفق ليس شهادة نشر. أعداد العمق والمسارات مجموعات تنظيم لا نسبة اكتمال أو جلسات مضمونة."
+    },
+    {
+      "id": "ALG7B13-04",
+      "title": "جمع صفوف طبقات الشجرة ليس partition مالية",
+      "finding_ids": "P3-020",
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:455-494;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:508-534",
+      "illustration_assertions_passed": true,
+      "details": {
+        "all_three_hierarchy_rows_total": 300,
+        "one_leaf_partition_total": 100,
+        "root_only_total": 100,
+        "not_three_findings": true
+      },
+      "source_application_executed": false,
+      "limit": "تصوير يدوي مستقل لعقد محدود، لا ترجمة أو تشغيل C#/SQL/WPF/REPX/Office أو قبول ERP/مال/ACL. بيانات خيالية ونصوص خاملة فقط، لا ملفات تصدير فعلية أو طابعة أو shell أو مفسر HTML/صيغة. لا كل caller/child/template/deployment. P3-022 باقية، والمخطط المرفق ليس شهادة نشر. أعداد العمق والمسارات مجموعات تنظيم لا نسبة اكتمال أو جلسات مضمونة."
+    },
+    {
+      "id": "ALG7B13-05",
+      "title": "مقارنة الحركة بدقة1 لا تثبت تساوي العرض N2 أو الإقفال",
+      "finding_ids": "P3-020",
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:508-534",
+      "illustration_assertions_passed": true,
+      "details": {
+        "debit": "100.04",
+        "credit": "100.00",
+        "difference": "0.04",
+        "local_rounded_comparison": true,
+        "not_a_certified_currency_tolerance": true
+      },
+      "source_application_executed": false,
+      "limit": "تصوير يدوي مستقل لعقد محدود، لا ترجمة أو تشغيل C#/SQL/WPF/REPX/Office أو قبول ERP/مال/ACL. بيانات خيالية ونصوص خاملة فقط، لا ملفات تصدير فعلية أو طابعة أو shell أو مفسر HTML/صيغة. لا كل caller/child/template/deployment. P3-022 باقية، والمخطط المرفق ليس شهادة نشر. أعداد العمق والمسارات مجموعات تنظيم لا نسبة اكتمال أو جلسات مضمونة."
+    },
+    {
+      "id": "ALG7B13-06",
+      "title": "Balances يضيف opening-only لكن لا يعوض كل السابق",
+      "finding_ids": "P3-019",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs:345-366;SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs:396-425",
+      "illustration_assertions_passed": true,
+      "details": {
+        "opening_only_counterevidence": 100,
+        "prior_non_type0_not_in_period_sketch": 50,
+        "local_period_result": 100,
+        "reference_if_same_contract": 150
+      },
+      "source_application_executed": false,
+      "limit": "تصوير يدوي مستقل لعقد محدود، لا ترجمة أو تشغيل C#/SQL/WPF/REPX/Office أو قبول ERP/مال/ACL. بيانات خيالية ونصوص خاملة فقط، لا ملفات تصدير فعلية أو طابعة أو shell أو مفسر HTML/صيغة. لا كل caller/child/template/deployment. P3-022 باقية، والمخطط المرفق ليس شهادة نشر. أعداد العمق والمسارات مجموعات تنظيم لا نسبة اكتمال أو جلسات مضمونة."
+    },
+    {
+      "id": "ALG7B13-07",
+      "title": "المركز الغريب يقبل parent غير المحدد بدلاً من إثبات العضوية",
+      "finding_ids": "P7-052",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:198-234;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:417-431;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:487-505",
+      "illustration_assertions_passed": true,
+      "details": {
+        "local_parent_results": {
+          "11": 0,
+          "91": 9
+        },
+        "reference_member_codes": [
+          1,
+          11
+        ],
+        "unrelated91_accepted_in_sketch": true,
+        "subtype2_sql_filter_counterevidence": true
+      },
+      "source_application_executed": false,
+      "limit": "تصوير يدوي مستقل لعقد محدود، لا ترجمة أو تشغيل C#/SQL/WPF/REPX/Office أو قبول ERP/مال/ACL. بيانات خيالية ونصوص خاملة فقط، لا ملفات تصدير فعلية أو طابعة أو shell أو مفسر HTML/صيغة. لا كل caller/child/template/deployment. P3-022 باقية، والمخطط المرفق ليس شهادة نشر. أعداد العمق والمسارات مجموعات تنظيم لا نسبة اكتمال أو جلسات مضمونة."
+    },
+    {
+      "id": "ALG7B13-08",
+      "title": "أول افتتاحي للمركز يتكرر ولا يوجد union للافتتاحي وحده",
+      "finding_ids": "P7-053",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:315-376;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:433-505",
+      "illustration_assertions_passed": true,
+      "details": {
+        "first_matching_center_opening": 100,
+        "two_movement_accounts_local_reuse": 200,
+        "two_keyed_openings_reference": 150,
+        "opening_only_center_local_rows": 0,
+        "not_balances_opening_only_behavior": true
+      },
+      "source_application_executed": false,
+      "limit": "تصوير يدوي مستقل لعقد محدود، لا ترجمة أو تشغيل C#/SQL/WPF/REPX/Office أو قبول ERP/مال/ACL. بيانات خيالية ونصوص خاملة فقط، لا ملفات تصدير فعلية أو طابعة أو shell أو مفسر HTML/صيغة. لا كل caller/child/template/deployment. P3-022 باقية، والمخطط المرفق ليس شهادة نشر. أعداد العمق والمسارات مجموعات تنظيم لا نسبة اكتمال أو جلسات مضمونة."
+    },
+    {
+      "id": "ALG7B13-09",
+      "title": "اسم الحساب المتساوي لا يمثل مفتاح الحساب",
+      "finding_ids": "P7-053",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:433-465",
+      "illustration_assertions_passed": true,
+      "details": {
+        "same_name_center_groups": 1,
+        "distinct_account_codes": 2,
+        "uniqueness_requires_contract": true
+      },
+      "source_application_executed": false,
+      "limit": "تصوير يدوي مستقل لعقد محدود، لا ترجمة أو تشغيل C#/SQL/WPF/REPX/Office أو قبول ERP/مال/ACL. بيانات خيالية ونصوص خاملة فقط، لا ملفات تصدير فعلية أو طابعة أو shell أو مفسر HTML/صيغة. لا كل caller/child/template/deployment. P3-022 باقية، والمخطط المرفق ليس شهادة نشر. أعداد العمق والمسارات مجموعات تنظيم لا نسبة اكتمال أو جلسات مضمونة."
+    },
+    {
+      "id": "ALG7B13-10",
+      "title": "تجميع اليوم مقابل تفصيل يبدأ10:00",
+      "finding_ids": "P3-023",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:307-349;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:433-473",
+      "illustration_assertions_passed": true,
+      "details": {
+        "reference_instant_movement": 5,
+        "day_range_movement": 25,
+        "day_vs_instant_requires_explicit_contract": true
+      },
+      "source_application_executed": false,
+      "limit": "تصوير يدوي مستقل لعقد محدود، لا ترجمة أو تشغيل C#/SQL/WPF/REPX/Office أو قبول ERP/مال/ACL. بيانات خيالية ونصوص خاملة فقط، لا ملفات تصدير فعلية أو طابعة أو shell أو مفسر HTML/صيغة. لا كل caller/child/template/deployment. P3-022 باقية، والمخطط المرفق ليس شهادة نشر. أعداد العمق والمسارات مجموعات تنظيم لا نسبة اكتمال أو جلسات مضمونة."
+    },
+    {
+      "id": "ALG7B13-11",
+      "title": "قطع السابق عند منتصف الليل يترك فجوة حتى وقت البداية",
+      "finding_ids": "P7-062",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:184-223;SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:240-300",
+      "illustration_assertions_passed": true,
+      "details": {
+        "prior_before_midnight": 100,
+        "unselected_9am": 20,
+        "selected_after10": 5,
+        "local_final": 105,
+        "reference_final": 125
+      },
+      "source_application_executed": false,
+      "limit": "تصوير يدوي مستقل لعقد محدود، لا ترجمة أو تشغيل C#/SQL/WPF/REPX/Office أو قبول ERP/مال/ACL. بيانات خيالية ونصوص خاملة فقط، لا ملفات تصدير فعلية أو طابعة أو shell أو مفسر HTML/صيغة. لا كل caller/child/template/deployment. P3-022 باقية، والمخطط المرفق ليس شهادة نشر. أعداد العمق والمسارات مجموعات تنظيم لا نسبة اكتمال أو جلسات مضمونة."
+    },
+    {
+      "id": "ALG7B13-12",
+      "title": "أول اسم صندوق مطابق لا يحسم هوية الحساب",
+      "finding_ids": "P3-008",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:156-176",
+      "illustration_assertions_passed": true,
+      "details": {
+        "name_matches": [
+          11,
+          22
+        ],
+        "declared_identity_example": 22,
+        "first_local_candidate": 11,
+        "branch_predicate_is_positive_counterevidence": true
+      },
+      "source_application_executed": false,
+      "limit": "تصوير يدوي مستقل لعقد محدود، لا ترجمة أو تشغيل C#/SQL/WPF/REPX/Office أو قبول ERP/مال/ACL. بيانات خيالية ونصوص خاملة فقط، لا ملفات تصدير فعلية أو طابعة أو shell أو مفسر HTML/صيغة. لا كل caller/child/template/deployment. P3-022 باقية، والمخطط المرفق ليس شهادة نشر. أعداد العمق والمسارات مجموعات تنظيم لا نسبة اكتمال أو جلسات مضمونة."
+    },
+    {
+      "id": "ALG7B13-13",
+      "title": "المصدر static يسمح بتبديل بيانات A عند فلتر لاحق",
+      "finding_ids": "P7-045",
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:90-91;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:199-225;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:549-568",
+      "illustration_assertions_passed": true,
+      "details": {
+        "A_before": [
+          "A"
+        ],
+        "A_after_filter": [
+          "B"
+        ],
+        "not_wpf_instances_executed": true
+      },
+      "source_application_executed": false,
+      "limit": "تصوير يدوي مستقل لعقد محدود، لا ترجمة أو تشغيل C#/SQL/WPF/REPX/Office أو قبول ERP/مال/ACL. بيانات خيالية ونصوص خاملة فقط، لا ملفات تصدير فعلية أو طابعة أو shell أو مفسر HTML/صيغة. لا كل caller/child/template/deployment. P3-022 باقية، والمخطط المرفق ليس شهادة نشر. أعداد العمق والمسارات مجموعات تنظيم لا نسبة اكتمال أو جلسات مضمونة."
+    },
+    {
+      "id": "ALG7B13-14",
+      "title": "اختيار الحساب وحده لا ينقل معايير الأب إلى الطفل",
+      "finding_ids": "P7-045",
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:582-595;SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs:455-470;SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs:42-103;SmartAuditERP/Form_WPF/frmAccountBalance.xaml:120-132",
+      "illustration_assertions_passed": true,
+      "details": {
+        "parent_criteria": [
+          "periodA",
+          "branch1"
+        ],
+        "child_default_sketch": [
+          "periodNow",
+          "branchDefault"
+        ],
+        "selection_only_copied": "account",
+        "aggregate_P3_022_not_assumed_fixed": true
+      },
+      "source_application_executed": false,
+      "limit": "تصوير يدوي مستقل لعقد محدود، لا ترجمة أو تشغيل C#/SQL/WPF/REPX/Office أو قبول ERP/مال/ACL. بيانات خيالية ونصوص خاملة فقط، لا ملفات تصدير فعلية أو طابعة أو shell أو مفسر HTML/صيغة. لا كل caller/child/template/deployment. P3-022 باقية، والمخطط المرفق ليس شهادة نشر. أعداد العمق والمسارات مجموعات تنظيم لا نسبة اكتمال أو جلسات مضمونة."
+    },
+    {
+      "id": "ALG7B13-15",
+      "title": "الصفوف الجزئية والبطاقات السابقة ليست نشراً ذرياً",
+      "finding_ids": "P7-046",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs:238-265;SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs:429-449;SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:227-305",
+      "illustration_assertions_passed": true,
+      "details": {
+        "manual_possible_late_failure_state": {
+          "rows": [
+            5
+          ],
+          "card": 100,
+          "health": "unlabelled"
+        },
+        "reference_failed_state": {
+          "rows": [],
+          "card": null,
+          "health": "failed"
+        },
+        "no_fault_injection": true,
+        "cards_not_always_stale": true
+      },
+      "source_application_executed": false,
+      "limit": "تصوير يدوي مستقل لعقد محدود، لا ترجمة أو تشغيل C#/SQL/WPF/REPX/Office أو قبول ERP/مال/ACL. بيانات خيالية ونصوص خاملة فقط، لا ملفات تصدير فعلية أو طابعة أو shell أو مفسر HTML/صيغة. لا كل caller/child/template/deployment. P3-022 باقية، والمخطط المرفق ليس شهادة نشر. أعداد العمق والمسارات مجموعات تنظيم لا نسبة اكتمال أو جلسات مضمونة."
+    },
+    {
+      "id": "ALG7B13-16",
+      "title": "N2 غير المقتبس يمكن أن يقسم الحقول؛ سياسة الخلية مستقلة",
+      "finding_ids": "P7-048;P7-049",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:403-420;SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs:489-510;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:668-693",
+      "illustration_assertions_passed": true,
+      "details": {
+        "intended_fields": 2,
+        "comma_split_fields": 3,
+        "formula_probe": "INERT_TEXT_ONLY",
+        "quote_escaping_not_formula_policy": true
+      },
+      "source_application_executed": false,
+      "limit": "تصوير يدوي مستقل لعقد محدود، لا ترجمة أو تشغيل C#/SQL/WPF/REPX/Office أو قبول ERP/مال/ACL. بيانات خيالية ونصوص خاملة فقط، لا ملفات تصدير فعلية أو طابعة أو shell أو مفسر HTML/صيغة. لا كل caller/child/template/deployment. P3-022 باقية، والمخطط المرفق ليس شهادة نشر. أعداد العمق والمسارات مجموعات تنظيم لا نسبة اكتمال أو جلسات مضمونة."
+    },
+    {
+      "id": "ALG7B13-17",
+      "title": "هوية الصيغة مخالفة للامتداد مع بقاء المسار نفسه",
+      "finding_ids": "P7-050",
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:609-667;SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:393-420",
+      "illustration_assertions_passed": true,
+      "details": {
+        "trial_payload": "HTML",
+        "trial_options": [
+          "xls",
+          "csv"
+        ],
+        "cashbox_payload": "CSV",
+        "cashbox_options": [
+          "csv",
+          "xlsx"
+        ],
+        "selected_path_not_changed_unlike_P7_116": true
+      },
+      "source_application_executed": false,
+      "limit": "تصوير يدوي مستقل لعقد محدود، لا ترجمة أو تشغيل C#/SQL/WPF/REPX/Office أو قبول ERP/مال/ACL. بيانات خيالية ونصوص خاملة فقط، لا ملفات تصدير فعلية أو طابعة أو shell أو مفسر HTML/صيغة. لا كل caller/child/template/deployment. P3-022 باقية، والمخطط المرفق ليس شهادة نشر. أعداد العمق والمسارات مجموعات تنظيم لا نسبة اكتمال أو جلسات مضمونة."
+    },
+    {
+      "id": "ALG7B13-18",
+      "title": "بوابة خارجية غير مستعملة وترميز النص عقدان مختلفان",
+      "finding_ids": "P7-097;P7-098",
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:635-667;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:694-732;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:843-867",
+      "illustration_assertions_passed": true,
+      "details": {
+        "local_gate_permits": false,
+        "reference_local_renderer_ready": true,
+        "raw_text": "A&B<value>",
+        "encoded_text": "A&amp;B&lt;value&gt;",
+        "flow_run_is_text": true,
+        "no_interpreter": true
+      },
+      "source_application_executed": false,
+      "limit": "تصوير يدوي مستقل لعقد محدود، لا ترجمة أو تشغيل C#/SQL/WPF/REPX/Office أو قبول ERP/مال/ACL. بيانات خيالية ونصوص خاملة فقط، لا ملفات تصدير فعلية أو طابعة أو shell أو مفسر HTML/صيغة. لا كل caller/child/template/deployment. P3-022 باقية، والمخطط المرفق ليس شهادة نشر. أعداد العمق والمسارات مجموعات تنظيم لا نسبة اكتمال أو جلسات مضمونة."
+    },
+    {
+      "id": "ALG7B13-19",
+      "title": "حد using-var ينتهي بعد إطلاق المستهلك؛ الأثر محتمل",
+      "finding_ids": "P7-108",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:403-427;SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs:505-510;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:688-693",
+      "illustration_assertions_passed": true,
+      "details": {
+        "local_event_sketch": [
+          "using_var_start",
+          "write",
+          "success",
+          "consumer_launch",
+          "scope_exit_dispose"
+        ],
+        "buffer_or_external_read_not_measured": true,
+        "WriteAllText_completes_before_return_counterevidence": true
+      },
+      "source_application_executed": false,
+      "limit": "تصوير يدوي مستقل لعقد محدود، لا ترجمة أو تشغيل C#/SQL/WPF/REPX/Office أو قبول ERP/مال/ACL. بيانات خيالية ونصوص خاملة فقط، لا ملفات تصدير فعلية أو طابعة أو shell أو مفسر HTML/صيغة. لا كل caller/child/template/deployment. P3-022 باقية، والمخطط المرفق ليس شهادة نشر. أعداد العمق والمسارات مجموعات تنظيم لا نسبة اكتمال أو جلسات مضمونة."
+    },
+    {
+      "id": "ALG7B13-20",
+      "title": "تصنيف10 قديم يتضمن8 أجسام C# كاملة سابقاً",
+      "finding_ids": "H7B13-06",
+      "evidence": "none-inventory-only",
+      "illustration_assertions_passed": true,
+      "details": {
+        "old_depth_dispositions": 10,
+        "prior_full_csharp_among_them": 8,
+        "local_b13_body_xaml_upgrades": 4,
+        "old_category_remaining": 6,
+        "remaining_B_planning_packages": 4,
+        "C_unstarted_axes": 6,
+        "counts_not_sessions_or_completion_percent": true
+      },
+      "source_application_executed": false,
+      "limit": "تصوير يدوي مستقل لعقد محدود، لا ترجمة أو تشغيل C#/SQL/WPF/REPX/Office أو قبول ERP/مال/ACL. بيانات خيالية ونصوص خاملة فقط، لا ملفات تصدير فعلية أو طابعة أو shell أو مفسر HTML/صيغة. لا كل caller/child/template/deployment. P3-022 باقية، والمخطط المرفق ليس شهادة نشر. أعداد العمق والمسارات مجموعات تنظيم لا نسبة اكتمال أو جلسات مضمونة."
+    }
+  ],
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B13-01",
+      "title": "أزرار المستوى2/3 وفرع الأب المباشر نفسه",
+      "finding_ids": "P7-118",
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:540-568;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml:194-198",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "وجود/غياب tokens داخل المقاطع المحددة فقط؛ لا AST دلالي أو ترجمة أو صحة SQL أو WPF rendering أو معيار محاسبي أو تفويض/إتاحة نشر أو قياس تسرب/فهرس/زمن."
+    },
+    {
+      "id": "ST7B13-02",
+      "title": "السابق حاضر في الجدول وHTML وغائب عن المستند المحلي",
+      "finding_ids": "P7-119",
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml:280-293;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:635-667;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:794-830",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "وجود/غياب tokens داخل المقاطع المحددة فقط؛ لا AST دلالي أو ترجمة أو صحة SQL أو WPF rendering أو معيار محاسبي أو تفويض/إتاحة نشر أو قياس تسرب/فهرس/زمن."
+    },
+    {
+      "id": "ST7B13-03",
+      "title": "leaf يحسب السابق والمساران الآخران لا يدخلانه في الإقفال",
+      "finding_ids": "P3-019",
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:396-448;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:323-345;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:455-486;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:475-476",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "وجود/غياب tokens داخل المقاطع المحددة فقط؛ لا AST دلالي أو ترجمة أو صحة SQL أو WPF rendering أو معيار محاسبي أو تفويض/إتاحة نشر أو قياس تسرب/فهرس/زمن."
+    },
+    {
+      "id": "ST7B13-04",
+      "title": "CalcSum يجمع كل صف ظاهر ويقارن الحركة بدقة1",
+      "finding_ids": "P3-020",
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:508-534",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "وجود/غياب tokens داخل المقاطع المحددة فقط؛ لا AST دلالي أو ترجمة أو صحة SQL أو WPF rendering أو معيار محاسبي أو تفويض/إتاحة نشر أو قياس تسرب/فهرس/زمن."
+    },
+    {
+      "id": "ST7B13-05",
+      "title": "Balances افتتاحي مقيد بالفترة مع إضافة opening-only صريحة",
+      "finding_ids": "P3-019",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs:345-366",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "وجود/غياب tokens داخل المقاطع المحددة فقط؛ لا AST دلالي أو ترجمة أو صحة SQL أو WPF rendering أو معيار محاسبي أو تفويض/إتاحة نشر أو قياس تسرب/فهرس/زمن."
+    },
+    {
+      "id": "ST7B13-06",
+      "title": "GetParent يختار عند عدم المساواة؛التفصيل يجلب الأبناء المباشرين",
+      "finding_ids": "P7-052",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:198-234;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:273-291;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:417-431",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "وجود/غياب tokens داخل المقاطع المحددة فقط؛ لا AST دلالي أو ترجمة أو صحة SQL أو WPF rendering أو معيار محاسبي أو تفويض/إتاحة نشر أو قياس تسرب/فهرس/زمن."
+    },
+    {
+      "id": "ST7B13-07",
+      "title": "opening center-only/break وتجميع اسم الحساب بلا code",
+      "finding_ids": "P7-053",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:352-376;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:433-465;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:493-505;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:493-502",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "وجود/غياب tokens داخل المقاطع المحددة فقط؛ لا AST دلالي أو ترجمة أو صحة SQL أو WPF rendering أو معيار محاسبي أو تفويض/إتاحة نشر أو قياس تسرب/فهرس/زمن."
+    },
+    {
+      "id": "ST7B13-08",
+      "title": "detail instant مقابل aggregate/opening shortdate+24",
+      "finding_ids": "P3-023",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:307-349;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:433-473;SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs:258-298",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "وجود/غياب tokens داخل المقاطع المحددة فقط؛ لا AST دلالي أو ترجمة أو صحة SQL أو WPF rendering أو معيار محاسبي أو تفويض/إتاحة نشر أو قياس تسرب/فهرس/زمن."
+    },
+    {
+      "id": "ST7B13-09",
+      "title": "ميزان المراجعة يستعمل نهاية يوم نصف مفتوحة في الحركة",
+      "finding_ids": "P3-023",
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:244-296;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:365-383",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "وجود/غياب tokens داخل المقاطع المحددة فقط؛ لا AST دلالي أو ترجمة أو صحة SQL أو WPF rendering أو معيار محاسبي أو تفويض/إتاحة نشر أو قياس تسرب/فهرس/زمن."
+    },
+    {
+      "id": "ST7B13-10",
+      "title": "الصندوق previous shortdate مقابل dt1 للحركة",
+      "finding_ids": "P7-062",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:179-257;SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:266-300;SmartAuditERP/Form_WPF/frmRptKhzna.xaml:292-298",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "وجود/غياب tokens داخل المقاطع المحددة فقط؛ لا AST دلالي أو ترجمة أو صحة SQL أو WPF rendering أو معيار محاسبي أو تفويض/إتاحة نشر أو قياس تسرب/فهرس/زمن."
+    },
+    {
+      "id": "ST7B13-11",
+      "title": "ربط الحساب بالاسم والفرع ثم أخذ أول صف",
+      "finding_ids": "P3-008",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:156-176",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "وجود/غياب tokens داخل المقاطع المحددة فقط؛ لا AST دلالي أو ترجمة أو صحة SQL أو WPF rendering أو معيار محاسبي أو تفويض/إتاحة نشر أو قياس تسرب/فهرس/زمن."
+    },
+    {
+      "id": "ST7B13-12",
+      "title": "Home Apply/new/static و disabled و Close شواهد متمايزة",
+      "finding_ids": "P1-013;P1-030",
+      "evidence": "SmartAuditERP/Home.xaml.cs:95-96;SmartAuditERP/Home.xaml.cs:2616-2667;SmartAuditERP/Home.xaml:335-340;SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:372-373",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "وجود/غياب tokens داخل المقاطع المحددة فقط؛ لا AST دلالي أو ترجمة أو صحة SQL أو WPF rendering أو معيار محاسبي أو تفويض/إتاحة نشر أو قياس تسرب/فهرس/زمن."
+    },
+    {
+      "id": "ST7B13-13",
+      "title": "static AccountList والطفل account-only بعد Apply",
+      "finding_ids": "P7-045;P1-013",
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:90-91;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:549-568;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:582-595;SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs:455-470",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "وجود/غياب tokens داخل المقاطع المحددة فقط؛ لا AST دلالي أو ترجمة أو صحة SQL أو WPF rendering أو معيار محاسبي أو تفويض/إتاحة نشر أو قياس تسرب/فهرس/زمن."
+    },
+    {
+      "id": "ST7B13-14",
+      "title": "افتراضيات الطفل و aggregate gate السابق لا يختفيان",
+      "finding_ids": "P7-045",
+      "evidence": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs:42-103;SmartAuditERP/Form_WPF/frmAccountBalance.xaml:120-132;SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs:167-250",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "وجود/غياب tokens داخل المقاطع المحددة فقط؛ لا AST دلالي أو ترجمة أو صحة SQL أو WPF rendering أو معيار محاسبي أو تفويض/إتاحة نشر أو قياس تسرب/فهرس/زمن."
+    },
+    {
+      "id": "ST7B13-15",
+      "title": "مسح المصادر قبل العمل والبطاقات تحدث لاحقاً",
+      "finding_ids": "P7-046",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs:238-265;SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs:429-449;SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:153-155;SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:294-305",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "وجود/غياب tokens داخل المقاطع المحددة فقط؛ لا AST دلالي أو ترجمة أو صحة SQL أو WPF rendering أو معيار محاسبي أو تفويض/إتاحة نشر أو قياس تسرب/فهرس/زمن."
+    },
+    {
+      "id": "ST7B13-16",
+      "title": "cashbox CSV خام و WriteAllText قبل shell في الآخرين",
+      "finding_ids": "P7-048;P7-049;P7-108",
+      "evidence": "SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:403-420;SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs:505-510;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:688-693",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "وجود/غياب tokens داخل المقاطع المحددة فقط؛ لا AST دلالي أو ترجمة أو صحة SQL أو WPF rendering أو معيار محاسبي أو تفويض/إتاحة نشر أو قياس تسرب/فهرس/زمن."
+    },
+    {
+      "id": "ST7B13-17",
+      "title": "خيارات xls/csv مع HTML و xlsx مع CSV",
+      "finding_ids": "P7-050",
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:609-667;SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:393-420",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "وجود/غياب tokens داخل المقاطع المحددة فقط؛ لا AST دلالي أو ترجمة أو صحة SQL أو WPF rendering أو معيار محاسبي أو تفويض/إتاحة نشر أو قياس تسرب/فهرس/زمن."
+    },
+    {
+      "id": "ST7B13-18",
+      "title": "trial gate فقط؛الآباء الثلاثة الأخرى تحمل REPX فعلاً",
+      "finding_ids": "P1-004;P7-097",
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:694-732;SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs:582-608;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:756-778;SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:450-471;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:694-760",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "وجود/غياب tokens داخل المقاطع المحددة فقط؛ لا AST دلالي أو ترجمة أو صحة SQL أو WPF rendering أو معيار محاسبي أو تفويض/إتاحة نشر أو قياس تسرب/فهرس/زمن."
+    },
+    {
+      "id": "ST7B13-19",
+      "title": "HTML خام مقابل Run نصي و using-var دون finalize قبل launch",
+      "finding_ids": "P7-098;P7-108",
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:635-667;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:843-867;SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:403-427",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "وجود/غياب tokens داخل المقاطع المحددة فقط؛ لا AST دلالي أو ترجمة أو صحة SQL أو WPF rendering أو معيار محاسبي أو تفويض/إتاحة نشر أو قياس تسرب/فهرس/زمن."
+    },
+    {
+      "id": "ST7B13-20",
+      "title": "فروع الرأس/السطر وClosing وDTO ليست تفويضاً أو قياساً",
+      "finding_ids": "P1-013;P2-010;P1-004",
+      "evidence": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:235-244;SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs:246-256;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:634-641;SmartAuditERP/Class/Accounting.cs:1-14;SmartAuditERP/Class/User.cs:108-114;SmartAuditERP/Class/MainClass.cs:349-455;SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs:65-68;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:63-66;SmartAuditERP/Class/RestrictionData.cs:31-42;SmartAuditERP/Class_WPF/KhznaRow.cs:8-16",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "وجود/غياب tokens داخل المقاطع المحددة فقط؛ لا AST دلالي أو ترجمة أو صحة SQL أو WPF rendering أو معيار محاسبي أو تفويض/إتاحة نشر أو قياس تسرب/فهرس/زمن."
+    }
+  ],
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs",
+      "start": 540,
+      "end": 568,
+      "selected_text_sha256": "226cab2f5bb2928b8423fb80e3801bcac9350fe9387c7f07874e8ca86bfca48c"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml",
+      "start": 194,
+      "end": 198,
+      "selected_text_sha256": "043c337a24a4b22b3d003f1cbd8d0034d7796f3309107fa8d71ef7f4aee05931"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml",
+      "start": 280,
+      "end": 293,
+      "selected_text_sha256": "a1df87c0d86a27bffbe1bce30d4d790e07c0efe3bbdae87014c8cdd1f6f310d8"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs",
+      "start": 635,
+      "end": 667,
+      "selected_text_sha256": "e1848e6c87ba7ea8f6ea749b76ea637af5f5d2215aad9c75c43fd47f0b8becd9"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs",
+      "start": 794,
+      "end": 830,
+      "selected_text_sha256": "2735f8e3c90ada8046874148ba9ebcfc76e8c69bc86bf690d4089c84e0928e2a"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs",
+      "start": 396,
+      "end": 448,
+      "selected_text_sha256": "9be67eb5f90e49db7d260e5be4eecfaed55cf50f8261a2ca5cc3c4d5bca61b82"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs",
+      "start": 323,
+      "end": 345,
+      "selected_text_sha256": "bee792ced132a272519f5fc59715ba508b318b910d6edb120e73a0907fd91475"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs",
+      "start": 455,
+      "end": 486,
+      "selected_text_sha256": "e088d52fa6a2eaefc15ce0d8e8c8d64f5283713aad09b0005dd909f2077fdff2"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs",
+      "start": 475,
+      "end": 476,
+      "selected_text_sha256": "c1be0edd2193e851994ef98bbd037953f86c73ecba6552e512fdfaf2942d78a4"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs",
+      "start": 508,
+      "end": 534,
+      "selected_text_sha256": "390ff68373fc6eb865930837e980dfe2aafcbd9962b960c7e67da16e6730b88b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs",
+      "start": 281,
+      "end": 298,
+      "selected_text_sha256": "b0d49ab2c292c4693162ae95113a35faabe056cce5cb899e0d81aeb2b57a4b7b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs",
+      "start": 345,
+      "end": 366,
+      "selected_text_sha256": "0b0b1779d3ad491c0070980e9c272f42d586100fa710c320525aad96be33bd5a"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs",
+      "start": 198,
+      "end": 234,
+      "selected_text_sha256": "b17c5d5082fc6f9df43165c20848fd57820ed7d3986e0391ed722e6fe012ca83"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs",
+      "start": 273,
+      "end": 291,
+      "selected_text_sha256": "876c8a80677572b7653312595cabfb27220950ffa5ac8771951e8d3eae6c4b45"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs",
+      "start": 417,
+      "end": 431,
+      "selected_text_sha256": "9c2baf7dea8b697dbc7273a7374c5777607a7e5dc28ad3578c6caf416df2ec7b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs",
+      "start": 352,
+      "end": 376,
+      "selected_text_sha256": "00bca9951750594d95222a4ddd9e00b6d3b83796a256916b0b5c5bac151208de"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs",
+      "start": 433,
+      "end": 465,
+      "selected_text_sha256": "24261ba3d492522dc9f5de9d130f5d22099787540aa61e5df6e9884aa40d3666"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs",
+      "start": 493,
+      "end": 505,
+      "selected_text_sha256": "2fedae73c00d23b75b6a8cfd708d33f8b2f1dbd6435f90bd9804798d70bc7453"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs",
+      "start": 493,
+      "end": 502,
+      "selected_text_sha256": "e1f29e96ffdff1b01785f62a3d925d4f38003d0c3b0eaa7d7a74ef135e590672"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs",
+      "start": 307,
+      "end": 349,
+      "selected_text_sha256": "e096b2acd3ca27e7fe4c5e9193293bf41da076c66170e78b21aa814027de1320"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs",
+      "start": 433,
+      "end": 473,
+      "selected_text_sha256": "47eab4c8d83dcc91d7755ea0a2ad66f85282a35df74403515a43b0ed353e989b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs",
+      "start": 258,
+      "end": 298,
+      "selected_text_sha256": "382de7cb7c912b310ce6069037e0b402f1cd6f970d0db9c5688f76b56fe16a5d"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs",
+      "start": 244,
+      "end": 296,
+      "selected_text_sha256": "fd003f14f3ccb85d8dccdc682fb8899e408477386d721c2169e6f5d6074b6d8d"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs",
+      "start": 365,
+      "end": 383,
+      "selected_text_sha256": "2dc19ed653334faa437d8e699dd0c81b8c649d21161728860e76d356c7c30201"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs",
+      "start": 179,
+      "end": 257,
+      "selected_text_sha256": "002d7bd70b1c71920f121e59ae3560ac30da37ebfd470ca29d33e492de45eda5"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs",
+      "start": 266,
+      "end": 300,
+      "selected_text_sha256": "c3b406c1433bfc82bf2a20c2285ce0e7544b79b287a99587672d63d9fad9dbfc"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptKhzna.xaml",
+      "start": 292,
+      "end": 298,
+      "selected_text_sha256": "552d85f670d863a60683ce964343bd40606e994b92f829328d8a5fdd8583ac95"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs",
+      "start": 156,
+      "end": 176,
+      "selected_text_sha256": "f157b1c11b2ef0cd89f4c0d6c98806b575c78c7d526f17ad7c409d0a75b7c01b"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "start": 95,
+      "end": 96,
+      "selected_text_sha256": "d1b2cbbc94a92627532dc62ed981c912e837d4c52dff7b4301587dc5e1872259"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "start": 2616,
+      "end": 2667,
+      "selected_text_sha256": "6cc62ec7f0c7f5519642473683a19004e1269f687b0db41f94c244cd0833f3d2"
+    },
+    {
+      "path": "SmartAuditERP/Home.xaml",
+      "start": 335,
+      "end": 340,
+      "selected_text_sha256": "cc44b3ca6a05f58a9b959bb9dce582a503250708d5606db475117b3f404c89a0"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs",
+      "start": 372,
+      "end": 373,
+      "selected_text_sha256": "58712623c8b3934edc388df871b814af2400fa95804e00a0a934cf93efd64b1a"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs",
+      "start": 90,
+      "end": 91,
+      "selected_text_sha256": "53df9c65c3473299f31dc5968208738e47f34fa86b031cec35815d16b491e30d"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs",
+      "start": 549,
+      "end": 568,
+      "selected_text_sha256": "54e081102fc28796be50c464adbad27c1e80db26368f008e64cac27e1e50a64a"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs",
+      "start": 582,
+      "end": 595,
+      "selected_text_sha256": "3511fd0ed5b057356f682a33d6689dd9c27150bac1cbbf46554bac6260515e4b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs",
+      "start": 455,
+      "end": 470,
+      "selected_text_sha256": "02ba13101a109014722efd6bb78b8bee0c2d622f6cbf4810d7bae1298c2095a5"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs",
+      "start": 42,
+      "end": 103,
+      "selected_text_sha256": "426ad339c6e1dbcd8769c8b3473ea072a8871520f7a8e933719b2352320babb2"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml",
+      "start": 120,
+      "end": 132,
+      "selected_text_sha256": "1bcbd6de04e5644c7dfecc802ee8d67563a0fdbd279e895494e4939c02730eca"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs",
+      "start": 167,
+      "end": 250,
+      "selected_text_sha256": "0668e52b4e3eac2bebe33e75bb7cdadee240e264a0765c2830456037de378f32"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs",
+      "start": 238,
+      "end": 265,
+      "selected_text_sha256": "5037eee206f5a54d842c251f25200982986f5547562fb3aea94c2520d48cc6b0"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs",
+      "start": 429,
+      "end": 449,
+      "selected_text_sha256": "945330129b8de71a2a244b3e2b749c88c74486c947ea82fcf514069df1f7d1ce"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs",
+      "start": 153,
+      "end": 155,
+      "selected_text_sha256": "05e30971da03eee5fba5b46a2bf344a72e0ae0b4c3c00755752626f400e52508"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs",
+      "start": 294,
+      "end": 305,
+      "selected_text_sha256": "533b2fc9cf6ab303f6d527410b43be1d4f39c037dc9f4a83aa742be31b49cda2"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs",
+      "start": 403,
+      "end": 420,
+      "selected_text_sha256": "c136c17692f2226793d280f5c536da5f4d0629b0d668416cf25c877700f203ac"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs",
+      "start": 505,
+      "end": 510,
+      "selected_text_sha256": "ef5f80e924ab8eca113ffcf01fcd3f6312815a1198ef76adc8480efea34b7391"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs",
+      "start": 688,
+      "end": 693,
+      "selected_text_sha256": "e757db19aff853c73492d96e343e9539d363a1e212596ebc7dddc18c423ecd24"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs",
+      "start": 609,
+      "end": 667,
+      "selected_text_sha256": "d46a0d1ad50388c1d274873c9ada4010afb11ca5b2af82139599b9307f29ea2f"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs",
+      "start": 393,
+      "end": 420,
+      "selected_text_sha256": "67b0921f3c5f15946671211e3ba661835861dcfbfb338aff3dd3a5268f797688"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs",
+      "start": 694,
+      "end": 732,
+      "selected_text_sha256": "4ba12fd5e2da53c01c9eb0bd14b487f18be328ff10da99db273ec9fcf1824a02"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs",
+      "start": 582,
+      "end": 608,
+      "selected_text_sha256": "697b565c8e5ae9fc6397a5e13d5d8d2c5418256197882a6a7e9a484708bca388"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs",
+      "start": 756,
+      "end": 778,
+      "selected_text_sha256": "912d827cc6b5190cd1ca3e37ce7e510d1396c49042b39688d6535d30d9ff727d"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs",
+      "start": 450,
+      "end": 471,
+      "selected_text_sha256": "9dd7bf64ab0de5b6e864f3e83207fa09f3c17eb836b49c6cdd3fdf4ff3b656a6"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs",
+      "start": 694,
+      "end": 760,
+      "selected_text_sha256": "6d6bf43c9f000f5fb5c0076dc6721a7902509341eab4fecdb82b4cae78b6a76b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs",
+      "start": 843,
+      "end": 867,
+      "selected_text_sha256": "184da641606d69f7b14313053b14366a9d7eb953f140fba9b6b65326230b35ad"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs",
+      "start": 403,
+      "end": 427,
+      "selected_text_sha256": "b22ea043a45e33bf89e225cc00e2c1f36a57ecb5ef5f9897ba32369bace0c9d9"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs",
+      "start": 235,
+      "end": 244,
+      "selected_text_sha256": "176a1945ce2779b3506819544bfbdbcd5e88be9386ec76cb80bc94f2b5737cb4"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs",
+      "start": 246,
+      "end": 256,
+      "selected_text_sha256": "263ccddd9b5465d1c921bb23b79965600464769d5551f398a4564004b6710d36"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs",
+      "start": 634,
+      "end": 641,
+      "selected_text_sha256": "77742e6a913d48e9965b39f1f6cb476bba8cff03a69705a4fb691d8e20d972cd"
+    },
+    {
+      "path": "SmartAuditERP/Class/Accounting.cs",
+      "start": 1,
+      "end": 14,
+      "selected_text_sha256": "edc89fbad181648d9525bb5d92343bd647b92a89c5f05f8de2b4950c868dd353"
+    },
+    {
+      "path": "SmartAuditERP/Class/User.cs",
+      "start": 108,
+      "end": 114,
+      "selected_text_sha256": "0363e8293ac7f316075281a46802dc4f72f570dd184ca3d1de502d6425dad2f2"
+    },
+    {
+      "path": "SmartAuditERP/Class/MainClass.cs",
+      "start": 349,
+      "end": 455,
+      "selected_text_sha256": "22209098067d4acedc1d32a593a2835ebc1cc85f17d97def4106b09050f1d127"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs",
+      "start": 65,
+      "end": 68,
+      "selected_text_sha256": "f2581c602e5c64c5812f7453c3f0d0ea01153bc78783bd3c2c142438ef02f134"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs",
+      "start": 63,
+      "end": 66,
+      "selected_text_sha256": "f2581c602e5c64c5812f7453c3f0d0ea01153bc78783bd3c2c142438ef02f134"
+    },
+    {
+      "path": "SmartAuditERP/Class/RestrictionData.cs",
+      "start": 31,
+      "end": 42,
+      "selected_text_sha256": "58bf6a05741a6939a05b5a100f1a4820de3ded1986a42ed7f1490a497fb8484a"
+    },
+    {
+      "path": "SmartAuditERP/Class_WPF/KhznaRow.cs",
+      "start": 8,
+      "end": 16,
+      "selected_text_sha256": "cd3649fb23bb9679c475ff791063f51650c4fc979bc44ec7de02e9a05e750936"
+    }
+  ],
+  "retained_additive_B10_arithmetic_erratum": {
+    "entered_quantity": 2,
+    "equality": 12,
+    "base_unit_cost": 5,
+    "local_cost": 10,
+    "reference_cost": 120,
+    "archive_rewritten": false
+  },
+  "errors": [],
+  "limit": "تصوير يدوي مستقل لعقد محدود، لا ترجمة أو تشغيل C#/SQL/WPF/REPX/Office أو قبول ERP/مال/ACL. بيانات خيالية ونصوص خاملة فقط، لا ملفات تصدير فعلية أو طابعة أو shell أو مفسر HTML/صيغة. لا كل caller/child/template/deployment. P3-022 باقية، والمخطط المرفق ليس شهادة نشر. أعداد العمق والمسارات مجموعات تنظيم لا نسبة اكتمال أو جلسات مضمونة."
+}
