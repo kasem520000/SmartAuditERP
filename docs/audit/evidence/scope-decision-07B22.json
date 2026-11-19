@@ -1,0 +1,49 @@
+{
+  "authority": [
+    "PHASE-07-REMAINING-07B21.md",
+    "evidence/split-register-07B21.csv"
+  ],
+  "selected_upstream_split": "SP7B21-03",
+  "bounded_cross_boundary_split": "SP7B21-01",
+  "entry": "b1f9524e552c36a05e1b351e2e12fd450ba051aa",
+  "selection_reason": "ItemOpercontract منصوص عليه كمرشح فيSP03. تتبع استهلاكه قاد إلى عقد وحدة سعر العميل، وحوار التكرار، ونتيجة صف الاستيراد فيSP01؛ لا قدرةbarcode مستقلة مفروضة أو استكمال لكل العقود.",
+  "named_capabilities": [
+    "legacy decoder→caller reachability with stable Code guard counterevidence",
+    "selected-unit→customer-price projection",
+    "duplicate dialog label→action→row mutation",
+    "contract import→resolved line or cancellation"
+  ],
+  "entry_source_and_output": "MenuItem/import input→validated Code→SearchByID→GetItemByIDcontract/LoadUnitInf/LoadCustomerPrice→in-memory InvoiceItems; ReadBarcode conditional fallback only. Main ItemOper unit/customer/repeat slices are comparison bodies, not all callers.",
+  "static_exit_criterion": "Trace every selected boundary with evidence/limits/owner/redacted input/impact/next step/two nonexecuted plans and adjudication against nearest historical roots. Preserve all313 rows and613 artifacts. Keep external contracts and SP01/02/03 explicit; no whole7B closure.",
+  "excluded_with_reason": [
+    "All other MsgExistItem consumers and scanner/import callers: lexical names are not body reviews; SP01/SP02.",
+    "All legacy engines/SDK enum/currency/major-minor/sign/zero/precision/templates: SP03 persists.",
+    "All persistence/GL/ACL/stock/lifecycle/general7C: not this selected in-memory boundary and no permission8."
+  ],
+  "bookkeeping": {
+    "selected_paths": 12,
+    "prior_union": 412,
+    "overlap": 8,
+    "new": 4,
+    "union": 416,
+    "complement": 411,
+    "complement_kinds": {
+      "source": 346,
+      "generated-artifact": 61,
+      "project-or-resource": 4
+    }
+  },
+  "new_on_union": [
+    "SmartAuditERP/Form_WPF/MsgExistItem.xaml",
+    "SmartAuditERP/Form_WPF/MsgExistItem.xaml.cs",
+    "SmartAuditERP/Form_WPF/frmImportDataGeneral.xaml",
+    "SmartAuditERP/Form_WPF/frmcontract.xaml"
+  ],
+  "source_csharp_paths_lexically_scanned_not_bodies": 477,
+  "legacy_SearchForBarcode_tokens": 1,
+  "explicit_new_ItemOpercontract_GetItemByIDcontract_tokens": 1,
+  "bounded_witness_reads": 31,
+  "counts_are_completion_percent_or_sessions": false,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false
+}

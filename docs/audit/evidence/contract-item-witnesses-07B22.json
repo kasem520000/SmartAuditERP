@@ -1,0 +1,713 @@
+{
+  "source_head": "10ba215152f722c8808aea0bb672c1d1d4d9d711",
+  "branch": "arena/94ae8414-smartauditerp",
+  "application_code_imported_or_executed": false,
+  "dotnet_wpf_sql_or_excel_executed": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "scanner_or_printer_tests_executed": 0,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "B_R4f_bounded_not_whole7B_closure": true,
+  "unresolved_external_contracts_and_explicit_splits_retained": true,
+  "retained_additive_B10_arithmetic_erratum": {
+    "local_cost": 10,
+    "reference_cost": 120,
+    "equality1_control": 10,
+    "protected_G138_not_rewritten": true
+  },
+  "illustration_count": 12,
+  "illustrations": [
+    {
+      "id": "ALG7B22-01",
+      "title": "Foreign-unit customer scalar replaces selected unit quote",
+      "finding_ids": "P7-142",
+      "evidence": "SmartAuditERP/Class/ItemOpercontract.cs:1195-1211;1331-1366;1481-1527;SmartAuditERP/Form_WPF/frmItems.xaml.cs:1022-1083",
+      "supplied_result": {
+        "line_unit_before": "PACK",
+        "line_unit_after": "PACK",
+        "supplied_price_row_unit": "EACH",
+        "unit_equality_after": "12",
+        "loaded_unit_price": "120",
+        "projected_line_price": "8",
+        "override_supplied": true,
+        "crossed_unit_without_conversion": true,
+        "hypothetical_linear_reference_only": "96",
+        "actual_pricing_policy_not_supplied": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Supplied pack/base quote and ratio;96 is a hypothetical declared linear reference, not an approved discount, conversion or tax policy. No actual DB/.NET/SDK pricing."
+    },
+    {
+      "id": "ALG7B22-02",
+      "title": "Five explicit source-local scalar branches share the unitless projection",
+      "finding_ids": "P7-142",
+      "evidence": "SmartAuditERP/Class/ItemOper.cs:983-1030;SmartAuditERP/Class/ItemOpercontract.cs:1331-1366",
+      "supplied_result": {
+        "1": {
+          "line_unit_before": "PACK",
+          "line_unit_after": "PACK",
+          "supplied_price_row_unit": "EACH",
+          "unit_equality_after": "12",
+          "loaded_unit_price": "120",
+          "projected_line_price": "8",
+          "override_supplied": true,
+          "crossed_unit_without_conversion": true,
+          "hypothetical_linear_reference_only": "96",
+          "actual_pricing_policy_not_supplied": true
+        },
+        "2": {
+          "line_unit_before": "PACK",
+          "line_unit_after": "PACK",
+          "supplied_price_row_unit": "EACH",
+          "unit_equality_after": "12",
+          "loaded_unit_price": "120",
+          "projected_line_price": "8",
+          "override_supplied": true,
+          "crossed_unit_without_conversion": true,
+          "hypothetical_linear_reference_only": "96",
+          "actual_pricing_policy_not_supplied": true
+        },
+        "5": {
+          "line_unit_before": "PACK",
+          "line_unit_after": "PACK",
+          "supplied_price_row_unit": "EACH",
+          "unit_equality_after": "12",
+          "loaded_unit_price": "120",
+          "projected_line_price": "8",
+          "override_supplied": true,
+          "crossed_unit_without_conversion": true,
+          "hypothetical_linear_reference_only": "96",
+          "actual_pricing_policy_not_supplied": true
+        },
+        "6": {
+          "line_unit_before": "PACK",
+          "line_unit_after": "PACK",
+          "supplied_price_row_unit": "EACH",
+          "unit_equality_after": "12",
+          "loaded_unit_price": "120",
+          "projected_line_price": "8",
+          "override_supplied": true,
+          "crossed_unit_without_conversion": true,
+          "hypothetical_linear_reference_only": "96",
+          "actual_pricing_policy_not_supplied": true
+        },
+        "7": {
+          "line_unit_before": "PACK",
+          "line_unit_after": "PACK",
+          "supplied_price_row_unit": "EACH",
+          "unit_equality_after": "12",
+          "loaded_unit_price": "120",
+          "projected_line_price": "8",
+          "override_supplied": true,
+          "crossed_unit_without_conversion": true,
+          "hypothetical_linear_reference_only": "96",
+          "actual_pricing_policy_not_supplied": true
+        }
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Numbers are visible switch cases only, not an AuditorAPI Pricing enum or a requirement that all customers use these modes. Recent-cost cases3/4 are outside this scalar proof."
+    },
+    {
+      "id": "ALG7B22-03",
+      "title": "Same-unit control does not cross unit identity",
+      "finding_ids": "P7-142",
+      "evidence": "SmartAuditERP/Class/ItemOpercontract.cs:1331-1366",
+      "supplied_result": {
+        "line_unit_before": "EACH",
+        "line_unit_after": "EACH",
+        "supplied_price_row_unit": "EACH",
+        "unit_equality_after": "1",
+        "loaded_unit_price": "10",
+        "projected_line_price": "8",
+        "override_supplied": true,
+        "crossed_unit_without_conversion": false,
+        "hypothetical_linear_reference_only": "8",
+        "actual_pricing_policy_not_supplied": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Same-unit counterexample limits the cause; no business price approval or real customer observed."
+    },
+    {
+      "id": "ALG7B22-04",
+      "title": "No-customer-override supplied outcome preserves unit quote",
+      "finding_ids": "P7-142",
+      "evidence": "SmartAuditERP/Class/ItemOper.cs:983-1030",
+      "supplied_result": {
+        "line_unit_before": "PACK",
+        "line_unit_after": "PACK",
+        "supplied_price_row_unit": "EACH",
+        "unit_equality_after": "12",
+        "loaded_unit_price": "120",
+        "projected_line_price": "120",
+        "override_supplied": false,
+        "crossed_unit_without_conversion": false,
+        "hypothetical_linear_reference_only": "96",
+        "actual_pricing_policy_not_supplied": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Supplied early-return/nonmatching pricing outcome only. Does not fix P4-026 or accept its pricing resolver."
+    },
+    {
+      "id": "ALG7B22-05",
+      "title": "Visible add-quantity button emits2 but consumer starts a new row",
+      "finding_ids": "P7-143",
+      "evidence": "SmartAuditERP/Form_WPF/MsgExistItem.xaml:59-134;SmartAuditERP/Form_WPF/MsgExistItem.xaml.cs:34-53;SmartAuditERP/Class/ItemOpercontract.cs:1000-1084",
+      "supplied_result": {
+        "source_local_action": 2,
+        "existing_quantity_after": "4",
+        "rows_after": 2,
+        "consumer_effect": "break-then-build-new-row",
+        "wpf_or_new_row_loading_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Conditional on reaching repeat dialog and normal completion of new-row load. Total quantity may still be5; mismatch is chosen row action, not a claim of doubled financial quantity or WPF execution."
+    },
+    {
+      "id": "ALG7B22-06",
+      "title": "Visible new-line button emits1 but consumer increments old row",
+      "finding_ids": "P7-143",
+      "evidence": "SmartAuditERP/Form_WPF/MsgExistItem.xaml:59-134;SmartAuditERP/Form_WPF/MsgExistItem.xaml.cs:34-53;SmartAuditERP/Class/ItemOper.cs:1091-1154",
+      "supplied_result": {
+        "source_local_action": 1,
+        "existing_quantity_after": "5",
+        "rows_after": 1,
+        "consumer_effect": "increment-existing-and-return",
+        "wpf_or_new_row_loading_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "No presumed policy about merging different units/discounts/serials, no persisted item or render observed; label, emitted code and selected consumer disagree locally."
+    },
+    {
+      "id": "ALG7B22-07",
+      "title": "Do-not-insert and initial-close controls do not mutate the loader row",
+      "finding_ids": "P7-143",
+      "evidence": "SmartAuditERP/Form_WPF/MsgExistItem.xaml.cs:9-18;34-53;SmartAuditERP/Class/ItemOpercontract.cs:1025-1035",
+      "supplied_result": {
+        "0": {
+          "source_local_action": 0,
+          "existing_quantity_after": "4",
+          "rows_after": 1,
+          "consumer_effect": "return-no-insertion",
+          "wpf_or_new_row_loading_executed": false
+        },
+        "3": {
+          "source_local_action": 3,
+          "existing_quantity_after": "4",
+          "rows_after": 1,
+          "consumer_effect": "return-no-insertion",
+          "wpf_or_new_row_loading_executed": false
+        }
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Loader-level control only; importer can still mutate last matching row afterward, a separate P7-144 boundary. No modal close/Hide lifecycle behavior is executed or accepted."
+    },
+    {
+      "id": "ALG7B22-08",
+      "title": "Merged nonlast line is not targeted by import code+Count predicate",
+      "finding_ids": "P7-144",
+      "evidence": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs:1747-1762;2500-2550;SmartAuditERP/Class/ItemOpercontract.cs:1025-1035",
+      "supplied_result": {
+        "lines": [
+          {
+            "code": "A",
+            "index": 1,
+            "quantity": "2",
+            "price": "10",
+            "description": "old-A"
+          },
+          {
+            "code": "B",
+            "index": 2,
+            "quantity": "2",
+            "price": "20",
+            "description": "old-B"
+          }
+        ],
+        "import_projection_touched_indices": [],
+        "imported_values_supplied_not_business_policy": true,
+        "success_message_after_loop_unconditional_in_model": true,
+        "real_result_or_cancellation_contract_not_executed": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Supplied Action1 outcome models increment1 then failed last-index match. Even with dialog labels corrected the importer still lacks a resolved line/result. Duplicate merge quantity policy is not invented; success text is source-local, not a saved import."
+    },
+    {
+      "id": "ALG7B22-09",
+      "title": "Same-code last row is a control where import values do get assigned",
+      "finding_ids": "P7-144",
+      "evidence": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs:2524-2543",
+      "supplied_result": {
+        "lines": [
+          {
+            "code": "B",
+            "index": 1,
+            "quantity": "2",
+            "price": "20",
+            "description": "old-B"
+          },
+          {
+            "code": "A",
+            "index": 2,
+            "quantity": "7",
+            "price": "50",
+            "description": "import-A"
+          }
+        ],
+        "import_projection_touched_indices": [
+          2
+        ],
+        "imported_values_supplied_not_business_policy": true,
+        "success_message_after_loop_unconditional_in_model": true,
+        "real_result_or_cancellation_contract_not_executed": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Control limits the nonlast-row cause. Replacement versus addition is an owner decision; this is not acceptance of the importer or a prescribed duplicate policy."
+    },
+    {
+      "id": "ALG7B22-10",
+      "title": "Do-not-insert result still reaches blind update of matching last row",
+      "finding_ids": "P7-144",
+      "evidence": "SmartAuditERP/Form_WPF/MsgExistItem.xaml:127-134;SmartAuditERP/Form_WPF/MsgExistItem.xaml.cs:48-53;SmartAuditERP/Class/ItemOpercontract.cs:1025-1035;SmartAuditERP/Form_WPF/frmcontract.xaml.cs:1747-1762;2524-2543",
+      "supplied_result": {
+        "lines": [
+          {
+            "code": "B",
+            "index": 1,
+            "quantity": "2",
+            "price": "20",
+            "description": "old-B"
+          },
+          {
+            "code": "A",
+            "index": 2,
+            "quantity": "7",
+            "price": "50",
+            "description": "import-A"
+          }
+        ],
+        "import_projection_touched_indices": [
+          2
+        ],
+        "imported_values_supplied_not_business_policy": true,
+        "success_message_after_loop_unconditional_in_model": true,
+        "real_result_or_cancellation_contract_not_executed": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Independent of the reversed1/2 label mapping: source-local Action3 means no insertion in loader. Caller has no typed cancellation result and mutates existing line; no actual click/import/save/DB rollback observed."
+    },
+    {
+      "id": "ALG7B22-11",
+      "title": "Stable accepted import-code guard shadows the barcode fallback",
+      "finding_ids": "H7B22-03",
+      "evidence": "SmartAuditERP/Form_WPF/frmImportDataGeneral.xaml.cs:1026-1048;1188-1199;SmartAuditERP/Form_WPF/frmcontract.xaml.cs:1764-1810;2520-2522",
+      "supplied_result": {
+        "import_row_emitted": true,
+        "direct_id_branch": true,
+        "barcode_fallback": false,
+        "database_stability_not_observed": true,
+        "raw_method_fallback_is_not_a_scanner_entry_contract": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Two matching query outcomes supplied; no snapshot/atomicity or actual scanner reachability proof. Concurrent master edits/other callers/external/reflection/alias entry remain unresolved; not dead code or unsupported status."
+    },
+    {
+      "id": "ALG7B22-12",
+      "title": "Legacy mode3 omission is a compatibility question, not a new defect",
+      "finding_ids": "H7B22-03",
+      "evidence": "SmartAuditERP/Class/ItemOpercontract.cs:1849-1916;SmartAuditERP/Class/ItemOper.cs:1962-2051;SmartAuditERP/Form_WPF/frmItems.xaml.cs:905-925",
+      "supplied_result": {
+        "legacy_explicit_weight_modes": [
+          1,
+          2
+        ],
+        "main_explicit_weight_modes": [
+          1,
+          2,
+          3
+        ],
+        "legacy_assigns_identity_for_mode3": false,
+        "mode3_support_policy_not_supplied": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Exact lookup precedes scale in both readers. No enum, checksum, scanner format or required mode3 support inferred. Same136/137/138 causes are compared, not extended or re-counted."
+    }
+  ],
+  "lexical_check_count": 12,
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B22-01",
+      "title": "Writer records base UnitId and separate ItemUnits prices",
+      "finding_ids": "P7-142",
+      "evidence": "SmartAuditERP/Form_WPF/frmItems.xaml.cs:1022-1083",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Selected writer only; not every import/cloud/history writer or deployed unique/foreign-key contract."
+    },
+    {
+      "id": "ST7B22-02",
+      "title": "Supplied DDL explicitly contains ItemPrices.UnitID",
+      "finding_ids": "P7-142",
+      "evidence": "SmartAuditERP/Properties/Resources.resx:1086-1103",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Embedded text, not executed migration or proof of deployed schema."
+    },
+    {
+      "id": "ST7B22-03",
+      "title": "Legacy customer price projection has item-only query and no unit normalization",
+      "finding_ids": "P7-142",
+      "evidence": "SmartAuditERP/Class/ItemOpercontract.cs:1331-1366",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Whole selected method text checked. Query order/history and pricing cases3/4 are not separate findings here."
+    },
+    {
+      "id": "ST7B22-04",
+      "title": "Main customer price projection repeats item-only unitless scalar assignment",
+      "finding_ids": "P7-142",
+      "evidence": "SmartAuditERP/Class/ItemOper.cs:983-1030",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Five shown scalar cases only. Not all pricing functions or an external enum definition."
+    },
+    {
+      "id": "ST7B22-05",
+      "title": "Both load paths place customer override after selected unit loading",
+      "finding_ids": "P7-142",
+      "evidence": "SmartAuditERP/Class/ItemOpercontract.cs:1195-1211;SmartAuditERP/Class/ItemOper.cs:495-521",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Conditional on successful lookup and normal method flow; no actual customer rows or load execution."
+    },
+    {
+      "id": "ST7B22-06",
+      "title": "Add quantity/new line XAML labels are wired to explicit handlers",
+      "finding_ids": "P7-143",
+      "evidence": "SmartAuditERP/Form_WPF/MsgExistItem.xaml:59-134",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Not just an inference from method names; still no WPF render or click."
+    },
+    {
+      "id": "ST7B22-07",
+      "title": "Dialog handlers emit2/1/3 and defaults0",
+      "finding_ids": "P7-143",
+      "evidence": "SmartAuditERP/Form_WPF/MsgExistItem.xaml.cs:1-57",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Integer source protocol only, not a guessed SDK enum or Hide/ShowDialog lifecycle contract."
+    },
+    {
+      "id": "ST7B22-08",
+      "title": "Three selected loaders consume1 as increment and2 as break-to-new",
+      "finding_ids": "P7-143",
+      "evidence": "SmartAuditERP/Class/ItemOpercontract.cs:1000-1084;1109-1193;SmartAuditERP/Class/ItemOper.cs:1091-1154",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Selected bodies only; other discovered MsgExistItem consumers are not body-reviewed or silently certified."
+    },
+    {
+      "id": "ST7B22-09",
+      "title": "Contract import command has literal menu and event wiring",
+      "finding_ids": "P7-144",
+      "evidence": "SmartAuditERP/Form_WPF/frmcontract.xaml:1001-1022;SmartAuditERP/Form_WPF/frmcontract.xaml.cs:163-206",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Static wiring conditional on window setup and authorization; not proof of deployed availability or permission."
+    },
+    {
+      "id": "ST7B22-10",
+      "title": "Importer success requires an existing item Code and emits typed column names",
+      "finding_ids": "H7B22-03",
+      "evidence": "SmartAuditERP/Form_WPF/frmImportDataGeneral.xaml.cs:996-1057;1188-1199",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Same SQL intent, no stability or parameterization approval. SQL interpolation remains under P1-011, not a new root."
+    },
+    {
+      "id": "ST7B22-11",
+      "title": "Caller discards loader outcome and updates code plus final index",
+      "finding_ids": "P7-144",
+      "evidence": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs:1747-1810;2500-2550",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Positive/nonempty import guards exist, but do not bind a resolved line or cancel. No persisted success/commit claim."
+    },
+    {
+      "id": "ST7B22-12",
+      "title": "Legacy barcode outputs are omitted and shared nearest causes remain",
+      "finding_ids": "P7-136;P7-137;P7-138;P4-026",
+      "evidence": "SmartAuditERP/Class/ItemOpercontract.cs:1808-1916;1481-1527;SmartAuditERP/Form_WPF/frmcontract.xaml.cs:1747-1810",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Source-local homologues only, zero old registry extensions/new barcode causes. Stable import guard limits practical reachability; no scan, decode, stock/save or approved support observed."
+    }
+  ],
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Class/ItemOpercontract.cs",
+      "start": 1808,
+      "end": 1916,
+      "sha256": "3e337459f37cd527f422efd15059c4303a18de39182ecf86a93ddc8af574195a",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+      "start": 1747,
+      "end": 1810,
+      "sha256": "3ed710535d46633f9bba00d129789de1d37c8399f3fe85c1ffa9f46f86bdb179",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmImportDataGeneral.xaml.cs",
+      "start": 996,
+      "end": 1057,
+      "sha256": "ac46af8ce8e94679048927ff753d34738f24a9c0fb2488ff891fa4eb9bc86f9f",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmImportDataGeneral.xaml.cs",
+      "start": 1188,
+      "end": 1199,
+      "sha256": "b2a89f766823eb5ebd74cded02d710fbd7c623c8e78dc0d61dff995aa7465519",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+      "start": 2500,
+      "end": 2550,
+      "sha256": "1b8cf9de3620f5f02fa31b00c605b2d65ccaff7f29fdf5cfa5f306d490138f9c",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+      "start": 163,
+      "end": 206,
+      "sha256": "c43c8a583a04e42e3803f16537e12082a1a91bfe2ded021cdd43db74e2d7afac",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmcontract.xaml",
+      "start": 1001,
+      "end": 1022,
+      "sha256": "cb7213baa700fbf9d287e7b1f4b6c54725d00e2f7c858ac6fc040bff2ddfa267",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/MsgExistItem.xaml.cs",
+      "start": 1,
+      "end": 57,
+      "sha256": "bdc2427f8f250f725a89f1927ac61e1d25552b7836b7d4be76fbb0dcc4f61169",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/MsgExistItem.xaml",
+      "start": 59,
+      "end": 134,
+      "sha256": "42ef491ef2f5b063fb12d5e9b5b37f8ec0a501aa3bc755c1145135649d753b25",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOpercontract.cs",
+      "start": 977,
+      "end": 1084,
+      "sha256": "beb5c0e4b009ed7ba4ad86f5331b7cd65d7f349793669b27a36d9233800b874e",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOpercontract.cs",
+      "start": 1086,
+      "end": 1193,
+      "sha256": "9f373c53f5c8853c2b5562e71788133032445af75aea67ab472f0bfdad51bada",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "start": 1035,
+      "end": 1185,
+      "sha256": "3fa226cc70b0cc3a39a2ae5b2b46f429603e73e8aefe3672fb6fc96fafad0193",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOpercontract.cs",
+      "start": 1331,
+      "end": 1366,
+      "sha256": "cd5232bf74475bf61ebf1819cb44913673b911e99899a563969a74505fae3bad",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "start": 983,
+      "end": 1030,
+      "sha256": "795ac71f17a618e123b41d0ffc0147301f714bd5b380cc08cd8fe72c7c057d4a",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOpercontract.cs",
+      "start": 1481,
+      "end": 1579,
+      "sha256": "15fc54870b0e127a8dc02c8eb6f5e2355ee5ed61f6a0d349ea204a435c9dc33f",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "start": 733,
+      "end": 811,
+      "sha256": "0e0bd87e1787d87e28a1594cba3a8153134b0c4b9010a7c7bd99265183142b87",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItems.xaml.cs",
+      "start": 1022,
+      "end": 1083,
+      "sha256": "ff3f92cda39bf4f7d0ba7440ba7c7e068a15a705f8c22a9d5d3f309b5fce284f",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 1086,
+      "end": 1103,
+      "sha256": "8bc4c9cbbdab65912f326774f08cf5e6788bc260f6b7163f8c033ae6ddec5829",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOpercontract.cs",
+      "start": 1195,
+      "end": 1211,
+      "sha256": "258a1158a76f85adb7cad581f676813e7b8fe8ff0e135b93381a4ac43a54f59e",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "start": 495,
+      "end": 521,
+      "sha256": "b1f5124fd8b63bdfd56298fac526fde0fd3f73a179fb0a267d3776bdd1d054b9",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "start": 1908,
+      "end": 2091,
+      "sha256": "df09b6fc3ca79016ddec64be0dc136e5fb8b25883f5f5e41d79714c87701ecea",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItems.xaml.cs",
+      "start": 905,
+      "end": 925,
+      "sha256": "ac7de08d70686a6df9863e3002e5ab6b227be0dc2135d897de850dd4b41a6a1d",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItems.xaml.cs",
+      "start": 972,
+      "end": 990,
+      "sha256": "4463e3cf805e24a23418cea857b89fd631c33e78295225d417924374dd3ff791",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItems.xaml",
+      "start": 497,
+      "end": 505,
+      "sha256": "26bfe6c5f8646fb84c34fcb133439f983f79db68297315d9b352358d35016ddc",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmImportDataGeneral.xaml.cs",
+      "start": 370,
+      "end": 382,
+      "sha256": "837a94313e4999b6520466aa487b1c31e312490c4cf0e647a83fdd47be1a2819",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmImportDataGeneral.xaml.cs",
+      "start": 429,
+      "end": 442,
+      "sha256": "457e628be02c65796a4272471ebe9f950965b96303ccd326012194c2b30f58be",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmImportDataGeneral.xaml",
+      "start": 439,
+      "end": 452,
+      "sha256": "1bb7169fdd91a26ff92c5d1d3596f16ca8afb921fa5fc4004df87722925411d0",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmImportDataGeneral.xaml",
+      "start": 601,
+      "end": 609,
+      "sha256": "e1dd25c07b46d9a27dfc7bac5779a49754416d211093e9c89e108bd8715c2b28",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+      "start": 76,
+      "end": 95,
+      "sha256": "31310134d2eb6b0e85e6faf8c8608b1f3f5dd6d06b3fe2303d28383df6d3aa87",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+      "start": 555,
+      "end": 619,
+      "sha256": "919cbea7bd8f4af1b0920a11c34b4e30f72a368c18996a3ed680e00f1c286bbf",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmcontract.xaml",
+      "start": 636,
+      "end": 680,
+      "sha256": "c42221c7379c926441b5a52f8a32fe7093a52f1d3c5a98506e8e4c2d70d88dbb",
+      "purpose": "bounded-inert-text-not-body-coverage-or-runtime"
+    }
+  ],
+  "qualified_literal_discovery": {
+    "source_csharp_paths_lexically_scanned": 477,
+    "scanned_bodies_not_reviewed": true,
+    "not_complete_callgraph_or_capability_census": true,
+    "lexical_utf8_replacement_paths_not_encoding_acceptance": [
+      "SmartAuditERP/Class/DgvAccount2.cs",
+      "SmartAuditERP/Class/FormPermission.cs",
+      "SmartAuditERP/Class/RestrictionData.cs",
+      "SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs"
+    ],
+    "legacy_SearchForBarcode": [
+      {
+        "source_path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+        "method": "SearchForBarcode",
+        "call_line_start": 1795,
+        "call_line_end": 1796,
+        "call_text_sha256": "094222bdcfdaaa15a604496a3fc829b62290eb82f36b991c266b3ec3792d14f8",
+        "inert_argument_expression": "barcode.Trim(), ref itemId, ref unitId, ref price, ref qty, isMultiText",
+        "not_type_or_runtime_resolution": true
+      }
+    ],
+    "legacy_GetItemByIDcontract": [
+      {
+        "source_path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+        "method": "GetItemByIDcontract",
+        "call_line_start": 1752,
+        "call_line_end": 1753,
+        "call_text_sha256": "e0428b186f6233f18ca74ecc13d980360f249e9ef23bd62b15e97cb8bd2f63bc",
+        "inert_argument_expression": "itemId, unitId, ref Invoic, false, barcode, serialNo",
+        "not_type_or_runtime_resolution": true
+      }
+    ],
+    "limit": "Only two receiver-qualified names, comments/strings masked; unqualified/alias/reflection/external/delegate and interpolated-expression calls excluded. No semantic source binding, scanner support, dead-code proof or whole-body review."
+  },
+  "errors": []
+}
