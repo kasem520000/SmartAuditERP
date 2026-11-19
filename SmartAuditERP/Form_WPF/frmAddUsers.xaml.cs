@@ -128,6 +128,20 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
+                // Repair R-030 (audit finding P2-001): pressing Enter in the password field calls
+                // this handler directly, and the handler never re-checked whether saving was even
+                // permitted - so a user whose btnSave had been disabled by the permission pass
+                // (MainClass.ApplyPermissionToForm -> ApplyWpfPermissions sets IsEnabled=false)
+                // could still write accounts through the keyboard route. A disabled WPF button
+                // cannot raise its own Click, so the only live bypass is this re-entrant path;
+                // enforce the platform's own decision here, where every caller funnels through.
+                if (!btnSave.IsEnabled)
+                {
+                    MessageBox.Show("لا تملك صلاحية الحفظ في هذه الشاشة.", "",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
                 if (cmbEmp.SelectedValue == null)
                 {
                     MessageBox.Show("اختر موظف", "", MessageBoxButton.OK,
