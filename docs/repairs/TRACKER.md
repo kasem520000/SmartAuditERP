@@ -61,6 +61,26 @@
 - **حدود التحقق:** تعذر WPF/.NET/SQL هنا؛ النجاح `verified-in-scope` لمنطق الاستمرار/الإبلاغ فقط وليس قبول ERP.
 - **الالتزام:** fix=`39421e8` · test=`4cbd374` — على الفرع الحالي فقط.
 
+### R-006 ← P7-109 — اتساع فترة تقرير الرواتب إلى كل الفترات عند فشل تحويل الشهر/السنة
+- **الحالة:** `verified-in-scope` (دلالة بناء المعيار؛ تشغيل WPF/SQL محجوب بيئياً)
+- **النتيجة الأصلية:** P7-109 · Medium · confirmed · implementation-defect (`findings.csv`).
+- **الدليل/المصدر:** `SmartAuditERP/Form_WPF/frmRptSalary.xaml.cs::btnShow_Click` (~57–88): عند عدم تفعيل «كل الفترة»، إذا فشل `int.TryParse` للسنة/الشهر يُترك `condWhere=""` ⇒ الاستعلام بلا شرط فترة ويعيد كل الفترات بصمت. (مفتاح `ckWholePeriod_CheckedChanged` يعطّل حقلي الشهر/السنة عند اختيار الكل، ما يؤكد أن عدم الاختيار يعني فترة محددة مقصودة.)
+- **التبعيات:** مستقل عن نتائج الرواتب الأخرى (P7-004/P7-005/P7-006 صرف واحتساب) وعن P7-002 تحميل الحالة؛ يخص معيار فترة العرض هنا فقط.
+- **التعديل المطبق:** إلزام سنة وشهر صحيحين (عددان) عند قصد فترة محددة؛ وعند فشل التحويل إيقاف مع رسالة واضحة بدل الاتساع. بعد التحقق القيمتان عددان لا يغيّران معنى SQL. سلوك «كل الفترة» والترشيح الصحيح دون تغيير، واستبعاد المحذوف باقٍ.
+- **اختبار الرجوع:** `tests/repair/salary_period_harness.py` — SQLite: شهر غير صالح أو فراغ: الأصل يعيد كل الصفوف، والمُصلَح يرفض ويعيد لا شيء؛ 2026/11 الصالح يختار المطابق فقط لدى الاثنين؛ «كل الفترة» يعيد الكل؛ والمحذوف مستبعد دائماً. الخروج PASS.
+- **حدود التحقق:** تعذر WPF/.NET/SQL هنا؛ النجاح `verified-in-scope` لبناء المعيار فقط وليس قبول ERP.
+- **الالتزام:** fix=`825334e` · test=`2c9be53` — على الفرع الحالي فقط.
+
+### R-007 ← P7-063 — تصدير قائمة الفواتير المخزنية يكتب الملاحظات مكان رقم الفاتورة
+- **الحالة:** `verified-in-scope` (منطق تعيين الأعمدة؛ تشغيل WPF/.NET محجوب بيئياً)
+- **النتيجة الأصلية:** P7-063 · Medium · confirmed · implementation-defect (`findings.csv`).
+- **الدليل/المصدر:** `SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs::btnExportExcel_Click` (~661–667): رأس CSV عموده الأول «رقم الفاتورة» بينما السطر يكتب `{inv.InvNote}` (الملاحظات) في ذلك الموضع. النموذج `InvoiceTxt` تُعبّأ فيه `InvoiceNo = Inv.id` في كل مواقع التعبئة (`InvoiceOper.BindingListOfInvoices1`) وهي مصدر الرقم.
+- **التبعيات:** محصور بإسقاط التصدير لهذه النافذة؛ لا يمس الشبكة/الطباعة. ملاحظة: عمود الشبكة «رقم الفاتورة» يربط `{Binding InvNo}`؛ اعتمدنا `InvoiceNo` الموثوق الوجود والتعبئة بدل المخاطرة بـ`InvNo` غير المُتحقق منه على هذا الصنف (ويُسجل كفحص عرضي منفصل إن لزم). إضافة عمود ملاحظات صريح تحسين منفصل خارج النطاق.
+- **التعديل المطبق:** كتابة `{inv.InvoiceNo}` في العمود الأول بدل `{inv.InvNote}`، وبقية الأعمدة كما هي.
+- **اختبار الرجوع:** `tests/repair/inventory_export_harness.py` — إعادة بناء الرأس وصفوف الإسقاط: الأصل يضع الملاحظة («دفعة أولى» أو فارغاً) في عمود الرقم، والمُصلَح يضع رقم الفاتورة؛ تطابق عدد الأعمدة مع الرأس وبقاء كل الأعمدة غير الأولى مطابقة. الخروج PASS. (فاصل تجميع الآلاف الذي يكسر CSV الساذج هو النتيجة المنفصلة P7-048 خارج نطاق هذا النموذج.)
+- **حدود التحقق:** تعذر WPF/.NET هنا؛ النجاح `verified-in-scope` لتعيين الأعمدة فقط وليس قبول ERP.
+- **الالتزام:** fix=`f0d134d` · test=`3d81840` — على الفرع الحالي فقط.
+
 ## دفتر المتراكم (ملخص حسب الطبقة/المرحلة — يُفصَّل مع تقدم العمل)
 | الطبقة | أمثلة مفتاحية | العدد المفتوح الإجمالي بالمرجع | حالة التخطيط |
 | --- | --- | --- | --- |
@@ -84,3 +104,7 @@
 | R-004 | P7-036 | test(P7-036): SQLite model proving UNION ALL catches duplicates the cross join misses | `fcff03a` | 2026-11-19 | verified-in-scope |
 | R-005 | P7-103/P7-104 | fix(P7-103,P7-104): load persisted print default and verify save actually updated | `39421e8` | 2026-11-19 | verified-in-scope |
 | R-005 | P7-103/P7-104 | test(P7-103,P7-104): SQLite model proving load round-trip and honest save result | `4cbd374` | 2026-11-19 | verified-in-scope |
+| R-006 | P7-109 | fix(P7-109): refuse to run salary report when period text is invalid (no silent widen) | `825334e` | 2026-11-19 | verified-in-scope |
+| R-006 | P7-109 | test(P7-109): SQLite model proving invalid period no longer widens to all rows | `2c9be53` | 2026-11-19 | verified-in-scope |
+| R-007 | P7-063 | fix(P7-063): write the invoice number, not notes, into the export's number column | `f0d134d` | 2026-11-19 | verified-in-scope |
+| R-007 | P7-063 | test(P7-063): model proving the number column now holds InvoiceNo, not notes | `3d81840` | 2026-11-19 | verified-in-scope |
