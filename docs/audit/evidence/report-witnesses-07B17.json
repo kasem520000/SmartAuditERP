@@ -1,0 +1,493 @@
+{
+  "phase": "7B17-partial-static-consolidation",
+  "application_code_imported_or_executed": false,
+  "application_remediation_performed": false,
+  "real_business_or_secret_data_used": false,
+  "spreadsheet_or_formula_interpreter_executed": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "illustration_count": 10,
+  "static_lexical_contract_check_count": 10,
+  "historical_metadata_rows_not_unique_features": 455,
+  "historical_metadata_aggregation_not_new_source_review": true,
+  "B_R4a_not_whole7B_closure": true,
+  "unresolved_external_contracts_and_explicit_splits_retained": true,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "supplied_DDL_not_deployed_schema_certification": true,
+  "illustrations": [
+    {
+      "id": "ALG7B17-01",
+      "title": "cold with-VAT شاهد إدراج T",
+      "finding_ids": "P7-128",
+      "evidence": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:38-45;SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:208-217;SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:280-310;SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:318-338;SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:442-511;SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:619-624",
+      "illustration_assertions_passed": true,
+      "details": {
+        "initial_flag": true,
+        "mode": "with",
+        "records": [
+          [
+            "T",
+            15
+          ]
+        ],
+        "local": [
+          "T"
+        ],
+        "independent": [
+          "T"
+        ]
+      },
+      "source_application_executed": false,
+      "limit": "نموذج يدوي مستقل بأسماء وأعداد افتراضية؛ ليس ترجمة/تنفيذ المصدر أو قبول ضريبي/مالي. يفترض صفوفاً مؤهلة وقراءة ناجحة؛ لا يثبت نشر schema أو حدوث الخلل في الإنتاج. 7B/7 جزئيتان؛7C لم تبدأ؛8 غير مأذونة. لا معالجة أو قياس."
+    },
+    {
+      "id": "ALG7B17-02",
+      "title": "warm after no-VAT يسقط نفس T",
+      "finding_ids": "P7-128",
+      "evidence": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:38-45;SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:208-217;SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:280-310;SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:318-338;SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:442-511;SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:619-624",
+      "illustration_assertions_passed": true,
+      "details": {
+        "seed": [
+          false,
+          [
+            "Z"
+          ]
+        ],
+        "local": [],
+        "independent": [
+          "T"
+        ],
+        "main_sub_tables_empty": true
+      },
+      "source_application_executed": false,
+      "limit": "نموذج يدوي مستقل بأسماء وأعداد افتراضية؛ ليس ترجمة/تنفيذ المصدر أو قبول ضريبي/مالي. يفترض صفوفاً مؤهلة وقراءة ناجحة؛ لا يثبت نشر schema أو حدوث الخلل في الإنتاج. 7B/7 جزئيتان؛7C لم تبدأ؛8 غير مأذونة. لا معالجة أو قياس."
+    },
+    {
+      "id": "ALG7B17-03",
+      "title": "أهلية no-VAT تتغير بترتيب صفين أيضاً",
+      "finding_ids": "P7-128",
+      "evidence": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:442-511",
+      "illustration_assertions_passed": true,
+      "details": {
+        "local_Z_then_T": [
+          "Z",
+          "T"
+        ],
+        "local_T_then_Z": [
+          "Z"
+        ],
+        "independent": [
+          "Z"
+        ],
+        "note": "أهلية فقط؛ لا ادعاء أن مبالغ T المنشورة سليمة أو أن هذه معادلة VAT كاملة."
+      },
+      "source_application_executed": false,
+      "limit": "نموذج يدوي مستقل بأسماء وأعداد افتراضية؛ ليس ترجمة/تنفيذ المصدر أو قبول ضريبي/مالي. يفترض صفوفاً مؤهلة وقراءة ناجحة؛ لا يثبت نشر schema أو حدوث الخلل في الإنتاج. 7B/7 جزئيتان؛7C لم تبدأ؛8 غير مأذونة. لا معالجة أو قياس."
+    },
+    {
+      "id": "ALG7B17-04",
+      "title": "main early-return لا يمس العلم false",
+      "finding_ids": "P7-128",
+      "evidence": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:318-338;SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:442-511",
+      "illustration_assertions_passed": true,
+      "details": {
+        "main_sub_table_empty": true,
+        "flag_after_early_return": false,
+        "local": []
+      },
+      "source_application_executed": false,
+      "limit": "نموذج يدوي مستقل بأسماء وأعداد افتراضية؛ ليس ترجمة/تنفيذ المصدر أو قبول ضريبي/مالي. يفترض صفوفاً مؤهلة وقراءة ناجحة؛ لا يثبت نشر schema أو حدوث الخلل في الإنتاج. 7B/7 جزئيتان؛7C لم تبدأ؛8 غير مأذونة. لا معالجة أو قياس."
+    },
+    {
+      "id": "ALG7B17-05",
+      "title": "وجود main-row ذي بنود يعيد true كشاهد مقابل",
+      "finding_ids": "P7-128",
+      "evidence": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:318-338;SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:442-511",
+      "illustration_assertions_passed": true,
+      "details": {
+        "main_with_nonempty_sub_table_resets_flag": true,
+        "local": [
+          "T"
+        ],
+        "same_T_not_always_omitted": true
+      },
+      "source_application_executed": false,
+      "limit": "نموذج يدوي مستقل بأسماء وأعداد افتراضية؛ ليس ترجمة/تنفيذ المصدر أو قبول ضريبي/مالي. يفترض صفوفاً مؤهلة وقراءة ناجحة؛ لا يثبت نشر schema أو حدوث الخلل في الإنتاج. 7B/7 جزئيتان؛7C لم تبدأ؛8 غير مأذونة. لا معالجة أو قياس."
+    },
+    {
+      "id": "ALG7B17-06",
+      "title": "all-VAT قد يورث false؛ zero في with وحده لا يفعل",
+      "finding_ids": "P7-128",
+      "evidence": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:463-486",
+      "illustration_assertions_passed": true,
+      "details": {
+        "all_seed_flag": false,
+        "warm_after_all": [],
+        "cold_with_zero_then_T": [
+          "T"
+        ]
+      },
+      "source_application_executed": false,
+      "limit": "نموذج يدوي مستقل بأسماء وأعداد افتراضية؛ ليس ترجمة/تنفيذ المصدر أو قبول ضريبي/مالي. يفترض صفوفاً مؤهلة وقراءة ناجحة؛ لا يثبت نشر schema أو حدوث الخلل في الإنتاج. 7B/7 جزئيتان؛7C لم تبدأ؛8 غير مأذونة. لا معالجة أو قياس."
+    },
+    {
+      "id": "ALG7B17-07",
+      "title": "crossjoin فارغ مع duplicate في أي جهة",
+      "finding_ids": "P7-036",
+      "evidence": "SmartAuditERP/Form_WPF/frmMultiBarcode.xaml.cs:75-149",
+      "illustration_assertions_passed": true,
+      "details": {
+        "local_cartesian_match_count": 0,
+        "independent_exists": true,
+        "deployed_constraint_not_tested": true
+      },
+      "source_application_executed": false,
+      "limit": "نموذج يدوي مستقل بأسماء وأعداد افتراضية؛ ليس ترجمة/تنفيذ المصدر أو قبول ضريبي/مالي. يفترض صفوفاً مؤهلة وقراءة ناجحة؛ لا يثبت نشر schema أو حدوث الخلل في الإنتاج. 7B/7 جزئيتان؛7C لم تبدأ؛8 غير مأذونة. لا معالجة أو قياس."
+    },
+    {
+      "id": "ALG7B17-08",
+      "title": "رمز عبوة مع سعر أساس مستقل",
+      "finding_ids": "P7-037",
+      "evidence": "SmartAuditERP/Form_WPF/frmPrintBarcode.xaml.cs:215-245;SmartAuditERP/Form_WPF/frmPrintBarcode.xaml.cs:337-354;SmartAuditERP/Class/Common.cs:560-578;SmartAuditERP/Form_WPF/frmItemsBarcode.xaml.cs:281-309",
+      "illustration_assertions_passed": true,
+      "details": {
+        "label_barcode": "PACK-X",
+        "hypothetical_base_price": 10,
+        "hypothetical_unit_price": 120,
+        "described_local_base_price": 10,
+        "policy_for_example": "label unit is pack",
+        "no_render_or_business_export": true
+      },
+      "source_application_executed": false,
+      "limit": "نموذج يدوي مستقل بأسماء وأعداد افتراضية؛ ليس ترجمة/تنفيذ المصدر أو قبول ضريبي/مالي. يفترض صفوفاً مؤهلة وقراءة ناجحة؛ لا يثبت نشر schema أو حدوث الخلل في الإنتاج. 7B/7 جزئيتان؛7C لم تبدأ؛8 غير مأذونة. لا معالجة أو قياس."
+    },
+    {
+      "id": "ALG7B17-09",
+      "title": "قص أول رقمين مقابل سياسة مثال معلنة",
+      "finding_ids": "P7-034",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:550-575;SmartAuditERP/Class/Print.cs:737-750",
+      "illustration_assertions_passed": true,
+      "details": {
+        "explicit_hypothetical_policy": "two decimals HALF_UP for this illustration only",
+        "input_text": "19.999",
+        "local_fraction_prefix": "99",
+        "reference_numeric_text": "20.00",
+        "actual_VB_culture_or_words_not_executed": true
+      },
+      "source_application_executed": false,
+      "limit": "نموذج يدوي مستقل بأسماء وأعداد افتراضية؛ ليس ترجمة/تنفيذ المصدر أو قبول ضريبي/مالي. يفترض صفوفاً مؤهلة وقراءة ناجحة؛ لا يثبت نشر schema أو حدوث الخلل في الإنتاج. 7B/7 جزئيتان؛7C لم تبدأ؛8 غير مأذونة. لا معالجة أو قياس."
+    },
+    {
+      "id": "ALG7B17-10",
+      "title": "تفرع اسم العملة code4 مقابل شاهد code2",
+      "finding_ids": "P7-035",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:987-1066;SmartAuditERP/Class/InvoiceOper.cs:1098-1159",
+      "illustration_assertions_passed": true,
+      "details": {
+        "code4_arabic_fallback_major": "ريال",
+        "code4_english_major": "Dirham",
+        "code2_both_currency_family": "Dollar/Cent",
+        "enum_identity_or_legal_policy_not_inferred": true
+      },
+      "source_application_executed": false,
+      "limit": "نموذج يدوي مستقل بأسماء وأعداد افتراضية؛ ليس ترجمة/تنفيذ المصدر أو قبول ضريبي/مالي. يفترض صفوفاً مؤهلة وقراءة ناجحة؛ لا يثبت نشر schema أو حدوث الخلل في الإنتاج. 7B/7 جزئيتان؛7C لم تبدأ؛8 غير مأذونة. لا معالجة أو قياس."
+    }
+  ],
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B17-01",
+      "title": "field/reset/ShowInvs لا يعيدان IsVAT عند بدء الطلب",
+      "finding_ids": "P7-128",
+      "evidence": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:38-45;SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:208-217;SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:619-624",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "تطابق/غياب نص في شرائح معلنة فقط، لا AST دلالي أو كل callgraph أو نتيجة build/SQL/WPF/REPX. وجود DTO أو DDL أو Apply لا يثبت عقد نشر أو تفويضاً أو قبولاً."
+    },
+    {
+      "id": "ST7B17-02",
+      "title": "استدعاء main يسبق no-sub وخيارات UI في النافذة ذاتها",
+      "finding_ids": "P7-128",
+      "evidence": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:280-310;SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:741-744;SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml:226-248;SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml:276-282;SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml.cs:868-887",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "تطابق/غياب نص في شرائح معلنة فقط، لا AST دلالي أو كل callgraph أو نتيجة build/SQL/WPF/REPX. وجود DTO أو DDL أو Apply لا يثبت عقد نشر أو تفويضاً أو قبولاً."
+    },
+    {
+      "id": "ST7B17-03",
+      "title": "return إذا خلا subTable يسبق إعادةtrue",
+      "finding_ids": "P7-128",
+      "evidence": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:318-338",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "تطابق/غياب نص في شرائح معلنة فقط، لا AST دلالي أو كل callgraph أو نتيجة build/SQL/WPF/REPX. وجود DTO أو DDL أو Apply لا يثبت عقد نشر أو تفويضاً أو قبولاً."
+    },
+    {
+      "id": "ST7B17-04",
+      "title": "no-sub يضعfalse ولا يعيدtrue قبل guard",
+      "finding_ids": "P7-128",
+      "evidence": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:442-486;SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:442-511",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "تطابق/غياب نص في شرائح معلنة فقط، لا AST دلالي أو كل callgraph أو نتيجة build/SQL/WPF/REPX. وجود DTO أو DDL أو Apply لا يثبت عقد نشر أو تفويضاً أو قبولاً."
+    },
+    {
+      "id": "ST7B17-05",
+      "title": "حد dispatch الستة مقابل Income/Android وزر كلصف",
+      "finding_ids": "P7-061;H7B17-03",
+      "evidence": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:568-613;SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:660-670;SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:789-876;SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml:474-486",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "تطابق/غياب نص في شرائح معلنة فقط، لا AST دلالي أو كل callgraph أو نتيجة build/SQL/WPF/REPX. وجود DTO أو DDL أو Apply لا يثبت عقد نشر أو تفويضاً أو قبولاً."
+    },
+    {
+      "id": "ST7B17-06",
+      "title": "مقدار عربي من نص محلي وقص الكسر ومستهلكان",
+      "finding_ids": "P7-034",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:550-575;SmartAuditERP/Class/Print.cs:737-750;SmartAuditERP/Class/Print.cs:1051-1065",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "تطابق/غياب نص في شرائح معلنة فقط، لا AST دلالي أو كل callgraph أو نتيجة build/SQL/WPF/REPX. وجود DTO أو DDL أو Apply لا يثبت عقد نشر أو تفويضاً أو قبولاً."
+    },
+    {
+      "id": "ST7B17-07",
+      "title": "case العملة والتفقيط الافتراضي في سند محدد",
+      "finding_ids": "P7-035",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:987-1066;SmartAuditERP/Class/InvoiceOper.cs:1098-1159;SmartAuditERP/Form_WPF/frmEmpSalaryAddSub.xaml.cs:975-982",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "تطابق/غياب نص في شرائح معلنة فقط، لا AST دلالي أو كل callgraph أو نتيجة build/SQL/WPF/REPX. وجود DTO أو DDL أو Apply لا يثبت عقد نشر أو تفويضاً أو قبولاً."
+    },
+    {
+      "id": "ST7B17-08",
+      "title": "crossjoin فحص مستقل عن insert parameters",
+      "finding_ids": "P7-036",
+      "evidence": "SmartAuditERP/Form_WPF/frmMultiBarcode.xaml.cs:75-149;SmartAuditERP/Form_WPF/frmItems.xaml.cs:1879-1889;SmartAuditERP/Properties/Resources.resx:410-432",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "تطابق/غياب نص في شرائح معلنة فقط، لا AST دلالي أو كل callgraph أو نتيجة build/SQL/WPF/REPX. وجود DTO أو DDL أو Apply لا يثبت عقد نشر أو تفويضاً أو قبولاً."
+    },
+    {
+      "id": "ST7B17-09",
+      "title": "رد unitId لا يدخل سعرالملصق؛ شاهد IU.sale",
+      "finding_ids": "P7-037",
+      "evidence": "SmartAuditERP/Form_WPF/frmPrintBarcode.xaml.cs:215-245;SmartAuditERP/Form_WPF/frmPrintBarcode.xaml.cs:337-354;SmartAuditERP/Class/Common.cs:560-578;SmartAuditERP/Class/ItemOper.cs:1920-1948;SmartAuditERP/Form_WPF/frmItemsBarcode.xaml.cs:281-309",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "تطابق/غياب نص في شرائح معلنة فقط، لا AST دلالي أو كل callgraph أو نتيجة build/SQL/WPF/REPX. وجود DTO أو DDL أو Apply لا يثبت عقد نشر أو تفويضاً أو قبولاً."
+    },
+    {
+      "id": "ST7B17-10",
+      "title": "متصلان محددان وvoid/copies/PDF لا كلcallgraph",
+      "finding_ids": "P7-029;P7-030;P7-031;H7B17-02",
+      "evidence": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:1199-1264;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2065-2124;SmartAuditERP/Class/Print.cs:148-221",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "تطابق/غياب نص في شرائح معلنة فقط، لا AST دلالي أو كل callgraph أو نتيجة build/SQL/WPF/REPX. وجود DTO أو DDL أو Apply لا يثبت عقد نشر أو تفويضاً أو قبولاً."
+    }
+  ],
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs",
+      "start": 38,
+      "end": 45,
+      "selected_text_sha256": "3782740f502a35f1c05d9b094115a5fe3a41b78a92fb5d833b105b8e9276eab8"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs",
+      "start": 208,
+      "end": 217,
+      "selected_text_sha256": "e5ad0e316a68ab323346888576d779e5dd556c1c4ab1757f74f898c9b3a0a475"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs",
+      "start": 619,
+      "end": 624,
+      "selected_text_sha256": "378cd786a1e1406b19028a2e36fe05faaff8efcaa7ab7e3545859be5693146cf"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs",
+      "start": 280,
+      "end": 310,
+      "selected_text_sha256": "f36da4c5bc101beb4a04ed8ccb0a4d2d3ff2b0b77b871b70fde2f345d7e755a0"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs",
+      "start": 741,
+      "end": 744,
+      "selected_text_sha256": "4ee06fb4b4e02d94b4c17147bbbef23a7912189206639de7bfe43b3daa122ef8"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml",
+      "start": 226,
+      "end": 248,
+      "selected_text_sha256": "d796fc357ffccd79e65abe91dd96da566c3bf171302017318766ed068cf86d45"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml",
+      "start": 276,
+      "end": 282,
+      "selected_text_sha256": "3b8561f88320836f985a8b48965baa866ec6ef116faf93038e962be16b60c0a5"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml.cs",
+      "start": 868,
+      "end": 887,
+      "selected_text_sha256": "6293ddeb5c063e31883025f6e556c80f11db67bb68260dbc50b1352ad19f58bb"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs",
+      "start": 318,
+      "end": 338,
+      "selected_text_sha256": "8d4c7b9357420551b52f279723d880519cdb519b507f4a517bc8a25ab4cc64eb"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs",
+      "start": 442,
+      "end": 486,
+      "selected_text_sha256": "5226da3037eae1e8b73cab8b4b81cb5807d6829164e6c1625955b4305992ceca"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs",
+      "start": 442,
+      "end": 511,
+      "selected_text_sha256": "3381e94acc2f7d5c3355ed1bcfe069e648ddf6b3b864b683a21a9b88af6c3953"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs",
+      "start": 789,
+      "end": 876,
+      "selected_text_sha256": "82f487fdb562fb23e3cf1726f3dc2ebe24d0c7f0b7229037ce502ffd8ea75f07"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs",
+      "start": 568,
+      "end": 613,
+      "selected_text_sha256": "fd372408a86a6a6aa4b56522797f203c544c11938543317b2182960761aa5dc8"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs",
+      "start": 660,
+      "end": 670,
+      "selected_text_sha256": "bb2df8dd8d38d0e7dd44cb38641409ecb651bd7471fd5ee2d98b2990d88976ed"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml",
+      "start": 474,
+      "end": 486,
+      "selected_text_sha256": "96100a133595112347394d7dd9ff40a1f3f68f4b32b6b26670235f25b43555db"
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 550,
+      "end": 575,
+      "selected_text_sha256": "363392650e8985266dc4ef15d51403520083f6b30042299ba8ac918c90d3bf38"
+    },
+    {
+      "path": "SmartAuditERP/Class/Print.cs",
+      "start": 737,
+      "end": 750,
+      "selected_text_sha256": "dc3c5ff20a2b39e0261bd3c17f70edcf54474a403350ea0af407a4759a1eb44a"
+    },
+    {
+      "path": "SmartAuditERP/Class/Print.cs",
+      "start": 1051,
+      "end": 1065,
+      "selected_text_sha256": "cc212713b915fd667a506a2b9cf56e549f20612d1d793a8c2cb48bb8028fbecb"
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 987,
+      "end": 1066,
+      "selected_text_sha256": "f2045dee7dde17df05d2e4e82d3914800aeb38a484125ed85dd0132544119aa0"
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 1098,
+      "end": 1159,
+      "selected_text_sha256": "cadc7cf6a1e7234599473a8830f092d7df78d62ce87add4044bd2f14ff7988fc"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmEmpSalaryAddSub.xaml.cs",
+      "start": 975,
+      "end": 982,
+      "selected_text_sha256": "43133d2cd841194090ff51c1030110091161964ea4a5cc8e52284f314ca342d6"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmMultiBarcode.xaml.cs",
+      "start": 75,
+      "end": 149,
+      "selected_text_sha256": "82550c254d38c995f4aec812b9b8378b213bbc50723a2e338037a2d42597aa17"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItems.xaml.cs",
+      "start": 1879,
+      "end": 1889,
+      "selected_text_sha256": "91dca31e12e1542874f4479478450bfdf259f28556a5e4d1b3298b1543cdd2a3"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 410,
+      "end": 432,
+      "selected_text_sha256": "d55b1223aca9c011cfa8e1d723c698ae42b242386e452b94ae8cb5788607e40c"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPrintBarcode.xaml.cs",
+      "start": 215,
+      "end": 245,
+      "selected_text_sha256": "e398a6dfbc3974486d2cab6fd13d539abae362e7ce25adc31479d1765809d421"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPrintBarcode.xaml.cs",
+      "start": 337,
+      "end": 354,
+      "selected_text_sha256": "dfad4a6c920746af8ad8a1fbb9e7410baf89e40f4473310b3350105df11dda6a"
+    },
+    {
+      "path": "SmartAuditERP/Class/Common.cs",
+      "start": 560,
+      "end": 578,
+      "selected_text_sha256": "a7d602540551dfa10aced4d70bb211dc48219059903bf79cd29b9c6fcbe5a83c"
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "start": 1920,
+      "end": 1948,
+      "selected_text_sha256": "f26a2b224f0591f78ce554e8517e3f57f621884d4d44483b7dba810dfe138976"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsBarcode.xaml.cs",
+      "start": 281,
+      "end": 309,
+      "selected_text_sha256": "def3af86cd5dfa1b9085bc86180bf0fb855abefd0e3117ad8f1d033f6500da75"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs",
+      "start": 1199,
+      "end": 1264,
+      "selected_text_sha256": "10f4fb91231eb9f5764532dbebfe9d1519bec93f236242794374a2145998762e"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 2065,
+      "end": 2124,
+      "selected_text_sha256": "c94ef9e4e748a6ca3e98b95adafae3e26ec4e05ae8c10186bafc1d7be84e1289"
+    },
+    {
+      "path": "SmartAuditERP/Class/Print.cs",
+      "start": 148,
+      "end": 221,
+      "selected_text_sha256": "d77fdae9a2b1136dec451cad0af5345a90e99e48ddd83cbc90eb63161e8a94e6"
+    }
+  ],
+  "retained_additive_B10_arithmetic_erratum": {
+    "entered_quantity": 2,
+    "equality": 12,
+    "base_unit_cost": 5,
+    "local_cost": 10,
+    "reference_cost": 120,
+    "archive_rewritten": false
+  },
+  "errors": [],
+  "limit": "نموذج يدوي مستقل بأسماء وأعداد افتراضية؛ ليس ترجمة/تنفيذ المصدر أو قبول ضريبي/مالي. يفترض صفوفاً مؤهلة وقراءة ناجحة؛ لا يثبت نشر schema أو حدوث الخلل في الإنتاج. 7B/7 جزئيتان؛7C لم تبدأ؛8 غير مأذونة. لا معالجة أو قياس."
+}

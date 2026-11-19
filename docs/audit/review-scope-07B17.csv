@@ -1,0 +1,19 @@
+path,review_state,ranges,focus
+SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs,selected-static-source-slices-not-runtime-certified,25-71;208-515;568-613;619-670;741-876,شرائح إعادة الطلب وIsVAT/no-sub والهوية والتوجيه؛ لا إعادة إعلان fullbody أو كل محرر.
+SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml,selected-static-source-slices-not-runtime-certified,169-282;466-486,خيارات الضرائب وزر العرض وزر تفاصيل كل صف؛ قراءة XAML لا تنفيذ WPF أو إثبات سياسة supported.
+SmartAuditERP/Class/InvoiceOper.cs,selected-static-source-slices-not-runtime-certified,550-575;972-1159,التفقيط المستخدم فعلياً وتقسيم الكسور واختيار العملة؛ لا كامل helpers أو كل مستدع.
+SmartAuditERP/Class/Print.cs,selected-static-source-slices-not-runtime-certified,54-221;737-750;1012-1072,إعداد/أوضاع/نتيجة وشرائح إسقاط التفقيط والباركود في مسارين؛ لا كامل BindToData أو جميع المتصلين.
+SmartAuditERP/Form_WPF/frmMultiBarcode.xaml.cs,selected-static-source-slices-not-runtime-certified,75-149,فحص الضرب الديكارتي ثم مسار إدراج parameterized؛ لا SQL منفذ أو إثبات constraints نشر.
+SmartAuditERP/Form_WPF/frmMultiBarcode.xaml,selected-static-source-slices-not-runtime-certified,139-149,وصل الإضافة من لوحة المفاتيح والزر وMaxLength، لا قبول UI.
+SmartAuditERP/Form_WPF/frmItems.xaml.cs,selected-static-source-slices-not-runtime-certified,1879-1889,مدخل متعدد الباركود المحدد فقط؛ لا كل إدارة الصنف.
+SmartAuditERP/Properties/Resources.resx,selected-static-source-slices-not-runtime-certified,410-432,DDL المرفق لجدولي الباركود؛ ليس مخططاً أو منحاً منشورة.
+SmartAuditERP/Form_WPF/frmPrintBarcode.xaml.cs,selected-static-source-slices-not-runtime-certified,215-245;337-365,الرمز الممسوح والوحدة والسعر إلى DTO واسم Barcode.repx؛ لا تنفيذ المحول/قالب.
+SmartAuditERP/Class/Common.cs,selected-static-source-slices-not-runtime-certified,560-578,GetItemPrice يرجع sale_price الأساسي؛ لا سياسة تسعير أو حسم أداء.
+SmartAuditERP/Class/ItemOper.cs,selected-static-source-slices-not-runtime-certified,1920-1948,شريحة رد هوية الوحدة من باركودها؛ ليست كل حالات الوزن أو كل SearchForBarcode.
+SmartAuditERP/Form_WPF/frmItemsBarcode.xaml.cs,selected-static-source-slices-not-runtime-certified,274-313,شاهد مقابل يقرأ IU.sale للوحدة؛ لا اعتماد ضريبة أو قالب كامل.
+SmartAuditERP/Form_WPF/frmEmpSalaryAddSub.xaml.cs,selected-static-source-slices-not-runtime-certified,960-982,مستدع تفقيط سند يترك العملة الافتراضية؛ ليس بدء7C أو قراءة جديدة للرواتب كلها.
+SmartAuditERP/Form_WPF/frmInvSale.xaml.cs,selected-static-source-slices-not-runtime-certified,2065-2124,مسارا طباعة وPDF المسمّيان فقط؛ لا كل المحرر أو callgraph.
+SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs,selected-static-source-slices-not-runtime-certified,1199-1264,كتابة السيريال قبل RptPrint ومرور DTO إلى المحرك؛ أصل029 محفوظ لا إعادة عد.
+SmartAuditERP/Form_WPF/frmVATReturn.xaml.cs,selected-static-source-slices-not-runtime-certified,676-715,مدخل الطفل الجديد مع تاريخ ونوع؛ لا فرع/allowed-set محمول هنا ولا كل المستدعي.
+SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml.cs,selected-static-source-slices-not-runtime-certified,847-887,مدخلا الطفل من الأب السابق؛ لا وراثة تغطية محرر آخر.
+SmartAuditERP/Class/InvoiceObj.cs,selected-static-source-slices-not-runtime-certified,113-184,علم السعر والمعدل الافتراضي/الإعداد الحالي؛ لا اعتماد سياسة أو تنفيذ lookup.
