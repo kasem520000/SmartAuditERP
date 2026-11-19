@@ -260,10 +260,23 @@ namespace SmartAuditERP.Form_WPF
                     condItems += $" and Inv_Sub.ItemId={SelectedId}";
 
                 // الفترة
+                // Repair R-002 (audit finding P7-059): the "آخر حركة" (last-movement)
+                // option requests TOP(1); with the fixed ascending ORDER BY below that
+                // returns the OLDEST matching row (the earliest movement ever, since the
+                // date-range filter is intentionally skipped in this mode) -- the exact
+                // opposite of "last movement". Order descending in last-movement mode so
+                // TOP(1) yields the most recent row. The full chronological list keeps its
+                // original ascending order, so multi-row report output is unchanged.
+                string orderDirection = "ASC";
                 if (cbLastProcess.IsChecked == true)
+                {
                     condTop = " top (1) ";
+                    orderDirection = "DESC";
+                }
                 else if (ckTotalPeriod.IsChecked != true)
+                {
                     condItems += " and date>=@date1 and date<=@date2 ";
+                }
 
                 // العميل
                 if (chkAllClients.IsChecked != true &&
@@ -301,7 +314,7 @@ namespace SmartAuditERP.Form_WPF
                     $"WHERE {condBranch} Inv.InvGlobalID=Inv_Sub.InvGlobalID " +
                     "AND Inv_Sub.proc_type IN(1,2) " +
                     $"AND Inv.IS_Deleted=0 {condItems} " +
-                    "ORDER BY inv.date ASC";
+                    $"ORDER BY inv.date {orderDirection}";
 
                 var adapter = new SqlDataAdapter(sql, conn);
                 adapter.SelectCommand.Parameters.Add(
