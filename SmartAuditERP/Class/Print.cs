@@ -1056,6 +1056,12 @@ namespace SmartAuditERP
 						num7 = Conversions.ToDouble((num6 * (invoiceObj.AdditionalTax / 100.0)).ToString(invoiceObj.DigitsNo));
 						double num8;
 						num8 = Conversions.ToDouble(((num6 + num7) * (invoiceObj.VAT / 100.0)).ToString(invoiceObj.DigitsNo));
+						// Repair R-010 (audit finding P7-140): this alternate invoice path passed
+						// Inv.Currency into the Arabic/English wording calls just below yet never
+						// filled the print-data currency field, so reports built from this branch
+						// showed an empty "العملة" while the primary paths populated it. Mirror that
+						// assignment verbatim; no value or format change.
+						invoiceData2.currency = Inv.Currency.ToString();
 						invoiceData2.SumPrice = Inv.SumPrice.ToString(invoiceObj.DigitsNo);
 						invoiceData2.TotalWithoutVAT = num6.ToString(invoiceObj.DigitsNo);
 						invoiceData2.AdditiontalTax = num7.ToString(invoiceObj.DigitsNo);
