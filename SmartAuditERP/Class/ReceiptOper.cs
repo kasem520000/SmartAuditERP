@@ -246,7 +246,22 @@ namespace SmartAuditERP
 				}
 				if (Entr == null)
 				{
-					goto IL_05d1;
+					// Repair R-035 (audit finding P3-004): a null entry used to jump straight to
+					// the SUCCESS label without Commit, so finally discarded the still-open
+					// transaction - the receipt write was implicitly rolled back while callers
+					// were told the save succeeded. Fail loudly instead: roll back explicitly and
+					// report false, matching the SaveEnty-failure arm just below. (SaveInvoice's
+					// own explicit null branch is a different, deliberate contract - untouched.)
+					sqlTransaction.Rollback();
+					string textNull;
+					textNull = "تعذر حفظ القيد المرتبط بالسند؛ تم التراجع عن الحفظ";
+					if (Operators.CompareString(MainClass.Language, "en", TextCompare: false) == 0)
+					{
+						textNull = "The linked entry could not be saved; the operation was rolled back";
+					}
+					MessageBox.Show(textNull, "", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+					result = false;
+					goto end_IL_013a;
 				}
 				if (new EntryOper().SaveEnty(Entr))
 				{
