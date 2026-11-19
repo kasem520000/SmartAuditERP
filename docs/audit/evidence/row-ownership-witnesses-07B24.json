@@ -1,0 +1,1044 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "source_head": "10ba215152f722c8808aea0bb672c1d1d4d9d711",
+  "entry_checkout": "f37c37ca6581c4d1546bf0e073326572f4b7af36",
+  "application_code_imported_or_executed": false,
+  "dotnet_wpf_sql_or_excel_executed": false,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "application_remediation_performed": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "scanner_or_printer_tests_executed": 0,
+  "B_R4h_bounded_not_whole7B_closure": true,
+  "unresolved_external_contracts_and_explicit_splits_retained": true,
+  "retained_additive_B10_arithmetic_erratum": {
+    "local_cost": 10,
+    "reference_cost": 120,
+    "equality1_control": 10,
+    "protected_G138_not_rewritten": true
+  },
+  "illustration_count": 14,
+  "lexical_check_count": 14,
+  "illustrations": [
+    {
+      "id": "ALG7B24-01",
+      "finding_ids": "P7-148",
+      "title": "Cancel removes a nonempty current row",
+      "result": {
+        "rows": [
+          {
+            "ref": "existing-A",
+            "item_id": 11,
+            "qty": "2",
+            "price": "10",
+            "derived": "20"
+          }
+        ],
+        "removed_ref": "input-X",
+        "positive_confirmation_branch_not_modelled": false,
+        "cleanup_has_no_empty_seed_ownership_test": true,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:133-145;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:767-808;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2293-2299;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2378-2378;SmartAuditERP/Form_WPF/frmPurchInv.xaml:558-581;SmartAuditERP/Form_WPF/frmPurchInv.xaml:770-778;SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:23-60;SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:442-445;SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:495-499;SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:571-574;SmartAuditERP/Form_WPF/frmItemsSrch.xaml:206-214",
+      "limit": "Supplied stable current index and false result; no WPF cancellation/rendering/save observed."
+    },
+    {
+      "id": "ALG7B24-02",
+      "finding_ids": "P7-148",
+      "title": "Blank-seed cleanup control",
+      "result": {
+        "rows": [
+          {
+            "ref": "existing-A",
+            "item_id": 11,
+            "qty": "2",
+            "price": "10",
+            "derived": "20"
+          }
+        ],
+        "removed_ref": "seed",
+        "positive_confirmation_branch_not_modelled": false,
+        "cleanup_has_no_empty_seed_ownership_test": true,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:133-145;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:767-808;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2293-2299;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2378-2378;SmartAuditERP/Form_WPF/frmPurchInv.xaml:558-581;SmartAuditERP/Form_WPF/frmPurchInv.xaml:770-778;SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:23-60;SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:442-445;SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:495-499;SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:571-574;SmartAuditERP/Form_WPF/frmItemsSrch.xaml:206-214",
+      "limit": "Removing an actually-owned seed can be appropriate; this control does not prove ownership of any current row."
+    },
+    {
+      "id": "ALG7B24-03",
+      "finding_ids": "P7-148",
+      "title": "Confirmed nonpositive ID uses the other destructive cleanup",
+      "result": {
+        "rows": [
+          {
+            "ref": "existing-A",
+            "item_id": 11,
+            "qty": "2",
+            "price": "10",
+            "derived": "20"
+          }
+        ],
+        "removed_ref": "input-X",
+        "positive_confirmation_branch_not_modelled": false,
+        "cleanup_has_no_empty_seed_ownership_test": true,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:133-145;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:767-808;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2293-2299;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2378-2378;SmartAuditERP/Form_WPF/frmPurchInv.xaml:558-581;SmartAuditERP/Form_WPF/frmPurchInv.xaml:770-778;SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:23-60;SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:442-445;SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:495-499;SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:571-574;SmartAuditERP/Form_WPF/frmItemsSrch.xaml:206-214",
+      "limit": "Supplied invalid confirmed result, not an observed picker failure."
+    },
+    {
+      "id": "ALG7B24-04",
+      "finding_ids": "P7-148",
+      "title": "Out-of-range cleanup guards",
+      "result": [
+        {
+          "rows": [
+            {
+              "ref": "input-X",
+              "item_id": 90,
+              "qty": "2",
+              "price": "10",
+              "derived": "20"
+            }
+          ],
+          "removed_ref": null,
+          "positive_confirmation_branch_not_modelled": false,
+          "cleanup_has_no_empty_seed_ownership_test": true,
+          "application_executed": false
+        },
+        {
+          "rows": [
+            {
+              "ref": "input-X",
+              "item_id": 90,
+              "qty": "2",
+              "price": "10",
+              "derived": "20"
+            }
+          ],
+          "removed_ref": null,
+          "positive_confirmation_branch_not_modelled": false,
+          "cleanup_has_no_empty_seed_ownership_test": true,
+          "application_executed": false
+        }
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:133-145;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:767-808;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2293-2299;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2378-2378;SmartAuditERP/Form_WPF/frmPurchInv.xaml:558-581;SmartAuditERP/Form_WPF/frmPurchInv.xaml:770-778;SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:23-60;SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:442-445;SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:495-499;SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:571-574;SmartAuditERP/Form_WPF/frmItemsSrch.xaml:206-214",
+      "limit": "Index guards limit the defect; they are not row ownership tests or all-cancel acceptance."
+    },
+    {
+      "id": "ALG7B24-05",
+      "finding_ids": "P7-149",
+      "title": "Wire2 changes unrelated last-row identity",
+      "result": {
+        "rows": [
+          {
+            "ref": "input-X",
+            "item_id": 90,
+            "qty": "2",
+            "price": "10",
+            "derived": "20"
+          },
+          {
+            "ref": "existing-A",
+            "item_id": 11,
+            "qty": "2",
+            "price": "10",
+            "derived": "20"
+          },
+          {
+            "ref": "last-Z",
+            "item_id": 11,
+            "qty": "4",
+            "price": "5",
+            "derived": "20"
+          }
+        ],
+        "wire_action": 2,
+        "found_index_before_removal": 1,
+        "existing_ref": "existing-A",
+        "removed_ref": null,
+        "attempted_calculation_index": null,
+        "calculated_ref": null,
+        "stale_flat_derived_refs": [],
+        "overwritten_unrelated_ref": "last-Z",
+        "flat_stored_sum": "60",
+        "flat_quantity_reference_sum": "60",
+        "identity_only_before_hydration": true,
+        "buttons_not_semantically_repaired": true,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:548-625;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:628-666;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2293-2327;SmartAuditERP/Form_WPF/MsgExistItem.xaml.cs:1-57;SmartAuditERP/Form_WPF/MsgExistItem.xaml:59-134;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:575-594;SmartAuditERP/Form_WPF/FrmIntialRestraiction.xaml.cs:509-574;SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:1185-1212",
+      "limit": "One duplicate sufficient; identity assignments before hydration only. Reversal143 is separate, no new-line or pricing policy silently accepted."
+    },
+    {
+      "id": "ALG7B24-06",
+      "finding_ids": "P7-149",
+      "title": "Last-row blank seed control",
+      "result": {
+        "rows": [
+          {
+            "ref": "input-X",
+            "item_id": 90,
+            "qty": "2",
+            "price": "10",
+            "derived": "20"
+          },
+          {
+            "ref": "existing-A",
+            "item_id": 11,
+            "qty": "2",
+            "price": "10",
+            "derived": "20"
+          },
+          {
+            "ref": "seed",
+            "item_id": 11,
+            "qty": "0",
+            "price": "0",
+            "derived": "0"
+          }
+        ],
+        "wire_action": 2,
+        "found_index_before_removal": 1,
+        "existing_ref": "existing-A",
+        "removed_ref": null,
+        "attempted_calculation_index": null,
+        "calculated_ref": null,
+        "stale_flat_derived_refs": [],
+        "overwritten_unrelated_ref": null,
+        "flat_stored_sum": "40",
+        "flat_quantity_reference_sum": "40",
+        "identity_only_before_hydration": true,
+        "buttons_not_semantically_repaired": true,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:548-625;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:628-666;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2293-2327",
+      "limit": "A genuine trailing seed masks unrelated-row clobber; no acceptance of all new-line/cancel/unit/price paths."
+    },
+    {
+      "id": "ALG7B24-07",
+      "finding_ids": "P7-149",
+      "title": "Single matching last row control",
+      "result": {
+        "rows": [
+          {
+            "ref": "existing-A",
+            "item_id": 11,
+            "qty": "2",
+            "price": "10",
+            "derived": "20"
+          }
+        ],
+        "wire_action": 2,
+        "found_index_before_removal": 0,
+        "existing_ref": "existing-A",
+        "removed_ref": null,
+        "attempted_calculation_index": null,
+        "calculated_ref": null,
+        "stale_flat_derived_refs": [],
+        "overwritten_unrelated_ref": null,
+        "flat_stored_sum": "20",
+        "flat_quantity_reference_sum": "20",
+        "identity_only_before_hydration": true,
+        "buttons_not_semantically_repaired": true,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:548-625;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:628-666;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2293-2327",
+      "limit": "No unrelated row exists to clobber; lack of a new row and hydration policies remain separate questions."
+    },
+    {
+      "id": "ALG7B24-08",
+      "finding_ids": "P7-150",
+      "title": "Removal before duplicate recalculates the following reference",
+      "result": {
+        "rows": [
+          {
+            "ref": "existing-A",
+            "item_id": 11,
+            "qty": "3",
+            "price": "10",
+            "derived": "20"
+          },
+          {
+            "ref": "last-Z",
+            "item_id": 22,
+            "qty": "4",
+            "price": "5",
+            "derived": "20"
+          }
+        ],
+        "wire_action": 1,
+        "found_index_before_removal": 1,
+        "existing_ref": "existing-A",
+        "removed_ref": "input-X",
+        "attempted_calculation_index": 1,
+        "calculated_ref": "last-Z",
+        "stale_flat_derived_refs": [
+          "existing-A"
+        ],
+        "overwritten_unrelated_ref": null,
+        "flat_stored_sum": "40",
+        "flat_quantity_reference_sum": "50",
+        "identity_only_before_hydration": false,
+        "buttons_not_semantically_repaired": true,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:300-327;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:359-457;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:575-587;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2460-2503;SmartAuditERP/Form_WPF/frmPurchInv.xaml:632-734",
+      "limit": "Flat ratio1/no VAT/no discount and supplied integers, not .NET formatting/tax/save acceptance. Removal intent not adjudicated."
+    },
+    {
+      "id": "ALG7B24-09",
+      "finding_ids": "P7-150",
+      "title": "Old index can become out of range and GetRowAt returns null",
+      "result": {
+        "rows": [
+          {
+            "ref": "existing-A",
+            "item_id": 11,
+            "qty": "3",
+            "price": "10",
+            "derived": "20"
+          }
+        ],
+        "wire_action": 1,
+        "found_index_before_removal": 1,
+        "existing_ref": "existing-A",
+        "removed_ref": "input-X",
+        "attempted_calculation_index": 1,
+        "calculated_ref": null,
+        "stale_flat_derived_refs": [
+          "existing-A"
+        ],
+        "overwritten_unrelated_ref": null,
+        "flat_stored_sum": "20",
+        "flat_quantity_reference_sum": "30",
+        "identity_only_before_hydration": false,
+        "buttons_not_semantically_repaired": true,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:300-327;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:359-457;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:575-587;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2460-2503;SmartAuditERP/Form_WPF/frmPurchInv.xaml:632-734",
+      "limit": "Guarded missed recalculation, not an asserted thrown exception; external subsequent recalculation not modelled."
+    },
+    {
+      "id": "ALG7B24-10",
+      "finding_ids": "P7-150",
+      "title": "Removal after existing row keeps its index",
+      "result": {
+        "rows": [
+          {
+            "ref": "existing-A",
+            "item_id": 11,
+            "qty": "3",
+            "price": "10",
+            "derived": "30"
+          }
+        ],
+        "wire_action": 1,
+        "found_index_before_removal": 0,
+        "existing_ref": "existing-A",
+        "removed_ref": "input-X",
+        "attempted_calculation_index": 0,
+        "calculated_ref": "existing-A",
+        "stale_flat_derived_refs": [],
+        "overwritten_unrelated_ref": null,
+        "flat_stored_sum": "30",
+        "flat_quantity_reference_sum": "30",
+        "identity_only_before_hydration": false,
+        "buttons_not_semantically_repaired": true,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:300-327;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:359-457;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:575-587;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2460-2503;SmartAuditERP/Form_WPF/frmPurchInv.xaml:632-734",
+      "limit": "Order control only; does not validate merge policy or financial result."
+    },
+    {
+      "id": "ALG7B24-11",
+      "finding_ids": "P7-150",
+      "title": "Same current/existing row avoids removal",
+      "result": {
+        "rows": [
+          {
+            "ref": "existing-A",
+            "item_id": 11,
+            "qty": "3",
+            "price": "10",
+            "derived": "30"
+          },
+          {
+            "ref": "last-Z",
+            "item_id": 22,
+            "qty": "4",
+            "price": "5",
+            "derived": "20"
+          }
+        ],
+        "wire_action": 1,
+        "found_index_before_removal": 0,
+        "existing_ref": "existing-A",
+        "removed_ref": null,
+        "attempted_calculation_index": 0,
+        "calculated_ref": "existing-A",
+        "stale_flat_derived_refs": [],
+        "overwritten_unrelated_ref": null,
+        "flat_stored_sum": "50",
+        "flat_quantity_reference_sum": "50",
+        "identity_only_before_hydration": false,
+        "buttons_not_semantically_repaired": true,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:300-327;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:359-457;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:575-587;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2460-2503;SmartAuditERP/Form_WPF/frmPurchInv.xaml:632-734",
+      "limit": "Equality control only, not a fix for a row before foundIndex."
+    },
+    {
+      "id": "ALG7B24-12",
+      "finding_ids": "P7-143",
+      "title": "Wire0/3 does not mutate rows in this duplicate branch",
+      "result": [
+        {
+          "rows": [
+            {
+              "ref": "input-X",
+              "item_id": 90,
+              "qty": "2",
+              "price": "10",
+              "derived": "20"
+            },
+            {
+              "ref": "existing-A",
+              "item_id": 11,
+              "qty": "2",
+              "price": "10",
+              "derived": "20"
+            },
+            {
+              "ref": "last-Z",
+              "item_id": 22,
+              "qty": "4",
+              "price": "5",
+              "derived": "20"
+            }
+          ],
+          "wire_action": 0,
+          "found_index_before_removal": 1,
+          "existing_ref": "existing-A",
+          "removed_ref": null,
+          "attempted_calculation_index": null,
+          "calculated_ref": null,
+          "stale_flat_derived_refs": [],
+          "overwritten_unrelated_ref": null,
+          "flat_stored_sum": "60",
+          "flat_quantity_reference_sum": "60",
+          "identity_only_before_hydration": false,
+          "buttons_not_semantically_repaired": true,
+          "application_executed": false
+        },
+        {
+          "rows": [
+            {
+              "ref": "input-X",
+              "item_id": 90,
+              "qty": "2",
+              "price": "10",
+              "derived": "20"
+            },
+            {
+              "ref": "existing-A",
+              "item_id": 11,
+              "qty": "2",
+              "price": "10",
+              "derived": "20"
+            },
+            {
+              "ref": "last-Z",
+              "item_id": 22,
+              "qty": "4",
+              "price": "5",
+              "derived": "20"
+            }
+          ],
+          "wire_action": 3,
+          "found_index_before_removal": 1,
+          "existing_ref": "existing-A",
+          "removed_ref": null,
+          "attempted_calculation_index": null,
+          "calculated_ref": null,
+          "stale_flat_derived_refs": [],
+          "overwritten_unrelated_ref": null,
+          "flat_stored_sum": "60",
+          "flat_quantity_reference_sum": "60",
+          "identity_only_before_hydration": false,
+          "buttons_not_semantically_repaired": true,
+          "application_executed": false
+        }
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/MsgExistItem.xaml.cs:1-57;SmartAuditERP/Form_WPF/MsgExistItem.xaml:59-134;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:575-594;SmartAuditERP/Form_WPF/FrmIntialRestraiction.xaml.cs:509-574;SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:1185-1212",
+      "limit": "Local duplicate dispatch only, NOT picker cleanup148, import144, or all modal/caller cancellation."
+    },
+    {
+      "id": "ALG7B24-13",
+      "finding_ids": "P7-146",
+      "title": "Shared valid cursor fills the same row for a distinct batch",
+      "result": {
+        "rows": [
+          22
+        ],
+        "same_cause_146_not_new_or_extended": true,
+        "successful_distinct_lookups_assumed": true,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:133-145;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:767-808;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2293-2299;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2378-2378;SmartAuditERP/Form_WPF/frmPurchInv.xaml:558-581;SmartAuditERP/Form_WPF/frmPurchInv.xaml:770-778;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:548-625;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:628-666;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2293-2327",
+      "limit": "Same batch-boundary cause146; comparison only, not a new finding or historical extension. All positive lookups supplied."
+    },
+    {
+      "id": "ALG7B24-14",
+      "finding_ids": "P7-143",
+      "title": "Initial-account hidden wire and production append contrast",
+      "result": {
+        "0": {
+          "initial_account_accepts_only_wire2": false,
+          "initial_quantity_button_hidden": true,
+          "visible_new_line_button_wire": 1,
+          "production_effect": "no-row-mutation",
+          "same_cause_143_not_new_or_extended": true,
+          "financial_or_production_acceptance": false,
+          "application_executed": false
+        },
+        "1": {
+          "initial_account_accepts_only_wire2": false,
+          "initial_quantity_button_hidden": true,
+          "visible_new_line_button_wire": 1,
+          "production_effect": "increment-known-reference",
+          "same_cause_143_not_new_or_extended": true,
+          "financial_or_production_acceptance": false,
+          "application_executed": false
+        },
+        "2": {
+          "initial_account_accepts_only_wire2": true,
+          "initial_quantity_button_hidden": true,
+          "visible_new_line_button_wire": 1,
+          "production_effect": "append-new-reference",
+          "same_cause_143_not_new_or_extended": true,
+          "financial_or_production_acceptance": false,
+          "application_executed": false
+        },
+        "3": {
+          "initial_account_accepts_only_wire2": false,
+          "initial_quantity_button_hidden": true,
+          "visible_new_line_button_wire": 1,
+          "production_effect": "no-row-mutation",
+          "same_cause_143_not_new_or_extended": true,
+          "financial_or_production_acceptance": false,
+          "application_executed": false
+        }
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/MsgExistItem.xaml.cs:1-57;SmartAuditERP/Form_WPF/MsgExistItem.xaml:59-134;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:575-594;SmartAuditERP/Form_WPF/FrmIntialRestraiction.xaml.cs:509-574;SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:1185-1212;SmartAuditERP/Form_WPF/FrmIntialRestraiction.xaml.cs:509-574;SmartAuditERP/Form_WPF/FrmIntialRestraiction.xaml:393-420;SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:1130-1265;SmartAuditERP/Form_WPF/frmProductionOrder.xaml:443-500",
+      "limit": "Visible new-line wire1 rejected in opening-account path while wire2 button hidden: same143, no actual hidden click. No production save/BOM/ACL acceptance."
+    }
+  ],
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B24-01",
+      "finding_ids": "P7-148;P7-149",
+      "title": "F1 and context menu call the picker without appending/resetting the cursor",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:133-145;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:767-808;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2293-2299;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2378-2378;SmartAuditERP/Form_WPF/frmPurchInv.xaml:558-581;SmartAuditERP/Form_WPF/frmPurchInv.xaml:770-778",
+      "limit": "Literal entry only; no key event dispatch or live selection observed."
+    },
+    {
+      "id": "ST7B24-02",
+      "finding_ids": "P7-148;P7-149;P7-150",
+      "title": "Selection and edit callbacks are actually wired",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:133-145;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:767-808;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2293-2299;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2378-2378;SmartAuditERP/Form_WPF/frmPurchInv.xaml:558-581;SmartAuditERP/Form_WPF/frmPurchInv.xaml:770-778",
+      "limit": "Event wiring not full UX/lifecycle7C, focus scheduling or rendering acceptance."
+    },
+    {
+      "id": "ST7B24-03",
+      "finding_ids": "P7-148",
+      "title": "Both picker cleanup branches remove any in-range current row",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:133-145;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:767-808;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2293-2299;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2378-2378;SmartAuditERP/Form_WPF/frmPurchInv.xaml:558-581;SmartAuditERP/Form_WPF/frmPurchInv.xaml:770-778;SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:23-60;SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:442-445;SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:495-499;SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:571-574;SmartAuditERP/Form_WPF/frmItemsSrch.xaml:206-214",
+      "limit": "Text absence is bounded to this explicit cleanup, not all application cleanup."
+    },
+    {
+      "id": "ST7B24-04",
+      "finding_ids": "P7-148",
+      "title": "New picker defaults false and closes without confirming",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:133-145;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:767-808;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2293-2299;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2378-2378;SmartAuditERP/Form_WPF/frmPurchInv.xaml:558-581;SmartAuditERP/Form_WPF/frmPurchInv.xaml:770-778;SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:23-60;SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:442-445;SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:495-499;SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:571-574;SmartAuditERP/Form_WPF/frmItemsSrch.xaml:206-214",
+      "limit": "No modal/Hide/Close invocation; successful return assumed when evaluating caller."
+    },
+    {
+      "id": "ST7B24-05",
+      "finding_ids": "P7-149;P7-150",
+      "title": "Successful active-Code lookup delegates with unit0",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:548-625;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:628-666;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2293-2327",
+      "limit": "No SQL/uniqueness/schema/grant or unit0 SDK contract accepted."
+    },
+    {
+      "id": "ST7B24-06",
+      "finding_ids": "P7-149",
+      "title": "Wire2 selects Count-1 and mutates that row without Add",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:548-625;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:628-666;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2293-2327",
+      "limit": "Identity before LoadItemInf only; no price policy or persisted overwrite claimed."
+    },
+    {
+      "id": "ST7B24-07",
+      "finding_ids": "P7-150",
+      "title": "Wire1 increments, removes, then recalculates the OLD foundIndex",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:300-327;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:359-457;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:575-587;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2460-2503;SmartAuditERP/Form_WPF/frmPurchInv.xaml:632-734",
+      "limit": "Source order, not .NET event scheduling; foundIndex local is not adjusted after RemoveAt."
+    },
+    {
+      "id": "ST7B24-08",
+      "finding_ids": "P7-150",
+      "title": "GetRowAt and CalcRowValues guard invalid indices",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:300-327;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:359-457;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:575-587;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2460-2503;SmartAuditERP/Form_WPF/frmPurchInv.xaml:632-734",
+      "limit": "Missed calculation may be silent; no exception invented."
+    },
+    {
+      "id": "ST7B24-09",
+      "finding_ids": "P7-150",
+      "title": "CalcTot sums stored derived cells rather than rebuilding each line",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:300-327;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:359-457;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:575-587;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2460-2503;SmartAuditERP/Form_WPF/frmPurchInv.xaml:632-734",
+      "limit": "Flat stored-sum model does not certify invoice discounts/VAT/totals or saving."
+    },
+    {
+      "id": "ST7B24-10",
+      "finding_ids": "P7-150",
+      "title": "QuantDgv setter raises notification without recalculation",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:300-327;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:359-457;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:575-587;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2460-2503;SmartAuditERP/Form_WPF/frmPurchInv.xaml:632-734",
+      "limit": "Bounded model class only; no universal claim about all external subscribers."
+    },
+    {
+      "id": "ST7B24-11",
+      "finding_ids": "P7-150",
+      "title": "Quantity and derived totals use distinct bound properties",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:300-327;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:359-457;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:575-587;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2460-2503;SmartAuditERP/Form_WPF/frmPurchInv.xaml:632-734",
+      "limit": "Not a rendered or measured discrepancy; view update details unexecuted."
+    },
+    {
+      "id": "ST7B24-12",
+      "finding_ids": "P7-148",
+      "title": "Explicit Delete has confirmation whereas picker cleanup does not",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:133-145;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:767-808;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2293-2299;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2378-2378;SmartAuditERP/Form_WPF/frmPurchInv.xaml:558-581;SmartAuditERP/Form_WPF/frmPurchInv.xaml:770-778;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2329-2342",
+      "limit": "Contrast only, not a separate missing prompt requirement or delete/ACL acceptance."
+    },
+    {
+      "id": "ST7B24-13",
+      "finding_ids": "P7-143",
+      "title": "Shared reversed wire mapping remains143 in three selected consumers",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/MsgExistItem.xaml.cs:1-57;SmartAuditERP/Form_WPF/MsgExistItem.xaml:59-134;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:575-594;SmartAuditERP/Form_WPF/FrmIntialRestraiction.xaml.cs:509-574;SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:1185-1212",
+      "limit": "No new finding/extension for another occurrence; not all11 constructor bodies or allcallgraph."
+    },
+    {
+      "id": "ST7B24-14",
+      "finding_ids": "P7-143",
+      "title": "Initial-account wire2 is hidden; production appends a new reference",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/FrmIntialRestraiction.xaml.cs:509-574;SmartAuditERP/Form_WPF/FrmIntialRestraiction.xaml:393-420;SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:1130-1265;SmartAuditERP/Form_WPF/frmProductionOrder.xaml:443-500;SmartAuditERP/Form_WPF/MsgExistItem.xaml.cs:1-57;SmartAuditERP/Form_WPF/MsgExistItem.xaml:59-134;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:575-594;SmartAuditERP/Form_WPF/FrmIntialRestraiction.xaml.cs:509-574;SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:1185-1212",
+      "limit": "Hidden-button code path is not a tested user action. Existing production020/021/022/133/134 barriers unchanged."
+    }
+  ],
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs",
+      "start": 67,
+      "end": 103,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "ccdb93fe95e7d67ce31808fd97cbf6453c1fcd0d549a329ab1889807c03e9a47",
+      "selected_text_utf8_sha256": "8f1123a6bd2f45e5987ef183dbd5ee136472d5cf42e6f1f55fd17a16d2358c85",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs",
+      "start": 133,
+      "end": 145,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "ccdb93fe95e7d67ce31808fd97cbf6453c1fcd0d549a329ab1889807c03e9a47",
+      "selected_text_utf8_sha256": "a633c5f8a982c8540a2a6604c78d2f1f543257e78115909c84dada1d10a4c93f",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs",
+      "start": 300,
+      "end": 327,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "ccdb93fe95e7d67ce31808fd97cbf6453c1fcd0d549a329ab1889807c03e9a47",
+      "selected_text_utf8_sha256": "6b7dc0ae0d010114cd5bcd151b1e611d2787565c5895ea4e7bf30525e18fa167",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs",
+      "start": 359,
+      "end": 457,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "ccdb93fe95e7d67ce31808fd97cbf6453c1fcd0d549a329ab1889807c03e9a47",
+      "selected_text_utf8_sha256": "fe9ac427143453b19df5efedcc6997653ad60e1a62089b82d3515302c7a5b716",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs",
+      "start": 500,
+      "end": 625,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "ccdb93fe95e7d67ce31808fd97cbf6453c1fcd0d549a329ab1889807c03e9a47",
+      "selected_text_utf8_sha256": "5102c6a359696a9bcc8f09fea8c179622b01df09ce67baf26e1e8ecab95868ad",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs",
+      "start": 628,
+      "end": 666,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "ccdb93fe95e7d67ce31808fd97cbf6453c1fcd0d549a329ab1889807c03e9a47",
+      "selected_text_utf8_sha256": "89385de86d4acf453cc179a647d3e406cb4626a55276c49df17b2763e0c2f4f1",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs",
+      "start": 767,
+      "end": 808,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "ccdb93fe95e7d67ce31808fd97cbf6453c1fcd0d549a329ab1889807c03e9a47",
+      "selected_text_utf8_sha256": "9d1d8b562018c456cc451b79248a7745afb1f0bb2bd88c6bc7681ec75b5dbaad",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs",
+      "start": 2089,
+      "end": 2095,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "ccdb93fe95e7d67ce31808fd97cbf6453c1fcd0d549a329ab1889807c03e9a47",
+      "selected_text_utf8_sha256": "4e6354321d6144b88754676f973beeb0c75a9255d4b9ad4c2786bc7818cdbd12",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs",
+      "start": 2293,
+      "end": 2342,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "ccdb93fe95e7d67ce31808fd97cbf6453c1fcd0d549a329ab1889807c03e9a47",
+      "selected_text_utf8_sha256": "597229c8ccd4c15bb2a421be8476cc65186765112e7ac33dc7a3195a28fcb75d",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs",
+      "start": 2378,
+      "end": 2378,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "ccdb93fe95e7d67ce31808fd97cbf6453c1fcd0d549a329ab1889807c03e9a47",
+      "selected_text_utf8_sha256": "d88d822bb4e3f0b239cf53b5e64a9dc946ce06351f274e39c177fc0c2a0418c7",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs",
+      "start": 2460,
+      "end": 2503,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "ccdb93fe95e7d67ce31808fd97cbf6453c1fcd0d549a329ab1889807c03e9a47",
+      "selected_text_utf8_sha256": "9457f2cf41e5f0a4be916e33f7a63b298bc4332ea785a6879e7338e7a5bd720a",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml",
+      "start": 1,
+      "end": 16,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "a7985ef37b4d6575a0a064de92fc02375beb90d3d1facbab3271f41191fbeeef",
+      "selected_text_utf8_sha256": "2a79782abde79c13172e8eb4ffb21a3340360b914d56a45991fbeedfe37c2cf6",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml",
+      "start": 548,
+      "end": 581,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "a7985ef37b4d6575a0a064de92fc02375beb90d3d1facbab3271f41191fbeeef",
+      "selected_text_utf8_sha256": "1bcbb73fb7d717fc567a2e598b214c61479e7875c3a34083df0f238173e5bab3",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml",
+      "start": 591,
+      "end": 605,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "a7985ef37b4d6575a0a064de92fc02375beb90d3d1facbab3271f41191fbeeef",
+      "selected_text_utf8_sha256": "d8498262785d7ac7674ad13e0ab86a3ad8eaaa24d56b45782b6b0c1e87f91342",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml",
+      "start": 632,
+      "end": 734,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "a7985ef37b4d6575a0a064de92fc02375beb90d3d1facbab3271f41191fbeeef",
+      "selected_text_utf8_sha256": "6e8692d440572bf07e10bc62d93baae80b8d034631ba51a5dcc25d46a6ce3710",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml",
+      "start": 748,
+      "end": 778,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "a7985ef37b4d6575a0a064de92fc02375beb90d3d1facbab3271f41191fbeeef",
+      "selected_text_utf8_sha256": "f4e4fdd878e0563f7e7162dacec6cf732ad247ac8db34394226be39807275aee",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/MsgExistItem.xaml.cs",
+      "start": 1,
+      "end": 57,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "bdc2427f8f250f725a89f1927ac61e1d25552b7836b7d4be76fbb0dcc4f61169",
+      "selected_text_utf8_sha256": "bdc2427f8f250f725a89f1927ac61e1d25552b7836b7d4be76fbb0dcc4f61169",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/MsgExistItem.xaml",
+      "start": 59,
+      "end": 134,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "68a6e0522c5ddadd8db3547b63e428a280053be9b1703a422098284ddd126118",
+      "selected_text_utf8_sha256": "42ef491ef2f5b063fb12d5e9b5b37f8ec0a501aa3bc755c1145135649d753b25",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs",
+      "start": 23,
+      "end": 60,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": true,
+      "source_sha256": "1df794869fa6587706c463ee5ec66a110c5a21762f2cb6e4ff27ea88f621ac50",
+      "selected_text_utf8_sha256": "4b8149be626112c1e3ee8062c9940744c9845fb53333370b95c04c4c59a8893f",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs",
+      "start": 294,
+      "end": 338,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": true,
+      "source_sha256": "1df794869fa6587706c463ee5ec66a110c5a21762f2cb6e4ff27ea88f621ac50",
+      "selected_text_utf8_sha256": "68be9e4bb3515dcdbe93f57d2edbe6f6611fbcd5f67a63d660c49b524307d6d7",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs",
+      "start": 442,
+      "end": 445,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": true,
+      "source_sha256": "1df794869fa6587706c463ee5ec66a110c5a21762f2cb6e4ff27ea88f621ac50",
+      "selected_text_utf8_sha256": "e93f284a1d245ca4373c046e71820add03159356333b686bcb1e6e983b17f1d1",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs",
+      "start": 495,
+      "end": 499,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": true,
+      "source_sha256": "1df794869fa6587706c463ee5ec66a110c5a21762f2cb6e4ff27ea88f621ac50",
+      "selected_text_utf8_sha256": "74bd3ae5f227d72bb111e5865fb111a8841dc94f2eefa6a00d57342918f58c1c",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs",
+      "start": 571,
+      "end": 574,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": true,
+      "source_sha256": "1df794869fa6587706c463ee5ec66a110c5a21762f2cb6e4ff27ea88f621ac50",
+      "selected_text_utf8_sha256": "629f752a92cd96b983e43e3ed5940c0b0adc6daf86d3e5c611910889b927d236",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsSrch.xaml",
+      "start": 1,
+      "end": 16,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": true,
+      "source_sha256": "302fab2effbeac2ab9088aa220eae66dd68fc1962f90ac4a4ca3cc247f9664d8",
+      "selected_text_utf8_sha256": "1b502c7fdacbea9700eefa6e72a0d22d94d84a23140174142bfefb63486f7e6b",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsSrch.xaml",
+      "start": 206,
+      "end": 214,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": true,
+      "source_sha256": "302fab2effbeac2ab9088aa220eae66dd68fc1962f90ac4a4ca3cc247f9664d8",
+      "selected_text_utf8_sha256": "9c331c80e37a560d899ff7fbdefc5642dc1f16f88c580c017b1da8126d213380",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsSrch.xaml",
+      "start": 596,
+      "end": 617,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": true,
+      "source_sha256": "302fab2effbeac2ab9088aa220eae66dd68fc1962f90ac4a4ca3cc247f9664d8",
+      "selected_text_utf8_sha256": "95f41f0ff6301b31f2d421a979246c7b8b3e28c5bbd4eae7d6ae7eb302e1cc6c",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/FrmIntialRestraiction.xaml.cs",
+      "start": 509,
+      "end": 574,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": true,
+      "source_sha256": "0a39043255ec7b80d586fd98f62f18a32dbaf4b488381ed885ea1f5496bccf2e",
+      "selected_text_utf8_sha256": "6e89be17fac3e67c869f54deaafeaa805f0149e89a2d4a710c660905a56c8970",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/FrmIntialRestraiction.xaml.cs",
+      "start": 609,
+      "end": 612,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": true,
+      "source_sha256": "0a39043255ec7b80d586fd98f62f18a32dbaf4b488381ed885ea1f5496bccf2e",
+      "selected_text_utf8_sha256": "7ca6aac8e9bc54beeb2a3bc03b6b218b98ef5a7003735a67a5e4787b54bc4588",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/FrmIntialRestraiction.xaml",
+      "start": 1,
+      "end": 16,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": true,
+      "source_sha256": "a9cd7a45f98bf616244bb83ef7fe11e57d1268998d06c927bbf72da45cee4098",
+      "selected_text_utf8_sha256": "b37baa7bed559127d44338b1bbf4beeefc860dc4153ce7368990be2114f9febe",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/FrmIntialRestraiction.xaml",
+      "start": 393,
+      "end": 420,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": true,
+      "source_sha256": "a9cd7a45f98bf616244bb83ef7fe11e57d1268998d06c927bbf72da45cee4098",
+      "selected_text_utf8_sha256": "10bbceacc2202e1fac70a83c89676bec2e8b3cca4caf742e05b82fa9ce7a56a8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "start": 122,
+      "end": 126,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": true,
+      "source_sha256": "0257059f67e696e4116013ee88694e9f400aafb0bf075bbf4f0556d8ea5d12f4",
+      "selected_text_utf8_sha256": "850fb7c688f6edc0bf1e3cd5d762e4083ec72da03bedc38f40eae725964c2af8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "start": 1130,
+      "end": 1265,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": true,
+      "source_sha256": "0257059f67e696e4116013ee88694e9f400aafb0bf075bbf4f0556d8ea5d12f4",
+      "selected_text_utf8_sha256": "8dfdaded2a84d363175420b95c271ca4e643de1b7c5298c92c4bfe28e086aab8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml",
+      "start": 1,
+      "end": 16,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": true,
+      "source_sha256": "1a9354daa583368c1a70dc2f2cf416adba0284bfbb8ce36fe6a0f86d0a9c5a9c",
+      "selected_text_utf8_sha256": "4f65a6424f3436ae154e751fe7b0c911bde9f37ed87b58acb6c2de7d24486be7",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml",
+      "start": 443,
+      "end": 500,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": true,
+      "source_sha256": "1a9354daa583368c1a70dc2f2cf416adba0284bfbb8ce36fe6a0f86d0a9c5a9c",
+      "selected_text_utf8_sha256": "c5573e2bd25307e7541ea7359a4e0e8c6f4de479c6b79d4d4bc0c19eee5e03e6",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    }
+  ],
+  "selected_source_paths": 10,
+  "selected_repeat_consumers": 3,
+  "selected_paths_strict_utf8_decode": true,
+  "all477_sources_or_all11_constructors_body_reviewed": false,
+  "historical143_and146_not_recounted_or_extended": true,
+  "financial_price_unit_merge_or_basket_policy_invented": false,
+  "limit": "34 bounded textual slices across10 paths, three selected repeat consumers. Supplied normal returns/stable current row/active unique lookup; no WPF/modal/SQL/Excel/build/SDK/REPX/ToDataTable/device/business data/remediation/measurement/acceptance.148 cancel cleanup not seed ownership;149 unrelated last-row identity before hydration independent of143;150 old foundIndex after removal, guarded-null not an asserted exception. Flat ratio1/noVAT/nodiscount integer examples are not .NET/tax/formatting or persisted amounts.143 and146 same-cause traces not recounted/extended;144/145/147 preserved,145/014/132 potential.7B/7 partial,R4i/B25 proposed,7C unstarted,8 unauthorized here. Independent repair conversation neither merged nor assumed started/synchronized.",
+  "errors": []
+}

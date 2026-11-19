@@ -1,0 +1,11 @@
+path,review_state,ranges,focus
+SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs,selected-static-row-ownership-repeat-recalculation-slices-not-runtime-certified,67-103;133-145;300-327;359-457;500-625;628-666;767-808;2089-2095;2293-2342;2378;2460-2503,شرائحentry/current/cancel/duplicate-target/indexshift/calculation/propertymodel؛لاeditor/save/writerكاملأوقبولمالي.
+SmartAuditERP/Form_WPF/frmPurchInv.xaml,selected-static-row-ownership-repeat-recalculation-slices-not-runtime-certified,1-16;548-581;591-605;632-734;748-778,ربطF1/selection/commitedit/quantity/derived/delete/menuالمحلي؛لاrenderingأوبداية7C.
+SmartAuditERP/Form_WPF/MsgExistItem.xaml.cs,selected-static-row-ownership-repeat-recalculation-slices-not-runtime-certified,1-57,wire0/1/2/3ومعالجاتالأزرار؛عكس143نفسهبلاإعادةعدأوامتداد،لامودالنفذ.
+SmartAuditERP/Form_WPF/MsgExistItem.xaml,selected-static-row-ownership-repeat-recalculation-slices-not-runtime-certified,59-134,نصوصالأزراروربطهاتحت143نفسه؛لاإثباتHide/CloseأوقبولUXعام.
+SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs,selected-static-row-ownership-repeat-recalculation-slices-not-runtime-certified,23-60;294-338;442-445;495-499;571-574,defaultfalse/ID−1وconfirmationوClose/Escape/Closingالمحلية؛145ثابتةلاbasketpolicyمخترعة.
+SmartAuditERP/Form_WPF/frmItemsSrch.xaml,selected-static-row-ownership-repeat-recalculation-slices-not-runtime-certified,1-16;206-214;596-617,ربطإغلاقوReturn/selectionمنتقى؛لاكلالواجهةأوقبولUX/lifecycle7C.
+SmartAuditERP/Form_WPF/FrmIntialRestraiction.xaml.cs,selected-static-row-ownership-repeat-recalculation-slices-not-runtime-certified,509-574;609-612,consumerالحسابالمكرريخفيزرwire2ويقبل2؛مظهر143لاfindingجديدةولامحاسبةأوحفظمدقق.
+SmartAuditERP/Form_WPF/FrmIntialRestraiction.xaml,selected-static-row-ownership-repeat-recalculation-slices-not-runtime-certified,1-16;393-420,ربطعينةزرالبحثعنالحسابفقط؛جديدعلىاتحادالمساراتلاقراءةكاملةأوبدء7C.
+SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs,selected-static-row-ownership-repeat-recalculation-slices-not-runtime-certified,122-126;1130-1265,F1→picker→duplicate→AppendItemRowكضابطRefمستقل؛لاBOM/save/readerكامل،020/021/022/133/134ثابتة.
+SmartAuditERP/Form_WPF/frmProductionOrder.xaml,selected-static-row-ownership-repeat-recalculation-slices-not-runtime-certified,1-16;443-500,ربطF1وقراءةحقولRef/Qtyمنتقاة؛لاrenderingأوقبولBOMأوبدء7C.
