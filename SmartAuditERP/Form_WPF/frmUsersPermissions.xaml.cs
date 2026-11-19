@@ -20,6 +20,11 @@ namespace SmartAuditERP.Form_WPF
         private int           Code      = -1;
         private bool          _Finished = true;
 
+        // Repair R-028 (audit finding P2-004): true ONLY while the permission tree shown on
+        // screen was loaded cleanly for the currently selected employee. Save is refused
+        // otherwise, so a failed/partial load can never be written back as if it were complete.
+        private bool          _treeLoadedForCurrentEmp = false;
+
         // قائمة CheckBoxes للعمليات
         private List<CheckBox> operCheckBoxes;
 
@@ -249,8 +254,19 @@ namespace SmartAuditERP.Form_WPF
                             node.IsChecked = true;
                     }
                 }
+
+                // R-028 (P2-004): a fully applied load certifies that what is on screen is this
+                // employee's actual grant set (the tree was reset first, grants only add checks).
+                _treeLoadedForCurrentEmp = true;
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // R-028 (P2-004): previously swallowed silently - a failed query left foreign or
+                // partial state visible AND saveable. Mark uncertified and tell the user instead.
+                _treeLoadedForCurrentEmp = false;
+                DXMessageBox.Show("تعذر تحميل صلاحيات الموظف؛ لن يُسمح بالحفظ قبل إعادة التحميل.\n" + ex.Message,
+                    "", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private PermissionTreeNode FindTreeNode(ItemCollection items, string id)
@@ -357,6 +373,13 @@ namespace SmartAuditERP.Form_WPF
                 MaxDicount.Text        = "0";
                 MaxDicountParcent.Text = "0";
 
+                // R-028 (P2-004): the operation checkboxes were already re-zeroed by their own
+                // loader, but the permission tree was never cleared on employee switch, so the
+                // previous employee's checks survived into the next load (and then into SAVE).
+                // Start from a clean model for every employee.
+                ClearTreeCheckboxes(treeView1.Items);
+                _treeLoadedForCurrentEmp = false;
+
                 if (cmbEmp.SelectedValue == null) return;
 
                 var adapter = new SqlDataAdapter(
@@ -426,6 +449,16 @@ namespace SmartAuditERP.Form_WPF
                     DXMessageBox.Show("يجب اختيار الموظف",
                         "", MessageBoxButton.OK, MessageBoxImage.Warning);
                     cmbEmp.Focus();
+                    return;
+                }
+
+                // R-028 (P2-004): never write a grant set whose load did not complete cleanly for
+                // the selected employee - that is exactly how one employee's rights used to be
+                // re-saved onto another. Reloading the employee certifies the model again.
+                if (!_treeLoadedForCurrentEmp)
+                {
+                    DXMessageBox.Show("حالة الصلاحيات المعروضة غير موثوقة لهذا الموظف؛ أعد اختياره ثم احفظ.",
+                        "", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
