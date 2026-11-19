@@ -71,11 +71,32 @@ namespace SmartAuditERP
         // ══════════════════════════════════════════
         // تعريف جميع الواجهات الفرعية (static instances)
         // ══════════════════════════════════════════
+        // Repair R-021 (audit finding P1-030): these windows were cached forever in static lazy
+        // references, but WPF forbids Show() on a closed Window - reopening the treasury or the
+        // accounts tree after either had been closed threw InvalidOperationException. Null each
+        // reference from its own Closed event so the next access constructs a FRESH instance (this
+        // also drops stale identity/data, per the audit's option A); no call site changes.
         private static frmAccountsTree _frmAccountsTree;
-        public static frmAccountsTree frmAccountsTree => _frmAccountsTree ?? (_frmAccountsTree = new frmAccountsTree());
+        public static frmAccountsTree frmAccountsTree =>
+            _frmAccountsTree ?? (_frmAccountsTree = CreateAccountsTree());
+
+        private static frmAccountsTree CreateAccountsTree()
+        {
+            var f = new frmAccountsTree();
+            f.Closed += (s, e) => { _frmAccountsTree = null; };
+            return f;
+        }
 
         private static frmTreasury _frmTreasury;
-        public static frmTreasury frmTreasury => _frmTreasury ?? (_frmTreasury = new frmTreasury());
+        public static frmTreasury frmTreasury =>
+            _frmTreasury ?? (_frmTreasury = CreateTreasury());
+
+        private static frmTreasury CreateTreasury()
+        {
+            var f = new frmTreasury();
+            f.Closed += (s, e) => { _frmTreasury = null; };
+            return f;
+        }
 
         private static frmBanks _frmBanks;
         public static frmBanks frmBanks => _frmBanks ?? (_frmBanks = new frmBanks());
@@ -434,7 +455,12 @@ namespace SmartAuditERP
                     }
                     if (MainClass.Conn_type == 2)
                     {
-                        connectionString = "server=" + MainClass.Server + ";database=" + MainClass.Database + ";user id=" + MainClass.Database + ";pwd=" + MainClass.NetPwd;
+                        // Repair R-022 (audit finding P1-031): this log-audit connection string put
+                        // the DATABASE name into "user id", so whenever login and database differ
+                        // the SQL appender failed silently while business access worked - weakening
+                        // audit trails. Use the actual login identity, matching the two branches
+                        // directly above it; nothing else about the string changes.
+                        connectionString = "server=" + MainClass.Server + ";database=" + MainClass.Database + ";user id=" + MainClass.NetUserId + ";pwd=" + MainClass.NetPwd;
                     }
                     Common.SetUpLogDbConnection(connectionString, "log4net.config");
                 }
@@ -1853,17 +1879,33 @@ namespace SmartAuditERP
                     if (MainClass.Conn_type == 1)
                     {
                         // ═══ تنفيذ سكريبتات التحديث ═══
-                        ExecuteDbUpdateScripts(sqlConn);
+                        bool upgradeCompleted = ExecuteDbUpdateScripts(sqlConn);
 
                         // ═══ تسجيل الإصدار الجديد ═══
-                        RegisterNewVersion(sqlConn, versionInfo);
+                        // Repair R-019 (audit finding P1-027): registration used to run
+                        // unconditionally right after the batch loop, so a schema that only
+                        // upgraded PARTIALLY was still stamped with the target version - and the
+                        // next launch would believe no upgrade was needed. Register (and apply the
+                        // extra settings that assume the new schema) ONLY when every batch
+                        // succeeded; otherwise leave the recorded version as-is so the repair is
+                        // retried on the next start, exactly as the audit proposes.
+                        if (upgradeCompleted)
+                        {
+                            RegisterNewVersion(sqlConn, versionInfo);
+                        }
+                        else
+                        {
+                            System.Diagnostics.Debug.WriteLine(
+                                "DB upgrade incomplete: new version NOT registered so the next launch retries.");
+                        }
 
                         // إغلاق الاتصال
                         if (sqlConn.State == ConnectionState.Open)
                             sqlConn.Close();
 
-                        // إعدادات إضافية
-                        Common.AddGediaSettins();
+                        // إعدادات إضافية (تفترض المخطط الجديد)
+                        if (upgradeCompleted)
+                            Common.AddGediaSettins();
                     }
                     else
                     {
@@ -1923,12 +1965,17 @@ namespace SmartAuditERP
         /// <summary>
         /// تنفيذ سكريبتات التحديث من AlterDb
         /// </summary>
-        private void ExecuteDbUpdateScripts(SqlConnection sqlConn)
+        // Repair R-019 (audit finding P1-027): returns whether EVERY upgrade batch succeeded, so
+        // callers can refuse to register the new version on top of a partial schema (previously it
+        // returned nothing and registration ran unconditionally). Per-batch transactions and the
+        // user-visible failure summary are unchanged.
+        private bool ExecuteDbUpdateScripts(SqlConnection sqlConn)
         {
             // ✅ تقسيم السكريبتات على GO
-            string[] sqlScripts = Properties.Resources.AlterDb.Split(
-                new[] { "GO" },
-                StringSplitOptions.RemoveEmptyEntries);
+            // Repair R-020 (audit finding P1-029): context-aware T-SQL batch splitting instead of
+            // blind textual cutting on every "GO" occurrence (comments/strings/names used to break).
+            string[] sqlScripts = SqlBatchSplitter
+                .SplitBatches(Properties.Resources.AlterDb).ToArray();
 
             if (sqlConn.State == ConnectionState.Closed)
                 sqlConn.Open();
@@ -2003,6 +2050,8 @@ namespace SmartAuditERP
                         MessageBoxButton.OK,
                         MessageBoxImage.Warning));
             }
+
+            return errorCount == 0;   // R-019 / P1-027: partial upgrade must be visible upstream
         }
 
         /// <summary>
@@ -2274,55 +2323,45 @@ namespace SmartAuditERP
             catch { return ""; }
         }
 
-        private string ExtractDownloadUrl(string json)
+        // Repair R-023 (audit finding P1-025): release metadata used to be scraped with
+        // IndexOf/Substring and each extractor independently grabbed the FIRST occurrence of its
+        // field, so a release carrying several attachments (checksum files, PDFs, multi-arch
+        // zips) could mix fields from different assets or pick a non-package file; legal JSON
+        // escapes/whitespace could also defeat the hand parsing. Parse once with Newtonsoft into
+        // typed tokens and select ONE asset deterministically (the first .zip attachment), then
+        // read name/url/size off that same node - all three values always describe one package.
+        // Architecture/manifest filtering remains tied to the P1-020 packaging-contract work.
+        private Newtonsoft.Json.Linq.JToken SelectZipAsset(string json)
         {
             try
             {
-                string key = "\"browser_download_url\"";
-                int keyIdx = json.IndexOf(key);
-                if (keyIdx == -1) return "";
-                int colonIdx = json.IndexOf(':', keyIdx + key.Length);
-                int urlStart = json.IndexOf('"', colonIdx + 1) + 1;
-                int urlEnd = json.IndexOf('"', urlStart);
-                return json.Substring(urlStart, urlEnd - urlStart);
+                var release = Newtonsoft.Json.Linq.JObject.Parse(json);
+                if (!(release["assets"] is Newtonsoft.Json.Linq.JArray assets))
+                    return null;
+                return assets.FirstOrDefault(a =>
+                    (a?["name"]?.ToString() ?? "")
+                        .EndsWith(".zip", StringComparison.OrdinalIgnoreCase));
             }
-            catch { return ""; }
+            catch { return null; }
+        }
+
+        private string ExtractDownloadUrl(string json)
+        {
+            return SelectZipAsset(json)?["browser_download_url"]?.ToString() ?? "";
         }
 
         private string ExtractAssetName(string json)
         {
-            try
-            {
-                int assetsIdx = json.IndexOf("\"assets\"");
-                if (assetsIdx == -1) return "update_SmartAuditERP.zip";
-                string nk = "\"name\"";
-                int nIdx = json.IndexOf(nk, assetsIdx);
-                if (nIdx == -1) return "update_SmartAuditERP.zip";
-                int cIdx = json.IndexOf(':', nIdx + nk.Length);
-                int nStart = json.IndexOf('"', cIdx + 1) + 1;
-                int nEnd = json.IndexOf('"', nStart);
-                return json.Substring(nStart, nEnd - nStart);
-            }
-            catch { return "update_SmartAuditERP.zip"; }
+            return SelectZipAsset(json)?["name"]?.ToString() ?? "update_SmartAuditERP.zip";
         }
 
         private long ExtractFileSize(string json)
         {
-            try
-            {
-                int assetsIdx = json.IndexOf("\"assets\"");
-                if (assetsIdx == -1) return 0;
-                string sk = "\"size\"";
-                int sIdx = json.IndexOf(sk, assetsIdx);
-                if (sIdx == -1) return 0;
-                int cIdx = json.IndexOf(':', sIdx + sk.Length);
-                int nStart = cIdx + 1;
-                while (nStart < json.Length && json[nStart] == ' ') nStart++;
-                int nEnd = nStart;
-                while (nEnd < json.Length && char.IsDigit(json[nEnd])) nEnd++;
-                return long.Parse(json.Substring(nStart, nEnd - nStart));
-            }
-            catch { return 0; }
+            long size = 0;
+            var asset = SelectZipAsset(json);
+            if (asset != null)
+                long.TryParse(asset["size"]?.ToString(), out size);
+            return size;
         }
 
         #endregion
