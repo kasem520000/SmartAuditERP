@@ -1,0 +1,13 @@
+path,review_state,ranges,focus
+SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs,selected-static-item-picker-batch-import-hydration-slices-not-runtime-certified,1-55;294-338,تهيئة Itemlist وعضوية SelectionChanged ثم التأكيد؛ لا كل البحث أو المخزون.
+SmartAuditERP/Form_WPF/frmItemsSrch.xaml,selected-static-item-picker-batch-import-hydration-slices-not-runtime-certified,596-614,Extended/full-row وربط اختيار/تأكيد؛ لا UX أو rendering عام.
+SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs,selected-static-item-picker-batch-import-hydration-slices-not-runtime-certified,183-203;1364-1510;1514-1640;2473-2477;2636-2681;3048-3100,مدخل F1/menu ودفعة الأصناف وحذف/إعادة بناء seed ثم defaults؛ لا save أو كل المحرر.
+SmartAuditERP/Form_WPF/frmSalesInvoice.xaml,selected-static-item-picker-batch-import-hydration-slices-not-runtime-certified,1-16;518-550;1098-1111,وصول أوامر البحث والاستيراد وLoaded wiring فقط؛ لا عمر WPF كامل.
+SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs,selected-static-item-picker-batch-import-hydration-slices-not-runtime-certified,408-619;780-813;2347-2384;2800-2845,control فارغ لكل تكرار وقراءة cp1256 محدودة لمسار seed/hydration؛ لا اعتماد compiler encoding.
+SmartAuditERP/Form_WPF/frmSalePurch.xaml,selected-static-item-picker-batch-import-hydration-slices-not-runtime-certified,1-15;735-789,وصول menu/Loaded/search/import؛ ليس صلاحية أو rendering أو 7C.
+SmartAuditERP/Form_WPF/frmInvSumByType.xaml.cs,selected-static-item-picker-batch-import-hydration-slices-not-runtime-certified,275-321,أفرع نوع1/2 إلى المحررين؛ نوع3 ظاهر في المقطع ولم يتتبع جسمه.
+SmartAuditERP/Form_WPF/frmInvSumByType.xaml,selected-static-item-picker-batch-import-hydration-slices-not-runtime-certified,416-430,Tag والزر للنداء المحدد؛ لا كل التقرير أو مستهلكيه.
+SmartAuditERP/Form_WPF/frmImportDataGeneral.xaml.cs,selected-static-item-picker-batch-import-hydration-slices-not-runtime-certified,38-55;370-382;429-442;996-1057;1188-1199,خمس خلايا وCode guard وISDone/return مع إنشاء dtInvSel؛ لا Excel/provider/schema نشر.
+SmartAuditERP/Form_WPF/frmImportDataGeneral.xaml,selected-static-item-picker-batch-import-hydration-slices-not-runtime-certified,439-452;601-609,index0/1 وزر import؛ لا enum SDK أو سياسة فواتير مكتملة.
+SmartAuditERP/Form_WPF/MsgExistItem.xaml.cs,selected-static-item-picker-batch-import-hydration-slices-not-runtime-certified,1-57,مرجع نفس143 فقط؛ 1/2 معكوسان في مستهلكين إضافيين دون عد أو extension.
+SmartAuditERP/Form_WPF/MsgExistItem.xaml,selected-static-item-picker-batch-import-hydration-slices-not-runtime-certified,59-134,تسميات الأزرار وأحداثها مرجع143 وليس تجربة modal.

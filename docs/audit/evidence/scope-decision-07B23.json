@@ -1,0 +1,50 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "entry": "3276579931925bff37bbf45c5b43efb7fbcd0118",
+  "authority": [
+    "PHASE-07-REMAINING-07B22.md",
+    "evidence/split-register-07B22.csv",
+    "evidence/residual-disposition-07B22.csv"
+  ],
+  "selected_upstream_split": "SP7B22-01",
+  "selected_capability": "picker membership -> distinct local batch rows -> imported seed hydration in two selected editors",
+  "entry_boundary": "XAML/key/menu plus literal report launch; ISDone and positive ItemId or nonempty dtInvSel supplied; successful distinct active Code/ID loads and normal returns",
+  "source_boundary": "Itemlist/SelectedItems, dtInvSel mapped five fields and local replacement/default model; not DB/Excel/SDK execution",
+  "output_boundary": "in-memory selected IDs/row identity/description/unit/quantity/price; no save/GL/stock/print acceptance",
+  "static_exit_criterion": "Each selected boundary has evidence/limit/owner/redacted input/impact/next action/two unexecuted plans; three causes deduplicated with145 potential; all14 residuals and3 further splits attributed; not all R4/SP01/7B closed",
+  "reason_for_split": "This slice follows SP01 beyond B22 loader samples; duplicate143 homologues not recounted, import147 seed destruction differs from144 code+last-index projection.11 literal dialog constructions do not imply11 body reviews or capability census.",
+  "excluded": "Other picker/dialog/import consumers and writers/output, financial/ACL/stock/save/build, schema/grants/support/SDK policy, legacy words/currency/precision/templates remain open7B; six7C axes unstarted;8 unauthorized.",
+  "bookkeeping": {
+    "selected_paths": 12,
+    "prior_union": 416,
+    "overlap": 10,
+    "new": 2,
+    "union": 418,
+    "complement": 409,
+    "complement_kinds": {
+      "source": 344,
+      "generated-artifact": 61,
+      "project-or-resource": 4
+    }
+  },
+  "new_paths": [
+    "SmartAuditERP/Form_WPF/frmItemsSrch.xaml",
+    "SmartAuditERP/Form_WPF/frmInvSumByType.xaml"
+  ],
+  "historical_metadata_screen_count": 316,
+  "historical_body_review_claim": false,
+  "nearest_bodies_explicitly_compared": [
+    "P2-004",
+    "P4-013",
+    "P4-026",
+    "P4-032",
+    "P7-013",
+    "P7-025",
+    "P7-143",
+    "P7-144"
+  ],
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "counts_are_completion_percent_or_sessions": false,
+  "parallel_repairs_not_merged_into_audit_branch": true
+}
