@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -1715,15 +1715,20 @@ namespace SmartAuditERP.Form_WPF
                 docForm.type = 4;
                 docForm.GlobalIdDoc = _code.ToString();
 
-                var documentItems = new System.Collections.ObjectModel.ObservableCollection<DocumentDisplayItem>();
+                // R-027 (P2-014): this path used a local DocumentDisplayItem whose property was
+                // RowNumber, while the viewer's handlers require DocumentItem (and bind RowNo) -
+                // rows appeared but open/delete were inert. Emit the viewer's own typed model,
+                // carrying the row Id so single-row deletion targets one record only (P2-013).
+                var documentItems = new System.Collections.ObjectModel.ObservableCollection<DocumentItem>();
 
                 for (int rowIndex = 0; rowIndex < docTable.Rows.Count; rowIndex++)
                 {
-                    documentItems.Add(new DocumentDisplayItem
+                    documentItems.Add(new DocumentItem
                     {
-                        RowNumber = rowIndex + 1,
+                        RowNo = rowIndex + 1,
                         FileName = docTable.Rows[rowIndex]["FileName"]?.ToString() ?? string.Empty,
-                        FileUrl = docTable.Rows[rowIndex]["FileUrl"]?.ToString() ?? string.Empty
+                        FileUrl = docTable.Rows[rowIndex]["FileUrl"]?.ToString() ?? string.Empty,
+                        DocId = Convert.ToInt32(docTable.Rows[rowIndex]["Id"])
                     });
                 }
 

@@ -3066,10 +3066,23 @@ namespace SmartAuditERP.Form_WPF
             if (dtt.Rows.Count > 0)
             {
                 var frm = new Frmshowdocument();
-                int i = 1;
-                foreach (DataRow row in dtt.Rows)
-                  //  frm.DataGridView1.Rows.Add(
-                  //      i++, row["FileName"], row["FileUrl"]);
+
+                // R-027 (P2-014): the old WinForms Rows.Add call here was commented out during the
+                // WPF migration, so this window opened EMPTY. Populate the viewer with typed rows
+                // (incl. each row's own Id) as the contract now requires.
+                var docItems = new System.Collections.Generic.List<DocumentItem>();
+                for (int i = 0; i < dtt.Rows.Count; i++)
+                {
+                    docItems.Add(new DocumentItem
+                    {
+                        RowNo    = i + 1,
+                        FileName = dtt.Rows[i]["FileName"]?.ToString() ?? "",
+                        FileUrl  = dtt.Rows[i]["FileUrl"]?.ToString()  ?? "",
+                        DocId    = Convert.ToInt32(dtt.Rows[i]["Id"])
+                    });
+                }
+                frm.DataGridView1.ItemsSource = docItems;
+
                 frm.type = 2;
                 frm.GlobalIdDoc = Invoic.InvGlobalID;
                 frm.Show();
@@ -3096,20 +3109,22 @@ namespace SmartAuditERP.Form_WPF
             {
                 var docDlg = new Frmshowdocument();
 
-                var displayTable = new DataTable();
-                displayTable.Columns.Add("RowNo", typeof(int));
-                displayTable.Columns.Add("FileName", typeof(string));
-                displayTable.Columns.Add("FileUrl", typeof(string));
-
+                // R-027 (P2-014): this path fed the viewer a DataView, whose rows are DataRowView -
+                // not the DocumentItem the open/delete handlers test for with 'is', so names showed
+                // but nothing could be opened or deleted. Pass typed items (with Id) instead.
+                var docItems = new System.Collections.Generic.List<DocumentItem>();
                 for (int i = 0; i < dtt.Rows.Count; i++)
                 {
-                    displayTable.Rows.Add(
-                        i + 1,
-                        dtt.Rows[i]["FileName"]?.ToString() ?? "",
-                        dtt.Rows[i]["FileUrl"]?.ToString() ?? "");
+                    docItems.Add(new DocumentItem
+                    {
+                        RowNo    = i + 1,
+                        FileName = dtt.Rows[i]["FileName"]?.ToString() ?? "",
+                        FileUrl  = dtt.Rows[i]["FileUrl"]?.ToString()  ?? "",
+                        DocId    = Convert.ToInt32(dtt.Rows[i]["Id"])
+                    });
                 }
+                docDlg.DataGridView1.ItemsSource = docItems;
 
-                docDlg.DataGridView1.ItemsSource = displayTable.DefaultView;
                 docDlg.type = 2;
                 docDlg.GlobalIdDoc = Invoic.InvGlobalID;
                 docDlg.Show();

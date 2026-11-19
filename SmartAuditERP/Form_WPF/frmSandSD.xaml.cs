@@ -921,7 +921,10 @@ namespace SmartAuditERP.Form_WPF
                     {
                         RowNo = i + 1,
                         FileName = dt.Rows[i]["FileName"].ToString(),
-                        FileUrl = dt.Rows[i]["FileUrl"].ToString()
+                        FileUrl = dt.Rows[i]["FileUrl"].ToString(),
+                        // R-027 (P2-013): carry the row's own Documents.Id so deleting this row
+                        // targets exactly one record instead of the whole document's attachments.
+                        DocId = Convert.ToInt32(dt.Rows[i]["Id"])
                     });
                 }
 
