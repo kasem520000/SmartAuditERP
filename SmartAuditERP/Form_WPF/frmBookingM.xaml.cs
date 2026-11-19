@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.SqlClient;
@@ -1223,24 +1223,38 @@ namespace SmartAuditERP.Form_WPF
 
             if (!string.IsNullOrWhiteSpace(txtClientName.Text))
             {
-                foreach (BookingSearchItem item in _dgvSrchList)
+                // Repair R-003 (audit finding P7-025): Search(3) -> LoadDG clears and
+                // refills _dgvSrchList, so calling it from inside a foreach over that
+                // live ObservableCollection mutates the collection mid-enumeration
+                // (throws / corrupts iteration). Enumerate a snapshot copy instead, and
+                // stop once the customer is matched and the search refined to them.
+                var nameSnapshot =
+                    new System.Collections.Generic.List<BookingSearchItem>(_dgvSrchList);
+                foreach (BookingSearchItem item in nameSnapshot)
                 {
                     if (string.Equals(item.CustomerName, txtClientName.Text))
                     {
                         ClientN = item.CustomerId;
                         Search(3);
+                        break;
                     }
                 }
             }
 
             if (string.IsNullOrWhiteSpace(txtCustPhone.Text)) return;
 
-            foreach (BookingSearchItem item in _dgvSrchList)
+            // Repair R-003 (audit finding P7-025): same mid-enumeration mutation as the
+            // name loop above -- Search(3) clears/refills _dgvSrchList. Use a snapshot
+            // copy and stop at the first matching customer.
+            var phoneSnapshot =
+                new System.Collections.Generic.List<BookingSearchItem>(_dgvSrchList);
+            foreach (BookingSearchItem item in phoneSnapshot)
             {
                 if (string.Equals(item.Mobile, txtCustPhone.Text))
                 {
                     ClientN = item.CustomerId;
                     Search(3);
+                    break;
                 }
             }
         }
