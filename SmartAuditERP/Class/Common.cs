@@ -1291,13 +1291,21 @@ namespace SmartAuditERP
                     var row = dt.Rows[0];
                     DateTime end = Convert.ToDateTime(row["AccountingPeriodEnd"]);
                     DateTime start = Convert.ToDateTime(row["AccountingPeriodStart"]);
-                    return !(InvoiceDate > end || InvoiceDate < start) || true;
+                    // Repair R-034 (audit finding P3-001 / follow-up H2-02): every arm of this
+                    // guard returned TRUE - the range test was OR'ed with a literal 'true', a
+                    // missing period row returned true, and even exceptions returned true - so
+                    // roughly nine save paths (journal, POS, sale, purchase, transfers, vouchers)
+                    // carried a purely decorative period check. Return the actual predicate, and
+                    // fail CLOSED when the period reference is absent or unreadable, per the
+                    // audit's required semantics: an unknown period must refuse the write rather
+                    // than rubber-stamp it. Callers already show their refusal message.
+                    return !(InvoiceDate > end || InvoiceDate < start);
                 }
-                return true;
+                return false;
             }
             catch
             {
-                return true;
+                return false;
             }
         }
 
