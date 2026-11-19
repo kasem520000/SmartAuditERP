@@ -120,6 +120,9 @@ namespace SmartAuditERP.Form_WPF
             else if (_currentPage == 1)
             {
                 // من التحميل إلى الاكتمال
+                // Repair R-018 (P1-026): advancing to the completion page no longer ignores a
+                // failed replacement on the manual path.
+                bool proceed = true;
                 if (rbManual.IsChecked == true)
                 {
                     if (string.IsNullOrWhiteSpace(txtPath.Text))
@@ -130,8 +133,9 @@ namespace SmartAuditERP.Form_WPF
                     }
                     FileDownload = txtPath.Text;
                     CreateFolderUpdate();
-                    ReplaceFiles();
+                    proceed = ReplaceFiles();
                 }
+                if (!proceed) return;
                 GoToPage(2);
                 btnNext.Content = "✅ إنتهاء";
             }
@@ -221,7 +225,23 @@ namespace SmartAuditERP.Form_WPF
                 wc.DownloadFileCompleted += (s, ev) =>
                     Dispatcher.Invoke(() =>
                     {
-                        ReplaceFiles();
+                        // Repair R-018 (audit finding P1-026): a failed or cancelled download used
+                        // to fall straight into file replacement and the completion page, so a
+                        // partial/missing ZIP could be unpacked behind a success screen. Check the
+                        // async outcome first; on any failure stop here with an explicit message.
+                        if (ev.Error != null)
+                        {
+                            DXMessageBox.Show("خطأ في التحميل: " + ev.Error.Message, "خطأ",
+                                            MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
+                        }
+                        if (ev.Cancelled)
+                        {
+                            DXMessageBox.Show("أُلغي التحميل.", "تنبيه",
+                                            MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
+                        if (!ReplaceFiles()) return;
                         GoToPage(2);
                         btnNext.Content = "✅ إنتهاء";
                     });
@@ -234,7 +254,11 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
-        private void ReplaceFiles()
+        // Repair R-018 (P1-026): now reports whether the replacement actually happened, so callers
+        // cannot walk to a completion page on top of a caught failure. Behaviour on the happy path
+        // is unchanged; the license-date side effect inside this routine is tracked separately as
+        // P1-032 policy work and intentionally untouched here.
+        private bool ReplaceFiles()
         {
             try
             {
@@ -243,11 +267,13 @@ namespace SmartAuditERP.Form_WPF
                                 MessageBoxButton.OK, MessageBoxImage.Information);
                 UpdateLicenseEndDate();
                  Process.Start(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Updater.exe"));
+                return true;
             }
             catch (Exception ex)
             {
                 DXMessageBox.Show("حدث خطأ أثناء تحميل ملفات النسخة الجديدة: " + ex.Message,
                                 "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
         }
 
