@@ -203,4 +203,4 @@
 | R-014 | P1-009 | fix(P1-009): persist app/SQL secrets only while Remember is checked | `77b5439` | 2026-11-19 | verified-in-scope (+needs-input حماية الملف) |
 | R-015 | P1-011 | fix(P1-011): bind credential inputs as typed parameters on the four named paths | `adf3c59` | 2026-11-19 | verified-in-scope (مسارات الاعتماد) + متبقٍّ عائلي |
 | R-014/R-015 | P1-009/P1-011 | test(P1-009,P1-011): models proving opt-out leaves no recoverable secrets and tautology bypasses fail post-fix | `e1fb862` | 2026-11-19 | verified-in-scope |
-| حواجز | P1-007/008/010/012 | docs(repairs): security blockers with required policy inputs; R-014/R-015 cards; eighth sync check | (يُستكمل أدناه) | 2026-11-19 | blocked/policy-input · needs-contract |
+| حواجز | P1-007/008/010/012 | docs(repairs): security blockers with required policy inputs; R-014/R-015 cards; eighth sync check | `a231f39` | 2026-11-19 | blocked/policy-input · needs-contract |
