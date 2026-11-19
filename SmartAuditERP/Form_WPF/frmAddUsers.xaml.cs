@@ -201,8 +201,13 @@ namespace SmartAuditERP.Form_WPF
                 {
                     // Repair R-015 (P1-011): bind both the edited user key and the entered username
                     // as typed parameters for the edit-mode uniqueness check.
+                    // Repair R-029 (audit finding P2-007): @code holds the USERS record id, but the
+                    // exclusion compared against emp, so the record being edited was NOT excluded
+                    // (editing without renaming always reported a phantom duplicate) and records
+                    // whose emp collided with another row's id were wrongly skipped. Exclude by the
+                    // actual primary key.
                     var dupEditCmd = new SqlCommand(
-                        "select id from Users where emp<>@code and username=@username and IS_Deleted=0", conn);
+                        "select id from Users where id<>@code and username=@username and IS_Deleted=0", conn);
                     dupEditCmd.Parameters.Add("@code", SqlDbType.Int).Value = Code;
                     dupEditCmd.Parameters.Add("@username", SqlDbType.NVarChar).Value = txtUser.Text;
                     var da3 = new SqlDataAdapter(dupEditCmd);
@@ -477,7 +482,11 @@ namespace SmartAuditERP.Form_WPF
                 {
                     var frm = new frmUsersPermissions();
                     frm.Show();
-                    frm.cmbEmp.SelectedValue = row.userid;
+                    // Repair R-029 (audit finding P2-007): that combo's SelectedValuePath is "emp"
+                    // (the employee link Users.emp = Employees.id), yet the row's USERS record id
+                    // was passed. Whenever the two numbers differ the permissions editor opened on
+                    // the wrong employee (or none); pass the employee id instead.
+                    frm.cmbEmp.SelectedValue = row.empid;
                 }
             }
             catch { }
