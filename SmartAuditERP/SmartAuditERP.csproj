@@ -4,6 +4,11 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <!-- Repair R-012 (audit finding P1-002): the project only declared WPF while code across
+         many files (Home.xaml.cs, Common.cs, ConnectBroker.cs, MainClass.cs, ...) instantiates
+         System.Windows.Forms types such as NotifyIcon. net8.0-windows compiles those only when
+         WinForms support is explicitly enabled, so declare what the sources already require. -->
+    <UseWindowsForms>true</UseWindowsForms>
     <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
 
