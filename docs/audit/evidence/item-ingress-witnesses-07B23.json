@@ -1,0 +1,775 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "source_head": "10ba215152f722c8808aea0bb672c1d1d4d9d711",
+  "application_code_imported_or_executed": false,
+  "dotnet_wpf_sql_or_excel_executed": false,
+  "B_R4g_bounded_not_whole7B_closure": true,
+  "unresolved_external_contracts_and_explicit_splits_retained": true,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "scanner_or_printer_tests_executed": 0,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "application_remediation_performed": false,
+  "illustration_count": 12,
+  "lexical_check_count": 12,
+  "illustrations": [
+    {
+      "id": "ALG7B23-01",
+      "finding_ids": "P7-145",
+      "title": "A selected then deselected; B confirmed",
+      "supplied_result": {
+        "final_selected_ids": [
+          22
+        ],
+        "returned_itemlist_if_confirmed": [
+          11,
+          22
+        ],
+        "accepted_batch": [
+          11,
+          22
+        ],
+        "stale_vs_current_selection": [
+          11
+        ],
+        "selection_semantics_owner_unresolved": true,
+        "wpf_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:294-338;SmartAuditERP/Form_WPF/frmItemsSrch.xaml:596-614",
+      "limit": "Accumulation is observed in the model; whether an intentional cumulative basket is required remains an owner contract, so145 stays potential. Source-local text or supplied Python model only; no WPF event/order/modal/SQL/Excel or saved/printed/stock effect observed."
+    },
+    {
+      "id": "ALG7B23-02",
+      "finding_ids": "P7-145",
+      "title": "One stable selection control",
+      "supplied_result": {
+        "final_selected_ids": [
+          22
+        ],
+        "returned_itemlist_if_confirmed": [
+          22
+        ],
+        "accepted_batch": [
+          22
+        ],
+        "stale_vs_current_selection": [],
+        "selection_semantics_owner_unresolved": true,
+        "wpf_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:294-338;SmartAuditERP/Form_WPF/frmItemsSrch.xaml:596-614",
+      "limit": "Source-local text or supplied Python model only; no WPF event/order/modal/SQL/Excel or saved/printed/stock effect observed."
+    },
+    {
+      "id": "ALG7B23-03",
+      "finding_ids": "P7-145",
+      "title": "Deduplication is not removal reconciliation",
+      "supplied_result": {
+        "final_selected_ids": [
+          22
+        ],
+        "returned_itemlist_if_confirmed": [
+          11,
+          22
+        ],
+        "accepted_batch": [
+          11,
+          22
+        ],
+        "stale_vs_current_selection": [
+          11
+        ],
+        "selection_semantics_owner_unresolved": true,
+        "wpf_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:294-338;SmartAuditERP/Form_WPF/frmItemsSrch.xaml:596-614",
+      "limit": "Source-local text or supplied Python model only; no WPF event/order/modal/SQL/Excel or saved/printed/stock effect observed."
+    },
+    {
+      "id": "ALG7B23-04",
+      "finding_ids": "P7-145",
+      "title": "ISDone false consumer control",
+      "supplied_result": {
+        "final_selected_ids": [
+          22
+        ],
+        "returned_itemlist_if_confirmed": [
+          11,
+          22
+        ],
+        "accepted_batch": [],
+        "stale_vs_current_selection": [
+          11
+        ],
+        "selection_semantics_owner_unresolved": true,
+        "wpf_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:294-338;SmartAuditERP/Form_WPF/frmItemsSrch.xaml:596-614",
+      "limit": "Source-local text or supplied Python model only; no WPF event/order/modal/SQL/Excel or saved/printed/stock effect observed."
+    },
+    {
+      "id": "ALG7B23-05",
+      "finding_ids": "P7-146",
+      "title": "Two distinct successful picks replace prior batch row",
+      "supplied_result": {
+        "rows": [
+          90,
+          22
+        ],
+        "removed_prior_batch_ids": [
+          11
+        ],
+        "all_lookups_successful_supplied": true,
+        "duplicate_dialog_executed": false,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:1393-1510;SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:2473-2477",
+      "limit": "Source-local text or supplied Python model only; no WPF event/order/modal/SQL/Excel or saved/printed/stock effect observed."
+    },
+    {
+      "id": "ALG7B23-06",
+      "finding_ids": "P7-146",
+      "title": "One pick preserves prefix control",
+      "supplied_result": {
+        "rows": [
+          90,
+          11
+        ],
+        "removed_prior_batch_ids": [],
+        "all_lookups_successful_supplied": true,
+        "duplicate_dialog_executed": false,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:1393-1510;SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:2473-2477",
+      "limit": "Source-local text or supplied Python model only; no WPF event/order/modal/SQL/Excel or saved/printed/stock effect observed."
+    },
+    {
+      "id": "ALG7B23-07",
+      "finding_ids": "P7-146",
+      "title": "Cancelled picker leaves prefix control",
+      "supplied_result": {
+        "rows": [
+          90
+        ],
+        "removed_prior_batch_ids": [],
+        "all_lookups_successful_supplied": true,
+        "duplicate_dialog_executed": false,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:1393-1510;SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:2473-2477",
+      "limit": "Source-local text or supplied Python model only; no WPF event/order/modal/SQL/Excel or saved/printed/stock effect observed."
+    },
+    {
+      "id": "ALG7B23-08",
+      "finding_ids": "P7-146",
+      "title": "Other selected editor seeds each iteration",
+      "supplied_result": {
+        "rows": [
+          90,
+          11,
+          22
+        ],
+        "per_iteration_empty_seed_supplied": true,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs:780-813;SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs:436-501",
+      "limit": "Source-local text or supplied Python model only; no WPF event/order/modal/SQL/Excel or saved/printed/stock effect observed."
+    },
+    {
+      "id": "ALG7B23-09",
+      "finding_ids": "P7-147",
+      "title": "Sales import seed discarded before hydration",
+      "supplied_result": {
+        "editor": "sales",
+        "before_seed": {
+          "code": "A",
+          "description": "import-A",
+          "unit": "PACK",
+          "quantity": "7",
+          "price": "50"
+        },
+        "after_hydration": {
+          "code": "A",
+          "description": "",
+          "unit": "EACH",
+          "quantity": "1",
+          "price": "20"
+        },
+        "fields_changed": [
+          "description",
+          "unit",
+          "quantity",
+          "price"
+        ],
+        "successful_lookup_supplied": true,
+        "rdAuto_off_supplied": true,
+        "failed_or_no_match_branch_not_modelled": false,
+        "duplicate_dialog_needed": false,
+        "actual_price_or_conversion_policy_accepted": false,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:2636-2681;SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:1393-1510;SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:1514-1640;SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs:2347-2384;SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs:436-619",
+      "limit": "Source-local text or supplied Python model only; no WPF event/order/modal/SQL/Excel or saved/printed/stock effect observed."
+    },
+    {
+      "id": "ALG7B23-10",
+      "finding_ids": "P7-147",
+      "title": "Purchase import same cause separate implementation",
+      "supplied_result": {
+        "editor": "purchase",
+        "before_seed": {
+          "code": "A",
+          "description": "import-A",
+          "unit": "PACK",
+          "quantity": "7",
+          "price": "50"
+        },
+        "after_hydration": {
+          "code": "A",
+          "description": "",
+          "unit": "EACH",
+          "quantity": "1",
+          "price": "20"
+        },
+        "fields_changed": [
+          "description",
+          "unit",
+          "quantity",
+          "price"
+        ],
+        "successful_lookup_supplied": true,
+        "rdAuto_off_supplied": true,
+        "failed_or_no_match_branch_not_modelled": false,
+        "duplicate_dialog_needed": false,
+        "actual_price_or_conversion_policy_accepted": false,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:2636-2681;SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:1393-1510;SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:1514-1640;SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs:2347-2384;SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs:436-619",
+      "limit": "Source-local text or supplied Python model only; no WPF event/order/modal/SQL/Excel or saved/printed/stock effect observed."
+    },
+    {
+      "id": "ALG7B23-11",
+      "finding_ids": "P7-147",
+      "title": "Equal-to-default import control",
+      "supplied_result": {
+        "editor": "sales",
+        "before_seed": {
+          "code": "A",
+          "description": "",
+          "unit": "EACH",
+          "quantity": "1",
+          "price": "20"
+        },
+        "after_hydration": {
+          "code": "A",
+          "description": "",
+          "unit": "EACH",
+          "quantity": "1",
+          "price": "20"
+        },
+        "fields_changed": [],
+        "successful_lookup_supplied": true,
+        "rdAuto_off_supplied": true,
+        "failed_or_no_match_branch_not_modelled": false,
+        "duplicate_dialog_needed": false,
+        "actual_price_or_conversion_policy_accepted": false,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:2636-2681;SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:1393-1510;SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:1514-1640;SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs:2347-2384;SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs:436-619",
+      "limit": "Source-local text or supplied Python model only; no WPF event/order/modal/SQL/Excel or saved/printed/stock effect observed."
+    },
+    {
+      "id": "ALG7B23-12",
+      "finding_ids": "P7-147",
+      "title": "No successful lookup is outside hydration-loss proof",
+      "supplied_result": {
+        "editor": "sales",
+        "before_seed": {
+          "code": "A",
+          "description": "import-A",
+          "unit": "PACK",
+          "quantity": "7",
+          "price": "50"
+        },
+        "after_hydration": {
+          "code": "A",
+          "description": "import-A",
+          "unit": "PACK",
+          "quantity": "7",
+          "price": "50"
+        },
+        "fields_changed": [],
+        "successful_lookup_supplied": false,
+        "rdAuto_off_supplied": true,
+        "failed_or_no_match_branch_not_modelled": true,
+        "duplicate_dialog_needed": false,
+        "actual_price_or_conversion_policy_accepted": false,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:2636-2681;SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:1393-1510;SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:1514-1640;SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs:2347-2384;SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs:436-619",
+      "limit": "The failed/no-match branch is outside this model, not accepted failure handling. Source-local text or supplied Python model only; no WPF event/order/modal/SQL/Excel or saved/printed/stock effect observed."
+    }
+  ],
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B23-01",
+      "finding_ids": "P7-145",
+      "title": "Selection handler adds current members without removal",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:294-338;SmartAuditERP/Form_WPF/frmItemsSrch.xaml:596-614",
+      "limit": "Source-local text or supplied Python model only; no WPF event/order/modal/SQL/Excel or saved/printed/stock effect observed."
+    },
+    {
+      "id": "ST7B23-02",
+      "finding_ids": "P7-145",
+      "title": "Confirmation removes/readds current ID only",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:294-338;SmartAuditERP/Form_WPF/frmItemsSrch.xaml:596-614",
+      "limit": "Source-local text or supplied Python model only; no WPF event/order/modal/SQL/Excel or saved/printed/stock effect observed."
+    },
+    {
+      "id": "ST7B23-03",
+      "finding_ids": "P7-145",
+      "title": "Extended full-row selection wired to handlers",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs:294-338;SmartAuditERP/Form_WPF/frmItemsSrch.xaml:596-614",
+      "limit": "Source-local text or supplied Python model only; no WPF event/order/modal/SQL/Excel or saved/printed/stock effect observed."
+    },
+    {
+      "id": "ST7B23-04",
+      "finding_ids": "P7-146",
+      "title": "Sales batch cursor and unconditional in-range removal",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:1393-1510;SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:2473-2477",
+      "limit": "Source-local text or supplied Python model only; no WPF event/order/modal/SQL/Excel or saved/printed/stock effect observed."
+    },
+    {
+      "id": "ST7B23-05",
+      "finding_ids": "P7-146",
+      "title": "Per-iteration empty seed and empty-only deletion control",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs:436-501;SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs:780-813",
+      "limit": "Source-local text or supplied Python model only; no WPF event/order/modal/SQL/Excel or saved/printed/stock effect observed."
+    },
+    {
+      "id": "ST7B23-06",
+      "finding_ids": "P7-147",
+      "title": "Sales import seed then void lookup",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:2636-2681;SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:1393-1510;SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:1514-1640;SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs:2347-2384;SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs:436-619",
+      "limit": "Source-local text or supplied Python model only; no WPF event/order/modal/SQL/Excel or saved/printed/stock effect observed."
+    },
+    {
+      "id": "ST7B23-07",
+      "finding_ids": "P7-147",
+      "title": "Purchase import seed then void lookup",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:2636-2681;SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:1393-1510;SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:1514-1640;SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs:2347-2384;SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs:436-619",
+      "limit": "Source-local text or supplied Python model only; no WPF event/order/modal/SQL/Excel or saved/printed/stock effect observed."
+    },
+    {
+      "id": "ST7B23-08",
+      "finding_ids": "P7-147",
+      "title": "Both Code lookup paths hydrate with unitId zero",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:2636-2681;SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:1393-1510;SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:1514-1640;SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs:2347-2384;SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs:436-619",
+      "limit": "Source-local text or supplied Python model only; no WPF event/order/modal/SQL/Excel or saved/printed/stock effect observed."
+    },
+    {
+      "id": "ST7B23-09",
+      "finding_ids": "P7-147",
+      "title": "Replacement models default description to empty",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:3048-3100;SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs:2800-2845",
+      "limit": "Source-local text or supplied Python model only; no WPF event/order/modal/SQL/Excel or saved/printed/stock effect observed."
+    },
+    {
+      "id": "ST7B23-10",
+      "finding_ids": "P7-147",
+      "title": "Wizard emits mapped fields only after Code guard",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmImportDataGeneral.xaml.cs:996-1057;SmartAuditERP/Form_WPF/frmImportDataGeneral.xaml.cs:1188-1199",
+      "limit": "Source-local text or supplied Python model only; no WPF event/order/modal/SQL/Excel or saved/printed/stock effect observed."
+    },
+    {
+      "id": "ST7B23-11",
+      "finding_ids": "H7B23-03",
+      "title": "Report has literal constructors for selected editors",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSumByType.xaml.cs:275-321;SmartAuditERP/Form_WPF/frmInvSumByType.xaml:416-430",
+      "limit": "Literal report reachability only; no ACL, Loaded timing, branch identity or save acceptance. Source-local text or supplied Python model only; no WPF event/order/modal/SQL/Excel or saved/printed/stock effect observed."
+    },
+    {
+      "id": "ST7B23-12",
+      "finding_ids": "P7-143",
+      "title": "Other selected consumers keep reversed1/2 homologue",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:1393-1477;SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs:436-501;SmartAuditERP/Form_WPF/MsgExistItem.xaml.cs:34-53;SmartAuditERP/Form_WPF/MsgExistItem.xaml:59-134",
+      "limit": "Same143 cause only; no registry extension or new duplicate finding, no modal execution. Source-local text or supplied Python model only; no WPF event/order/modal/SQL/Excel or saved/printed/stock effect observed."
+    }
+  ],
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs",
+      "start": 1,
+      "end": 55,
+      "encoding_observation": "utf-8-sig-read-only",
+      "path_sha256": "1df794869fa6587706c463ee5ec66a110c5a21762f2cb6e4ff27ea88f621ac50",
+      "bounded_text_sha256": "1a38eaf4294c45be44236cd0fde79225a895630709d4478afe66a3938bb63c41",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsSrch.xaml.cs",
+      "start": 294,
+      "end": 338,
+      "encoding_observation": "utf-8-sig-read-only",
+      "path_sha256": "1df794869fa6587706c463ee5ec66a110c5a21762f2cb6e4ff27ea88f621ac50",
+      "bounded_text_sha256": "cb23180c624a2791b6caf678e630b3431a8c2920faab439c02abf161af8c05dc",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsSrch.xaml",
+      "start": 596,
+      "end": 614,
+      "encoding_observation": "utf-8-sig-read-only",
+      "path_sha256": "302fab2effbeac2ab9088aa220eae66dd68fc1962f90ac4a4ca3cc247f9664d8",
+      "bounded_text_sha256": "a5197e667b705f0bcac95a85ecaba0ba40f6dadd4694cf055a62d342962355d8",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs",
+      "start": 183,
+      "end": 203,
+      "encoding_observation": "utf-8-sig-read-only",
+      "path_sha256": "254323b61e30492599b3e7127d62d156d32bffb637c61b75e52b92fe00e1cb1d",
+      "bounded_text_sha256": "25120078fb68d7303b41ba094d76835b308c11444bb5589a546d22bb2a662d66",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs",
+      "start": 1364,
+      "end": 1510,
+      "encoding_observation": "utf-8-sig-read-only",
+      "path_sha256": "254323b61e30492599b3e7127d62d156d32bffb637c61b75e52b92fe00e1cb1d",
+      "bounded_text_sha256": "a3450cb35cab29df648cf76a5cd5b79644de76e9bf9da5caae62a922bc392bbf",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs",
+      "start": 1514,
+      "end": 1640,
+      "encoding_observation": "utf-8-sig-read-only",
+      "path_sha256": "254323b61e30492599b3e7127d62d156d32bffb637c61b75e52b92fe00e1cb1d",
+      "bounded_text_sha256": "03a8d82feeee612169a9e31176535d6c985d18e3536d1ddd381edd1d51d01143",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs",
+      "start": 2473,
+      "end": 2477,
+      "encoding_observation": "utf-8-sig-read-only",
+      "path_sha256": "254323b61e30492599b3e7127d62d156d32bffb637c61b75e52b92fe00e1cb1d",
+      "bounded_text_sha256": "03a85a554ce74145f0c129868763891338a407e089eed631c88499cfe6b0f4a5",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs",
+      "start": 2636,
+      "end": 2681,
+      "encoding_observation": "utf-8-sig-read-only",
+      "path_sha256": "254323b61e30492599b3e7127d62d156d32bffb637c61b75e52b92fe00e1cb1d",
+      "bounded_text_sha256": "15aa488f09af1ce4ce0b8f96069e59a7f6e8a9cafc2443c99153aa26f10928be",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs",
+      "start": 3048,
+      "end": 3100,
+      "encoding_observation": "utf-8-sig-read-only",
+      "path_sha256": "254323b61e30492599b3e7127d62d156d32bffb637c61b75e52b92fe00e1cb1d",
+      "bounded_text_sha256": "3aae7166df99fe2ccecb11990d5a6be5dfab1f212ae35eeaaa96fbd0e367c33e",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml",
+      "start": 1,
+      "end": 16,
+      "encoding_observation": "utf-8-sig-read-only",
+      "path_sha256": "fd001e0f4a2e51fa659dc5e2c9448d645358417ebf905b42f9b7f6ec7b4d0574",
+      "bounded_text_sha256": "16c524e90380500336774dd04099d431f43338d3a1398d51beefa631fbca4d59",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml",
+      "start": 518,
+      "end": 550,
+      "encoding_observation": "utf-8-sig-read-only",
+      "path_sha256": "fd001e0f4a2e51fa659dc5e2c9448d645358417ebf905b42f9b7f6ec7b4d0574",
+      "bounded_text_sha256": "d1045af6e6c9378e54cd9f3897652416235ea3aea1a58db01de1e2e754d1dd06",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml",
+      "start": 1098,
+      "end": 1111,
+      "encoding_observation": "utf-8-sig-read-only",
+      "path_sha256": "fd001e0f4a2e51fa659dc5e2c9448d645358417ebf905b42f9b7f6ec7b4d0574",
+      "bounded_text_sha256": "ba76b22030d8116717ea2457430dece25dd8217825aa019db21e254f405ffd8c",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs",
+      "start": 408,
+      "end": 619,
+      "encoding_observation": "cp1256-read-only-not-compiler-acceptance",
+      "path_sha256": "d5b5eb49e9deeb478c66ffaa091e0af6ac8d7dfd00c2dca5cf952b99ae943286",
+      "bounded_text_sha256": "70153219eb821d0887f3e7168c2f8218aefe1b5d2ff30a55e2523094b95b4774",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs",
+      "start": 780,
+      "end": 813,
+      "encoding_observation": "cp1256-read-only-not-compiler-acceptance",
+      "path_sha256": "d5b5eb49e9deeb478c66ffaa091e0af6ac8d7dfd00c2dca5cf952b99ae943286",
+      "bounded_text_sha256": "c19f4e75e95cb711784e5d74bb72c3711fd4c886127eb7657045df8b70efbbbe",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs",
+      "start": 2347,
+      "end": 2384,
+      "encoding_observation": "cp1256-read-only-not-compiler-acceptance",
+      "path_sha256": "d5b5eb49e9deeb478c66ffaa091e0af6ac8d7dfd00c2dca5cf952b99ae943286",
+      "bounded_text_sha256": "b9622f12ee842e1f598f3e107de1aea030c0daa151e7eb3eb87343ab742dde01",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs",
+      "start": 2800,
+      "end": 2845,
+      "encoding_observation": "cp1256-read-only-not-compiler-acceptance",
+      "path_sha256": "d5b5eb49e9deeb478c66ffaa091e0af6ac8d7dfd00c2dca5cf952b99ae943286",
+      "bounded_text_sha256": "b1533d6fda76a908ba67c2942642871ec285e1bd143dfd395e42cc1b936d2090",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSalePurch.xaml",
+      "start": 1,
+      "end": 15,
+      "encoding_observation": "utf-8-sig-read-only",
+      "path_sha256": "5964004f902d8391c230f93b742c7fb6fa91941831f5f49ee06e81ebc2e30165",
+      "bounded_text_sha256": "1dd12a8889de6d75ade877e8916c4498a96eaacd6f913ab3d48bb533fa0a5ef4",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSalePurch.xaml",
+      "start": 735,
+      "end": 789,
+      "encoding_observation": "utf-8-sig-read-only",
+      "path_sha256": "5964004f902d8391c230f93b742c7fb6fa91941831f5f49ee06e81ebc2e30165",
+      "bounded_text_sha256": "494c6350e57c458e70581d71c2cc30176a1c9d4126fa444a54e04108a219889e",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSumByType.xaml.cs",
+      "start": 275,
+      "end": 321,
+      "encoding_observation": "utf-8-sig-read-only",
+      "path_sha256": "f834a971fe4810b70fea6080e9cf3368fbfa84384dddabbd465f6da136e6d40d",
+      "bounded_text_sha256": "5d62c32b364a6b8f4a61713841556a9052ccf739baca017a58d0437e47228a66",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSumByType.xaml",
+      "start": 416,
+      "end": 430,
+      "encoding_observation": "utf-8-sig-read-only",
+      "path_sha256": "593d3fd3fa28825c0ad1347ba7d230e0739dbfbd9551cc2c42286ca985b518c6",
+      "bounded_text_sha256": "fbdab2cfd2d83644fbb3e60d39ec59b6ce212f2ec3951cc669cfdea9f87dc8f6",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmImportDataGeneral.xaml.cs",
+      "start": 38,
+      "end": 55,
+      "encoding_observation": "utf-8-sig-read-only",
+      "path_sha256": "73ac7c4bbdf2fb7805d9fb2e70880b6ccb2592e74f45963dd7c1860818a753f3",
+      "bounded_text_sha256": "7f6da89eedf3a4f761770ee82ea4922743efd76785288155ac1c1b49aaf737ed",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmImportDataGeneral.xaml.cs",
+      "start": 370,
+      "end": 382,
+      "encoding_observation": "utf-8-sig-read-only",
+      "path_sha256": "73ac7c4bbdf2fb7805d9fb2e70880b6ccb2592e74f45963dd7c1860818a753f3",
+      "bounded_text_sha256": "b744693b18950f7fa9478c268d075068fe534e27c7cacea6bd423537f5face79",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmImportDataGeneral.xaml.cs",
+      "start": 429,
+      "end": 442,
+      "encoding_observation": "utf-8-sig-read-only",
+      "path_sha256": "73ac7c4bbdf2fb7805d9fb2e70880b6ccb2592e74f45963dd7c1860818a753f3",
+      "bounded_text_sha256": "ce241a455fdf3f933f3a3767185ea5eb6c27b367b22917abc00288b774d5ebba",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmImportDataGeneral.xaml.cs",
+      "start": 996,
+      "end": 1057,
+      "encoding_observation": "utf-8-sig-read-only",
+      "path_sha256": "73ac7c4bbdf2fb7805d9fb2e70880b6ccb2592e74f45963dd7c1860818a753f3",
+      "bounded_text_sha256": "5c9f998e0518c68a8bcbbfa3a8590e6d5a31c8719a9b4017637defe0b1fc9b30",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmImportDataGeneral.xaml.cs",
+      "start": 1188,
+      "end": 1199,
+      "encoding_observation": "utf-8-sig-read-only",
+      "path_sha256": "73ac7c4bbdf2fb7805d9fb2e70880b6ccb2592e74f45963dd7c1860818a753f3",
+      "bounded_text_sha256": "b06f871c64dd1b896ca496bf87002d0d610bf5c9b9721207366a256b22a70326",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmImportDataGeneral.xaml",
+      "start": 439,
+      "end": 452,
+      "encoding_observation": "utf-8-sig-read-only",
+      "path_sha256": "3a40bfb667798d08953080e9145ae1401d1b319c3d94e40fd186ed03d720580c",
+      "bounded_text_sha256": "e301e1584c8a205edf2692b0e6b2a0392940b3bd56475f1bb2d4483a10149953",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmImportDataGeneral.xaml",
+      "start": 601,
+      "end": 609,
+      "encoding_observation": "utf-8-sig-read-only",
+      "path_sha256": "3a40bfb667798d08953080e9145ae1401d1b319c3d94e40fd186ed03d720580c",
+      "bounded_text_sha256": "d4636ba23f9f189e0ff58f0309f637bea174d469c5dc5465966a87d0224f4e4a",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/MsgExistItem.xaml.cs",
+      "start": 1,
+      "end": 57,
+      "encoding_observation": "utf-8-sig-read-only",
+      "path_sha256": "bdc2427f8f250f725a89f1927ac61e1d25552b7836b7d4be76fbb0dcc4f61169",
+      "bounded_text_sha256": "bdc2427f8f250f725a89f1927ac61e1d25552b7836b7d4be76fbb0dcc4f61169",
+      "not_body_or_runtime_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/MsgExistItem.xaml",
+      "start": 59,
+      "end": 134,
+      "encoding_observation": "utf-8-sig-read-only",
+      "path_sha256": "68a6e0522c5ddadd8db3547b63e428a280053be9b1703a422098284ddd126118",
+      "bounded_text_sha256": "8fad8dc0e8dbd1ffee1150873da2c3c872de1f311d2d35be0ad0c7fe596b0fb2",
+      "not_body_or_runtime_coverage": true
+    }
+  ],
+  "constructor_discovery": {
+    "source_csharp_paths_lexically_scanned": 477,
+    "exact_new_MsgExistItem_tokens": [
+      {
+        "path": "SmartAuditERP/Class/ItemOper.cs",
+        "line": 1101
+      },
+      {
+        "path": "SmartAuditERP/Class/ItemOper.cs",
+        "line": 1127
+      },
+      {
+        "path": "SmartAuditERP/Class/ItemOpercontract.cs",
+        "line": 1011
+      },
+      {
+        "path": "SmartAuditERP/Class/ItemOpercontract.cs",
+        "line": 1028
+      },
+      {
+        "path": "SmartAuditERP/Class/ItemOpercontract.cs",
+        "line": 1120
+      },
+      {
+        "path": "SmartAuditERP/Class/ItemOpercontract.cs",
+        "line": 1137
+      },
+      {
+        "path": "SmartAuditERP/Form_WPF/FrmIntialRestraiction.xaml.cs",
+        "line": 552
+      },
+      {
+        "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+        "line": 1188
+      },
+      {
+        "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs",
+        "line": 577
+      },
+      {
+        "path": "SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs",
+        "line": 469
+      },
+      {
+        "path": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs",
+        "line": 1436
+      }
+    ],
+    "strict_utf8_fallback_cp1256_paths_not_compiler_acceptance": [
+      "SmartAuditERP/Class/DgvAccount2.cs",
+      "SmartAuditERP/Class/FormPermission.cs",
+      "SmartAuditERP/Class/RestrictionData.cs",
+      "SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs"
+    ],
+    "not_complete_callgraph_or_runtime_reachability": true,
+    "scanned_bodies_not_reviewed": true
+  },
+  "retained_additive_B10_arithmetic_erratum": {
+    "local_cost": 10,
+    "reference_cost": 120,
+    "equality1_control": 10,
+    "protected_G138_not_rewritten": true
+  },
+  "limit": "316 historical registry titles/classifications/evidence-path summaries screened plus selected nearest source chains, not all historical bodies.12 bounded paths not all consumers/census.145 potential pending selection contract;146/147 source-local with supplied success/normal-return assumptions; no save/print/financial loss observed. No pricing/merge/basket/SDK policy invented.7B/7 partial;R4h/B24 proposed;7C unstarted;8 unauthorized. Parallel repairs not merged into audit branch.",
+  "errors": []
+}
