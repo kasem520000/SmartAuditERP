@@ -272,4 +272,4 @@
 | R-017 | P1-021/022/023 | test(P1-021,P1-022,P1-023): pipeline model proving failed updates end closable without false success | `34b0064` | 2026-11-19 | verified-in-scope |
 | R-019/R-020 | P1-027/P1-029 | test(P1-027,P1-029): SQLite gate model plus splitter fixtures incl. GO-in-string/comment/name cases | `96e0a81` | 2026-11-19 | verified-in-scope |
 | R-018/R-021–R-024 | P1-018..P1-031 | test(P1-018,P1-025,P1-026,P1-030,P1-031): contract models and static witnesses for the five Home repairs | `3e74863` | 2026-11-19 | verified-in-scope |
-| حواجز | P1-017/019/020/024/028/032/033 | docs(repairs): close phase P1 — seven policy/contract blockers, eight repair cards, tenth sync check | `8a815f9` | 2026-11-19 | blocked / needs-contract / backlog |
+| حواجز | P1-017/019/020/024/028/032/033 | docs(repairs): close phase P1 — seven policy/contract blockers, eight repair cards, tenth sync check | `3d1a641` | 2026-11-19 | blocked / needs-contract / backlog |
