@@ -549,6 +549,44 @@ namespace SmartAuditERP
 
 		public static string ToArabicLetter(double givenNumber, Currency MyCurrency = Currency.SAR)
 		{
+			// Repair R-008 (audit finding P7-034): the legacy implementation below split
+			// Conversions.ToString(givenNumber) on the literal "." character and TRUNCATED any
+			// fractional digits beyond two. That made the wording depend on how the runtime renders
+			// the decimal separator and silently discarded sub-unit value, so the spelled amount no
+			// longer equalled one single amount at currency precision. Every sub-currency this engine
+			// phrases is base-100, so for ordinary finite, non-negative magnitudes whose x100 fits in
+			// Int64 we now settle ONE rounded amount: round half away from zero to whole sub-units,
+			// re-derive integer/fraction arithmetically (no string splitting => no dependence on the
+			// culture decimal separator), and phrase them through the SAME untouched
+			// NumberAsCurrency / FractionAsCurrency helpers as before. Inputs whose fractions already
+			// had at most two digits produce wording identical to the legacy path; only amounts that
+			// were being truncated change, which is exactly the defect. Exotic inputs (negative, NaN,
+			// infinity, or magnitude overflow) keep EXACTLY the old behaviour byte-for-byte by falling
+			// through to the preserved legacy path. No accounting/tax rule and no new currency
+			// precision are introduced: two-decimal settlement matches the fraction domain the wording
+			// engine already assumes.
+			if (!double.IsNaN(givenNumber) && !double.IsInfinity(givenNumber)
+				&& givenNumber >= 0.0 && givenNumber <= 90000000000000000.0)
+			{
+				long totalSubunits;
+				totalSubunits = checked((long)Math.Round(givenNumber * 100.0, MidpointRounding.AwayFromZero));
+				long intPart;
+				intPart = totalSubunits / 100L;
+				long fracPart;
+				fracPart = totalSubunits % 100L;
+				string settled;
+				settled = InvoiceOper.NumberAsCurrency((double)intPart, MyCurrency);
+				if (fracPart != 0L)
+				{
+					settled = settled + " و" + InvoiceOper.FractionAsCurrency((double)fracPart, MyCurrency);
+				}
+				if ((Operators.CompareString(settled, null, TextCompare: false) != 0) & (Operators.CompareString(settled, "", TextCompare: false) != 0))
+				{
+					settled += " فقط لا غير";
+				}
+				return settled;
+			}
+
 			string text;
 			text = " فقط لا غير";
 			string[] array;
@@ -1076,6 +1114,135 @@ namespace SmartAuditERP
 			return false;
 		}
 
+		// Repair R-009 (audit finding P7-035): the legacy Arabic spellers (NumberAsCurrency /
+		// FractionAsCurrency) and the English speller (SpellNumberEDP) each carried their OWN private
+		// cascade mapping (int)MyCurrency -> names. The two cascades did not cover the same keys, so a
+		// single currency symbol could be announced as Riyal/Halala in one language while the other
+		// said Pound/Euro/Yen/Dirham or Egyptian/Sudanese/Syrian pound - and any key absent from a
+		// cascade silently collapsed to that cascade's default Riyal pair. One shared table now drives
+		// BOTH languages, guaranteeing every key phrases corresponding names in each. Rows for keys a
+		// legacy cascade already handled reproduce its exact strings, spacing and plural rules (so all
+		// historically supported currencies phrase byte-identically to before); the missing counterpart
+		// language was added using the standard name of THAT SAME currency (ISO-style equivalents for
+		// the national pounds; direct counterparts for Dirham/Riyal/Pound/Euro/Yen). Keys 4, 9, 10 and
+		// 11 are labelled strictly after what the legacy ENGLISH cascade printed for them, because the
+		// Currency enum itself is declared outside this source tree and cannot be inspected here -
+		// flagged "needs-input" in docs/repairs/TRACKER.md (R-009 residual notes) for owner
+		// confirmation of those identities; whatever they turn out to be, the two languages can no
+		// longer contradict each other about them. No amounts, rates or precision change.
+		private sealed class CurrencyLabels
+		{
+			// Arabic main-unit forms, mirroring the legacy ternary shape exactly:
+			// n == 0 -> ArMain0; n == 2 -> ArMainDual; n outside [3..10] -> ArMainOut; else -> ArMainIn.
+			public string ArMain0 = "";
+			public string ArMainDual = "";
+			public string ArMainOut = "";
+			public string ArMainIn = "";
+			// Arabic sub-unit forms, same selection shape.
+			public string ArFrac0 = "";
+			public string ArFracDual = "";
+			public string ArFracOut = "";
+			public string ArFracIn = "";
+			// English forms consumed by SpellNumberEDP.
+			public string EnSing = "";
+			public string EnPlural = "";
+			public string EnFracSing = "";
+			public string EnFracPlural = "";
+		}
+
+		private static readonly Dictionary<int, CurrencyLabels> _currencyLabels = new Dictionary<int, CurrencyLabels>
+		{
+			// 2: Dollar/Cent - present in BOTH legacy cascades; paired already, kept verbatim.
+			{ 2, new CurrencyLabels
+				{
+					ArMain0 = "", ArMainDual = " اثنان دولار", ArMainOut = "دولار", ArMainIn = " دولار",
+					ArFrac0 = "", ArFracDual = " سنتان", ArFracOut = "سنت", ArFracIn = " سنتات",
+					EnSing = "Dollar", EnPlural = "Dollars", EnFracSing = "Cent", EnFracPlural = "Cents"
+				} },
+			// 4: legacy ENGLISH only ("Dirham/Fil"); Arabic counterpart added (standard dirham/fils).
+			{ 4, new CurrencyLabels
+				{
+					ArMain0 = "", ArMainDual = "درهمان", ArMainOut = "درهم", ArMainIn = "دراهم",
+					ArFrac0 = "", ArFracDual = "فلسان", ArFracOut = "فلس", ArFracIn = "فلوس",
+					EnSing = "Dirham", EnPlural = "Dirhams", EnFracSing = "Fil", EnFracPlural = "Fils"
+				} },
+			// 8: legacy ENGLISH explicit "Riyal/Halala"; Arabic fell through to the default Riyal row.
+			// Made explicit with the identical default strings - behaviour unchanged, drift closed.
+			{ 8, new CurrencyLabels
+				{
+					ArMain0 = "", ArMainDual = " اثنان ريال", ArMainOut = "ريال", ArMainIn = " ريال",
+					ArFrac0 = "", ArFracDual = " هللتين", ArFracOut = " هللة", ArFracIn = " ه\u064eل\u064eلات",
+					EnSing = "Riyal", EnPlural = "Riyals", EnFracSing = "Halala", EnFracPlural = "Halalas"
+				} },
+			// 9: legacy ENGLISH only ("Pound/Penny"). The enum identity is not inspectable here, so the
+			// Arabic side mirrors the generic English labels literally (needs-input per TRACKER R-009).
+			{ 9, new CurrencyLabels
+				{
+					ArMain0 = "", ArMainDual = "جنيهان", ArMainOut = "جنيه", ArMainIn = "جنيهات",
+					ArFrac0 = "", ArFracDual = "بنسان", ArFracOut = "بنس", ArFracIn = "بنسات",
+					EnSing = "Pound", EnPlural = "Pounds", EnFracSing = "Penny", EnFracPlural = "Pence"
+				} },
+			// 10: legacy ENGLISH only ("Euro/Cent"); Arabic counterpart transliterates the same terms.
+			{ 10, new CurrencyLabels
+				{
+					ArMain0 = "", ArMainDual = "يوروان", ArMainOut = "يورو", ArMainIn = "يورو",
+					ArFrac0 = "", ArFracDual = "سنتان", ArFracOut = "سنت", ArFracIn = "سنتات",
+					EnSing = "Euro", EnPlural = "Euros", EnFracSing = "Cent", EnFracPlural = "Cents"
+				} },
+			// 11: legacy ENGLISH only ("Yen/Sen"); Arabic counterpart transliterates the same terms.
+			{ 11, new CurrencyLabels
+				{
+					ArMain0 = "", ArMainDual = "ينان", ArMainOut = "ين", ArMainIn = "ين",
+					ArFrac0 = "", ArFracDual = "سنان", ArFracOut = "سن", ArFracIn = "سنات",
+					EnSing = "Yen", EnPlural = "Yens", EnFracSing = "Sen", EnFracPlural = "Sens"
+				} },
+			// 12: legacy ARABIC only (Egyptian pound/piastre); English equivalent added (ISO EGP).
+			{ 12, new CurrencyLabels
+				{
+					ArMain0 = "", ArMainDual = " جنيهان مصريان", ArMainOut = " جنيه مصري", ArMainIn = " جنيهات مصرية",
+					ArFrac0 = "", ArFracDual = " قرشان", ArFracOut = " قرشا", ArFracIn = " قروش",
+					EnSing = "Egyptian Pound", EnPlural = "Egyptian Pounds", EnFracSing = "Piastre", EnFracPlural = "Piastres"
+				} },
+			// 13: legacy ARABIC only (Sudanese pound/piastre); English equivalent added (ISO SDG).
+			{ 13, new CurrencyLabels
+				{
+					ArMain0 = "", ArMainDual = " جنيهان سودانيان", ArMainOut = " جنيه سوداني", ArMainIn = " جنيهات سودانية",
+					ArFrac0 = "", ArFracDual = " قرشان", ArFracOut = " قرشا", ArFracIn = " قروش",
+					EnSing = "Sudanese Pound", EnPlural = "Sudanese Pounds", EnFracSing = "Piastre", EnFracPlural = "Piastres"
+				} },
+			// 15: legacy ARABIC main unit only (Syrian lira); its FRACTION previously fell through to
+			// Halala. Paired with the piastre sub-unit forms used by the other pound rows (standard SYP
+			// sub-unit) and the ISO English equivalent.
+			{ 15, new CurrencyLabels
+				{
+					ArMain0 = "ليرة سورية", ArMainDual = "ليرتان سوريتان", ArMainOut = "ليرة سورية", ArMainIn = "ليرات سورية",
+					ArFrac0 = "", ArFracDual = " قرشان", ArFracOut = " قرشا", ArFracIn = " قروش",
+					EnSing = "Syrian Pound", EnPlural = "Syrian Pounds", EnFracSing = "Piastre", EnFracPlural = "Piastres"
+				} }
+		};
+
+		// Default row: byte-identical to what BOTH legacy cascades produced for any unlisted key
+		// (Arabic default branch and English final else => Riyal/Halala), so unknown symbols behave
+		// exactly as before AND identically across languages.
+		private static readonly CurrencyLabels _defaultCurrencyLabels = new CurrencyLabels
+		{
+			ArMain0 = "", ArMainDual = " اثنان ريال", ArMainOut = "ريال", ArMainIn = " ريال",
+			ArFrac0 = "", ArFracDual = " هللتين", ArFracOut = " هللة", ArFracIn = " ه\u064eل\u064eلات",
+			EnSing = "Riyal", EnPlural = "Riyals", EnFracSing = "Halala", EnFracPlural = "Halalas"
+		};
+
+		private static CurrencyLabels ResolveCurrencyLabels(Currency MyCurrency)
+		{
+			int id;
+			id = (int)MyCurrency;
+			CurrencyLabels labels;
+			if (!InvoiceOper._currencyLabels.TryGetValue(id, out labels))
+			{
+				labels = InvoiceOper._defaultCurrencyLabels;
+			}
+			return labels;
+		}
+
 		public static string NumberAsCurrency(double givenNumber, Currency MyCurrency = Currency.SAR)
 		{
 			string text;
@@ -1091,39 +1258,15 @@ namespace SmartAuditERP
 					text = text.Substring(5);
 				}
 			}
-			string left;
-			left = Strings.UCase(Conversions.ToString((int)MyCurrency));
+			// Repair R-009 (P7-035): labels come from the shared table; the selection order below is
+			// the exact ternary shape the legacy Arabic branches encoded, so outputs are unchanged for
+			// every key a legacy branch used to handle.
+			CurrencyLabels labels;
+			labels = InvoiceOper.ResolveCurrencyLabels(MyCurrency);
+			double num;
+			num = givenNumber;
 			string text2;
-			if (Operators.CompareString(left, Conversions.ToString(2), TextCompare: false) == 0)
-			{
-				double num;
-				num = givenNumber;
-				text2 = ((num == 0.0) ? "" : ((num == 2.0) ? " اثنان دولار" : ((!(num >= 3.0) || !(num <= 10.0)) ? "دولار" : " دولار")));
-			}
-			else if (Operators.CompareString(left, Conversions.ToString(12), TextCompare: false) == 0)
-			{
-				double num2;
-				num2 = givenNumber;
-				text2 = ((num2 == 0.0) ? "" : ((num2 == 2.0) ? " جنيهان مصريان" : ((!(num2 >= 3.0) || !(num2 <= 10.0)) ? " جنيه مصري" : " جنيهات مصرية")));
-			}
-			else if (Operators.CompareString(left, Conversions.ToString(13), TextCompare: false) == 0)
-			{
-				double num3;
-				num3 = givenNumber;
-				text2 = ((num3 == 0.0) ? "" : ((num3 == 2.0) ? " جنيهان سودانيان" : ((!(num3 >= 3.0) || !(num3 <= 10.0)) ? " جنيه سوداني" : " جنيهات سودانية")));
-			}
-			else if (Operators.CompareString(left, Conversions.ToString(15), TextCompare: false) == 0)
-			{
-				double num4;
-				num4 = givenNumber;
-				text2 = ((num4 == 0.0) ? "ليرة سورية" : ((num4 == 1.0) ? "ليرة سورية" : ((num4 == 2.0) ? "ليرتان سوريتان" : ((!(num4 >= 3.0) || !(num4 <= 10.0)) ? "ليرة سورية" : "ليرات سورية"))));
-			}
-			else
-			{
-				double num5;
-				num5 = givenNumber;
-				text2 = ((num5 == 0.0) ? "" : ((num5 == 2.0) ? " اثنان ريال" : ((!(num5 >= 3.0) || !(num5 <= 10.0)) ? "ريال" : " ريال")));
-			}
+			text2 = ((num == 0.0) ? labels.ArMain0 : ((num == 2.0) ? labels.ArMainDual : ((!(num >= 3.0) || !(num <= 10.0)) ? labels.ArMainOut : labels.ArMainIn)));
 			return text + " " + text2;
 		}
 
@@ -1142,33 +1285,16 @@ namespace SmartAuditERP
 					text = text.Substring(5);
 				}
 			}
-			string left;
-			left = Strings.UCase(Conversions.ToString((int)MyCurrency));
+			// Repair R-009 (P7-035): same shared table as the main-unit speller; selection shape kept
+			// identical to the legacy Arabic branches. Key 15, which the legacy fraction cascade did
+			// not list (it fell through to Halala next to an Arabic main unit of Syrian lira), now
+			// phrases its own piastre sub-unit, matching the language pair used for the pound rows.
+			CurrencyLabels labels;
+			labels = InvoiceOper.ResolveCurrencyLabels(MyCurrency);
+			double num;
+			num = givenNumber;
 			string text2;
-			if (Operators.CompareString(left, Conversions.ToString(2), TextCompare: false) == 0)
-			{
-				double num;
-				num = givenNumber;
-				text2 = ((num == 0.0) ? "" : ((num == 2.0) ? " سنتان" : ((!(num >= 3.0) || !(num <= 10.0)) ? "سنت" : " سنتات")));
-			}
-			else if (Operators.CompareString(left, Conversions.ToString(12), TextCompare: false) == 0)
-			{
-				double num2;
-				num2 = givenNumber;
-				text2 = ((num2 == 0.0) ? "" : ((num2 == 2.0) ? " قرشان" : ((!(num2 >= 3.0) || !(num2 <= 10.0)) ? " قرشا" : " قروش")));
-			}
-			else if (Operators.CompareString(left, Conversions.ToString(13), TextCompare: false) == 0)
-			{
-				double num3;
-				num3 = givenNumber;
-				text2 = ((num3 == 0.0) ? "" : ((num3 == 2.0) ? " قرشان" : ((!(num3 >= 3.0) || !(num3 <= 10.0)) ? " قرشا" : " قروش")));
-			}
-			else
-			{
-				double num4;
-				num4 = givenNumber;
-				text2 = ((num4 == 0.0) ? "" : ((num4 == 2.0) ? " هللتين" : ((!(num4 >= 3.0) || !(num4 <= 10.0)) ? " هللة" : " ه\u064eل\u064eلات")));
-			}
+			text2 = ((num == 0.0) ? labels.ArFrac0 : ((num == 2.0) ? labels.ArFracDual : ((!(num >= 3.0) || !(num <= 10.0)) ? labels.ArFracOut : labels.ArFracIn)));
 			return text + " " + text2;
 		}
 
@@ -1202,61 +1328,23 @@ namespace SmartAuditERP
 					num2++;
 				}
 			}
-			string left;
-			left = Strings.UCase(Conversions.ToString((int)MyCurrency));
+			// Repair R-009 (audit finding P7-035): the English names now come from the SAME shared
+			// table that drives the Arabic spelling, so one currency key announces corresponding names
+			// in both languages. The former English-only keys keep their exact strings (Dollar,
+			// Dirham/Fil(s), Pound/Penny/Pence, Euro, Yen/Sen, Riyal/Halala); keys that previously
+			// existed only on the Arabic side (Egyptian/Sudanese/Syrian pound) no longer collapse to
+			// "Riyal" here - they phrase their ISO English equivalents. Unlisted keys still default
+			// to Riyal/Halala exactly as before.
+			CurrencyLabels labels;
+			labels = InvoiceOper.ResolveCurrencyLabels(MyCurrency);
 			object right;
+			right = labels.EnSing;
 			object right2;
+			right2 = labels.EnPlural;
 			object right3;
+			right3 = labels.EnFracSing;
 			object right4;
-			if (Operators.CompareString(left, Conversions.ToString(2), TextCompare: false) == 0)
-			{
-				right = "Dollar";
-				right2 = "Dollars";
-				right3 = "Cent";
-				right4 = "Cents";
-			}
-			else if (Operators.CompareString(left, Conversions.ToString(4), TextCompare: false) == 0)
-			{
-				right = "Dirham";
-				right2 = "Dirhams";
-				right3 = "Fil";
-				right4 = "Fils";
-			}
-			else if (Operators.CompareString(left, Conversions.ToString(9), TextCompare: false) == 0)
-			{
-				right = "Pound";
-				right2 = "Pounds";
-				right3 = "Penny";
-				right4 = "Pence";
-			}
-			else if (Operators.CompareString(left, Conversions.ToString(10), TextCompare: false) == 0)
-			{
-				right = "Euro";
-				right2 = "Euros";
-				right3 = "Cent";
-				right4 = "Cents";
-			}
-			else if (Operators.CompareString(left, Conversions.ToString(11), TextCompare: false) == 0)
-			{
-				right = "Yen";
-				right2 = "Yens";
-				right3 = "Sen";
-				right4 = "Sens";
-			}
-			else if (Operators.CompareString(left, Conversions.ToString(8), TextCompare: false) == 0)
-			{
-				right = "Riyal";
-				right2 = "Riyals";
-				right3 = "Halala";
-				right4 = "Halalas";
-			}
-			else
-			{
-				right = "Riyal";
-				right2 = "Riyals";
-				right3 = "Halala";
-				right4 = "Halalas";
-			}
+			right4 = labels.EnFracPlural;
 			object left2;
 			left2 = obj;
 			obj = (Operators.ConditionalCompareObjectEqual(left2, "", TextCompare: false) ? "" : ((!Operators.ConditionalCompareObjectEqual(left2, "One", TextCompare: false)) ? Operators.ConcatenateObject(Operators.ConcatenateObject(obj, " "), right2) : Operators.ConcatenateObject("One ", right)));
