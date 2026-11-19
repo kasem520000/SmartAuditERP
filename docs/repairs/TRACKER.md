@@ -122,6 +122,24 @@
 - **حدود التحقق:** تعذر WPF/.NET/DevExpress هنا؛ النجاح `verified-in-scope` لبوابة التحقق فقط وليس قبول ERP.
 - **الالتزام:** fix=`b5cf359` · test=`43517c6` — على الفرع الحالي فقط.
 
+### R-012 ← P1-002 — دعم WinForms غير مصرح به صراحة في مشروع يستخدمه
+- **الحالة:** `verified-in-scope` (إعلان تبعية قائمة؛ البناء الفعلي محجوب بيئياً كسائر الإصلاحات)
+- **النتيجة الأصلية:** P1-002 · High · potential · build (`findings.csv`) — تأكدت بالتتبع فارتقت عملياً إلى سبب معلوم.
+- **الدليل/المصدر:** `SmartAuditERP.csproj` يعلن `<UseWPF>true</UseWPF>` فقط على `net8.0-windows`، بينما تنشئ عشرة ملفات فأكثر أنواع `System.Windows.Forms` (مثل `NotifyIcon` في `Home.xaml.cs:328,335` واستخدامات في Common/ConnectBroker/MainClass/Gdip/FingerPrintDevice وغيرها). هذه الأنواع لا تُجمَّع على الإطار المستهدف دون تفعيل WinForms صراحة.
+- **التعديل المطبق:** إضافة `<UseWindowsForms>true</UseWindowsForms>` مع تعليق يربطها بالنتيجة — إعلان لتبعية موجودة فعلاً لا إدخال جديدة، وبلا أي تغيير سلوكي.
+- **اختبار الرجوع:** مراجعة استاتيكية (وجود الإعلان + شواهد الاستخدام في المصادر)؛ تعذر التنفيذ البنّاء هنا لعدم وجود .NET SDK.
+- **حدود التحقق:** لم يُبنَ المشروع فعلياً (بيئة بلا toolchain، واعتماديات P1-001 الخارجية حاجز مستقل).
+- **الالتزام:** fix=`50fffd6` — على الفرع الحالي فقط.
+
+### R-013 ← P1-006 — مخرجات bin/obj وملفات مستخدم متتبعة بلا gitignore
+- **الحالة:** `verified-in-scope` (فهرس git الحي)
+- **النتيجة الأصلية:** P1-006 · Low · repository-gap · repository-hygiene (`findings.csv`).
+- **الدليل/المصدر:** 64 ملفاً متتبعاً تحت `SmartAuditUpdater/bin|obj` ونسختا `*.csproj.user` بلا أي `.gitignore`.
+- **التعديل المطبق:** إضافة `.gitignore` مركزة (`bin/`, `obj/`, `*.user`, `.vs/`, `*.suo`, `*.log`) ورفع التتبع عن النسخ القائمة بـ`git rm -r --cached` (تبقى على الأقراص محلياً؛ لا حذف من أي نسخة عمل؛ أرشيف التدقيق لم يُمس إطلاقاً).
+- **اختبار الرجوع:** `tests/repair/repo_hygiene_check.py` يفهرس git مباشرة: صفر مسارات bin/obj/user/suo متتبعة، أنماط التجاهل موجودة، وعيّنة من أرشيف التدقيق (findings/README/inventory/PHASE-01) ما تزال متتبعة. الخروج PASS.
+- **حدود التحقق:** فحص فهرس وليس بناء؛ كافٍ لطبيعة النتيجة.
+- **الالتزام:** fix=`fe551f5` · test=`b9f07f7` — على الفرع الحالي فقط.
+
 ## دفتر المتراكم (ملخص حسب الطبقة/المرحلة — يُفصَّل مع تقدم العمل)
 | الطبقة | أمثلة مفتاحية | العدد المفتوح الإجمالي بالمرجع | حالة التخطيط |
 | --- | --- | --- | --- |
@@ -129,7 +147,9 @@
 | B أمن/أسرار/حقن/تفويض | P1-009…P1-016, P2-* | مرتفع | تهيئة حزم بعقود قبل التنفيذ |
 | C سلامة مالية/محاسبية | P3-*, P4-* | مرتفع | يتطلب غالباً سياسة/تحقق SQL |
 | D عيوب منطق محصورة | أُنجز R-001..R-011 (P7-139/059/025/036/103/104/109/063/034/035/140/141)؛ المتبقي مرشحون منطقيون آخرون | 144 بالمرحلة 7 | الاستمرار بما يتحقق بمعزل عن السياسات |
-الإجمالي المفتوح وقت المزامنة: **316**. هذا الملخص لا يغني عن بطاقة تفصيلية لكل مهمة عند تنفيذها.
+الإجمالي المفتوح وقت آخر مزامنة (`f37c37c`): **319** (أضيفت P7-145/146/147 بشريحة B23). هذا الملخص لا يغني عن بطاقة تفصيلية لكل مهمة عند تنفيذها.
+
+**المسار الجاري الآن:** مسح المرحلة **P1** كاملاً بالترتيب الرقمي (توجيه المستخدم)؛ المنفذ R-012/R-013، والحواجز BLK-P1-001/003/004/005 موثقة بمدخلاتها في [PLAN.md](PLAN.md)، والتالي الحرجتان P1-007/P1-008 ثم بقية العقد الأمنية.
 
 ## سجل روابط (يُحدَّث مع كل التزام)
 | R | النتيجة | الرسالة | SHA | التاريخ | الحالة |
@@ -155,3 +175,8 @@
 | R-010 | P7-140 | test(P7-140): static witness proving both invoice print paths fill currency before wording | `a37dde3` | 2026-11-19 | verified-in-scope |
 | R-011 | P7-141 | fix(P7-141): refuse to print bonds whose value is not a parseable number | `b5cf359` | 2026-11-19 | verified-in-scope |
 | R-011 | P7-141 | test(P7-141): gate model proving non-numeric values can no longer print as zero-worded bonds | `43517c6` | 2026-11-19 | verified-in-scope |
+| — | مزامنة | Merge audit f37c37c (B23 slice) via history-preserving merge; SYNC seventh check | `13e70c0`, `3dc5127` | 2026-11-19 | sync |
+| R-012 | P1-002 | fix(P1-002): declare WinForms support the sources already require | `50fffd6` | 2026-11-19 | verified-in-scope |
+| R-013 | P1-006 | fix(P1-006): ignore build output and user state; untrack existing copies | `fe551f5` | 2026-11-19 | verified-in-scope |
+| R-013 | P1-006 | test(P1-006): live-index check proving artefacts untracked and audit archive intact | `b9f07f7` | 2026-11-19 | verified-in-scope |
+| حواجز | P1-001/003/004/005 | docs(repairs): phase-1 sweep kickoff; BLK cards for build/packaging inputs needed | `92bda90` | 2026-11-19 | blocked/needs-input |
