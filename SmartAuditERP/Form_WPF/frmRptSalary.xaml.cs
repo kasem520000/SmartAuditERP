@@ -1,4 +1,4 @@
-﻿using DevExpress.Xpf.Core;
+using DevExpress.Xpf.Core;
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -64,12 +64,25 @@ namespace SmartAuditERP.Form_WPF
 
                 if (ckWholePeriod.IsChecked != true)
                 {
-                    if (int.TryParse(txtYear.Text, out int yr) &&
-                        int.TryParse(txtMonth.Text, out int mo))
+                    // Repair R-006 (audit finding P7-109): previously, if the year/month
+                    // text failed to parse (blank or non-numeric), the period condition was
+                    // silently left empty and the report widened to ALL periods -- the
+                    // opposite of asking for a specific month. Require valid numbers when a
+                    // specific period is intended; otherwise stop with a clear prompt. Once
+                    // validated, yr/mo are integers and cannot alter the SQL meaning.
+                    if (!int.TryParse(txtYear.Text, out int yr) ||
+                        !int.TryParse(txtMonth.Text, out int mo))
                     {
-                        condWhere = $" AND SalaryPay.year=N'{yr}' " +
-                                    $"AND SalaryPay.month={mo}";
+                        DXMessageBox.Show(
+                            "أدخل سنة وشهراً صحيحين، أو فعّل خيار «كل الفترة».",
+                            "فترة التقرير",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Warning);
+                        return;
                     }
+
+                    condWhere = $" AND SalaryPay.year=N'{yr}' " +
+                                $"AND SalaryPay.month={mo}";
                 }
 
                 string sql =
