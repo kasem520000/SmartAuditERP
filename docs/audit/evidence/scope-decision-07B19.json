@@ -1,0 +1,41 @@
+{
+  "entry": "ee393a741a862a605c6c2f688d3f634bd91856ae",
+  "authority": [
+    "PHASE-07-REMAINING-07B18.md",
+    "evidence/split-register-07B18.csv"
+  ],
+  "selected_upstream_split": "SP7B18-01",
+  "reason": "اختيرت بقية SP7B18-01 الخاصة بطلب DocumentRef والمستقبل وLoaded والحد بين القراءة وحفظ الموجود بعد تسليم R4b. والدان مسميان وسبع حواف استقبال، مع اختلاف عقد جدول التسوية وشواهد مضادة؛ ليست مراجعة عامة لمحور WPF في7C.",
+  "inputs": "المصدر الأصلي المجمد827 وآثارB18 المحمية فقط. لا مدخل نشر خارجي أو سر أو بيانات أعمال.",
+  "outputs": [
+    "navigation-ledger-07B19.csv",
+    "leaf-contract-ledger-07B19.csv",
+    "feature-implementation-matrix-07B19.csv",
+    "acceptance-tests-07B19.csv",
+    "residual-disposition-07B19.csv"
+  ],
+  "boundary": "23 مساراً بشرائح dispatch/identity/initialization/reader/dirty/save-boundary مسماة، لا كامل محرر أو كاتب أو كل المتصلين والطباعة أو حصر القدرات. بقية SP01 وSP02/SP03 صريحة.7B/7 جزئيتان؛7C لم تبدأ؛8 غير مأذونة.",
+  "bookkeeping": {
+    "selected_paths": 23,
+    "prior_union": 408,
+    "overlap": 21,
+    "new": 2,
+    "union": 410,
+    "complement": 417,
+    "complement_kinds": {
+      "source": 352,
+      "generated-artifact": 61,
+      "project-or-resource": 4
+    }
+  },
+  "route_instances": 22,
+  "literal_Navigate_tokens": 19,
+  "parent_paths": 2,
+  "receiver_leaves": 7,
+  "source_review_state": "selected-static-navigation-loader-save-boundary-slices-not-runtime-certified",
+  "application_remediation_performed": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false
+}
