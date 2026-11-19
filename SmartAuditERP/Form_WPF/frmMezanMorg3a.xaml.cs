@@ -150,6 +150,11 @@ namespace SmartAuditERP.Form_WPF
             {
                 cmbBranches.SelectedIndex = -1;
                 cmbBranches.IsEnabled = false;
+
+                // R-033 (P2-010): tell restricted users up front that totals stay on their branch.
+                if (!User.ShowBranchsAccounts)
+                    DXMessageBox.Show("لا تملك صلاحية عرض حسابات الفروع؛ ستقتصر المجاميع على فرعك الحالي.",
+                        "المدقق", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
@@ -236,6 +241,17 @@ namespace SmartAuditERP.Form_WPF
                 if (cmbBranches.SelectedIndex > -1)
                 {
                     branchFilter = $"Entry.branch={cmbBranches.SelectedValue} and Entry_sub.branch={cmbBranches.SelectedValue} and ";
+                }
+
+                // Repair R-033 (audit finding P2-010): "all branches" used to empty this filter
+                // WITHOUT consulting the cross-branch viewing grant (User.ShowBranchsAccounts,
+                // OperNo 17), so anyone who could open the screen could total every branch's
+                // movements. Enforce the same policy Accounting.BranchCondition expresses: own
+                // branch only unless explicitly granted. Both the selected value above and this
+                // integer property are ints; nothing user-typed enters the predicate.
+                if (string.IsNullOrEmpty(branchFilter) && !User.ShowBranchsAccounts)
+                {
+                    branchFilter = $"Entry.branch={MainClass.BranchNo} and Entry_sub.branch={MainClass.BranchNo} and ";
                 }
 
                 AccountList.Clear();

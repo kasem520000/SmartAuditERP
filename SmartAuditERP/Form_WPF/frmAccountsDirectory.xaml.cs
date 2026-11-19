@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -262,10 +262,24 @@ namespace SmartAuditERP.Form_WPF
                     filter = $" ParentCode LIKE '{_selectedCode}%' AND ";
                 }
 
-                string query = $"SELECT Code, AName, ParentCode, Acc_branch FROM Accounts_Index WHERE {filter} type=2";
+                // Repair R-033 (audit finding P2-010): the definitions listing read EVERY leaf
+                // account regardless of Acc_branch; balances were already branch-limited by
+                // Common.GetAccountBalance, but names/codes of other branches' accounts still
+                // leaked. Restrict rows to the current branch plus shared (NULL-branch) accounts
+                // unless the cross-branch viewing grant (User.ShowBranchsAccounts) is held - the
+                // same policy Accounting.BranchCondition encodes elsewhere. The value is an int
+                // property bound as a typed parameter.
+                string branchClause = "";
+                if (!User.ShowBranchsAccounts)
+                    branchClause = " AND (Acc_branch=@br OR Acc_branch IS NULL)";
+
+                string query = $"SELECT Code, AName, ParentCode, Acc_branch FROM Accounts_Index WHERE {filter} type=2{branchClause}";
 
                 using (SqlDataAdapter adapter = new SqlDataAdapter(query, _connection))
                 {
+                    if (branchClause.Length > 0)
+                        adapter.SelectCommand.Parameters.Add("@br", SqlDbType.Int).Value = MainClass.BranchNo;
+
                     DataTable accountsTable = new DataTable();
                     adapter.Fill(accountsTable);
 
@@ -838,8 +852,16 @@ namespace SmartAuditERP.Form_WPF
 
                 using (SqlConnection conn = MainClass.ConnObj())
                 {
+                    // R-033 (P2-010): this shared tree dump also listed every branch's accounts;
+                    // apply the identical grant-gated restriction so no consumer inherits an
+                    // unrestricted hierarchy.
                     string query = "SELECT Code, AName, ParentCode, type FROM Accounts_Index";
                     SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
+                    if (!User.ShowBranchsAccounts)
+                    {
+                        adapter.SelectCommand.CommandText += " WHERE Acc_branch=@br OR Acc_branch IS NULL";
+                        adapter.SelectCommand.Parameters.Add("@br", SqlDbType.Int).Value = MainClass.BranchNo;
+                    }
                     DataTable dt = new DataTable();
                     adapter.Fill(dt);
 
