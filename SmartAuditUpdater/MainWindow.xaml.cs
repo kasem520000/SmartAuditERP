@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -91,14 +91,32 @@ namespace SmartAuditUpdater
 
                 // 2) تحميل الملف
                 bool downloaded = await DownloadUpdate();
-                if (!downloaded) return;
+                // Repair R-017 (audit findings P1-021/P1-022/P1-023, bounded part): every non-success
+                // exit used to RETURN here without clearing _isUpdating or enabling close, leaving a
+                // failed update window that could not be dismissed normally; and failures below were
+                // swallowed into "success anyway". Route each failure through FailTerminal so the user
+                // always ends on a closable, clearly-failed state - mirroring the general catch arm.
+                if (!downloaded)
+                {
+                    FailTerminal("❌ فشل تحميل التحديث!");
+                    return;
+                }
 
-                // 3) نسخ احتياطي
-                await BackupOldFiles();
+                // 3) نسخ احتياطي (إلزامي قبل أي تعديل - P1-023)
+                bool backedUp = await BackupOldFiles();
+                if (!backedUp)
+                {
+                    FailTerminal("❌ فشل النسخ الاحتياطي! لن يتم تعديل الملفات.");
+                    return;
+                }
 
                 // 4) تثبيت التحديث
                 bool installed = await InstallUpdate();
-                if (!installed) return;
+                if (!installed)
+                {
+                    FailTerminal("❌ فشل تثبيت التحديث!");
+                    return;
+                }
 
                 // 5) تنظيف
                 await CleanUp();
@@ -113,14 +131,23 @@ namespace SmartAuditUpdater
             }
             catch (Exception ex)
             {
-                Dispatcher.Invoke(() =>
-                {
-                    AddLog($"❌ خطأ عام: {ex.Message}");
-                    SetError("❌ فشل التحديث!");
-                    _isUpdating = false;
-                    EnableClose(false);
-                });
+                FailTerminal("❌ فشل التحديث!");
+                Dispatcher.Invoke(() => AddLog($"❌ خطأ عام: {ex.Message}"));
             }
+        }
+
+        // Repair R-017 (P1-021): one terminal-failure state for every failed branch, identical in
+        // spirit to the former general-catch handling: mark the error UI, stop the "updating" flag
+        // so Window_Closing no longer cancels the close, and turn the close button into a plain
+        // red "إغلاق". No success wording can ever reach this path.
+        private void FailTerminal(string message)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                SetError(message);
+                _isUpdating = false;
+                EnableClose(false);
+            });
         }
 
         #endregion
@@ -254,8 +281,13 @@ namespace SmartAuditUpdater
 
         #region ══════════════════ Step 2: Backup ══════════════════
 
-        private Task BackupOldFiles()
+        private Task<bool> BackupOldFiles()
         {
+            // Repair R-017 (audit finding P1-023, bounded part): backup failure used to log
+            // "المتابعة رغم ذلك" and the install ran anyway - updates could proceed with no
+            // working way back. Report success/failure instead; RunUpdateProcess now refuses to
+            // modify any file unless this step succeeded. Full staging/rollback architecture
+            // remains documented as needs-input work (TRACKER backlog, P1-023 residual).
             return Task.Run(() =>
             {
                 UpdateStep("💾 الخطوة 2: نسخ احتياطي للملفات القديمة...");
@@ -337,11 +369,13 @@ namespace SmartAuditUpdater
                     }
 
                     AddLog("");
+                    return true;
                 }
                 catch (Exception ex)
                 {
-                    AddLog($"⚠️ تحذير في النسخ الاحتياطي: {ex.Message}");
-                    AddLog("المتابعة رغم ذلك...");
+                    AddLog($"❌ فشل النسخ الاحتياطي: {ex.Message}");
+                    AddLog("لن تتم متابعة التحديث دون نسخة احتياطية ناجحة.");
+                    return false;
                 }
             });
         }
@@ -367,6 +401,8 @@ namespace SmartAuditUpdater
                         SearchOption.AllDirectories);
 
                     AddLog($"عدد الملفات: {files.Length}");
+
+                    bool anyCopyFailed = false;   // R-017 / P1-022: honest install result
 
                     for (int i = 0; i < files.Length; i++)
                     {
@@ -400,14 +436,28 @@ namespace SmartAuditUpdater
                             }
                         }
 
-                        if (!copied)
-                            AddLog($"  ⚠️ تعذر نسخ: {rel}");
+                        // Repair R-017 (audit finding P1-022): a file that still could not be
+                        // copied after five attempts used to draw only a warning while the step
+                        // announced "all files succeeded" and returned true - leaving a mixed set
+                        // of versions behind a success message. Track the failure and fail the
+                        // whole install instead; no success wording is emitted in that case.
+                        bool failedThisFile = !copied;
+                        if (failedThisFile)
+                        {
+                            anyCopyFailed = true;
+                            AddLog($"  ❌ تعذر نسخ: {rel}");
+                        }
 
                         int pct = (i + 1) * 100 / files.Length;
                         Dispatcher.Invoke(() => SetProgress(pct));
                     }
 
                     AddLog("");
+                    if (anyCopyFailed)
+                    {
+                        AddLog("❌ فشل التحديث: تعذر نسخ بعض الملفات بعد المحاولات.");
+                        return false;
+                    }
                     AddLog("✅ تم تثبيت جميع الملفات بنجاح!");
                     return true;
                 }
