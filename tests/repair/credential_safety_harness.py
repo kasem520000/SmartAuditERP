@@ -246,8 +246,12 @@ WITNESS = [
     ("SmartAuditERP/Form_WPF/frmAddUsers.xaml.cs",
      ["where username=@username and IS_Deleted=0",
       "where SecureCode=@secureCode and IS_Deleted=0",
-      "where emp<>@code and username=@username and IS_Deleted=0"],
-     ["username=N'", "SecureCode=N'"]),
+      # R-029 (P2-007) moved the edit-mode exclusion from emp to the record's own id;
+      # parameterisation (the property this witness guards) is unchanged.
+      "where id<>@code and username=@username and IS_Deleted=0"],
+     ["username=N'", "SecureCode=N'",
+      # must not regress to excluding by emp while @code holds a Users.id (P2-007).
+      "where emp<>@code and username=@username"]),
 ]
 for path, needs, gones in WITNESS:
     s = open(path, encoding="utf-8").read()
