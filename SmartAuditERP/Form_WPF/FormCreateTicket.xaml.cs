@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -14,7 +14,13 @@ namespace SmartAuditERP.Form_WPF
         #region Private Fields
 
         private SupportTicketApiClient apiClient;
-        public static string[] filePathDocument;
+
+        // Repair R-025 (audit finding P2-015): this list used to be 'public static', so the
+        // attachments chosen for one ticket outlived Clear/success and even the window itself -
+        // the very next ticket submitted from a brand-new window silently re-sent the previous
+        // images. Attachments now belong to THIS draft/window only; nothing outside this class
+        // referenced the field, so no call site changes.
+        private string[] filePathDocument;
 
         #endregion
 
@@ -139,6 +145,9 @@ namespace SmartAuditERP.Form_WPF
             TextBoxDescription.Clear();
             ComboBoxPriority.SelectedIndex = 1;
             ComboBoxCategory.SelectedIndex = 0;
+            // R-025 (P2-015): dropping a draft or finishing a ticket must also drop its chosen
+            // attachments; without this a later submit re-sent stale files.
+            filePathDocument = null;
         }
 
         #endregion
