@@ -1085,13 +1085,27 @@ namespace SmartAuditERP
 
         public void @lock()
         {
+            // Repair R-026 (audit finding P2-002): ShowDialog's return used to be ignored, so
+            // closing or dismissing the lock dialog WITHOUT a successful authentication left the
+            // business shell running unlocked - "the dialog came back" was treated as "identity
+            // proved". Now every outcome that is not a verified unlock ends the session safely
+            // (audit acceptance P2T-03: keep the block or terminate), including exceptions while
+            // showing the lock, which previously fell into an empty catch and continued unlocked.
+            bool unlocked;
             try
             {
                 var frmLock = new frmlock();
                 MainClass.DoApplyUserSett(frmLock);
                 frmLock.ShowDialog();
+                unlocked = frmLock.Iscorrect;
             }
-            catch { }
+            catch
+            {
+                unlocked = false;
+            }
+
+            if (!unlocked)
+                Application.Current.Shutdown();
         }
 
         private void btnLogOut_Click(object sender, RoutedEventArgs e)

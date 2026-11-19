@@ -210,19 +210,46 @@ namespace SmartAuditERP.Form_WPF
 
         private void LinkLabel1_LinkClicked(object sender, MouseButtonEventArgs e)
         {
+            // Repair R-026 (audit finding P2-002): the advanced login dialog used to be followed
+            // by an unconditional Hide(), so returning from a FAILED or CANCELLED advanced login
+            // still removed the lock from view. Read the dialog's own SuccessLogin flag instead:
+            // only a genuine unlock closes the lock; anything else keeps it open and on top.
             try
             {
                 var frmUserLogin = new frmUserLogin();
                 Topmost = false;
                 frmUserLogin.ShowDialog();
-                Hide();
+
+                if (frmUserLogin.SuccessLogin)
+                {
+                    Iscorrect = true;
+                    Close();
+                    return;
+                }
+
+                Topmost = true;
             }
-            catch { }
+            catch
+            {
+                Topmost = true;
+            }
         }
 
         #endregion
 
         #region Window Events
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            base.OnClosing(e);
+
+            // R-026 (P2-002): while identity is NOT proven, no dismissal route (X button,
+            // Alt+F4, taskbar close) may remove the lock. Only successful Check()/advanced login
+            // sets Iscorrect; is_close remains the existing escape hatch for programmatic close.
+            // Note: non-numeric PIN text normalising to zero here stays tracked under P2-008.
+            if (!Iscorrect && !is_close)
+                e.Cancel = true;
+        }
 
         private void Frm_Calculator_Click(object sender, MouseButtonEventArgs e)
         {
