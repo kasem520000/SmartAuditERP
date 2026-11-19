@@ -574,7 +574,114 @@ namespace SmartAuditERP
 			return text2;
 		}
 
+		// Repair R-001 (audit finding P7-139): the Arabic number-to-words engine below is a
+		// positional decoder pinned to a fixed 12-digit template ("000000000000") and reads every
+		// digit/group through absolute Strings.Mid offsets. That is only valid while the integer
+		// magnitude has at most 12 digits (<= 999,999,999,999). For larger magnitudes
+		// Strings.Format emits a LONGER string, so every absolute offset reads the wrong digit and
+		// silently produces corrupted wording. This dispatcher keeps the legacy engine EXACTLY for
+		// everything it handled correctly (byte-identical output => no regression for current
+		// invoices/receipts/salaries/statements/balances) and adds a correct right-anchored
+		// composer, using standard Arabic short-scale names, for magnitudes beyond the 12-digit
+		// window. It invents no accounting/tax/unit policy and changes no currency handling.
 		public static string SFormatNumber(double X)
+		{
+			double floored = Math.Floor(X);
+			// Negative, NaN or infinite inputs lie outside the wording domain; route them to the
+			// untouched legacy engine so their behaviour is identical to before this repair.
+			if (double.IsNaN(floored) || double.IsInfinity(floored) || floored < 0.0)
+			{
+				return InvoiceOper.SFormatNumberCore(floored);
+			}
+			// Within the 12-digit window: identical legacy output.
+			if (floored <= 999999999999.0)
+			{
+				return InvoiceOper.SFormatNumberCore(floored);
+			}
+			// Wider than the 12-digit window: compose from 3-digit groups with correct scale names.
+			return InvoiceOper.SFormatNumberWide(floored);
+		}
+
+		private static readonly string[] _arabicScaleSingular = new string[] { "", "الف", "مليون", "مليار", "تريليون", "كوادريليون", "كوينتيليون", "سكستيليون" };
+		private static readonly string[] _arabicScaleDual = new string[] { "", "الفان", "مليونان", "ملياران", "تريليونان", "كوادريليونان", "كوينتيليونان", "سكستيليونان" };
+		private static readonly string[] _arabicScalePlural = new string[] { "", "آلاف", "ملايين", "مليار", "تريليونات", "كوادريليونات", "كوينتيليونات", "سكستيليونات" };
+
+		// Composes magnitudes beyond 12 digits. The lowest 12 digits are rendered by the exact
+		// legacy engine (so thousands/millions/billions wording matches historical output); higher
+		// 3-digit groups are named with the standard Arabic short-scale table and joined with " و".
+		private static string SFormatNumberWide(double X)
+		{
+			System.Collections.Generic.List<string> highParts = new System.Collections.Generic.List<string>();
+			double remaining = Math.Floor(X);
+			// Lowest 12 digits (always < 1e12, so the cast to long is safe): legacy phrasing.
+			double lowTwelve = remaining % 1000000000000.0;
+			string lowWord = InvoiceOper.SFormatNumberCore((double)checked((long)lowTwelve));
+			remaining = Math.Floor(remaining / 1000000000000.0);
+			int groupIndex = 4; // 10^(3*4) = trillion
+			while (remaining >= 1.0)
+			{
+				int groupValue = (int)(remaining % 1000.0); // 0..999
+				if (groupValue != 0)
+				{
+					highParts.Add(InvoiceOper.ArabicScalePhrase(groupIndex, groupValue));
+				}
+				remaining = Math.Floor(remaining / 1000.0);
+				groupIndex++;
+			}
+			highParts.Reverse();
+			System.Text.StringBuilder sb = new System.Text.StringBuilder();
+			foreach (string part in highParts)
+			{
+				if (!string.IsNullOrEmpty(part))
+				{
+					if (sb.Length > 0)
+					{
+						sb.Append(" و");
+					}
+					sb.Append(part);
+				}
+			}
+			if (!string.IsNullOrEmpty(lowWord))
+			{
+				if (sb.Length > 0)
+				{
+					sb.Append(" و");
+				}
+				sb.Append(lowWord);
+			}
+			return sb.ToString();
+		}
+
+		// Renders one 3-digit group (1..999) together with its scale name, mirroring the legacy
+		// convention: value 1 => singular alone, value 2 => dual alone, 3..10 => words + plural,
+		// >10 => words + singular. New scales (trillion+) use a regular sound plural for 3..10.
+		private static string ArabicScalePhrase(int groupIndex, int value)
+		{
+			if (groupIndex >= 0 && groupIndex < InvoiceOper._arabicScaleSingular.Length)
+			{
+				if (value == 1)
+				{
+					return InvoiceOper._arabicScaleSingular[groupIndex];
+				}
+				if (value == 2)
+				{
+					return InvoiceOper._arabicScaleDual[groupIndex];
+				}
+				string words = InvoiceOper.SFormatNumberCore(value);
+				if (value >= 3 && value <= 10)
+				{
+					return (words + " " + InvoiceOper._arabicScalePlural[groupIndex]).Trim();
+				}
+				return (words + " " + InvoiceOper._arabicScaleSingular[groupIndex]).Trim();
+			}
+			// Far beyond the defined scale table (unreachable for monetary values): emit an explicit
+			// power-of-thousand marker instead of corrupt wording.
+			string wideWords = InvoiceOper.SFormatNumberCore(value);
+			return (wideWords + " ×10^" + (groupIndex * 3)).Trim();
+		}
+
+		// Preserved verbatim: the legacy positional engine. Valid for magnitudes up to 12 digits.
+		private static string SFormatNumberCore(double X)
 		{
 			string str;
 			str = Strings.Format(Math.Floor(X), "000000000000");
