@@ -360,24 +360,39 @@ namespace SmartAuditERP.Form_WPF
 
         private void SaveStartupData()
         {
+            // Repair R-014 (audit finding P1-009): "remember me" used to decide only whether the
+            // login form REFILLED itself on load, while StartupData.json was written with the
+            // application password and the SQL Server credentials on every save either way - so
+            // unticking "remember" removed nothing from disk, and the next launch still loaded the
+            // stored server credentials into memory. Honour the choice where it matters: secrets
+            // are persisted ONLY while Remember is checked; otherwise empty strings are stored.
+            // This composes with the existing read path, which already derives UseServerAuth from a
+            // non-empty ServerUserName and clears the password box when Remember is false, so the
+            // observable behaviour stays coherent (users who opt out simply re-enter credentials,
+            // exactly what their choice means). Non-secret connection metadata keeps saving as
+            // before. Protecting an opted-IN file at OS level (credential store / DPAPI) and
+            // cleaning pre-existing files are the documented needs-input layer (TRACKER R-014),
+            // not something this change fabricates.
+            bool remember = chkRemember.IsChecked == true;
+
             var startupData = new StartupData
             {
-                Remember = chkRemember.IsChecked == true,
+                Remember = remember,
                 ConnType = MainClass.Conn_type.ToString(),
                 Server = MainClass.Server,
                 DatabaseName = cmbDatabases.SelectedValue?.ToString() ?? "",
                 Branch = cmbBranches.SelectedValue?.ToString() ?? "",
                 UserName = txtUser.Text,
-                Password = txtPwd.Password,
+                Password = remember ? txtPwd.Password : "",
                 Language = cmblanguages.SelectedIndex.ToString()
             };
 
-            if (conn_type == 1 && MainClass.UseServerAuth)
+            if (remember && conn_type == 1 && MainClass.UseServerAuth)
             {
                 startupData.ServerUserName = MainClass.NetUserId;
                 startupData.ServerPassword = MainClass.NetPwd;
             }
-            if (conn_type == 2)
+            if (remember && conn_type == 2)
             {
                 startupData.ServerUserName = MainClass.NetUserId;
                 startupData.ServerPassword = MainClass.NetPwd;
