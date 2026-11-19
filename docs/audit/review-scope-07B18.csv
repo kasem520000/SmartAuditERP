@@ -1,0 +1,30 @@
+path,review_state,ranges,focus
+SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs,selected-static-request-trace-slices-not-runtime-certified,55-188;209-311;619-759;1011-1194,المستقبل: constructor و Loaded و lookup و LastProcess وحراس الطرف والمخزن والترتيب وفتح المستند. شرائح مسماة، لا مراجعة كل القدرة.
+SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml,selected-static-request-trace-slices-not-runtime-certified,251-312;355-433;708-724,خيارات الفرع والمخزن والفترة والطرف وزر فتح الصف. قراءة XAML ساكنة، لا rendering أو قبول واجهة.
+SmartAuditERP/Form_WPF/frmcontract.xaml.cs,selected-static-request-trace-slices-not-runtime-certified,424-448;1338-1374;1532-1595,مصدر نوع الطرف وقائمة runtime والمداخل الثلاثة. لا كل العقود أو الحفظ.
+SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs,selected-static-request-trace-slices-not-runtime-certified,296-325;2527-2571,مصدر نوع الطرف بحسب InvType ومداخل الحركة وآخر حركة الطرف. لا كل محرر الفاتورة.
+SmartAuditERP/Form_WPF/frmSalesInvoice.xaml,selected-static-request-trace-slices-not-runtime-certified,545-563,ربط أسماء أوامر الحركة بمعالجاتها فقط، لا كامل الشاشة.
+SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs,selected-static-request-trace-slices-not-runtime-certified,275-316;2228-2266,شرائح cp1256 فُك ترميزها للقراءة فقط: مورد2 مقابل kind1. لم يُعد ترميز الملف أو تعديله.
+SmartAuditERP/Form_WPF/frmSalePurch.xaml,selected-static-request-trace-slices-not-runtime-certified,751-777,ربط أوامر الحركة والطرف بمعالجاتها. لا كل الشاشة أو وصولها المنشور.
+SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs,selected-static-request-trace-slices-not-runtime-certified,215-242;2414-2446,واجهة مشتريات إضافية: مصدر المورد وأوامر الحركة. لا يُثبت وجود الكلاس ورودها في النشر.
+SmartAuditERP/Form_WPF/frmPurchInv.xaml,selected-static-request-trace-slices-not-runtime-certified,775-790,قائمة الحركة المحلية. لا وصول إنتاج مفترض.
+SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs,selected-static-request-trace-slices-not-runtime-certified,1358-1381;1442-1482,قائمة runtime ومداخل الحركة العامة والأخيرة. تعبير المخزن موثق، لا كل نموذج الصف أو دورة النقل.
+SmartAuditERP/Form_WPF/frmInvSale.xaml.cs,selected-static-request-trace-slices-not-runtime-certified,489-511;1115-1121;1185-1227,مصدر الطرف و wrappers وأوامر الحركة. النمط InvType1 مشروط، لا اعتماد كل حالات التشغيل.
+SmartAuditERP/Form_WPF/frmInvSale.xaml,selected-static-request-trace-slices-not-runtime-certified,671-682,أسماء الأوامر وربطها بالمداخل الثلاثة فقط.
+SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs,selected-static-request-trace-slices-not-runtime-certified,231-258;882-895;1123-1167,شاهد مورد2→kind2 مع بقاء122/059. لا كل عمليات المشتريات.
+SmartAuditERP/Form_WPF/frmInvPurch.xaml,selected-static-request-trace-slices-not-runtime-certified,700-718,ربط زر آخر حركة المورد بالمعالج المطابق.
+SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs,selected-static-request-trace-slices-not-runtime-certified,1197-1241;1740-1761;2658-2680,مداخل POS ومسار اختيار عميل Type1 مقابل kind2 عند النقل. لا دفع أو حفظ.
+SmartAuditERP/Form_WPF/frmInvPOS.xaml,selected-static-request-trace-slices-not-runtime-certified,515-533,تمييز أمر المادة العام عن أمر الطرف في قائمة POS.
+SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs,selected-static-request-trace-slices-not-runtime-certified,253-273;936-960;1263-1308,نوع الطرف في4/14 مقابل5، ثم const2 في الطلب. لا كل أوامر الإدخال والإخراج.
+SmartAuditERP/Form_WPF/frmInvInputOutput.xaml,selected-static-request-trace-slices-not-runtime-certified,751-766,القائمة تسمي الطرف مورداً؛ تحديد نوعه من مصدر الأب، لا من التسمية وحدها.
+SmartAuditERP/Form_WPF/frmInvInOutput.xaml.cs,selected-static-request-trace-slices-not-runtime-certified,409-439;2569-2623,تحميل الطرف والمعالج الفعلي لأمر العميل، StripLastItem. كلا استدعاءَي LP يرسل-1. ورود النافذة من الخارج غير محسوم.
+SmartAuditERP/Form_WPF/frmInvInOutput.xaml,selected-static-request-trace-slices-not-runtime-certified,544-565,label العميل مربوط بـ StripLastItem، لا بالمعالج الآخر الذي يوحي اسمه بذلك.
+SmartAuditERP/Class/LoadData.cs,selected-static-request-trace-slices-not-runtime-certified,28-43,Customers(Type) يحصر type المطلوب أو3. لا DDL أو نشر أو grants مستنتجة.
+SmartAuditERP/Form_WPF/frmSrchClient.xaml.cs,selected-static-request-trace-slices-not-runtime-certified,96-125,عقد حوار اختيار العميل: Type1 أو3 وعمود المعرف. لا كامل الحوار.
+SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs,selected-static-request-trace-slices-not-runtime-certified,470-639,شاهد GlobalID و ProcType في مداخل inventory المحددة. لا كل Navigate أو حراس الحفظ.
+SmartAuditERP/Form_WPF/frmRptInventory.xaml,selected-static-request-trace-slices-not-runtime-certified,453-489,Tag للهوية العالمية مقابل Tag للصف. لا اعتماد قالب خارجي.
+SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs,selected-static-request-trace-slices-not-runtime-certified,187-211;312-347,أقرب أصل058: فرع العميل فارغ في التجميعي؛ مختلف عن فقد نوع الطرف أو معرفه في طلب الطفل التفصيلي.
+SmartAuditERP/Form_WPF/frmInvSumByType.xaml.cs,selected-static-request-trace-slices-not-runtime-certified,275-307,شاهد route محلي إلى SalePurch من صف InvType1. لا كل التقرير أو هوية النشر.
+SmartAuditERP/Home.xaml.cs,selected-static-request-trace-slices-not-runtime-certified,2872-2889;2948-2962,مداخل Home المباشرة لتقارير R1 فقط. لا شهادة ACL أو وصول إنتاج.
+SmartAuditERP/Form_WPF/frmEmpInvs.xaml.cs,selected-static-request-trace-slices-not-runtime-certified,435-475,شاهد route إضافي إلى SalePurch. لا كامل تقرير الموظف أو بدء7C.
+SmartAuditERP/Class_WPF/ItemActivityRow_ActivityDetailed.cs,selected-static-request-trace-slices-not-runtime-certified,13-40,DTO الصف التفصيلي يحمل الرقم المحلي واسم العرض، لا GlobalID أو branch. لا مراجعة كل DTOs.
