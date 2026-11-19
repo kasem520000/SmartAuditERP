@@ -485,6 +485,17 @@ namespace SmartAuditERP.Form_WPF
                 DataTable dt = new DataTable();
                 da.Fill(dt);
 
+                // Repair R-032 (audit finding P2-008): a duplicated SecureCode used to log in as
+                // WHICHEVER row came back first - row order deciding identity. For the PIN path an
+                // ambiguous match is refused outright until duplicates are removed; ordinary
+                // username+password login keeps matching at most one account by construction.
+                if (Type != 1 && dt.Rows.Count > 1)
+                {
+                    MessageBox.Show("هذا الرقم السري مطابق لأكثر من حساب؛ لا يمكن الدخول حتى إزالة التكرار.",
+                        "", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return false;
+                }
+
                 if (dt.Rows.Count > 0)
                 {
                     // التحقق من صلاحية الفرع

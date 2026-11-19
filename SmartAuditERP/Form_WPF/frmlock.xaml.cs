@@ -83,14 +83,19 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
-                double numericCode = 0;
-                double.TryParse(passwordText, out numericCode);
-
-                SqlDataAdapter adapterSecure = new SqlDataAdapter(
-                    $"select * from Users where emp={MainClass.UserID} and SecureCode={(int)numericCode} and LoginSecode=1",
-                    conn);
+                // Repair R-032 (audit finding P2-008): a non-numeric entry used to fail TryParse
+                // and silently compare SecureCode=0 - matching any account whose PIN happens to be
+                // zero. The PIN arm now runs ONLY for canonical integral input; anything else is
+                // left to the password comparison below (the values are ints, so no injection).
                 DataTable dtSecure = new DataTable();
-                adapterSecure.Fill(dtSecure);
+                if (long.TryParse(passwordText.Trim(), out long unlockPin) &&
+                    unlockPin >= 0 && unlockPin <= int.MaxValue)
+                {
+                    SqlDataAdapter adapterSecure = new SqlDataAdapter(
+                        $"select * from Users where emp={MainClass.UserID} and SecureCode={(int)unlockPin} and LoginSecode=1",
+                        conn);
+                    adapterSecure.Fill(dtSecure);
+                }
 
                 // Repair R-015 (audit finding P1-011): the unlock password was interpolated into
                 // the SELECT text, letting crafted input alter the predicate instead of being

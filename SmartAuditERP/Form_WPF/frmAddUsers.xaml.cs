@@ -190,14 +190,21 @@ namespace SmartAuditERP.Form_WPF
                     }
                 }
 
-                // التحقق من تكرار الرقم السري (إضافة جديدة)
-                if (Code == -1 && !string.IsNullOrWhiteSpace(txtSecureCode.Text))
+                // التحقق من تكرار الرقم السري (إضافة وتعديل)
+                if (!string.IsNullOrWhiteSpace(txtSecureCode.Text))
                 {
                     // Repair R-015 (P1-011): bind the secure code as a typed parameter instead of
                     // embedding it in the uniqueness-check text.
+                    // Repair R-032 (audit finding P2-008): this check used to run for NEW users
+                    // only, so editing an account could silently create a duplicate PIN that later
+                    // resolves to whichever row comes first. It now also runs while editing,
+                    // excluding the record being edited by its own key (id<>@id keeps @id=-1
+                    // harmless on the add path). The database index backing this stays tracked as
+                    // owner-input residual (no unique constraint exists in the embedded schema).
                     var dupCodeCmd = new SqlCommand(
-                        "select id from Users where SecureCode=@secureCode and IS_Deleted=0", conn);
+                        "select id from Users where SecureCode=@secureCode and IS_Deleted=0 and id<>@id", conn);
                     dupCodeCmd.Parameters.Add("@secureCode", SqlDbType.NVarChar).Value = txtSecureCode.Text;
+                    dupCodeCmd.Parameters.Add("@id", SqlDbType.Int).Value = Code;
                     var da2 = new SqlDataAdapter(dupCodeCmd);
                     var dt2 = new DataTable();
                     da2.Fill(dt2);
@@ -247,7 +254,31 @@ namespace SmartAuditERP.Form_WPF
 
                 int loginSecode = (ckLoginSecode.IsChecked == true) ? 1 : 0;
 
-                double.TryParse(txtSecureCode.Text, out double secureCodeVal);
+                // Repair R-032 (P2-008): a failed numeric parse used to fall through as ZERO and
+                // fractions were truncated on cast - "12.7" stored 12, letters stored 0 - so two
+                // accounts could converge on the same identity key after normalisation. The PIN is
+                // now canonical digits only: required and strictly integral when quick-login is
+                // enabled, still optional (stored 0) when it is not, and never silently coerced.
+                long pinVal = 0;
+                string pinText = txtSecureCode.Text?.Trim() ?? "";
+                if (pinText.Length > 0)
+                {
+                    if (!long.TryParse(pinText, out pinVal) || pinVal < 0 || pinVal > int.MaxValue)
+                    {
+                        MessageBox.Show("الرقم السري يجب أن يكون رقماً صحيحاً موجباً بلا كسور أو حروف.",
+                            "", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        txtSecureCode.Focus();
+                        return;
+                    }
+                }
+                else if (loginSecode == 1)
+                {
+                    MessageBox.Show("أدخل الرقم السري أو ألغِ تفعيل الدخول به.",
+                        "", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    txtSecureCode.Focus();
+                    return;
+                }
+                int secureCodeInt = (int)pinVal;
 
                 if (conn.State != ConnectionState.Open) conn.Open();
 
@@ -257,7 +288,7 @@ namespace SmartAuditERP.Form_WPF
                     cmd = new SqlCommand(
                         "insert into Users(emp,username,pwd,SecureCode,LoginSecode,IS_Deleted)" +
                         " values(" + cmbEmp.SelectedValue +
-                        ",@username,@pwd," + (int)secureCodeVal +
+                        ",@username,@pwd," + secureCodeInt +
                         "," + loginSecode + ",0)", conn);
                     cmd.Parameters.Add("@username", SqlDbType.NVarChar).Value = txtUser.Text;
                     cmd.Parameters.Add("@pwd", SqlDbType.NVarChar).Value = txtPass.Password;
@@ -269,7 +300,7 @@ namespace SmartAuditERP.Form_WPF
                 {
                     cmd = new SqlCommand(
                         "update Users set emp=" + cmbEmp.SelectedValue +
-                        ",username=@username,pwd=@pwd,SecureCode=" + (int)secureCodeVal +
+                        ",username=@username,pwd=@pwd,SecureCode=" + secureCodeInt +
                         ",LoginSecode=" + loginSecode +
                         ",IS_Deleted=0 where id=" + Code, conn);
                     cmd.Parameters.Add("@username", SqlDbType.NVarChar).Value = txtUser.Text;

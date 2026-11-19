@@ -67,12 +67,15 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
-                if (decimal.TryParse(pwd, out decimal val) &&
-                    val >= 0 && val <= 1000000)
+                // Repair R-032 (audit finding P2-008): accepting a DECIMAL and truncating it made
+                // "12.7" authenticate as account 12; identity material must be exact canonical
+                // digits only, compared without normalisation.
+                if (long.TryParse(pwd.Trim(), out long pin) &&
+                    pin >= 0 && pin <= int.MaxValue)
                 {
                     var frmUserLogin = new frmUserLogin();
                     frmUserLogin.Activate();
-                    frmUserLogin.SecureCode = Convert.ToInt32(val);
+                    frmUserLogin.SecureCode = (int)pin;
                     frmUserLogin.LoadData();
                     frmUserLogin.Login(2);
 
