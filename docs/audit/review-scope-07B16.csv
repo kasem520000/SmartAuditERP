@@ -1,0 +1,31 @@
+path,review_state,ranges,focus
+SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs,selected-static-source-slices-not-runtime-certified,1-1086,جسم محلي وown-XAML مقروءان بالكامل فيB16 مع تتبع source/request/DTO/output. ليست تغطية كلfeature أوكلcaller أوتصديقREPX/schema/ACL/نشر أوتشغيل. الطفل كان مقاطع فقطB15، لا يرث عمق والده.
+SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml,selected-static-source-slices-not-runtime-certified,1-601,جسم محلي وown-XAML مقروءان بالكامل فيB16 مع تتبع source/request/DTO/output. ليست تغطية كلfeature أوكلcaller أوتصديقREPX/schema/ACL/نشر أوتشغيل.
+SmartAuditERP/Form_WPF/frmVATReturn.xaml.cs,selected-static-source-slices-not-runtime-certified,1-858,جسم محلي وown-XAML مقروءان بالكامل فيB16 مع تتبع source/request/DTO/output. ليست تغطية كلfeature أوكلcaller أوتصديقREPX/schema/ACL/نشر أوتشغيل. مستدع فعلي منفصل عنfrmTaxRptPeriod؛ لا مساواة قسرية بين مصدريهما.
+SmartAuditERP/Form_WPF/frmVATReturn.xaml,selected-static-source-slices-not-runtime-certified,1-764,جسم محلي وown-XAML مقروءان بالكامل فيB16 مع تتبع source/request/DTO/output. ليست تغطية كلfeature أوكلcaller أوتصديقREPX/schema/ACL/نشر أوتشغيل.
+SmartAuditERP/Class/Report.cs,selected-static-source-slices-not-runtime-certified,1-611,Report محلي كامل: GridView/DataTable overloads، defaults/empty-result، نسخ ومعاينة وheader/footer. ليس build/resolution أوREPX.
+SmartAuditERP/Class/Print.cs,selected-static-source-slices-not-runtime-certified,54-221,constructor/SettingPrint/PrinterSettings وPrinting فقط؛ لا إعادة قراءة BindToData للفواتير أوالبريد/التفقيط كله.
+SmartAuditERP/Form_WPF/frmPrinter.xaml.cs,selected-static-source-slices-not-runtime-certified,1-127,جسم محلي وown-XAML مقروءان بالكامل فيB16 مع تتبع source/request/DTO/output. ليست تغطية كلfeature أوكلcaller أوتصديقREPX/schema/ACL/نشر أوتشغيل. C# كامل فيB1 سابقاً؛ الجديد own-XAML/contract، لا أول قراءة للجسم.
+SmartAuditERP/Form_WPF/frmPrinter.xaml,selected-static-source-slices-not-runtime-certified,1-109,جسم محلي وown-XAML مقروءان بالكامل فيB16 مع تتبع source/request/DTO/output. ليست تغطية كلfeature أوكلcaller أوتصديقREPX/schema/ACL/نشر أوتشغيل.
+SmartAuditERP/Class/InventoryData.cs,selected-static-source-slices-not-runtime-certified,1-303,DTO محلي string-default fields، لا غيابDependency منusing. لا typed مالي أو versioned snapshot.
+SmartAuditERP/Class/resvdPrint.cs,selected-static-source-slices-not-runtime-certified,1-32,DTO محلي26string؛ بنوك/رواتبحقيقيةلمتستخدم.
+SmartAuditERP/Class/RptTaxData.cs,selected-static-source-slices-not-runtime-certified,1-46,DTO محلي35string؛ A/B/C/E/F/H mappings؛ لاخريطةقالبخارجي.
+SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs,selected-static-source-slices-not-runtime-certified,650-755,output→Report وnull GridView barrier محفوظ؛ لا إعادة جسم الأب أووهمحلoverload.
+SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs,selected-static-source-slices-not-runtime-certified,515-710,settings12→live defaults وDTO/movement outputs؛ الأب كاملB14 وليس أول قراءة.
+SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs,selected-static-source-slices-not-runtime-certified,525-660,output/DTO المقابل للحركة التفصيلية فقط؛ لا إعادة جسم الأب أوكلopener.
+SmartAuditERP/Form_WPF/frmRptItemsExpiration.xaml.cs,selected-static-source-slices-not-runtime-certified,265-320,batch/expiry DTO→Report.Printing معcopies1؛ لا مساواة batch بمجموعحركة أوإثباتقالب.
+SmartAuditERP/Form_WPF/FrmReseved.xaml.cs,selected-static-source-slices-not-runtime-certified,547-655,resvdPrint→Print طلب10 تاريخياً، حقول/masters/livecriteria/saved-subset والنتيجة؛ لا إعادةحسابالرواتبأوأهليتها.
+SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml.cs,selected-static-source-slices-not-runtime-certified,180-211;700-817;847-887,outputSettings/DTO/REPX/callers للوالدالسابق، شاهدالتفريق عنVATcaller؛ لا إعادةالجسم.
+SmartAuditERP/Form_WPF/frmSettings.xaml.cs,selected-static-source-slices-not-runtime-certified,97-159;1233-1312;2087-2205;2898-2960,RegisterEvents يربط حفظ الطباعة وخياراتها برمجياً؛ XAML بلا Click ليس إثبات غياب. مقاطع read/write/settingsId/default0/report6 وglobal publication، لا كلfrmSettings أوأمنه.
+SmartAuditERP/Form_WPF/frmSettings.xaml,selected-static-source-slices-not-runtime-certified,1060-1118;1135-1175;1296-1312,عناصرنوعالطباعةوالنسخوالاسم/المساروflagsوزرالحفظ؛ selectedXAMLلاالجسم.
+SmartAuditERP/Class/Common.cs,selected-static-source-slices-not-runtime-certified,901-942,مصدرdefaultsReportsPath/Printer منSettingPrint0 وfallback؛ لاقراءةكلCommon.
+SmartAuditERP/Class/MainClass.cs,selected-static-source-slices-not-runtime-certified,349-455,WPFpermission helper/earlyreturn/visualtree/exactnames، لا ACL فعلي من النص.
+SmartAuditERP/Home.xaml.cs,selected-static-source-slices-not-runtime-certified,2706-2713,HomeTax ينشئVATReturn وApplyقبلShow؛ لا وصولنشرمنوجودhandler.
+SmartAuditERP/Home.xaml,selected-static-source-slices-not-runtime-certified,345-345,عنصرالقائمة disabled أولياً شاهد مضادلاعتبارHomeإثباتوصولتشغيلي.
+SmartAuditERP/Properties/Resources.resx,selected-static-source-slices-not-runtime-certified,242-276;954-977;1496-1532;2014-2035;2283-2312;3895-3908,DDL supplied لفرعid/BranchId/Code ومفاتيحInv/Receipts/settings والموردين؛ ليس schema/deployment/grants أوكلmigrations.
+SmartAuditERP/Class/InvoiceObj.cs,selected-static-source-slices-not-runtime-certified,113-184,إعدادالنوعالحاليPriceIncVAT/MainVAT/defaults؛ لا تحميلتاريخيفاتورة.
+SmartAuditERP/Class/InvoiceOper.cs,selected-static-source-slices-not-runtime-certified,1530-1573;1595-1604,كاتبparameterizedيحفظPriceIncVAT وVATPercent وval/val1/exchange_price، لافرضإصلاحالكاتبأوحفظمرصود.
+SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs,selected-static-source-slices-not-runtime-certified,481-503,مستقبلNavigate المحلي→BindingInvoice/Controls؛ لاكلمحررأوكلbinder.
+SmartAuditERP/Form_WPF/frmInvSale.xaml.cs,selected-static-source-slices-not-runtime-certified,1643-1660,مستقبلNavigate للمبيعاتمقاطعفقط.
+SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs,selected-static-source-slices-not-runtime-certified,1861-1880,مستقبلNavigateلـPOS؛ لاreviewشاملهأوأندرويد.
+SmartAuditERP/Form_WPF/frmSandVAT.xaml.cs,selected-static-source-slices-not-runtime-certified,528-622;642-667,المستقبلينفذSQLالمرسلثمReadمرة ويعيدGlobalID/BranchID؛ navigationداخليهحارسفرعخلافطلبالطفل.
