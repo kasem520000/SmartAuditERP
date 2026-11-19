@@ -1,0 +1,760 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "source_head": "10ba215152f722c8808aea0bb672c1d1d4d9d711",
+  "phase": "7B20-partial-static-barcode-contracts",
+  "method": "Independent manually transcribed ASCII/Decimal illustrations and bounded literal-source observations only, not SQL/C#/WPF/DTO/UtilitiesProj/REPX/scanner/printer or business acceptance.",
+  "illustration_count": 12,
+  "illustrations": [
+    {
+      "id": "ALG7B20-01",
+      "title": "Valid weight is discarded by three identity-only invoice callers",
+      "finding_ids": "P7-136",
+      "observed": [
+        "1",
+        "1",
+        "1"
+      ],
+      "expected": [
+        "1",
+        "1",
+        "1"
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Manually transcribed ASCII/Decimal illustration only; no SQL/.NET/WPF/DTO, physical order, business policy, checksum or saved invoice demonstrated."
+    },
+    {
+      "id": "ALG7B20-02",
+      "title": "Embedded price is also discarded, not merely fractional quantity",
+      "finding_ids": "P7-136",
+      "observed": {
+        "decoded_price": "12.34",
+        "invoice_price": "10"
+      },
+      "expected": {
+        "decoded_price": "12.34",
+        "invoice_price": "10"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Manually transcribed ASCII/Decimal illustration only; no SQL/.NET/WPF/DTO, physical order, business policy, checksum or saved invoice demonstrated."
+    },
+    {
+      "id": "ALG7B20-03",
+      "title": "POS consumes a successfully decoded positive weight as counterevidence",
+      "finding_ids": "P7-136",
+      "observed": {
+        "price": "10",
+        "quantity": "2.5",
+        "is_scale": true
+      },
+      "expected": {
+        "price": "10",
+        "quantity": "2.5",
+        "is_scale": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Manually transcribed ASCII/Decimal illustration only; no SQL/.NET/WPF/DTO, physical order, business policy, checksum or saved invoice demonstrated."
+    },
+    {
+      "id": "ALG7B20-04",
+      "title": "Base-barcode OR admits both unit rows even with distinct barcodes",
+      "finding_ids": "P7-137",
+      "observed": [
+        1,
+        12
+      ],
+      "expected": [
+        1,
+        12
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Manually transcribed ASCII/Decimal illustration only; no SQL/.NET/WPF/DTO, physical order, business policy, checksum or saved invoice demonstrated. Candidate multiplicity, not proof which SQL row arrives first."
+    },
+    {
+      "id": "ALG7B20-05",
+      "title": "Either selected unit changes weight-to-base meaning",
+      "finding_ids": "P7-137",
+      "observed": [
+        "2.5",
+        "30.0"
+      ],
+      "expected": [
+        "2.5",
+        "30.0"
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Manually transcribed ASCII/Decimal illustration only; no SQL/.NET/WPF/DTO, physical order, business policy, checksum or saved invoice demonstrated. Assumes Wscale1 payload is the base unit; support/unit contract must be supplied."
+    },
+    {
+      "id": "ALG7B20-06",
+      "title": "Alphabetic payload falls to numeric zero and POS ordinary default one",
+      "finding_ids": "P7-138",
+      "observed": {
+        "price": "10",
+        "quantity": "1",
+        "is_scale": false
+      },
+      "expected": {
+        "price": "10",
+        "quantity": "1",
+        "is_scale": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Manually transcribed ASCII/Decimal illustration only; no SQL/.NET/WPF/DTO, physical order, business policy, checksum or saved invoice demonstrated. Given prefix lookup succeeds and exact lookups do not match."
+    },
+    {
+      "id": "ALG7B20-07",
+      "title": "Partially malformed payload can still become a positive weight",
+      "finding_ids": "P7-138",
+      "observed": "0.25",
+      "expected": "0.25",
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Manually transcribed ASCII/Decimal illustration only; no SQL/.NET/WPF/DTO, physical order, business policy, checksum or saved invoice demonstrated. Illustrates loss of parse-failure status, not a .NET parser conformance test."
+    },
+    {
+      "id": "ALG7B20-08",
+      "title": "Exact unit and alias results precede scale attempt",
+      "finding_ids": "H7B20-03",
+      "observed": [
+        "unit-exact",
+        "alias-exact",
+        "scale-attempt",
+        "not-found"
+      ],
+      "expected": [
+        "unit-exact",
+        "alias-exact",
+        "scale-attempt",
+        "not-found"
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Manually transcribed ASCII/Decimal illustration only; no SQL/.NET/WPF/DTO, physical order, business policy, checksum or saved invoice demonstrated."
+    },
+    {
+      "id": "ALG7B20-09",
+      "title": "Retained static price flag root remains independent",
+      "finding_ids": "P4-028",
+      "observed": [
+        "20",
+        "10"
+      ],
+      "expected": [
+        "20",
+        "10"
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Manually transcribed ASCII/Decimal illustration only; no SQL/.NET/WPF/DTO, physical order, business policy, checksum or saved invoice demonstrated. Does not reset or remediate the actual static field."
+    },
+    {
+      "id": "ALG7B20-10",
+      "title": "A guard on default one does not validate a later payload quantity",
+      "finding_ids": "P4-014",
+      "observed": {
+        "stock": "2",
+        "checked_default": "1",
+        "later_scale_quantity": "4",
+        "later_exceeds": true
+      },
+      "expected": {
+        "stock": "2",
+        "checked_default": "1",
+        "later_scale_quantity": "4",
+        "later_exceeds": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Manually transcribed ASCII/Decimal illustration only; no SQL/.NET/WPF/DTO, physical order, business policy, checksum or saved invoice demonstrated. Retained potential stock/save root; no bypass of deployed server guards or successful save claimed."
+    },
+    {
+      "id": "ALG7B20-11",
+      "title": "Scanned label keeps a unit barcode but takes base price; selected-unit path differs",
+      "finding_ids": "P7-037",
+      "observed": {
+        "scan_barcode": "BOX0001",
+        "scan_price": "10",
+        "selected_unit_price": "120"
+      },
+      "expected": {
+        "scan_barcode": "BOX0001",
+        "scan_price": "10",
+        "selected_unit_price": "120"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Manually transcribed ASCII/Decimal illustration only; no SQL/.NET/WPF/DTO, physical order, business policy, checksum or saved invoice demonstrated. Value projection only; UtilitiesProj/REPX/printer not executed."
+    },
+    {
+      "id": "ALG7B20-12",
+      "title": "Mode3 quantity precision and zero divisor are policy/health boundaries",
+      "finding_ids": "H7B20-01",
+      "observed": [
+        "0.333",
+        "0"
+      ],
+      "expected": [
+        "0.333",
+        "0"
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Manually transcribed ASCII/Decimal illustration only; no SQL/.NET/WPF/DTO, physical order, business policy, checksum or saved invoice demonstrated. No required rounding policy or free-item rule inferred from this illustration."
+    }
+  ],
+  "static_lexical_contract_check_count": 12,
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B20-01",
+      "title": "Exact unit then alias then length13 fallthrough",
+      "finding_ids": "H7B20-03",
+      "evidence": "SmartAuditERP/Class/ItemOper.cs:1908-2091",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Token/order checks, not query execution or complete callgraph."
+    },
+    {
+      "id": "ST7B20-02",
+      "title": "Scale numeric slices and three modes are explicit",
+      "finding_ids": "P7-136;H7B20-01",
+      "evidence": "SmartAuditERP/Class/ItemOper.cs:1908-2091",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Named literals only; no checksum/symbology or culture contract inferred."
+    },
+    {
+      "id": "ST7B20-03",
+      "title": "Prefix predicate can match Items barcode for every joined ItemUnits row",
+      "finding_ids": "P7-137",
+      "evidence": "SmartAuditERP/Class/ItemOper.cs:1908-2091",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Unordered candidate selection, not a prediction of physical query order."
+    },
+    {
+      "id": "ST7B20-04",
+      "title": "Numeric parse returns zero and a successful prefix still assigns identity",
+      "finding_ids": "P7-138",
+      "evidence": "SmartAuditERP/Class/ItemOper.cs:93-103;1908-2091",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Observed fallback; no actual VisualBasic/.NET parse or scanner input executed."
+    },
+    {
+      "id": "ST7B20-05",
+      "title": "Sale transports identity but not decoded numeric values",
+      "finding_ids": "P7-136",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:667-725",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Counts/false token are bounded textual observations, not whole dataflow or all editor/writer behavior."
+    },
+    {
+      "id": "ST7B20-06",
+      "title": "Purch transports identity but not decoded numeric values",
+      "finding_ids": "P7-136",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:613-663",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Counts/false token are bounded textual observations, not whole dataflow or all editor/writer behavior."
+    },
+    {
+      "id": "ST7B20-07",
+      "title": "InputOutput transports identity but not decoded numeric values",
+      "finding_ids": "P7-136",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs:427-458",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Counts/false token are bounded textual observations, not whole dataflow or all editor/writer behavior."
+    },
+    {
+      "id": "ST7B20-08",
+      "title": "POS applies positive outputs only after SearchByID guard",
+      "finding_ids": "P7-138;P4-014",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs:871-955",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "No server/write guard assessment beyond retained P4-014; source order only."
+    },
+    {
+      "id": "ST7B20-09",
+      "title": "Default line quantity, scale flag and static total calculation",
+      "finding_ids": "P7-136;P4-028",
+      "evidence": "SmartAuditERP/Class/ItemOper.cs:729-811;1035-1185;1367-1430",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Successful visible assignments assumed; external DTO semantics not executed."
+    },
+    {
+      "id": "ST7B20-10",
+      "title": "Scanned-label unit/price dropped and DTO projection remains",
+      "finding_ids": "P7-037",
+      "evidence": "SmartAuditERP/Form_WPF/frmPrintBarcode.xaml.cs:215-253;337-381;SmartAuditERP/Class/Common.cs:560-578",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Retained037, not a new finding or manifest/printer acceptance."
+    },
+    {
+      "id": "ST7B20-11",
+      "title": "Selected unit uses item+barcode key and local label copies differ from invoice engine",
+      "finding_ids": "P7-037;H7B20-02",
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsBarcode.xaml.cs:274-328;334-488",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Unit-key counterexample only; no approved VAT/quantity policy, REPX or actual copies measured."
+    },
+    {
+      "id": "ST7B20-12",
+      "title": "Item editor writes base and extra units with separate barcodes",
+      "finding_ids": "P7-137",
+      "evidence": "SmartAuditERP/Form_WPF/frmItems.xaml.cs:905-925;1022-1054",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Source feasibility of multiunit rows, not a real saved fixture or deployed constraints."
+    }
+  ],
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Class/Common.cs",
+      "start": 560,
+      "end": 578,
+      "source_slice_sha256": "9843f4f1b0af7330c71a8ea6da71b23d85380ed90da1ffe25a6bf647c3a27a00",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceData.cs",
+      "start": 274,
+      "end": 283,
+      "source_slice_sha256": "310742af0330e6183280518aba407240cbc5656bcc52d2392593602e5c259de7",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceData.cs",
+      "start": 374,
+      "end": 380,
+      "source_slice_sha256": "4c1df13c447173a6722b743af4615896b2443f22c26758c7c1a6ae1678bb185d",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceData.cs",
+      "start": 415,
+      "end": 423,
+      "source_slice_sha256": "75cc3778faaaee458faa1025dece1d18b7edf9c7fb42395c5b83d93615590f20",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "start": 93,
+      "end": 103,
+      "source_slice_sha256": "498c349ae0f84da866a35585da4cc7ccd618655090fa73b53ae2bbdd2244a64e",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "start": 491,
+      "end": 576,
+      "source_slice_sha256": "b8df249ec1c316cf444434c2a7e1746b3c26e073fa6da830a964e3cfd99a865b",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "start": 729,
+      "end": 811,
+      "source_slice_sha256": "94a2b0d10e499507be9c6b5c93f678cf8ba82059c697da3547260ac7da6d2c49",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "start": 1035,
+      "end": 1185,
+      "source_slice_sha256": "3fa226cc70b0cc3a39a2ae5b2b46f429603e73e8aefe3672fb6fc96fafad0193",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "start": 1367,
+      "end": 1430,
+      "source_slice_sha256": "5e928336c2dfcfb57da3e07dba3a294ffacc6ae954f89462860dd7e88cf233a8",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "start": 1829,
+      "end": 1902,
+      "source_slice_sha256": "bae16be444a3a76dbb85dbacbabd3fb8f73888e08c87d7bbb4e3da54ef87170a",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "start": 1908,
+      "end": 2091,
+      "source_slice_sha256": "df09b6fc3ca79016ddec64be0dc136e5fb8b25883f5f5e41d79714c87701ecea",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml",
+      "start": 511,
+      "end": 522,
+      "source_slice_sha256": "e68801dbb7bd33dc180600aa2a1a902ad5d94752e0da4d9d67a1c7474fa1e66c",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+      "start": 427,
+      "end": 458,
+      "source_slice_sha256": "d10b1dca6b47d088bdfa99cd7102d795788291d6cc3c2a672ada99301a282fc7",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+      "start": 988,
+      "end": 997,
+      "source_slice_sha256": "8a973ebb54342fa0bbddc43abbed0d382986c8a1da771c665cde05d5f7d5e223",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml",
+      "start": 832,
+      "end": 848,
+      "source_slice_sha256": "65940d4219364fe67809bc1b3d2ca12893daed3136f902a92279a2c4161ef16d",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+      "start": 834,
+      "end": 850,
+      "source_slice_sha256": "22a8f1304af1f471e9a344b1475f2178836e68eb0ff5101b38f45c0b6d683969",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+      "start": 871,
+      "end": 955,
+      "source_slice_sha256": "187a8828c75c0343c59d4d306f5b53f18bf2f4c98a027f517d7eb62dd6b57c46",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+      "start": 1901,
+      "end": 1978,
+      "source_slice_sha256": "abe5f6d41510b50b2713f32350da6ae5ccba4dfe05c64a6782a4170a940d73c8",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml",
+      "start": 1,
+      "end": 16,
+      "source_slice_sha256": "579fb7341692676cacb3a9f7ed5da881dc79380d2a797d2bce98d8c850390c2f",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml",
+      "start": 591,
+      "end": 609,
+      "source_slice_sha256": "966b0ec977ba2d9ec16f855369a56dd38d46c41c959c609dd570a8b958c8d908",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 613,
+      "end": 663,
+      "source_slice_sha256": "891656b816a6617de107d3394e8ad5e6675c33f8a4d0f1ec81fef360ffbaa1ac",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 2753,
+      "end": 2770,
+      "source_slice_sha256": "a52fe944fbf141170ced59d7581b967dbd4cc1d141b34508d9039d29de8c54b1",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml",
+      "start": 584,
+      "end": 594,
+      "source_slice_sha256": "841144f1d70f53bf59c392f5048fd58e340c37ca7deaf84209a4d56a83de67a7",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 667,
+      "end": 725,
+      "source_slice_sha256": "d79b67c99caaf2d37d8b2bca6e4c2d6c92151f7b960d36cb883bd1f6d9c4b37a",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 3590,
+      "end": 3597,
+      "source_slice_sha256": "57bcd9540a31fa2c5c67eabe91af14270375b1eef5e40961f9ff961754650d97",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml",
+      "start": 1,
+      "end": 18,
+      "source_slice_sha256": "a1fd827582c123d82671ca680aeabcdc8eef454d2adc60a5c9146d938c95b4c9",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "start": 167,
+      "end": 218,
+      "source_slice_sha256": "54bedc0baef2c6fb763adc99cbd7fd029a0902bd4c8dc8fe51e3e1d755929ace",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "start": 575,
+      "end": 614,
+      "source_slice_sha256": "11f27ea822dec66b1b2288fb59e5046eb14d0f27151461ce27f476fa6207b206",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "start": 648,
+      "end": 666,
+      "source_slice_sha256": "f5dc5b9a33d857e54e1d99fc71ab387c32b4a60a7e5d7ef6aac8b434bed20d6f",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItems.xaml.cs",
+      "start": 905,
+      "end": 925,
+      "source_slice_sha256": "ac7de08d70686a6df9863e3002e5ab6b227be0dc2135d897de850dd4b41a6a1d",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItems.xaml.cs",
+      "start": 1022,
+      "end": 1054,
+      "source_slice_sha256": "6b0dc42e0810c6eeca7d31ddddae8ba6d26a78f42597d24524eadd3134ea69a6",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsBarcode.xaml",
+      "start": 211,
+      "end": 294,
+      "source_slice_sha256": "389a0b9e5348c52f0f9c2bdcb1e4e8f0909b76b899dec65730a0ae4b1af8cef8",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsBarcode.xaml",
+      "start": 358,
+      "end": 405,
+      "source_slice_sha256": "33c917cda0820164b03330d54e1f8373c261b3a15d916d6ba06b5e4a70af98d1",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsBarcode.xaml.cs",
+      "start": 142,
+      "end": 174,
+      "source_slice_sha256": "f0dc4df5572245d1b029ec360cb12d61f0b5792f6338c09d8baed391aff9a677",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsBarcode.xaml.cs",
+      "start": 206,
+      "end": 237,
+      "source_slice_sha256": "01146de5c5f7b3b2ab8acfa21b9f311f5cccc312761566188686265b482da8f6",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsBarcode.xaml.cs",
+      "start": 274,
+      "end": 328,
+      "source_slice_sha256": "247ce1f05c7cda07843cea3d203a85ced55d99517ed9816c649073d1925301d7",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsBarcode.xaml.cs",
+      "start": 334,
+      "end": 488,
+      "source_slice_sha256": "ca1751be8354bb18124248cdcda3608be7e11d23c89593596442bab9e7722f64",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPrintBarcode.xaml",
+      "start": 1,
+      "end": 16,
+      "source_slice_sha256": "afafb1424b6c86194b33f98e0afb0a3b43bbd5baeaf665df55ebe406484f0c90",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPrintBarcode.xaml",
+      "start": 199,
+      "end": 206,
+      "source_slice_sha256": "571987a27138d044568305553966a0345625e5c09c93dd240d9eb7234c62dcbf",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPrintBarcode.xaml",
+      "start": 317,
+      "end": 336,
+      "source_slice_sha256": "0d6dbb49281cd6dd99619ef0ce525c3e2924ef4996ba5e833b995c066feb8b64",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPrintBarcode.xaml",
+      "start": 408,
+      "end": 421,
+      "source_slice_sha256": "f3d550d8f1a70b26d9d1f8d43fd1ec91cf26e5aeddca1a6190b104d1a9b0e506",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPrintBarcode.xaml.cs",
+      "start": 50,
+      "end": 90,
+      "source_slice_sha256": "f62da631bbaf8f324872bd14643c9fdf08e7588093517afde1b44296d5e119a2",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPrintBarcode.xaml.cs",
+      "start": 215,
+      "end": 253,
+      "source_slice_sha256": "a8732303df38703450bcea41479774315707e64d51fcd5ce71181463c7a91703",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPrintBarcode.xaml.cs",
+      "start": 307,
+      "end": 325,
+      "source_slice_sha256": "2a043c3a0309d48b254c6de40def3ab6cbf2c8726757e30cb7577c37a1162be2",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPrintBarcode.xaml.cs",
+      "start": 337,
+      "end": 381,
+      "source_slice_sha256": "19b0a3342f96f811528823b38f0f31be0638887ec2b1812e379da65cc26955d9",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml",
+      "start": 1,
+      "end": 16,
+      "source_slice_sha256": "bb8f3057d5c6806fc9a8daa67c369e11a5a6b12b6bca78b5ab426a0773b83b7e",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs",
+      "start": 291,
+      "end": 336,
+      "source_slice_sha256": "36dce28d4627c496cd6e3527ff4c6a727f1834abf894dad4984d0fdf50cd5e0b",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs",
+      "start": 410,
+      "end": 436,
+      "source_slice_sha256": "fd1dbb4d3195024208940d680456f8568c21bbe52a019988d7a221de636f023f",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs",
+      "start": 618,
+      "end": 643,
+      "source_slice_sha256": "8de0b174994e6609f208f21cbd61617d20b7c13295ef0cc4d9df19b21c427e40",
+      "not_semantic_or_execution_coverage": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs",
+      "start": 1708,
+      "end": 1725,
+      "source_slice_sha256": "3d4949df7d501613be0cd8eb92ea2f58d1e14cbf654c185f561b63b8d73381c8",
+      "not_semantic_or_execution_coverage": true
+    }
+  ],
+  "qualified_literal_discovery": {
+    "source_csharp_paths_lexically_scanned": 477,
+    "literal_call_tokens": 7,
+    "literal_calls": [
+      {
+        "source_path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+        "call_line_start": 448,
+        "call_line_end": 450,
+        "call_text_sha256": "ac500a920ed2a57893aa90a71b7b4e16105a5d68d7def69c50ce85c15f0a23e5",
+        "inert_argument_expression": "itemBarcode.Trim(),\n                    ref foundItemId, ref foundUnitId,\n                    ref foundPrice, ref foundQty, isMultiText",
+        "not_type_or_runtime_resolution": true
+      },
+      {
+        "source_path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+        "call_line_start": 881,
+        "call_line_end": 885,
+        "call_text_sha256": "9f1acb255fbd60729b69213d9ecf586bd874bb1dd65d32e64b00bb110a1cce00",
+        "inert_argument_expression": "\n                    itemBarcode.Trim(),\n                    ref itemID, ref unitId,\n                    ref itemPrice, ref itemQuantity,\n                    isMultiText",
+        "not_type_or_runtime_resolution": true
+      },
+      {
+        "source_path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+        "call_line_start": 652,
+        "call_line_end": 655,
+        "call_text_sha256": "224806ba94ce44bcbf9e4f2ffd8b359db409eb1680df8efc227926aa3a0330ca",
+        "inert_argument_expression": "\n                    itemBarcode.Trim(),\n                    ref itemID, ref unitId, ref itemPrice, ref itemQuantity,\n                    isMultiText",
+        "not_type_or_runtime_resolution": true
+      },
+      {
+        "source_path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+        "call_line_start": 708,
+        "call_line_end": 710,
+        "call_text_sha256": "1a1140a9da226ea207d5a29f388b3558940e0f46f0b6e664b051a46e581d8a64",
+        "inert_argument_expression": "itemBarcode.Trim(),\n                    ref itemID, ref unitId,\n                    ref itemPrice, ref itemQuantity, isMultiText",
+        "not_type_or_runtime_resolution": true
+      },
+      {
+        "source_path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+        "call_line_start": 654,
+        "call_line_end": 655,
+        "call_text_sha256": "6899bba143f5ba5e0271ee3122b7f337bfb0bad735039ce08e5f978ebfa764d2",
+        "inert_argument_expression": "barcode.Trim(), ref itemId,\n                    ref unitId, ref price, ref qty, isMulti",
+        "not_type_or_runtime_resolution": true
+      },
+      {
+        "source_path": "SmartAuditERP/Form_WPF/frmPrintBarcode.xaml.cs",
+        "call_line_start": 224,
+        "call_line_end": 225,
+        "call_text_sha256": "705739f79df2802f13e98a4d3270021b6b910ed9d0da5ba3987270438ccc655b",
+        "inert_argument_expression": "barcode.Trim(),\n                    ref itemId, ref unitId, ref itemPrice, ref itemQty, false",
+        "not_type_or_runtime_resolution": true
+      },
+      {
+        "source_path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs",
+        "call_line_start": 624,
+        "call_line_end": 625,
+        "call_text_sha256": "04f875d02f53bc2c1234baabb27f6dd56d4c1e96913971ad987d80f127de485e",
+        "inert_argument_expression": "barcode.Trim(), ref itemId,\n                    ref unitId, ref itemPrice, ref itemQty, isMultiText",
+        "not_type_or_runtime_resolution": true
+      }
+    ],
+    "not_complete_callgraph_or_capability_census": true,
+    "not477_body_reviews": true,
+    "scope": "Exact qualified spelling ItemOper.SearchForBarcode only; aliases/delegates/reflection/other barcode engines not inferred."
+  },
+  "retained_additive_B10_arithmetic_erratum": {
+    "entered_quantity": 2,
+    "equality": 12,
+    "base_unit_cost": 5,
+    "local_cost": 10,
+    "reference_cost": 120,
+    "archive_rewritten": false
+  },
+  "application_code_imported_or_executed": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "scanner_template_or_printer_executed": false,
+  "application_remediation_performed": false,
+  "real_business_or_secret_data_used": false,
+  "spreadsheet_or_formula_interpreter_executed": false,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "B_R4d_bounded_not_whole7B_closure": true,
+  "prior_roots_not_assumed_remediated": true,
+  "unresolved_external_contracts_and_explicit_splits_retained": true,
+  "errors": []
+}

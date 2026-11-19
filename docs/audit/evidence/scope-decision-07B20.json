@@ -1,0 +1,43 @@
+{
+  "authority": [
+    "PHASE-07-REMAINING-07B19.md",
+    "evidence/split-register-07B19.csv"
+  ],
+  "selected_upstream_split": "SP7B19-03",
+  "adjacent_bounded_output_support": "SP7B19-01",
+  "entry": "ac20e3104f84fefbc62779e22d2c9b9621802340",
+  "reason": "Barcode/scale decoding is not complete at a successful ItemId: seven named consumers differ in carrying quantity/price/unit/health and two label projections differ. Trace this bounded SP03 source→consumer→label slice rather than recensus all features or assume three splits close7B.",
+  "selected_input": "13-character scale candidates and exact unit/alias candidates, a redacted selected Items/ItemUnits row and declared label mode; no real scanner or DB data.",
+  "selected_output": "Named caller dataflow and per-unit/payload/health/label contracts with root adjudication, owners and not-executed plans; no deployed save or printed artifact.",
+  "excluded": [
+    "all barcode engines/legacy editors and unqualified/aliased/delegate/reflection calls",
+    "remaining amountwords/currency callers and complete negative/zero/precision policy",
+    "whole editors/writers/callgraph/capability census",
+    "UtilitiesProj.ToDataTable/REPX/symbology/scanner/printer/culture/deployed schema acceptance",
+    "general7C axes or8 authorization"
+  ],
+  "bookkeeping": {
+    "selected_paths": 20,
+    "prior_union": 410,
+    "overlap": 20,
+    "new": 0,
+    "union": 410,
+    "complement": 417,
+    "complement_kinds": {
+      "source": 352,
+      "generated-artifact": 61,
+      "project-or-resource": 4
+    }
+  },
+  "literal_qualified_decoder_calls": 7,
+  "named_consumer_paths": 7,
+  "lexical_source_csharp_paths_scanned_not_body_reviews": 477,
+  "label_projection_boundaries": 2,
+  "source_review_state": "selected-static-barcode-codec-consumer-label-slices-not-runtime-certified",
+  "prior_selected_path_does_not_mean_full_body_review": true,
+  "counts_are_completion_percent_or_sessions": false,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "application_remediation_performed": false,
+  "erp_runtime_tests_executed": 0
+}

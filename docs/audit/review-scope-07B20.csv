@@ -1,0 +1,21 @@
+path,ranges,review_state,focus
+SmartAuditERP/Class/Common.cs,560-578,selected-static-barcode-codec-consumer-label-slices-not-runtime-certified,مصدر سعر الأساس في الملصق؛ لا سياسة دقة أو تسعير أو تفويض كامل.
+SmartAuditERP/Class/InvoiceData.cs,274-283;374-380;415-423,selected-static-barcode-codec-consumer-label-slices-not-runtime-certified,حقول DTO المحلية للرمز والسعر والجهة والتاريخ فقط؛ لا wire-schema أو ToDataTable الخارجي.
+SmartAuditERP/Class/ItemOper.cs,30-34;93-103;491-576;729-811;1035-1185;1367-1430;1829-1902;1908-2091,selected-static-barcode-codec-consumer-label-slices-not-runtime-certified,قارئ الباركود وToDouble الافتراضي ووحدة السطر وإنشاؤه وحواف الكمية/الحساب؛ لا كل ItemOper أو writers.
+SmartAuditERP/Form_WPF/frmInvInputOutput.xaml,511-522,selected-static-barcode-codec-consumer-label-slices-not-runtime-certified,ربط حقل الرمز بالحدث؛ لا كامل XAML.
+SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs,427-458;988-997,selected-static-barcode-codec-consumer-label-slices-not-runtime-certified,نداء decode وSearchByID وEnter؛ لا كل مصادر الإدخال/الإخراج أو حفظها.
+SmartAuditERP/Form_WPF/frmInvPOS.xaml,832-848,selected-static-barcode-codec-consumer-label-slices-not-runtime-certified,ربط حقل الرمز فقط؛ لا WPF منفذ.
+SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs,834-850;871-955;1901-1978,selected-static-barcode-codec-consumer-label-slices-not-runtime-certified,مسار Enter وdecode ونقل القيم الموجبة وحارس الكمية السابق لها، وpay guard للمقارنة فقط؛ لا كل POS/PayBill/SaveInvoice.
+SmartAuditERP/Form_WPF/frmInvPurch.xaml,1-16;591-609,selected-static-barcode-codec-consumer-label-slices-not-runtime-certified,ربط Window KeyDown وحقل الباركود؛ لا كامل XAML.
+SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs,613-663;2753-2770,selected-static-barcode-codec-consumer-label-slices-not-runtime-certified,نداء decode وإضافة الصنف وحافة Enter بالنافذة؛ لا كل المحرر أو writer.
+SmartAuditERP/Form_WPF/frmInvSale.xaml,584-594,selected-static-barcode-codec-consumer-label-slices-not-runtime-certified,ربط حقل الرمز بـKeyDown فقط؛ لا rendering أو حكم usability.
+SmartAuditERP/Form_WPF/frmInvSale.xaml.cs,667-725;3590-3597,selected-static-barcode-codec-consumer-label-slices-not-runtime-certified,نداء decode وSearchByID وحافة Enter؛ إهمال القيم العددية لا كل المحرر أو الحفظ.
+SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml,1-18,selected-static-barcode-codec-consumer-label-slices-not-runtime-certified,ربط نافذة الأحداث فقط؛ ليس تدقيق XAML كاملاً أو كل callgraph.
+SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs,167-218;575-614;648-666,selected-static-barcode-codec-consumer-label-slices-not-runtime-certified,نداء decoder عبر SearchByCode إلى إضافة هوية/وحدة فقط؛ لا ادعاء وصول Enter مباشر أو وجوب نقل وزن لكل مناقلة.
+SmartAuditERP/Form_WPF/frmItems.xaml.cs,905-925;1022-1054,selected-static-barcode-codec-consumer-label-slices-not-runtime-certified,ترميز Wscale وإدراج الوحدة الأساسية ثم الإضافية كشاهد إمكانية تعدد المرشحين؛ لا معاملة حفظ الصنف كاملة.
+SmartAuditERP/Form_WPF/frmItemsBarcode.xaml,211-294;358-405,selected-static-barcode-codec-consumer-label-slices-not-runtime-certified,اختيار وحدة الرمز وخياري السعر وعدد النسخ وربط الأوامر؛ لا كامل واجهة الملصق.
+SmartAuditERP/Form_WPF/frmItemsBarcode.xaml.cs,142-174;206-237;274-328;334-488,selected-static-barcode-codec-consumer-label-slices-not-runtime-certified,مصدر وحدة الملصق والسعر/ضريبة افتراضية وخياراته ونسخه ومعاينته وDTO؛ لا إعداد حفظ أو مصمم أو manifest منشور.
+SmartAuditERP/Form_WPF/frmPrintBarcode.xaml,1-16;199-206;317-336;408-421,selected-static-barcode-codec-consumer-label-slices-not-runtime-certified,Window KeyDown وحقل الرمز وكمية الملصقات وزر الطباعة فقط.
+SmartAuditERP/Form_WPF/frmPrintBarcode.xaml.cs,50-90;215-253;307-325;337-381,selected-static-barcode-codec-consumer-label-slices-not-runtime-certified,مسح للملصق وإسقاط السعر/الرمز إلى DTO وتكرار عدد الملصقات؛ لا كامل الملف أو طابعة/قالب منفذ.
+SmartAuditERP/Form_WPF/frmSafeAdjust.xaml,1-16,selected-static-barcode-codec-consumer-label-slices-not-runtime-certified,ربط حدث النافذة فقط؛ لا مصدر reader/save الذي سُلّم في B19.
+SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs,291-336;410-436;618-643;1708-1725,selected-static-barcode-codec-consumer-label-slices-not-runtime-certified,قارئ الرمز يختار ItemId لحساب الرصيد والتسوية، لا وزن السطر؛ حافة المخزن/Enter فقط.
