@@ -1,0 +1,21 @@
+path,review_state,ranges,focus
+SmartAuditERP/Form_WPF/FrmReseved.xaml.cs,selected-static-source-slices-not-runtime-certified,1-923,إعادة قراءة الجسم المحلي الكامل؛ معلن كامل في7A، لا أول قراءة. فترة واختيار وتعديل وحفظ/reload/entry/print.
+SmartAuditERP/Form_WPF/FrmReseved.xaml,selected-static-source-slices-not-runtime-certified,1-530,own-XAML كامل الآن؛ الشهر أرقام1–12 وyear/DateEdit/Grid وتحديد وCellEditEnding والأوامر؛ لا rendering/accessibility.
+SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml.cs,selected-static-source-slices-not-runtime-certified,1-953,إعادة قراءة الجسم المحلي الكامل؛ معلن كامل فيB1. معايير وحساب ومصدر وصحة وDTO/print وطلبات الطفل.
+SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml,selected-static-source-slices-not-runtime-certified,1-911,own-XAML كامل الآن؛ فروع وتواريخ وأنماط ربع/شهر وخلايا read-only ومخرجات؛ لا WPF rendering.
+SmartAuditERP/Class/Reseved.cs,selected-static-source-slices-not-runtime-certified,1-347,resvd وSaveReceipt1 وBindreservedToEntry كامل محلياً؛ typed-row/null ونتيجة وذرية. insertSalaryres ليس caller المسار المفحوص.
+SmartAuditERP/Class/resvdPrint.cs,selected-static-source-slices-not-runtime-certified,1-32,DTO محلي كامل يضم26 حقلاً نصياً؛ جديد على اتحاد المسارات، لا غياب dependency.
+SmartAuditERP/Class/RptTaxData.cs,selected-static-source-slices-not-runtime-certified,1-46,DTO محلي كامل للمعايير وA1…D6/E…H؛ ليس قالب REPX أو tax breakdown مصادقاً.
+SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs,selected-static-source-slices-not-runtime-certified,15-194;208-337;520-614;738-778,طفل جديد على اتحاد المسارات، مقاطع فقط:الإنشاء/Loaded/branches/settings/request/query/receipts/events؛ لا جسم كامل أو كل output/openers.
+SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml,selected-static-source-slices-not-runtime-certified,145-285,own-XAML الطفل منتقى فقط:all-type/all-period/all-branches defaults وتواريخ؛ لا يرث body/XAML الوالد.
+SmartAuditERP/Form_WPF/frmRptReseved.xaml.cs,selected-static-source-slices-not-runtime-certified,100-173,متصل report→editor قبلShow؛ DataView/hide/identity فقط، ليس إعادة تسليم تقريرB9 كاملاً.
+SmartAuditERP/Form_WPF/frmRptEntries.xaml.cs,selected-static-source-slices-not-runtime-certified,591-600,متصل القيد→new/Show/Navigate للاستحقاق فقط.
+SmartAuditERP/Class/Print.cs,selected-static-source-slices-not-runtime-certified,25-221,Print10/settings/PrintersList/REPX/subreports/copies/outcome helper محلي؛ لا بقية قنوات المشاركة/SDK.
+SmartAuditERP/Class/EntryOper.cs,selected-static-source-slices-not-runtime-certified,850-935;1264-1289,SaveEnty ومعاملته وتخصيصEntryGlobalID فقط؛ ليس كل كاتب مالي أو build.
+SmartAuditERP/Class/InvoiceOper.cs,selected-static-source-slices-not-runtime-certified,1526-1602,عينة الكاتب:رأس شمول/معدل/خصم وضريبة وسعر/كمية السطر وtaxval، لا دورة حفظ كاملة أو إصلاحP4-003.
+SmartAuditERP/Class/ItemOper.cs,selected-static-source-slices-not-runtime-certified,1389-1421,عينة حاسبة السطر ومعدل ضريبته/وحدته؛ لا كل عروض/خصومات.
+SmartAuditERP/Class/MainClass.cs,selected-static-source-slices-not-runtime-certified,331-455,DoApplyUserSett فارغة وWPF Apply/اسمButton وحدود visual-tree؛ لا ACL نشر مقاس.
+SmartAuditERP/Home.xaml.cs,selected-static-source-slices-not-runtime-certified,239-243;2706-2713;3643-3645,static محرر الاستحقاق ومدخله؛ menuTax ينشئfrmVATReturn لاfrmTaxRptPeriod؛ لا callgraph كامل للانعكاس/خارجGit.
+SmartAuditERP/Home.xaml,selected-static-source-slices-not-runtime-certified,335-347;520-531,مسارا القائمة المحددان؛ taxdisabled افتراضي واسم editor/report منفصلان.
+SmartAuditERP/Properties/Resources.resx,selected-static-source-slices-not-runtime-certified,242-275;1496-1530;2825-2825;3011-3011;4523-4553;46152-46154;50008-50048,DDL/seed مرفق للفروع والسند والاستحقاق وForms، لا شهادة نشر أو منح أو constraints لكل نسخة.
+SmartAuditERP/Form_WPF/frmSandVAT.xaml.cs,selected-static-source-slices-not-runtime-certified,709-808,عينة الكاتب Payment/VAT/NetVal/BranchID؛ ليست كل ReceiptType10 أو إثبات نجاحه، P3-009 باقٍ.

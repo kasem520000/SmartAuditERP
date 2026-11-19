@@ -1,0 +1,3 @@
+id,screen,body_path,prior_category,prior_full_local_csharp_declared,prior_full_body_scope_ids,b15_full_local_body_and_xaml,remaining_old_category_after_b15,interpretation,runtime_status
+DEP7B15-01,FrmReseved,SmartAuditERP/Form_WPF/FrmReseved.xaml.cs,prior-selected-slices-depth-not-upgraded,true,7A,true,false,فئتان قديمتان لهما C# كامل سابقاً؛ ترقيتاown-XAML/عقود تتركان0 في الفئة فقط، لا0 عقد متبق أو أول قراءتيC# أو إغلاق7B.,not-executed
+DEP7B15-02,frmTaxRptPeriod,SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml.cs,prior-selected-slices-depth-not-upgraded,true,7B1,true,false,فئتان قديمتان لهما C# كامل سابقاً؛ ترقيتاown-XAML/عقود تتركان0 في الفئة فقط، لا0 عقد متبق أو أول قراءتيC# أو إغلاق7B.,not-executed
