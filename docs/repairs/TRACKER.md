@@ -29,6 +29,16 @@
 - **حدود التحقق:** تعذر SQL Server/WPF/.NET هنا؛ النجاح `verified-in-scope` لدلالة الاختيار فقط وليس قبول ERP. ملاحظة متبقية: تحديد الهوية بين صفوف تتشارك نفس أقصى تاريخ غير محسوم بالترتيب وحده (لم يُصلح تعمداً لتجنب الاعتماد على ترتيب توليد المعرفات المُشار إلى إشكالاته في نتائج أخرى مثل P3-005).
 - **الالتزام:** fix=`cd53431` · test=`744adf2` — على الفرع الحالي فقط.
 
+### R-003 ← P7-025 — بحث الحجز يعدّل المجموعة التي يعدّدها داخل foreach
+- **الحالة:** `verified-in-scope` (دلالة التعداد/التدفق؛ تشغيل WPF/DataGrid/ADO.NET محجوب بيئياً)
+- **النتيجة الأصلية:** P7-025 · Medium · confirmed · implementation-defect (`findings.csv`).
+- **الدليل/المصدر:** `SmartAuditERP/Form_WPF/frmBookingM.xaml.cs::btnSearch_Click` (~1220–1248): حلقتا `foreach` على مجموعة `_dgvSrchList` الحيّة (`ObservableCollection`، سطر 42)، وكلتاهما تستدعي في جسمها `Search(3) ← LoadDG` الذي ينفّذ `_dgvSrchList.Clear()` (سطر ~907) ثم إعادة تعبئة `Add` (سطر ~936) ⇒ تعديل المجموعة أثناء التعداد ⇒ استثناء .NET الفاشل سريعاً `InvalidOperationException` وفساد التكرار على أي حال. فحص شامل أكّد أن هاتين الحلقتين هما الموقع الوحيد للتعداد مع التعديل (Clear أخرى في `ClearAll` خارج التعداد).
+- **التبعيات:** مستقل عن عيوب هوية/والد الحجز المجاورة (P7-022/P7-023/P7-024) وعن P7-026.. لا يمس منطق البحث نفسه أو صياغة الاستعلام.
+- **التعديل المطبق:** كل حلقة تعدّد الآن نسخة لقطة مستقلة من `_dgvSrchList` (`new List<BookingSearchItem>(_dgvSrchList)`) وتتوقف عند أول تطابق (`break`) بعد تكرير البحث لذلك العميل عبر `Search(3)`. بلا تغيير لسلوك حالة عدم التطابق (لم تكن تعدّل أصلاً).
+- **اختبار الرجوع:** `tests/repair/booking_search_enum_harness.py` — نموذج يحاكي عدّاد .NET الفاشل سريعاً (فحص الإصدار عند MoveNext): قبل الإصلاح مسار مطابق يطلق «Collection was modified» ومسار بلا تطابق يكمل؛ بعده مسارا الاسم/الهاتف يكملان دون استثناء ويختاران المعرف الصحيح (اسم→11، هاتف→12) بتكرير واحد بالضبط وتبقى القائمة محصورة بالمطابق. الخروج PASS.
+- **حدود التحقق:** تعذر WPF/.NET/SQL هنا؛ النجاح `verified-in-scope` لمنطق التدفق فقط وليس قبول ERP.
+- **الالتزام:** fix=`29419ee` · test=`0eef57b` — على الفرع الحالي فقط.
+
 ## دفتر المتراكم (ملخص حسب الطبقة/المرحلة — يُفصَّل مع تقدم العمل)
 | الطبقة | أمثلة مفتاحية | العدد المفتوح الإجمالي بالمرجع | حالة التخطيط |
 | --- | --- | --- | --- |
@@ -46,3 +56,5 @@
 | R-001 | P7-139 | test(P7-139): isolated harness proving no in-range regression + wide fix | `2a7683d` | 2026-11-19 | verified-in-scope |
 | R-002 | P7-059 | fix(P7-059): order descending for last-movement TOP(1) so it returns the newest | `cd53431` | 2026-11-19 | verified-in-scope |
 | R-002 | P7-059 | test(P7-059): SQLite model proving last-movement now selects the newest | `744adf2` | 2026-11-19 | verified-in-scope |
+| R-003 | P7-025 | fix(P7-025): enumerate a snapshot in booking search to stop live-collection mutation | `29419ee` | 2026-11-19 | verified-in-scope |
+| R-003 | P7-025 | test(P7-025): fail-fast model proving snapshot enumeration fixes the crash | `0eef57b` | 2026-11-19 | verified-in-scope |
