@@ -478,8 +478,16 @@ namespace SmartAuditERP.Form_WPF
 
                 if (rdLocal.IsChecked == true)
                 {
-                    frmUserLogin.conn = new SqlConnection(
-                        $"server={txtServer.Text};database={dbValue};trusted_connection=true;");
+                    // Repair R-024 (audit finding P1-018): a LOCAL server explicitly configured for
+                    // SQL Authentication (chkServerAuth + credentials right here on this form) was
+                    // still connected with trusted_connection only. Honour the checkbox exactly as
+                    // the terminal branch and the login path do; unattended behaviour is unchanged.
+                    frmUserLogin.conn = chkServerAuth.IsChecked == true
+                        ? new SqlConnection(
+                            $"server={txtServer.Text};database={dbValue};" +
+                            $"user id={txtUser.Text}; pwd={txtPWD.Password};")
+                        : new SqlConnection(
+                            $"server={txtServer.Text};database={dbValue};trusted_connection=true;");
                     frmUserLogin.conn_type = 1;
                 }
                 else
@@ -569,8 +577,9 @@ namespace SmartAuditERP.Form_WPF
                 string connStr2 = BuildConnStr(autoName.Trim());
                 using var conn2 = new SqlConnection(connStr2);
 
-                var sqlParts = Properties.Resources.CrystalLiteDB.Split(
-                    new[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
+                // Repair R-020 (P1-029): context-aware T-SQL batch splitting (see SqlBatchSplitter).
+                var sqlParts = SqlBatchSplitter
+                    .SplitBatches(Properties.Resources.CrystalLiteDB).ToArray();
 
                 if (conn2.State == ConnectionState.Closed) conn2.Open();
 
@@ -724,8 +733,9 @@ namespace SmartAuditERP.Form_WPF
                 try
                 {
                     using var localConn = new SqlConnection(BuildConnStr(item.AutoName));
-                    var parts = Properties.Resources.AlterDb.Split(
-                        new[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
+                    // Repair R-020 (P1-029): same context-aware splitter for the alter scripts.
+                    var parts = SqlBatchSplitter
+                        .SplitBatches(Properties.Resources.AlterDb).ToArray();
                     localConn.Open();
                     foreach (var p in parts)
                         new SqlCommand(p, localConn).ExecuteNonQuery();

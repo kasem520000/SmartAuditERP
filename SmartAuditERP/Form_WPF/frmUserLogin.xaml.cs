@@ -629,7 +629,15 @@ namespace SmartAuditERP.Form_WPF
                     }
 
                     // بناء الاتصال
-                    conn = conn_type == 2
+                    // Repair R-024 (audit finding P1-018): local installs configured for SQL
+                    // Authentication still fell into the trusted-connection branch here (any
+                    // conn_type != 2), ignoring the server credentials this very load path had
+                    // just restored - so setup could fail before the main login path, which does
+                    // honour the flags. Follow the same matrix Home.Window_Loaded uses: SQL-auth
+                    // string whenever terminal mode OR an opted-in local server-auth exists.
+                    bool useSqlAuth = conn_type == 2 ||
+                        (MainClass.UseServerAuth && !string.IsNullOrEmpty(NetUserid));
+                    conn = useSqlAuth
                         ? new SqlConnection($"server={MainClass.Server};database={txtDatabase};" +
                                             $"user id={NetUserid}; pwd={Netpwd}")
                         : new SqlConnection($"server={MainClass.Server};database={txtDatabase};" +
