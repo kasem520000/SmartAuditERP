@@ -79,10 +79,24 @@ namespace SmartAuditERP.Form_WPF
             double itemId = 0;
             double.TryParse(txtNo.Text, out itemId);
 
+            // Repair R-004 (audit finding P7-036): the previous check combined the two
+            // tables with a comma cross join ("from ItemUnits,Itembarcodes") -- a CARTESIAN
+            // product filtered by an OR. When either table is empty, the product is empty,
+            // so a barcode duplicated in the OTHER table was never detected. Check each
+            // table independently with UNION ALL so a match in either one is found even if
+            // the other table has no rows. Existence (Rows.Count > 0) semantics preserved.
+            // Incidental local hardening of this same statement: bind the user-supplied
+            // barcode and the item id as parameters instead of interpolating them into the
+            // SQL text (does NOT claim to resolve the broad injection family P1-011).
             SqlDataAdapter adapter = new SqlDataAdapter(
-                $"select ItemUnits.ItemId, Itembarcodes.ItemId from ItemUnits,Itembarcodes where " +
-                $"(ItemUnits.barcode=N'{barcode}' and ItemUnits.ItemId<>{(int)itemId}) or " +
-                $"(Itembarcodes.barcode=N'{barcode}' and Itembarcodes.ItemId<>{(int)itemId})", conn);
+                "select ItemId from ItemUnits where barcode=@barcode and ItemId<>@itemId " +
+                "union all " +
+                "select ItemId from Itembarcodes where barcode=@barcode and ItemId<>@itemId",
+                conn);
+            adapter.SelectCommand.Parameters.Add(
+                "@barcode", SqlDbType.NVarChar).Value = barcode ?? "";
+            adapter.SelectCommand.Parameters.Add(
+                "@itemId", SqlDbType.Int).Value = (int)itemId;
             DataTable dt = new DataTable();
             adapter.Fill(dt);
 
