@@ -1,4 +1,4 @@
-﻿using DevExpress.Charts.Model;
+using DevExpress.Charts.Model;
 using drHamiedNotify;
 using Newtonsoft.Json;
 using SmartAuditERP.Form_WPF;
@@ -404,7 +404,21 @@ namespace SmartAuditERP
 
                 if (!this.IsLogin)
                 {
-                    this.ISSecureLogin();
+                    // Repair R-016 (audit finding P1-016): the secure-login result was discarded
+                    // here, so cancelling or failing the login dialogs still let Window_Loaded run
+                    // on into connection building, log setup, license feature loading and status
+                    // timers - an interactive business shell with no confirmed access. Honour the
+                    // exact contract this file already applies on the logout/re-login path (the
+                    // "if (this.ISSecureLogin())" branch further below gates its wiring on the
+                    // result): when access is not confirmed, stop initializing and shut the
+                    // application down. The internal stale-process cleanup inside ISSecureLogin
+                    // (old product name "Auditor E-Invoicing") belongs to the P1-024 process
+                    // handling review and is deliberately left untouched by this repair.
+                    if (!this.ISSecureLogin())
+                    {
+                        System.Windows.Application.Current.Shutdown();
+                        return;
+                    }
                 }
 
                 this.conn = MainClass.ConnObj();
