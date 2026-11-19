@@ -1,4 +1,4 @@
-﻿using DevExpress.Xpf.Core;
+using DevExpress.Xpf.Core;
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -92,9 +92,16 @@ namespace SmartAuditERP.Form_WPF
                 DataTable dtSecure = new DataTable();
                 adapterSecure.Fill(dtSecure);
 
-                SqlDataAdapter adapterPwd = new SqlDataAdapter(
-                    $"select * from Users where emp={MainClass.UserID} and pwd='{passwordText}'",
-                    conn);
+                // Repair R-015 (audit finding P1-011): the unlock password was interpolated into
+                // the SELECT text, letting crafted input alter the predicate instead of being
+                // compared as data. Bind it (and the user key) as typed parameters; behaviour for
+                // ordinary passwords is unchanged because parameterised comparison matches exactly
+                // what the literal form did for benign text.
+                SqlCommand pwdCmd = new SqlCommand(
+                    "select * from Users where emp=@emp and pwd=@pwd", conn);
+                pwdCmd.Parameters.Add("@emp", SqlDbType.Int).Value = MainClass.UserID;
+                pwdCmd.Parameters.Add("@pwd", SqlDbType.NVarChar).Value = passwordText;
+                SqlDataAdapter adapterPwd = new SqlDataAdapter(pwdCmd);
                 DataTable dtPwd = new DataTable();
                 adapterPwd.Fill(dtPwd);
 

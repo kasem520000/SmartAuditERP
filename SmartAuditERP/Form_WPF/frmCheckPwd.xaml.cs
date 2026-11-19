@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows;
@@ -128,12 +128,17 @@ namespace SmartAuditERP.Form_WPF
 
         private void CheckDatabasePassword(string enteredPassword)
         {
-            SqlDataAdapter adapter = new SqlDataAdapter(
+            // Repair R-015 (audit finding P1-011): the entered permission password was embedded in
+            // the SQL text; a crafted entry could reshape the predicate rather than be compared as
+            // data. Typed parameters keep the comparison semantics for ordinary passwords while
+            // making injection impossible on this path.
+            SqlCommand checkCmd = new SqlCommand(
                 "SELECT id, lastChanged FROM OperationPermission " +
-                $"WHERE IS_Deleted = 0 " +
-                $"AND pwd = '{enteredPassword}' " +
-                $"AND OperNo = {operNo}",
+                "WHERE IS_Deleted = 0 AND pwd = @pwd AND OperNo = @operNo",
                 conn);
+            checkCmd.Parameters.Add("@pwd", SqlDbType.NVarChar).Value = enteredPassword;
+            checkCmd.Parameters.Add("@operNo", SqlDbType.Int).Value = operNo;
+            SqlDataAdapter adapter = new SqlDataAdapter(checkCmd);
 
             DataTable dataTable = new DataTable();
             adapter.Fill(dataTable);

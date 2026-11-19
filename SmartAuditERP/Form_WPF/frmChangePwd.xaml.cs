@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows;
@@ -89,10 +89,19 @@ namespace SmartAuditERP.Form_WPF
                 if (conn.State != ConnectionState.Open)
                     conn.Open();
 
-                new SqlCommand(
-                    $"UPDATE Users SET pwd = '{txtPass.Password}' " +
-                    $"WHERE emp = {MainClass.UserID}",
-                    conn).ExecuteNonQuery();
+                // Repair R-015 (audit finding P1-011): the password used to be concatenated into
+                // the UPDATE text, so any apostrophe/Unicode in it broke or re-interpreted the
+                // statement within this connection's privileges. Bind both values as typed
+                // parameters - the entered text is data only. NOTE: the column still stores what
+                // it is given; plaintext-at-rest remediation belongs to P1-010 (tracked separately)
+                // and is not solved by parametrization alone.
+                using (SqlCommand changeCmd = new SqlCommand(
+                    "UPDATE Users SET pwd = @pwd WHERE emp = @emp", conn))
+                {
+                    changeCmd.Parameters.Add("@pwd", SqlDbType.NVarChar).Value = txtPass.Password;
+                    changeCmd.Parameters.Add("@emp", SqlDbType.Int).Value = MainClass.UserID;
+                    changeCmd.ExecuteNonQuery();
+                }
 
                 MessageBox.Show("تم الحفظ بنجاح ✅",
                     "نجاح", MessageBoxButton.OK, MessageBoxImage.Information);

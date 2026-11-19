@@ -1,4 +1,4 @@
-﻿// frmAddUsers.xaml.cs
+// frmAddUsers.xaml.cs
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -159,9 +159,12 @@ namespace SmartAuditERP.Form_WPF
                 // التحقق من تكرار اسم المستخدم (إضافة جديدة)
                 if (Code == -1)
                 {
-                    var da = new SqlDataAdapter(
-                        "select emp from Users where username=N'" +
-                        txtUser.Text + "' and IS_Deleted=0", conn);
+                    // Repair R-015 (audit finding P1-011): the entered username was concatenated
+                    // into this uniqueness check; bind it as a typed parameter instead.
+                    var dupUserCmd = new SqlCommand(
+                        "select emp from Users where username=@username and IS_Deleted=0", conn);
+                    dupUserCmd.Parameters.Add("@username", SqlDbType.NVarChar).Value = txtUser.Text;
+                    var da = new SqlDataAdapter(dupUserCmd);
                     var dt = new DataTable();
                     da.Fill(dt);
                     if (dt.Rows.Count > 0)
@@ -176,9 +179,12 @@ namespace SmartAuditERP.Form_WPF
                 // التحقق من تكرار الرقم السري (إضافة جديدة)
                 if (Code == -1 && !string.IsNullOrWhiteSpace(txtSecureCode.Text))
                 {
-                    var da2 = new SqlDataAdapter(
-                        "select id from Users where SecureCode=N'" +
-                        txtSecureCode.Text + "' and IS_Deleted=0", conn);
+                    // Repair R-015 (P1-011): bind the secure code as a typed parameter instead of
+                    // embedding it in the uniqueness-check text.
+                    var dupCodeCmd = new SqlCommand(
+                        "select id from Users where SecureCode=@secureCode and IS_Deleted=0", conn);
+                    dupCodeCmd.Parameters.Add("@secureCode", SqlDbType.NVarChar).Value = txtSecureCode.Text;
+                    var da2 = new SqlDataAdapter(dupCodeCmd);
                     var dt2 = new DataTable();
                     da2.Fill(dt2);
                     if (dt2.Rows.Count > 0)
@@ -193,9 +199,13 @@ namespace SmartAuditERP.Form_WPF
                 // التحقق من تكرار اسم المستخدم (تعديل)
                 if (Code != -1)
                 {
-                    var da3 = new SqlDataAdapter(
-                        "select id from Users where emp<>" + Code +
-                        " and username=N'" + txtUser.Text + "' and IS_Deleted=0", conn);
+                    // Repair R-015 (P1-011): bind both the edited user key and the entered username
+                    // as typed parameters for the edit-mode uniqueness check.
+                    var dupEditCmd = new SqlCommand(
+                        "select id from Users where emp<>@code and username=@username and IS_Deleted=0", conn);
+                    dupEditCmd.Parameters.Add("@code", SqlDbType.Int).Value = Code;
+                    dupEditCmd.Parameters.Add("@username", SqlDbType.NVarChar).Value = txtUser.Text;
+                    var da3 = new SqlDataAdapter(dupEditCmd);
                     var dt3 = new DataTable();
                     da3.Fill(dt3);
                     if (dt3.Rows.Count > 0)
