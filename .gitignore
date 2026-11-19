@@ -1,0 +1,15 @@
+# Repair R-013 (audit finding P1-006): build output and per-user IDE state were
+# tracked in the repository. Ignore them going forward; they remain available
+# locally on disk after being untracked with `git rm -r --cached`.
+
+# Build results
+bin/
+obj/
+
+# Per-user project/IDE state
+*.user
+.vs/
+*.suo
+
+# Common local droppings
+*.log
