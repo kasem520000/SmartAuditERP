@@ -1,0 +1,44 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "entry": "f37c37ca6581c4d1546bf0e073326572f4b7af36",
+  "authority": [
+    "PHASE-07-REMAINING-07B23.md",
+    "evidence/split-register-07B23.csv",
+    "evidence/residual-disposition-07B23.csv"
+  ],
+  "selected_upstream_split": "SP7B23-01",
+  "selected_capability": "current row ownership at picker cancellation, duplicate wire2 target and wire1 recalculation index after removal in PurchInv; initial-account/production controls",
+  "input": "stable current-row reference/index; picker result or one successful active unique lookup with normal return and duplicate wire action",
+  "source": "in-memory grid row identity and quantity/derived cell updates; bounded XAML/handlers",
+  "output": "surviving row refs, identity target before hydration and recalculated reference; not saved/printed/financial/stock results",
+  "exit": "each selected capability evidence/limit/owner/redacted input/impact/next step/two unexecuted plans plus root/residual/split adjudication",
+  "exclusions": [
+    "not all11constructor bodies/477source bodies/callgraph/census/455FE",
+    "no whole editor/production/BOM/save/writer/output certification",
+    "no price/unit/merge/basket/SDK policy invented",
+    "no WPF/modal/SQL/Excel/provider/device execution or7C start",
+    "independent repairs not merged or presumed synchronized"
+  ],
+  "bookkeeping": {
+    "selected_paths": 10,
+    "prior_union": 418,
+    "overlap": 9,
+    "new": 1,
+    "union": 419,
+    "complement": 408,
+    "complement_kinds": {
+      "source": 343,
+      "generated-artifact": 61,
+      "project-or-resource": 4
+    }
+  },
+  "new_paths": [
+    "SmartAuditERP/Form_WPF/FrmIntialRestraiction.xaml"
+  ],
+  "historical_metadata_screen_count": 319,
+  "historical_comparison_depth": "all319-title-certainty-summaries-plus-path-filtered-metadata-and-selected-nearest-bodies-source-chains-not-all-historical-bodies",
+  "historical_body_review_claim": false,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "counts_are_completion_percent_or_sessions": false
+}
