@@ -39,6 +39,28 @@
 - **حدود التحقق:** تعذر WPF/.NET/SQL هنا؛ النجاح `verified-in-scope` لمنطق التدفق فقط وليس قبول ERP.
 - **الالتزام:** fix=`29419ee` · test=`0eef57b` — على الفرع الحالي فقط.
 
+### R-004 ← P7-036 — فحص تفرد الباركود يضرب الجدولين ديكارتياً فيفوّت التكرار عند خلو أحدهما
+- **الحالة:** `verified-in-scope` (دلالة كشف الوجود؛ تشغيل SQL Server/WPF محجوب بيئياً)
+- **النتيجة الأصلية:** P7-036 · Medium · confirmed · implementation-defect (`findings.csv`).
+- **الدليل/المصدر:** `SmartAuditERP/Form_WPF/frmMultiBarcode.xaml.cs::IsValidBarcode` (~75–98): `select … from ItemUnits,Itembarcodes where (…units…) or (…barcodes…)` — فَصل بالفاصلة = ضرب ديكارتي، والناتج فارغ كلما خلا أحد الجدولين ⇒ لا يُكتشف تكرار موجود في الجدول الآخر. القارئ يستخدم `dt.Rows.Count > 0` فقط (دلالة وجود).
+- **التبعيات:** مستقل عن نتائج باركود الميزان الأخرى (P7-136/137/138 في المحررات/POS) وعن P7-037 تسمية سعر الملصق؛ يخص تحقق التفرد قبل إدراج صف `Itembarcodes` هنا فقط.
+- **التعديل المطبق:** فحص كل جدول باستقلال عبر `UNION ALL` فيُلتقط التطابق في أيٍّ منهما حتى مع خلو الآخر، مع إبقاء استبعاد باركود الصنف نفسه (`ItemId<>@itemId`) والحفاظ على دلالة الوجود. تحصين موضعي لنفس العبارة: ربط `barcode`/`itemId` كمعاملات بدل حشرهما نصياً (لا يدّعي حل عائلة الحقن الواسعة P1-011).
+- **اختبار الرجوع:** `tests/repair/barcode_uniqueness_harness.py` — SQLite: خلو ItemUnits أو Itembarcodes يُخفي التكرار عن الأصل ويلتقطه المُصلَح؛ ومع امتلاء الجدولين يتفقان (كشف)، وبلا إنذار كاذب عند عدم وجود تكرار، وباركود الصنف نفسه مستبعد. الخروج PASS.
+- **حدود التحقق:** تعذر SQL Server/WPF هنا؛ النجاح `verified-in-scope` لدلالة الكشف فقط وليس قبول ERP.
+- **الالتزام:** fix=`f2a3695` · test=`fcff03a` — على الفرع الحالي فقط.
+
+### R-005 ← P7-103 و P7-104 — افتراضي الطباعة: استرجاع القيمة المحفوظة وتأكيد نجاح الحفظ فعلياً
+- **الحالة:** `verified-in-scope` (منطق التحميل/الحفظ والإبلاغ عن النتيجة؛ تشغيل WPF/SQL محجوب بيئياً)
+- **النتيجتان الأصليتان:** P7-103 · P7-104 · كلاهما Medium · confirmed · implementation-defect (`findings.csv`). نموذج واحد وصف إعداد واحد `sett(id=1)`.
+- **الدليل/المصدر:** `SmartAuditERP/Form_WPF/frmInvRptType.xaml.cs` و`frmInvRptType.xaml`:
+  - P7-103: لا منطق تحميل إطلاقاً؛ `RadioButton1` (A4) مثبّت `IsChecked="True"` في XAML ولا تُقرأ `sett.val` عند الفتح ⇒ الافتراضي دائماً A4 متجاهلاً المحفوظ.
+  - P7-104: `Button1_Click` ينفّذ `UPDATE sett SET val=… WHERE id=1` عبر `ExecuteNonQuery()` ويتجاهل عدد الصفوف المتأثرة ثم يعرض «تم الحفظ بنجاح» دائماً ⇒ نجاح زائف إذا لم يوجد صف `id=1`.
+- **التبعيات:** محصور بنافذة اختيار افتراضي الطباعة وصف الإعداد الواحد؛ لا يمس محرك الطباعة `Print.cs` أو مستهلكي قيمة الافتراضي elsewhere.
+- **التعديل المطبق:** إضافة `LoadSavedDefault()` يقرأ `val` ويضبط زر الاختيار المطابق، مع تراجع آمن إلى A4 عند تعذر القراءة/غياب الصف (بلا انهيار عند الفتح). وفي الحفظ: التفرع على عدد الصفوف المتأثرة — نجاح فقط عند `>0` وإلا تحذير بأنه لا يوجد صف إعداد قابل للتحديث — وربط القيمة كمعامل بدل تضمينها نصياً.
+- **اختبار الرجوع:** `tests/repair/print_default_harness.py` — SQLite: المخزّن val=2 يجعل المُصلَح يفتح على الورق الصغير بينما بقي الأصل على A4؛ غياب الصف → A4؛ حفظ بلا صف إعداد: الأصل أعلن نجاحاً زائفاً (affected=0، بلا تخزين) والمُصلَح لا يعلن ويخزّن شيئاً؛ حفظ حقيقي ينجح ويخزّن val=2 وإعادة الفتح تعكسه. الخروج PASS.
+- **حدود التحقق:** تعذر WPF/.NET/SQL هنا؛ النجاح `verified-in-scope` لمنطق الاستمرار/الإبلاغ فقط وليس قبول ERP.
+- **الالتزام:** fix=`39421e8` · test=`4cbd374` — على الفرع الحالي فقط.
+
 ## دفتر المتراكم (ملخص حسب الطبقة/المرحلة — يُفصَّل مع تقدم العمل)
 | الطبقة | أمثلة مفتاحية | العدد المفتوح الإجمالي بالمرجع | حالة التخطيط |
 | --- | --- | --- | --- |
@@ -58,3 +80,7 @@
 | R-002 | P7-059 | test(P7-059): SQLite model proving last-movement now selects the newest | `744adf2` | 2026-11-19 | verified-in-scope |
 | R-003 | P7-025 | fix(P7-025): enumerate a snapshot in booking search to stop live-collection mutation | `29419ee` | 2026-11-19 | verified-in-scope |
 | R-003 | P7-025 | test(P7-025): fail-fast model proving snapshot enumeration fixes the crash | `0eef57b` | 2026-11-19 | verified-in-scope |
+| R-004 | P7-036 | fix(P7-036): detect barcode duplicates via independent UNION ALL, not a cartesian join | `f2a3695` | 2026-11-19 | verified-in-scope |
+| R-004 | P7-036 | test(P7-036): SQLite model proving UNION ALL catches duplicates the cross join misses | `fcff03a` | 2026-11-19 | verified-in-scope |
+| R-005 | P7-103/P7-104 | fix(P7-103,P7-104): load persisted print default and verify save actually updated | `39421e8` | 2026-11-19 | verified-in-scope |
+| R-005 | P7-103/P7-104 | test(P7-103,P7-104): SQLite model proving load round-trip and honest save result | `4cbd374` | 2026-11-19 | verified-in-scope |
