@@ -1239,6 +1239,20 @@ namespace SmartAuditERP.Form_WPF
                 return;
             }
 
+            // Repair R-011 (audit finding P7-141): BindToData() coerces an unparseable voucher value
+            // to zero (double.TryParse(...) ? v : 0) while still copying the ORIGINAL text into
+            // BondVal, so a non-numeric amount printed as the words-of-ZERO beside its raw text.
+            // Reject such values up front - same UX pattern as the empty-value guard above - instead
+            // of printing an inconsistent bond. Valid numbers (including a deliberate zero) proceed
+            // exactly as before; this parse uses the same double.TryParse semantics BindToData
+            // applies, so nothing is newly accepted or rejected beyond outright unparseable text.
+            if (!double.TryParse(txtVal.Text, out _))
+            {
+                DXMessageBox.Show("قيمة السند ليست رقماً صالحاً.", "تنبيه",
+                                MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             if (string.IsNullOrEmpty(print.RptUrl))
             {
                 DXMessageBox.Show("يجب تحديد مسار التقرير.", "تنبيه",
