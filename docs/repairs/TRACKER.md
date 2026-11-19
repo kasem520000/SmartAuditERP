@@ -215,4 +215,4 @@
 | حواجز | P1-007/008/010/012 | docs(repairs): security blockers with required policy inputs; R-014/R-015 cards; eighth sync check | `a231f39` | 2026-11-19 | blocked/policy-input · needs-contract |
 | R-016 | P1-016 | fix(P1-016): shut down instead of initializing the business shell when login fails | `bb7de78` | 2026-11-19 | verified-in-scope |
 | R-016 | P1-016 | test(P1-016): lifecycle model proving failed login no longer wires the business shell | `f816795` | 2026-11-19 | verified-in-scope |
-| حواجز | P1-013/014/015 | docs(repairs): authorization timing & transport blockers; R-016 card; ninth sync check | (يُستكمل أدناه) | 2026-11-19 | needs-contract · blocked |
+| حواجز | P1-013/014/015 | docs(repairs): authorization timing & transport blockers; R-016 card; ninth sync check | `24b3844` | 2026-11-19 | needs-contract · blocked |
