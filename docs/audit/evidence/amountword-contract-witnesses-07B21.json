@@ -1,0 +1,765 @@
+{
+  "phase": "7B21-partial-static-amountword-contracts",
+  "application_code_imported_or_executed": false,
+  "dotnet_or_visualbasic_format_parse_or_words_executed": false,
+  "scanner_template_or_printer_executed": false,
+  "application_remediation_performed": false,
+  "real_business_or_secret_data_used": false,
+  "spreadsheet_or_formula_interpreter_executed": false,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "B_R4e_bounded_not_whole7B_closure": true,
+  "prior_roots_not_assumed_remediated": true,
+  "unresolved_external_contracts_and_explicit_splits_retained": true,
+  "illustration_count": 12,
+  "static_lexical_contract_check_count": 12,
+  "illustrations": [
+    {
+      "id": "ALG7B21-01",
+      "title": "Twelve supplied positions retain magnitude",
+      "manual_model": {
+        "supplied_digits": "999999999999",
+        "selected_groups": [
+          "999",
+          "999",
+          "999",
+          "999"
+        ],
+        "selected_magnitude": "999999999999",
+        "unread_tail": ""
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-139",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:550-591;SmartAuditERP/Class/InvoiceOper.cs:707-795",
+      "limit": "Supplied ASCII/Decimal/boolean toy only; no C#/VB/.NET format/parse/words, SQL, template or printer execution; no approved currency/precision/sign/zero policy.",
+      "source_application_executed": false
+    },
+    {
+      "id": "ALG7B21-02",
+      "title": "Thirteen supplied digits select only first twelve",
+      "manual_model": {
+        "supplied_digits": "1000000000000",
+        "selected_groups": [
+          "100",
+          "000",
+          "000",
+          "000"
+        ],
+        "selected_magnitude": "100000000000",
+        "unread_tail": "0"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-139",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:550-591;SmartAuditERP/Class/InvoiceOper.cs:707-795",
+      "limit": "Supplied ASCII/Decimal/boolean toy only; no C#/VB/.NET format/parse/words, SQL, template or printer execution; no approved currency/precision/sign/zero policy.",
+      "source_application_executed": false
+    },
+    {
+      "id": "ALG7B21-03",
+      "title": "Two distinct wide integers collide before word grammar",
+      "manual_model": {
+        "left": {
+          "supplied_digits": "1000000000000",
+          "selected_groups": [
+            "100",
+            "000",
+            "000",
+            "000"
+          ],
+          "selected_magnitude": "100000000000",
+          "unread_tail": "0"
+        },
+        "right": {
+          "supplied_digits": "1000000000001",
+          "selected_groups": [
+            "100",
+            "000",
+            "000",
+            "000"
+          ],
+          "selected_magnitude": "100000000000",
+          "unread_tail": "1"
+        }
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-139",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:550-591;SmartAuditERP/Class/InvoiceOper.cs:707-795",
+      "limit": "Supplied ASCII/Decimal/boolean toy only; no C#/VB/.NET format/parse/words, SQL, template or printer execution; no approved currency/precision/sign/zero policy.",
+      "source_application_executed": false
+    },
+    {
+      "id": "ALG7B21-04",
+      "title": "Alternate DTO drops currency while both word inputs retain it",
+      "manual_model": {
+        "primary": {
+          "currency": "CURRENCY-TOKEN",
+          "arabic_currency_input": "CURRENCY-TOKEN",
+          "english_currency_input": "CURRENCY-TOKEN"
+        },
+        "alternate": {
+          "currency": "",
+          "arabic_currency_input": "CURRENCY-TOKEN",
+          "english_currency_input": "CURRENCY-TOKEN"
+        }
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-140",
+      "evidence": "SmartAuditERP/Class/InvoiceData.cs:53-56;SmartAuditERP/Class/Print.cs:708-750;SmartAuditERP/Class/Print.cs:977-987;SmartAuditERP/Class/Print.cs:1051-1075;SmartAuditERP/Class/Print.cs:1141-1156",
+      "limit": "Supplied ASCII/Decimal/boolean toy only; no C#/VB/.NET format/parse/words, SQL, template or printer execution; no approved currency/precision/sign/zero policy. Token is not an SDK enum or printed label.",
+      "source_application_executed": false
+    },
+    {
+      "id": "ALG7B21-05",
+      "title": "Failure and genuine zero share word input but not raw amount",
+      "manual_model": {
+        "failure": {
+          "BondVal": "bad",
+          "word_numeric_input": "0",
+          "parse_health_in_Bond": false
+        },
+        "zero": {
+          "BondVal": "0",
+          "word_numeric_input": "0",
+          "parse_health_in_Bond": false
+        }
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-141",
+      "evidence": "SmartAuditERP/Form_WPF/frmSandD.xaml.cs:1233-1330;SmartAuditERP/Form_WPF/frmSandQAndroid.xaml.cs:1030-1127;SmartAuditERP/Class/Bond.cs:40-44;SmartAuditERP/Class/Bond.cs:60-64",
+      "limit": "Supplied ASCII/Decimal/boolean toy only; no C#/VB/.NET format/parse/words, SQL, template or printer execution; no approved currency/precision/sign/zero policy. Parse failure supplied, not performed.",
+      "source_application_executed": false
+    },
+    {
+      "id": "ALG7B21-06",
+      "title": "Successful supplied parse is a counterexample to blanket failure",
+      "manual_model": {
+        "BondVal": "12.5",
+        "word_numeric_input": "12.5",
+        "parse_health_in_Bond": false
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-141",
+      "evidence": "SmartAuditERP/Form_WPF/frmSandD.xaml.cs:1233-1330;SmartAuditERP/Form_WPF/frmSandQAndroid.xaml.cs:1030-1127;SmartAuditERP/Class/Bond.cs:40-44;SmartAuditERP/Class/Bond.cs:60-64",
+      "limit": "Supplied ASCII/Decimal/boolean toy only; no C#/VB/.NET format/parse/words, SQL, template or printer execution; no approved currency/precision/sign/zero policy.",
+      "source_application_executed": false
+    },
+    {
+      "id": "ALG7B21-07",
+      "title": "Retained034 fraction prefix is not normalization",
+      "manual_model": {
+        "supplied_dot_string": "19.999",
+        "prefix": "99",
+        "illustrative_half_even": "20.00"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-034",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:550-575;SmartAuditERP/Class/Print.cs:737-750",
+      "limit": "Supplied ASCII/Decimal/boolean toy only; no C#/VB/.NET format/parse/words, SQL, template or printer execution; no approved currency/precision/sign/zero policy. Half-even is illustrative, NOT a chosen money policy. Primary Print preformats first.",
+      "source_application_executed": false
+    },
+    {
+      "id": "ALG7B21-08",
+      "title": "Retained035 branch drift with numeric2 counterexample",
+      "manual_model": {
+        "code4": {
+          "numeric_source_branch": 4,
+          "arabic_major_family": "Riyal",
+          "arabic_minor_family": "Halala",
+          "english_major_family": "Dirham",
+          "english_minor_family": "Fil"
+        },
+        "code2": {
+          "numeric_source_branch": 2,
+          "arabic_major_family": "Dollar",
+          "arabic_minor_family": "Cent",
+          "english_major_family": "Dollar",
+          "english_minor_family": "Cent"
+        }
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-035",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:972-1170",
+      "limit": "Supplied ASCII/Decimal/boolean toy only; no C#/VB/.NET format/parse/words, SQL, template or printer execution; no approved currency/precision/sign/zero policy. Families summarize literal local branches, not SDK enum mappings or grammar.",
+      "source_application_executed": false
+    },
+    {
+      "id": "ALG7B21-09",
+      "title": "Index/value mismatch requires actual external enum contract",
+      "manual_model": {
+        "hypothetical_nonidentity": {
+          "displayed_synthetic_value": 8,
+          "persisted_index": 2,
+          "read_numeric_cast_input": 2,
+          "identity_preserved": false,
+          "actual_sdk_enum_not_supplied": true
+        },
+        "identity_counterexample": {
+          "displayed_synthetic_value": 2,
+          "persisted_index": 2,
+          "read_numeric_cast_input": 2,
+          "identity_preserved": true,
+          "actual_sdk_enum_not_supplied": true
+        }
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "H7B21-04",
+      "evidence": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs:333-352;SmartAuditERP/Form_WPF/frmSettings.xaml.cs:1028-1032;SmartAuditERP/Form_WPF/frmSettings.xaml.cs:1655-1661;SmartAuditERP/Class/InvoiceObj.cs:262-270",
+      "limit": "Supplied ASCII/Decimal/boolean toy only; no C#/VB/.NET format/parse/words, SQL, template or printer execution; no approved currency/precision/sign/zero policy. Hypothetical enum is explicitly NOT the unavailable SDK definition; no new finding.",
+      "source_application_executed": false
+    },
+    {
+      "id": "ALG7B21-10",
+      "title": "Separators plus closing phrase do not express numeric zero",
+      "manual_model": {
+        "supplied_empty_group_and_zero_suffix": " ",
+        "source_style_nonempty_test": true,
+        "separator_and_closing": "  فقط لا غير"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "H7B21-01",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:550-575;SmartAuditERP/Class/InvoiceOper.cs:972-1021",
+      "limit": "Supplied ASCII/Decimal/boolean toy only; no C#/VB/.NET format/parse/words, SQL, template or printer execution; no approved currency/precision/sign/zero policy. Inert concatenation using supplied empty group output; exact VB/null/culture behavior not executed, required wording unresolved.",
+      "source_application_executed": false
+    },
+    {
+      "id": "ALG7B21-11",
+      "title": "Signed formatted string lies outside unsigned positional proof",
+      "manual_model": {
+        "supplied_signed_string": "-000000000001",
+        "groups": [
+          "-00",
+          "000",
+          "000",
+          "000"
+        ],
+        "unread_tail": "1",
+        "sign_is_not_a_digit": true
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "H7B21-01",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:577-591;SmartAuditERP/Class/InvoiceOper.cs:707-795",
+      "limit": "Supplied ASCII/Decimal/boolean toy only; no C#/VB/.NET format/parse/words, SQL, template or printer execution; no approved currency/precision/sign/zero policy. No assertion that .NET actually formats a negative value to this string; do not infer a production sign defect.",
+      "source_application_executed": false
+    },
+    {
+      "id": "ALG7B21-12",
+      "title": "Magnitude plus side can represent either ledger direction",
+      "manual_model": {
+        "credit_case": {
+          "debit": "20",
+          "credit": "120",
+          "word_magnitude": "100",
+          "side": "credit"
+        },
+        "debit_case": {
+          "debit": "120",
+          "credit": "20",
+          "word_magnitude": "100",
+          "side": "debit"
+        }
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "H7B21-01",
+      "evidence": "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs:708-747;SmartAuditERP/Form_WPF/frmCostCenterBalance.xaml.cs:632-651",
+      "limit": "Supplied ASCII/Decimal/boolean toy only; no C#/VB/.NET format/parse/words, SQL, template or printer execution; no approved currency/precision/sign/zero policy. Sign/side semantics need an owner; no requirement to prepend minus to an absolute balance.",
+      "source_application_executed": false
+    }
+  ],
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B21-01",
+      "title": "Fixed twelve-position groups with no length branch in converter",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-139",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:550-591;SmartAuditERP/Class/InvoiceOper.cs:707-795",
+      "limit": "Exact local instructions, not formatted runtime output or proof a deployed amount reaches the boundary.",
+      "source_application_executed": false
+    },
+    {
+      "id": "ST7B21-02",
+      "title": "Primary currency assigned, alternate not assigned on selected construction-to-return span",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-140",
+      "evidence": "SmartAuditERP/Class/InvoiceData.cs:53-56;SmartAuditERP/Class/Print.cs:708-750;SmartAuditERP/Class/Print.cs:977-987;SmartAuditERP/Class/Print.cs:1051-1075;SmartAuditERP/Class/Print.cs:1141-1156",
+      "limit": "Local DTO omission only. External ToDataTable/template aliases can change presentation; no blank printed invoice was observed.",
+      "source_application_executed": false
+    },
+    {
+      "id": "ST7B21-03",
+      "title": "Two receipt print boundaries keep raw BondVal but ignore parse failure",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-141",
+      "evidence": "SmartAuditERP/Form_WPF/frmSandD.xaml.cs:1233-1330;SmartAuditERP/Form_WPF/frmSandQAndroid.xaml.cs:1030-1127;SmartAuditERP/Class/Bond.cs:40-44;SmartAuditERP/Class/Bond.cs:60-64",
+      "limit": "Whitespace guard is not a parse guard. Conditions include valid template path/Foundation access; no saved-zero claim.",
+      "source_application_executed": false
+    },
+    {
+      "id": "ST7B21-04",
+      "title": "Selected receipt fields/styles have no numeric input mask; D handler only updates parsed values",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-141",
+      "evidence": "SmartAuditERP/Form_WPF/frmSandD.xaml:64-93;SmartAuditERP/Form_WPF/frmSandD.xaml:345-348;SmartAuditERP/Form_WPF/frmSandD.xaml.cs:1092-1122;SmartAuditERP/Form_WPF/frmSandQAndroid.xaml:65-94;SmartAuditERP/Form_WPF/frmSandQAndroid.xaml:322-325",
+      "limit": "Selected local XAML/styles and event only; no rendering, global styles or WPF event timing acceptance.",
+      "source_application_executed": false
+    },
+    {
+      "id": "ST7B21-05",
+      "title": "Both languages consume formatted primary Net and raw alternate Net",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-034",
+      "evidence": "SmartAuditERP/Class/Print.cs:737-750;SmartAuditERP/Class/Print.cs:1051-1075",
+      "limit": "Primary preformat is counterevidence to a universal raw-fraction truncation claim; no language/runtime output equality established.",
+      "source_application_executed": false
+    },
+    {
+      "id": "ST7B21-06",
+      "title": "Fixed dot and first two fractional characters remain prior034",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-034",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:550-575",
+      "limit": "Recheck of retained root, no new row/evidence extension and no approved precision policy.",
+      "source_application_executed": false
+    },
+    {
+      "id": "ST7B21-07",
+      "title": "Local numeric currency branches are asymmetric; numeric2 present in both",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-035",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:972-1170",
+      "limit": "Compare literal numeric branches only; do not invent external enum values or complete currency support.",
+      "source_application_executed": false
+    },
+    {
+      "id": "ST7B21-08",
+      "title": "Five receipt callers use settings key13, with local settings13 counterevidence",
+      "documented_text_observation_matches": true,
+      "finding_ids": "H7B21-03",
+      "evidence": "SmartAuditERP/Class/Common.cs:768-788;SmartAuditERP/Form_WPF/frmSettings.xaml.cs:2772-2791;SmartAuditERP/Form_WPF/frmSandD.xaml.cs:1285-1313;SmartAuditERP/Form_WPF/frmSandQAndroid.xaml.cs:1082-1110;SmartAuditERP/Form_WPF/frmSandQD.xaml.cs:1388-1411;SmartAuditERP/Form_WPF/frmSandSD.xaml.cs:1339-1365;SmartAuditERP/Form_WPF/frmSandVAT.xaml.cs:1200-1214",
+      "limit": "Shared13 may be intended policy; different ReceiptType numbers alone are NOT a new currency-setting finding.",
+      "source_application_executed": false
+    },
+    {
+      "id": "ST7B21-09",
+      "title": "Two HR word callers omit currency; salary net is locally read-only",
+      "documented_text_observation_matches": true,
+      "finding_ids": "H7B21-01",
+      "evidence": "SmartAuditERP/Form_WPF/frmSalaryPay.xaml.cs:835-867;SmartAuditERP/Form_WPF/frmEmpSalaryAddSub.xaml.cs:973-984;SmartAuditERP/Form_WPF/frmSalaryPay.xaml:368-374",
+      "limit": "Default SAR usage is source fact, not proof multi-currency HR is required;006 financial/recalculation root remains unchanged.",
+      "source_application_executed": false
+    },
+    {
+      "id": "ST7B21-10",
+      "title": "Statement/cost carry magnitude and side; AccountBalance uses literal0.00 selector",
+      "documented_text_observation_matches": true,
+      "finding_ids": "H7B21-01",
+      "evidence": "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs:708-747;SmartAuditERP/Form_WPF/frmCostCenterBalance.xaml.cs:632-651;SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs:453-462",
+      "limit": "Direction encoded by side is counterevidence to blanket lost-negative claims. Literal selector needs format/DTO contract, not an assumed new root.",
+      "source_application_executed": false
+    },
+    {
+      "id": "ST7B21-11",
+      "title": "Enum objects displayed but index persisted/restored and cast numerically",
+      "documented_text_observation_matches": true,
+      "finding_ids": "H7B21-04",
+      "evidence": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs:333-352;SmartAuditERP/Form_WPF/frmSettings.xaml.cs:1028-1032;SmartAuditERP/Form_WPF/frmSettings.xaml.cs:1655-1661;SmartAuditERP/Class/InvoiceObj.cs:262-270",
+      "limit": "Potential index/value ambiguity is an unanswered dependency contract, not a new finding without actual enum evidence. Identity mapping is a counterexample.",
+      "source_application_executed": false
+    },
+    {
+      "id": "ST7B21-12",
+      "title": "Legacy helper and VAT numeric catch do not establish approved replacement or words",
+      "documented_text_observation_matches": true,
+      "finding_ids": "H7B21-02",
+      "evidence": "SmartAuditERP/Class/Number2Arabic.cs:261-328;SmartAuditERP/Form_WPF/frmSandVAT.xaml.cs:1200-1214;SmartAuditERP/Form_WPF/frmSandVAT.xaml.cs:1330-1345",
+      "limit": "Fallback numeric N2 in word field is source-bound and owner/template health contract remains open; no rendered report, replacement or absence proof.",
+      "source_application_executed": false
+    }
+  ],
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 550,
+      "end": 795,
+      "sha256": "ccf89c20a7d1699083e1bf70ed92920df999d36c61774092962cd4cd7a3b36fb",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Class/Print.cs",
+      "start": 708,
+      "end": 750,
+      "sha256": "e7c97b231d0cba7934b4c97c9df6107dc74fbb0c2ef346c150091edf32cb1a0f",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Class/Print.cs",
+      "start": 977,
+      "end": 1156,
+      "sha256": "58ef1928ac1fc2fe04b270d5667114ae0420ae2a76e005aacb5ee1834ce93ca1",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceData.cs",
+      "start": 53,
+      "end": 56,
+      "sha256": "0e3ff7bcd1752c57638955ea701b6c26a0def120930a26f7c649217d954f5553",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandD.xaml.cs",
+      "start": 1233,
+      "end": 1330,
+      "sha256": "fa33d642e2996437252f8b55b69c3792afcb8b5a6478da47a45c6216bf744f12",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandQAndroid.xaml.cs",
+      "start": 1030,
+      "end": 1127,
+      "sha256": "fe1c37080792dfa914edc01d112dcd1cfaa70bd253aed975f28b409112a3497a",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandD.xaml",
+      "start": 64,
+      "end": 93,
+      "sha256": "1e7602f1dd93ccb3e18841ad6a46be66d72b926afad823fbe03c1eddb478a1ba",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandD.xaml",
+      "start": 345,
+      "end": 348,
+      "sha256": "89668894a8e5fbf62a13109cd53259bb85b9e6c6a62516a5e38a68eb81131149",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandQAndroid.xaml",
+      "start": 65,
+      "end": 94,
+      "sha256": "1e7602f1dd93ccb3e18841ad6a46be66d72b926afad823fbe03c1eddb478a1ba",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandQAndroid.xaml",
+      "start": 322,
+      "end": 325,
+      "sha256": "466316adea35c968b7ec1c5d2974f7c293339a1ce159e61209ad88b70fb2d424",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandD.xaml.cs",
+      "start": 1092,
+      "end": 1122,
+      "sha256": "5cb544a9fcf36e689ea45a49fb594048a72bf12c545a68f6eb58c59ff6fd780b",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 550,
+      "end": 575,
+      "sha256": "e1099e17b536cbd3b909312baa4ee261410c3db06969448b70c86cc815dc58c7",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 972,
+      "end": 1170,
+      "sha256": "cda6fe5e88545621689aa1cd73879f13b18a88a85e3941283c75a82ceb46c5bf",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Class/Common.cs",
+      "start": 768,
+      "end": 788,
+      "sha256": "340d9bfdc98f771d3593be76c2499d3b8335a46081e5bf761cf5c51ac47e32cf",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs",
+      "start": 2772,
+      "end": 2791,
+      "sha256": "655a88df46436214c137af1160d31297c54e53ace7e8bf9293c00bea94ce81b5",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandD.xaml.cs",
+      "start": 1285,
+      "end": 1313,
+      "sha256": "f5520fc88e7d43f14745f7a2e48a049402003c312a8fc0f2d28c8e5f3beb9320",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandQAndroid.xaml.cs",
+      "start": 1082,
+      "end": 1110,
+      "sha256": "1784f46649eb23edc08bb56a43fad4709c2859ce6c7e4ac8083e913b48859a31",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandQD.xaml.cs",
+      "start": 1388,
+      "end": 1411,
+      "sha256": "acfc2f404d64e38a4758066471f31f82d63c889bd806302a3124b6316bc90ec7",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandSD.xaml.cs",
+      "start": 1339,
+      "end": 1365,
+      "sha256": "0cd436c64f872ca210dbaf95e624174d1de73678d815a1d8e535f88f74b5973b",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandVAT.xaml.cs",
+      "start": 1200,
+      "end": 1214,
+      "sha256": "ba330bcbd0b7e946b05d24b35f0f3fd09c0493626cfb22fb3318e800f6cb710c",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSalaryPay.xaml.cs",
+      "start": 835,
+      "end": 867,
+      "sha256": "70b92641bcf640411e17c0e186549878edf44accc98b3864478d9dcfc37e6ec9",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmEmpSalaryAddSub.xaml.cs",
+      "start": 973,
+      "end": 984,
+      "sha256": "e9db8ea5a9b4820d3f5611cfadba4731d4568292fb0f4aa0ba14cc4ceb0614ab",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSalaryPay.xaml",
+      "start": 368,
+      "end": 374,
+      "sha256": "ce16b6a66ca068e321243947e00d82e346b0157a7589f41959c69594548bf055",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs",
+      "start": 708,
+      "end": 747,
+      "sha256": "62e3e99f6f4ab3bd6de0225196c821caf173f71336bc98a942561247f800bbab",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmCostCenterBalance.xaml.cs",
+      "start": 632,
+      "end": 651,
+      "sha256": "4ab32531603e1dd2ac5d94779cbc1e6a692164ed4d74c67c11beb9e5b32323ce",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs",
+      "start": 453,
+      "end": 462,
+      "sha256": "16c099af99b9ecba7df68724ea00a62dcc37c0136022d7d9f78c995243fa29c3",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs",
+      "start": 333,
+      "end": 352,
+      "sha256": "35dd143a78c9ad8d35437c97ce525efbbf538dd92da882877a17abae8e46b9ca",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs",
+      "start": 1028,
+      "end": 1032,
+      "sha256": "22f12c1e795b385cc157c7e472b332e44c2c59f47c76fb0da157cd050235a72e",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs",
+      "start": 1655,
+      "end": 1661,
+      "sha256": "26186cd770f3a39d5ea6ab6571369cbba72ba7cd4f25cf7e705c2b52fe3016ec",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceObj.cs",
+      "start": 262,
+      "end": 270,
+      "sha256": "e38a85487995dfb9af43b1d8a3dbf6da78768b042bad56630d81c2ae3fa93ab8",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Class/Number2Arabic.cs",
+      "start": 261,
+      "end": 328,
+      "sha256": "fdaf7e89062b614a0521b3cc7037a315ec44f2a08d6ab3f09161d8635b5f71ca",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandVAT.xaml.cs",
+      "start": 1200,
+      "end": 1214,
+      "sha256": "ba330bcbd0b7e946b05d24b35f0f3fd09c0493626cfb22fb3318e800f6cb710c",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandVAT.xaml.cs",
+      "start": 1330,
+      "end": 1345,
+      "sha256": "9196542cacb84b9f135b3c941f59cd0eaf5e92c67d09ef7cf674b63ea632f633",
+      "purpose": "bounded-inert-source-text-not-semantic-or-runtime-coverage"
+    }
+  ],
+  "qualified_literal_discovery": {
+    "source_csharp_paths_lexically_scanned": 477,
+    "literal_qualified_arabic_calls": [
+      {
+        "source_path": "SmartAuditERP/Class/Print.cs",
+        "method": "ToArabicLetter",
+        "call_line_start": 748,
+        "call_line_end": 748,
+        "call_text_sha256": "cf07814132f6e9d7d609753be0e5f7e3625913c5f0c289b7be002b4757c4973a",
+        "inert_argument_expression": "Conversions.ToDouble(invoiceData.Net), Inv.Currency",
+        "not_type_or_runtime_resolution": true
+      },
+      {
+        "source_path": "SmartAuditERP/Class/Print.cs",
+        "method": "ToArabicLetter",
+        "call_line_start": 1064,
+        "call_line_end": 1064,
+        "call_text_sha256": "335f06bb366883ed80dc33c131ddefbab27fa71ee3b003a70be29218e55e046d",
+        "inert_argument_expression": "Inv.Net, Inv.Currency",
+        "not_type_or_runtime_resolution": true
+      },
+      {
+        "source_path": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs",
+        "method": "ToArabicLetter",
+        "call_line_start": 460,
+        "call_line_end": 460,
+        "call_text_sha256": "5b8c8e8a2394cd27fa8be432789ab7a347d950d570e125d6f40c9f1dd74a26bf",
+        "inert_argument_expression": "Convert.ToDouble(txtBalance1.Text != \"0.00\" ? txtBalance1.Text : txtBalance2.Text)",
+        "not_type_or_runtime_resolution": true
+      },
+      {
+        "source_path": "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs",
+        "method": "ToArabicLetter",
+        "call_line_start": 732,
+        "call_line_end": 732,
+        "call_text_sha256": "a46a50d3a53aca4efc209ac3b032b9f3c7d975ded0dfc1eb92747d486e3186e0",
+        "inert_argument_expression": "balance",
+        "not_type_or_runtime_resolution": true
+      },
+      {
+        "source_path": "SmartAuditERP/Form_WPF/frmCostCenterBalance.xaml.cs",
+        "method": "ToArabicLetter",
+        "call_line_start": 648,
+        "call_line_end": 648,
+        "call_text_sha256": "18d76197395e35bcf21eb7f2c49e8a88be2b8c6b1ac45085a26da21ec2363c1e",
+        "inert_argument_expression": "SafeParseDouble(restrictionData.BalanceInperiod)",
+        "not_type_or_runtime_resolution": true
+      },
+      {
+        "source_path": "SmartAuditERP/Form_WPF/frmEmpSalaryAddSub.xaml.cs",
+        "method": "ToArabicLetter",
+        "call_line_start": 980,
+        "call_line_end": 981,
+        "call_text_sha256": "4bf3c10b9eca4e28ca8a0f8faef9fa4b8678207f3d6c9d43a89be9e66c0c270a",
+        "inert_argument_expression": "Convert.ToDouble(txtVal.Text)",
+        "not_type_or_runtime_resolution": true
+      },
+      {
+        "source_path": "SmartAuditERP/Form_WPF/frmSalaryPay.xaml.cs",
+        "method": "ToArabicLetter",
+        "call_line_start": 863,
+        "call_line_end": 863,
+        "call_text_sha256": "e2a2163b2a6b96853119dbcc7177ba9a4addb96c61f283716efe238a7dc2c830",
+        "inert_argument_expression": "netVal",
+        "not_type_or_runtime_resolution": true
+      },
+      {
+        "source_path": "SmartAuditERP/Form_WPF/frmSandD.xaml.cs",
+        "method": "ToArabicLetter",
+        "call_line_start": 1311,
+        "call_line_end": 1311,
+        "call_text_sha256": "5cee19361afaa5d1fbaaff1cb672fc9ea39afddf2eda0b3ae1f5ef4953103ed1",
+        "inert_argument_expression": "netVal, (Currency)currency",
+        "not_type_or_runtime_resolution": true
+      },
+      {
+        "source_path": "SmartAuditERP/Form_WPF/frmSandQAndroid.xaml.cs",
+        "method": "ToArabicLetter",
+        "call_line_start": 1108,
+        "call_line_end": 1108,
+        "call_text_sha256": "5cee19361afaa5d1fbaaff1cb672fc9ea39afddf2eda0b3ae1f5ef4953103ed1",
+        "inert_argument_expression": "netVal, (Currency)currency",
+        "not_type_or_runtime_resolution": true
+      },
+      {
+        "source_path": "SmartAuditERP/Form_WPF/frmSandQD.xaml.cs",
+        "method": "ToArabicLetter",
+        "call_line_start": 1407,
+        "call_line_end": 1410,
+        "call_text_sha256": "903e2b37c6a0895444547c282274f32590c63a4574d0dd7f8de8666e4abf675e",
+        "inert_argument_expression": "Convert.ToDouble( string.IsNullOrWhiteSpace(txtVal.Text) ? \"0\" : txtVal.Text), (Currency)currencyCode",
+        "not_type_or_runtime_resolution": true
+      },
+      {
+        "source_path": "SmartAuditERP/Form_WPF/frmSandSD.xaml.cs",
+        "method": "ToArabicLetter",
+        "call_line_start": 1363,
+        "call_line_end": 1365,
+        "call_text_sha256": "ef7bbbb4f466c3967ed4ff88d2016e499a03e563284ccdbb4741c9ecde9a9979",
+        "inert_argument_expression": "Convert.ToDouble(txtVal.Text == \"\" ? \"0\" : txtVal.Text), (Currency)currencyCode",
+        "not_type_or_runtime_resolution": true
+      },
+      {
+        "source_path": "SmartAuditERP/Form_WPF/frmSandVAT.xaml.cs",
+        "method": "ToArabicLetter",
+        "call_line_start": 1207,
+        "call_line_end": 1208,
+        "call_text_sha256": "e944b90573b54dabd9af721d65fb5b4b90f74c57561a81aa525936120b2755d3",
+        "inert_argument_expression": "netValDouble, (Currency)currencyCode",
+        "not_type_or_runtime_resolution": true
+      }
+    ],
+    "literal_qualified_english_calls": [
+      {
+        "source_path": "SmartAuditERP/Class/Print.cs",
+        "method": "SpellNumberEDP",
+        "call_line_start": 749,
+        "call_line_end": 749,
+        "call_text_sha256": "00a99c75f8cd7766fdc2f9b608eed19cc6d9fc821cb231add545f312618db27b",
+        "inert_argument_expression": "invoiceData.Net, Inv.Currency",
+        "not_type_or_runtime_resolution": true
+      },
+      {
+        "source_path": "SmartAuditERP/Class/Print.cs",
+        "method": "SpellNumberEDP",
+        "call_line_start": 1065,
+        "call_line_end": 1065,
+        "call_text_sha256": "3cd565c6b389a2f2d858fbaec304e7a4dbd830eae44cb901a91865e6088038ba",
+        "inert_argument_expression": "Conversions.ToString(Inv.Net), Inv.Currency",
+        "not_type_or_runtime_resolution": true
+      }
+    ],
+    "lexical_utf8_replacement_paths_not_encoding_acceptance": [
+      "SmartAuditERP/Class/DgvAccount2.cs",
+      "SmartAuditERP/Class/FormPermission.cs",
+      "SmartAuditERP/Class/RestrictionData.cs",
+      "SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs"
+    ],
+    "external_qualified_Number2Arabic_ameral_calls_discovered": [],
+    "not_complete_callgraph_or_capability_census": true,
+    "scanned_bodies_not_reviewed": true,
+    "masked_interpolated_string_expressions_aliases_reflection_delegates_and_external_components_not_resolved": true
+  },
+  "retained_additive_B10_arithmetic_erratum": {
+    "entered_quantity": 2,
+    "equality": 12,
+    "base_unit_cost": 5,
+    "local_cost": 10,
+    "reference_cost": 120,
+    "archive_rewritten": false
+  },
+  "errors": []
+}

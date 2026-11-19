@@ -1,0 +1,40 @@
+{
+  "authority": [
+    "PHASE-07-REMAINING-07B20.md",
+    "evidence/split-register-07B20.csv"
+  ],
+  "selected_upstream_split": "SP7B20-03",
+  "adjacent_bounded_output_support": "SP7B20-01",
+  "entry": "c2c895d0df0e4f106c4e5c2853219aa04303e002",
+  "reason": "بعد تقدم barcode في R4d بقيت amountwords/currency في SP03: تتبع مصدر المبلغ إلى المحول وحقول DTO في 12 نداءً عربياً مؤهلاً ونداءين إنجليزيين؛ فصل المجال العددي وهوية العملة وصحة القراءة عن034/035 القديمتين قبل أي حكم دعم أو قبول.",
+  "selected_input": "مقدار موجب صحيح واسع كنص ASCII افتراضي، قيمة/عملة Invoice الحالية، نص مبلغ محلي مع نتيجة parse افتراضية، ومداخل إعدادات/جانب رصيد منقحة لا بيانات أعمال.",
+  "selected_output": "عقود producer→caller→DTO ومجال/عملة/health، نتائج مصدر مستقلة وخطط غير منفذة وتصرف صريح لكل بقية؛ لا فاتورة مطبوعة أو اعتماد سياسة.",
+  "selection_exit_criterion": "كل قدرة منتقاة بدليل وحد وشاهد مقابل ومالك ومدخل منقح وأثر وخطوة وخطة وتصرف؛ حفظ السابق والتمييز بين تقرير الوثائق والقبول؛ بقايا SP01–03 واضحة دون نقل7B إلى7C.",
+  "excluded": [
+    "كل callgraph والنداءات غير المؤهلة/aliases/delegates/reflection أو تعبيرات interpolation المقنّعة والمكونات الخارجية",
+    "كامل المحررات وwriters ومحركات barcode/legacy وعقود كيان/فرع وأهلية خارج الشرائح",
+    "تعريف enum في SDK أو لائحة عملات/precision/sign/zero/rounding معتمدة غير موردة",
+    "UtilitiesProj.ToDataTable/REPX/printer أو SDK/.NET/VB/culture/provider/schema/grants الفعلية",
+    "محاور7C العامة أو إذن8 أو إصلاح أو تشغيل أو قياس"
+  ],
+  "bookkeeping": {
+    "selected_paths": 24,
+    "prior_union": 410,
+    "overlap": 22,
+    "new": 2,
+    "union": 412,
+    "complement": 415,
+    "complement_kinds": {
+      "source": 350,
+      "generated-artifact": 61,
+      "project-or-resource": 4
+    }
+  },
+  "literal_qualified_arabic_calls": 12,
+  "literal_qualified_english_calls": 2,
+  "named_WPF_caller_paths": 10,
+  "source_csharp_paths_lexically_scanned_not_body_reviews": 477,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "counts_are_completion_percent_or_sessions": false
+}
