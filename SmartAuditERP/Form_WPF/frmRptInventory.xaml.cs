@@ -660,8 +660,15 @@ namespace SmartAuditERP.Form_WPF
 
                 foreach (var inv in _invoicesList)
                 {
+                    // Repair R-007 (audit finding P7-063): the first CSV column is headed
+                    // "رقم الفاتورة" (invoice number) yet the code wrote inv.InvNote (the
+                    // notes), so notes appeared where the invoice number belongs. Write the
+                    // actual invoice number instead. InvoiceNo is the populated, source-of-
+                    // truth number (Inv.id) used by every other binding of this same list.
+                    // (Notes are not dropped by design elsewhere; adding a dedicated notes
+                    // column would be a separate enhancement, out of scope here.)
                     sb.AppendLine(
-                        $"{inv.InvNote},{inv.InvDate:d},{inv.Customer}," +
+                        $"{inv.InvoiceNo},{inv.InvDate:d},{inv.Customer}," +
                         $"{inv.User},{inv.Branch}," +
                         $"{inv.SumPrice:N2},{inv.TotDiscount:N2}," +
                         $"{inv.Total:N2},{inv.VAT:N2},{inv.Net:N2}");
