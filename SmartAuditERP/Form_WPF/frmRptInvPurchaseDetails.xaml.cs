@@ -61,6 +61,11 @@ namespace SmartAuditERP.Form_WPF
         private readonly Dictionary<string, InvoiceObj> _invoiceObjCache
             = new Dictionary<string, InvoiceObj>();
 
+        // Repair R-080 (audit finding P7-047): money columns the loaded result set did not carry.
+        // They are published as unavailable (an empty cell), never as a fabricated zero.
+        private readonly HashSet<string> _unavailableAmountColumns
+            = new HashSet<string>();
+
         #endregion
 
         #region ══════════════════ Inner Model ══════════════════
@@ -534,6 +539,7 @@ namespace SmartAuditERP.Form_WPF
             bool withItems = false)
         {
             var list = new List<InvoiceTxt>();
+            _unavailableAmountColumns.Clear();   // Repair R-080 (P7-047): per load, not per row
 
             // ✅ بناء الاستعلام المحسّن مع LEFT JOIN للمستودع
             string sql = overrideSql ?? BuildOptimizedSql(p);
@@ -653,6 +659,42 @@ namespace SmartAuditERP.Form_WPF
 
                             invoiceTxt.TotDiscount = invoiceTxt.InvDiscount;
 
+                            // Repair R-080 (audit finding P7-047): the output projection used to put
+                            // the additional-tax RATE (ExtraVATPerc) into the ExtraVAT column and to
+                            // leave TotalTax, Paycash and PayATM at a literal zero, so the printed
+                            // sheet and the exported file mixed a percentage with amounts and stated
+                            // financial zeros as facts. The amounts are on the row - the query selects
+                            // Inv.* - and Inv.tax already carries the additional tax (InvoiceOper
+                            // accumulates VAT += num + num2 and VAT += ExtraVAT), so every figure is
+                            // taken from the same row the way the sales-details and notification
+                            // screens read these very columns; a column the result set does not carry
+                            // is recorded as unavailable instead of being invented as zero.
+                            double extraAmount = ReadAmount(row, "ExtraVAT", out bool extraKnown);
+                            if (!extraKnown) _unavailableAmountColumns.Add("ExtraVAT");
+                            invoiceTxt.ExtraVAT = extraAmount;
+
+                            // Inv.tax is the tax total and already carries the additional tax, so
+                            // the main VAT is what remains of it - the sibling screens' convention -
+                            // and the total tax published here is main + additional, never a zero
+                            // beside a positive VAT.
+                            double taxTotal = ReadAmount(row, "tax", out bool totalTaxKnown);
+                            if (!totalTaxKnown) _unavailableAmountColumns.Add("TotalTax");
+                            double mainVat = (taxTotal - extraAmount) > 0
+                                ? taxTotal - extraAmount
+                                : taxTotal;
+                            invoiceTxt.TotalTax = mainVat + extraAmount;
+
+                            invoiceTxt.Paycash = ReadAmount(row, "cash", out bool cashKnown);
+                            if (!cashKnown) _unavailableAmountColumns.Add("Paycash");
+
+                            invoiceTxt.PayATM = ReadAmount(row, "visa", out bool atmKnown);
+                            if (!atmKnown) _unavailableAmountColumns.Add("PayATM");
+
+                            // A settled cash invoice is published as paid in full, on the same rule
+                            // the sibling screens apply to the same columns.
+                            if (payTypeInt == 1 && ReadInt(row, "PaymentStatus") == 1)
+                                invoiceTxt.Paycash = ReadAmount(row, "tot_net", out _);
+
                             // التواريخ
                             if (DateTime.TryParse(
                                     row["date"].ToString(), out DateTime invDate))
@@ -702,6 +744,40 @@ namespace SmartAuditERP.Form_WPF
         /// ✅ بناء الاستعلام المحسّن مع LEFT JOIN للمستودع
         /// بدل استدعاء GetStoreName لكل صف (N+1)
         /// </summary>
+        /// <summary>
+        /// Repair R-080 (audit finding P7-047): reads a money column when the loaded result set
+        /// actually carries it; <paramref name="known"/> is false for a missing column, a DBNull or
+        /// a value that is not a number, so the caller publishes "unavailable" rather than a zero.
+        /// </summary>
+        private static double ReadAmount(DataRow row, string column, out bool known)
+        {
+            known = row.Table.Columns.Contains(column)
+                    && row[column] != DBNull.Value
+                    && double.TryParse(Convert.ToString(row[column]), out _);
+            return known ? Convert.ToDouble(row[column]) : 0.0;
+        }
+
+        /// <summary>Repair R-080 (audit finding P7-047): same rule for a whole-number column.</summary>
+        private static int ReadInt(DataRow row, string column)
+        {
+            return row.Table.Columns.Contains(column)
+                   && row[column] != DBNull.Value
+                   && int.TryParse(Convert.ToString(row[column]), out int value)
+                ? value
+                : 0;
+        }
+
+        /// <summary>
+        /// Repair R-080 (audit finding P7-047): publishes a money value, or an empty cell when the
+        /// source result set did not carry that column - unavailable, never an invented zero.
+        /// </summary>
+        private string AmountText(double value, string column)
+        {
+            return _unavailableAmountColumns.Contains(column)
+                ? string.Empty
+                : value.ToString(Common.DigitsNo ?? "N2");
+        }
+
         private string BuildOptimizedSql(QueryParams p)
         {
             return
@@ -847,6 +923,9 @@ namespace SmartAuditERP.Form_WPF
             dt.Columns.Add("TotalTax", typeof(string));
             dt.Columns.Add("Paycash", typeof(string));
             dt.Columns.Add("PayATM", typeof(string));
+            // Repair R-080 (audit finding P7-047): the rate keeps its own explicitly named column,
+            // so ExtraVAT carries an amount and ExtraVATPerc carries a percentage.
+            dt.Columns.Add("ExtraVATPerc", typeof(string));
 
             string fmt = Common.DigitsNo ?? "N2";
 
@@ -873,8 +952,11 @@ namespace SmartAuditERP.Form_WPF
                     row.ProcType,
                     row.Paid.ToString(fmt),
                     row.Remainder.ToString(fmt),
-                    row.ExtraVATPerc.ToString(fmt),
-                    "0", "0", "0");
+                    AmountText(row.ExtraVAT, "ExtraVAT"),        // amount, was the rate
+                    AmountText(row.TotalTax, "TotalTax"),        // was the literal "0"
+                    AmountText(row.Paycash, "Paycash"),          // was the literal "0"
+                    AmountText(row.PayATM, "PayATM"),            // was the literal "0"
+                    row.ExtraVATPerc.ToString(fmt));             // the rate, in its own column
             }
             return dt;
         }

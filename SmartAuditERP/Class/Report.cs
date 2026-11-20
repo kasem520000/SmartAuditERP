@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 using DevExpress.Data;
@@ -546,6 +547,17 @@ namespace SmartAuditERP
             {
                 var list = new List<InventoryData>();
 
+                // Repair R-080 (audit finding P7-047): these four summaries used to be the literal
+                // "0" on every row, so the printed sheet claimed no additional tax, no total tax,
+                // nothing paid and no remainder even though the rows carried Paid and Remainder.
+                // They are now summed from the very rows being published, and a column the caller
+                // did not supply - or a cell that is not a number - is published as unavailable
+                // (empty) instead of a fabricated zero.
+                string sumExtraTax = SumColumn(dt, "ExtraVAT");
+                string sumTotalTax = SumColumn(dt, "TotalTax");
+                string sumPaid = SumColumn(dt, "Paid");
+                string sumRemainder = SumColumn(dt, "Remainder");
+
                 foreach (DataRow row in dt.Rows)
                 {
                     var inventoryData = new InventoryData
@@ -580,10 +592,10 @@ namespace SmartAuditERP
                         Total1 = sumNet,
                         SumTax = sumVAT,
                         NetTotal = sumNetFinal,
-                        SummaryExtraTax = "0",
-                        SummaryTotalTax = "0",
-                        SummaryPaid = "0",
-                        SummaryRemainder = "0",
+                        SummaryExtraTax = sumExtraTax,
+                        SummaryTotalTax = sumTotalTax,
+                        SummaryPaid = sumPaid,
+                        SummaryRemainder = sumRemainder,
                         FilterText = "",
 
                         FromDate = FromDate,
@@ -606,6 +618,29 @@ namespace SmartAuditERP
                 Console.WriteLine(ex.Message);
                 return new DataSet();
             }
+        }
+
+        /// <summary>
+        /// Repair R-080 (audit finding P7-047): sums one money column of the rows being published.
+        /// Returns an empty string - "unavailable", not zero - when the table does not carry the
+        /// column or when any of its cells is not a number, so a partial sum is never presented as
+        /// a total and a constant never stands in for the rows.
+        /// </summary>
+        private static string SumColumn(DataTable dt, string column)
+        {
+            if (dt == null || !dt.Columns.Contains(column)) return string.Empty;
+
+            double sum = 0.0;
+            foreach (DataRow row in dt.Rows)
+            {
+                string text = row[column]?.ToString();
+                if (!double.TryParse(text, NumberStyles.Any,
+                        CultureInfo.CurrentCulture, out double value))
+                    return string.Empty;
+                sum += value;
+            }
+
+            return Math.Round(sum, 2).ToString(Common.DigitsNo ?? "N2");
         }
     }
 }
