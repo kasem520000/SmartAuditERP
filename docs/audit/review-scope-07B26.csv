@@ -1,0 +1,10 @@
+path,review_state,ranges,focus
+SmartAuditERP/Form_WPF/frmEditItems.xaml.cs,whole-local-bulk-editor-or-selected-surrounding-static-slices-not-runtime-certified,1-378,كامل محلي378C#/469XAML للمحرر الجماعي فقط؛ لا SDK أو تسعير أو WPF/SQL runtime.
+SmartAuditERP/Form_WPF/frmEditItems.xaml,whole-local-bulk-editor-or-selected-surrounding-static-slices-not-runtime-certified,1-469,كامل محلي378C#/469XAML للمحرر الجماعي فقط؛ لا SDK أو تسعير أو WPF/SQL runtime.
+SmartAuditERP/Form_WPF/frmItemsDir.xaml.cs,whole-local-bulk-editor-or-selected-surrounding-static-slices-not-runtime-certified,548-578,شرائح مدخل أو قراءة أو قيم معاملات أو مستهلك أو ضابط محددة؛ لا كل الصنف والكاتب والحقول والمتصلين.
+SmartAuditERP/Form_WPF/frmItemsDir.xaml,whole-local-bulk-editor-or-selected-surrounding-static-slices-not-runtime-certified,218-222;421-433,شرائح مدخل أو قراءة أو قيم معاملات أو مستهلك أو ضابط محددة؛ لا كل الصنف والكاتب والحقول والمتصلين.
+SmartAuditERP/Class/EntityOperations.cs,whole-local-bulk-editor-or-selected-surrounding-static-slices-not-runtime-certified,632-793,شرائح مدخل أو قراءة أو قيم معاملات أو مستهلك أو ضابط محددة؛ لا كل الصنف والكاتب والحقول والمتصلين.
+SmartAuditERP/Class/ItemOper.cs,whole-local-bulk-editor-or-selected-surrounding-static-slices-not-runtime-certified,549-574;604-620;733-811;2467-2610,شرائح مدخل أو قراءة أو قيم معاملات أو مستهلك أو ضابط محددة؛ لا كل الصنف والكاتب والحقول والمتصلين.
+SmartAuditERP/Form_WPF/frmItems.xaml.cs,whole-local-bulk-editor-or-selected-surrounding-static-slices-not-runtime-certified,911-932;979-991;2020-2097,شرائح مدخل أو قراءة أو قيم معاملات أو مستهلك أو ضابط محددة؛ لا كل الصنف والكاتب والحقول والمتصلين.
+SmartAuditERP/Form_WPF/frmItems.xaml,whole-local-bulk-editor-or-selected-surrounding-static-slices-not-runtime-certified,487-512,شرائح مدخل أو قراءة أو قيم معاملات أو مستهلك أو ضابط محددة؛ لا كل الصنف والكاتب والحقول والمتصلين.
+SmartAuditERP/Class/StoredQueries.cs,whole-local-bulk-editor-or-selected-surrounding-static-slices-not-runtime-certified,34-36,شرائح مدخل أو قراءة أو قيم معاملات أو مستهلك أو ضابط محددة؛ لا كل الصنف والكاتب والحقول والمتصلين.

@@ -1,0 +1,892 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "source_head": "10ba215152f722c8808aea0bb672c1d1d4d9d711",
+  "entry_checkout": "dd38f97e844dc60ea64ae00fa40ef588e49752d7",
+  "application_code_imported_or_executed": false,
+  "dotnet_wpf_sql_or_excel_executed": false,
+  "application_remediation_performed": false,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "scanner_or_printer_tests_executed": 0,
+  "B_R4j_bounded_not_whole7B_closure": true,
+  "unresolved_external_contracts_and_explicit_splits_retained": true,
+  "selected_paths_strict_utf8_decode": true,
+  "all_callers_or_external_DTOs_body_reviewed": false,
+  "actual_WPF_event_order_or_count_claimed": false,
+  "financial_or_unit_conversion_policy_invented": false,
+  "external_DTO_constructor_defaults_assumed": false,
+  "database_commit_or_saved_loss_claimed": false,
+  "prior026_142_151_152_not_recounted_or_extended": true,
+  "retained_additive_B10_arithmetic_erratum": {
+    "local_cost": 10,
+    "reference_cost": 120,
+    "equality1_control": 10,
+    "protected_G138_not_rewritten": true
+  },
+  "illustration_count": 16,
+  "lexical_check_count": 16,
+  "illustrations": [
+    {
+      "id": "ALG7B26-01",
+      "finding_ids": "P7-153",
+      "title": "Validated packing 12 becomes constant2",
+      "result": {
+        "product": {
+          "id": 7,
+          "main_unit": 1,
+          "property": 2,
+          "packing": "2",
+          "sale": "10",
+          "purchase": "6",
+          "units": [
+            {
+              "id": 1,
+              "ratio": "1",
+              "sale": "10",
+              "purchase": "6"
+            },
+            {
+              "id": 2,
+              "ratio": "12",
+              "sale": "120",
+              "purchase": "72"
+            }
+          ]
+        },
+        "rejected": false,
+        "reason": "source-assignment-illustration-only",
+        "price_checkboxes_not_consulted": true,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:172-200;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:251-267;SmartAuditERP/Form_WPF/frmEditItems.xaml:202-266;SmartAuditERP/Class/EntityOperations.cs:678-683;SmartAuditERP/Class/StoredQueries.cs:34-36",
+      "limit": "Supplied valid integer input; local mapping and parameter plan, not a SQL commit, unit policy or saved loss."
+    },
+    {
+      "id": "ALG7B26-02",
+      "finding_ids": "P7-153",
+      "title": "Validated packing 24 becomes constant2",
+      "result": {
+        "product": {
+          "id": 7,
+          "main_unit": 1,
+          "property": 2,
+          "packing": "2",
+          "sale": "10",
+          "purchase": "6",
+          "units": [
+            {
+              "id": 1,
+              "ratio": "1",
+              "sale": "10",
+              "purchase": "6"
+            },
+            {
+              "id": 2,
+              "ratio": "12",
+              "sale": "120",
+              "purchase": "72"
+            }
+          ]
+        },
+        "rejected": false,
+        "reason": "source-assignment-illustration-only",
+        "price_checkboxes_not_consulted": true,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:172-200;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:251-267;SmartAuditERP/Form_WPF/frmEditItems.xaml:202-266;SmartAuditERP/Class/EntityOperations.cs:678-683;SmartAuditERP/Class/StoredQueries.cs:34-36",
+      "limit": "Supplied valid integer input; local mapping and parameter plan, not a SQL commit, unit policy or saved loss."
+    },
+    {
+      "id": "ALG7B26-03",
+      "finding_ids": "P7-153",
+      "title": "Input2 is a fixed-point control",
+      "result": {
+        "product": {
+          "id": 7,
+          "main_unit": 1,
+          "property": 2,
+          "packing": "2",
+          "sale": "10",
+          "purchase": "6",
+          "units": [
+            {
+              "id": 1,
+              "ratio": "1",
+              "sale": "10",
+              "purchase": "6"
+            },
+            {
+              "id": 2,
+              "ratio": "12",
+              "sale": "120",
+              "purchase": "72"
+            }
+          ]
+        },
+        "rejected": false,
+        "reason": "source-assignment-illustration-only",
+        "price_checkboxes_not_consulted": true,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:172-200;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:251-267;SmartAuditERP/Form_WPF/frmEditItems.xaml:202-266;SmartAuditERP/Class/EntityOperations.cs:678-683;SmartAuditERP/Class/StoredQueries.cs:34-36",
+      "limit": "Coincidental equality is not acceptance of other inputs or business packing semantics."
+    },
+    {
+      "id": "ALG7B26-04",
+      "finding_ids": "P7-153",
+      "title": "Zero packing returns before mutation",
+      "result": {
+        "product": {
+          "id": 7,
+          "main_unit": 1,
+          "property": 2,
+          "packing": "6",
+          "sale": "10",
+          "purchase": "6",
+          "units": [
+            {
+              "id": 1,
+              "ratio": "1",
+              "sale": "10",
+              "purchase": "6"
+            },
+            {
+              "id": 2,
+              "ratio": "12",
+              "sale": "120",
+              "purchase": "72"
+            }
+          ]
+        },
+        "rejected": true,
+        "reason": "zero-or-empty-packing",
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:172-200;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:251-267;SmartAuditERP/Form_WPF/frmEditItems.xaml:202-266;SmartAuditERP/Class/EntityOperations.cs:678-683;SmartAuditERP/Class/StoredQueries.cs:34-36",
+      "limit": "Fixture covers plain zero only, not .NET parsing, negative-domain policy, NaN or event behavior."
+    },
+    {
+      "id": "ALG7B26-05",
+      "finding_ids": "P7-153",
+      "title": "Unselected property preserves supplied packing",
+      "result": {
+        "product": {
+          "id": 7,
+          "main_unit": 1,
+          "property": 2,
+          "packing": "6",
+          "sale": "10",
+          "purchase": "6",
+          "units": [
+            {
+              "id": 1,
+              "ratio": "1",
+              "sale": "10",
+              "purchase": "6"
+            },
+            {
+              "id": 2,
+              "ratio": "12",
+              "sale": "120",
+              "purchase": "72"
+            }
+          ]
+        },
+        "rejected": false,
+        "reason": "source-assignment-illustration-only",
+        "price_checkboxes_not_consulted": true,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:172-200;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:251-267;SmartAuditERP/Form_WPF/frmEditItems.xaml:202-266;SmartAuditERP/Class/EntityOperations.cs:678-683;SmartAuditERP/Class/StoredQueries.cs:34-36",
+      "limit": "Omitted property selection is distinct from explicitly selecting zero; no external DTO defaults assumed."
+    },
+    {
+      "id": "ALG7B26-06",
+      "finding_ids": "P7-153",
+      "title": "Other property leaves packing unchanged locally",
+      "result": {
+        "product": {
+          "id": 7,
+          "main_unit": 1,
+          "property": 3,
+          "packing": "6",
+          "sale": "10",
+          "purchase": "6",
+          "units": [
+            {
+              "id": 1,
+              "ratio": "1",
+              "sale": "10",
+              "purchase": "6"
+            },
+            {
+              "id": 2,
+              "ratio": "12",
+              "sale": "120",
+              "purchase": "72"
+            }
+          ]
+        },
+        "rejected": false,
+        "reason": "source-assignment-illustration-only",
+        "price_checkboxes_not_consulted": true,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:172-200;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:251-267;SmartAuditERP/Form_WPF/frmEditItems.xaml:202-266;SmartAuditERP/Class/EntityOperations.cs:678-683;SmartAuditERP/Class/StoredQueries.cs:34-36",
+      "limit": "Branch contrast only, not support or dimensional acceptance for every property."
+    },
+    {
+      "id": "ALG7B26-07",
+      "finding_ids": "P7-154",
+      "title": "General sale edit changes header20 but matched unit stays10",
+      "result": {
+        "plan": {
+          "header": {
+            "@id": 7,
+            "@unit": 1,
+            "@ItemProperty": 2,
+            "@FillValue": "6",
+            "@sale_price": "20",
+            "@purch_price": "6"
+          },
+          "unit_rows": [
+            {
+              "@ItemId": 7,
+              "@unit": 1,
+              "@perc": "1",
+              "@sale": "10",
+              "@purch": "6"
+            },
+            {
+              "@ItemId": 7,
+              "@unit": 2,
+              "@perc": "12",
+              "@sale": "120",
+              "@purch": "72"
+            }
+          ],
+          "database_executed": false,
+          "commit_success_not_assumed": true
+        },
+        "consumer": {
+          "value": "10",
+          "source": "matched-ItemUnits",
+          "SQL_lookup_supplied_not_executed": true
+        }
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:202-234;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:264-267;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:293-343;SmartAuditERP/Class/EntityOperations.cs:667-712;SmartAuditERP/Class/ItemOper.cs:733-811;SmartAuditERP/Class/ItemOper.cs:2500-2545",
+      "limit": "Existing main-unit row, default pricing, normal writer-success path and no customer override supplied; SQL/ERP never executed."
+    },
+    {
+      "id": "ALG7B26-08",
+      "finding_ids": "P7-154",
+      "title": "General purchase edit changes header8 but unit stays6",
+      "result": {
+        "plan": {
+          "header": {
+            "@id": 7,
+            "@unit": 1,
+            "@ItemProperty": 2,
+            "@FillValue": "6",
+            "@sale_price": "10",
+            "@purch_price": "8"
+          },
+          "unit_rows": [
+            {
+              "@ItemId": 7,
+              "@unit": 1,
+              "@perc": "1",
+              "@sale": "10",
+              "@purch": "6"
+            },
+            {
+              "@ItemId": 7,
+              "@unit": 2,
+              "@perc": "12",
+              "@sale": "120",
+              "@purch": "72"
+            }
+          ],
+          "database_executed": false,
+          "commit_success_not_assumed": true
+        },
+        "consumer": {
+          "value": "6",
+          "source": "matched-ItemUnits",
+          "SQL_lookup_supplied_not_executed": true
+        }
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:202-234;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:264-267;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:293-343;SmartAuditERP/Class/EntityOperations.cs:667-712;SmartAuditERP/Class/ItemOper.cs:733-811;SmartAuditERP/Class/ItemOper.cs:2500-2545",
+      "limit": "Same154 root for purchase, not another finding or statement of all consumers."
+    },
+    {
+      "id": "ALG7B26-09",
+      "finding_ids": "P7-154",
+      "title": "General command does not consult price-operation checkboxes",
+      "result": {
+        "product": {
+          "id": 7,
+          "main_unit": 1,
+          "property": 2,
+          "packing": "6",
+          "sale": "20",
+          "purchase": "8",
+          "units": [
+            {
+              "id": 1,
+              "ratio": "1",
+              "sale": "10",
+              "purchase": "6"
+            },
+            {
+              "id": 2,
+              "ratio": "12",
+              "sale": "120",
+              "purchase": "72"
+            }
+          ]
+        },
+        "rejected": false,
+        "reason": "source-assignment-illustration-only",
+        "price_checkboxes_not_consulted": true,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:202-234;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:264-267;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:293-343;SmartAuditERP/Class/EntityOperations.cs:667-712;SmartAuditERP/Class/ItemOper.cs:733-811;SmartAuditERP/Class/ItemOper.cs:2500-2545",
+      "limit": "Documented command-boundary contrast within154; no third unchecked-checkbox defect or assumed user intent."
+    },
+    {
+      "id": "ALG7B26-10",
+      "finding_ids": "P7-154",
+      "title": "Selecting same main unit opens synchronization control",
+      "result": {
+        "header": {
+          "@id": 7,
+          "@unit": 1,
+          "@ItemProperty": 2,
+          "@FillValue": "6",
+          "@sale_price": "20",
+          "@purch_price": "8"
+        },
+        "unit_rows": [
+          {
+            "@ItemId": 7,
+            "@unit": 1,
+            "@perc": "1",
+            "@sale": "20",
+            "@purch": "8"
+          },
+          {
+            "@ItemId": 7,
+            "@unit": 2,
+            "@perc": "12",
+            "@sale": "120",
+            "@purch": "72"
+          }
+        ],
+        "database_executed": false,
+        "commit_success_not_assumed": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:202-234;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:264-267;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:293-343;SmartAuditERP/Class/EntityOperations.cs:667-712;SmartAuditERP/Class/ItemOper.cs:733-811;SmartAuditERP/Class/ItemOper.cs:2500-2545",
+      "limit": "Same-unit control only; remapping units, ratios, duplicate IDs, stock or history conversion not certified."
+    },
+    {
+      "id": "ALG7B26-11",
+      "finding_ids": "P7-154",
+      "title": "Missing-unit row falls back to updated header",
+      "result": {
+        "value": "20",
+        "source": "Items-fallback",
+        "SQL_lookup_supplied_not_executed": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:202-234;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:264-267;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:293-343;SmartAuditERP/Class/EntityOperations.cs:667-712;SmartAuditERP/Class/ItemOper.cs:733-811;SmartAuditERP/Class/ItemOper.cs:2500-2545",
+      "limit": "No-row fallback source contrast, not a claim a database row is absent or a certification of026 pricing policies."
+    },
+    {
+      "id": "ALG7B26-12",
+      "finding_ids": "P7-154",
+      "title": "Price-operation checkbox false leaves prices unchanged",
+      "result": {
+        "id": 7,
+        "main_unit": 1,
+        "property": 2,
+        "packing": "6",
+        "sale": "10",
+        "purchase": "6",
+        "units": [
+          {
+            "id": 1,
+            "ratio": "1",
+            "sale": "10",
+            "purchase": "6"
+          },
+          {
+            "id": 2,
+            "ratio": "12",
+            "sale": "120",
+            "purchase": "72"
+          }
+        ]
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:202-234;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:264-267;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:293-343;SmartAuditERP/Class/EntityOperations.cs:667-712;SmartAuditERP/Class/ItemOper.cs:733-811;SmartAuditERP/Class/ItemOper.cs:2500-2545",
+      "limit": "This is the separate command, not the general footer command; UI gesture not executed."
+    },
+    {
+      "id": "ALG7B26-13",
+      "finding_ids": "P7-154",
+      "title": "Increase command updates scalar and each supplied unit",
+      "result": {
+        "id": 7,
+        "main_unit": 1,
+        "property": 2,
+        "packing": "6",
+        "sale": "20",
+        "purchase": "6",
+        "units": [
+          {
+            "id": 1,
+            "ratio": "1",
+            "sale": "20",
+            "purchase": "6"
+          },
+          {
+            "id": 2,
+            "ratio": "12",
+            "sale": "130",
+            "purchase": "72"
+          }
+        ]
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:202-234;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:264-267;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:293-343;SmartAuditERP/Class/EntityOperations.cs:667-712;SmartAuditERP/Class/ItemOper.cs:733-811;SmartAuditERP/Class/ItemOper.cs:2500-2545",
+      "limit": "Literal arithmetic control, not an endorsed equal increase across different unit ratios."
+    },
+    {
+      "id": "ALG7B26-14",
+      "finding_ids": "P7-154",
+      "title": "Percentage-increase command control",
+      "result": {
+        "id": 7,
+        "main_unit": 1,
+        "property": 2,
+        "packing": "6",
+        "sale": "11",
+        "purchase": "6",
+        "units": [
+          {
+            "id": 1,
+            "ratio": "1",
+            "sale": "11",
+            "purchase": "6"
+          },
+          {
+            "id": 2,
+            "ratio": "12",
+            "sale": "132",
+            "purchase": "72"
+          }
+        ]
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:202-234;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:264-267;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:293-343;SmartAuditERP/Class/EntityOperations.cs:667-712;SmartAuditERP/Class/ItemOper.cs:733-811;SmartAuditERP/Class/ItemOper.cs:2500-2545",
+      "limit": "Exact finite fixture, no monetary/currency/rounding or .NET numeric oracle."
+    },
+    {
+      "id": "ALG7B26-15",
+      "finding_ids": "P7-154",
+      "title": "Percentage-decrease command control",
+      "result": {
+        "id": 7,
+        "main_unit": 1,
+        "property": 2,
+        "packing": "6",
+        "sale": "9",
+        "purchase": "6",
+        "units": [
+          {
+            "id": 1,
+            "ratio": "1",
+            "sale": "9",
+            "purchase": "6"
+          },
+          {
+            "id": 2,
+            "ratio": "12",
+            "sale": "108",
+            "purchase": "72"
+          }
+        ]
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:202-234;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:264-267;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:293-343;SmartAuditERP/Class/EntityOperations.cs:667-712;SmartAuditERP/Class/ItemOper.cs:733-811;SmartAuditERP/Class/ItemOper.cs:2500-2545",
+      "limit": "Does not certify pricing policy, later discounts or taxes."
+    },
+    {
+      "id": "ALG7B26-16",
+      "finding_ids": "H7B26-04",
+      "title": "Supplied edit permission blocks the local handler",
+      "result": {
+        "product": {
+          "id": 7,
+          "main_unit": 1,
+          "property": 2,
+          "packing": "6",
+          "sale": "10",
+          "purchase": "6",
+          "units": [
+            {
+              "id": 1,
+              "ratio": "1",
+              "sale": "10",
+              "purchase": "6"
+            },
+            {
+              "id": 2,
+              "ratio": "12",
+              "sale": "120",
+              "purchase": "72"
+            }
+          ]
+        },
+        "rejected": true,
+        "reason": "supplied-guard",
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:154-170;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:277-297",
+      "limit": "Local positive guard control, not proof of deployed ACL or all entrypoints; financial/ACL/save barriers remain."
+    }
+  ],
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B26-01",
+      "finding_ids": "H7B26-03",
+      "title": "Directory selected IDs reach the bulk modal",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemsDir.xaml.cs:548-578;SmartAuditERP/Form_WPF/frmItemsDir.xaml:218-222;SmartAuditERP/Form_WPF/frmItemsDir.xaml:421-433",
+      "limit": "One selected entry, not every caller or actual modal/SQL execution."
+    },
+    {
+      "id": "ST7B26-02",
+      "finding_ids": "H7B26-03",
+      "title": "Loaded wires footer and four independent price commands",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:28-67;SmartAuditERP/Form_WPF/frmEditItems.xaml:398-469",
+      "limit": "Literal wiring only, not Loaded scheduling/count, rendering or7C lifecycle review."
+    },
+    {
+      "id": "ST7B26-03",
+      "finding_ids": "P7-153",
+      "title": "Packing choice index2 exposes and validates an input",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:172-200;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:251-267;SmartAuditERP/Form_WPF/frmEditItems.xaml:202-266;SmartAuditERP/Class/EntityOperations.cs:678-683;SmartAuditERP/Class/StoredQueries.cs:34-36",
+      "limit": "Local input route only; .NET parsing and product policy not executed."
+    },
+    {
+      "id": "ST7B26-04",
+      "finding_ids": "P7-153",
+      "title": "Bulk general apply writes constant2 rather than parsed input",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:172-200;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:251-267;SmartAuditERP/Form_WPF/frmEditItems.xaml:202-266;SmartAuditERP/Class/EntityOperations.cs:678-683;SmartAuditERP/Class/StoredQueries.cs:34-36",
+      "limit": "Scoped literal assignment; no claim a stored database was changed."
+    },
+    {
+      "id": "ST7B26-05",
+      "finding_ids": "P7-153",
+      "title": "Single-product counterparts project user packing input",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItems.xaml.cs:911-932;SmartAuditERP/Form_WPF/frmItems.xaml.cs:979-991;SmartAuditERP/Form_WPF/frmItems.xaml.cs:2020-2097;SmartAuditERP/Form_WPF/frmItems.xaml:487-512",
+      "limit": "Control source mapping, not approval of every single-product save or conversion."
+    },
+    {
+      "id": "ST7B26-06",
+      "finding_ids": "P7-153;P7-154",
+      "title": "Reader hydrates packing and header and per-unit prices",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Class/ItemOper.cs:2467-2610",
+      "limit": "Source producer fields only; successful data rows supplied, no full DTO/default/BOM/health contract acceptance."
+    },
+    {
+      "id": "ST7B26-07",
+      "finding_ids": "P7-154",
+      "title": "General scalar price edit is outside the selected-unit gate",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:202-234;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:264-267;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:293-343;SmartAuditERP/Class/EntityOperations.cs:667-712;SmartAuditERP/Class/ItemOper.cs:733-811;SmartAuditERP/Class/ItemOper.cs:2500-2545",
+      "limit": "General path distinct from four price-operation commands; no unchecked-input finding added."
+    },
+    {
+      "id": "ST7B26-08",
+      "finding_ids": "P7-154",
+      "title": "Only selected-unit gate synchronizes units in general apply",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:202-234;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:264-267;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:293-343;SmartAuditERP/Class/EntityOperations.cs:667-712;SmartAuditERP/Class/ItemOper.cs:733-811;SmartAuditERP/Class/ItemOper.cs:2500-2545",
+      "limit": "With unselected unit, existing unit values persist locally; changing main-unit identity/ratio needs a separate contract."
+    },
+    {
+      "id": "ST7B26-09",
+      "finding_ids": "P7-154",
+      "title": "Price-operation command checks flags and updates each unit",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:202-234;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:264-267;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:293-343;SmartAuditERP/Class/EntityOperations.cs:667-712;SmartAuditERP/Class/ItemOper.cs:733-811;SmartAuditERP/Class/ItemOper.cs:2500-2545",
+      "limit": "Positive contrast only; not endorsing all-unit arithmetic or business price policy."
+    },
+    {
+      "id": "ST7B26-10",
+      "finding_ids": "P7-153;P7-154",
+      "title": "Writer binds header packing and prices independently of units",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Class/EntityOperations.cs:632-715",
+      "limit": "SQL command construction, not execution, transaction acceptance or stored-loss measurement."
+    },
+    {
+      "id": "ST7B26-11",
+      "finding_ids": "P7-153;P7-154",
+      "title": "Attached item SQL maps those parameters to matching columns",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Class/StoredQueries.cs:34-36",
+      "limit": "Attached SQL text only, no schema/grants/deployed trigger or provider execution."
+    },
+    {
+      "id": "ST7B26-12",
+      "finding_ids": "P7-154",
+      "title": "Existing unit reader uses per-unit price before fallback",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Class/ItemOper.cs:733-811",
+      "limit": "Default pricing and no customer override supplied to isolate154 from existing026 and142; not whole pricing review."
+    },
+    {
+      "id": "ST7B26-13",
+      "finding_ids": "P7-153",
+      "title": "Packing value reaches detail ratio and dialog width",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Class/ItemOper.cs:549-574;SmartAuditERP/Class/ItemOper.cs:604-620",
+      "limit": "Source-local downstream link, not reopening151/152 or approving net calculation/persistence."
+    },
+    {
+      "id": "ST7B26-14",
+      "finding_ids": "H7B26-04",
+      "title": "Both command handlers retain local edit and branch guards",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:154-170;SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:277-297",
+      "limit": "No new ACL defect/closure from a positive local guard; deployed ACL/SQL grants unresolved."
+    },
+    {
+      "id": "ST7B26-15",
+      "finding_ids": "H7B26-04",
+      "title": "Writer normal path commits and catch rolls back with finally close",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Class/EntityOperations.cs:632-793",
+      "limit": "No SQL/commit run or atomicity certification; empty/early-false/resource/concurrency contracts remain open."
+    },
+    {
+      "id": "ST7B26-16",
+      "finding_ids": "P7-154",
+      "title": "Price operations retain four arithmetic branches",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmEditItems.xaml.cs:348-364",
+      "limit": "Arithmetic control only, not monetary/ratio/precision policy or .NET execution."
+    }
+  ],
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmEditItems.xaml.cs",
+      "start": 1,
+      "end": 378,
+      "encoding": "strict-utf-8",
+      "source_sha256": "9de90d7a2b0e6a737ff38194707abc154ce1985352c65f952ef3fbe9d8519ea5",
+      "selected_text_utf8_sha256": "9de90d7a2b0e6a737ff38194707abc154ce1985352c65f952ef3fbe9d8519ea5",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmEditItems.xaml",
+      "start": 1,
+      "end": 469,
+      "encoding": "strict-utf-8",
+      "source_sha256": "032b498aa5cb1acab95061fc516cb7ac5dd83ec9c927e3f43f7bd760880e7470",
+      "selected_text_utf8_sha256": "032b498aa5cb1acab95061fc516cb7ac5dd83ec9c927e3f43f7bd760880e7470",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsDir.xaml.cs",
+      "start": 548,
+      "end": 578,
+      "encoding": "strict-utf-8",
+      "source_sha256": "9a2042d980e211a34ec3f1555e5a1fad9c6fc865367f878c47292c91e4864a68",
+      "selected_text_utf8_sha256": "fb08ef814d08339d3a3a3608a5f23ca9579704ca5a93d58576e4563728639a91",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsDir.xaml",
+      "start": 218,
+      "end": 222,
+      "encoding": "strict-utf-8",
+      "source_sha256": "1b20098180114b70ecd7a2b9ea930b0a32ccf7d8c8ff0a881c6a26151dfb5cc2",
+      "selected_text_utf8_sha256": "3ef47c7026013c088ea4282bc8cce5c7f060993e95823ea31f84fda57c8cef63",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsDir.xaml",
+      "start": 421,
+      "end": 433,
+      "encoding": "strict-utf-8",
+      "source_sha256": "1b20098180114b70ecd7a2b9ea930b0a32ccf7d8c8ff0a881c6a26151dfb5cc2",
+      "selected_text_utf8_sha256": "750f96cd3ebebfd8d52668d3d587a55cd2de751e830904c2bcc1aa83d974fe69",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Class/EntityOperations.cs",
+      "start": 632,
+      "end": 793,
+      "encoding": "strict-utf-8",
+      "source_sha256": "bc84d9b037fd1f82b44a285b7c336af93ff4ee1432baa180b28d5a0b1a331425",
+      "selected_text_utf8_sha256": "b7500df3f3f33466d3f3a3b21429bf7709bf4dc1bcd12c489d4097cd5e668f3f",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "start": 549,
+      "end": 574,
+      "encoding": "strict-utf-8",
+      "source_sha256": "1f3c56a8304a38163dc3d18b432e15152c42787966a9ed9966e3297cfafba17a",
+      "selected_text_utf8_sha256": "89203d7fb773ab303e9eda4fa7d70d0e9c93743b171b69d0f54974d2584e29cf",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "start": 604,
+      "end": 620,
+      "encoding": "strict-utf-8",
+      "source_sha256": "1f3c56a8304a38163dc3d18b432e15152c42787966a9ed9966e3297cfafba17a",
+      "selected_text_utf8_sha256": "b72d3a6056d431f624c24110fd7af149bdaae5f123302580e690979d46fa0369",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "start": 733,
+      "end": 811,
+      "encoding": "strict-utf-8",
+      "source_sha256": "1f3c56a8304a38163dc3d18b432e15152c42787966a9ed9966e3297cfafba17a",
+      "selected_text_utf8_sha256": "0e0bd87e1787d87e28a1594cba3a8153134b0c4b9010a7c7bd99265183142b87",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "start": 2467,
+      "end": 2610,
+      "encoding": "strict-utf-8",
+      "source_sha256": "1f3c56a8304a38163dc3d18b432e15152c42787966a9ed9966e3297cfafba17a",
+      "selected_text_utf8_sha256": "6babb1af6df9c006db18ba27103e60d572ed4197e1107a1c3a29127c5322d6b6",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItems.xaml.cs",
+      "start": 911,
+      "end": 932,
+      "encoding": "strict-utf-8",
+      "source_sha256": "996048322730bc9d7346598871fce660f5f38d6741e11cdf72843c2e566e21d4",
+      "selected_text_utf8_sha256": "ca1a4e3c5af323838d1cf01d0e28099f03ac9547005a68824f34364f7460fe93",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItems.xaml.cs",
+      "start": 979,
+      "end": 991,
+      "encoding": "strict-utf-8",
+      "source_sha256": "996048322730bc9d7346598871fce660f5f38d6741e11cdf72843c2e566e21d4",
+      "selected_text_utf8_sha256": "9ea9a51aed7193e6e955aef8d8f6dcd1634e214cdde861d6311a86dd57a27c18",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItems.xaml.cs",
+      "start": 2020,
+      "end": 2097,
+      "encoding": "strict-utf-8",
+      "source_sha256": "996048322730bc9d7346598871fce660f5f38d6741e11cdf72843c2e566e21d4",
+      "selected_text_utf8_sha256": "b9607584288d118f54155ae013b4d421dce93439132abed4ab5498e9c0c71300",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItems.xaml",
+      "start": 487,
+      "end": 512,
+      "encoding": "strict-utf-8",
+      "source_sha256": "61e518b51bbe2a715e0b6da4b93e3020b50785e2ddeaabf8c4a0be31c1ec703a",
+      "selected_text_utf8_sha256": "890955ede7ea78f9274f302b54beaf80513ad5a5046bcd327cfb084134f67715",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Class/StoredQueries.cs",
+      "start": 34,
+      "end": 36,
+      "encoding": "strict-utf-8",
+      "source_sha256": "5a78f21b7175791fd18593a345ce6303de3c48337018b71505fbe2e98bc7655e",
+      "selected_text_utf8_sha256": "cf8ce36a94723995f7cbaaee5fee5163dc69ee8017195e220c23926120094c38",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    }
+  ],
+  "selected_source_paths": 9,
+  "whole_local_editor_files_selected": 2,
+  "source_read_slice_count": 15,
+  "limit": "Locally whole bulk editor378C#/469XAML plus15 selected reads/9paths not all product features/callers/SDK DTOs/census/455FE.153 constant2 mapping after supplied valid packing input;154 general header prices differ from preexisting main-unit prices until unit gate opens, writer binds each independently and matched-unit consumer retains old price. Exact supplied integer/terminating fixtures not .NET culture/precision/event/runtime/SQL/commit/save/stock/financial policy. No third checkbox/zero-field/BOM/DTO-default root;026/142/151/152 and sync021 retained.7B/7 partial,R4k/B27 proposed,7C unstarted,8 unauthorized; repairs independent not presumed started/synchronized.",
+  "errors": []
+}
