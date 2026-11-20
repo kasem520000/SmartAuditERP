@@ -253,11 +253,12 @@ check("E4 the sales-in-period export keeps both tabs and routes both through the
       PERIOD.count("SpreadsheetExport.Write(filePath, SpreadsheetExport.CsvDelimiter, header, rows);") == 2 and
       PERIOD.count("SpreadsheetExport.Money(r.") == 8 and PERIOD.count("sw.WriteLine") == 0 and
       PERIOD.count("if (TabControl1.SelectedIndex == 0)") == 1)
-check("E5 the purchase export delegates to the writer, keeps its cells, and matches its extension",
+check("E5 the purchase export matches its extension: a real workbook, comma CSV or tab text",
       PUR.count("SpreadsheetExport.WriteDataTable(") == 1 and
       PUR.count("asCsv ? SpreadsheetExport.CsvDelimiter : SpreadsheetExport.TsvDelimiter") == 1 and
-      PUR.count("sb.AppendLine") == 0 and PUR.count("ExportDataTableToTsv") == 0 and
-      PUR.count("Excel Files (*.xlsx)") == 0)
+      PUR.count("workbook.Worksheets.Add(dt, ") == 1 and
+      PUR.count("workbook.SaveAs(dlg.FileName);") == 1 and
+      PUR.count("sb.AppendLine") == 0 and PUR.count("ExportDataTableToTsv") == 0)
 check("E6 the POS export quotes every field and writes invariant money",
       POS.count("SpreadsheetExport.Write(outputPath, SpreadsheetExport.CsvDelimiter, header, rows);") == 1 and
       POS.count("SpreadsheetExport.Money(item.") == 9 and POS.count("writer.WriteLine") == 0 and

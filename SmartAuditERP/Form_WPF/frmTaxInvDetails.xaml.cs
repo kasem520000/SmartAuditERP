@@ -895,13 +895,12 @@ namespace SmartAuditERP.Form_WPF
                 {
                     // Repair R-089 (audit finding P7-050): the dialog announced an Excel workbook and
                     // the writer below produced a DataTable XML document under that name, so the file
-                    // was never the format it claimed to be. The screen keeps its single writer and
-                    // announces it instead: comma-separated text, which is what these nine columns
-                    // already are. Announcing a real workbook needs a spreadsheet writer this screen
-                    // does not have - an owner decision, not a guess.
-                    Filter      = "CSV Files (*.csv)|*.csv",
-                    DefaultExt  = ".csv",
-                    FileName    = "TaxInvoices_Export.csv"
+                    // was never the format it claimed to be. Repair R-091 then made the announcement
+                    // true instead of dropping it: *.xlsx now leaves as a real workbook and *.csv as
+                    // comma-separated text, both from the same nine columns.
+                    Filter      = "Excel Files (*.xlsx)|*.xlsx|CSV Files (*.csv)|*.csv",
+                    DefaultExt  = ".xlsx",
+                    FileName    = "TaxInvoices_Export.xlsx"
                 };
 
                 if (saveDialog.ShowDialog() != true) return;
@@ -925,12 +924,28 @@ namespace SmartAuditERP.Form_WPF
                         row.DgvNetBeforVat, row.DgvVAT, row.DgvNet);
                 }
 
-                // Repair R-089 (audit finding P7-050): the same nine columns and the same rows now go
-                // out as comma-separated text under the announced schema (comma, doubled quotes, CRLF,
-                // UTF-8) instead of an XML document under a workbook extension. Every cell keeps the
-                // grid's own text, so no value is reformatted or dropped.
-                SpreadsheetExport.WriteDataTable(
-                    saveDialog.FileName, table, SpreadsheetExport.CsvDelimiter);
+                if (saveDialog.FileName.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase))
+                {
+                    // Repair R-091 (audit finding P7-050): a real workbook, written with the library
+                    // the project already references and three other screens already use, so the
+                    // *.xlsx bytes are a workbook and not an XML document under a workbook name.
+                    using (var workbook = new ClosedXML.Excel.XLWorkbook())
+                    {
+                        var worksheet = workbook.Worksheets.Add(table, "الفواتير الضريبية");
+                        worksheet.RightToLeft = true;
+                        worksheet.Columns().AdjustToContents();
+                        workbook.SaveAs(saveDialog.FileName);
+                    }
+                }
+                else
+                {
+                    // Repair R-089 (audit finding P7-050): the same nine columns and the same rows go
+                    // out as comma-separated text under the announced schema (comma, doubled quotes,
+                    // CRLF, UTF-8). Every cell keeps the grid's own text, so no value is reformatted
+                    // or dropped.
+                    SpreadsheetExport.WriteDataTable(
+                        saveDialog.FileName, table, SpreadsheetExport.CsvDelimiter);
+                }
                 Process.Start(new ProcessStartInfo(saveDialog.FileName)
                     { UseShellExecute = true });
             }

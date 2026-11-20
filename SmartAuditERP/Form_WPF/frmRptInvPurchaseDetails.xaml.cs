@@ -971,13 +971,13 @@ namespace SmartAuditERP.Form_WPF
                     // Repair R-088 (audit finding P7-050): this dialog offered *.xlsx and *.csv while
                     // every choice wrote the same tab-separated text, so the announced extension never
                     // matched the bytes on disk - an *.xlsx file holding text, and a *.csv file holding
-                    // tabs where a comma is expected. Each option offered now has a writer of its own:
-                    // comma CSV for *.csv and tab-separated text for *.txt. A real *.xlsx workbook is no
-                    // longer announced, because producing one needs a spreadsheet writer this screen does
-                    // not have; offering it again is an owner decision, not a guess.
-                    Filter = "CSV Files (*.csv)|*.csv|Text - tab separated (*.txt)|*.txt",
-                    DefaultExt = ".csv",
-                    FileName = $"فواتير_مشتريات_{DateTime.Now:yyyyMMdd}.csv"
+                    // tabs where a comma is expected. Repair R-091 then gave each option a writer of
+                    // its own instead of dropping one: a real workbook for *.xlsx, comma CSV for *.csv
+                    // and tab-separated text for *.txt, all three from the very same table.
+                    Filter = "Excel Files (*.xlsx)|*.xlsx|CSV Files (*.csv)|*.csv|"
+                             + "Text - tab separated (*.txt)|*.txt",
+                    DefaultExt = ".xlsx",
+                    FileName = $"فواتير_مشتريات_{DateTime.Now:yyyyMMdd}.xlsx"
                 };
 
                 if (dlg.ShowDialog() != true) return;
@@ -987,26 +987,46 @@ namespace SmartAuditERP.Form_WPF
                 // so no file is left behind announcing a format its bytes do not have.
                 bool asCsv = dlg.FileName.EndsWith(".csv", StringComparison.OrdinalIgnoreCase);
                 bool asText = dlg.FileName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase);
-                if (!asCsv && !asText)
+                bool asWorkbook = dlg.FileName.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase);
+                if (!asCsv && !asText && !asWorkbook)
                 {
                     MessageBox.Show(
-                        "صيغة غير مدعومة للتصدير: اختر CSV (*.csv) أو نصاً بفاصل جدولة (*.txt).",
+                        "صيغة غير مدعومة للتصدير: اختر Excel (*.xlsx) أو CSV (*.csv) "
+                        + "أو نصاً بفاصل جدولة (*.txt).",
                         "", MessageBoxButton.OK, MessageBoxImage.Information);
                     return;
                 }
 
                 var dt = BuildDataTableForReport();
 
-                // Repair R-088 (audit finding P7-050): the delimiter follows the chosen extension, so
-                // the file matches what the dialog announced. Repair R-082 (audit finding P7-048) still
-                // stands behind it: the shared writer announces one schema (comma or tab, doubled
-                // quotes, CRLF, UTF-8) and quotes whatever could break a record, and the cells keep
-                // the display formatting they were built with, because the same table feeds the
-                // printed report.
-                SpreadsheetExport.WriteDataTable(
-                    dlg.FileName,
-                    dt,
-                    asCsv ? SpreadsheetExport.CsvDelimiter : SpreadsheetExport.TsvDelimiter);
+                if (asWorkbook)
+                {
+                    // Repair R-091 (audit finding P7-050): a real workbook, written with the library
+                    // the project already references and three other screens already use, so the
+                    // *.xlsx bytes are a workbook. Cells keep the table's own types - the two integer
+                    // columns leave as numbers and the rest as the text this screen formats for the
+                    // printed report - so all three containers carry one and the same projection.
+                    using (var workbook = new ClosedXML.Excel.XLWorkbook())
+                    {
+                        var worksheet = workbook.Worksheets.Add(dt, "فواتير المشتريات");
+                        worksheet.RightToLeft = true;
+                        worksheet.Columns().AdjustToContents();
+                        workbook.SaveAs(dlg.FileName);
+                    }
+                }
+                else
+                {
+                    // Repair R-088 (audit finding P7-050): the delimiter follows the chosen extension,
+                    // so the file matches what the dialog announced. Repair R-082 (audit finding
+                    // P7-048) still stands behind it: the shared writer announces one schema (comma or
+                    // tab, doubled quotes, CRLF, UTF-8) and quotes whatever could break a record, and
+                    // the cells keep the display formatting they were built with, because the same
+                    // table feeds the printed report.
+                    SpreadsheetExport.WriteDataTable(
+                        dlg.FileName,
+                        dt,
+                        asCsv ? SpreadsheetExport.CsvDelimiter : SpreadsheetExport.TsvDelimiter);
+                }
 
                 System.Diagnostics.Process.Start(
                     new System.Diagnostics.ProcessStartInfo(dlg.FileName)
