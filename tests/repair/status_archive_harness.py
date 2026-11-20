@@ -68,6 +68,12 @@ check('batch report and packing fixes classified conservatively',
       and all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
           for fid, rid in [('P7-106', 'R-105'), ('P7-123', 'R-108')])
       and all(by_id[fid]['repair_status'] != 'closed_in_scope' for fid in ('P7-124', 'P7-154')))
+check('period, tax, and scoped activity batch remains conservative',
+      all(by_id[fid]['repair_status'] == 'closed_in_scope' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P7-086', 'R-110'), ('P7-122', 'R-111'), ('P7-130', 'R-112')])
+      and all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P7-124', 'R-109'), ('P7-129', 'R-111')])
+      and by_id['P7-123']['repair_status'] == 'partial_open')
 check('plan-only repairs are included and P5-027 remains partial',
       by_id['P5-010']['repair_ids'] == 'R-058' and by_id['P5-027']['repair_ids'] == 'R-057'
       and by_id['P5-027']['repair_status'] == 'partial_open')
