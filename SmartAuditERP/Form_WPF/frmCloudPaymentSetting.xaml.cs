@@ -308,11 +308,15 @@ namespace SmartAuditERP.Form_WPF
                         $"BankId = 1 WHERE ID = 3");
 
                 // حفظ إعدادات البنوك
+                // Repair R-066 (audit finding P6-023): revoking EVERY link must actually revoke. The scoped delete
+                // used to hide inside the count>0 guard, so deleting the last bank row saved nothing and the stale
+                // links kept feeding the cloud payment types. Clear the user-defined rows unconditionally first;
+                // the loop below re-inserts what remains. Atomicity across these commands stays tracked residual.
+                ExecuteNonQuery(conn,
+                    "DELETE FROM CloudPaytypeSetting WHERE ID > 4");
+
                 if (_bankRows.Count > 0)
                 {
-                    ExecuteNonQuery(conn,
-                        "DELETE FROM CloudPaytypeSetting WHERE ID > 4");
-
                     foreach (BankPayTypeRow row in _bankRows)
                     {
                         if (string.IsNullOrEmpty(row.BankId) ||
