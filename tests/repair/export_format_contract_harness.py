@@ -782,8 +782,12 @@ check("D17 the two relabelled screens: the *.xls option says what its bytes are 
       NET.count("ExportToExcelHtml(saveDialog.FileName);") == 1 and
       ENTRY.count("private void ExportToHtml(string fileName)") == 1 and
       ENTRY.count("ExportToHtml(saveDialog.FileName);") == 1 and
-      NET.count("<th>الأرباح</th>") == 1 and ENTRY.count("<th>الشرح</th>") == 1,
-      "the HTML writers themselves are untouched")
+      NET.count("<th>الأرباح</th>") == 1 and ENTRY.count("<th>الشرح</th>") == 1 and
+      NET.count('export.Row("الإجمالي", "", "",') == 1 and
+      NET.count("SpreadsheetExport.Text(txtVal2.Text)") == 1 and
+      NET.count("SpreadsheetExport.Text(txtVal4.Text)") == 1 and
+      ENTRY.count('export.Header("#", "رمز الحساب", "اسم الحساب", "مدين", "دائن", "الشرح");') == 1,
+      "the HTML writers themselves are untouched, and the totals record keeps its six cells")
 check("D19 each cell kind in the source is the one the model carries",
       ENTRY.count("SpreadsheetExport.Money(acc.AccDebit)") == 1 and
       ENTRY.count("SpreadsheetExport.Money(acc.AccCredit)") == 1 and
