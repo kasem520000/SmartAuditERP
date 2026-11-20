@@ -43,6 +43,9 @@ namespace SmartAuditERP.Form_WPF
         // Repair R-075 (audit finding P7-155): the proc_type criterion the master snapshot was
         // actually loaded with, so a process change can tell 'already loaded' from 'must reload'.
         private int                                  _snapshotProc;
+        // Repair R-076 (audit finding P7-156): the mandatory condition the CALLER supplied before
+        // ShowDialog (document eligibility), kept apart from the optional filters this form owns.
+        private string                               _callerCond;
 
         #endregion
 
@@ -65,6 +68,7 @@ namespace SmartAuditERP.Form_WPF
             _displayRows = new ObservableCollection<InvoiceSrchRow>();
             Cond         = string.Empty;
             _snapshotProc = -1;
+            _callerCond   = string.Empty;
 
             dgvItems.ItemsSource = _displayRows;
         }
@@ -76,6 +80,12 @@ namespace SmartAuditERP.Form_WPF
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            // Repair R-076 (audit finding P7-156): capture the caller's eligibility condition
+            // before anything here can touch Cond, so the date handlers and Clear can restore it
+            // instead of replacing it. Callers such as the transfer receive button pass
+            // `Cond += " AND InvoiceStatus = 1"` and rely on it for the whole dialog lifetime.
+            _callerCond = Cond ?? string.Empty;
+
             txtFromDate.SelectedDate = DateTime.Today;
             txtToDate.SelectedDate   = DateTime.Today;
 
@@ -219,7 +229,9 @@ namespace SmartAuditERP.Form_WPF
         {
             if (txtFromDate.IsEnabled)
             {
-                Cond = " and inv.date >= @date1 and inv.date <= @date2 ";
+                // Repair R-076 (audit finding P7-156): intersect with the caller's condition;
+                // assigning the date clause alone dropped the document eligibility it passed.
+                Cond = _callerCond + " and inv.date >= @date1 and inv.date <= @date2 ";
                 _masterTable.Clear();
                 LoadInvoices();
             }
@@ -229,7 +241,9 @@ namespace SmartAuditERP.Form_WPF
         {
             if (txtToDate.IsEnabled)
             {
-                Cond = " and inv.date >= @date1 and inv.date <= @date2 ";
+                // Repair R-076 (audit finding P7-156): intersect with the caller's condition;
+                // assigning the date clause alone dropped the document eligibility it passed.
+                Cond = _callerCond + " and inv.date >= @date1 and inv.date <= @date2 ";
                 _masterTable.Clear();
                 LoadInvoices();
             }
@@ -274,7 +288,9 @@ namespace SmartAuditERP.Form_WPF
             txtTableNoSearch.Text    = "";
             TxtNotes.Text            = "";
             cmbUsers.SelectedIndex   = -1;
-            Cond                     = string.Empty;
+            // Repair R-076 (audit finding P7-156): Clear resets THIS form's optional filters; the
+            // caller's mandatory eligibility condition is not this form's to drop.
+            Cond                     = _callerCond;
 
             if (cmbProcType.Items.Count > 1)
                 cmbProcType.SelectedIndex = 1;
