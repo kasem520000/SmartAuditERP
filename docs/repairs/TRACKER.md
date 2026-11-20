@@ -733,4 +733,4 @@
 | R-086 | P7-160/P7-159 | fix(P7-160): gate the whole invoice-import conversion on acceptance, and route it through the standing guard | `fa748a2` | 2026-11-19 | fixed |
 | R-087 | P7-160 | fix(P7-160): gate the same cancelled-import conversion in the POS and inventory-transfer callers | `692ddf1` | 2026-11-19 | fixed (توسعة مؤرَّضة خارج الدليل) |
 | R-086..R-087 | P7-160 | test(P7-160): import-path model - cancelled, accepted, guarded - and witnesses over all five callers | `b8ad451` | 2026-11-19 | verified-in-scope |
-| BLK-P7-049 | P7-049 | docs(repairs): barrier - formula prefixes in exported cells are an owner policy decision | `—` | 2026-11-19 | blocked/needs-input |
+| BLK-P7-049 | P7-049 | docs(repairs): barrier - formula prefixes in exported cells are an owner policy decision | `93b1a78` | 2026-11-19 | blocked/needs-input |
