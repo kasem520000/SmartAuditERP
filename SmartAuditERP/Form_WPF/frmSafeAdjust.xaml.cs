@@ -913,6 +913,13 @@ namespace SmartAuditERP.Form_WPF
             if (!invoiceOper.SaveInvoice(invoice, null, IsNew: true))
                 return;
 
+            // R-046 (P4-017): approve ONLY once the movement truly saved - a failed save now leaves
+            // the draft untouched and freely re-approvable instead of orphaned behind its guard.
+            new SqlCommand(
+                $"UPDATE SafesAdjust SET Is_Approved=1 " +
+                $"WHERE id={Convert.ToInt32(txtNo.Text)}", conn)
+                .ExecuteNonQuery();
+
             ThreadContext.Properties["EmpID"] = MainClass.EmpNo;
             Logger.Info(
                 $" تم حفظ تسوية جردية برقم {invoice.InvoiceNo} " +
@@ -966,10 +973,12 @@ namespace SmartAuditERP.Form_WPF
 
             string invGlobalID = entryGlobalID;
 
-            new SqlCommand(
-                $"UPDATE SafesAdjust SET Is_Approved=1 " +
-                $"WHERE id={Convert.ToInt32(txtNo.Text)}", conn)
-                .ExecuteNonQuery();
+            // Repair R-046 (audit finding P4-017): the approval stamp no longer runs here. It used
+            // to mark the adjustment approved BEFORE the inventory movement saved - and on another
+            // connection - so any save failure left an approved draft that this window's own guard
+            // (Is_Approved=0) then refused to approve again. BindToInvoice is now pure binding;
+            // SaveAndPrint stamps only after a successful SaveInvoice commit. (Concurrent-window
+            // races and version comparison remain recorded owner-input barriers.)
 
             foreach (var row in ItemsList)
             {
