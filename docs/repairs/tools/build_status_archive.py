@@ -132,7 +132,7 @@ def render_summary(rows, rules):
     out = [
         '# سجل حالة الإصلاح — نسخة مشتقة من أرشيف التدقيق', '',
         'هذا سجل متابعة منفصل؛ لم تُعدّل ملفات التدقيق الأصلية ولم تُغلق الحالات فيها. '
-        'مصدره `docs/audit/findings.csv` عند تسليم B32 (`' + rules['audit_commit'][:7] + '`) '
+        'مصدره `docs/audit/findings.csv` عند تسليم ' + rules['audit_delivery'] + ' (`' + rules['audit_commit'][:7] + '`) '
         'وبصمة SHA-256 `' + rules['findings_sha256'] + '`؛ ويستند إلى بطاقات `TRACKER.md` '
         'وحواجز `PLAN.md` عند لقطة الإصلاح `' + rules['repair_snapshot_commit'] + '` '
         'وقواعد الاستثناء في `classification_rules.json`. لقطة ثابتة وليست تحديثاً تلقائياً.', '',

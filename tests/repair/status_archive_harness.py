@@ -29,14 +29,14 @@ rules, findings, tracker, plan = builder.load_inputs()
 repairs, blockers = builder.index_docs(tracker, plan, rules, {r['id'] for r in findings})
 rows = builder.build_rows(findings, repairs, blockers, rules)
 by_id = {r['id']: r for r in rows}
-check('each original finding has exactly one status', len(by_id) == len(rows) == len(findings) == 334 and
+check('each original finding has exactly one status', len(by_id) == len(rows) == len(findings) == 335 and
       set(by_id) == {r['id'] for r in findings})
 with (ROOT / 'docs/repairs/STATUS_ARCHIVE.csv').open(encoding='utf-8-sig', newline='') as f:
     saved = list(csv.DictReader(f))
 check('saved CSV equals rebuilt records', saved == rows)
 counts = collections.Counter(r['repair_status'] for r in rows)
 check('all four states are mutually exclusive and exhaustive', set(counts) ==
-      {'closed_in_scope', 'partial_open', 'deferred_blocked', 'pending_review'} and sum(counts.values()) == 334)
+      {'closed_in_scope', 'partial_open', 'deferred_blocked', 'pending_review'} and sum(counts.values()) == len(rows))
 check('closed findings have repair evidence and no explicit remainder', all(
       r['repair_ids'] and not r['blocker_id'] and r['id'] not in rules['partial']
       for r in rows if r['repair_status'] == 'closed_in_scope'))
@@ -59,6 +59,9 @@ check('warehouse name repair is in scope; access and branch findings remain open
       by_id['P7-087']['repair_status'] == 'closed_in_scope' and by_id['P7-087']['repair_ids'] == 'R-101'
       and by_id['P2-011']['repair_status'] == 'deferred_blocked'
       and by_id['P7-088']['repair_status'] == 'pending_review')
+check('date layout repair is in scope and new printer-state finding remains open',
+      by_id['P7-089']['repair_status'] == 'closed_in_scope' and by_id['P7-089']['repair_ids'] == 'R-102'
+      and by_id['P7-163']['repair_status'] == 'pending_review')
 check('plan-only repairs are included and P5-027 remains partial',
       by_id['P5-010']['repair_ids'] == 'R-058' and by_id['P5-027']['repair_ids'] == 'R-057'
       and by_id['P5-027']['repair_status'] == 'partial_open')

@@ -1,9 +1,9 @@
 {
-  "audit_commit": "3f747085b8f91762f7626dd45331ca1f5ba9e9c1",
-  "findings_sha256": "5cbab5bb0fa037b32fbcd9e30dad416eec3da960a5d175f1da4edf13d6d43980",
-  "repair_snapshot_commit": "6d8bfc8",
-  "tracker_sha256": "959109a80193e9d67909fa27c922484d3f0e7b811f8e6ad6c6b5c52048a53901",
-  "plan_sha256": "51a91121dc6c9516d8fc868d4163d01e5a1f9ec8701e3e2756f6aa256129ac07",
+  "audit_commit": "dea2244267d74dd540af59c6e63b0f4362ab8c1c",
+  "findings_sha256": "ce8c8b823a9a683d446d73dc4ffe564039f1542b649aeda79acd4c7a6600c42a",
+  "repair_snapshot_commit": "22ed71c",
+  "tracker_sha256": "bfc0edf1f4d3045ef14b4bc2cf475d33f4f2b7a2657329fe29a2c4207940749f",
+  "plan_sha256": "6d6a7de1c6b6fca95d85457722a883d7c1e067081b9f0a1548116c33fc6f6acf",
   "extra_repairs": {
     "P5-010": {
       "repairs": [
@@ -54,5 +54,6 @@
     "P7-028": "حفظ بدل الطعام منفذ؛ بقية حقول الموظف تحتاج عقد DTO الخارجي.",
     "P7-035": "توحيد التسميات منفذ؛ هويات بعض مفاتيح العملات تحتاج تأكيد المالك.",
     "P7-157": "نقل النوع وفحصه في المشتريات منفذان؛ مجموعة الأنواع المسموحة تحتاج سياسة."
-  }
+  },
+  "audit_delivery": "B33"
 }
