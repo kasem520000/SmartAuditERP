@@ -382,20 +382,13 @@ namespace SmartAuditERP.Form_WPF
 
         public void LoadRequirements(int requirementNumber)
         {
-            TermRows.Clear();
-
-            var adapter = new SqlDataAdapter(
-                $"SELECT * FROM PM_RequirementSub WHERE IsDeleted=0 AND RequirNo={requirementNumber}",
-                _connection);
-            var dataTable = new DataTable();
-            adapter.Fill(dataTable);
-
+            var dataTable = frmRequirementPM.LoadRequirementLines(_connection, requirementNumber);
+            var staged = new System.Collections.Generic.List<ContractTermRow>();
             foreach (DataRow row in dataTable.Rows)
             {
                 double price = Convert.ToDouble(row["price"]);
                 double quantity = Convert.ToDouble(row["Quntity"]);
-
-                TermRows.Add(new ContractTermRow
+                staged.Add(new ContractTermRow
                 {
                     TermPk = Convert.ToInt32(row["TermPk"]),
                     Quantity = quantity,
@@ -403,6 +396,8 @@ namespace SmartAuditERP.Form_WPF
                     Total = price * quantity
                 });
             }
+            TermRows.Clear();
+            foreach (var row in staged) TermRows.Add(row);
         }
 
         #endregion

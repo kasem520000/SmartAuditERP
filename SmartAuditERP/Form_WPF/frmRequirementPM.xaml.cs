@@ -21,6 +21,7 @@ namespace SmartAuditERP.Form_WPF
         private bool   _priceIncVAT = false;
         private double _defVAT      = 0;
         private int    _code        = -1;
+        private bool _saveOutcomeUnknown;
         private int    _procType    = 1;
         private int    _restrNo     = -1;
 
@@ -196,18 +197,30 @@ namespace SmartAuditERP.Form_WPF
                 _searchSource.Clear();
                 string cond = "";
 
+                int? searchNumber = null;
                 if (!string.IsNullOrWhiteSpace(txtSrchNo.Text))
-                    cond += $"PM_Requirement.RequirNo={txtSrchNo.Text} AND ";
+                {
+                    if (!int.TryParse(txtSrchNo.Text.Trim(), out int parsed) || parsed <= 0)
+                    {
+                        DXMessageBox.Show("رقم طلب الاحتياج غير صالح.", "تنبيه",
+                            MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+                    searchNumber = parsed;
+                    cond += "PM_Requirement.RequirNo=@requirementNumber AND ";
+                }
                 else
-                    cond += " RequirNo IS NOT NULL AND ";
+                    cond += " PM_Requirement.RequirNo IS NOT NULL AND ";
 
                 using (var da = new SqlDataAdapter(
                     $"SELECT PM_Requirement.RequirNo, Countries.name AS country, " +
                     $"PM_Requirement.RegsDate AS vDate " +
                     $"FROM PM_Requirement LEFT JOIN Countries ON PM_Requirement.Country=Countries.id " +
-                    $"WHERE IS_Deleted=0 AND {cond} 1=1 ORDER BY RequirNo DESC",
+                    $"WHERE PM_Requirement.IS_Deleted=0 AND {cond} 1=1 ORDER BY RequirNo DESC",
                     _conn))
                 {
+                    if (searchNumber.HasValue)
+                        da.SelectCommand.Parameters.Add("@requirementNumber", SqlDbType.Int).Value = searchNumber.Value;
                     var dt = new DataTable();
                     da.Fill(dt);
 
@@ -233,8 +246,7 @@ namespace SmartAuditERP.Form_WPF
         {
             if (dgvSrch.SelectedItem is SearchRow row)
             {
-                _code = row.id;
-                Navigate($"SELECT * FROM PM_Requirement WHERE RequirNo={_code}");
+                Navigate($"SELECT * FROM PM_Requirement WHERE RequirNo={row.id}");
                 TabControl1.SelectedIndex = 0;
             }
         }
@@ -248,9 +260,15 @@ namespace SmartAuditERP.Form_WPF
             try
             {
                 EnsureOpen(_conn);
-                using (var cmd = new SqlCommand(sqlQuery, _conn))
-                using (var dr  = cmd.ExecuteReader())
-                    ReadData(dr);
+                using (var adapter = new SqlDataAdapter(sqlQuery, _conn))
+                {
+                    var headers = new DataTable();
+                    adapter.Fill(headers);
+                    if (headers.Rows.Count == 0) { CLR(); return; }
+                    if (headers.Rows.Count != 1)
+                        throw new InvalidOperationException("رقم طلب الاحتياج غير فريد.");
+                    ReadData(headers.Rows[0]);
+                }
             }
             catch (Exception ex)
             {
@@ -259,52 +277,70 @@ namespace SmartAuditERP.Form_WPF
             finally { CloseConn(_conn); }
         }
 
-        private void ReadData(SqlDataReader dr)
+        // Support the shipped table (no IsDeleted) without resurrecting rows on
+        // installations that do have the optional soft-delete column. Refuse if
+        // metadata is not visible instead of assuming the column is absent.
+        public static DataTable LoadRequirementLines(SqlConnection connection, int requirementNumber)
         {
-            if (!dr.HasRows) { CLR(); return; }
-            dr.Read();
-            CLR();
-
-            _code          = Convert.ToInt32(dr["RequirNo"]);
-            txtNo.Text     = _code.ToString();
-
-            if (DateTime.TryParse(dr["Regsdate"].ToString(), out DateTime d))
-                txtDate.DateTime = d;
-
-            try { cmbCities.SelectedValue  = Convert.ToDouble(dr["City"]);    } catch { }
-            try { cmbCountry.SelectedValue = dr["Country"];                    } catch { }
-            txtLocation.Text   = dr["Address"].ToString();
-            txtPopulation.Text = dr["Population"].ToString();
-
-            dr.Close();
-
-            // تحميل البنود
-            _termsSource.Clear();
-            using (var da = new SqlDataAdapter(
-                $"SELECT * FROM PM_RequirementSub " +
-                $"WHERE IsDeleted=0 AND RequirNo={_code}",
-                _conn))
+            if (requirementNumber <= 0) throw new ArgumentOutOfRangeException(nameof(requirementNumber));
+            bool opened = connection.State != ConnectionState.Open;
+            if (opened) connection.Open();
+            try
             {
-                var dt = new DataTable();
-                da.Fill(dt);
+                int schemaState;
+                using (var meta = new SqlCommand(
+                    "SELECT CASE WHEN OBJECT_ID(N'dbo.PM_RequirementSub',N'U') IS NULL THEN -1 " +
+                    "WHEN ISNULL(HAS_PERMS_BY_NAME(N'dbo.PM_RequirementSub', N'OBJECT', N'VIEW DEFINITION'),0)=0 THEN -2 " +
+                    "WHEN COL_LENGTH(N'dbo.PM_RequirementSub',N'IsDeleted') IS NULL THEN 0 ELSE 1 END", connection))
+                    schemaState = Convert.ToInt32(meta.ExecuteScalar());
+                if (schemaState < 0)
+                    throw new InvalidOperationException("تعذر التحقق من مخطط بنود الاحتياج وصلاحية قراءته.");
 
-                foreach (DataRow row in dt.Rows)
+                string sql = "SELECT TermPk,Quntity,price,status,Reff_No FROM dbo.PM_RequirementSub " +
+                    "WHERE RequirNo=@requirement" + (schemaState == 1 ? " AND IsDeleted=0" : "");
+                using (var adapter = new SqlDataAdapter(sql, connection))
                 {
-                    double qty   = Convert.ToDouble(row["Quntity"]);
-                    double price = Convert.ToDouble(row["price"]);
-
-                    _termsSource.Add(new TermRow
-                    {
-                        TermCode = Convert.ToInt32(row["TermPk"]),
-                        Qty      = qty,
-                        Price    = price,
-                        Total    = qty * price,
-                        Status   = Convert.ToBoolean(row["status"]),
-                        RefNo    = Convert.ToDouble(row["Reff_No"])
-                    });
+                    adapter.SelectCommand.Parameters.Add("@requirement", SqlDbType.Int).Value = requirementNumber;
+                    var lines = new DataTable();
+                    adapter.Fill(lines);
+                    return lines;
                 }
             }
+            finally { if (opened) connection.Close(); }
+        }
 
+        private void ReadData(DataRow header)
+        {
+            int code = Convert.ToInt32(header["RequirNo"]);
+            var lines = LoadRequirementLines(_conn, code);
+            var staged = new System.Collections.Generic.List<TermRow>();
+            foreach (DataRow row in lines.Rows)
+            {
+                double qty = Convert.ToDouble(row["Quntity"]);
+                double price = Convert.ToDouble(row["price"]);
+                staged.Add(new TermRow
+                {
+                    TermCode = Convert.ToInt32(row["TermPk"]),
+                    Qty = qty,
+                    Price = price,
+                    Total = qty * price,
+                    Status = Convert.ToBoolean(row["status"]),
+                    RefNo = Convert.ToDouble(row["Reff_No"])
+                });
+            }
+
+            // No reader is open while CLR obtains the next number and closes the
+            // connection. A failed line load leaves the prior form untouched.
+            CLR();
+            _code = code;
+            txtNo.Text = _code.ToString();
+            if (DateTime.TryParse(header["Regsdate"].ToString(), out DateTime d))
+                txtDate.DateTime = d;
+            try { cmbCities.SelectedValue = Convert.ToDouble(header["City"]); } catch { }
+            try { cmbCountry.SelectedValue = header["Country"]; } catch { }
+            txtLocation.Text = header["Address"].ToString();
+            txtPopulation.Text = header["Population"].ToString();
+            foreach (var row in staged) _termsSource.Add(row);
             CalcTotal();
         }
 
@@ -363,7 +399,20 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            if (_saveOutcomeUnknown)
+            {
+                DXMessageBox.Show("تعذر تأكيد نتيجة الحفظ؛ راجع قاعدة البيانات قبل إعادة المحاولة.",
+                    "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            if (_code != -1)
+            {
+                DXMessageBox.Show("تعديل طلب الاحتياج المحفوظ غير متاح؛ لم يتم حفظ التغييرات.",
+                    "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
             SqlTransaction transaction = null;
+            bool commitAttempted = false, committed = false;
             try
             {
                 if (_termsSource.Count == 0)
@@ -373,6 +422,24 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
+                if (!int.TryParse(txtNo.Text, out int reqNo) || reqNo <= 0)
+                {
+                    DXMessageBox.Show("رقم طلب الاحتياج غير صالح.", "تنبيه",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                foreach (var row in _termsSource)
+                {
+                    // Both fields are INT in the shipped schema. Never silently
+                    // round or overflow an edited quantity or reference number.
+                    if (!IsExactSqlInt(row.Qty) || !IsExactSqlInt(row.RefNo) ||
+                        double.IsNaN(row.Price) || double.IsInfinity(row.Price))
+                    {
+                        DXMessageBox.Show("تحقق من الكمية والمرجع والسعر؛ الكمية والمرجع يجب أن يكونا عددين صحيحين.",
+                            "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+                }
                 EnsureOpen(_conn);
                 EnsureOpen(_conn1);
                 transaction = _conn.BeginTransaction();
@@ -399,8 +466,7 @@ namespace SmartAuditERP.Form_WPF
                         "VALUES(@RequirNo,@Country,@City,@Address,@Population,@RegsDate,@IS_Deleted)",
                         _conn, transaction))
                     {
-                        double.TryParse(txtNo.Text, out double reqNo);
-                        cmd.Parameters.Add("@RequirNo",   SqlDbType.Int).Value      = (int)reqNo;
+                        cmd.Parameters.Add("@RequirNo",   SqlDbType.Int).Value      = reqNo;
                         cmd.Parameters.Add("@Country",    SqlDbType.Int).Value      = cmbCountry.SelectedValue ?? DBNull.Value;
                         cmd.Parameters.Add("@City",       SqlDbType.Int).Value      = cmbCities.SelectedValue  ?? DBNull.Value;
                         cmd.Parameters.Add("@Address",    SqlDbType.NVarChar).Value = txtLocation.Text;
@@ -411,7 +477,6 @@ namespace SmartAuditERP.Form_WPF
                     }
 
                     // إدراج البنود
-                    double.TryParse(txtNo.Text, out double reqNoSub);
                     foreach (var row in _termsSource)
                     {
                         using (var subCmd = new SqlCommand(
@@ -419,19 +484,21 @@ namespace SmartAuditERP.Form_WPF
                             "VALUES(@RequirNo,@TermPk,@Quntity,@price,@status,@Reff_No)",
                             _conn, transaction))
                         {
-                            subCmd.Parameters.Add("@RequirNo", SqlDbType.Int).Value      = (int)reqNoSub;
+                            subCmd.Parameters.Add("@RequirNo", SqlDbType.Int).Value      = reqNo;
                             subCmd.Parameters.Add("@TermPK",   SqlDbType.Int).Value      = row.TermCode;
-                            subCmd.Parameters.Add("@Quntity",  SqlDbType.Int).Value      = row.Qty;
+                            subCmd.Parameters.Add("@Quntity",  SqlDbType.Int).Value      = (int)row.Qty;
                             subCmd.Parameters.Add("@price",    SqlDbType.Float).Value    = row.Price;
-                            subCmd.Parameters.Add("@Reff_No",  SqlDbType.Int).Value      = row.RefNo;
+                            subCmd.Parameters.Add("@Reff_No",  SqlDbType.Int).Value      = (int)row.RefNo;
                             subCmd.Parameters.Add("@status",   SqlDbType.Bit).Value      = row.Status;
                             subCmd.ExecuteNonQuery();
                         }
                     }
                 }
 
+                commitAttempted = true;
                 transaction.Commit();
-                _termsSource.Clear();
+                committed = true;
+                _code = reqNo;
 
                 var savedMsg = new frmSavedMsg();
                 savedMsg.ShowDialog();
@@ -446,17 +513,33 @@ namespace SmartAuditERP.Form_WPF
             }
             catch (Exception ex)
             {
-                transaction?.Rollback();
-                string msg = MainClass.Language == "ar"
-                    ? $"خطأ أثناء الحفظ\nتفاصيل الخطأ: {ex.Message}"
-                    : $"error in saving\nError details: {ex.Message}";
+                if (commitAttempted && !committed) _saveOutcomeUnknown = true;
+                string msg = committed ? "تم الحفظ، لكن حدث خطأ بعده: " + ex.Message
+                    : _saveOutcomeUnknown ? "تعذر تأكيد نتيجة الحفظ؛ راجع قاعدة البيانات: " + ex.Message
+                    : "خطأ أثناء الحفظ: " + ex.Message;
                 DXMessageBox.Show(msg, "", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
+                if (transaction != null && !committed)
+                {
+                    try { transaction.Rollback(); }
+                    catch
+                    {
+                        _saveOutcomeUnknown = true;
+                        DXMessageBox.Show("تعذر تأكيد التراجع؛ راجع قاعدة البيانات قبل إعادة المحاولة.",
+                            "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
                 CloseConn(_conn);
                 CloseConn(_conn1);
             }
+        }
+
+        private static bool IsExactSqlInt(double value)
+        {
+            return !double.IsNaN(value) && !double.IsInfinity(value) &&
+                value >= int.MinValue && value <= int.MaxValue && Math.Truncate(value) == value;
         }
 
         private void btnAddCountry_Click(object sender, RoutedEventArgs e)
@@ -483,16 +566,33 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
-                if (_termsSource.Count > 0)
+                if (_code <= 0 || _termsSource.Count == 0)
                 {
-                    double.TryParse(txtNo.Text, out double reqNo);
-                    var frm = new frmContractPM();
+                    DXMessageBox.Show("افتح طلب احتياج محفوظاً ذا بنود أولاً.", "تنبيه",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                if (DXMessageBox.Show("سيتم تحميل البنود المحفوظة فقط، وليس تعديلات الشاشة غير المحفوظة. هل تتابع؟",
+                    "تنبيه", MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes)
+                    return;
+                var frm = new frmContractPM();
+                try
+                {
                     frm.Show();
+                    frm.LoadRequirements(_code);
                     frm.Activate();
-                    frm.LoadRequirements((int)reqNo);
+                }
+                catch
+                {
+                    frm.Close();
+                    throw;
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                DXMessageBox.Show("تعذر تحميل بنود الاحتياج: " + ex.Message, "خطأ",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         #endregion

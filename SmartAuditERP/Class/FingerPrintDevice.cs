@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.CompilerServices;
 using log4net;
@@ -21,6 +22,10 @@ namespace SmartAuditERP
 		private static int iMachineNumber;
 
 		private static readonly ILog Logger = LogManager.GetLogger(typeof(FingerPrintDevice));
+		private static int _importRunning;
+		// Process-local only: after an uncertain commit or device clear, do not
+		// automatically replay the same log during this application session.
+		private static int _replayRiskLocked;
 
 		[DllImport("kernel32", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
 		private static extern void Sleep(long dwMilliseconds);
@@ -50,12 +55,17 @@ namespace SmartAuditERP
 
 		public static void loadAttendData()
 		{
+			if (Interlocked.CompareExchange(ref _importRunning, 1, 0) != 0) return;
 			bool enableAttemptNeeded = false;
+			bool committed = false;
+			bool alreadyLocked = Volatile.Read(ref _replayRiskLocked) != 0;
+			SqlTransaction sqlTransaction = null;
 			try
 			{
+				if (Volatile.Read(ref _replayRiskLocked) != 0) return;
 				if (FingerPrintDevice.conn.State != ConnectionState.Open)
 					FingerPrintDevice.conn.Open();
-				SqlTransaction sqlTransaction = FingerPrintDevice.conn.BeginTransaction();
+				sqlTransaction = FingerPrintDevice.conn.BeginTransaction();
 				new SqlCommand();
 				new ListViewItem("Items", 0);
 				// Repair R-118 (P7-008): even an exception during the COM call
@@ -97,9 +107,14 @@ namespace SmartAuditERP
 						sqlCommand.Parameters.Add("@_statu", SqlDbType.Bit).Value = dwInOutMode;
 						sqlCommand.ExecuteNonQuery();
 					}
+					// Commit and device clear cannot be one transaction. Latch before
+					// commit; only a confirmed clear permits another automatic import.
+					Volatile.Write(ref _replayRiskLocked, 1);
 					sqlTransaction.Commit();
+					committed = true;
 					if (FingerPrintDevice.axCZKEM1.ClearGLog(FingerPrintDevice.iMachineNumber))
 					{
+						Volatile.Write(ref _replayRiskLocked, 0);
 						FingerPrintDevice.axCZKEM1.RefreshData(FingerPrintDevice.iMachineNumber);
 					}
 				}
@@ -118,6 +133,15 @@ namespace SmartAuditERP
 			}
 			finally
 			{
+				if (sqlTransaction != null && !committed)
+				{
+					try { sqlTransaction.Rollback(); }
+					catch (Exception ex)
+					{
+						Volatile.Write(ref _replayRiskLocked, 1);
+						Logger.Error("Fingerprint rollback was not confirmed (" + ex.GetType().Name + ").");
+					}
+				}
 				if (enableAttemptNeeded)
 				{
 					try
@@ -138,6 +162,21 @@ namespace SmartAuditERP
 				catch (Exception ex)
 				{
 					Logger.Error("Fingerprint connection cleanup failed (" + ex.GetType().Name + ").");
+				}
+				bool needsReconciliation = Volatile.Read(ref _replayRiskLocked) != 0;
+				Interlocked.Exchange(ref _importRunning, 0);
+				if (needsReconciliation && !alreadyLocked)
+				{
+					Logger.Error("Fingerprint automatic import stopped: reconcile database and device logs before restarting.");
+					try
+					{
+						MessageBox.Show("توقف استيراد البصمة لتجنب التكرار. راجع سجل الجهاز وقاعدة البيانات قبل إعادة تشغيل البرنامج.",
+							"تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					}
+					catch (Exception ex)
+					{
+						Logger.Error("Fingerprint operator alert failed (" + ex.GetType().Name + ").");
+					}
 				}
 			}
 		}

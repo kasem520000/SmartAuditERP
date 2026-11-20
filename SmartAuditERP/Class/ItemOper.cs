@@ -1937,8 +1937,9 @@ namespace SmartAuditERP
                     " from Items, ItemUnits" +
                     " where Items.IS_Deleted=0" +
                     " and ItemUnits.ItemId=items.id" +
-                    $" and ItemUnits.barcode=N'{barcode}'", conn))
+                    " and ItemUnits.barcode=@barcode", conn))
                 {
+                    adapter.SelectCommand.Parameters.Add("@barcode", SqlDbType.NVarChar, -1).Value = barcode;
                     DataTable dt = new DataTable();
                     adapter.Fill(dt);
                     if (dt.Rows.Count > 0)
@@ -1957,8 +1958,9 @@ namespace SmartAuditERP
                     " from Items, Itembarcodes" +
                     " where Items.IS_Deleted=0" +
                     " and Itembarcodes.ItemId=items.id" +
-                    $" and Itembarcodes.barcode=N'{barcode}'", conn))
+                    " and Itembarcodes.barcode=@barcode", conn))
                 {
+                    adapter.SelectCommand.Parameters.Add("@barcode", SqlDbType.NVarChar, -1).Value = barcode;
                     DataTable dt = new DataTable();
                     adapter.Fill(dt);
                     if (dt.Rows.Count > 0)
@@ -1993,13 +1995,21 @@ namespace SmartAuditERP
                             " from Items, ItemUnits" +
                             " where Items.IS_Deleted=0" +
                             " and ItemUnits.ItemId=items.id" +
-                            $" and (ItemUnits.barcode=N'{shortBarcode}'" +
-                            $" or Items.barcode=N'{shortBarcode}')", conn))
+                            " and (ItemUnits.barcode=@prefix" +
+                            " or (Items.barcode=@prefix and ItemUnits.unit=Items.unit))", conn))
                         {
+                            adapter.SelectCommand.Parameters.Add("@prefix", SqlDbType.NVarChar, 100).Value = shortBarcode;
                             DataTable dt = new DataTable();
                             adapter.Fill(dt);
 
-                            if (dt.Rows.Count > 0)
+                            // A scale code must identify one item-unit row, not an
+                            // arbitrary unit of the item or the first duplicate match.
+                            if (dt.Rows.Count > 1)
+                            {
+                                if (!isMultiText) ShowAttentionMsg("باركود الميزان يطابق أكثر من صنف أو وحدة");
+                                return;
+                            }
+                            if (dt.Rows.Count == 1)
                             {
                                 if (dt.Rows[0]["Wscale"] != DBNull.Value)
                                 {

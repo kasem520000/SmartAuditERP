@@ -445,6 +445,19 @@ namespace SmartAuditERP.Form_WPF
 
         private void ShowDetails22()
         {
+            _reportPublished = false;
+            ClearReportCells();
+            // Until cross-branch authorization is defined, all sources must use
+            // the same explicit session branch rather than mixing branch scopes.
+            if (chkAllBranches.IsChecked == true || cmbBranches.SelectedIndex < 0 ||
+                cmbBranches.SelectedValue == null ||
+                !int.TryParse(cmbBranches.SelectedValue.ToString(), out int branchId) ||
+                branchId <= 0 || MainClass.BranchNo <= 0 || branchId != MainClass.BranchNo)
+            {
+                DXMessageBox.Show("اختر فرع الجلسة؛ بقية نطاقات الفروع غير متاحة حتى اعتماد الصلاحيات.",
+                    "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
             try
             {
                 // Sales accumulators
@@ -523,8 +536,8 @@ namespace SmartAuditERP.Form_WPF
                 // ── Receipts (type 10) ──────────────────────────────────────
                 string sqlReceipts =
                     $"SELECT SUM(Payment) AS total, SUM(NetVal) AS NetVal " +
-                    $"FROM Receipts WHERE ReceiptType=10 AND branchID={MainClass.BranchNo} " +
-                    "AND Paymenttype=1 AND ReceiptDate>=@date1 AND ReceiptDate<@date2 AND ISDeleted=0";
+                    $"FROM Receipts WHERE ReceiptType=10 AND {branchBranch}" +
+                    "Paymenttype=1 AND ReceiptDate>=@date1 AND ReceiptDate<@date2 AND ISDeleted=0";
 
                 using (var adapter = new SqlDataAdapter(sqlReceipts, conn))
                 {
@@ -1025,6 +1038,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void chkAllBranches_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            if (!IsLoaded) return;
+            _reportPublished = false;
+            ClearReportCells();
             if (chkAllBranches.IsChecked.GetValueOrDefault())
                 cmbBranches.SelectedIndex = -1;
             else
@@ -1034,7 +1050,9 @@ namespace SmartAuditERP.Form_WPF
         private void cmbBranches_SelectionChanged(object sender,
             System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            // Reserved for future branch-change logic
+            if (!IsLoaded) return;
+            _reportPublished = false;
+            ClearReportCells();
         }
 
         #endregion

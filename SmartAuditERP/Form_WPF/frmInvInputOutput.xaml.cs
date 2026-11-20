@@ -445,9 +445,20 @@ namespace SmartAuditERP.Form_WPF
                 decimal foundPrice  = 0;
                 decimal foundQty    = 0;
 
+                bool previousScalePriceFlag = ItemOper.IsPriceFromBarcode;
                 ItemOper.SearchForBarcode(itemBarcode.Trim(),
                     ref foundItemId, ref foundUnitId,
                     ref foundPrice, ref foundQty, isMultiText);
+
+                if (foundItemId > 0 && (foundPrice > 0 || foundQty > 0))
+                {
+                    // This editor does not apply the decoded scale payload to a
+                    // reliably identified row. Refuse rather than sell one unit.
+                    ItemOper.IsPriceFromBarcode = previousScalePriceFlag;
+                    MessageBox.Show("باركود الميزان غير مدعوم في هذه الشاشة؛ لم يُضف الصنف.",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
 
                 if (foundItemId > 0)
                     SearchByID(foundItemId, foundUnitId, itemBarcode);
