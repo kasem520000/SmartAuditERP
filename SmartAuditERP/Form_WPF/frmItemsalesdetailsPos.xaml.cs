@@ -678,7 +678,11 @@ namespace SmartAuditERP.Form_WPF
                 SaveFileDialog saveDialog = new SaveFileDialog
                 {
                     FileName = Title.Replace(" ", "_"),
-                    Filter = "Excel File (*.xls)|*.xls|CSV File (*.csv)|*.csv",
+                    // Repair R-090 (audit finding P7-050): this screen already wrote the format each
+                    // option asked for - real comma CSV for *.csv, its HTML table for *.xls - so only
+                    // the label misdescribed the second one. It now says what those bytes are; no
+                    // writer changed here.
+                    Filter = "Excel File - HTML table (*.xls)|*.xls|CSV File (*.csv)|*.csv",
                     DefaultExt = ".xls"
                 };
 

@@ -652,13 +652,23 @@ namespace SmartAuditERP.Form_WPF
                 SaveFileDialog saveDialog = new SaveFileDialog
                 {
                     FileName = "ميزان_المراجعة",
-                    Filter = "Excel File (*.xls)|*.xls|CSV File (*.csv)|*.csv",
+                    // Repair R-090 (audit finding P7-050): both options used to land in the same HTML
+                    // writer, so picking *.csv produced an HTML document under a CSV name. The *.xls
+                    // option keeps that HTML table - Excel opens it, and the label now says what the
+                    // bytes are - while *.csv gets a real comma-separated file from the shared writer.
+                    Filter = "Excel File - HTML table (*.xls)|*.xls|CSV File (*.csv)|*.csv",
                     DefaultExt = ".xls"
                 };
 
                 if (saveDialog.ShowDialog() != true) return;
 
-                ExportToExcelHtml(saveDialog.FileName);
+                // Repair R-090 (audit finding P7-050): the written format follows the chosen
+                // extension, so *.csv is comma-separated text and *.xls is the HTML table this screen
+                // has always written.
+                if (saveDialog.FileName.EndsWith(".csv", StringComparison.OrdinalIgnoreCase))
+                    ExportToCsv(saveDialog.FileName);
+                else
+                    ExportToExcelHtml(saveDialog.FileName);
                 Process.Start(new ProcessStartInfo(saveDialog.FileName) { UseShellExecute = true });
             }
             catch (Exception ex)
@@ -699,6 +709,42 @@ namespace SmartAuditERP.Form_WPF
 
             sb.AppendLine("</table></body></html>");
             File.WriteAllText(fileName, sb.ToString(), Encoding.UTF8);
+        }
+
+        /// <summary>
+        /// Repair R-090 (audit finding P7-050): the same twelve columns of the trial balance the HTML
+        /// table carries, as comma-separated text under the announced schema (comma, doubled quotes,
+        /// CRLF, UTF-8). The account code and name pass through as text; the ten amounts leave as
+        /// machine-readable money (invariant, two decimals, no group separator) exactly as every other
+        /// delimited export in the project does, while the HTML table keeps its display formatting.
+        /// </summary>
+        private void ExportToCsv(string fileName)
+        {
+            var export = SpreadsheetExport.Begin(fileName, SpreadsheetExport.CsvDelimiter);
+            export.Header("الحساب", "اسم الحساب",
+                          "افتتاحي مدين", "افتتاحي دائن",
+                          "رصيد سابق مدين", "رصيد سابق دائن",
+                          "حركة مدين", "حركة دائن",
+                          "رصيد مدين", "رصيد دائن",
+                          "ختامي مدين", "ختامي دائن");
+
+            foreach (AccountNode row in _displayRows)
+            {
+                export.Row(SpreadsheetExport.Text(row.TrAccount),
+                           SpreadsheetExport.Text(row.TrAccName),
+                           SpreadsheetExport.Money(row.TrDeptIntial),
+                           SpreadsheetExport.Money(row.TrCreditIntial),
+                           SpreadsheetExport.Money(row.TrDeptPervious),
+                           SpreadsheetExport.Money(row.TrCreditPervious),
+                           SpreadsheetExport.Money(row.TrDebtorMovement),
+                           SpreadsheetExport.Money(row.TrCreditorMovement),
+                           SpreadsheetExport.Money(row.TrDeptBlc),
+                           SpreadsheetExport.Money(row.TrCreditBlc),
+                           SpreadsheetExport.Money(row.TrDeptFinal),
+                           SpreadsheetExport.Money(row.TrCreditFinal));
+            }
+
+            export.Save();
         }
 
         private void LoadPrintSettings()

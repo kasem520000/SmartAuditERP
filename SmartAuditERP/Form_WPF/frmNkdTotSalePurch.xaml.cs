@@ -242,13 +242,24 @@ namespace SmartAuditERP.Form_WPF
                 SaveFileDialog saveDialog = new SaveFileDialog
                 {
                     FileName   = "إجمالي_المبيعات_والمشتريات",
-                    Filter     = "Excel File (*.xls)|*.xls|CSV File (*.csv)|*.csv",
+                    // Repair R-090 (audit finding P7-050): both options used to land in the same HTML
+                    // writer, so picking *.csv produced an HTML document under a CSV name and no reader
+                    // got the format it was promised. The *.xls option keeps that HTML table - Excel
+                    // opens it, and the label now says what the bytes are - while *.csv gets a real
+                    // comma-separated file from the shared writer.
+                    Filter     = "Excel File - HTML table (*.xls)|*.xls|CSV File (*.csv)|*.csv",
                     DefaultExt = ".xls"
                 };
 
                 if (saveDialog.ShowDialog() != true) return;
 
-                ExportToHtml(saveDialog.FileName);
+                // Repair R-090 (audit finding P7-050): the written format follows the chosen
+                // extension, so *.csv is comma-separated text and *.xls is the HTML table this screen
+                // has always written.
+                if (saveDialog.FileName.EndsWith(".csv", StringComparison.OrdinalIgnoreCase))
+                    ExportToCsv(saveDialog.FileName);
+                else
+                    ExportToHtml(saveDialog.FileName);
                 Process.Start(new ProcessStartInfo(saveDialog.FileName) { UseShellExecute = true });
             }
             catch (Exception ex)
@@ -284,6 +295,39 @@ namespace SmartAuditERP.Form_WPF
             sb.AppendLine($"<tr><td colspan='3'><b>إجمالي المشتريات</b></td><td>{txtSumPurch.Text}</td><td><b>إجمالي المبيعات</b></td><td>{txtSumSale.Text}</td></tr>");
             sb.AppendLine("</table></body></html>");
             File.WriteAllText(fileName, sb.ToString(), Encoding.UTF8);
+        }
+
+        /// <summary>
+        /// Repair R-090 (audit finding P7-050): the same six columns and the same totals record the
+        /// HTML table carries, as comma-separated text under the announced schema (comma, doubled
+        /// quotes, CRLF, UTF-8). Every cell is the grid's own text and passes through unchanged; the
+        /// sales pair keeps the HTML column order (quantity then total).
+        /// </summary>
+        private void ExportToCsv(string fileName)
+        {
+            var export = SpreadsheetExport.Begin(fileName, SpreadsheetExport.CsvDelimiter);
+            export.Header("رقم الصنف", "الصنف",
+                          "الكمية (مشتريات)", "الإجمالي (مشتريات)",
+                          "الكمية (مبيعات)", "الإجمالي (مبيعات)");
+
+            foreach (SalePurchRow row in _rows)
+            {
+                export.Row(SpreadsheetExport.Text(row.Column1),
+                           SpreadsheetExport.Text(row.Column2),
+                           SpreadsheetExport.Text(row.Column3),
+                           SpreadsheetExport.Text(row.Column4),
+                           SpreadsheetExport.Text(row.Column6),
+                           SpreadsheetExport.Text(row.Column5));
+            }
+
+            // The HTML totals line spans three columns under its label; the delimited record keeps the
+            // same six-column alignment instead of collapsing into a shorter line.
+            export.Row("إجمالي المشتريات", "", "",
+                       SpreadsheetExport.Text(txtSumPurch.Text),
+                       "إجمالي المبيعات",
+                       SpreadsheetExport.Text(txtSumSale.Text));
+
+            export.Save();
         }
 
         private void PrintDevexpress(int printMode)

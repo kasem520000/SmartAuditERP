@@ -163,8 +163,9 @@ check("C3 the footer skips covered children via one guard in CalcSum alone",
       SRC.count("displayedCodes.Contains(row.TrParentAcc)") == 1)
 export_loops = SRC.count("foreach (AccountNode row in _displayRows)")
 guard_skips = SRC.count('continue;\n\n                sumDebt')
-check("C4 export/print row-rendering loops unchanged; the skip-guard lives only in CalcSum",
-      export_loops == 3 and guard_skips == 1)
+check("C4 the three legacy rendering loops unchanged plus the R-090 CSV writer; the skip-guard lives only in CalcSum",
+      export_loops == 4 and guard_skips == 1 and
+      SRC.count("private void ExportToCsv(string fileName)") == 1)
 leaf_form = SRC[SRC.index("double num9 = num3 + num7 + num;"):]
 check("C5 leaf arithmetic (the reference convention) untouched",
       "double num9 = num3 + num7 + num;" in leaf_form[:60])

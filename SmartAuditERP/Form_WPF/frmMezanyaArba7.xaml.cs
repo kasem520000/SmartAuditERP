@@ -451,13 +451,23 @@ namespace SmartAuditERP.Form_WPF
                 SaveFileDialog saveDialog = new SaveFileDialog
                 {
                     FileName   = "أرباح_وخسائر",
-                    Filter     = "Excel File (*.xls)|*.xls|CSV File (*.csv)|*.csv",
+                    // Repair R-090 (audit finding P7-050): both options used to land in the same HTML
+                    // writer, so picking *.csv produced an HTML document under a CSV name. The *.xls
+                    // option keeps that HTML table - Excel opens it, and the label now says what the
+                    // bytes are - while *.csv gets a real comma-separated file from the shared writer.
+                    Filter     = "Excel File - HTML table (*.xls)|*.xls|CSV File (*.csv)|*.csv",
                     DefaultExt = ".xls"
                 };
 
                 if (saveDialog.ShowDialog() != true) return;
 
-                ExportToExcelHtml(saveDialog.FileName);
+                // Repair R-090 (audit finding P7-050): the written format follows the chosen
+                // extension, so *.csv is comma-separated text and *.xls is the HTML table this screen
+                // has always written.
+                if (saveDialog.FileName.EndsWith(".csv", StringComparison.OrdinalIgnoreCase))
+                    ExportToCsv(saveDialog.FileName);
+                else
+                    ExportToExcelHtml(saveDialog.FileName);
                 Process.Start(new ProcessStartInfo(saveDialog.FileName) { UseShellExecute = true });
             }
             catch (Exception ex)
@@ -488,6 +498,33 @@ namespace SmartAuditERP.Form_WPF
             sb.AppendLine("</table></body></html>");
 
             File.WriteAllText(fileName, sb.ToString(), Encoding.UTF8);
+        }
+
+        /// <summary>
+        /// Repair R-090 (audit finding P7-050): the same four columns and the same totals record the
+        /// HTML table carries, as comma-separated text under the announced schema (comma, doubled
+        /// quotes, CRLF, UTF-8). Every cell is the screen's own text and passes through unchanged.
+        /// </summary>
+        private void ExportToCsv(string fileName)
+        {
+            var export = SpreadsheetExport.Begin(fileName, SpreadsheetExport.CsvDelimiter);
+            export.Header("الحساب", "إسم الحساب", "رصيد مدين", "رصيد دائن");
+
+            foreach (AccountBalanceRow row in _rows)
+            {
+                export.Row(SpreadsheetExport.Text(row.Column1),
+                           SpreadsheetExport.Text(row.Column2),
+                           SpreadsheetExport.Text(row.Column5),
+                           SpreadsheetExport.Text(row.Column6));
+            }
+
+            // The HTML totals line spans two columns under its label; the delimited record keeps the
+            // same four-column alignment instead of collapsing into a shorter line.
+            export.Row("الإجمالي", "",
+                       SpreadsheetExport.Text(txtDeptDiff.Text),
+                       SpreadsheetExport.Text(txtCreditDiff.Text));
+
+            export.Save();
         }
 
         private void PrintDevexpress(int printMode)
