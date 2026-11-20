@@ -1093,9 +1093,19 @@ namespace SmartAuditERP.Form_WPF
                                .ToList();
         }
 
+        // R-209: the legacy commands update a payment header before separately
+        // regenerating the entry, without reconciling payment details or failure.
+        private bool PaymentChangeAvailable()
+        {
+            DXMessageBox.Show("تغيير طريقة الدفع من هذا التقرير معطل مؤقتاً حتى تتوفر تسوية آمنة للمدفوعات والقيد.",
+                "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return false;
+        }
+
         // ── تحويل إلى نقدي
         private void ToolMenuCash_Click(object sender, RoutedEventArgs e)
         {
+            if (!PaymentChangeAvailable()) return;
             var selected = GetSelectedItems();
             if (selected.Count == 0)
             {
@@ -1148,6 +1158,7 @@ namespace SmartAuditERP.Form_WPF
         // ── تحويل إلى آجل
         private void ToolMenuCredit_Click(object sender, RoutedEventArgs e)
         {
+            if (!PaymentChangeAvailable()) return;
             var selected = GetSelectedItems();
             if (selected.Count == 0)
             {
@@ -1207,6 +1218,7 @@ namespace SmartAuditERP.Form_WPF
         // ── تحويل إلى شبكة (يُفتح dialog لاختيار البنك)
         private void ToolMenuVisa_Click(object sender, RoutedEventArgs e)
         {
+            if (!PaymentChangeAvailable()) return;
             // تحميل قائمة البنوك وعرضها في نافذة اختيار
             var selected = GetSelectedItems();
             if (selected.Count == 0)

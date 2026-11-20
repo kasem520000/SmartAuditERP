@@ -506,7 +506,8 @@ namespace SmartAuditERP.Form_WPF
                 SrchName = "";
 
                 var adp = new SqlDataAdapter(
-                    $"select name,id from Items where IS_Deleted=0 and Code=N'{code}'", conn);
+                    "select name,id from Items where IS_Deleted=0 and Code=@code", conn);
+                adp.SelectCommand.Parameters.Add("@code", SqlDbType.NVarChar, -1).Value = code ?? "";
                 var dt = new DataTable();
                 adp.Fill(dt);
 
@@ -530,7 +531,8 @@ namespace SmartAuditERP.Form_WPF
                 SrchName = name;
 
                 var adp = new SqlDataAdapter(
-                    $"select name,id from Items where IS_Deleted=0 and name=N'{name}'", conn);
+                    "select name,id from Items where IS_Deleted=0 and name=@name", conn);
+                adp.SelectCommand.Parameters.Add("@name", SqlDbType.NVarChar, -1).Value = name ?? "";
                 var dt = new DataTable();
                 adp.Fill(dt);
 
@@ -819,8 +821,9 @@ namespace SmartAuditERP.Form_WPF
                 var adp = new SqlDataAdapter(
                     $"select Items.id,ItemUnits.unit from Items,ItemUnits " +
                     $"where Items.IS_Deleted=0 and ItemUnits.ItemId=items.id " +
-                    $"and (ItemUnits.barcode=N'{barcode}' or Items.barcode=N'{barcode}')",
+                    "and (ItemUnits.barcode=@barcode or Items.barcode=@barcode)",
                     conn1);
+                adp.SelectCommand.Parameters.Add("@barcode", SqlDbType.NVarChar, -1).Value = barcode;
                 var dt = new DataTable();
                 adp.Fill(dt);
 
@@ -838,8 +841,9 @@ namespace SmartAuditERP.Form_WPF
                 var adp2 = new SqlDataAdapter(
                     $"select items.unit,Itembarcodes.itemId from Items,Itembarcodes " +
                     $"where Items.IS_Deleted=0 and Itembarcodes.ItemId=items.id " +
-                    $"and (Itembarcodes.barcode=N'{barcode}' or Items.barcode=N'{barcode}')",
+                    "and (Itembarcodes.barcode=@barcode or Items.barcode=@barcode)",
                     conn1);
+                adp2.SelectCommand.Parameters.Add("@barcode", SqlDbType.NVarChar, -1).Value = barcode;
                 var dt2 = new DataTable();
                 adp2.Fill(dt2);
 
@@ -2226,7 +2230,8 @@ namespace SmartAuditERP.Form_WPF
                 SrchName = cmbClient.Text;
                 var adp = new SqlDataAdapter(
                     $"select id,name from Customers where IS_Deleted=0 " +
-                    $"and name=N'{SrchName}' and type=2", conn);
+                    "and name=@name and type=2", conn);
+                adp.SelectCommand.Parameters.Add("@name", SqlDbType.NVarChar, -1).Value = SrchName ?? "";
                 var dt = new DataTable();
                 adp.Fill(dt);
 

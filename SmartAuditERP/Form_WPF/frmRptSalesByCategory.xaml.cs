@@ -377,6 +377,14 @@ namespace SmartAuditERP.Form_WPF
         private void btnShow_Click(object sender, RoutedEventArgs e)
         {
             LoadDgv();
+            if (CategoryList.Count > 0)
+                WarnEstimatedCategoryTax();
+        }
+
+        private void WarnEstimatedCategoryTax()
+        {
+            DXMessageBox.Show("تنبيه: الضريبة والصافي في تقرير المجموعات محسوبان بنسبة ثابتة 15%، وليسا ضريبة البنود المعتمدة. لا تستخدمهما للتسوية الضريبية.",
+                "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
@@ -417,6 +425,7 @@ namespace SmartAuditERP.Form_WPF
                 return;
             }
 
+            WarnEstimatedCategoryTax();
             try
             {
                 string path = System.IO.Path.Combine(
@@ -463,8 +472,16 @@ namespace SmartAuditERP.Form_WPF
 
         #region Print
 
+        private bool CategoryPrintAvailable()
+        {
+            DXMessageBox.Show("طباعة ومعاينة تقرير المجموعات معطلتان مؤقتاً لأن مصدر الطباعة لا ينقل تفاصيل النتائج.",
+                "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return false;
+        }
+
         private void PrintReport(int printMode)
         {
+            if (!CategoryPrintAvailable()) return;
             try
             {
                 if (CategoryList == null || CategoryList.Count == 0)

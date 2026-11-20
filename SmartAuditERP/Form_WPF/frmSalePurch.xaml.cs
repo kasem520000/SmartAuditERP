@@ -387,8 +387,9 @@ namespace SmartAuditERP.Form_WPF
                 SrchName = _itemsSource[RowIndex].ItemName ?? "";
 
                 var adapter = new SqlDataAdapter(
-                    $"select name,id from Items where IS_Deleted=0 and name=N'{SrchName}'",
+                    "select name,id from Items where IS_Deleted=0 and name=@name",
                     conn);
+                adapter.SelectCommand.Parameters.Add("@name", SqlDbType.NVarChar, -1).Value = SrchName ?? "";
                 var dt = new DataTable();
                 adapter.Fill(dt);
 
@@ -415,8 +416,9 @@ namespace SmartAuditERP.Form_WPF
                 SrchName = "";
 
                 var adapter = new SqlDataAdapter(
-                    $"select name,id from Items where IS_Deleted=0 and Code=N'{code}'",
+                    "select name,id from Items where IS_Deleted=0 and Code=@code",
                     conn);
+                adapter.SelectCommand.Parameters.Add("@code", SqlDbType.NVarChar, -1).Value = code ?? "";
                 var dt = new DataTable();
                 adapter.Fill(dt);
 
@@ -942,8 +944,9 @@ namespace SmartAuditERP.Form_WPF
                 var adapter = new SqlDataAdapter(
                     $"select Items.id,ItemUnits.unit from Items,ItemUnits " +
                     $"where Items.IS_Deleted=0 and ItemUnits.ItemId=items.id " +
-                    $"and ItemUnits.barcode=N'{barcode}'",
+                    "and ItemUnits.barcode=@barcode",
                     conn1);
+                adapter.SelectCommand.Parameters.Add("@barcode", SqlDbType.NVarChar, -1).Value = barcode;
                 var dt = new DataTable();
                 adapter.Fill(dt);
 
@@ -962,8 +965,9 @@ namespace SmartAuditERP.Form_WPF
                 var adapter2 = new SqlDataAdapter(
                     $"select items.unit,Itembarcodes.itemId from Items,Itembarcodes " +
                     $"where Items.IS_Deleted=0 and Itembarcodes.ItemId=items.id " +
-                    $"and (Itembarcodes.barcode=N'{barcode}' or Items.barcode=N'{barcode}')",
+                    "and (Itembarcodes.barcode=@barcode or Items.barcode=@barcode)",
                     conn1);
+                adapter2.SelectCommand.Parameters.Add("@barcode", SqlDbType.NVarChar, -1).Value = barcode;
                 var dt2 = new DataTable();
                 adapter2.Fill(dt2);
 
@@ -1854,9 +1858,10 @@ namespace SmartAuditERP.Form_WPF
             {
                 SrchName = cmbClient.Text;
                 var adapter = new SqlDataAdapter(
-                    $"select id,name from Customers where IS_Deleted=0 and name=N'{SrchName}' " +
-                    $"and (type=1 or type=3)",
+                    "select id,name from Customers where IS_Deleted=0 and name=@name " +
+                    "and (type=1 or type=3)",
                     conn);
+                adapter.SelectCommand.Parameters.Add("@name", SqlDbType.NVarChar, -1).Value = SrchName ?? "";
                 var dt = new DataTable();
                 adapter.Fill(dt);
 

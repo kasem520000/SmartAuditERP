@@ -198,35 +198,35 @@ namespace SmartAuditERP.Form_WPF
 
         private void GetParent(int code)
         {
+            // Only include a row when its actual ancestor chain reaches the
+            // selected center. Do not recurse indefinitely on malformed data.
+            _parentCode = -1;
+            if (!int.TryParse(Convert.ToString(cmbCostCenter.SelectedValue), out int selected))
+                return;
+
             try
             {
-                using (var da = new SqlDataAdapter(
-                    $"SELECT ParentCode FROM cost_center WHERE code={code}", _conn))
+                var visited = new HashSet<int>();
+                int current = code;
+                while (visited.Add(current))
                 {
-                    var dt = new DataTable();
-                    da.Fill(dt);
-
-                    if (dt.Rows.Count == 0)
+                    using (var da = new SqlDataAdapter(
+                        "SELECT ParentCode FROM cost_center WHERE code=@code AND Is_Deleted=0", _conn))
                     {
-                        _parentCode = -1;
-                        return;
-                    }
-
-                    string parentStr = dt.Rows[0][0]?.ToString() ?? "";
-                    double parentVal = 0;
-                    double.TryParse(parentStr, out parentVal);
-
-                    if (cmbCostCenter.SelectedValue != null)
-                    {
-                        double selectedVal = 0;
-                        double.TryParse(cmbCostCenter.SelectedValue.ToString(), out selectedVal);
-
-                        if (parentVal != selectedVal)
-                            _parentCode = (int)parentVal;
-                        else if (string.IsNullOrEmpty(parentStr))
-                            _parentCode = -1;
-                        else
-                            GetParent((int)parentVal);
+                        da.SelectCommand.Parameters.Add("@code", SqlDbType.Int).Value = current;
+                        var dt = new DataTable();
+                        da.Fill(dt);
+                        // Code is not unique in the supplied DDL; ambiguous
+                        // ancestors must not be treated as verified membership.
+                        if (dt.Rows.Count != 1) return;
+                        if (current == selected)
+                        {
+                            _parentCode = selected;
+                            return;
+                        }
+                        if (dt.Rows[0]["ParentCode"] == DBNull.Value ||
+                            !int.TryParse(Convert.ToString(dt.Rows[0]["ParentCode"]), out current))
+                            return;
                     }
                 }
             }
@@ -434,14 +434,14 @@ namespace SmartAuditERP.Form_WPF
                 using (var da = new SqlDataAdapter(
                     $"SELECT Entry_sub.CCcode, cost_center.name, " +
                     $"SUM(Entry_sub.dept) AS dept, SUM(Entry_sub.credit) AS credit, " +
-                    $"Accounts_Index.Aname AS AccName " +
+                    $"Accounts_Index.Code AS AccCode, Accounts_Index.Aname AS AccName " +
                     $"FROM Entry, Entry_sub, cost_center, Accounts_Index " +
                     $"WHERE {branchCond} Entry.IS_Deleted=0 AND {accCond} " +
                     $"Entry.type<>0 AND Entry.state=1 {dateCond} {typeFilter} " +
                     $"AND Entry_sub.acc_no=Accounts_Index.Code " +
                     $"AND Entry.GlobalID=Entry_sub.EntryGlobalID " +
                     $"AND Entry_sub.CCcode=cost_center.code " +
-                    $"GROUP BY Entry_sub.CCcode, Accounts_Index.Aname, cost_center.name",
+                    $"GROUP BY Entry_sub.CCcode, Accounts_Index.Code, Accounts_Index.Aname, cost_center.name",
                     _conn))
                 {
                     da.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value
@@ -455,14 +455,14 @@ namespace SmartAuditERP.Form_WPF
                 using (var da2 = new SqlDataAdapter(
                     $"SELECT Entry_sub.CCcode, cost_center.name, " +
                     $"SUM(Entry_sub.dept) AS dept, SUM(Entry_sub.credit) AS credit, " +
-                    $"Accounts_Index.Aname AS AccName " +
+                    $"Accounts_Index.Code AS AccCode, Accounts_Index.Aname AS AccName " +
                     $"FROM Entry, Entry_sub, cost_center, Accounts_Index " +
                     $"WHERE {branchCond} Entry.IS_Deleted=0 AND {accCond} " +
                     $"Entry.type=0 AND Entry.state=1 {dateCond} {typeFilter} " +
                     $"AND Entry_sub.acc_no=Accounts_Index.Code " +
                     $"AND Entry.GlobalID=Entry_sub.EntryGlobalID " +
                     $"AND Entry_sub.CCcode=cost_center.code " +
-                    $"GROUP BY Entry_sub.CCcode, Accounts_Index.Aname, cost_center.name",
+                    $"GROUP BY Entry_sub.CCcode, Accounts_Index.Code, Accounts_Index.Aname, cost_center.name",
                     _conn))
                 {
                     da2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value
@@ -493,7 +493,8 @@ namespace SmartAuditERP.Form_WPF
                     double deptInit = 0, creditInit = 0;
                     foreach (DataRow initRow in dt5.Rows)
                     {
-                        if (initRow["CCcode"].ToString() == row["CCcode"].ToString())
+                        if (initRow["CCcode"].ToString() == row["CCcode"].ToString() &&
+                            initRow["AccCode"].ToString() == row["AccCode"].ToString())
                         {
                             double.TryParse(initRow["dept"].ToString(),   out deptInit);
                             double.TryParse(initRow["credit"].ToString(), out creditInit);
