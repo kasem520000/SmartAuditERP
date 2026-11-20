@@ -323,13 +323,25 @@ namespace SmartAuditERP.Form_WPF
                 SaveFileDialog saveDialog = new SaveFileDialog
                 {
                     FileName   = "صافي_المبيعات",
-                    Filter     = "Excel File (*.xls)|*.xls|CSV File (*.csv)|*.csv",
+                    // Repair R-097 (audit finding P7-050, a grounded expansion beyond the finding's
+                    // evidence list): both options used to land in the same HTML writer, so picking
+                    // *.csv produced an HTML document under a CSV name and no reader got the format it
+                    // was promised. The *.xls option keeps that HTML table - Excel opens it, and the
+                    // label now says what the bytes are - while *.csv gets a real comma-separated file
+                    // from the shared writer.
+                    Filter     = "Excel File - HTML table (*.xls)|*.xls|CSV File (*.csv)|*.csv",
                     DefaultExt = ".xls"
                 };
 
                 if (saveDialog.ShowDialog() != true) return;
 
-                ExportToExcelHtml(saveDialog.FileName);
+                // Repair R-097 (audit finding P7-050): the written format follows the chosen
+                // extension, so *.csv is comma-separated text and *.xls is the HTML table this screen
+                // has always written.
+                if (saveDialog.FileName.EndsWith(".csv", StringComparison.OrdinalIgnoreCase))
+                    ExportToCsv(saveDialog.FileName);
+                else
+                    ExportToExcelHtml(saveDialog.FileName);
                 Process.Start(new ProcessStartInfo(saveDialog.FileName) { UseShellExecute = true });
             }
             catch (Exception ex)
@@ -364,6 +376,38 @@ namespace SmartAuditERP.Form_WPF
             sb.AppendLine("</table></body></html>");
 
             File.WriteAllText(fileName, sb.ToString(), Encoding.UTF8);
+        }
+
+        /// <summary>
+        /// Repair R-097 (audit finding P7-050): the same six columns and the same totals record the
+        /// HTML table carries, as comma-separated text under the announced schema (comma, doubled
+        /// quotes, CRLF, UTF-8). Every cell is the grid's own text and passes through unchanged, in the
+        /// HTML column order. The HTML totals line spans three columns under its label; the delimited
+        /// record keeps the same six-column alignment instead of collapsing into a shorter line. The
+        /// HTML writer itself is untouched.
+        /// </summary>
+        private void ExportToCsv(string fileName)
+        {
+            var export = SpreadsheetExport.Begin(fileName, SpreadsheetExport.CsvDelimiter);
+            export.Header("رقم الصنف", "الصنف", "الكمية المباعة",
+                          "إجمالي قيمة المبيعات", "إجمالي تكلفة المبيعات", "الأرباح");
+
+            foreach (NetSalesRow row in _rows)
+            {
+                export.Row(SpreadsheetExport.Text(row.Column1),
+                           SpreadsheetExport.Text(row.Column2),
+                           SpreadsheetExport.Text(row.Column3),
+                           SpreadsheetExport.Text(row.Column4),
+                           SpreadsheetExport.Text(row.Column5),
+                           SpreadsheetExport.Text(row.Column6));
+            }
+
+            export.Row("الإجمالي", "", "",
+                       SpreadsheetExport.Text(txtVal2.Text),
+                       SpreadsheetExport.Text(txtVal3.Text),
+                       SpreadsheetExport.Text(txtVal4.Text));
+
+            export.Save();
         }
 
         private void PrintDevexpress(int printMode)

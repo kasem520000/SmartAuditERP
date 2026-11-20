@@ -1063,13 +1063,25 @@ namespace SmartAuditERP.Form_WPF
                 Microsoft.Win32.SaveFileDialog saveDialog = new Microsoft.Win32.SaveFileDialog
                 {
                     FileName = "قيد_يومية",
-                    Filter = "Excel File (*.xls)|*.xls|CSV File (*.csv)|*.csv",
+                    // Repair R-097 (audit finding P7-050, a grounded expansion beyond the finding's
+                    // evidence list): both options used to land in the same HTML writer, so picking
+                    // *.csv produced an HTML document under a CSV name and no reader got the format it
+                    // was promised. The *.xls option keeps that HTML table - Excel opens it, and the
+                    // label now says what the bytes are - while *.csv gets a real comma-separated file
+                    // from the shared writer.
+                    Filter = "Excel File - HTML table (*.xls)|*.xls|CSV File (*.csv)|*.csv",
                     DefaultExt = ".xls"
                 };
 
                 if (saveDialog.ShowDialog() != true) return;
 
-                ExportToHtml(saveDialog.FileName);
+                // Repair R-097 (audit finding P7-050): the written format follows the chosen
+                // extension, so *.csv is comma-separated text and *.xls is the HTML table this screen
+                // has always written.
+                if (saveDialog.FileName.EndsWith(".csv", StringComparison.OrdinalIgnoreCase))
+                    ExportToCsv(saveDialog.FileName);
+                else
+                    ExportToHtml(saveDialog.FileName);
                 Process.Start(new ProcessStartInfo(saveDialog.FileName) { UseShellExecute = true });
             }
             catch (Exception ex)
@@ -1099,6 +1111,32 @@ namespace SmartAuditERP.Form_WPF
 
             sb.AppendLine("</table></body></html>");
             File.WriteAllText(fileName, sb.ToString(), System.Text.Encoding.UTF8);
+        }
+
+        /// <summary>
+        /// Repair R-097 (audit finding P7-050): the same six columns the HTML table carries, as
+        /// comma-separated text under the announced schema (comma, doubled quotes, CRLF, UTF-8), so a
+        /// comma inside an account name or a description can no longer add a column. Debit and credit
+        /// leave machine-readable in the invariant culture with two decimals and no group separator,
+        /// while the HTML table keeps the display formatting it has always shown - the same documented
+        /// divergence the shared writer's other callers carry. The HTML writer itself is untouched.
+        /// </summary>
+        private void ExportToCsv(string fileName)
+        {
+            var export = SpreadsheetExport.Begin(fileName, SpreadsheetExport.CsvDelimiter);
+            export.Header("#", "رمز الحساب", "اسم الحساب", "مدين", "دائن", "الشرح");
+
+            foreach (DgvAccount acc in EntryAccList)
+            {
+                export.Row(SpreadsheetExport.Text(acc.AccRowIndex),
+                           SpreadsheetExport.Text(acc.AccCode),
+                           SpreadsheetExport.Text(acc.AccName),
+                           SpreadsheetExport.Money(acc.AccDebit),
+                           SpreadsheetExport.Money(acc.AccCredit),
+                           SpreadsheetExport.Text(acc.AccDescription));
+            }
+
+            export.Save();
         }
 
         private void BtnCopy_Click(object sender, RoutedEventArgs e)
