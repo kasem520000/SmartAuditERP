@@ -192,14 +192,19 @@ namespace SmartAuditERP
 					defPrinter = xtraReport.PrinterName;
 				}
 				xtraReport.PrinterName = defPrinter;
-				if (type == 1 && PrintNo > 0)
+				// Repair R-070 (audit finding P7-030): a print request, type 1, whose copy count
+				// was zero or negative failed the PrintNo > 0 test and fell through to the final
+				// else below, which printed ONE copy anyway, so the requested count was ignored.
+				// Honour it exactly the way Report.Printing already does: loop 1..PrintNo, so a
+				// non-positive count prints nothing. Preview, type 2, and the remaining report
+				// types keep their single output, and the kitchen copy only follows a real print.
+				if (type == 1)
 				{
-					xtraReport.Print();
-					for (int i = 2; i <= PrintNo; i = checked(i + 1))
+					for (int i = 1; i <= PrintNo; i = checked(i + 1))
 					{
 						xtraReport.Print();
 					}
-					if (Operators.CompareString(kitchenprinter, "", TextCompare: false) != 0)
+					if (PrintNo > 0 && Operators.CompareString(kitchenprinter, "", TextCompare: false) != 0)
 					{
 						this.Printing(type, ds, RptUrl, "rptPOS2.repx", kitchenprinter, "", 1);
 					}
