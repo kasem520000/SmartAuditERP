@@ -1,0 +1,54 @@
+{
+  "authority": [
+    "PHASE-07-REMAINING-07B30.md",
+    "evidence/split-register-07B30.csv",
+    "evidence/residual-disposition-07B30.csv",
+    "evidence/remaining-workplan-07B30.csv",
+    "evidence/continuation-backlog-07B30.csv"
+  ],
+  "selected_upstream_split": "SP7B30-01",
+  "entry": "038a18b74acb92c35a6172d4619fee5712424489",
+  "bookkeeping": {
+    "selected_paths": 5,
+    "prior_union": 427,
+    "overlap": 5,
+    "new": 0,
+    "union": 427,
+    "complement": 400,
+    "complement_kinds": {
+      "generated-artifact": 61,
+      "source": 335,
+      "project-or-resource": 4
+    }
+  },
+  "new_paths": [],
+  "historical_metadata_screen_count": 332,
+  "path_matched_metadata_rows": 79,
+  "historical_body_review_claim": false,
+  "historical_comparison_depth": "all332-title-metadata-and79-path-matched-rows-plus-selected-reader-and-nearest-parent-bodies-and-protected-root-reports-not-all-historical-bodies",
+  "bounded_read_slice_count": 14,
+  "whole_local_files": 0,
+  "whole_reader_method_lines": 290,
+  "one_new_root": [
+    "P7-161"
+  ],
+  "existing_root_extensions": [],
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "counts_are_completion_percent_or_sessions": false,
+  "selected_capability": "ثمانية أوامر toolbar للأول/السابق/التالي/الأخير في محرري البيع والشراء؛حارس قبل CLR ثم BindingInvoice وحد null/nonnull،بما فيه empty وouter-catch وإعادة CLR عند null. لا توسيع لكلcaller أوحقل أوتنفيذprovider/SQL/SDK.",
+  "selection_reason": "SP01 يترك load-failure/reset/dirty/caller مفتوحة. B29/B30 لم يثبتا outcome القارئ؛هنا تُقرأ طريقته المحلية290 سطراً وتفصل بوابة ترك المستند عن نجاح/صحة قراءة الهدف. كل المسارات الخمسة سابقة لكن العلاقة الجديدة لم تكن قبولاً سابقاً أوعداً من جديد.",
+  "exclusions": [
+    "جميع متصلي Navigate خارج أوامر toolbar الثمانية",
+    "كل SDK/DTO/constructors/collections/setters وhydration المساعدات",
+    "تنفيذ SQL/provider/schema/transaction أوفشل فعلي",
+    "جدول أحداث WPF وإعادة الدخول وحالة UI النهائية",
+    "كل إلغاء import/search وdirty-notifications والكتّاب والمخارج",
+    "SP02 census/crosswalk455FE وSP03 currency/precision/templates تبقى7B"
+  ],
+  "owner_role": "مالك WPF وعقد LoadOutcome والمنتج",
+  "required_redacted_input": "NavigationRequest/DocumentRef وFound/Empty/Failed/Partial وسياسة boundary/retry وحفظ المحرر الحالي بعقود منقحة؛لا أسرار أوبيانات أعمال.",
+  "impact_if_unavailable": "نثبت ترتيب الاستبدال والتقاء empty/outer-failure عند null فقط؛لا نقبل صحة تحميل أوحفظ/مخزون أوتعيين SDK.",
+  "next_step": "تجهيز هدف مستقل وفحص LoadOutcome قبل Apply/Publish،مع فصل AbandonDecision وترك بقيةcaller/field/reset كـsplit صريح.",
+  "static_exit_criterion": "كل أمر مختار له source/output وضوابط وحدود وخطط قبول غير منفذة وإحالات؛7B/7 جزئيتان و7C لم تبدأ و8 غير مأذونة."
+}

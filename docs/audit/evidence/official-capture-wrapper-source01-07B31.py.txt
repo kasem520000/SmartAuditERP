@@ -1,0 +1,26 @@
+from pathlib import Path
+from datetime import datetime,timezone
+import hashlib,json,os,subprocess,sys,time
+R=Path('/home/user/SmartAuditERP');A=R/'docs/audit';E=A/'evidence';T=A/'tools';ENTRY='038a18b74acb92c35a6172d4619fee5712424489';BRANCH='arena/94ae8414-smartauditerp'
+sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();git=lambda *args:subprocess.check_output(['git',*args],cwd=R).decode().strip()
+assert git('rev-parse','HEAD')==ENTRY and git('branch','--show-current')==BRANCH
+sys.path.insert(0,str(T));import validate_navigation_load_part as b
+prov=json.loads((E/'provenance-07B31.json').read_bytes());assert all(sha(A/n)==h for n,h in prov['historical_artifact_sha256'].items())
+h=json.loads((E/'historical-mode-verification-07B31.json').read_bytes());assert b.historical_record_errors(h)==[] and b.capture_source_errors(h,{p.relative_to(A).as_posix():p.read_bytes() for p in T.glob('*.py')})==[]
+for name in b.PART_DOCS+b.SHARED_DOCS:assert '__B31_' not in (A/name).read_text()
+record=E/'checks-07B31.json';assert not record.exists()
+paths=git('ls-files','--cached','--others','--exclude-standard','docs/audit').splitlines();assert len(paths)==len(set(paths))==939
+inputs={n:sha(R/n) for n in paths};inputpath=Path('/tmp/smartaudit-b31-official-inputs.json')
+with inputpath.open('x') as f:json.dump(inputs,f,indent=2);f.write('\n')
+command=[sys.executable,'-B','docs/audit/tools/validate_audit.py'];err=Path('/tmp/smartaudit-b31-official.stderr');started=datetime.now(timezone.utc).isoformat();t=time.monotonic()
+with record.open('xb') as out,err.open('xb') as stderr:r=subprocess.run(command,cwd=R,stdout=out,stderr=stderr,env=os.environ|{'PYTHONDONTWRITEBYTECODE':'1'},timeout=180)
+ended=datetime.now(timezone.utc).isoformat();raw=record.read_bytes();data=json.loads(raw);v=data['validation'];s=v['audit_only_checker_self_tests_executed_not_erp_tests']
+receipt=dict(command=command,environment_clock_observed_start_utc=started,environment_clock_observed_end_utc=ended,elapsed_seconds=round(time.monotonic()-t,3),date_reference_not_execution_clock='2026-11-16',process_exit_code=r.returncode,stderr_bytes=err.stat().st_size,stderr_sha256=sha(err),stdout_path='docs/audit/evidence/checks-07B31.json',stdout_bytes=len(raw),stdout_sha256=sha(record),checkout_head=data['checkout_head'],source_head=data['source_head'],branch=data['branch'],registry=data['registry_used'],findings=data['findings']['total_open_not_remediated'],originals=data['original_project_hashes_matching'],cases=sum(x['tests_reported'] for x in s.values()),suites=len(s),errors=v['errors'],pending_first_write=v['current_output_record_pending_first_write_not_placeholder'],all939_inputs_unchanged=all(sha(R/n)==h for n,h in inputs.items()),official_exclusive_actual_default_process_not_synthetic=True)
+with Path('/tmp/smartaudit-b31-official-receipt.json').open('x') as f:json.dump(receipt,f,indent=2);f.write('\n')
+print(json.dumps(receipt,ensure_ascii=False,indent=2),flush=True)
+assert r.returncode==0 and err.read_bytes()==b'' and v['errors']==[],(r.returncode,err.read_text()[-12000:],v['errors'])
+assert (receipt['findings'],receipt['originals'],receipt['cases'],receipt['suites'],receipt['pending_first_write'],receipt['all939_inputs_unchanged'])==(333,827,1034,32,False,True)
+assert (data['checkout_head'],data['source_head'],data['branch'],data['registry_used'])==(ENTRY,'10ba215152f722c8808aea0bb672c1d1d4d9d711',BRANCH,'findings.csv')
+assert all(x['result']=='passed' and x['process_exit_code']==0 for x in s.values()) and s['test_navigation_load_audit_validator.py']['tests_reported']==48 and s['test_import_cancel_audit_validator.py']['tests_reported']==52
+assert data['historical_artifact_sha256']==prov['historical_artifact_sha256'] and data['erp_runtime_tests_executed']==data['sql_or_external_service_tests_executed']==0
+assert len(v['current_audit_checker_source_sha256_not_original_application'])==115 and all(sha(A/n)==h for n,h in v['current_audit_checker_source_sha256_not_original_application'].items())
