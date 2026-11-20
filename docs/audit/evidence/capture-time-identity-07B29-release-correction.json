@@ -1,0 +1,21 @@
+{
+  "observed_clock_utc": "2026-11-20T17:04:32.149227+00:00",
+  "correction_kind": "additive-archive-path-label-correction-not-stream-or-hash-rewrite",
+  "original_proof": "evidence/capture-time-identity-07B29-release.json",
+  "original_proof_sha256": "b81e529e84c6bfac7c293295d2ca44e95337691687de81c9f7797a2da785f954",
+  "incorrect_archive_path_label": "evidence/historical-mode-verification-07B29.json",
+  "correct_archive_path": "evidence/historical-mode-verification-07B29-release.json",
+  "correct_archive_bytes": 116641,
+  "correct_archive_sha256": "338dfa9ae86a743e33a8656875325474f6e38d19f3d4478deddf1481cd3f9cc6",
+  "explanation": "The distinct release pin writer correctly read and pinned the new release archive, but its descriptive archive path field retained the preliminary filename. Corrected additively here; original proof bytes retained, not silently replaced. The preliminary archive remains116059 bytes/e577dd..., distinct from the release116641/338dfa...",
+  "current_tool_set_count": 107,
+  "unchanged_capture_tool_count": 106,
+  "all_capture_sources_match_exactly_except_single_inverse_pin": true,
+  "new_test39_and_dispatcher_unchanged_since_release_capture": true,
+  "original_proof_bytes_overwritten": false,
+  "historical_archives_rewritten": false,
+  "wholesale34_replayed_after_pin": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "errors": []
+}
