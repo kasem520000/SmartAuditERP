@@ -307,27 +307,34 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
-                        <!-- من تاريخ - بعد -->
-                        <DatePicker x:Name="txtDateFrom"
-            Height="30"
-            FontSize="11"
-            FontWeight="SemiBold"
-            SelectedDateFormat="Short"
-            Background="White"
-            BorderBrush="{StaticResource BorderLight}"
-            BorderThickness="1"
-            VerticalContentAlignment="Center"/>
+                        <!-- Repair R-102 (audit finding P7-089): separate and name the date inputs. -->
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="من تاريخ" Style="{StaticResource FieldLabel}"/>
+                            <DatePicker x:Name="txtDateFrom"
+                                        AutomationProperties.Name="من تاريخ"
+                                        Height="30"
+                                        FontSize="11"
+                                        FontWeight="SemiBold"
+                                        SelectedDateFormat="Short"
+                                        Background="White"
+                                        BorderBrush="{StaticResource BorderLight}"
+                                        BorderThickness="1"
+                                        VerticalContentAlignment="Center"/>
+                        </StackPanel>
 
-                        <!-- الى تاريخ - بعد -->
-                        <DatePicker x:Name="txtDateTo"
-            Height="30"
-            FontSize="11"
-            FontWeight="SemiBold"
-            SelectedDateFormat="Short"
-            Background="White"
-            BorderBrush="{StaticResource BorderLight}"
-            BorderThickness="1"
-            VerticalContentAlignment="Center"/>
+                        <StackPanel Grid.Column="2">
+                            <TextBlock Text="إلى تاريخ" Style="{StaticResource FieldLabel}"/>
+                            <DatePicker x:Name="txtDateTo"
+                                        AutomationProperties.Name="إلى تاريخ"
+                                        Height="30"
+                                        FontSize="11"
+                                        FontWeight="SemiBold"
+                                        SelectedDateFormat="Short"
+                                        Background="White"
+                                        BorderBrush="{StaticResource BorderLight}"
+                                        BorderThickness="1"
+                                        VerticalContentAlignment="Center"/>
+                        </StackPanel>
                         
                         <!-- المستخدم -->
                         <StackPanel Grid.Column="4">
