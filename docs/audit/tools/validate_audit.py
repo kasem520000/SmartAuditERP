@@ -1,42 +1,42 @@
 #!/usr/bin/env python3
-"""Read-only PARTIAL7B32/R4p static documentary audit,NEVER ERP acceptance.
+"""Read-only PARTIAL7B33/R4q static documentary audit,NEVER ERP acceptance.
 
-LIVE B32/current334; historical B31 OWN333/raw334CRLF/indexes/presetB31/ALL48
-original cases via module-local A/Path and exact115 source-assertion inputs/
-dispatcher TEXT,not old dispatcher code,process-global pathlib/subprocess patch,
-disk overlay,protected edit,skip or rebaseline. B30 ALL52 and every prior1034
-case retained. Actual B32 parser/19 routing gates/119 execution tools checked
-independently; versionedB31 and API main defaultB15 remain distinct.
-One Medium confirmed-source162: sale events wired in XAML then constructor.
-Closing can ask twice with stable supplied dirty/returning callbacks. Cancel
-is not KeyDown.Handled: No thenYes does NOT undo the sale Cancel=true. F6 may
-request ValidateInvoice twice when unhandled/returning;NOT two successful saves.
-F5 sets Handled after normal return and masks the second ordinary subscription.
-No blanket duplicate-all-keys,duplicate-commit,bypass-cancel or financial-loss
-claim. Loaded subscription source only does not settle132,which stays potential.
-Header ReffNo/InvNote assignments do not settle external IsUpdated setters;
-unknown SDK contracts stay unknown,not capability absence or new dirty finding.
-159/160/161/046 and all333 dictionaries/fullraw334CRLF prefix/ALLnext_phase exact.
-942/947 protected entry artifacts,G01..244,827 originals/29,128,444bytes,three
-freezes and auxiliary dispatcher TEXT exact;new G245..248 proposals,not fixes.
-EO8/DG8/FE16/INV16/RC6/AD8/32plansNOTexecuted,RS14/SP3/HQ6 full input prefixes,
-ancestry/contracts/routes/dispositions.22 contract slices+9 context/5 prior
-paths/0wholefiles,5overlap+0new->427/complement400 bookkeeping not coverage,
-455FE,all callers/fields/writers/outputs/SDK or complete WPF lifecycle review.
-Actual37 OWN historical processes2..6,A,B1..31 captured with119 tool identities,
-not full streams or final/postpin/prose/postpush wholesale replay. Only a later
-single helper pin may be inverted in memory,never archive hashes retrofitted.
-Reference2026-11-16 vs raw environment clocks and frozen16/20 labels separate,
-no calibration/backdating/timestamp rewrite. Source10ba,official B31 capture038a,
-B31delivery/B32entry0bb and current capture/delivery remain separate identities.
-B10 additive10vs120/equality1=10/G138 retained. Potential014/132/145,020/021 and
+LIVE B33/current335; historical B32 OWN334/raw335CRLF/indexes/presetB32/ALL52
+with119 source assertion identities and canonical dispatcher TEXT via child
+module-local A/Path only. Not old code,global pathlib/subprocess mutation,
+protected edits,overlay,filter,skip or rebaseline. ALL1086 prior cases retained;
+B31 assertion115/B30=111/B29=107 remain separate from actual123 execution tools.
+Actual parser LIVE33/versioned32/API15 and19 routing gates checked independently.
+One Medium confirmed-source163: sale RptPrintPDF writes local defPrinter to PDF
+before BindToData without restoration; normal RptPrint only replaces empty.
+Same instance,explicit printed/clean/mapping-returned/gates and no intervening
+writer;picker and type3 overrides are string-parameter-local,type2 previews,
+early row/url/file returns do not write. No installed device,actual PDF/paper,
+spool success,DB-setting write,SDK dirty semantics,save/financial loss proved.
+030count/031void/103read/104zero-row/032identity/033details/140currency and
+159/160/161/162/046 roots stay exact,no per-route/editor/event/failure recount.
+ALL334 dictionaries/ALLnext_phase/fullraw335CRLF/G248/827originals/29,128,444bytes,
+976/981 protected entry artifacts,three freezes+dispatcher TEXT remain exact.
+OS8/OV8/FE16/INV16/RC6/AD8 and32plansNOTexecuted;RS14/SP3/HQ6 full upstream
+input prefixes/row hashes/contracts/routes/dispositions preserved.20contract
+slices+9context/6priorpaths/0wholefiles,6overlap+0new→427/complement400 bookkeeping
+not455FE/capability coverage.334metadata/37five-path registry rows and24 selected
+report sections,NOT all historical bodies. Actual38 OWN historical subprocesses
+2..6,A,B1..32 captured with123source hashes,only single later helper pin inverted
+in memory;not copied prefixes/full streams or final/postpin/postpush wholesale
+replay. Reference2026-11-16 and raw environment clocks/frozen16/20 metadata kept
+separate,never calibrated/backdated/rewritten. Source10ba,B32officialcapture0bb,
+B32delivery/B33entry3f747,current capture and later delivery identities separate.
+B10 additive10vs120/equality1=10/G138 retained;potential014/132/145,020/021 and
 financial/ACL/stock/save/production barriers unchanged. No ERP/build/C#/VB/.NET/
-WPF/SQL/provider/SDK/REPX/ToDataTable/scanner/printer,business data,secrets,repair,
-measurement or operational acceptance. OtherSP01..03 including Product/BulkPatch/
-LineRef/OwnedSeed/PropertiesResult/basket/RepeatOutcome,census/crosswalk455FE,
-SDK/constructors/collections/currency/precision/templates remain7B.7B/7partial,
-R4q/B33proposed or reasoned split,7Cunstarted,8unauthorized;repair start/sync
-unknown,no repair->audit,next_phase8planningonly,no duration/session/percent.
+WPF/SQL/provider/SDK/REPX/ToDataTable/printer/scanner,business data,secrets,
+remediation,measurement or operational acceptance. OtherSP01..03 including
+Product/BulkPatch/LineRef/OwnedSeed/PropertiesResult/basket/RepeatOutcome,
+DocumentRef/allowed-set/branch/reset/dirty/cancel/failure,all callers/fields/
+writers/outputs,census455FE,SDK/constructors/collections/currency/precision/
+policies/templates remain7B.7B/7partial,R4r/B34proposed or reasoned split,
+7Cunstarted,8unauthorized,repair start/syncunknown,no repair→audit or assumptions,
+next_phase8planningonly,no duration/session/coverage-percent/completion promise.
 """
 from __future__ import annotations
 
@@ -1152,79 +1152,79 @@ def main(through: int, phase7_part: str = "B15") -> int:
     if through == 7:
         report["phase_7A_historical_input_mode"] = "frozen200-and-protected7A-artifacts-not-current-shared-indexes"
         report["validation"]["limit"] += " Historical7A current-checker recomputation is not a claim of byte-identical reproduction of the original checks-07 metrics."
-        if phase7_part in {"B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32"}:
+        if phase7_part in {"B1", "B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32", "B33"}:
             from validate_financial_report_part import validate_frozen_b1
             prov7b2, frozen223 = provenance("evidence/provenance-07B2.json", 110, 223)
             validate_frozen_b1(sys.modules[__name__], report, prov7b, frozen200, prov7b2, frozen223)
-            if phase7_part in {"B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32"}:
+            if phase7_part in {"B2", "B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32", "B33"}:
                 from validate_commercial_report_part import validate_frozen_b2
                 prov7b3, frozen237 = provenance("evidence/provenance-07B3.json", 132, 237)
                 validate_frozen_b2(sys.modules[__name__], report, prov7b2, frozen223, prov7b, prov7b3, frozen237)
-                if phase7_part in {"B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32"}:
+                if phase7_part in {"B3", "B4", "B5", "B6", "B7", "B8", "B9", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32", "B33"}:
                     from validate_invoice_analysis_part import validate_frozen_b3
                     prov7b4, frozen248 = provenance("evidence/provenance-07B4.json", 155, 248)
                     validate_frozen_b3(sys.modules[__name__], report, prov7b3, frozen237, prov7b4, frozen248)
-                    if phase7_part in {"B4", "B5", "B6", "B7", "B8", "B9", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32"}:
+                    if phase7_part in {"B4", "B5", "B6", "B7", "B8", "B9", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32", "B33"}:
                         from validate_sales_report_part import validate_frozen_b4
                         prov7b5, frozen261 = provenance("evidence/provenance-07B5.json", 178, 261)
                         validate_frozen_b4(sys.modules[__name__], report, prov7b4, frozen248, prov7b5, frozen261)
-                        if phase7_part in {"B5", "B6", "B7", "B8", "B9", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32"}:
+                        if phase7_part in {"B5", "B6", "B7", "B8", "B9", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32", "B33"}:
                             from validate_pos_totals_part import validate_frozen_b5
                             prov7b6, frozen266 = provenance("evidence/provenance-07B6.json", 199, 266)
                             validate_frozen_b5(sys.modules[__name__], report, prov7b5, frozen261, prov7b6, frozen266)
-                            if phase7_part in {"B6", "B7", "B8", "B9", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32"}:
+                            if phase7_part in {"B6", "B7", "B8", "B9", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32", "B33"}:
                                 from validate_financial_controls_part import validate_frozen_b6
                                 prov7b7, frozen270 = provenance("evidence/provenance-07B7.json", 223, 270)
                                 validate_frozen_b6(sys.modules[__name__], report, prov7b6, frozen266, prov7b7, frozen270)
-                                if phase7_part in {"B7", "B8", "B9", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32"}:
+                                if phase7_part in {"B7", "B8", "B9", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32", "B33"}:
                                     from validate_decision_summary_part import validate_frozen_b7
                                     prov7b8, frozen276 = provenance("evidence/provenance-07B8.json", 246, 276)
                                     validate_frozen_b7(sys.modules[__name__], report, prov7b7, frozen270, prov7b8, frozen276)
-                                    if phase7_part in {"B8", "B9", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32"}:
+                                    if phase7_part in {"B8", "B9", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32", "B33"}:
                                         from validate_receipt_payroll_part import validate_frozen_b8
                                         prov7b9, frozen280 = provenance("evidence/provenance-07B9.json", 269, 280)
                                         validate_frozen_b8(sys.modules[__name__], report, prov7b8, frozen276, prov7b9, frozen280)
-                                        if phase7_part in {"B9", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32"}:
+                                        if phase7_part in {"B9", "B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32", "B33"}:
                                             from validate_salesman_contract_part import validate_frozen_b9
                                             prov7b10, frozen282 = provenance("evidence/provenance-07B10.json", 292, 282)
                                             validate_frozen_b9(sys.modules[__name__], report, prov7b9, frozen280, prov7b10, frozen282)
-                                            if phase7_part in {"B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32"}:
+                                            if phase7_part in {"B10", "B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32", "B33"}:
                                                 from validate_statement_contract_part import validate_frozen_b10
                                                 prov7b11, frozen285 = provenance("evidence/provenance-07B11.json", 315, 285)
                                                 validate_frozen_b10(sys.modules[__name__], report, prov7b10, frozen282, prov7b11, frozen285)
-                                                if phase7_part in {"B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32"}:
+                                                if phase7_part in {"B11", "B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32", "B33"}:
                                                     from validate_income_contract_part import validate_frozen_b11
                                                     prov7b12, frozen287 = provenance("evidence/provenance-07B12.json", 338, 287)
                                                     validate_frozen_b11(sys.modules[__name__], report, prov7b11, frozen285, prov7b12, frozen287)
-                                                    if phase7_part in {"B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32"}:
+                                                    if phase7_part in {"B12", "B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32", "B33"}:
                                                         from validate_trial_balance_part import validate_frozen_b12
                                                         prov7b13, frozen289 = provenance("evidence/provenance-07B13.json", 361, 289)
                                                         validate_frozen_b12(sys.modules[__name__], report, prov7b12, frozen287, prov7b13, frozen289)
-                                                        if phase7_part in {"B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32"}:
+                                                        if phase7_part in {"B13", "B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32", "B33"}:
                                                             from validate_inventory_activity_part import validate_frozen_b13
                                                             prov7b14, frozen291 = provenance("evidence/provenance-07B14.json", 387, 291)
                                                             validate_frozen_b13(sys.modules[__name__], report, prov7b13, frozen289, prov7b14, frozen291)
-                                                            if phase7_part in {"B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32"}:
+                                                            if phase7_part in {"B14", "B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32", "B33"}:
                                                                 from validate_accrual_tax_part import validate_frozen_b14, extend_accrual_tax
                                                                 prov7b15, frozen294 = provenance("evidence/provenance-07B15.json", 413, 294)
                                                                 validate_frozen_b14(sys.modules[__name__], report, prov7b14, frozen291, prov7b15, frozen294)
-                                                                if phase7_part in {"B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32"}:
+                                                                if phase7_part in {"B15", "B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32", "B33"}:
                                                                     from validate_shared_contract_part import validate_frozen_b15, extend_shared_contracts
                                                                     prov7b16, frozen298 = provenance("evidence/provenance-07B16.json", 440, 298)
                                                                     validate_frozen_b15(sys.modules[__name__], report, prov7b15, frozen294, prov7b16, frozen298)
-                                                                    if phase7_part in {"B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32"}:
+                                                                    if phase7_part in {"B16", "B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32", "B33"}:
                                                                         from validate_consolidation_part import validate_frozen_b16, extend_consolidation
                                                                         prov7b17, frozen299 = provenance("evidence/provenance-07B17.json", 468, 299)
                                                                         validate_frozen_b16(sys.modules[__name__], report, prov7b16, frozen298, prov7b17, frozen299)
-                                                                        if phase7_part in {"B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32"}:
+                                                                        if phase7_part in {"B17", "B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32", "B33"}:
                                                                             from validate_caller_request_part import validate_frozen_b17, extend_caller_requests
                                                                             prov7b18, frozen300 = provenance("evidence/provenance-07B18.json", 495, 300)
                                                                             validate_frozen_b17(sys.modules[__name__], report, prov7b17, frozen299, prov7b18, frozen300)
-                                                                            if phase7_part in {"B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32"}:
+                                                                            if phase7_part in {"B18", "B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32", "B33"}:
                                                                                 from validate_navigation_contract_part import validate_frozen_b18, extend_navigation_contracts
                                                                                 prov7b19, frozen302 = provenance("evidence/provenance-07B19.json", 523, 302)
                                                                                 validate_frozen_b18(sys.modules[__name__], report, prov7b18, frozen300, prov7b19, frozen302)
-                                                                                if phase7_part in {"B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32"}:
+                                                                                if phase7_part in {"B19", "B20", "B21", "B22", "B23", "B24", "B25", "B26", "B27", "B28", "B29", "B30", "B31", "B32", "B33"}:
                                                                                     from validate_barcode_contract_part import historical_b19_validation, extend_barcode_contracts
                                                                                     prov7b20, frozen307 = provenance("evidence/provenance-07B20.json", 553, 307)
                                                                                     with historical_b19_validation(sys.modules[__name__], report, prov7b19, prov7b20, frozen307) as historical_b19:
@@ -1316,7 +1316,14 @@ def main(through: int, phase7_part: str = "B15") -> int:
                                                                                                                                     if phase7_part == "B31":
                                                                                                                                         report["phase_7B31_checked_as_explicit_historical_mode_not_current_default"] = True
                                                                                                                                     else:
-                                                                                                                                        extend_editor_close(sys.modules[__name__], report, prov7b32, frozen333)
+                                                                                                                                        from validate_output_route_part import historical_b32_validation, extend_output_route
+                                                                                                                                        prov7b33, frozen334 = provenance("evidence/provenance-07B33.json", 976, 334)
+                                                                                                                                        with historical_b32_validation(sys.modules[__name__], report, prov7b32, prov7b33, frozen334) as historical_b32:
+                                                                                                                                            extend_editor_close(historical_b32, report, prov7b32, frozen333)
+                                                                                                                                        if phase7_part == "B32":
+                                                                                                                                            report["phase_7B32_checked_as_explicit_historical_mode_not_current_default"] = True
+                                                                                                                                        else:
+                                                                                                                                            extend_output_route(sys.modules[__name__], report, prov7b33, frozen334)
     # New-part checks increment the same counters/errors without writing files.
     report["validation"]["source_range_references_checked_including_repeats"] = REFERENCE_COUNT
     report["validation"]["local_markdown_links_checked_including_repeats"] = LINK_COUNT
@@ -1343,16 +1350,17 @@ PHASE7_B28_CLI = PHASE7_B27_CLI | dict(choices=PHASE7_B27_CLI["choices"] + ("B28
 PHASE7_B29_CLI = PHASE7_B28_CLI | dict(choices=PHASE7_B28_CLI["choices"] + ("B29",), default="B29")
 PHASE7_B30_CLI = PHASE7_B29_CLI | dict(choices=PHASE7_B29_CLI["choices"] + ("B30",), default="B30")
 PHASE7_B31_CLI = PHASE7_B30_CLI | dict(choices=PHASE7_B30_CLI["choices"] + ("B31",), default="B31")
-PHASE7_LIVE_CLI = PHASE7_B31_CLI | dict(choices=PHASE7_B31_CLI["choices"] + ("B32",), default="B32")
+PHASE7_B32_CLI = PHASE7_B31_CLI | dict(choices=PHASE7_B31_CLI["choices"] + ("B32",), default="B32")
+PHASE7_LIVE_CLI = PHASE7_B32_CLI | dict(choices=PHASE7_B32_CLI["choices"] + ("B33",), default="B33")
 
 
 def build_cli_parser():
     """Real current parser; immutable versioned descriptors are not defaults."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--through-phase", type=int, choices=(2, 3, 4, 5, 6, 7), default=7,
-                        help="Default7 is7A+B1..B32/R4p partial;2..6 use OWN frozen historical inputs")
+                        help="Default7 is7A+B1..B33/R4q partial;2..6 use OWN frozen historical inputs")
     parser.add_argument("--phase7-part", **PHASE7_LIVE_CLI,
-                        help="A/B1..B31 historical OWN. B31=OWN333/raw334CRLF/indexes/presetB31/ALL48 with module-local A/Path and exact115 source-assertion identities/dispatcher TEXT,not executable old code or actual119-tool inventory. LIVEB32/current334;one Medium source162:authored XAML+constructor event registration,Closing may ask twice,F6 may request validation twice after normal unhandled return,NOT successful saves. F5 sets Handled,Cancel does not mask next Closing delegate;No thenYes preserves sale veto. Loaded source duplication does not settle132;header setter dirty remains unknown not absence proof.159/160/161/046 exact,ext0.22 contract slices+9 context/5priorpaths/0wholefiles;5overlap+0new->427/400 bookkeeping,333metadata/27parentpathrows plus selected nearest bodies/reports not all. EO8/DG8/FE16/INV16/RC6/AD8/32plansNOTexecuted;RS14/SP3/HQ6 all input prefixes/ancestry/routes/dispositions.942/947protected,all333fields/ALLnext_phase/fullraw334CRLF/G244/827/3freezes+auxTEXT exact. ALL48B31/52B30/48B29/48B28/52B27/48B26/44B25/24 and1034priorcases,no skip/rebaseline/overlay/protected edit/global mutation. Actual37 process summaries/stdout identities/capture119tools,single inverse helper pin,not final/postpush wholesale replay. Reference16/raw clock/frozen16/20/source10ba/officialB31capture038/B31deliveryandB32entry0bb distinct. Potential014/132/145,020/021 andfinancial/ACL/stock/save/production barriers retained,B10additive10vs120/equality1=10/G138 unchanged. No ERP/build/WPF/.NET/SQL/SDK/provider/BAML/save/loss/remediation/measurement/acceptance;setters/flags/counts/replies/callbacks SUPPLIED. OtherSP01..03/Product/BulkPatch/LineRef/OwnedSeed/PropertiesResult/basket/RepeatOutcome/census/SDK/currency/precision/templates remain7B.7B/7partial,R4q/B33proposed or reasoned split,7Cunstarted,8unauthorized;repair start/syncunknown,next_phase8planningonly,no duration/session/percent promise.")
+                        help="A/B1..B32 historical OWN;B32=OWN334/raw335CRLF/indexes/preset32/ALL52 with module-local A/Path and119 historical source assertion identities/dispatcher TEXT,not old code. Actual LIVEB33/current335/19gates/API15/123tools independent. One163: same-instance PDF property assignment persists into normal nonempty fallback;picker/type3 local overrides,preview and early gates controls. No device/PDF/paper/spool success,DB-setting write,save/financial loss or unknown SDK semantics proved. OS8/OV8/FE16/INV16/RC6/AD8/32plansNOTexecuted;RS14/SP3/HQ6 full lineage/input prefixes/routes/dispositions.20contract+9context/6priorpaths/0wholefiles,427/400 bookkeeping;334metadata/37pathrows/24selectedreportsections not all bodies or455FE.976/981protected/ALL334fields/raw335prefix/G248/827originals/freezes exact,ext0,all1086priorcases incl52B32 unmodified. Actual38 OWN process summaries/stdout identities/123capturetools/single inverse helper pin,not final/postpush wholesale replay. Reference16/raw clocks/frozen16and20/source10ba/B32capture0bb/B32delivery-B33entry3f747 distinct. Potential014/132/145,020/021/financial-ACL-stock-save-production barriers,B10additive10vs120/equality1=10/G138 retained. No ERP/build/C#/VB/.NET/WPF/SQL/provider/SDK/REPX/ToDataTable/printer/scanner/businessdata/secrets/repair/measurement/acceptance. OtherSP01..03/DocumentRef/allowed-set/branch/reset/dirty/cancel/failure/Product/BulkPatch/LineRef/OwnedSeed/PropertiesResult/basket/RepeatOutcome/census/SDK/currency/precision/templates remain7B;7B/7partial,R4r/B34proposed or reasoned split,7Cunstarted,8unauthorized,repair start/syncunknown,next_phase8planningonly,no duration/session/percent promise.")
     return parser
 
 

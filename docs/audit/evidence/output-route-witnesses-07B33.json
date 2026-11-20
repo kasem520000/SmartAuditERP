@@ -1,0 +1,1000 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "entry_checkout": "3f747085b8f91762f7626dd45331ca1f5ba9e9c1",
+  "new_root_ids": [
+    "P7-163"
+  ],
+  "extended_existing_root_ids": [],
+  "illustration_count": 20,
+  "lexical_check_count": 20,
+  "selected_source_paths": 6,
+  "selected_contract_slices": 20,
+  "context_slices_not_certified": 9,
+  "whole_local_files_selected": 0,
+  "gates_and_return_flags_and_printer_tokens_are_supplied": true,
+  "parameter_overrides_do_not_write_back_local_auto_property": true,
+  "source_assignment_and_next_request_not_output_success": true,
+  "unknown_DTO_dirty_mapping_and_SDK_contracts_remain_unknown": true,
+  "application_code_imported_or_executed": false,
+  "dotnet_wpf_sql_or_SDK_executed": false,
+  "installed_printer_or_PDF_file_or_paper_output_proved": false,
+  "persisted_setting_write_or_financial_loss_claimed": false,
+  "all_callers_or_engine_types_certified": false,
+  "application_remediation_performed": false,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "retained_additive_B10_arithmetic_erratum": {
+    "local_cost": 10,
+    "reference_cost": 120,
+    "equality1_control": 10,
+    "protected_G138_not_rewritten": true
+  },
+  "illustrations": [
+    {
+      "id": "ALG7B33-01",
+      "boundary": "pdf-mutates-shared-local-property",
+      "trace": {
+        "mode": "pdf",
+        "shared_before": "fixture-paper-A",
+        "shared_after": "Microsoft Print to PDF",
+        "stopped_before_assignment": null,
+        "assignment_boundary_reached": true,
+        "engine_entered": true,
+        "engine_printer_argument": "Microsoft Print to PDF",
+        "binding_nonreturn_after_assignment": false,
+        "engine_or_application_executed": false,
+        "actual_output_proved": false
+      },
+      "expected": {
+        "shared_after": "Microsoft Print to PDF",
+        "engine_printer_argument": "Microsoft Print to PDF"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2041-2124;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2581-2595;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3201-3208;SmartAuditERP/Class/Print.cs:148-221",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ALG7B33-02",
+      "boundary": "same-instance-next-normal-reuses-PDF",
+      "trace": {
+        "mode": "normal",
+        "shared_before": "Microsoft Print to PDF",
+        "shared_after": "Microsoft Print to PDF",
+        "stopped_before_assignment": null,
+        "assignment_boundary_reached": true,
+        "engine_entered": true,
+        "engine_printer_argument": "Microsoft Print to PDF",
+        "binding_nonreturn_after_assignment": false,
+        "engine_or_application_executed": false,
+        "actual_output_proved": false
+      },
+      "expected": {
+        "shared_after": "Microsoft Print to PDF",
+        "engine_printer_argument": "Microsoft Print to PDF"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2041-2124;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2581-2595;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3201-3208;SmartAuditERP/Class/Print.cs:148-221",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ALG7B33-03",
+      "boundary": "normal-without-prior-PDF-control",
+      "trace": {
+        "mode": "normal",
+        "shared_before": "fixture-paper-A",
+        "shared_after": "fixture-paper-A",
+        "stopped_before_assignment": null,
+        "assignment_boundary_reached": true,
+        "engine_entered": true,
+        "engine_printer_argument": "fixture-paper-A",
+        "binding_nonreturn_after_assignment": false,
+        "engine_or_application_executed": false,
+        "actual_output_proved": false
+      },
+      "expected": {
+        "shared_after": "fixture-paper-A",
+        "engine_printer_argument": "fixture-paper-A"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2041-2124;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2581-2595;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3201-3208;SmartAuditERP/Class/Print.cs:148-221",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ALG7B33-04",
+      "boundary": "new-independent-instance-control",
+      "trace": {
+        "mode": "normal",
+        "shared_before": "fixture-paper-B",
+        "shared_after": "fixture-paper-B",
+        "stopped_before_assignment": null,
+        "assignment_boundary_reached": true,
+        "engine_entered": true,
+        "engine_printer_argument": "fixture-paper-B",
+        "binding_nonreturn_after_assignment": false,
+        "engine_or_application_executed": false,
+        "actual_output_proved": false
+      },
+      "expected": {
+        "shared_after": "fixture-paper-B"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2041-2124;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2581-2595;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3201-3208;SmartAuditERP/Class/Print.cs:148-221",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ALG7B33-05",
+      "boundary": "empty-grid-stops-before-PDF-write",
+      "trace": {
+        "mode": "pdf",
+        "shared_before": "fixture-paper-A",
+        "shared_after": "fixture-paper-A",
+        "stopped_before_assignment": "empty-grid",
+        "assignment_boundary_reached": false,
+        "engine_entered": false,
+        "engine_printer_argument": null,
+        "binding_nonreturn_after_assignment": false,
+        "engine_or_application_executed": false,
+        "actual_output_proved": false
+      },
+      "expected": {
+        "shared_after": "fixture-paper-A",
+        "stopped_before_assignment": "empty-grid",
+        "engine_entered": false
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2041-2124;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2581-2595;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3201-3208;SmartAuditERP/Class/Print.cs:148-221",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ALG7B33-06",
+      "boundary": "empty-report-url-stops-before-write",
+      "trace": {
+        "mode": "pdf",
+        "shared_before": "fixture-paper-A",
+        "shared_after": "fixture-paper-A",
+        "stopped_before_assignment": "missing-url",
+        "assignment_boundary_reached": false,
+        "engine_entered": false,
+        "engine_printer_argument": null,
+        "binding_nonreturn_after_assignment": false,
+        "engine_or_application_executed": false,
+        "actual_output_proved": false
+      },
+      "expected": {
+        "shared_after": "fixture-paper-A",
+        "stopped_before_assignment": "missing-url"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2041-2124;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2581-2595;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3201-3208;SmartAuditERP/Class/Print.cs:148-221",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ALG7B33-07",
+      "boundary": "missing-main-report-stops-before-write",
+      "trace": {
+        "mode": "pdf",
+        "shared_before": "fixture-paper-A",
+        "shared_after": "fixture-paper-A",
+        "stopped_before_assignment": "missing-main-report",
+        "assignment_boundary_reached": false,
+        "engine_entered": false,
+        "engine_printer_argument": null,
+        "binding_nonreturn_after_assignment": false,
+        "engine_or_application_executed": false,
+        "actual_output_proved": false
+      },
+      "expected": {
+        "shared_after": "fixture-paper-A",
+        "stopped_before_assignment": "missing-main-report"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2041-2124;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2581-2595;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3201-3208;SmartAuditERP/Class/Print.cs:148-221",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ALG7B33-08",
+      "boundary": "binding-nonreturn-after-PDF-write",
+      "trace": {
+        "mode": "pdf",
+        "shared_before": "fixture-paper-A",
+        "shared_after": "Microsoft Print to PDF",
+        "stopped_before_assignment": null,
+        "assignment_boundary_reached": true,
+        "engine_entered": false,
+        "engine_printer_argument": null,
+        "binding_nonreturn_after_assignment": true,
+        "engine_or_application_executed": false,
+        "actual_output_proved": false
+      },
+      "expected": {
+        "shared_after": "Microsoft Print to PDF",
+        "engine_entered": false,
+        "binding_nonreturn_after_assignment": true
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2041-2124;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2581-2595;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3201-3208;SmartAuditERP/Class/Print.cs:148-221",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ALG7B33-09",
+      "boundary": "empty-normal-printer-fallback",
+      "trace": {
+        "mode": "normal",
+        "shared_before": "",
+        "shared_after": "fixture-default",
+        "stopped_before_assignment": null,
+        "assignment_boundary_reached": true,
+        "engine_entered": true,
+        "engine_printer_argument": "fixture-default",
+        "binding_nonreturn_after_assignment": false,
+        "engine_or_application_executed": false,
+        "actual_output_proved": false
+      },
+      "expected": {
+        "shared_after": "fixture-default",
+        "engine_printer_argument": "fixture-default"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2041-2124;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2581-2595;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3201-3208;SmartAuditERP/Class/Print.cs:148-221",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ALG7B33-10",
+      "boundary": "nonempty-normal-printer-is-not-reset",
+      "trace": {
+        "mode": "normal",
+        "shared_before": "Microsoft Print to PDF",
+        "shared_after": "Microsoft Print to PDF",
+        "stopped_before_assignment": null,
+        "assignment_boundary_reached": true,
+        "engine_entered": true,
+        "engine_printer_argument": "Microsoft Print to PDF",
+        "binding_nonreturn_after_assignment": false,
+        "engine_or_application_executed": false,
+        "actual_output_proved": false
+      },
+      "expected": {
+        "shared_after": "Microsoft Print to PDF"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2041-2124;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2581-2595;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3201-3208;SmartAuditERP/Class/Print.cs:148-221",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ALG7B33-11",
+      "boundary": "type1-without-picker-or-template-override",
+      "trace": {
+        "incoming_argument": "Microsoft Print to PDF",
+        "local_after_overrides": "Microsoft Print to PDF",
+        "report_printer_assignment": "Microsoft Print to PDF",
+        "output_type": 1,
+        "selected_branch_print_requests": 1,
+        "selected_branch_preview_requests": 0,
+        "requests_not_successful_or_spooled_copies": true,
+        "kitchen_recursion_boundary": false,
+        "failure_point_supplied": "none",
+        "normal_void_return_proves_output_success": false,
+        "shared_property_written_by_this_engine": false,
+        "engine_or_application_executed": false
+      },
+      "expected": {
+        "report_printer_assignment": "Microsoft Print to PDF",
+        "selected_branch_print_requests": 1
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2041-2124;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2581-2595;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3201-3208;SmartAuditERP/Class/Print.cs:148-221",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ALG7B33-12",
+      "boundary": "picker-overrides-local-not-property",
+      "trace": {
+        "incoming_argument": "Microsoft Print to PDF",
+        "local_after_overrides": "fixture-picker",
+        "report_printer_assignment": "fixture-picker",
+        "output_type": 1,
+        "selected_branch_print_requests": 1,
+        "selected_branch_preview_requests": 0,
+        "requests_not_successful_or_spooled_copies": true,
+        "kitchen_recursion_boundary": false,
+        "failure_point_supplied": "none",
+        "normal_void_return_proves_output_success": false,
+        "shared_property_written_by_this_engine": false,
+        "engine_or_application_executed": false
+      },
+      "expected": {
+        "report_printer_assignment": "fixture-picker",
+        "shared_property_written_by_this_engine": false
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2041-2124;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2581-2595;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3201-3208;SmartAuditERP/Class/Print.cs:148-221",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ALG7B33-13",
+      "boundary": "empty-picker-value-does-not-override",
+      "trace": {
+        "incoming_argument": "Microsoft Print to PDF",
+        "local_after_overrides": "Microsoft Print to PDF",
+        "report_printer_assignment": "Microsoft Print to PDF",
+        "output_type": 1,
+        "selected_branch_print_requests": 1,
+        "selected_branch_preview_requests": 0,
+        "requests_not_successful_or_spooled_copies": true,
+        "kitchen_recursion_boundary": false,
+        "failure_point_supplied": "none",
+        "normal_void_return_proves_output_success": false,
+        "shared_property_written_by_this_engine": false,
+        "engine_or_application_executed": false
+      },
+      "expected": {
+        "report_printer_assignment": "Microsoft Print to PDF"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2041-2124;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2581-2595;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3201-3208;SmartAuditERP/Class/Print.cs:148-221",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ALG7B33-14",
+      "boundary": "type3-template-overrides-picker-locally",
+      "trace": {
+        "incoming_argument": "Microsoft Print to PDF",
+        "local_after_overrides": "fixture-template",
+        "report_printer_assignment": "fixture-template",
+        "output_type": 3,
+        "selected_branch_print_requests": 1,
+        "selected_branch_preview_requests": 0,
+        "requests_not_successful_or_spooled_copies": true,
+        "kitchen_recursion_boundary": false,
+        "failure_point_supplied": "none",
+        "normal_void_return_proves_output_success": false,
+        "shared_property_written_by_this_engine": false,
+        "engine_or_application_executed": false
+      },
+      "expected": {
+        "report_printer_assignment": "fixture-template"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2041-2124;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2581-2595;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3201-3208;SmartAuditERP/Class/Print.cs:148-221",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ALG7B33-15",
+      "boundary": "type2-preview-is-not-print",
+      "trace": {
+        "incoming_argument": "Microsoft Print to PDF",
+        "local_after_overrides": "Microsoft Print to PDF",
+        "report_printer_assignment": "Microsoft Print to PDF",
+        "output_type": 2,
+        "selected_branch_print_requests": 0,
+        "selected_branch_preview_requests": 1,
+        "requests_not_successful_or_spooled_copies": true,
+        "kitchen_recursion_boundary": false,
+        "failure_point_supplied": "none",
+        "normal_void_return_proves_output_success": false,
+        "shared_property_written_by_this_engine": false,
+        "engine_or_application_executed": false
+      },
+      "expected": {
+        "selected_branch_print_requests": 0,
+        "selected_branch_preview_requests": 1
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2041-2124;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2581-2595;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3201-3208;SmartAuditERP/Class/Print.cs:148-221",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ALG7B33-16",
+      "boundary": "type3-empty-template-keeps-argument",
+      "trace": {
+        "incoming_argument": "Microsoft Print to PDF",
+        "local_after_overrides": "Microsoft Print to PDF",
+        "report_printer_assignment": "Microsoft Print to PDF",
+        "output_type": 3,
+        "selected_branch_print_requests": 1,
+        "selected_branch_preview_requests": 0,
+        "requests_not_successful_or_spooled_copies": true,
+        "kitchen_recursion_boundary": false,
+        "failure_point_supplied": "none",
+        "normal_void_return_proves_output_success": false,
+        "shared_property_written_by_this_engine": false,
+        "engine_or_application_executed": false
+      },
+      "expected": {
+        "report_printer_assignment": "Microsoft Print to PDF"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2041-2124;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2581-2595;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3201-3208;SmartAuditERP/Class/Print.cs:148-221",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ALG7B33-17",
+      "boundary": "template-failure-does-not-restore-shared-state",
+      "trace": {
+        "incoming_argument": "Microsoft Print to PDF",
+        "local_after_overrides": "Microsoft Print to PDF",
+        "report_printer_assignment": null,
+        "output_type": 1,
+        "selected_branch_print_requests": 0,
+        "selected_branch_preview_requests": 0,
+        "requests_not_successful_or_spooled_copies": true,
+        "kitchen_recursion_boundary": false,
+        "failure_point_supplied": "template",
+        "normal_void_return_proves_output_success": false,
+        "shared_property_written_by_this_engine": false,
+        "engine_or_application_executed": false
+      },
+      "expected": {
+        "report_printer_assignment": null,
+        "shared_property_written_by_this_engine": false
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2041-2124;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2581-2595;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3201-3208;SmartAuditERP/Class/Print.cs:148-221",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ALG7B33-18",
+      "boundary": "output-failure-void-does-not-prove-success",
+      "trace": {
+        "incoming_argument": "Microsoft Print to PDF",
+        "local_after_overrides": "Microsoft Print to PDF",
+        "report_printer_assignment": "Microsoft Print to PDF",
+        "output_type": 1,
+        "selected_branch_print_requests": 1,
+        "selected_branch_preview_requests": 0,
+        "requests_not_successful_or_spooled_copies": true,
+        "kitchen_recursion_boundary": false,
+        "failure_point_supplied": "output",
+        "normal_void_return_proves_output_success": false,
+        "shared_property_written_by_this_engine": false,
+        "engine_or_application_executed": false
+      },
+      "expected": {
+        "normal_void_return_proves_output_success": false,
+        "shared_property_written_by_this_engine": false
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2041-2124;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2581-2595;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3201-3208;SmartAuditERP/Class/Print.cs:148-221",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ALG7B33-19",
+      "boundary": "count-zero-is-old030-not-a-new-root",
+      "trace": {
+        "incoming_argument": "Microsoft Print to PDF",
+        "local_after_overrides": "Microsoft Print to PDF",
+        "report_printer_assignment": "Microsoft Print to PDF",
+        "output_type": 1,
+        "selected_branch_print_requests": 1,
+        "selected_branch_preview_requests": 0,
+        "requests_not_successful_or_spooled_copies": true,
+        "kitchen_recursion_boundary": false,
+        "failure_point_supplied": "none",
+        "normal_void_return_proves_output_success": false,
+        "shared_property_written_by_this_engine": false,
+        "engine_or_application_executed": false
+      },
+      "expected": {
+        "selected_branch_print_requests": 1
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-030",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2041-2124;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2581-2595;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3201-3208;SmartAuditERP/Class/Print.cs:148-221",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ALG7B33-20",
+      "boundary": "kitchen-is-separate-recursive-boundary",
+      "trace": {
+        "incoming_argument": "Microsoft Print to PDF",
+        "local_after_overrides": "Microsoft Print to PDF",
+        "report_printer_assignment": "Microsoft Print to PDF",
+        "output_type": 1,
+        "selected_branch_print_requests": 1,
+        "selected_branch_preview_requests": 0,
+        "requests_not_successful_or_spooled_copies": true,
+        "kitchen_recursion_boundary": true,
+        "failure_point_supplied": "none",
+        "normal_void_return_proves_output_success": false,
+        "shared_property_written_by_this_engine": false,
+        "engine_or_application_executed": false
+      },
+      "expected": {
+        "kitchen_recursion_boundary": true,
+        "selected_branch_print_requests": 1
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2041-2124;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2581-2595;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3201-3208;SmartAuditERP/Class/Print.cs:148-221",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    }
+  ],
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B33-01",
+      "boundary": "one-instance-field-and-construction",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:34-34;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-78",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ST7B33-02",
+      "boundary": "PDF-menu-wired",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml:1187-1191",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ST7B33-03",
+      "boundary": "normal-and-preview-wired",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml:1251-1259",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ST7B33-04",
+      "boundary": "PDF-caller-flags-and-type1",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3201-3208",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ST7B33-05",
+      "boundary": "normal-preview-caller-flags-types",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2581-2595",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ST7B33-06",
+      "boundary": "local-auto-property-not-unknown-DTO-setter",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Class/Print.cs:38-38",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ST7B33-07",
+      "boundary": "constructor-default-and-casher-setting",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Class/Print.cs:54-95",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ST7B33-08",
+      "boundary": "PDF-writes-before-binding-call",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2093-2124",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ST7B33-09",
+      "boundary": "complete-selected-PDF-wrapper-no-restoration",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2093-2124",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ST7B33-10",
+      "boundary": "normal-fallback-only-for-empty-property",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2085-2091",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ST7B33-11",
+      "boundary": "PDF-row-url-file-gates-precede-write",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2093-2124",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ST7B33-12",
+      "boundary": "normal-file-gate-before-engine",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2041-2091",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ST7B33-13",
+      "boundary": "engine-string-parameter-by-value",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Class/Print.cs:148-162",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ST7B33-14",
+      "boundary": "picker-local-override-only-if-nonempty",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Class/Print.cs:148-162",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ST7B33-15",
+      "boundary": "type3-template-local-override",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Class/Print.cs:190-194",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ST7B33-16",
+      "boundary": "preview-and-count-controls",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Class/Print.cs:195-221",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ST7B33-17",
+      "boundary": "engine-has-no-write-to-instance-defPrinter",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Class/Print.cs:148-221",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ST7B33-18",
+      "boundary": "void-catch-is-old031-not-success",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Class/Print.cs:148-221",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ST7B33-19",
+      "boundary": "purchase-control-does-not-use-sale-field",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1438-1471",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    },
+    {
+      "id": "ST7B33-20",
+      "boundary": "kitchen-recursive-argument-is-separate",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-163",
+      "evidence": "SmartAuditERP/Class/Print.cs:195-209",
+      "source_application_executed": false,
+      "limit": "سلاسل وأعلام ورجوع حدود موردة صراحة؛لا C#/WPF/SQL/SDK أو قالب أو طابعة أو PDF أو حفظ أو نتيجة إرسال/خسارة مالية مرصودة."
+    }
+  ],
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 34,
+      "end": 34,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 65,
+      "end": 78,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml",
+      "start": 1187,
+      "end": 1191,
+      "sha256": "289a5a6bce98948818d3847a9cdf50870a35ca8269416a1ac3dd293db13e4e6d",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml",
+      "start": 1251,
+      "end": 1259,
+      "sha256": "289a5a6bce98948818d3847a9cdf50870a35ca8269416a1ac3dd293db13e4e6d",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 3201,
+      "end": 3208,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 2581,
+      "end": 2595,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 2041,
+      "end": 2058,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 2059,
+      "end": 2083,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 2084,
+      "end": 2092,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 2093,
+      "end": 2111,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 2112,
+      "end": 2124,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/Print.cs",
+      "start": 38,
+      "end": 38,
+      "sha256": "8f90315f6f8e1c09620515fea620a2538ed3262d205172f2f469c674ce30cb10",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/Print.cs",
+      "start": 54,
+      "end": 95,
+      "sha256": "8f90315f6f8e1c09620515fea620a2538ed3262d205172f2f469c674ce30cb10",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/Print.cs",
+      "start": 148,
+      "end": 163,
+      "sha256": "8f90315f6f8e1c09620515fea620a2538ed3262d205172f2f469c674ce30cb10",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/Print.cs",
+      "start": 164,
+      "end": 189,
+      "sha256": "8f90315f6f8e1c09620515fea620a2538ed3262d205172f2f469c674ce30cb10",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/Print.cs",
+      "start": 190,
+      "end": 194,
+      "sha256": "8f90315f6f8e1c09620515fea620a2538ed3262d205172f2f469c674ce30cb10",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/Print.cs",
+      "start": 195,
+      "end": 209,
+      "sha256": "8f90315f6f8e1c09620515fea620a2538ed3262d205172f2f469c674ce30cb10",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/Print.cs",
+      "start": 210,
+      "end": 221,
+      "sha256": "8f90315f6f8e1c09620515fea620a2538ed3262d205172f2f469c674ce30cb10",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 1438,
+      "end": 1471,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 1610,
+      "end": 1624,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    }
+  ],
+  "exploratory_source_reads_not_capability_certification": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml",
+      "start": 1206,
+      "end": 1216,
+      "sha256": "289a5a6bce98948818d3847a9cdf50870a35ca8269416a1ac3dd293db13e4e6d",
+      "purpose": "context-not-certified",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml",
+      "start": 1411,
+      "end": 1428,
+      "sha256": "0c519c74b0fa74213ffb19f9de07ee54b52ece09b00597c6a1fe48e369e15c11",
+      "purpose": "context-not-certified",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 2888,
+      "end": 2899,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "purpose": "context-not-certified",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 1858,
+      "end": 1935,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "purpose": "context-not-certified",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 2986,
+      "end": 3035,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "purpose": "context-not-certified",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 3124,
+      "end": 3199,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "purpose": "context-not-certified",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/Print.cs",
+      "start": 110,
+      "end": 146,
+      "sha256": "8f90315f6f8e1c09620515fea620a2538ed3262d205172f2f469c674ce30cb10",
+      "purpose": "context-not-certified",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 4040,
+      "end": 4131,
+      "sha256": "0bab36016f53ecd18360833d1fba980290702a52a98871fb397be9e813810d91",
+      "purpose": "context-not-certified",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 1546,
+      "end": 1606,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "purpose": "context-not-certified",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    }
+  ],
+  "errors": []
+}

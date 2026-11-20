@@ -1,0 +1,31 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "environment_clock_observed_when_note_written_utc": "2026-11-20T19:56:42.919908+00:00",
+  "observation_kind": "retained-observed-tool-result-not-raw-subprocess-stream",
+  "command": [
+    "python3",
+    "-B",
+    "docs/audit/tools/run_historical_editor_close_tests_07B33.py",
+    "--through-part",
+    "B32"
+  ],
+  "observed_exit_code": 1,
+  "observed_tests_reported": 52,
+  "observed_failures": 1,
+  "failed_test": "test_47_one162_not159_160_161_or_setter_guess_132",
+  "observed_mismatch": {
+    "actual_last_registry_id": "P7-163",
+    "expected_OWN_B32_last_registry_id": "P7-162"
+  },
+  "reason": "The new module-local HistoricalOwnPath covered read_bytes/read_text/glob but not the existing protected test's canonical Path.open read. That one read reached current registry335 instead of OWN334.",
+  "source_before_correction": {
+    "path": "evidence/historical-adapter-source01-07B33.py.txt",
+    "bytes": 46390,
+    "sha256": "4c1a9409c5db82e60674b2ce288b21ba868baf774d940a9d27ecb4e67870cf81"
+  },
+  "raw_stream_limit": "Tool stdout/stderr were observed in the conversation,not directly captured to workspace files. No raw-stream SHA or bytes claimed;this note is not a replay or historical-success archive.",
+  "planned_correction": "Add read-only open to the NEW module-local Path subtype only;do not change protected B32 tests,global pathlib/shared subprocess or execute old dispatcher code.",
+  "historical_success_claim": false,
+  "application_executed": false,
+  "raw_stdout_and_stderr_retained_in_workspace": false
+}
