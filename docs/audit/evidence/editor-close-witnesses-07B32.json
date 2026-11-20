@@ -1,0 +1,1105 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "entry_checkout": "0bbadbe9f86a7ded7bbb1d2bcce209c7eda551fb",
+  "new_root_ids": [
+    "P7-162"
+  ],
+  "extended_existing_root_ids": [],
+  "illustration_count": 20,
+  "lexical_check_count": 20,
+  "selected_source_paths": 5,
+  "selected_contract_slices": 22,
+  "context_slices_not_certified": 9,
+  "whole_local_files_selected": 0,
+  "authored_sale_Closing_attachments": 2,
+  "authored_purchase_Closing_attachments_in_selected_constructor_and_XAML": 1,
+  "author_source_attachments_not_observed_runtime_count": true,
+  "header_setter_profiles_are_supplied_not_SDK_evidence": true,
+  "unknown_setter_profile_remains_unknown": true,
+  "callbacks_and_event_outcomes_supplied": true,
+  "F5_Handled_control_prevents_blanket_duplicate_key_claim": true,
+  "validation_requests_not_successful_saves": true,
+  "application_code_imported_or_executed": false,
+  "dotnet_wpf_sql_or_SDK_executed": false,
+  "compiled_BAML_or_generated_code_executed": false,
+  "persisted_duplicate_save_or_financial_loss_claimed": false,
+  "IsUpdated_propagation_or_SDK_defaults_proved": false,
+  "stable_post_event_state_claimed": false,
+  "application_remediation_performed": false,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "retained_additive_B10_arithmetic_erratum": {
+    "local_cost": 10,
+    "reference_cost": 120,
+    "equality1_control": 10,
+    "protected_G138_not_rewritten": true
+  },
+  "illustrations": [
+    {
+      "id": "ALG7B32-01",
+      "boundary": "sale-Yes-Yes",
+      "trace": {
+        "editor": "sale",
+        "invocations": 2,
+        "prompts": 2,
+        "cancel_at_boundary": false,
+        "events": [
+          {
+            "invocation": 1,
+            "guard": true,
+            "reply": "Yes",
+            "cancel_before": false,
+            "cancel_after": false
+          },
+          {
+            "invocation": 2,
+            "guard": true,
+            "reply": "Yes",
+            "cancel_before": false,
+            "cancel_after": false
+          }
+        ],
+        "actual_window_closed_claimed": false,
+        "Cancel_does_not_short_circuit_this_supplied_invocation_list": true
+      },
+      "expected": {
+        "prompts": 2,
+        "cancel_at_boundary": false
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-162",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "مصدر ومعطيات اصطناعية فقط؛القوائم والحراس والردود ورجوع النداء موردة،لا حوار أوWPF أوSDK أوحفظ أوحالةUI نهائية مرصودة."
+    },
+    {
+      "id": "ALG7B32-02",
+      "boundary": "sale-No-Yes",
+      "trace": {
+        "editor": "sale",
+        "invocations": 2,
+        "prompts": 2,
+        "cancel_at_boundary": true,
+        "events": [
+          {
+            "invocation": 1,
+            "guard": true,
+            "reply": "No",
+            "cancel_before": false,
+            "cancel_after": true
+          },
+          {
+            "invocation": 2,
+            "guard": true,
+            "reply": "Yes",
+            "cancel_before": true,
+            "cancel_after": true
+          }
+        ],
+        "actual_window_closed_claimed": false,
+        "Cancel_does_not_short_circuit_this_supplied_invocation_list": true
+      },
+      "expected": {
+        "prompts": 2,
+        "cancel_at_boundary": true
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-162",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "مصدر ومعطيات اصطناعية فقط؛القوائم والحراس والردود ورجوع النداء موردة،لا حوار أوWPF أوSDK أوحفظ أوحالةUI نهائية مرصودة."
+    },
+    {
+      "id": "ALG7B32-03",
+      "boundary": "sale-Yes-No",
+      "trace": {
+        "editor": "sale",
+        "invocations": 2,
+        "prompts": 2,
+        "cancel_at_boundary": true,
+        "events": [
+          {
+            "invocation": 1,
+            "guard": true,
+            "reply": "Yes",
+            "cancel_before": false,
+            "cancel_after": false
+          },
+          {
+            "invocation": 2,
+            "guard": true,
+            "reply": "No",
+            "cancel_before": false,
+            "cancel_after": true
+          }
+        ],
+        "actual_window_closed_claimed": false,
+        "Cancel_does_not_short_circuit_this_supplied_invocation_list": true
+      },
+      "expected": {
+        "prompts": 2,
+        "cancel_at_boundary": true
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-162",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "مصدر ومعطيات اصطناعية فقط؛القوائم والحراس والردود ورجوع النداء موردة،لا حوار أوWPF أوSDK أوحفظ أوحالةUI نهائية مرصودة."
+    },
+    {
+      "id": "ALG7B32-04",
+      "boundary": "sale-No-No",
+      "trace": {
+        "editor": "sale",
+        "invocations": 2,
+        "prompts": 2,
+        "cancel_at_boundary": true,
+        "events": [
+          {
+            "invocation": 1,
+            "guard": true,
+            "reply": "No",
+            "cancel_before": false,
+            "cancel_after": true
+          },
+          {
+            "invocation": 2,
+            "guard": true,
+            "reply": "No",
+            "cancel_before": true,
+            "cancel_after": true
+          }
+        ],
+        "actual_window_closed_claimed": false,
+        "Cancel_does_not_short_circuit_this_supplied_invocation_list": true
+      },
+      "expected": {
+        "prompts": 2,
+        "cancel_at_boundary": true
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-162",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "مصدر ومعطيات اصطناعية فقط؛القوائم والحراس والردود ورجوع النداء موردة،لا حوار أوWPF أوSDK أوحفظ أوحالةUI نهائية مرصودة."
+    },
+    {
+      "id": "ALG7B32-05",
+      "boundary": "sale-clean",
+      "trace": {
+        "editor": "sale",
+        "invocations": 2,
+        "prompts": 0,
+        "cancel_at_boundary": false,
+        "events": [
+          {
+            "invocation": 1,
+            "guard": false,
+            "reply": null,
+            "cancel_before": false,
+            "cancel_after": false
+          },
+          {
+            "invocation": 2,
+            "guard": false,
+            "reply": null,
+            "cancel_before": false,
+            "cancel_after": false
+          }
+        ],
+        "actual_window_closed_claimed": false,
+        "Cancel_does_not_short_circuit_this_supplied_invocation_list": true
+      },
+      "expected": {
+        "prompts": 0,
+        "cancel_at_boundary": false
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-162",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "مصدر ومعطيات اصطناعية فقط؛القوائم والحراس والردود ورجوع النداء موردة،لا حوار أوWPF أوSDK أوحفظ أوحالةUI نهائية مرصودة."
+    },
+    {
+      "id": "ALG7B32-06",
+      "boundary": "sale-existing-veto",
+      "trace": {
+        "editor": "sale",
+        "invocations": 2,
+        "prompts": 2,
+        "cancel_at_boundary": true,
+        "events": [
+          {
+            "invocation": 1,
+            "guard": true,
+            "reply": "Yes",
+            "cancel_before": true,
+            "cancel_after": true
+          },
+          {
+            "invocation": 2,
+            "guard": true,
+            "reply": "Yes",
+            "cancel_before": true,
+            "cancel_after": true
+          }
+        ],
+        "actual_window_closed_claimed": false,
+        "Cancel_does_not_short_circuit_this_supplied_invocation_list": true
+      },
+      "expected": {
+        "prompts": 2,
+        "cancel_at_boundary": true
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-162",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "مصدر ومعطيات اصطناعية فقط؛القوائم والحراس والردود ورجوع النداء موردة،لا حوار أوWPF أوSDK أوحفظ أوحالةUI نهائية مرصودة."
+    },
+    {
+      "id": "ALG7B32-07",
+      "boundary": "purchase-single-No",
+      "trace": {
+        "editor": "purchase",
+        "invocations": 1,
+        "prompts": 1,
+        "cancel_at_boundary": true,
+        "events": [
+          {
+            "invocation": 1,
+            "guard": true,
+            "reply": "No",
+            "cancel_before": false,
+            "cancel_after": true
+          }
+        ],
+        "actual_window_closed_claimed": false,
+        "Cancel_does_not_short_circuit_this_supplied_invocation_list": true
+      },
+      "expected": {
+        "prompts": 1,
+        "cancel_at_boundary": true
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-162",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "مصدر ومعطيات اصطناعية فقط؛القوائم والحراس والردود ورجوع النداء موردة،لا حوار أوWPF أوSDK أوحفظ أوحالةUI نهائية مرصودة."
+    },
+    {
+      "id": "ALG7B32-08",
+      "boundary": "purchase-single-Yes",
+      "trace": {
+        "editor": "purchase",
+        "invocations": 1,
+        "prompts": 1,
+        "cancel_at_boundary": false,
+        "events": [
+          {
+            "invocation": 1,
+            "guard": true,
+            "reply": "Yes",
+            "cancel_before": false,
+            "cancel_after": false
+          }
+        ],
+        "actual_window_closed_claimed": false,
+        "Cancel_does_not_short_circuit_this_supplied_invocation_list": true
+      },
+      "expected": {
+        "prompts": 1,
+        "cancel_at_boundary": false
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-162",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "مصدر ومعطيات اصطناعية فقط؛القوائم والحراس والردود ورجوع النداء موردة،لا حوار أوWPF أوSDK أوحفظ أوحالةUI نهائية مرصودة."
+    },
+    {
+      "id": "ALG7B32-09",
+      "boundary": "purchase-existing-veto-source-boundary-only",
+      "trace": {
+        "editor": "purchase",
+        "invocations": 1,
+        "prompts": 1,
+        "cancel_at_boundary": false,
+        "events": [
+          {
+            "invocation": 1,
+            "guard": true,
+            "reply": "Yes",
+            "cancel_before": true,
+            "cancel_after": false
+          }
+        ],
+        "actual_window_closed_claimed": false,
+        "Cancel_does_not_short_circuit_this_supplied_invocation_list": true
+      },
+      "expected": {
+        "prompts": 1,
+        "cancel_at_boundary": false
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-162",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "مصدر ومعطيات اصطناعية فقط؛القوائم والحراس والردود ورجوع النداء موردة،لا حوار أوWPF أوSDK أوحفظ أوحالةUI نهائية مرصودة."
+    },
+    {
+      "id": "ALG7B32-10",
+      "boundary": "changing-guard-not-always-two-prompts",
+      "trace": {
+        "editor": "sale",
+        "invocations": 2,
+        "prompts": 1,
+        "cancel_at_boundary": true,
+        "events": [
+          {
+            "invocation": 1,
+            "guard": true,
+            "reply": "No",
+            "cancel_before": false,
+            "cancel_after": true
+          },
+          {
+            "invocation": 2,
+            "guard": false,
+            "reply": null,
+            "cancel_before": true,
+            "cancel_after": true
+          }
+        ],
+        "actual_window_closed_claimed": false,
+        "Cancel_does_not_short_circuit_this_supplied_invocation_list": true
+      },
+      "expected": {
+        "prompts": 1,
+        "cancel_at_boundary": true
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-162",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "مصدر ومعطيات اصطناعية فقط؛القوائم والحراس والردود ورجوع النداء موردة،لا حوار أوWPF أوSDK أوحفظ أوحالةUI نهائية مرصودة."
+    },
+    {
+      "id": "ALG7B32-11",
+      "boundary": "F6-two-returning-callbacks",
+      "trace": {
+        "key": "F6",
+        "registered_attachments": 2,
+        "handler_invocations": 2,
+        "validation_requests": 2,
+        "new_command_requests": 0,
+        "handled_at_boundary": false,
+        "boundary_did_not_return": false,
+        "events": [
+          {
+            "attachment": 1,
+            "invoked": true,
+            "downstream_returned": true
+          },
+          {
+            "attachment": 2,
+            "invoked": true,
+            "downstream_returned": true
+          }
+        ],
+        "successful_saves_inferred": false,
+        "routed_event_mask_rule_is_supplied_standard_contract": true
+      },
+      "expected": {
+        "handler_invocations": 2,
+        "validation_requests": 2,
+        "successful_saves_inferred": false
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-162",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "مصدر ومعطيات اصطناعية فقط؛القوائم والحراس والردود ورجوع النداء موردة،لا حوار أوWPF أوSDK أوحفظ أوحالةUI نهائية مرصودة."
+    },
+    {
+      "id": "ALG7B32-12",
+      "boundary": "F5-handled-masks-second",
+      "trace": {
+        "key": "F5",
+        "registered_attachments": 2,
+        "handler_invocations": 1,
+        "validation_requests": 0,
+        "new_command_requests": 1,
+        "handled_at_boundary": true,
+        "boundary_did_not_return": false,
+        "events": [
+          {
+            "attachment": 1,
+            "invoked": true,
+            "downstream_returned": true
+          },
+          {
+            "attachment": 2,
+            "invoked": false
+          }
+        ],
+        "successful_saves_inferred": false,
+        "routed_event_mask_rule_is_supplied_standard_contract": true
+      },
+      "expected": {
+        "handler_invocations": 1,
+        "new_command_requests": 1,
+        "handled_at_boundary": true
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-162",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "مصدر ومعطيات اصطناعية فقط؛القوائم والحراس والردود ورجوع النداء موردة،لا حوار أوWPF أوSDK أوحفظ أوحالةUI نهائية مرصودة."
+    },
+    {
+      "id": "ALG7B32-13",
+      "boundary": "F6-initially-handled",
+      "trace": {
+        "key": "F6",
+        "registered_attachments": 2,
+        "handler_invocations": 0,
+        "validation_requests": 0,
+        "new_command_requests": 0,
+        "handled_at_boundary": true,
+        "boundary_did_not_return": false,
+        "events": [
+          {
+            "attachment": 1,
+            "invoked": false
+          },
+          {
+            "attachment": 2,
+            "invoked": false
+          }
+        ],
+        "successful_saves_inferred": false,
+        "routed_event_mask_rule_is_supplied_standard_contract": true
+      },
+      "expected": {
+        "handler_invocations": 0,
+        "validation_requests": 0
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-162",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "مصدر ومعطيات اصطناعية فقط؛القوائم والحراس والردود ورجوع النداء موردة،لا حوار أوWPF أوSDK أوحفظ أوحالةUI نهائية مرصودة."
+    },
+    {
+      "id": "ALG7B32-14",
+      "boundary": "F6-first-does-not-return",
+      "trace": {
+        "key": "F6",
+        "registered_attachments": 2,
+        "handler_invocations": 1,
+        "validation_requests": 1,
+        "new_command_requests": 0,
+        "handled_at_boundary": false,
+        "boundary_did_not_return": true,
+        "events": [
+          {
+            "attachment": 1,
+            "invoked": true,
+            "downstream_returned": false
+          }
+        ],
+        "successful_saves_inferred": false,
+        "routed_event_mask_rule_is_supplied_standard_contract": true
+      },
+      "expected": {
+        "handler_invocations": 1,
+        "boundary_did_not_return": true
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-162",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "مصدر ومعطيات اصطناعية فقط؛القوائم والحراس والردود ورجوع النداء موردة،لا حوار أوWPF أوSDK أوحفظ أوحالةUI نهائية مرصودة."
+    },
+    {
+      "id": "ALG7B32-15",
+      "boundary": "header-profile-no-dirty",
+      "trace": {
+        "value_after": "fixture-B",
+        "is_updated_after": false,
+        "profile": "no-dirty-effect",
+        "profile_is_not_actual_SDK_behavior": true
+      },
+      "expected": {
+        "is_updated_after": false
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "H7B32-02",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "مصدر ومعطيات اصطناعية فقط؛القوائم والحراس والردود ورجوع النداء موردة،لا حوار أوWPF أوSDK أوحفظ أوحالةUI نهائية مرصودة."
+    },
+    {
+      "id": "ALG7B32-16",
+      "boundary": "header-profile-dirty",
+      "trace": {
+        "value_after": "fixture-B",
+        "is_updated_after": true,
+        "profile": "dirty-on-value-change",
+        "profile_is_not_actual_SDK_behavior": true
+      },
+      "expected": {
+        "is_updated_after": true
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "H7B32-02",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "مصدر ومعطيات اصطناعية فقط؛القوائم والحراس والردود ورجوع النداء موردة،لا حوار أوWPF أوSDK أوحفظ أوحالةUI نهائية مرصودة."
+    },
+    {
+      "id": "ALG7B32-17",
+      "boundary": "header-profile-unresolved",
+      "trace": {
+        "value_after": "fixture-B",
+        "is_updated_after": null,
+        "profile": "unresolved",
+        "profile_is_not_actual_SDK_behavior": true
+      },
+      "expected": {
+        "is_updated_after": null
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "H7B32-02",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "مصدر ومعطيات اصطناعية فقط؛القوائم والحراس والردود ورجوع النداء موردة،لا حوار أوWPF أوSDK أوحفظ أوحالةUI نهائية مرصودة."
+    },
+    {
+      "id": "ALG7B32-18",
+      "boundary": "new-sale-No",
+      "trace": {
+        "prompt_required": true,
+        "denied": true,
+        "first_write_boundary": null,
+        "CLR_or_SDK_executed": false
+      },
+      "expected": {
+        "denied": true,
+        "first_write_boundary": null
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "H7B32-02",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "مصدر ومعطيات اصطناعية فقط؛القوائم والحراس والردود ورجوع النداء موردة،لا حوار أوWPF أوSDK أوحفظ أوحالةUI نهائية مرصودة."
+    },
+    {
+      "id": "ALG7B32-19",
+      "boundary": "new-purchase-empty-header-only-supplied-false",
+      "trace": {
+        "prompt_required": false,
+        "denied": false,
+        "first_write_boundary": "CLR-entry-only",
+        "CLR_or_SDK_executed": false
+      },
+      "expected": {
+        "prompt_required": false,
+        "first_write_boundary": "CLR-entry-only"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "H7B32-02",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "مصدر ومعطيات اصطناعية فقط؛القوائم والحراس والردود ورجوع النداء موردة،لا حوار أوWPF أوSDK أوحفظ أوحالةUI نهائية مرصودة."
+    },
+    {
+      "id": "ALG7B32-20",
+      "boundary": "new-sale-Yes",
+      "trace": {
+        "prompt_required": true,
+        "denied": false,
+        "first_write_boundary": "ReturnYearPreviews=false-before-CLR",
+        "CLR_or_SDK_executed": false
+      },
+      "expected": {
+        "denied": false,
+        "first_write_boundary": "ReturnYearPreviews=false-before-CLR"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "H7B32-02",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "مصدر ومعطيات اصطناعية فقط؛القوائم والحراس والردود ورجوع النداء موردة،لا حوار أوWPF أوSDK أوحفظ أوحالةUI نهائية مرصودة."
+    }
+  ],
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B32-01",
+      "boundary": "sale-XAML-three-events",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-162",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "فحص نص/عقد مصدر محدود لاBAML أوbuild أوجدولة أوتعداداشتراكاتوقتتشغيل؛غيابIsUpdatedالصريحليسغيابقدرةSDK."
+    },
+    {
+      "id": "ST7B32-02",
+      "boundary": "sale-constructor-three-extra-events",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-162",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "فحص نص/عقد مصدر محدود لاBAML أوbuild أوجدولة أوتعداداشتراكاتوقتتشغيل؛غيابIsUpdatedالصريحليسغيابقدرةSDK."
+    },
+    {
+      "id": "ST7B32-03",
+      "boundary": "InitializeComponent-before-extra-Closing",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-162",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "فحص نص/عقد مصدر محدود لاBAML أوbuild أوجدولة أوتعداداشتراكاتوقتتشغيل؛غيابIsUpdatedالصريحليسغيابقدرةSDK."
+    },
+    {
+      "id": "ST7B32-04",
+      "boundary": "purchase-XAML-one-declared-Closing",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-162",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "فحص نص/عقد مصدر محدود لاBAML أوbuild أوجدولة أوتعداداشتراكاتوقتتشغيل؛غيابIsUpdatedالصريحليسغيابقدرةSDK."
+    },
+    {
+      "id": "ST7B32-05",
+      "boundary": "purchase-constructor-no-extra-Closing-in-selected-body",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-162",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "فحص نص/عقد مصدر محدود لاBAML أوbuild أوجدولة أوتعداداشتراكاتوقتتشغيل؛غيابIsUpdatedالصريحليسغيابقدرةSDK."
+    },
+    {
+      "id": "ST7B32-06",
+      "boundary": "sale-Closing-only-No-sets-cancel",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-162",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "فحص نص/عقد مصدر محدود لاBAML أوbuild أوجدولة أوتعداداشتراكاتوقتتشغيل؛غيابIsUpdatedالصريحليسغيابقدرةSDK."
+    },
+    {
+      "id": "ST7B32-07",
+      "boundary": "purchase-Closing-assigns-result",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-162",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "فحص نص/عقد مصدر محدود لاBAML أوbuild أوجدولة أوتعداداشتراكاتوقتتشغيل؛غيابIsUpdatedالصريحليسغيابقدرةSDK."
+    },
+    {
+      "id": "ST7B32-08",
+      "boundary": "sale-dirty-predicate",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-162",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "فحص نص/عقد مصدر محدود لاBAML أوbuild أوجدولة أوتعداداشتراكاتوقتتشغيل؛غيابIsUpdatedالصريحليسغيابقدرةSDK."
+    },
+    {
+      "id": "ST7B32-09",
+      "boundary": "purchase-dirty-predicate",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-162",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "فحص نص/عقد مصدر محدود لاBAML أوbuild أوجدولة أوتعداداشتراكاتوقتتشغيل؛غيابIsUpdatedالصريحليسغيابقدرةSDK."
+    },
+    {
+      "id": "ST7B32-10",
+      "boundary": "sale-F5-explicit-Handled",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-162",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "فحص نص/عقد مصدر محدود لاBAML أوbuild أوجدولة أوتعداداشتراكاتوقتتشغيل؛غيابIsUpdatedالصريحليسغيابقدرةSDK."
+    },
+    {
+      "id": "ST7B32-11",
+      "boundary": "sale-F6-validation-no-Handled-in-branch",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-162",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "فحص نص/عقد مصدر محدود لاBAML أوbuild أوجدولة أوتعداداشتراكاتوقتتشغيل؛غيابIsUpdatedالصريحليسغيابقدرةSDK."
+    },
+    {
+      "id": "ST7B32-12",
+      "boundary": "sale-new-guard-before-first-write",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-162",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "فحص نص/عقد مصدر محدود لاBAML أوbuild أوجدولة أوتعداداشتراكاتوقتتشغيل؛غيابIsUpdatedالصريحليسغيابقدرةSDK."
+    },
+    {
+      "id": "ST7B32-13",
+      "boundary": "purchase-new-existing-guard",
+      "documented_text_observation_matches": true,
+      "finding_ids": "P7-162",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "فحص نص/عقد مصدر محدود لاBAML أوbuild أوجدولة أوتعداداشتراكاتوقتتشغيل؛غيابIsUpdatedالصريحليسغيابقدرةSDK."
+    },
+    {
+      "id": "ST7B32-14",
+      "boundary": "sale-header-text-wiring",
+      "documented_text_observation_matches": true,
+      "finding_ids": "H7B32-02",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "فحص نص/عقد مصدر محدود لاBAML أوbuild أوجدولة أوتعداداشتراكاتوقتتشغيل؛غيابIsUpdatedالصريحليسغيابقدرةSDK."
+    },
+    {
+      "id": "ST7B32-15",
+      "boundary": "purchase-header-text-wiring",
+      "documented_text_observation_matches": true,
+      "finding_ids": "H7B32-02",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "فحص نص/عقد مصدر محدود لاBAML أوbuild أوجدولة أوتعداداشتراكاتوقتتشغيل؛غيابIsUpdatedالصريحليسغيابقدرةSDK."
+    },
+    {
+      "id": "ST7B32-16",
+      "boundary": "sale-header-setter-contract-not-inferred",
+      "documented_text_observation_matches": true,
+      "finding_ids": "H7B32-02",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "فحص نص/عقد مصدر محدود لاBAML أوbuild أوجدولة أوتعداداشتراكاتوقتتشغيل؛غيابIsUpdatedالصريحليسغيابقدرةSDK."
+    },
+    {
+      "id": "ST7B32-17",
+      "boundary": "purchase-header-null-guards",
+      "documented_text_observation_matches": true,
+      "finding_ids": "H7B32-02",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "فحص نص/عقد مصدر محدود لاBAML أوbuild أوجدولة أوتعداداشتراكاتوقتتشغيل؛غيابIsUpdatedالصريحليسغيابقدرةSDK."
+    },
+    {
+      "id": "ST7B32-18",
+      "boundary": "local-comparator-no-literal-caller",
+      "documented_text_observation_matches": true,
+      "finding_ids": "H7B32-02",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "فحص نص/عقد مصدر محدود لاBAML أوbuild أوجدولة أوتعداداشتراكاتوقتتشغيل؛غيابIsUpdatedالصريحليسغيابقدرةSDK."
+    },
+    {
+      "id": "ST7B32-19",
+      "boundary": "SDK-references-not-owning-type-proof",
+      "documented_text_observation_matches": true,
+      "finding_ids": "H7B32-02",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "فحص نص/عقد مصدر محدود لاBAML أوbuild أوجدولة أوتعداداشتراكاتوقتتشغيل؛غيابIsUpdatedالصريحليسغيابقدرةSDK."
+    },
+    {
+      "id": "ST7B32-20",
+      "boundary": "no-generated-event-count-added",
+      "documented_text_observation_matches": true,
+      "finding_ids": "H7B32-02",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-317;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753",
+      "source_application_executed": false,
+      "limit": "فحص نص/عقد مصدر محدود لاBAML أوbuild أوجدولة أوتعداداشتراكاتوقتتشغيل؛غيابIsUpdatedالصريحليسغيابقدرةSDK."
+    }
+  ],
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 65,
+      "end": 94,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 236,
+      "end": 317,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 1662,
+      "end": 1679,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 2563,
+      "end": 2574,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 3528,
+      "end": 3542,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 3790,
+      "end": 3803,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 67,
+      "end": 88,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 1571,
+      "end": 1594,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 2071,
+      "end": 2087,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 2738,
+      "end": 2753,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 2798,
+      "end": 2803,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml",
+      "start": 1,
+      "end": 16,
+      "sha256": "289a5a6bce98948818d3847a9cdf50870a35ca8269416a1ac3dd293db13e4e6d",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml",
+      "start": 404,
+      "end": 409,
+      "sha256": "289a5a6bce98948818d3847a9cdf50870a35ca8269416a1ac3dd293db13e4e6d",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml",
+      "start": 580,
+      "end": 585,
+      "sha256": "289a5a6bce98948818d3847a9cdf50870a35ca8269416a1ac3dd293db13e4e6d",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml",
+      "start": 1158,
+      "end": 1165,
+      "sha256": "289a5a6bce98948818d3847a9cdf50870a35ca8269416a1ac3dd293db13e4e6d",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml",
+      "start": 1264,
+      "end": 1271,
+      "sha256": "289a5a6bce98948818d3847a9cdf50870a35ca8269416a1ac3dd293db13e4e6d",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml",
+      "start": 1,
+      "end": 16,
+      "sha256": "0c519c74b0fa74213ffb19f9de07ee54b52ece09b00597c6a1fe48e369e15c11",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml",
+      "start": 525,
+      "end": 533,
+      "sha256": "0c519c74b0fa74213ffb19f9de07ee54b52ece09b00597c6a1fe48e369e15c11",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml",
+      "start": 548,
+      "end": 556,
+      "sha256": "0c519c74b0fa74213ffb19f9de07ee54b52ece09b00597c6a1fe48e369e15c11",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml",
+      "start": 1323,
+      "end": 1329,
+      "sha256": "0c519c74b0fa74213ffb19f9de07ee54b52ece09b00597c6a1fe48e369e15c11",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml",
+      "start": 1431,
+      "end": 1439,
+      "sha256": "0c519c74b0fa74213ffb19f9de07ee54b52ece09b00597c6a1fe48e369e15c11",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/SmartAuditERP.csproj",
+      "start": 130,
+      "end": 152,
+      "sha256": "00f8963d1f87bce983ca024a6b34101c5f91de86cf3f3a39078c5e08688f814d",
+      "purpose": "selected-contract",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    }
+  ],
+  "exploratory_source_reads_not_capability_certification": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 3399,
+      "end": 3566,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "purpose": "context-not-whole-feature-review",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 1970,
+      "end": 2088,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "purpose": "context-not-whole-feature-review",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 1780,
+      "end": 1889,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "purpose": "context-not-whole-feature-review",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 200,
+      "end": 264,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "purpose": "context-not-whole-feature-review",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 3710,
+      "end": 3807,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "purpose": "context-not-whole-feature-review",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 2680,
+      "end": 2803,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "purpose": "context-not-whole-feature-review",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 317,
+      "end": 351,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "purpose": "context-not-whole-feature-review",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 89,
+      "end": 122,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "purpose": "context-not-whole-feature-review",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/SmartAuditERP.csproj",
+      "start": 1,
+      "end": 45,
+      "sha256": "00f8963d1f87bce983ca024a6b34101c5f91de86cf3f3a39078c5e08688f814d",
+      "purpose": "context-not-whole-feature-review",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    }
+  ],
+  "errors": []
+}

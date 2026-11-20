@@ -1,0 +1,6 @@
+path,ranges,review_state,focus
+SmartAuditERP/Form_WPF/frmInvSale.xaml.cs,65-94;200-351;1662-1679;1780-1889;2563-2574;3399-3566;3710-3807,bounded-editor-events-and-context-not-whole-file-or-runtime,22 شريحة تعاقدية و9 سياق منفصلة؛Closing/KeyDown وحقلا المرجع والبيان وحارساnew/close؛لا كاملSDK أوالحفظ أوعمرWPF.
+SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs,67-122;1571-1594;1970-2088;2680-2803,bounded-editor-events-and-context-not-whole-file-or-runtime,22 شريحة تعاقدية و9 سياق منفصلة؛Closing/KeyDown وحقلا المرجع والبيان وحارساnew/close؛لا كاملSDK أوالحفظ أوعمرWPF.
+SmartAuditERP/Form_WPF/frmInvSale.xaml,1-16;404-409;580-585;1158-1165;1264-1271,bounded-editor-events-and-context-not-whole-file-or-runtime,22 شريحة تعاقدية و9 سياق منفصلة؛Closing/KeyDown وحقلا المرجع والبيان وحارساnew/close؛لا كاملSDK أوالحفظ أوعمرWPF.
+SmartAuditERP/Form_WPF/frmInvPurch.xaml,1-16;525-533;548-556;1323-1329;1431-1439,bounded-editor-events-and-context-not-whole-file-or-runtime,22 شريحة تعاقدية و9 سياق منفصلة؛Closing/KeyDown وحقلا المرجع والبيان وحارساnew/close؛لا كاملSDK أوالحفظ أوعمرWPF.
+SmartAuditERP/SmartAuditERP.csproj,1-45;130-152,bounded-editor-events-and-context-not-whole-file-or-runtime,22 شريحة تعاقدية و9 سياق منفصلة؛Closing/KeyDown وحقلا المرجع والبيان وحارساnew/close؛لا كاملSDK أوالحفظ أوعمرWPF.
