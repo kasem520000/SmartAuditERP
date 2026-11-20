@@ -98,6 +98,12 @@ check('rental production print purchase and HTML batch has bounded statuses',
       and all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
           for fid, rid in [('P7-134', 'R-131'), ('P7-150', 'R-133')])
       and by_id['P7-149']['repair_status'] != 'closed_in_scope')
+check('activity, export, approved stock and logs batch statuses',
+      all(by_id[fid]['repair_status'] == 'closed_in_scope' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P7-116', 'R-136'), ('P7-107', 'R-138')])
+      and all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P7-056', 'R-135'), ('P7-117', 'R-137')])
+      and by_id['P7-057']['repair_status'] != 'closed_in_scope')
 check('plan-only repairs are included and P5-027 remains partial',
       by_id['P5-010']['repair_ids'] == 'R-058' and by_id['P5-027']['repair_ids'] == 'R-057'
       and by_id['P5-027']['repair_status'] == 'partial_open')
