@@ -465,10 +465,13 @@ namespace SmartAuditERP.Form_WPF
                     double tax   = ToDouble(dr["tax"]);
                     double total = ToDouble(dr["InvTotal"]);
                     double minus = ToDouble(dr["minus"]);
+                    // Repair R-127 (P7-128): VAT eligibility is local to this
+                    // invoice, not inherited from another row or prior request.
+                    bool isVat = true;
 
                     if (rbNoVAT.IsChecked == true)
                     {
-                        if (tax == 0) { IsVAT = false; InvSum = total; InvVAT = tax; InvDiscount = minus; }
+                        if (tax == 0) { isVat = false; InvSum = total; InvVAT = tax; InvDiscount = minus; }
                     }
                     else if (rbWithVAT.IsChecked == true)
                     {
@@ -476,14 +479,14 @@ namespace SmartAuditERP.Form_WPF
                     }
                     else
                     {
-                        if (tax == 0) IsVAT = false;
+                        if (tax == 0) isVat = false;
                         InvSum = total; InvVAT = tax; InvDiscount = minus;
                     }
 
                     if (PricIncVAT) InvSum -= InvVAT;
                     if (rbWithVAT.IsChecked == true && InvVAT == 0) continue;
-                    if (!IsVAT && rbWithVAT.IsChecked == true) continue;
-                    if (IsVAT && rbNoVAT.IsChecked == true) continue;
+                    if (!isVat && rbWithVAT.IsChecked == true) continue;
+                    if (isVat && rbNoVAT.IsChecked == true) continue;
 
                     double netBef  = Math.Round(InvSum - minus, 2);
                     double vatVal  = Math.Round(netBef * (invObj2.VAT / 100.0), 3);

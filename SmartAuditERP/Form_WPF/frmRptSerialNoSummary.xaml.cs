@@ -65,6 +65,14 @@ namespace SmartAuditERP.Form_WPF
             {
                 SummaryList.Clear();
 
+                // R-129 (P7-075): a specific-item request must have a confirmed identity.
+                if (ckAllItems.IsChecked != true && SelectedId <= 0)
+                {
+                    DXMessageBox.Show("يرجى اختيار صنف من البحث.", "تنبيه",
+                                      MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
                 string filterWhere = chkShowOnlyExisting.IsChecked == true
                     ? " WHERE result > 0 "
                     : "";
@@ -80,7 +88,7 @@ namespace SmartAuditERP.Form_WPF
                         : txtSeialNo.Text);
 
                 cmd.Parameters.AddWithValue("@itemid",
-                    SelectedId != -1 ? (object)SelectedId : DBNull.Value);
+                    ckAllItems.IsChecked == true ? (object)DBNull.Value : SelectedId);
 
                 cmd.Parameters.AddWithValue("@Branch",
                     (chkAllBranch.IsChecked != true &&
@@ -132,9 +140,11 @@ namespace SmartAuditERP.Form_WPF
 
                 if (form.ISDone && form.ItemId > 0)
                 {
-                    SelectedId       = form.ItemId;
-                    txtItemCode.Text = Common.GetItemCode(SelectedId);
+                    string itemCode = Common.GetItemCode(form.ItemId);
+                    txtItemCode.Text = itemCode;
                     txtItemName.Text = form.Itemname;
+                    SelectedId = form.ItemId;
+                    SummaryList?.Clear();
                 }
             }
             catch (Exception ex)
@@ -160,12 +170,20 @@ namespace SmartAuditERP.Form_WPF
             bool isAll = ckAllItems.IsChecked == true;
             txtItemCode.IsEnabled = !isAll;
             txtItemName.IsEnabled = !isAll;
+            btnSearchItem.IsEnabled = !isAll;
+            SummaryList?.Clear();
             if (isAll)
             {
                 txtItemCode.Text = "";
                 txtItemName.Text = "";
                 SelectedId       = -1;
             }
+        }
+
+        private void txtItemFilter_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SelectedId = -1;
+            SummaryList?.Clear();
         }
 
         private void chkAllSeialNo_CheckedChanged(object sender, RoutedEventArgs e)
@@ -184,7 +202,6 @@ namespace SmartAuditERP.Form_WPF
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
             addNewItem();
-            ckAllItems.IsChecked = false;
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)

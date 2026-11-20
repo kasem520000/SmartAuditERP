@@ -71,6 +71,14 @@ namespace SmartAuditERP.Form_WPF
             {
                 SerialList.Clear();
 
+                // R-129 (P7-075): a specific-item request must have a confirmed identity.
+                if (ckAllItems.IsChecked != true && SelectedId <= 0)
+                {
+                    DXMessageBox.Show("يرجى اختيار صنف من البحث.", "تنبيه",
+                                      MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
                 var cmd = new SqlCommand(
                     "SELECT * FROM funGetInvoiceItemDetails(" +
                     "@ItemSerialNo, @Branch, @ItemId, @StartDate, @EndDate)",
@@ -91,7 +99,7 @@ namespace SmartAuditERP.Form_WPF
 
                 // الصنف
                 cmd.Parameters.AddWithValue("@ItemId",
-                    SelectedId != -1 ? (object)SelectedId : DBNull.Value);
+                    ckAllItems.IsChecked == true ? (object)DBNull.Value : SelectedId);
 
                 // التاريخ
                 cmd.Parameters.AddWithValue("@StartDate", SqlDbType.Date).Value =
@@ -158,9 +166,11 @@ namespace SmartAuditERP.Form_WPF
 
                 if (form.ISDone && form.ItemId > 0)
                 {
-                    SelectedId       = form.ItemId;
-                    txtItemCode.Text = Common.GetItemCode(SelectedId);
+                    string itemCode = Common.GetItemCode(form.ItemId);
+                    txtItemCode.Text = itemCode;
                     txtItemName.Text = form.Itemname;
+                    SelectedId = form.ItemId;
+                    SerialList?.Clear();
                 }
             }
             catch (Exception ex)
@@ -294,6 +304,8 @@ namespace SmartAuditERP.Form_WPF
             bool isAll = ckAllItems.IsChecked == true;
             txtItemCode.IsEnabled = !isAll;
             txtItemName.IsEnabled = !isAll;
+            btnSearchItem.IsEnabled = !isAll;
+            SerialList?.Clear();
             // أيضاً زر البحث
             if (isAll)
             {
@@ -301,6 +313,12 @@ namespace SmartAuditERP.Form_WPF
                 txtItemName.Text = "";
                 SelectedId       = -1;
             }
+        }
+
+        private void txtItemFilter_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            SelectedId = -1;
+            SerialList?.Clear();
         }
 
         private void chkAllSeialNo_CheckedChanged(object sender, RoutedEventArgs e)
@@ -326,7 +344,6 @@ namespace SmartAuditERP.Form_WPF
         private void btnSearch_Click(object sender, RoutedEventArgs e)
         {
             addNewItem();
-            ckAllItems.IsChecked = false;
         }
 
         private void btnShowInv_Click(object sender, RoutedEventArgs e)

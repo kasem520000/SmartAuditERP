@@ -2174,8 +2174,8 @@ namespace SmartAuditERP.Form_WPF
                 if (Invoic.ISNew)
                     invoice.InvDate = DateTime.Now;
 
-                if (!EnableE_Invoice && !Invoic.ISNew)
-                    invoice.InvDate = DateTime.Now;
+                // Repair R-126 (P7-135): an existing invoice keeps the mapped
+                // document date, regardless of electronic-invoicing mode.
 
                 // إنشاء القيد المحاسبي
                 Entry entry = null;

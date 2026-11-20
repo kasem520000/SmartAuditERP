@@ -34,14 +34,15 @@ namespace SmartAuditERP.Form_WPF
         private void btnAddquantity_Click(object sender, RoutedEventArgs e)
         {
             this.Topmost = false;
-            Action = 2;
+            // Repair R-128 (P7-143): consumers use 1 to increment the existing line.
+            Action = 1;
             this.Hide();
         }
 
         private void btnNewTirm_Click(object sender, RoutedEventArgs e)
         {
             this.Topmost = false;
-            Action = 1;
+            Action = 2;
             this.Hide();
         }
 
