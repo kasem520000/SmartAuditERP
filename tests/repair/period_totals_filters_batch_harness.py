@@ -41,6 +41,7 @@ for name, end_marker in [('ProcessExpenseReceipts', 'private void ProcessIncomeR
  body=section(tax, 'private void '+name+'(', end_marker)
  check(name+' all-period switches off dates', '(allPeriod ? "" : "AND ReceiptDate>=@date1 AND ReceiptDate<@date2 ")' in body and 'if (!allPeriod)' in body and 'Value = toDate;' in body)
 vat = src('frmVATReturn.xaml.cs')
+check('VAT return exclusive end covers selected last day', 'DateTime toDt = dtTo.DateTime.Date.AddDays(1);' in vat)
 check('sales returns subtract non-taxable value', 'salesNotTax += nonTaxable;' in vat and 'salesNotTax -= nonTaxable;' in vat)
 check('purchase returns subtract non-taxable value', 'purchNotTax += nonTaxable;' in vat and 'purchNotTax -= nonTaxable;' in vat)
 check('non-taxable model sale and return', 250-75 == 175 and 50-70 == -20)

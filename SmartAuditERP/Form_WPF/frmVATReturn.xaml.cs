@@ -310,10 +310,9 @@ namespace SmartAuditERP.Form_WPF
                 dtFrom.DateTime.Month,
                 dtFrom.DateTime.Day, 0, 0, 0);
 
-            DateTime toDt = new DateTime(
-                dtTo.DateTime.Year,
-                dtTo.DateTime.Month,
-                dtTo.DateTime.Day, 23, 59, 59);
+            // All queries below use < @toDate/@date2: use next midnight so the
+            // entire selected last day (including fractional seconds) is included.
+            DateTime toDt = dtTo.DateTime.Date.AddDays(1);
 
             int branchId = -1;
             if (chkAllBranches.IsChecked != true && cmbBranch.SelectedValue != null)
