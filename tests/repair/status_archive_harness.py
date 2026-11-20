@@ -59,7 +59,7 @@ check('sale event repair is recorded in scope', by_id['P7-162']['repair_status']
 check('warehouse name repair is in scope; access and branch findings remain open',
       by_id['P7-087']['repair_status'] == 'closed_in_scope' and by_id['P7-087']['repair_ids'] == 'R-101'
       and by_id['P2-011']['repair_status'] == 'deferred_blocked'
-      and by_id['P7-088']['repair_status'] == 'pending_review')
+      and by_id['P7-088']['repair_status'] == 'partial_open')
 check('date layout and sale printer-state repairs are recorded in scope',
       by_id['P7-089']['repair_status'] == 'closed_in_scope' and by_id['P7-089']['repair_ids'] == 'R-102'
       and by_id['P7-163']['repair_status'] == 'closed_in_scope' and by_id['P7-163']['repair_ids'] == 'R-103')
@@ -104,7 +104,7 @@ check('activity, export, approved stock and logs batch statuses',
       all(by_id[fid]['repair_status'] == 'closed_in_scope' and by_id[fid]['repair_ids'] == rid
           for fid, rid in [('P7-116', 'R-136'), ('P7-107', 'R-138')])
       and all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
-          for fid, rid in [('P7-056', 'R-135'), ('P7-117', 'R-137')])
+          for fid, rid in [('P7-056', 'R-135'), ('P7-117', 'R-137; R-227')])
       and by_id['P7-057']['repair_status'] != 'closed_in_scope')
 check('plan-only repairs are included and P5-027 remains partial',
       by_id['P5-010']['repair_ids'] == 'R-058' and by_id['P5-027']['repair_ids'] == 'R-057'
@@ -151,7 +151,7 @@ check('payroll navigation and sales report findings remain partial',
           for fid, rid in [('P7-002', 'R-184'), ('P7-041', 'R-185'), ('P7-066', 'R-186'),
                            ('P7-067', 'R-187'), ('P7-080', 'R-188'), ('P7-095', 'R-189')])
       and by_id['P7-001']['repair_status'] == 'partial_open'
-      and by_id['P7-082']['repair_status'] == 'pending_review')
+      and by_id['P7-082']['repair_status'] == 'partial_open')
 
 check('booking project and activity batch remains partial and guarded',
       all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
@@ -186,6 +186,12 @@ check('cost, line discount, price and serial follow-up remains partial',
 check('production and project accreditation guards stay partial',
       all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
           for fid, rid in [('P7-133', 'R-218'), ('P7-020', 'R-219')]))
+
+check('salary, PM, import and report guards remain partial',
+      all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P7-004', 'R-220'), ('P7-014', 'R-221'), ('P7-144', 'R-222'),
+                           ('P7-147', 'R-223'), ('P7-065', 'R-224'), ('P7-082', 'R-225'),
+                           ('P7-088', 'R-226'), ('P7-117', 'R-137; R-227')]))
 
 owner = (ROOT / 'docs/repairs/OWNER_DECISIONS.md').read_text(encoding='utf-8')
 sections = {
