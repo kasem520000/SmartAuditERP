@@ -1642,21 +1642,28 @@ namespace SmartAuditERP.Form_WPF
 
         public void Navigate(string sqlStr)
         {
+            // Repair R-092 (audit finding P7-161): resolve before replacing. The reader fills the
+            // instance it is handed and nulls that reference when the query returns no row - no next
+            // or previous invoice, an empty first/last range - and when it throws, so clearing the
+            // editor first destroyed the invoice on screen and then published a blank one, with
+            // nothing to tell "there is no target" from "the load failed". The target is now read
+            // into an instance of its own; only a found invoice is published, and only then does the
+            // editor reset and rebind exactly as it did before. An absent or failed target leaves the
+            // current invoice, its items and every control as they stood. Telling the two outcomes
+            // apart for the user needs the typed result the audit proposes and the owner has not
+            // chosen, so both stay silent here, and "new" remains its own explicit command.
+            InvoiceDGV target = new InvoiceDGV();
+            InvoiceOper.BindingInvoice(ref target, sqlStr);
+            if (target == null) return;
+
             if (Invoic != null) CLR();
-            InvoiceOper.BindingInvoice(ref Invoic, sqlStr);
-            if (Invoic != null)
-            {
-                txtNo.Background =
-                    new SolidColorBrush(Color.FromRgb(245, 245, 245));
-                txtNo.Foreground = new SolidColorBrush(Colors.Black);
-                BindingDGV();
-                BindingControls();
-            }
-            else
-            {
-                Invoic = new InvoiceDGV();
-                CLR();
-            }
+            Invoic = target;
+
+            txtNo.Background =
+                new SolidColorBrush(Color.FromRgb(245, 245, 245));
+            txtNo.Foreground = new SolidColorBrush(Colors.Black);
+            BindingDGV();
+            BindingControls();
         }
 
         private bool CheckBeforeClear()

@@ -480,25 +480,31 @@ namespace SmartAuditERP.Form_WPF
 
         public void Navigate(string sqlStr)
         {
+            // Repair R-092 (audit finding P7-161): resolve before replacing. The reader fills the
+            // instance it is handed and nulls that reference when the query returns no row - no next
+            // or previous invoice, an empty first/last range - and when it throws, so clearing the
+            // editor first destroyed the invoice on screen and then published a blank one, with
+            // nothing to tell "there is no target" from "the load failed". The target is now read
+            // into an instance of its own; only a found invoice is published, and only then does the
+            // editor reset and rebind exactly as it did before. An absent or failed target leaves the
+            // current invoice, its items and every control as they stood. Telling the two outcomes
+            // apart for the user needs the typed result the audit proposes and the owner has not
+            // chosen, so both stay silent here, and "new" remains its own explicit command.
+            InvoiceDGV target = new InvoiceDGV();
+            InvoiceOper.BindingInvoice(ref target, sqlStr);
+            if (target == null) return;
+
             if (this.Invoic != null)
                 this.CLR();
 
-            InvoiceOper.BindingInvoice(ref this.Invoic, sqlStr);
+            this.Invoic = target;
 
-            if (this.Invoic != null)
-            {
-                this.txtNo.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                this.txtNo.Foreground = new SolidColorBrush(Colors.Black);
-                this.BindingDGV();
-                this.BindingControls();
+            this.txtNo.Background = new SolidColorBrush(Colors.WhiteSmoke);
+            this.txtNo.Foreground = new SolidColorBrush(Colors.Black);
+            this.BindingDGV();
+            this.BindingControls();
 
-                this.ckZeroVAT.IsChecked = (this.Invoic.VAT == 0.0);
-            }
-            else
-            {
-                this.Invoic = new InvoiceDGV();
-                this.CLR();
-            }
+            this.ckZeroVAT.IsChecked = (this.Invoic.VAT == 0.0);
         }
 
         private void btnFirst_Click(object sender, RoutedEventArgs e)
