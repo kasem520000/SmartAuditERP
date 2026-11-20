@@ -356,9 +356,13 @@ namespace SmartAuditERP.Form_WPF
 
                 SqlCommand cmd;
                 if (count == 0)
+                    // Repair R-059 (audit finding P6-011): eight columns stood against seven values and three bound
+                    // parameters, so this statement could never execute. This path only carries the production request
+                    // triple, hence insert exactly those columns - mirroring the UPDATE arm below; the compliance
+                    // columns stay null until the import path fills them (every column is nullable per the DDL).
                     cmd = new SqlCommand(
-                        "INSERT INTO ZatcaCredential(ID,CSR,RequestID,CSID,Secret,P_RequestID,P_CSID,P_Secret) " +
-                        "VALUES(1,@RequestID,@CSID,@Secret,@P_RequestID,@P_CSID,@P_Secret)", conn);
+                        "INSERT INTO ZatcaCredential(ID,P_RequestID,P_CSID,P_Secret) " +
+                        "VALUES(1,@P_RequestID,@P_CSID,@P_Secret)", conn);
                 else
                     cmd = new SqlCommand(
                         "UPDATE ZatcaCredential SET P_RequestID=@P_RequestID," +
@@ -1061,9 +1065,12 @@ namespace SmartAuditERP.Form_WPF
 
                 SqlCommand cmd;
                 if (count == 0)
+                    // Repair R-059 (audit finding P6-011): the import path binds six parameters for six data columns,
+                    // yet listed eight columns against seven values (CSR had neither value nor parameter). Drop CSR -
+                    // unowned by this payload and nullable - so column/value/parameter counts finally agree.
                     cmd = new SqlCommand(
                         "INSERT INTO ZatcaCredential " +
-                        "(ID,CSR,RequestID,CSID,Secret,P_RequestID,P_CSID,P_Secret) " +
+                        "(ID,RequestID,CSID,Secret,P_RequestID,P_CSID,P_Secret) " +
                         "VALUES(1,@RequestID,@CSID,@Secret,@P_RequestID,@P_CSID,@P_Secret)", conn);
                 else
                     cmd = new SqlCommand(
