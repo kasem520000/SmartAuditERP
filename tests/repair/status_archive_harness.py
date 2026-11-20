@@ -183,6 +183,10 @@ check('cost, line discount, price and serial follow-up remains partial',
                            ('P7-083', 'R-214'), ('P7-154', 'R-215'),
                            ('P7-033', 'R-216'), ('P7-043', 'R-217')]))
 
+check('production and project accreditation guards stay partial',
+      all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P7-133', 'R-218'), ('P7-020', 'R-219')]))
+
 owner = (ROOT / 'docs/repairs/OWNER_DECISIONS.md').read_text(encoding='utf-8')
 sections = {
     'deferred_blocked': owner.split('## أولاً:', 1)[1].split('## ثانياً:', 1)[0],
