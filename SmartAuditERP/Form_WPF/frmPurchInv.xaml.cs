@@ -578,20 +578,22 @@ namespace SmartAuditERP.Form_WPF
                     msgExist.ShowDialog();
                     if (msgExist.Action == 1)
                     {
-                        // R-133 (P7-150): removing an earlier row shifts the
-                        // duplicate's index, so recalculate by its identity.
+                        // R-133/R-204: recalculate the matched object and do not
+                        // delete a source row whose ownership is unknown.
                         var matchedRow = _gridSource[foundIndex];
-                        var sourceRow = GetRowAt(RowIndex);
+                        // The focused row may be an existing invoice line, not
+                        // a temporary row owned by this lookup. Preserve it.
                         double.TryParse(matchedRow.QuantDgv, out double q);
                         matchedRow.QuantDgv = (q + 1).ToString();
-                        if (sourceRow != null && !ReferenceEquals(sourceRow, matchedRow))
-                            _gridSource.Remove(sourceRow);
                         int matchedIndex = _gridSource.IndexOf(matchedRow);
                         if (matchedIndex >= 0) CalcRowValues(matchedIndex);
                         CalcTot();
                     }
                     else if (msgExist.Action == 2)
                     {
+                        // A separate line must have a separate object; the last
+                        // row can already contain an unrelated invoice item.
+                        _gridSource.Add(new PurchInvRow());
                         RowIndex = _gridSource.Count - 1;
                         FillRowFromDt(RowIndex, dt.Rows[0], unitId);
                     }
@@ -785,15 +787,17 @@ namespace SmartAuditERP.Form_WPF
 
             if (frm.ISDone && frm.ItemId > 0)
             {
+                bool firstSelection = true;
                 foreach (int id in frm.Itemlist)
                 {
                     SelectedId = id;
-                    if (RowIndex < 0 || RowIndex >= _gridSource.Count)
+                    if (!firstSelection || RowIndex < 0 || RowIndex >= _gridSource.Count)
                     {
                         _gridSource.Add(new PurchInvRow());
                         RowIndex = _gridSource.Count - 1;
                     }
                     SearchByID(0);
+                    firstSelection = false;
                 }
             }
             // Repair R-122 (P7-148): no row belongs to this picker attempt.

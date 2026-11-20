@@ -49,14 +49,14 @@ check('trial balance print has 12 columns and the same ordered fields as grid',p
 check('missing previous balance mutant detected',not print_contract(doc.replace('AddBodyCell(dataRow, row.TrDeptPervious.ToString("N2"));','')))
 
 purch=section(read('frmPurchInv.xaml.cs'),'private void SearchByID(int unitId)','private void FillRowFromDt(')
-def purchase_contract(s): return ordered(s,['var matchedRow = _gridSource[foundIndex];','var sourceRow = GetRowAt(RowIndex);','matchedRow.QuantDgv = (q + 1).ToString();','_gridSource.Remove(sourceRow);','_gridSource.IndexOf(matchedRow);','CalcRowValues(matchedIndex);','CalcTot();'])
-check('purchase duplicate recalculation resolves identity after source removal',purchase_contract(purch))
+def purchase_contract(s): return (ordered(s,['var matchedRow = _gridSource[foundIndex];','matchedRow.QuantDgv = (q + 1).ToString();','_gridSource.IndexOf(matchedRow);','CalcRowValues(matchedIndex);','CalcTot();']) and '_gridSource.Remove(sourceRow);' not in s)
+check('purchase duplicate recalculates identity and preserves unowned source',purchase_contract(purch))
 check('stale index mutant detected',not purchase_contract(purch.replace('CalcRowValues(matchedIndex);','CalcRowValues(foundIndex);')))
+check('source deletion mutant detected',not purchase_contract(purch+' _gridSource.Remove(sourceRow);'))
 for source,found in [(0,2),(2,0),(1,1)]:
  rows=[{'name':n,'qty':1} for n in 'ABC']; matched=rows[found];origin=rows[source];matched['qty']+=1
- if origin is not matched: rows.remove(origin)
  actual=next(i for i,x in enumerate(rows) if x is matched)
- check(f'purchase source={source} matched={found} recalculates matched object',rows[actual] is matched and matched['qty']==2)
+ check(f'purchase source={source} matched={found} recalculates matched object',rows[actual] is matched and matched['qty']==2 and origin in rows)
 
 specs={
  'frmItemsalesdetailsPos.xaml.cs':('private void ExportToExcelHtml(string fileName)','#endregion',['Title','item.DgvStore','item.DgvInvType','item.DgvClient','item.DgvDate','item.DgvInvNo','item.DgvItem','item.DgvUnit','item.DgvUser']),

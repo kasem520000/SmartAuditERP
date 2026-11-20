@@ -14,6 +14,10 @@ namespace SmartAuditERP.Form_WPF
         public int ItemProperty;
         public double NetQnty;
         private bool _isInternalUpdate;
+        // The editable packing request is not the multiplied output.
+        private string _packingInputText;
+        private bool _packingRoundUp;
+        private bool _packingHeightEdited;
 
         #endregion
 
@@ -144,11 +148,9 @@ namespace SmartAuditERP.Form_WPF
 
                 if (ItemProperty == 2) // تعبئة
                 {
-                    if (string.IsNullOrWhiteSpace(txtNetQnty.Text))
-                    {
-                        txtNetQnty.Text = "0";
-                        netQntyValue = 0;
-                    }
+                    if (_packingInputText == null)
+                        _packingInputText = txtNetQnty.Text;
+                    netQntyValue = ParseNumber(_packingInputText, 0);
 
                     if (widthValue <= 0 || qtyValue <= 0)
                     {
@@ -157,12 +159,9 @@ namespace SmartAuditERP.Form_WPF
                     }
                     else
                     {
-                        double currentHeightValue = ParseNumber(txtHeight.Text, 0);
-
-                        if (Math.Abs(currentHeightValue % 1.0) < 0.0000001)
-                            heightValue = netQntyValue / widthValue;
-                        else
-                            heightValue = Math.Ceiling(netQntyValue / widthValue);
+                        heightValue = _packingRoundUp
+                            ? Math.Ceiling(netQntyValue / widthValue)
+                            : netQntyValue / widthValue;
 
                         netQntyValue = heightValue * widthValue * qtyValue;
                     }
@@ -199,6 +198,9 @@ namespace SmartAuditERP.Form_WPF
         {
             if (_isInternalUpdate) return;
 
+            double height = ParseNumber(txtHeight.Text, 0);
+            _packingRoundUp = Math.Abs(height % 1.0) >= 0.0000001;
+            if (ItemProperty == 2) _packingHeightEdited = true;
             if (!string.IsNullOrWhiteSpace(txtHeight.Text) && ItemProperty != 2)
                 Calc();
         }
@@ -221,7 +223,8 @@ namespace SmartAuditERP.Form_WPF
 
         private void txtNetQnty_TextChanged(object sender, TextChangedEventArgs e)
         {
-            // فقط للتعبئة - لا عمل إضافي هنا
+            if (!_isInternalUpdate && ItemProperty == 2)
+                _packingInputText = txtNetQnty.Text;
         }
 
         #endregion
@@ -234,7 +237,16 @@ namespace SmartAuditERP.Form_WPF
             {
                 double heightValue = ParseNumber(txtHeight.Text, 0);
                 double widthValue = ParseNumber(txtWidth.Text, 0);
-                SetTextSilently(txtNetQnty, FormatNumber(heightValue * widthValue));
+                if (ItemProperty != 2 || _packingHeightEdited)
+                {
+                    string requested = FormatNumber(heightValue * widthValue);
+                    if (ItemProperty == 2)
+                    {
+                        _packingInputText = requested;
+                        _packingHeightEdited = false;
+                    }
+                    SetTextSilently(txtNetQnty, requested);
+                }
                 Calc();
             }
             catch { }
@@ -260,7 +272,16 @@ namespace SmartAuditERP.Form_WPF
             {
                 double heightValue = ParseNumber(txtHeight.Text, 0);
                 double widthValue = ParseNumber(txtWidth.Text, 0);
-                SetTextSilently(txtNetQnty, FormatNumber(heightValue * widthValue));
+                if (ItemProperty != 2 || _packingHeightEdited)
+                {
+                    string requested = FormatNumber(heightValue * widthValue);
+                    if (ItemProperty == 2)
+                    {
+                        _packingInputText = requested;
+                        _packingHeightEdited = false;
+                    }
+                    SetTextSilently(txtNetQnty, requested);
+                }
                 Calc();
                 FocusAndSelect(txtWidth);
                 e.Handled = true;
@@ -302,6 +323,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnInsert_Click(object sender, RoutedEventArgs e)
         {
+            Calc();
             NetQnty = ParseNumber(txtNetQnty.Text, 0);
             try { DialogResult = true; } catch { }
             Close();
@@ -309,6 +331,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void cmbItemProperties_SelectedIndexChanged(object sender, SelectionChangedEventArgs e)
         {
+            // Do not reuse an earlier packing request after a mode switch.
+            _packingInputText = null;
+            _packingHeightEdited = false;
             ApplyPropertyMode();
             Calc();
         }
