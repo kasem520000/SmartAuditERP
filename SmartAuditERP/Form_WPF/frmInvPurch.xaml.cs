@@ -2675,6 +2675,16 @@ namespace SmartAuditERP.Form_WPF
                 !string.Equals(frm.InvGlobalID, "-1",
                     StringComparison.OrdinalIgnoreCase))
             {
+                // Repair R-079 (audit finding P7-046, extension B28): a usable document id is not
+                // proof that the request which produced it succeeded; the search window reports
+                // snapshot validity, and an invalid one is refused before the editor loads.
+                if (!frm.SnapshotValid)
+                {
+                    DXMessageBox.Show("نتيجة البحث غير صالحة لهذا الطلب، أعد البحث قبل اختيار مستند",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
                 // Repair R-077 (audit finding P7-157): the search query admits inv_type 20 beside
                 // the requested type, and this lookup filtered on GlobalID + branch only, so a
                 // document outside the purchase set could reach this editor (the reader takes

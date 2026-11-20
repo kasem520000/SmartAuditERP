@@ -32,6 +32,10 @@ namespace SmartAuditERP.Form_WPF
         // Repair R-077 (audit finding P7-157): the inv_type of the row the caller accepted;
         // -1 while nothing was accepted.
         public int    SelectedInvType;
+        // Repair R-079 (audit finding P7-046, extension B28): whether the rows the caller could
+        // accept came from a source that actually succeeded for the current request, so a
+        // consumer can separate a valid document id from a valid search result.
+        public bool   SnapshotValid => _snapshotValid;
 
         #endregion
 
