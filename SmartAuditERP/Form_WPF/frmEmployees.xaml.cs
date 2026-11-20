@@ -133,7 +133,14 @@ namespace SmartAuditERP.Form_WPF
             txtBirthDate.DateTime = DateTime.Now;
             txtWorkDate.DateTime = DateTime.Now;
 
-            dgvBranches.Items.Clear();
+            // Repair R-072 (audit finding P7-027): Items.Clear() throws InvalidOperationException
+            // once ItemsSource is bound, and LoadBranches binds _employeeBranches, so every
+            // ClearForm after the first load aborted here (uncaught: the record indicators
+            // stayed on the previous employee and btnNew raised into the dispatcher). Clear the
+            // bound list and re-bind it, the same idiom LoadBranches itself uses.
+            _employeeBranches.Clear();
+            dgvBranches.ItemsSource = null;
+            dgvBranches.ItemsSource = _employeeBranches;
             LoadBranches();
 
             txtCurrentEmpId.Text = "--";
@@ -456,15 +463,22 @@ namespace SmartAuditERP.Form_WPF
                 var branchTable = new DataTable();
                 branchAdapter.Fill(branchTable);
 
-                dgvBranches.Items.Clear();
+                // Repair R-072 (audit finding P7-027): the same ItemsSource contract broke this
+                // load path too, and the surrounding catch swallowed the throw, so an existing
+                // employee's branches were never displayed (the grid kept LoadBranches' single
+                // default row) and the save below then persisted that wrong set. Fill the bound
+                // list and re-bind it; dgvBranches.Items still enumerates the bound rows for the
+                // save path, which reads BranchRowData from Items.
+                _employeeBranches.Clear();
                 foreach (DataRow row in branchTable.Rows)
                 {
-                    dgvBranches.Items.Add(
-                        new BranchRowData
-                        {
-                            BranchId = Convert.ToInt32(row["branch"])
-                        });
+                    _employeeBranches.Add(new BranchRowData
+                    {
+                        BranchId = Convert.ToInt32(row["branch"])
+                    });
                 }
+                dgvBranches.ItemsSource = null;
+                dgvBranches.ItemsSource = _employeeBranches;
             }
             catch { /* ignore */ }
 
