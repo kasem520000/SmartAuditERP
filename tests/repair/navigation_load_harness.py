@@ -432,6 +432,27 @@ check("C9 exactly six screens carry the repair, two named by the finding and fou
                  "frmInventoryTransfer.xaml.cs": ["R-093"], "frmcontract.xaml.cs": ["R-093"]},
       "tagged=%s" % (tagged,))
 
+screens, in_class = [], []
+for path in sorted(glob.glob("SmartAuditERP/**/*.cs", recursive=True)):
+    body = src(path)
+    for i, line in enumerate(body.splitlines(), 1):
+        if "BindingInvoice(ref" in line and "public static void" not in line:
+            (screens if path.startswith(F) else in_class).append("%s:%d" % (path.split("/")[-1], i))
+check("C11 the six screens are every screen caller of the two readers, so no seventh navigates this way",
+      sorted(c.split(":")[0] for c in screens) == sorted(
+          ["frmInvPurch.xaml.cs", "frmInvSale.xaml.cs", "frmInvInputOutput.xaml.cs",
+           "frmInvPOS.xaml.cs", "frmInventoryTransfer.xaml.cs", "frmcontract.xaml.cs"]) and
+      len(screens) == 6, "screens=%s" % (screens,))
+check("C12 the two other callers stay inside InsertFromInv, another finding's territory, untouched",
+      len(in_class) == 2 and
+      OPER.count("InvoiceOper.BindingInvoice(ref Invo,") == 1 and
+      OPER_C.count("InvoiceOperContract.BindingInvoice(ref Invo,") == 1 and
+      OPER.count("public static void InsertFromInv(ref InvoiceDGV Invo, int Ptype)") == 1 and
+      OPER_C.count("public static void InsertFromInv(ref Invoicecontract Invo, int Ptype)") == 1 and
+      "Repair R-092" not in OPER and "Repair R-093" not in OPER and
+      "Repair R-092" not in OPER_C and "Repair R-093" not in OPER_C,
+      "in_class=%s" % (in_class,))
+
 check("C10 the earlier navigation repairs are still in place in both named editors",
       PUR.count("if (this.CheckBeforeClear()) return;") == 2 and
       SAL.count("if (CheckBeforeClear()) return;") == 2 and
