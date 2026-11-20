@@ -713,7 +713,8 @@ namespace SmartAuditERP.Form_WPF
 
                 if (isNew) txtNo.Text = GetNextReceiptNo().ToString();
                 if (!int.TryParse(txtNo.Text, out int receiptNo)) receiptNo = 1;
-                Code = receiptNo;
+                // Repair R-036 (audit finding P3-009): mode advances to "existing" only after a
+                // successful commit (see below), not before the insert has run.
 
                 if (string.IsNullOrWhiteSpace(txtNotes.Text))
                     txtNotes.Text = $"سند صرف ضريبة رقم: {txtNo.Text} - سداد دفعة من حساب: {(cmbAccounts.SelectedItem as DataRowView)?["AName"]}";
@@ -755,14 +756,19 @@ namespace SmartAuditERP.Form_WPF
                 var transaction = conn1.BeginTransaction();
                 try
                 {
+                    // Repair R-036 (audit findings P3-009 & P3-011): same contract repair as the
+                    // customer-receipt twin - supply the NOT NULL GlobalID primary key (fresh GUID,
+                    // EntryGlobalID at the "-1" no-linked-entry sentinel pending BLK-P3-010), and
+                    // key the UPDATE by receipt number, branch AND voucher type so it cannot reach
+                    // another type's row sharing the display number.
                     string upsertSql = isNew
                         ? @"INSERT INTO Receipts
-                            (ReceiptNo,BranchID,ReceiptType,State,Payment,VAT,NetVal,
+                            (GlobalID,EntryGlobalID,ReceiptNo,BranchID,ReceiptType,State,Payment,VAT,NetVal,
                              ReceiptDate,ReffNo,Reffdate,ISDeleted,Notes,EmpId,
                              CreditAcc,DebitAcc,TreasuryID,SalesManID,PaymentType,
                              CheckNo,CheckDate,Checkbank,CheckState,CCcode,ClientID)
                             VALUES
-                            (@ReceiptNo,@BranchID,@ReceiptType,1,@Payment,@VAT,@NetVal,
+                            (@GlobalID,@EntryGlobalID,@ReceiptNo,@BranchID,@ReceiptType,1,@Payment,@VAT,@NetVal,
                              @ReceiptDate,@ReffNo,@Reffdate,0,@Notes,@EmpId,
                              @CreditAcc,@DebitAcc,@TreasuryID,@SalesManID,@PaymentType,
                              @CheckNo,@CheckDate,@Checkbank,@CheckState,@CCcode,@ClientID)"
@@ -774,10 +780,15 @@ namespace SmartAuditERP.Form_WPF
                             PaymentType=@PaymentType,CheckNo=@CheckNo,CheckDate=@CheckDate,
                             Checkbank=@Checkbank,CheckState=@CheckState,CCcode=@CCcode,
                             ClientID=@ClientID
-                            WHERE ReceiptNo=@ReceiptNo AND BranchID=@BranchID";
+                            WHERE ReceiptNo=@ReceiptNo AND BranchID=@BranchID AND ReceiptType=@ReceiptType";
 
                     var cmd = new SqlCommand(upsertSql, conn1, transaction);
-                    cmd.Parameters.AddWithValue("@ReceiptNo", Code);
+                    if (isNew)
+                    {
+                        cmd.Parameters.AddWithValue("@GlobalID", Guid.NewGuid().ToString());
+                        cmd.Parameters.AddWithValue("@EntryGlobalID", "-1");
+                    }
+                    cmd.Parameters.AddWithValue("@ReceiptNo", receiptNo);
                     cmd.Parameters.AddWithValue("@BranchID", MainClass.BranchNo);
                     cmd.Parameters.AddWithValue("@ReceiptType", ReceiptType);
                     cmd.Parameters.AddWithValue("@Payment", payVal);
@@ -820,7 +831,11 @@ namespace SmartAuditERP.Form_WPF
                     cmd.ExecuteNonQuery();
                     transaction.Commit();
 
-                    SetStatus(isNew ? $"تم حفظ سند ضريبي رقم {Code}" : $"تم تعديل سند ضريبي رقم {Code}");
+                    // R-036 (P3-009): mode advances to "existing" only after the commit succeeded.
+                    if (isNew)
+                        Code = receiptNo;
+
+                    SetStatus(isNew ? $"تم حفظ سند ضريبي رقم {receiptNo}" : $"تم تعديل سند ضريبي رقم {receiptNo}");
 
                     var savedMsg = new frmSavedMsg();
                     savedMsg.ShowDialog();
@@ -858,8 +873,10 @@ namespace SmartAuditERP.Form_WPF
             try
             {
                 EnsureOpen(conn);
+                // R-036 (P3-011): cancel scope includes this form's voucher type - receipt numbers
+                // repeat lawfully across types inside one branch.
                 int affected = new SqlCommand(
-                    $"UPDATE Receipts SET ISDeleted=1 WHERE ReceiptNo={Code} AND BranchID={MainClass.BranchNo}",
+                    $"UPDATE Receipts SET ISDeleted=1 WHERE ReceiptNo={Code} AND BranchID={MainClass.BranchNo} AND ReceiptType={ReceiptType}",
                     conn).ExecuteNonQuery();
 
                 if (affected > 0)

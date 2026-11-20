@@ -859,7 +859,10 @@ namespace SmartAuditERP.Form_WPF
                 if (!int.TryParse(txtNo.Text, out int receiptNo))
                     receiptNo = 1;
 
-                Code = receiptNo;
+                // Repair R-036 (audit finding P3-009): Code used to flip from -1 to the receipt
+                // number BEFORE any commit, so a failed insert made the next attempt take the
+                // UPDATE branch against a row that does not exist. The mode flag now advances
+                // only after successful commit (see below).
 
                 if (string.IsNullOrWhiteSpace(txtNotes.Text))
                     txtNotes.Text = $"سند قبض رقم: {txtNo.Text} خاصة العميل: " +
@@ -888,14 +891,23 @@ namespace SmartAuditERP.Form_WPF
 
                 try
                 {
+                    // Repair R-036 (audit findings P3-009 & P3-011): the INSERT omitted GlobalID,
+                    // which the Receipts definition makes a NOT NULL primary key with no default -
+                    // the row could never satisfy its own contract. It is now generated as a fresh
+                    // GUID (the idiom already used elsewhere in this codebase), with EntryGlobalID
+                    // carrying "-1", the application's established sentinel for "no linked entry"
+                    // until the posting-link policy work lands (tracked as BLK-P3-010). The UPDATE
+                    // also keyed on ReceiptNo+Branch only, although receipt numbers legitimately
+                    // repeat across types inside one branch; it now includes ReceiptType so an edit
+                    // can reach at most this voucher kind's own row.
                     string upsertSql = isNew
                         ? @"INSERT INTO Receipts
-                    (ReceiptNo, BranchID, ReceiptType, State, Payment, VAT, NetVal,
+                    (GlobalID, EntryGlobalID, ReceiptNo, BranchID, ReceiptType, State, Payment, VAT, NetVal,
                      ReceiptDate, ReffNo, Reffdate, ISDeleted, Notes, EmpId,
                      DebitAcc, TreasuryID, SalesManID, PaymentType, CheckNo,
                      CheckDate, Checkbank, CheckState, CCcode, ClientID)
                     VALUES
-                    (@ReceiptNo,@BranchID,@ReceiptType,1,@Payment,0,@Payment,
+                    (@GlobalID, @EntryGlobalID, @ReceiptNo,@BranchID,@ReceiptType,1,@Payment,0,@Payment,
                      @ReceiptDate,@ReffNo,@Reffdate,0,@Notes,@EmpId,
                      @DebitAcc,@TreasuryID,@SalesManID,@PaymentType,@CheckNo,
                      @CheckDate,@Checkbank,@CheckState,@CCcode,@ClientID)"
@@ -906,11 +918,16 @@ namespace SmartAuditERP.Form_WPF
                     SalesManID=@SalesManID, PaymentType=@PaymentType,
                     CheckNo=@CheckNo, CheckDate=@CheckDate, Checkbank=@Checkbank,
                     CheckState=@CheckState, CCcode=@CCcode, ClientID=@ClientID
-                    WHERE ReceiptNo=@ReceiptNo AND BranchID=@BranchID";
+                    WHERE ReceiptNo=@ReceiptNo AND BranchID=@BranchID AND ReceiptType=@ReceiptType";
 
                     var cmd = new SqlCommand(upsertSql, conn1, transaction);
 
-                    cmd.Parameters.AddWithValue("@ReceiptNo", Code);
+                    if (isNew)
+                    {
+                        cmd.Parameters.AddWithValue("@GlobalID", Guid.NewGuid().ToString());
+                        cmd.Parameters.AddWithValue("@EntryGlobalID", "-1");
+                    }
+                    cmd.Parameters.AddWithValue("@ReceiptNo", receiptNo);
                     cmd.Parameters.AddWithValue("@BranchID", MainClass.BranchNo);
                     cmd.Parameters.AddWithValue("@ReceiptType", ReceiptType);
                     cmd.Parameters.AddWithValue("@Payment", paymentVal);
@@ -960,9 +977,13 @@ namespace SmartAuditERP.Form_WPF
                     cmd.ExecuteNonQuery();
                     transaction.Commit();
 
+                    // R-036 (P3-009): only a committed insert promotes this window to "existing".
+                    if (isNew)
+                        Code = receiptNo;
+
                     SetStatus(isNew
-                        ? $"تم حفظ سند قبض رقم {Code} بنجاح"
-                        : $"تم تعديل سند قبض رقم {Code} بنجاح");
+                        ? $"تم حفظ سند قبض رقم {receiptNo} بنجاح"
+                        : $"تم تعديل سند قبض رقم {receiptNo} بنجاح");
 
                     var saved = DXMessageBox.Show(
                         $"تم الحفظ بنجاح\nهل تريد إضافة سند جديد؟",
@@ -1008,8 +1029,10 @@ namespace SmartAuditERP.Form_WPF
             try
             {
                 EnsureOpen(conn);
+                // R-036 (P3-011): the cancel key must include this form's own voucher type, or a
+                // receipt number shared by another type in the same branch could be hit instead.
                 var cmd = new SqlCommand(
-                    $"UPDATE Receipts SET ISDeleted=1 WHERE ReceiptNo={Code} AND BranchID={MainClass.BranchNo}",
+                    $"UPDATE Receipts SET ISDeleted=1 WHERE ReceiptNo={Code} AND BranchID={MainClass.BranchNo} AND ReceiptType={ReceiptType}",
                     conn);
                 int affected = cmd.ExecuteNonQuery();
 
