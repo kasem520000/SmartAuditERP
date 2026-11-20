@@ -198,6 +198,13 @@ check('scale, tax, requirement and fingerprint results remain partial',
           for fid, rid in [('P7-137', 'R-228'), ('P7-136', 'R-229'), ('P7-125', 'R-230'),
                            ('P7-021', 'R-231'), ('P7-009', 'R-232')]))
 
+check('unit pricing and marine safety guards remain partial',
+      all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P7-142', 'R-233'), ('P7-026', 'R-234')]))
+check('four unresolved findings remain pending review',
+      {r['id'] for r in rows if r['repair_status'] == 'pending_review'} ==
+      {'P7-024', 'P7-032', 'P7-084', 'P7-102'})
+
 owner = (ROOT / 'docs/repairs/OWNER_DECISIONS.md').read_text(encoding='utf-8')
 sections = {
     'deferred_blocked': owner.split('## أولاً:', 1)[1].split('## ثانياً:', 1)[0],
