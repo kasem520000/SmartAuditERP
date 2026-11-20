@@ -14,6 +14,7 @@ using AuditorAPI.Models.DGVmodels;
 using AuditorAPI.Models.tags;
 using DevExpress.XtraReports.UI;
 using ETA_Invoice.Models;
+using log4net;
 using Microsoft.VisualBasic;
 using Microsoft.VisualBasic.CompilerServices;
 using SmartAuditERP.Form_WPF;
@@ -26,6 +27,10 @@ namespace SmartAuditERP
 	public class Print
 	{
 		public List<InvPrinter> PrintersList;
+
+		// Repair R-071 (audit finding P7-031): the engine used to discard every template and
+		// printer failure inside an empty catch; log it with the idiom InvoiceOper already uses.
+		private static readonly ILog Logger = LogManager.GetLogger(Environment.MachineName);
 
 		public int RptId { get; set; }
 
@@ -145,7 +150,10 @@ namespace SmartAuditERP
 			}
 		}
 
-		public void Printing(int type, DataSet ds, string RptUrl, string RptName, string defPrinter, string kitchenprinter, int PrintNo)
+		// Repair R-071 (audit finding P7-031): returns whether the request actually produced its
+		// output, so a caller can tell a printed document from a swallowed template or printer
+		// failure instead of assuming success because no exception escaped the engine.
+		public bool Printing(int type, DataSet ds, string RptUrl, string RptName, string defPrinter, string kitchenprinter, int PrintNo)
 		{
 			try
 			{
@@ -204,24 +212,32 @@ namespace SmartAuditERP
 					{
 						xtraReport.Print();
 					}
+					bool kitchenDone = true;
 					if (PrintNo > 0 && Operators.CompareString(kitchenprinter, "", TextCompare: false) != 0)
 					{
-						this.Printing(type, ds, RptUrl, "rptPOS2.repx", kitchenprinter, "", 1);
+						// Repair R-071 (audit finding P7-031): the kitchen copy belongs to this
+						// request, so its outcome is reported instead of dropped.
+						kitchenDone = this.Printing(type, ds, RptUrl, "rptPOS2.repx", kitchenprinter, "", 1);
 					}
+					return kitchenDone;
 				}
 				else if (type == 2)
 				{
 					xtraReport.ShowPreviewDialog();
+					return true;
 				}
 				else
 				{
 					xtraReport.Print();
+					return true;
 				}
 			}
 			catch (Exception projectError)
 			{
 				ProjectData.SetProjectError(projectError);
+				Logger.Error("Print engine  " + projectError.Message + " " + MainClass.UserName);
 				ProjectData.ClearProjectError();
+				return false;
 			}
 		}
 

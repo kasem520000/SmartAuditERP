@@ -1255,13 +1255,20 @@ namespace SmartAuditERP.Form_WPF
             if (string.IsNullOrEmpty(print.defPrinter))
                 print.defPrinter = MainClass.ReportsPrinter;
 
-            print.Printing(type,
+            // Repair R-071 (audit finding P7-031): the engine reported nothing, so an invoice
+            // could be saved and treated as printed while the template or printer had failed.
+            // Consume the outcome and tell the user instead of returning in silence.
+            if (!print.Printing(type,
                 print.BindToData(inv),
                 print.RptUrl,
                 print.RptName,
                 print.defPrinter,
                 print.kitchenprinter,
-                print.PrintNo);
+                print.PrintNo))
+            {
+                DXMessageBox.Show("فشلت الطباعة، تحقق من قالب التقرير ومن الطابعة ثم أعد الطباعة",
+                    "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         #endregion

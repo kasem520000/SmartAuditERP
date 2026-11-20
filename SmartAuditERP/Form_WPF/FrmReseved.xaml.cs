@@ -576,8 +576,14 @@ namespace SmartAuditERP.Form_WPF
             if (string.IsNullOrEmpty(_print.defPrinter))
                 _print.defPrinter = MainClass.ReportsPrinter;
 
-            _print.Printing(printType, BindToData(), _print.RptUrl,
-                _print.RptName, _print.defPrinter, _print.kitchenprinter, _print.PrintNo);
+            // Repair R-071 (audit finding P7-031): consume the engine outcome; a failed accrual
+            // print used to be indistinguishable from a successful one because nothing came back.
+            if (!_print.Printing(printType, BindToData(), _print.RptUrl,
+                _print.RptName, _print.defPrinter, _print.kitchenprinter, _print.PrintNo))
+            {
+                DXMessageBox.Show("فشلت الطباعة، تحقق من قالب التقرير ومن الطابعة ثم أعد الطباعة",
+                    "خطأ", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private DataSet BindToData()
