@@ -37,7 +37,14 @@ namespace SmartAuditERP
 				if (dataTable.Rows.Count > 0)
 				{
 					this.Name = Conversions.ToString(dataTable.Rows[0]["name"]);
-					this.AccCode = Common.GetAccountCode(this.Name);
+					// Repair R-040 (audit finding P3-008): same as Bank - the treasury's own Acc_Code
+					// is selected above; prefer that stored link over a non-unique name search,
+					// keeping the name fallback for unlinked legacy rows.
+					object storedAcc;
+					storedAcc = dataTable.Rows[0]["Acc_Code"];
+					this.AccCode = (storedAcc != DBNull.Value && !string.IsNullOrWhiteSpace(Conversions.ToString(storedAcc)))
+						? Conversions.ToString(storedAcc)
+						: Common.GetAccountCode(this.Name);
 				}
 			}
 		}

@@ -77,7 +77,17 @@ namespace SmartAuditERP
 				{
 					this.VATno = Conversions.ToString(Operators.ConcatenateObject("", dataTable.Rows[0]["tax_no"]));
 					this.Name = Conversions.ToString(Operators.ConcatenateObject("", dataTable.Rows[0]["name"]));
-					this.AccCode = Common.GetAccountCode(this.Name);
+					// Repair R-040 (audit finding P3-008): 'select *' already carries the customer's
+					// stored account link (AccountCode); prefer it over a non-unique name search in
+					// Accounts_Index, keeping the historical name fallback for rows never linked.
+					object storedLink;
+					storedLink = dataTable.Rows[0].Table.Columns.Contains("AccountCode")
+						? dataTable.Rows[0]["AccountCode"]
+						: null;
+					this.AccCode = (storedLink != null && storedLink != DBNull.Value
+							&& !string.IsNullOrWhiteSpace(Conversions.ToString(storedLink)))
+						? Conversions.ToString(storedLink)
+						: Common.GetAccountCode(this.Name);
 					this.Mobile = Conversions.ToString(dataTable.Rows[0]["mobile"]);
 					this.City = Conversions.ToString(Operators.ConcatenateObject("", dataTable.Rows[0]["city"]));
 					this.Country = Conversions.ToString(Operators.ConcatenateObject("", dataTable.Rows[0]["country"]));

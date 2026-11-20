@@ -40,7 +40,16 @@ namespace SmartAuditERP
 				if (dataTable.Rows.Count > 0)
 				{
 					this.Name = Conversions.ToString(dataTable.Rows[0][0]);
-					this.AccCode = Common.GetAccountCode(this.Name);
+					// Repair R-040 (audit finding P3-008): Acc_Code rides in THIS result set yet was
+					// thrown away to re-resolve the account by NAME - wrong whenever names repeat
+					// (Accounts_Index.AName carries no uniqueness constraint) or simply diverge.
+					// Trust the stored bank->account link; fall back to the historical name lookup
+					// only for legacy rows where the link was never populated.
+					object storedAcc;
+					storedAcc = dataTable.Rows[0]["Acc_Code"];
+					this.AccCode = (storedAcc != DBNull.Value && !string.IsNullOrWhiteSpace(Conversions.ToString(storedAcc)))
+						? Conversions.ToString(storedAcc)
+						: Common.GetAccountCode(this.Name);
 					this.DisPrec = Conversions.ToDecimal(dataTable.Rows[0]["DisPre"]);
 				}
 			}
