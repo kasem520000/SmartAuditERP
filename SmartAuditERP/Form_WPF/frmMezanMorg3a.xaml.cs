@@ -679,13 +679,14 @@ namespace SmartAuditERP.Form_WPF
 
         private void ExportToExcelHtml(string fileName)
         {
+            // R-134 (P7-098): HTML text cells must not be interpreted as markup.
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("<html><head><meta charset='utf-8'/>");
             sb.AppendLine("<style>table{border-collapse:collapse;font-family:Tahoma;font-size:11px;}");
             sb.AppendLine("th,td{border:1px solid #999;padding:4px;text-align:center;}");
             sb.AppendLine("th{background:#DDE7FF;font-weight:bold;}</style></head>");
             sb.AppendLine("<body dir='rtl'>");
-            sb.AppendLine($"<h2 style='text-align:center;'>{Title}</h2>");
+            sb.AppendLine($"<h2 style='text-align:center;'>{System.Net.WebUtility.HtmlEncode(Title)}</h2>");
             sb.AppendLine("<table><tr>");
             sb.AppendLine("<th>الحساب</th><th>اسم الحساب</th>");
             sb.AppendLine("<th>افتتاحي مدين</th><th>افتتاحي دائن</th>");
@@ -698,7 +699,7 @@ namespace SmartAuditERP.Form_WPF
             foreach (AccountNode row in _displayRows)
             {
                 sb.AppendLine("<tr>");
-                sb.AppendLine($"<td>{row.TrAccount}</td><td>{row.TrAccName}</td>");
+                sb.AppendLine($"<td>{row.TrAccount}</td><td>{System.Net.WebUtility.HtmlEncode(row.TrAccName)}</td>");
                 sb.AppendLine($"<td>{row.TrDeptIntial:N2}</td><td>{row.TrCreditIntial:N2}</td>");
                 sb.AppendLine($"<td>{row.TrDeptPervious:N2}</td><td>{row.TrCreditPervious:N2}</td>");
                 sb.AppendLine($"<td>{row.TrDebtorMovement:N2}</td><td>{row.TrCreditorMovement:N2}</td>");
@@ -873,7 +874,8 @@ namespace SmartAuditERP.Form_WPF
             doc.Blocks.Add(info);
 
             Table table = new Table { CellSpacing = 0 };
-            for (int i = 0; i < 10; i++)
+            // R-132 (P7-119): local print has the same twelve columns as the grid.
+            for (int i = 0; i < 12; i++)
                 table.Columns.Add(new TableColumn());
 
             TableRowGroup rowGroup = new TableRowGroup();
@@ -886,6 +888,8 @@ namespace SmartAuditERP.Form_WPF
             AddHeaderCell(headerRow, "اسم الحساب");
             AddHeaderCell(headerRow, "افتتاحي مدين");
             AddHeaderCell(headerRow, "افتتاحي دائن");
+            AddHeaderCell(headerRow, "رصيد سابق مدين");
+            AddHeaderCell(headerRow, "رصيد سابق دائن");
             AddHeaderCell(headerRow, "حركة مدين");
             AddHeaderCell(headerRow, "حركة دائن");
             AddHeaderCell(headerRow, "رصيد مدين");
@@ -901,6 +905,8 @@ namespace SmartAuditERP.Form_WPF
                 AddBodyCell(dataRow, row.TrAccName);
                 AddBodyCell(dataRow, row.TrDeptIntial.ToString("N2"));
                 AddBodyCell(dataRow, row.TrCreditIntial.ToString("N2"));
+                AddBodyCell(dataRow, row.TrDeptPervious.ToString("N2"));
+                AddBodyCell(dataRow, row.TrCreditPervious.ToString("N2"));
                 AddBodyCell(dataRow, row.TrDebtorMovement.ToString("N2"));
                 AddBodyCell(dataRow, row.TrCreditorMovement.ToString("N2"));
                 AddBodyCell(dataRow, row.TrDeptBlc.ToString("N2"));

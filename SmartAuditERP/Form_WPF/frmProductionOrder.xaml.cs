@@ -973,8 +973,10 @@ namespace SmartAuditERP.Form_WPF
                         try
                         {
                             int itemId = Convert.ToInt32(row["ItemId"]);
-                            double qty = Math.Round(Convert.ToDouble(row["val1"]), 2);
-                            double price = Math.Round(Convert.ToDouble(row["exchange_price"]), 2);
+                            // R-131 (P7-134): preserve stored precision in the editor;
+                            // keep the existing two-decimal total policy unchanged.
+                            double qty = Convert.ToDouble(row["val1"]);
+                            double price = Convert.ToDouble(row["exchange_price"]);
                             double total = Math.Round(qty * price, 2);
                             int unitId = 0;
                             int storeId = 0;

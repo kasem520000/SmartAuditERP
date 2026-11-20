@@ -578,11 +578,16 @@ namespace SmartAuditERP.Form_WPF
                     msgExist.ShowDialog();
                     if (msgExist.Action == 1)
                     {
-                        double.TryParse(_gridSource[foundIndex].QuantDgv, out double q);
-                        _gridSource[foundIndex].QuantDgv = (q + 1).ToString();
-                        if (RowIndex != foundIndex && RowIndex >= 0 && RowIndex < _gridSource.Count)
-                            _gridSource.RemoveAt(RowIndex);
-                        CalcRowValues(foundIndex);
+                        // R-133 (P7-150): removing an earlier row shifts the
+                        // duplicate's index, so recalculate by its identity.
+                        var matchedRow = _gridSource[foundIndex];
+                        var sourceRow = GetRowAt(RowIndex);
+                        double.TryParse(matchedRow.QuantDgv, out double q);
+                        matchedRow.QuantDgv = (q + 1).ToString();
+                        if (sourceRow != null && !ReferenceEquals(sourceRow, matchedRow))
+                            _gridSource.Remove(sourceRow);
+                        int matchedIndex = _gridSource.IndexOf(matchedRow);
+                        if (matchedIndex >= 0) CalcRowValues(matchedIndex);
                         CalcTot();
                     }
                     else if (msgExist.Action == 2)

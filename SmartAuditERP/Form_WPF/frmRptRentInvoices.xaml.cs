@@ -282,6 +282,9 @@ namespace SmartAuditERP.Form_WPF
 
         #region GenerateFilter - فلتر DataView
 
+        private static string EscapeFilterLiteral(string text)
+            => (text ?? string.Empty).Replace("'", "''");
+
         private void GenerateFilter()
         {
             try
@@ -304,13 +307,15 @@ namespace SmartAuditERP.Form_WPF
                 else if (rdOutPlan.IsChecked == true)
                     filter += " AND InPlan=0";
 
+                // R-130 (P7-074): quote DataView string literals, not SQL parameters.
+                // Preserve the existing LIKE wildcard behavior.
                 // المستخدم
                 if (cmbUsers.SelectedIndex > -1)
-                    filter += $" AND emp LIKE '%{cmbUsers.Text}%'";
+                    filter += $" AND emp LIKE '%{EscapeFilterLiteral(cmbUsers.Text)}%'";
 
                 // الفئة
                 if (cmbGroups.SelectedIndex > -1)
-                    filter += $" AND Groupcode LIKE '%{cmbGroups.Text}%'";
+                    filter += $" AND Groupcode LIKE '%{EscapeFilterLiteral(cmbGroups.Text)}%'";
 
                 // رقم الفاتورة
                 if (!string.IsNullOrWhiteSpace(txtInvNo.Text))
@@ -321,11 +326,11 @@ namespace SmartAuditERP.Form_WPF
 
                 // جوال العميل
                 if (!string.IsNullOrWhiteSpace(txtClientMobile.Text))
-                    filter += $" AND mobile LIKE '%{txtClientMobile.Text.Trim()}%'";
+                    filter += $" AND mobile LIKE '%{EscapeFilterLiteral(txtClientMobile.Text.Trim())}%'";
 
                 // اسم العميل
                 if (!string.IsNullOrWhiteSpace(txtClientName.Text))
-                    filter += $" AND cust LIKE '%{txtClientName.Text.Trim()}%'";
+                    filter += $" AND cust LIKE '%{EscapeFilterLiteral(txtClientName.Text.Trim())}%'";
 
                 _dataView.RowFilter  = filter;
                 dgvItems.ItemsSource = _dataView;

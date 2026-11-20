@@ -350,6 +350,10 @@ namespace SmartAuditERP.Form_WPF
             catch { /* تجاهل أخطاء الفلترة */ }
         }
 
+        // R-130 extension: the rental picker also builds DataView LIKE literals.
+        private static string EscapeFilterLiteral(string text)
+            => (text ?? string.Empty).Replace("'", "''");
+
         private string BuildFilterExpression()
         {
             var conditions = new System.Collections.Generic.List<string>();
@@ -366,15 +370,15 @@ namespace SmartAuditERP.Form_WPF
 
             // اسم العميل
             if (!string.IsNullOrWhiteSpace(txtClientName.Text))
-                conditions.Add($"cust LIKE '%{txtClientName.Text.Trim()}%'");
+                conditions.Add($"cust LIKE '%{EscapeFilterLiteral(txtClientName.Text.Trim())}%'");
 
             // جوال العميل
             if (!string.IsNullOrWhiteSpace(txtClientMobile.Text))
-                conditions.Add($"mobile LIKE '%{txtClientMobile.Text.Trim()}%'");
+                conditions.Add($"mobile LIKE '%{EscapeFilterLiteral(txtClientMobile.Text.Trim())}%'");
 
             // المستخدم
             if (cmbUsers.SelectedIndex > -1 && cmbUsers.Text != null)
-                conditions.Add($"emp LIKE '%{cmbUsers.Text}%'");
+                conditions.Add($"emp LIKE '%{EscapeFilterLiteral(cmbUsers.Text)}%'");
 
             // نطاق السعر
             if (!string.IsNullOrWhiteSpace(txtMinPrice.Text) &&

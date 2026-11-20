@@ -726,13 +726,14 @@ namespace SmartAuditERP.Form_WPF
 
         private void ExportToExcelHtml(string fileName)
         {
+            // R-134 (P7-098): HTML text cells must not be interpreted as markup.
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("<html><head><meta charset='utf-8'/>");
             sb.AppendLine("<style>table{border-collapse:collapse;font-family:Tahoma;font-size:11px;}");
             sb.AppendLine("th,td{border:1px solid #999;padding:4px;text-align:center;}");
             sb.AppendLine("th{background:#DDE7FF;font-weight:bold;}</style></head>");
             sb.AppendLine("<body dir='rtl'>");
-            sb.AppendLine($"<h2 style='text-align:center;'>{Title}</h2>");
+            sb.AppendLine($"<h2 style='text-align:center;'>{System.Net.WebUtility.HtmlEncode(Title)}</h2>");
             sb.AppendLine("<table><tr>");
             sb.AppendLine("<th>م</th><th>المستودع</th><th>نوع العملية</th><th>المورد</th><th>التاريخ</th>");
             sb.AppendLine("<th>الرقم</th><th>المادة</th><th>الوحدة</th><th>الكمية</th><th>السعر</th>");
@@ -743,13 +744,13 @@ namespace SmartAuditERP.Form_WPF
             {
                 sb.AppendLine("<tr>");
                 sb.AppendLine($"<td>{item.DgvNo}</td>");
-                sb.AppendLine($"<td>{item.DgvStore}</td>");
-                sb.AppendLine($"<td>{item.DgvInvType}</td>");
-                sb.AppendLine($"<td>{item.DgvClient}</td>");
-                sb.AppendLine($"<td>{item.DgvDate}</td>");
-                sb.AppendLine($"<td>{item.DgvInvNo}</td>");
-                sb.AppendLine($"<td>{item.DgvItem}</td>");
-                sb.AppendLine($"<td>{item.DgvUnit}</td>");
+                sb.AppendLine($"<td>{System.Net.WebUtility.HtmlEncode(item.DgvStore)}</td>");
+                sb.AppendLine($"<td>{System.Net.WebUtility.HtmlEncode(item.DgvInvType)}</td>");
+                sb.AppendLine($"<td>{System.Net.WebUtility.HtmlEncode(item.DgvClient)}</td>");
+                sb.AppendLine($"<td>{System.Net.WebUtility.HtmlEncode(item.DgvDate)}</td>");
+                sb.AppendLine($"<td>{System.Net.WebUtility.HtmlEncode(item.DgvInvNo)}</td>");
+                sb.AppendLine($"<td>{System.Net.WebUtility.HtmlEncode(item.DgvItem)}</td>");
+                sb.AppendLine($"<td>{System.Net.WebUtility.HtmlEncode(item.DgvUnit)}</td>");
                 sb.AppendLine($"<td>{item.DgvQty:N2}</td>");
                 sb.AppendLine($"<td>{item.DgvPrice:N2}</td>");
                 sb.AppendLine($"<td>{item.DgvItemSum:N2}</td>");
@@ -757,7 +758,7 @@ namespace SmartAuditERP.Form_WPF
                 sb.AppendLine($"<td>{item.DgvTotalBeforeTax:N2}</td>");
                 sb.AppendLine($"<td>{item.DgvVAT:N2}</td>");
                 sb.AppendLine($"<td>{item.DgvTotal:N2}</td>");
-                sb.AppendLine($"<td>{item.DgvUser}</td>");
+                sb.AppendLine($"<td>{System.Net.WebUtility.HtmlEncode(item.DgvUser)}</td>");
                 sb.AppendLine("</tr>");
             }
 

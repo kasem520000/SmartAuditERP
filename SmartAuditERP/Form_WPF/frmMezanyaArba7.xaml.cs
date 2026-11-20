@@ -478,23 +478,24 @@ namespace SmartAuditERP.Form_WPF
 
         private void ExportToExcelHtml(string fileName)
         {
+            // R-134 (P7-098): HTML text cells must not be interpreted as markup.
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("<html><head><meta charset='utf-8'/>");
             sb.AppendLine("<style>table{border-collapse:collapse;font-family:Tahoma;font-size:11px;}");
             sb.AppendLine("th,td{border:1px solid #999;padding:4px;text-align:center;}");
             sb.AppendLine("th{background:#DDE7FF;font-weight:bold;}</style></head>");
             sb.AppendLine("<body dir='rtl'>");
-            sb.AppendLine($"<h2 style='text-align:center;'>{Title}</h2>");
+            sb.AppendLine($"<h2 style='text-align:center;'>{System.Net.WebUtility.HtmlEncode(Title)}</h2>");
             sb.AppendLine("<table><tr><th>الحساب</th><th>إسم الحساب</th><th>رصيد مدين</th><th>رصيد دائن</th></tr>");
 
             foreach (AccountBalanceRow row in _rows)
             {
                 sb.AppendLine("<tr>");
-                sb.AppendLine($"<td>{row.Column1}</td><td>{row.Column2}</td><td>{row.Column5}</td><td>{row.Column6}</td>");
+                sb.AppendLine($"<td>{System.Net.WebUtility.HtmlEncode(row.Column1)}</td><td>{System.Net.WebUtility.HtmlEncode(row.Column2)}</td><td>{System.Net.WebUtility.HtmlEncode(row.Column5)}</td><td>{System.Net.WebUtility.HtmlEncode(row.Column6)}</td>");
                 sb.AppendLine("</tr>");
             }
 
-            sb.AppendLine($"<tr><td colspan='2'><b>الإجمالي</b></td><td>{txtDeptDiff.Text}</td><td>{txtCreditDiff.Text}</td></tr>");
+            sb.AppendLine($"<tr><td colspan='2'><b>الإجمالي</b></td><td>{System.Net.WebUtility.HtmlEncode(txtDeptDiff.Text)}</td><td>{System.Net.WebUtility.HtmlEncode(txtCreditDiff.Text)}</td></tr>");
             sb.AppendLine("</table></body></html>");
 
             File.WriteAllText(fileName, sb.ToString(), Encoding.UTF8);
