@@ -715,9 +715,16 @@ namespace SmartAuditERP
 					value = File.ReadAllText(path);
 					if (!string.IsNullOrWhiteSpace(value))
 					{
-						foreach (ListItems item in JsonConvert.DeserializeObject<List<ListItems>>(value))
+						// Repair R-050 (audit finding P5-003): this file is written as List<ItemIdOff> whose only
+						// member is 'itemid', yet it used to be bound to List<ListItems> and read '.id' - a name
+						// no deserializer can match. Every queued replay therefore carried id 0 until the queue
+						// was cleared, losing the original request entirely. Bind the writer's real contract.
+						foreach (ItemIdOff item in JsonConvert.DeserializeObject<List<ItemIdOff>>(value))
 						{
-							item_ID = item.id;
+														item_ID = item.itemid;
+							// Skip anything that is not a positive identity rather than publishing id=0 queries.
+							if (item_ID <= 0)
+								continue;
 							global::SmartAuditERP.SendData.SendItemDataByid(item_ID);
 						}
 					}
