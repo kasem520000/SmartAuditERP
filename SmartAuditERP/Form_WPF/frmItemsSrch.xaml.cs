@@ -297,16 +297,19 @@ namespace SmartAuditERP.Form_WPF
 
         private void GridControl1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            try
+            // Keep selection order, but never retain rows removed by deselection
+            // or when a new search replaces the grid contents.
+            foreach (object removed in e.RemovedItems)
             {
-                foreach (ItemSearchRow item in GridControl1.SelectedItems)
-                {
-                    int.TryParse(item.id, out int itemId);
-                    if (itemId > 0 && !Itemlist.Contains(itemId))
-                        Itemlist.Add(itemId);
-                }
+                if (removed is ItemSearchRow item && int.TryParse(item.id, out int id))
+                    Itemlist.Remove(id);
             }
-            catch { }
+            foreach (object added in e.AddedItems)
+            {
+                if (added is ItemSearchRow item && int.TryParse(item.id, out int id) &&
+                    id > 0 && !Itemlist.Contains(id))
+                    Itemlist.Add(id);
+            }
         }
 
         private void GridControl1_KeyDown(object sender, KeyEventArgs e)
@@ -320,21 +323,37 @@ namespace SmartAuditERP.Form_WPF
             try
             {
                 ItemSearchRow selected = GridControl1.SelectedItem as ItemSearchRow;
-                if (selected == null) return;
+                if (selected == null || !int.TryParse(selected.id, out int itemId) || itemId <= 0)
+                    return;
 
-                int.TryParse(selected.id, out int itemId);
+                // Reconcile against the actual selection at confirmation.  The
+                // focused item stays last, matching the previous caller order.
+                var selectedIds = new HashSet<int>();
+                var gridOrder = new List<int>();
+                foreach (object value in GridControl1.SelectedItems)
+                {
+                    if (value is ItemSearchRow item && int.TryParse(item.id, out int id) &&
+                        id > 0 && selectedIds.Add(id))
+                        gridOrder.Add(id);
+                }
+                if (!selectedIds.Contains(itemId)) return;
 
-                if (Itemlist.Contains(itemId))
-                    Itemlist.Remove(itemId);
+                var confirmed = new List<int>();
+                foreach (int id in Itemlist)
+                    if (selectedIds.Contains(id) && !confirmed.Contains(id)) confirmed.Add(id);
+                foreach (int id in gridOrder)
+                    if (!confirmed.Contains(id)) confirmed.Add(id);
+                confirmed.Remove(itemId);
+                confirmed.Add(itemId);
 
-                ISDone = true;
+                Itemlist.Clear();
+                Itemlist.AddRange(confirmed);
                 ItemId = itemId;
                 Itemname = selected.name;
-                Itemlist.Add(itemId);
-
+                ISDone = true;
                 Close();
             }
-            catch { }
+            catch (Exception ex) { ShowError(ex); }
         }
 
         #endregion

@@ -6,7 +6,6 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -172,7 +171,7 @@ namespace SmartAuditERP.Form_WPF
 
                 var adapter = new SqlDataAdapter(
                     $"select * from PM_ProjectFiles where Proj_ID={ProjNo} " +
-                    $"and StageNo={StageID} order by FileNo",
+                    $"and StageNo={StageID} and ISNULL(IS_Deleted,0)=0 order by FileNo",
                     conn);
                 var dt = new DataTable();
                 adapter.Fill(dt);
@@ -200,44 +199,87 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
-                var adapter = new SqlDataAdapter(
-                    $"select PM_Stages.name, PM_Stages.nameEn, PM_GroupStages.StageID, " +
-                    $"PM_GroupStages.StageOrder " +
-                    $"from PM_GroupStages, PM_Stages " +
-                    $"where PM_Stages.IS_Deleted=0 " +
-                    $"and PM_Stages.id=PM_GroupStages.StageID " +
-                    $"and PM_GroupStages.ProjGropID={code} " +
-                    $"and PM_GroupStages.IS_Deleted=0 " +
-                    $"order by StageOrder",
-                    conn);
-                var dt = new DataTable();
-                adapter.Fill(dt);
-
-                if (dt.Rows.Count > 0)
+                if (!HasCurrentProject())
+                    throw new InvalidOperationException("تعذر تحديد المشروع المطلوب لتهيئة المراحل.");
+                if (conn.State != ConnectionState.Open) conn.Open();
+                using (var tx = conn.BeginTransaction(IsolationLevel.Serializable))
                 {
-                    if (conn.State != ConnectionState.Open) conn.Open();
-                    foreach (DataRow r in dt.Rows)
+                    // Cooperative initializers serialize on the same project.
+                    using (var project = new SqlCommand(
+                        "SELECT id FROM PM_Projects WITH (UPDLOCK,HOLDLOCK) WHERE id=@Project AND IS_Deleted=0", conn, tx))
                     {
-                        var cmd = new SqlCommand(
-                            "insert into PM_ProjStages(StageId,ProjID,StageOrder,IsAccredit,IS_Deleted) " +
-                            "values(@StageId,@ProjID,@StageOrder,0,0)", conn);
-                        cmd.Parameters.Add("@StageId",    SqlDbType.Int).Value = r["StageID"];
-                        cmd.Parameters.Add("@ProjID",     SqlDbType.Int).Value = ProjNo;
-                        cmd.Parameters.Add("@StageOrder", SqlDbType.Int).Value = r["StageOrder"];
-                        cmd.ExecuteNonQuery();
+                        project.Parameters.Add("@Project", SqlDbType.Int).Value = ProjNo;
+                        if (project.ExecuteScalar() == null)
+                            throw new InvalidOperationException("المشروع غير موجود أو محذوف.");
                     }
-                    LoadProjectStage(code);
+                    int existing;
+                    using (var count = new SqlCommand(
+                        "SELECT COUNT(*) FROM PM_ProjStages WITH (UPDLOCK,HOLDLOCK) " +
+                        "WHERE ProjID=@Project AND IS_Deleted=0", conn, tx))
+                    {
+                        count.Parameters.Add("@Project", SqlDbType.Int).Value = ProjNo;
+                        existing = Convert.ToInt32(count.ExecuteScalar());
+                    }
+                    if (existing == 0)
+                    {
+                        var visited = new HashSet<int>();
+                        DataTable template = null;
+                        int current = code;
+                        while (current > 0)
+                        {
+                            if (!visited.Add(current))
+                                throw new InvalidOperationException("توجد حلقة في تسلسل مجموعات المشروع.");
+                            using (var cmd = new SqlCommand(
+                                "SELECT PM_GroupStages.StageID, PM_GroupStages.StageOrder " +
+                                "FROM PM_GroupStages JOIN PM_Stages ON PM_Stages.id=PM_GroupStages.StageID " +
+                                "WHERE PM_Stages.IS_Deleted=0 AND PM_GroupStages.IS_Deleted=0 " +
+                                "AND PM_GroupStages.ProjGropID=@GroupId ORDER BY PM_GroupStages.StageOrder", conn, tx))
+                            {
+                                cmd.Parameters.Add("@GroupId", SqlDbType.Int).Value = current;
+                                template = new DataTable();
+                                using (var adapter = new SqlDataAdapter(cmd)) adapter.Fill(template);
+                            }
+                            if (template.Rows.Count > 0) break;
+                            using (var parent = new SqlCommand(
+                                "SELECT ParentCode FROM PM_Terms WHERE Code=@Code", conn, tx))
+                            {
+                                parent.Parameters.Add("@Code", SqlDbType.Int).Value = current;
+                                object value = parent.ExecuteScalar();
+                                current = value == null || value == DBNull.Value ? 0 : Convert.ToInt32(value);
+                            }
+                        }
+                        if (template == null || template.Rows.Count == 0)
+                            throw new InvalidOperationException("يجب إدخال مراحل لمجموعة المشروع.");
+                        if (template.Rows.Count > 6)
+                            throw new InvalidOperationException("لا يمكن تهيئة أكثر من ست مراحل في شاشة الدورة الحالية.");
+                        var ids = new HashSet<int>();
+                        var orders = new HashSet<int>();
+                        foreach (DataRow row in template.Rows)
+                        {
+                            if (row["StageID"] == DBNull.Value || row["StageOrder"] == DBNull.Value ||
+                                !ids.Add(Convert.ToInt32(row["StageID"])) ||
+                                !orders.Add(Convert.ToInt32(row["StageOrder"])))
+                                throw new InvalidOperationException("المراحل أو ترتيبها مكرر أو غير صالح.");
+                        }
+                        foreach (DataRow row in template.Rows)
+                        {
+                            using (var cmd = new SqlCommand(
+                                "INSERT INTO PM_ProjStages(StageId,ProjID,StageOrder,IsAccredit,IS_Deleted) " +
+                                "VALUES(@StageId,@ProjID,@StageOrder,0,0)", conn, tx))
+                            {
+                                cmd.Parameters.Add("@StageId", SqlDbType.Int).Value = row["StageID"];
+                                cmd.Parameters.Add("@ProjID", SqlDbType.Int).Value = ProjNo;
+                                cmd.Parameters.Add("@StageOrder", SqlDbType.Int).Value = row["StageOrder"];
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+                    }
+                    tx.Commit();
                 }
-                else
-                {
-                    int parent = GetParent(code);
-                    if (parent == 0)
-                        DXMessageBox.Show("يجب إدخال مراحل لمجموعة المشروع");
-                    else
-                        LoadParentStages(parent);
-                }
+                // One refresh only: a missing stage or changed data cannot recurse.
+                LoadProjectStageCore(code, false);
             }
-            catch { }
+            catch (Exception ex) { DXMessageBox.Show("تعذر تحميل مراحل المشروع: " + ex.Message); }
             finally
             {
                 if (conn.State != ConnectionState.Closed) conn.Close();
@@ -245,6 +287,11 @@ namespace SmartAuditERP.Form_WPF
         }
 
         private void LoadProjectStage(int code)
+        {
+            LoadProjectStageCore(code, true);
+        }
+
+        private void LoadProjectStageCore(int code, bool allowInitialize)
         {
             Stageslist.Clear();
             StageID = -1;
@@ -320,30 +367,21 @@ namespace SmartAuditERP.Form_WPF
                             stageBtns[i].Background = Brushes.LightGreen;
                     }
                 }
-                else
+                else if (allowInitialize)
                 {
                     LoadParentStages(code);
                 }
+                else
+                {
+                    DXMessageBox.Show("لا توجد مراحل صالحة للمشروع؛ راجع بيانات المراحل.");
+                }
             }
-            catch { }
+            catch (Exception ex) { DXMessageBox.Show("تعذر قراءة مراحل المشروع: " + ex.Message); }
         }
 
         #endregion
 
         #region Helper Methods
-
-        private int GetParent(int code)
-        {
-            try
-            {
-                var adapter = new SqlDataAdapter(
-                    $"Select ParentCode from PM_Terms where Code={code}", conn);
-                var dt = new DataTable();
-                adapter.Fill(dt);
-                return dt.Rows.Count > 0 ? Convert.ToInt32(dt.Rows[0][0]) : 0;
-            }
-            catch { return 0; }
-        }
 
         private string GetContractorName(int id)
         {
@@ -372,6 +410,7 @@ namespace SmartAuditERP.Form_WPF
         private bool HasCurrentProject()
         {
             return rbProject.IsChecked == true && ProjNo > 0 &&
+                int.TryParse(txtNo.Text, out int requestedProject) && requestedProject == ProjNo &&
                 int.TryParse(txtProjectNo.Text, out int displayedProject) &&
                 displayedProject == ProjNo;
         }
@@ -445,10 +484,25 @@ namespace SmartAuditERP.Form_WPF
             return true;
         }
 
+        private bool IsCurrentFileRow(ProjFileRow row)
+        {
+            if (row == null || !_filesSource.Contains(row) || !HasCurrentProject() || StageID <= 0)
+                return false;
+            if (row.FileNo > 0 && row.ProjId != ProjNo) return false;
+            foreach (var stage in Stageslist)
+                if (int.TryParse(stage.Id, out int id) && id == StageID) return true;
+            return false;
+        }
+
         private void OpenFileForRow(ProjFileRow row)
         {
             try
             {
+                if (!IsCurrentFileRow(row))
+                {
+                    DXMessageBox.Show("يجب تحديد مشروع ومرحلة صالحين للملف.");
+                    return;
+                }
                 if (cmbStatus.SelectedValue != null &&
                     Convert.ToInt32(cmbStatus.SelectedValue) == 4)
                 {
@@ -479,17 +533,20 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
+                if (!IsCurrentFileRow(row))
+                {
+                    DXMessageBox.Show("يجب تحديد مشروع ومرحلة صالحين للملف.");
+                    return;
+                }
+                if (cmbStatus.SelectedValue != null &&
+                    Convert.ToInt32(cmbStatus.SelectedValue) == 4)
+                {
+                    DXMessageBox.Show("المشروع مغلق، لا يسمح بتعديل ملفاته.");
+                    return;
+                }
                 if (row.FileNo == 0)
                 {
                     // إضافة جديدة
-                    if (cmbStatus.SelectedValue != null &&
-                        Convert.ToInt32(cmbStatus.SelectedValue) == 4)
-                    {
-                        DXMessageBox.Show("المشروع مغلق، لا يسمح بإضافة ملف جديد",
-                            "", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        return;
-                    }
-
                     if (row.FileTypeId <= 0)
                     {
                         DXMessageBox.Show("يجب تحديد نوع الملف",
@@ -515,22 +572,35 @@ namespace SmartAuditERP.Form_WPF
 
                     int mainFile = row.IsMain ? 1 : 0;
 
-                    var sb = new StringBuilder();
-                    sb.AppendLine("Declare @Ufile As VARBINARY(MAX)");
-                    sb.AppendLine($"Select @Ufile = CAST(bulkcolumn As VARBINARY(MAX)) " +
-                                  $"FROM OPENROWSET(BULK N'{row.FilePath}', SINGLE_BLOB) AS Document");
-                    sb.AppendLine("INSERT INTO PM_ProjectFiles (FileId,UploadedFile,Fname,Ftype," +
-                                  "Proj_ID,StageNo,UploadDate,MainFile) " +
-                                  "SELECT NEWID(),@Ufile,@Fname,@Ftype,@Proj_ID,@StageNo,@UploadDate,@MainFile");
-
-                    var cmd = new SqlCommand(sb.ToString(), conn);
-                    cmd.Parameters.Add("@Fname",      SqlDbType.NVarChar).Value  = fileName;
-                    cmd.Parameters.Add("@Ftype",      SqlDbType.Int).Value       = row.FileTypeId;
-                    cmd.Parameters.Add("@Proj_ID",    SqlDbType.Int).Value       = ProjNo;
-                    cmd.Parameters.Add("@StageNo",    SqlDbType.Int).Value       = StageID;
-                    cmd.Parameters.Add("@UploadDate", SqlDbType.DateTime).Value  = DateTime.Now;
-                    cmd.Parameters.Add("@MainFile",   SqlDbType.Bit).Value       = mainFile;
-                    cmd.ExecuteNonQuery();
+                    // Stream bytes from the client, never ask SQL Server to
+                    // interpret a client path or embed that path in SQL.
+                    using (var file = new FileStream(row.FilePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                    using (var tx = conn.BeginTransaction())
+                    {
+                        using (var cmd = new SqlCommand(
+                            "INSERT INTO PM_ProjectFiles (FileId,UploadedFile,Fname,Ftype," +
+                            "Proj_ID,StageNo,UploadDate,MainFile) " +
+                            "VALUES (NEWID(),@Ufile,@Fname,@Ftype,@Proj_ID,@StageNo,@UploadDate,@MainFile); " +
+                            "SELECT CAST(SCOPE_IDENTITY() AS int)", conn, tx))
+                        {
+                            cmd.Parameters.Add("@Ufile", SqlDbType.VarBinary, -1).Value = file;
+                            cmd.Parameters.Add("@Fname", SqlDbType.NVarChar).Value = fileName;
+                            cmd.Parameters.Add("@Ftype", SqlDbType.Int).Value = row.FileTypeId;
+                            cmd.Parameters.Add("@Proj_ID", SqlDbType.Int).Value = ProjNo;
+                            cmd.Parameters.Add("@StageNo", SqlDbType.Int).Value = StageID;
+                            cmd.Parameters.Add("@UploadDate", SqlDbType.DateTime).Value = DateTime.Now;
+                            cmd.Parameters.Add("@MainFile", SqlDbType.Bit).Value = mainFile;
+                            object identity = cmd.ExecuteScalar();
+                            if (identity == null || identity == DBNull.Value || Convert.ToInt32(identity) <= 0)
+                                throw new InvalidOperationException("تعذر تحديد هوية الملف المحفوظ.");
+                            int fileNo = Convert.ToInt32(identity);
+                            tx.Commit();
+                            row.FileNo = fileNo;
+                            row.ProjId = ProjNo;
+                            row.FileName = fileName;
+                            row.FilePath = "";
+                        }
+                    }
 
                     DXMessageBox.Show(string.Equals(MainClass.Language, "ar",
                         StringComparison.OrdinalIgnoreCase)
@@ -547,11 +617,16 @@ namespace SmartAuditERP.Form_WPF
 
                     int mainFile = row.IsMain ? 1 : 0;
                     var cmd = new SqlCommand(
-                        $"Update PM_ProjectFiles set Fname=@Fname, MainFile=@MainFile " +
-                        $"where FileNo={row.FileNo}", conn);
-                    cmd.Parameters.Add("@Fname",    SqlDbType.NVarChar).Value = row.FileName;
-                    cmd.Parameters.Add("@MainFile", SqlDbType.Bit).Value      = mainFile;
-                    cmd.ExecuteNonQuery();
+                        "UPDATE PM_ProjectFiles SET Fname=@Fname, MainFile=@MainFile " +
+                        "WHERE FileNo=@FileNo AND Proj_ID=@Project AND StageNo=@Stage " +
+                        "AND ISNULL(IS_Deleted,0)=0", conn);
+                    cmd.Parameters.Add("@Fname",    SqlDbType.NVarChar).Value = row.FileName ?? "";
+                    cmd.Parameters.Add("@MainFile", SqlDbType.Bit).Value = mainFile;
+                    cmd.Parameters.Add("@FileNo", SqlDbType.Int).Value = row.FileNo;
+                    cmd.Parameters.Add("@Project", SqlDbType.Int).Value = ProjNo;
+                    cmd.Parameters.Add("@Stage", SqlDbType.Int).Value = StageID;
+                    if (cmd.ExecuteNonQuery() != 1)
+                        throw new InvalidOperationException("لم يعد الملف مطابقاً للمشروع والمرحلة.");
 
                     DXMessageBox.Show("تم تعديل معلومات الملف");
                 }
@@ -565,13 +640,17 @@ namespace SmartAuditERP.Form_WPF
 
         private void LoadSavedFile(ProjFileRow row)
         {
-            if (row.FileNo <= 0) return;
+            if (row.FileNo <= 0 || !IsCurrentFileRow(row)) return;
 
             try
             {
-                var adapter = new SqlDataAdapter(
-                    $"SELECT UploadedFile,Fname,Ftype FROM PM_ProjectFiles where FileNo={row.FileNo}",
-                    conn);
+                var cmd = new SqlCommand(
+                    "SELECT UploadedFile,Fname,Ftype FROM PM_ProjectFiles " +
+                    "WHERE FileNo=@FileNo AND Proj_ID=@Project AND StageNo=@Stage AND ISNULL(IS_Deleted,0)=0", conn);
+                cmd.Parameters.Add("@FileNo", SqlDbType.Int).Value = row.FileNo;
+                cmd.Parameters.Add("@Project", SqlDbType.Int).Value = ProjNo;
+                cmd.Parameters.Add("@Stage", SqlDbType.Int).Value = StageID;
+                var adapter = new SqlDataAdapter(cmd);
                 var ds = new DataSet();
                 adapter.Fill(ds);
                 var dt = ds.Tables[0];
@@ -591,12 +670,11 @@ namespace SmartAuditERP.Form_WPF
                     _ => ".bin"
                 };
 
-                string filePath = Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.Personal),
-                    $"file{ext}");
-
-                using var fs = new FileStream(filePath, FileMode.Create, FileAccess.Write);
-                fs.Write(data, 0, data.Length);
+                string folder = Path.Combine(Path.GetTempPath(), "SmartAuditERP");
+                Directory.CreateDirectory(folder);
+                string filePath = Path.Combine(folder, Guid.NewGuid().ToString("N") + ext);
+                using (var fs = new FileStream(filePath, FileMode.CreateNew, FileAccess.Write))
+                    fs.Write(data, 0, data.Length);
 
                 Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
             }
@@ -936,6 +1014,11 @@ namespace SmartAuditERP.Form_WPF
         {
             if (sender is Button btn && btn.Tag is ProjFileRow row)
             {
+                if (row.FileNo > 0)
+                {
+                    DXMessageBox.Show("حذف الملف المحفوظ غير متاح حتى اعتماد سياسة الحذف والاحتفاظ.");
+                    return;
+                }
                 if (DXMessageBox.Show("هل تريد حذف الملف؟", "",
                     MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                     _filesSource.Remove(row);

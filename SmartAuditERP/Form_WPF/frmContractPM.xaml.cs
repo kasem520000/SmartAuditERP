@@ -507,7 +507,7 @@ namespace SmartAuditERP.Form_WPF
                         Price = price,
                         Total = price * quantity,
                         VAT = vat,
-                        NetValue = price + vat,
+                        NetValue = price * quantity + vat,
                         StatusName = GetStatusName(Convert.ToInt32(row["status"]))
                     });
                 }
@@ -524,6 +524,14 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            // Existing contracts lack a reliable reconciliation of contract,
+            // detail, project and journal identities. Refuse destructive edits.
+            if (_currentCode != -1)
+            {
+                MessageBox.Show("تعديل العقد المحفوظ غير متاح حتى التحقق من هويته ومشروعاته والقيود المرتبطة.",
+                    "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
             EnsureConnectionOpen(_connection);
             EnsureConnectionOpen(_connectionSecondary);
 
@@ -675,7 +683,8 @@ namespace SmartAuditERP.Form_WPF
                 mainCommand.Parameters.Add("@RestractionPk", SqlDbType.Int).Value = entryNumber;
                 mainCommand.Parameters.Add("@BranchPK", SqlDbType.Int).Value = MainClass.BranchNo;
                 mainCommand.Parameters.Add("@TotVal", SqlDbType.Float).Value = ParseDouble(txtTotPrice.Text);
-                mainCommand.Parameters.Add("@VATval", SqlDbType.Float).Value = 0;
+                // Use the same computed VAT value passed to the journal path.
+                mainCommand.Parameters.Add("@VATval", SqlDbType.Float).Value = ParseDouble(txtNetVAT.Text);
                 mainCommand.Parameters.Add("@discount", SqlDbType.Float).Value = 0;
                 mainCommand.Parameters.Add("@NetCost", SqlDbType.Float).Value = netValue;
                 mainCommand.Parameters.Add("@Salesman", SqlDbType.Int).Value = salesmanId;

@@ -216,40 +216,58 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
-                int     itemId    = 0;
-                int     unitId    = 0;
-                decimal itemPrice = 0;
-                decimal itemQty   = 0;
-
-                ItemOper.SearchForBarcode(barcode.Trim(),
-                    ref itemId, ref unitId, ref itemPrice, ref itemQty, false);
-
-                if (itemId > 0)
+                string scanned = (barcode ?? "").Trim();
+                if (scanned.Length == 0 || scanned.Length > 50)
                 {
+                    DXMessageBox.Show("الباركود فارغ أو أطول من الحد المسموح.");
+                    return;
+                }
+
+                // Only an exact, unique unit barcode carries an unambiguous
+                // unit price. Scale payloads and aliases without a unit mapping
+                // must not be printed with the item header price by guesswork.
+                using (var cmd = new SqlCommand(
+                    "SELECT I.id, I.code, I.name, U.unit, U.sale " +
+                    "FROM ItemUnits U INNER JOIN Items I ON I.id=U.ItemId " +
+                    "WHERE I.IS_Deleted=0 AND U.barcode=@barcode", _conn))
+                {
+                    cmd.Parameters.Add("@barcode", SqlDbType.NVarChar, 50).Value = scanned;
+                    var dt = new DataTable();
+                    using (var da = new SqlDataAdapter(cmd)) da.Fill(dt);
+                    if (dt.Rows.Count != 1 || dt.Rows[0]["unit"] == DBNull.Value ||
+                        Convert.ToInt32(dt.Rows[0]["unit"]) <= 0 || dt.Rows[0]["sale"] == DBNull.Value)
+                    {
+                        DXMessageBox.Show("تعذر تحديد وحدة وسعر وحيدين لهذا الباركود؛ لا يمكن إنشاء الملصق.");
+                        return;
+                    }
+                    double price = Convert.ToDouble(dt.Rows[0]["sale"]);
+                    if (double.IsNaN(price) || double.IsInfinity(price))
+                    {
+                        DXMessageBox.Show("سعر الوحدة غير صالح لطباعة الملصق.");
+                        return;
+                    }
                     var item = new ItemDgv
                     {
                         RowIndex      = ItemList.Count + 1,
-                        ItemCode      = Common.GetItemCode(itemId),
-                        ItemName      = Common.GetItemName(itemId),
-                        ItemBarcode   = barcode.Trim(),
-                        ItemSalePrice = Common.GetItemPrice(itemId),
+                        ItemCode      = dt.Rows[0]["code"].ToString(),
+                        ItemName      = dt.Rows[0]["name"].ToString(),
+                        ItemBarcode   = scanned,
+                        ItemSalePrice = price,
                         ItemQty       = 1,
                         ItemProDate   = DateTime.Now.Date,
                         ItemExpDate   = DateTime.Now.Date
                     };
-
                     ItemList.Add(item);
-                    txtItemCode.Text    = item.ItemCode;
-                    txtItemName.Text    = item.ItemName;
-                    txtItemBarcode.Text = barcode.Trim();
+                    txtItemCode.Text = item.ItemCode;
+                    txtItemName.Text = item.ItemName;
+                    txtItemBarcode.Text = scanned;
                     UpdateGrid();
                 }
-                else
-                {
-                    AddNewItem();
-                }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                DXMessageBox.Show("تعذر قراءة الباركود: " + ex.Message);
+            }
         }
 
         #endregion
