@@ -1,0 +1,778 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "entry_checkout": "3589d23a26438300d631790487eafe3aaddef7fb",
+  "source_head": "10ba215152f722c8808aea0bb672c1d1d4d9d711",
+  "method": "Strict UTF8 source hashes/lexical observations and finite supplied import-return/assignment fixtures, NOT application execution",
+  "application_code_imported_or_executed": false,
+  "dotnet_wpf_sql_or_SDK_executed": false,
+  "application_remediation_performed": false,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "all_callers_or_external_DTOs_body_reviewed": false,
+  "actual_WPF_chrome_close_result_or_event_schedule_claimed": false,
+  "SDK_setter_defaults_or_reentrancy_modeled": false,
+  "provider_failure_observed": false,
+  "database_commit_or_saved_loss_claimed": false,
+  "new_GlobalID_allocated_or_SQL_write_claimed": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "scanner_or_printer_tests_executed": 0,
+  "normal_nonaccepted_return_and_nonnull_editor_are_supplied": true,
+  "number_result_or_failure_is_supplied": true,
+  "B_R4n_bounded_not_whole7B_closure": true,
+  "unresolved_external_contracts_and_explicit_splits_retained": true,
+  "selected_paths_strict_utf8_decode": true,
+  "prior015_046_091_148_151_155_158_not_recounted": true,
+  "new_root_ids": [
+    "P7-160"
+  ],
+  "extended_existing_root_ids": [
+    "P7-159"
+  ],
+  "illustration_count": 18,
+  "lexical_check_count": 18,
+  "selected_source_paths": 7,
+  "whole_local_files_selected": 2,
+  "source_read_slice_count": 14,
+  "retained_additive_B10_arithmetic_erratum": {
+    "local_cost": 10,
+    "reference_cost": 120,
+    "equality1_control": 10,
+    "protected_G138_not_rewritten": true
+  },
+  "unadjudicated_source_leads_not_additional_findings": [
+    "other import/search/linked callers,fields,writers,outputs,branch and allowed-set",
+    "all SDK identity/collection/copy/defaults and binding reentrancy",
+    "number-failure and copy/load/outcome policies with financial/ACL/stock/save barriers",
+    "Product/BulkPatch/LineRef/OwnedSeed/PropertiesResult/basket/RepeatOutcome,census455FE,currency/precision/templates"
+  ],
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmImportInvoice.xaml.cs",
+      "start": 1,
+      "end": 419,
+      "whole_local_file_selected": true,
+      "sha256": "3971f16dd152841b959c4c4e99e2a560fa301392936c2529efcfcc9679749a88",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmImportInvoice.xaml",
+      "start": 1,
+      "end": 449,
+      "whole_local_file_selected": true,
+      "sha256": "f8a1fcaf2592cfe083ccd7844d9d3c2552de894ae9ee10ce716d8435d11696d0",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 281,
+      "end": 298,
+      "whole_local_file_selected": false,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 445,
+      "end": 475,
+      "whole_local_file_selected": false,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 481,
+      "end": 502,
+      "whole_local_file_selected": false,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 1531,
+      "end": 1593,
+      "whole_local_file_selected": false,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 2558,
+      "end": 2577,
+      "whole_local_file_selected": false,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml",
+      "start": 1383,
+      "end": 1384,
+      "whole_local_file_selected": false,
+      "sha256": "0c519c74b0fa74213ffb19f9de07ee54b52ece09b00597c6a1fe48e369e15c11",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 558,
+      "end": 570,
+      "whole_local_file_selected": false,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 1447,
+      "end": 1493,
+      "whole_local_file_selected": false,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 1607,
+      "end": 1679,
+      "whole_local_file_selected": false,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 3348,
+      "end": 3373,
+      "whole_local_file_selected": false,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml",
+      "start": 1183,
+      "end": 1183,
+      "whole_local_file_selected": false,
+      "sha256": "289a5a6bce98948818d3847a9cdf50870a35ca8269416a1ac3dd293db13e4e6d",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 2789,
+      "end": 2808,
+      "whole_local_file_selected": false,
+      "sha256": "0bab36016f53ecd18360833d1fba980290702a52a98871fb397be9e813810d91",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    }
+  ],
+  "illustrations": [
+    {
+      "id": "ALG7B30-01",
+      "title": "Nonaccepted purchase blocks Navigate but converts current editor",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2558-2577;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:445-475;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1383-1384;SmartAuditERP/Form_WPF/frmImportInvoice.xaml.cs:49-61;SmartAuditERP/Form_WPF/frmImportInvoice.xaml.cs:371-389;SmartAuditERP/Form_WPF/frmImportInvoice.xaml:1-14;SmartAuditERP/Form_WPF/frmImportInvoice.xaml:398-413",
+      "actual": [
+        false,
+        true,
+        "",
+        41,
+        true,
+        true
+      ],
+      "expected": [
+        false,
+        true,
+        "",
+        41,
+        true,
+        true
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ALG7B30-02",
+      "title": "Nonaccepted sale has same160 plus explicit later flag writes",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3348-3373;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1493;SmartAuditERP/Form_WPF/frmInvSale.xaml:1183-1183;SmartAuditERP/Form_WPF/frmImportInvoice.xaml.cs:49-61;SmartAuditERP/Form_WPF/frmImportInvoice.xaml.cs:371-389;SmartAuditERP/Form_WPF/frmImportInvoice.xaml:1-14;SmartAuditERP/Form_WPF/frmImportInvoice.xaml:398-413",
+      "actual": [
+        [
+          false,
+          true,
+          "",
+          41,
+          true,
+          true
+        ],
+        false,
+        false
+      ],
+      "expected": [
+        [
+          false,
+          true,
+          "",
+          41,
+          true,
+          true
+        ],
+        false,
+        false
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ALG7B30-03",
+      "title": "Sale types3/5 become zero; other supplied item inherits current impact",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3348-3373;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1493;SmartAuditERP/Form_WPF/frmInvSale.xaml:1183-1183",
+      "actual": [
+        [
+          "fixture-L1",
+          -1
+        ],
+        [
+          "fixture-L2",
+          0
+        ],
+        [
+          "fixture-L3",
+          0
+        ]
+      ],
+      "expected": [
+        [
+          "fixture-L1",
+          -1
+        ],
+        [
+          "fixture-L2",
+          0
+        ],
+        [
+          "fixture-L3",
+          0
+        ]
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ALG7B30-04",
+      "title": "Not-done with non-sentinel still does not Navigate yet executes tail",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2558-2577;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:445-475;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1383-1384",
+      "actual": [
+        false,
+        true,
+        "",
+        41,
+        true,
+        true
+      ],
+      "expected": [
+        false,
+        true,
+        "",
+        41,
+        true,
+        true
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ALG7B30-05",
+      "title": "Done with sentinel also leaves unconditional tail reachable",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3348-3373;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1493;SmartAuditERP/Form_WPF/frmInvSale.xaml:1183-1183",
+      "actual": [
+        false,
+        true,
+        "",
+        41,
+        true,
+        true
+      ],
+      "expected": [
+        false,
+        true,
+        "",
+        41,
+        true,
+        true
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ALG7B30-06",
+      "title": "Accepted purchase import calls Navigate without dirty guard: existing159",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2558-2577;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1383-1384;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3348-3373;SmartAuditERP/Form_WPF/frmInvSale.xaml:1183-1183;SmartAuditERP/Form_WPF/frmImportInvoice.xaml.cs:49-61;SmartAuditERP/Form_WPF/frmImportInvoice.xaml.cs:371-389;SmartAuditERP/Form_WPF/frmImportInvoice.xaml:398-413;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1593;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1607-1679",
+      "actual": [
+        true,
+        false,
+        false
+      ],
+      "expected": [
+        true,
+        false,
+        false
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Accepted importer is an additive source extension of159, not a second new root. Explicit normal Navigate outcome only. Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ALG7B30-07",
+      "title": "Accepted sale import is the same159 extension",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2558-2577;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1383-1384;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3348-3373;SmartAuditERP/Form_WPF/frmInvSale.xaml:1183-1183;SmartAuditERP/Form_WPF/frmImportInvoice.xaml.cs:49-61;SmartAuditERP/Form_WPF/frmImportInvoice.xaml.cs:371-389;SmartAuditERP/Form_WPF/frmImportInvoice.xaml:398-413;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1593;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1607-1679",
+      "actual": [
+        "fixture-EDITOR-B",
+        "fixture-DOC-B",
+        false
+      ],
+      "expected": [
+        "fixture-EDITOR-B",
+        "fixture-DOC-B",
+        false
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ALG7B30-08",
+      "title": "Supplied number failure does not undo earlier purchase note assignment",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2558-2577;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:445-475;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1383-1384;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Class/InvoiceOper.cs:2789-2808",
+      "actual": [
+        [
+          false,
+          true,
+          "",
+          7,
+          false,
+          false
+        ],
+        false
+      ],
+      "expected": [
+        [
+          false,
+          true,
+          "",
+          7,
+          false,
+          false
+        ],
+        false
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Earlier local writes precede number-helper call; supplied failure, not an induced provider exception. Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ALG7B30-09",
+      "title": "Supplied sale number failure retains earlier item writes but not later flags",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3348-3373;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1493;SmartAuditERP/Form_WPF/frmInvSale.xaml:1183-1183;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Class/InvoiceOper.cs:2789-2808",
+      "actual": [
+        [
+          false,
+          true,
+          "",
+          7,
+          false,
+          false
+        ],
+        [
+          -1,
+          0,
+          0
+        ],
+        true,
+        true
+      ],
+      "expected": [
+        [
+          false,
+          true,
+          "",
+          7,
+          false,
+          false
+        ],
+        [
+          -1,
+          0,
+          0
+        ],
+        true,
+        true
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ALG7B30-10",
+      "title": "A clean existing editor still reaches the nonaccepted conversion tail",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3348-3373;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1493;SmartAuditERP/Form_WPF/frmInvSale.xaml:1183-1183",
+      "actual": [
+        false,
+        true,
+        "",
+        41,
+        true,
+        true
+      ],
+      "expected": [
+        false,
+        true,
+        "",
+        41,
+        true,
+        true
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Dirty state is not required for160; clean supplied state isolates cancellation/conversion from159. Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ALG7B30-11",
+      "title": "An explicit empty sale item list does not prevent header conversion",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3348-3373;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1493;SmartAuditERP/Form_WPF/frmInvSale.xaml:1183-1183",
+      "actual": [
+        false,
+        true,
+        "",
+        41,
+        true,
+        true
+      ],
+      "expected": [
+        false,
+        true,
+        "",
+        41,
+        true,
+        true
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ALG7B30-12",
+      "title": "Number/combined ID rewrite is NOT a new GlobalID or SQL write",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2558-2577;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:445-475;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1383-1384;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Class/InvoiceOper.cs:2789-2808",
+      "actual": [
+        "fixture-DOC-A",
+        "fixture-CODE-P-41",
+        false
+      ],
+      "expected": [
+        "fixture-DOC-A",
+        "fixture-CODE-P-41",
+        false
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ALG7B30-13",
+      "title": "A dialog that does not return normally never reaches this tail",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3348-3373;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1493;SmartAuditERP/Form_WPF/frmInvSale.xaml:1183-1183",
+      "actual": [
+        false,
+        false,
+        true
+      ],
+      "expected": [
+        false,
+        false,
+        true
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Exception is a finite counter-control, not a WPF/provider failure reproduction. No claim that every cancellation returns normally."
+    },
+    {
+      "id": "ALG7B30-14",
+      "title": "Assignments may be value-idempotent on an explicitly matching fixture",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2558-2577;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:445-475;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1383-1384",
+      "actual": [
+        true,
+        false
+      ],
+      "expected": [
+        true,
+        false
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "160 is not a claim that every normal nonaccepted return visibly changes every object. Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ALG7B30-15",
+      "title": "Purchase tail has no explicit print/update reset at this boundary",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2558-2577;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:445-475;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1383-1384",
+      "actual": [
+        true,
+        true
+      ],
+      "expected": [
+        true,
+        true
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Absence of those writes only within selected tail, not SDK setter effects or later binding events. Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ALG7B30-16",
+      "title": "Supplied mismatching header type/process are replaced by current config",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3348-3373;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1493;SmartAuditERP/Form_WPF/frmInvSale.xaml:1183-1183",
+      "actual": [
+        2,
+        1
+      ],
+      "expected": [
+        2,
+        1
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "No assumption that every real loaded editor starts mismatching current configuration. Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ALG7B30-17",
+      "title": "Explicit nonaccept then accepted retry separates160 from159",
+      "finding_ids": "P7-160;P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3348-3373;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1493;SmartAuditERP/Form_WPF/frmInvSale.xaml:1183-1183;SmartAuditERP/Form_WPF/frmImportInvoice.xaml.cs:49-61;SmartAuditERP/Form_WPF/frmImportInvoice.xaml.cs:371-389;SmartAuditERP/Form_WPF/frmImportInvoice.xaml:1-14;SmartAuditERP/Form_WPF/frmImportInvoice.xaml:398-413",
+      "actual": [
+        true,
+        true,
+        true,
+        false
+      ],
+      "expected": [
+        true,
+        true,
+        true,
+        false
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Two supplied function invocations, NOT a WPF reopen/event/default-retention schedule. Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ALG7B30-18",
+      "title": "Adjacent New guard with supplied No blocks reset; not an import interceptor",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1593;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1607-1679",
+      "actual": [
+        true,
+        true
+      ],
+      "expected": [
+        true,
+        true
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Existing source control with supplied flags/count/No, not MessageBox execution or proof Closing intercepts import."
+    }
+  ],
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B30-01",
+      "title": "Explicit fresh child fields remain sentinel/not-done until accept",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmImportInvoice.xaml.cs:49-61;SmartAuditERP/Form_WPF/frmImportInvoice.xaml.cs:371-389;SmartAuditERP/Form_WPF/frmImportInvoice.xaml:1-14;SmartAuditERP/Form_WPF/frmImportInvoice.xaml:398-413",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical, not a C# parser or execution. Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ST7B30-02",
+      "title": "Accept handler assigns GID and done before Close",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmImportInvoice.xaml.cs:371-389",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical, not a C# parser or execution. Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ST7B30-03",
+      "title": "Child own row button binds GID and invokes accept",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmImportInvoice.xaml:398-413",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical, not a C# parser or execution. Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ST7B30-04",
+      "title": "Whole local child has no Closing/closed/dialog-result acceptance override",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmImportInvoice.xaml.cs:1-419;SmartAuditERP/Form_WPF/frmImportInvoice.xaml:1-449",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical, not a C# parser or execution. Local absence only: inherited DevExpress/WPF chrome/normal-close bool? and actual event schedule are NOT proven; normal nonaccepted return is supplied."
+    },
+    {
+      "id": "ST7B30-05",
+      "title": "Purchase own tools menu wires invoice import",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml:1383-1384",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical, not a C# parser or execution. Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ST7B30-06",
+      "title": "Sale own tools menu wires invoice import",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml:1183-1183",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical, not a C# parser or execution. Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ST7B30-07",
+      "title": "Purchase guard encloses Navigate only, closes before conversion",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2558-2577",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical, not a C# parser or execution. Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ST7B30-08",
+      "title": "Sale single guarded statement is Navigate; conversion follows",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3348-3373",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical, not a C# parser or execution. Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ST7B30-09",
+      "title": "Accepted purchase caller lacks CheckBeforeClear",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2558-2577",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical, not a C# parser or execution. Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ST7B30-10",
+      "title": "Accepted sale caller lacks CheckBeforeClear",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3348-3373",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical, not a C# parser or execution. Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ST7B30-11",
+      "title": "Purchase note precedes number helper, ISNew and BindingControls",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2558-2577",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical, not a C# parser or execution. Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ST7B30-12",
+      "title": "Sale item-impact loop precedes note and number helper",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3348-3373",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical, not a C# parser or execution. Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ST7B30-13",
+      "title": "Sale later flags follow number helper and precede binding",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3348-3373",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical, not a C# parser or execution. Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ST7B30-14",
+      "title": "Both number helpers write InvoiceNo/combined ID and UI number",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Class/InvoiceOper.cs:2789-2808",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical, not a C# parser or execution. Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ST7B30-15",
+      "title": "Selected shared number helper reads MAX+1 with prefix fallback",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:2789-2808",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical, not a C# parser or execution. Source SELECT/candidate calculation only; NOT executed allocation/reservation, no concurrency experiment or new GlobalID claim."
+    },
+    {
+      "id": "ST7B30-16",
+      "title": "Both binding heads can publish number and cleared note",
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:445-475;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1493",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical, not a C# parser or execution. Publication assignments/attempt only; binding events, rendering and final stable flags are not modeled."
+    },
+    {
+      "id": "ST7B30-17",
+      "title": "Both Navigate bodies clear before BindingInvoice",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1593;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1607-1679",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical, not a C# parser or execution. Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    },
+    {
+      "id": "ST7B30-18",
+      "title": "Existing New guard differs from unconditional import tail",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1593;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1607-1679",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical, not a C# parser or execution. Finite supplied non-null editor/items/config and normal setter completion; number outcome supplied, not SQL. Stops at assignments/binding attempt before WPF reentrancy; not financial/save/stock acceptance."
+    }
+  ],
+  "errors": []
+}
