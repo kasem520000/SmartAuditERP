@@ -585,18 +585,26 @@ namespace SmartAuditERP.Form_WPF
         {
             _displayRows.Clear();
 
+            // R-145 (P7-118): grow from roots by the requested number of edges.
+            // The visited set also prevents cycles from extending the traversal.
+            var visibleCodes = new HashSet<int>();
+            var frontier = new HashSet<int>();
             foreach (AccountNode node in AccountList)
+                if (node.TrParentAcc == 0 && visibleCodes.Add(node.TrAccount))
+                    frontier.Add(node.TrAccount);
+
+            for (int level = 0; level < maxLevel && frontier.Count > 0; level++)
             {
-                if (node.TrParentAcc == 0 && maxLevel >= 0)
-                {
-                    _displayRows.Add(node);
-                }
-                else if (maxLevel >= 1)
-                {
-                    bool parentIsRoot = AccountList.Exists(p => p.TrAccount == node.TrParentAcc && p.TrParentAcc == 0);
-                    if (parentIsRoot) _displayRows.Add(node);
-                }
+                var next = new HashSet<int>();
+                foreach (AccountNode node in AccountList)
+                    if (frontier.Contains(node.TrParentAcc) && visibleCodes.Add(node.TrAccount))
+                        next.Add(node.TrAccount);
+                frontier = next;
             }
+
+            foreach (AccountNode node in AccountList)
+                if (visibleCodes.Contains(node.TrAccount))
+                    _displayRows.Add(node);
 
             UpdateRowCount();
             CalcSum();

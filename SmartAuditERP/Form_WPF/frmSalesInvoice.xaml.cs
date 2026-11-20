@@ -1288,6 +1288,7 @@ namespace SmartAuditERP.Form_WPF
                 string barcode = txtBarcode.Text.Trim();
                 if (string.IsNullOrEmpty(barcode))
                 {
+                    RowIndex = _itemsSource.Count;
                     AddNewItem();
                     return;
                 }
@@ -1456,7 +1457,7 @@ namespace SmartAuditERP.Form_WPF
                 }
 
                 // Add new row
-                if (RowIndex < _itemsSource.Count)
+                if (RowIndex >= 0 && RowIndex < _itemsSource.Count)
                     _itemsSource.RemoveAt(RowIndex);
 
                 var newRow = new InvoiceItemRow_frmSalesInvoice
@@ -1501,11 +1502,16 @@ namespace SmartAuditERP.Form_WPF
 
                 if (frm.ISDone && frm.ItemId > 0)
                 {
+                    bool firstSelection = true;
                     foreach (int id in frm.Itemlist)
                     {
+                        // R-142 (P7-146): only the first selection may use the
+                        // original edit row; later items must not replace prior items.
+                        if (!firstSelection || RowIndex < 0 || RowIndex > _itemsSource.Count)
+                            RowIndex = _itemsSource.Count;
                         SelectedId = id;
                         SearchByID(0);
-                        RowIndex = _itemsSource.Count - 1;
+                        firstSelection = false;
                     }
                 }
             }

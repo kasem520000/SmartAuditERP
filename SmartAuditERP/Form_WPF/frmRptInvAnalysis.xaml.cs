@@ -490,10 +490,11 @@ namespace SmartAuditERP.Form_WPF
         /// <summary>
         /// حساب تكلفة الوحدة بناءً على حركات الشراء
         /// </summary>
+        // R-143 (P7-077): do not quantize the divisor before calculating unit cost.
         private double CalcUnitCost(object itemId, DateTime saleDate)
         {
             double totalCostValue = 0.0;
-            int totalQty = 0;
+            double totalQty = 0.0;
             double unitCost = 0.0;
 
             // من فواتير الشراء
@@ -511,7 +512,7 @@ namespace SmartAuditERP.Form_WPF
                 double.TryParse(dt.Rows[0][1].ToString(), out double v);
                 totalCostValue += v;
                 if (double.TryParse(dt.Rows[0][0].ToString(), out double q))
-                    totalQty += (int)Math.Round(q);
+                    totalQty += q;
             }
 
             // من مرتجعات الشراء
@@ -528,7 +529,7 @@ namespace SmartAuditERP.Form_WPF
                 double.TryParse(dt.Rows[0][1].ToString(), out double v);
                 totalCostValue += v;
                 if (double.TryParse(dt.Rows[0][0].ToString(), out double q))
-                    totalQty += (int)Math.Round(q);
+                    totalQty += q;
             }
 
             if (totalQty != 0)
@@ -555,7 +556,7 @@ namespace SmartAuditERP.Form_WPF
         private double CalcUnitCostStock(object itemId, DateTime saleDate)
         {
             double totalCostValue = 0.0;
-            int totalQty = 0;
+            double totalQty = 0.0;
             double unitCost = 0.0;
 
             var adp = new SqlDataAdapter(
@@ -572,7 +573,7 @@ namespace SmartAuditERP.Form_WPF
                 double.TryParse(dt.Rows[0][1].ToString(), out double v);
                 totalCostValue += v;
                 if (double.TryParse(dt.Rows[0][0].ToString(), out double q))
-                    totalQty += (int)Math.Round(q);
+                    totalQty += q;
             }
 
             var adp2 = new SqlDataAdapter(
@@ -589,7 +590,7 @@ namespace SmartAuditERP.Form_WPF
                 double.TryParse(dt2.Rows[0][1].ToString(), out double v);
                 totalCostValue += v;
                 if (double.TryParse(dt2.Rows[0][0].ToString(), out double q))
-                    totalQty += (int)Math.Round(q);
+                    totalQty += q;
             }
 
             if (totalQty != 0)
@@ -1286,17 +1287,26 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
-                DateTime dateFrom = GetDateFrom();
-                DateTime dateTo = GetDateTo();
+                DateTime dateFrom = GetDateFrom().Date;
+                DateTime dateTo = GetDateTo().Date;
+                // R-144 (P7-079): dates represent inclusive calendar days;
+                // use a half-open interval for every monthly query.
+                if (dateFrom > dateTo || dateTo == DateTime.MaxValue.Date)
+                {
+                    Dispatcher.Invoke(() => DXMessageBox.Show(
+                        "نطاق التاريخ غير صالح.", "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning));
+                    return;
+                }
+                DateTime requestedEndExclusive = dateTo.AddDays(1);
 
                 var adp = new SqlDataAdapter(
                     "select distinct date=DATEADD(MONTH, DATEDIFF(MONTH, 0, date), 0) " +
                     " from inv,inv_sub where inv.InvGlobalID=inv_sub.InvGlobalID " +
                     " and inv.proc_type=1 and inv_sub.proc_type=2 " +
-                    " and date>=@date1 and date<=@date2 and IS_Deleted=0 " +
+                    " and date>=@date1 and date<@date2 and IS_Deleted=0 " +
                     " GROUP BY DATEADD(MONTH, DATEDIFF(MONTH, 0, date),0)", conn);
-                adp.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
-                adp.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateTo.AddDays(1.0).ToShortDateString();
+                adp.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom;
+                adp.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = requestedEndExclusive;
                 var dt = new DataTable();
                 adp.Fill(dt);
 
@@ -1324,20 +1334,22 @@ namespace SmartAuditERP.Form_WPF
                     if (!allCust) filter += $"cust_id={custVal} and ";
                     if (!allSales) filter += $"salesman={salesVal} and ";
                     if (!allGroups) filter += $"ItemsCategory.id={groupVal} and ";
-                    filter += " date>=@date1 and date<=@date2 and ";
+                    filter += " date>=@date1 and date<@date2 and ";
 
                     DateTime monthStart = Convert.ToDateTime(dt.Rows[i]["date"]);
-                    DateTime monthEnd = new DateTime(
-                        monthStart.Year, monthStart.Month,
-                        DateTime.DaysInMonth(monthStart.Year, monthStart.Month));
+                    DateTime nextMonth = monthStart.Year == 9999 && monthStart.Month == 12
+                        ? DateTime.MaxValue : monthStart.AddMonths(1);
+                    DateTime rangeStart = monthStart > dateFrom ? monthStart : dateFrom;
+                    DateTime rangeEndExclusive = nextMonth < requestedEndExclusive
+                        ? nextMonth : requestedEndExclusive;
 
                     var adp2 = new SqlDataAdapter(
                         "select distinct inv.InvGlobalID from inv,inv_sub,Items,ItemsCategory where " + filter +
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
                         " and inv_sub.proc_type=2 and inv.is_deleted=0", conn);
-                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = monthStart;
-                    adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = monthEnd;
+                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = rangeStart;
+                    adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = rangeEndExclusive;
                     var dt2 = new DataTable();
                     adp2.Fill(dt2);
                     int invCount = dt2.Rows.Count;
@@ -1349,8 +1361,8 @@ namespace SmartAuditERP.Form_WPF
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
                         " and inv_sub.proc_type=2 and inv.is_deleted=0 group by inv.InvGlobalID) as tbl", conn);
-                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = monthStart;
-                    adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = monthEnd;
+                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = rangeStart;
+                    adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = rangeEndExclusive;
                     dt2 = new DataTable();
                     adp2.Fill(dt2);
 
@@ -1368,8 +1380,8 @@ namespace SmartAuditERP.Form_WPF
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
                         " and inv_sub.proc_type=2 and inv.is_deleted=0 group by inv_sub.ItemId,inv.date", conn);
-                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = monthStart;
-                    adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = monthEnd;
+                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = rangeStart;
+                    adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = rangeEndExclusive;
                     dt2 = new DataTable();
                     adp2.Fill(dt2);
 

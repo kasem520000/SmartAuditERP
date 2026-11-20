@@ -388,6 +388,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            bool committed = false;
             try
             {
                 if (cmbGroup.SelectedIndex == -1)
@@ -408,21 +409,38 @@ namespace SmartAuditERP.Form_WPF
                 EnsureOpen(_conn);
                 int groupCode = Convert.ToInt32(cmbGroup.SelectedValue);
 
-                using (var delCmd = new SqlCommand(
-                    $"DELETE FROM PM_GroupStages WHERE ProjGropID={groupCode} AND IS_Deleted=0",
-                    _conn))
-                    delCmd.ExecuteNonQuery();
-
-                foreach (var row in _grpStagesSource)
+                // R-139 (P7-018): replace one group's stages as a single unit.
+                using (var tx = _conn.BeginTransaction())
                 {
-                    using (var insCmd = new SqlCommand(
-                        "INSERT INTO PM_GroupStages(StageId,ProjGropID,StageOrder,IS_Deleted) " +
-                        "VALUES(@StageId,@ProjGropID,@StageOrder,0)", _conn))
+                    try
                     {
-                        insCmd.Parameters.Add("@StageId",    SqlDbType.NVarChar).Value = row.StageID;
-                        insCmd.Parameters.Add("@ProjGropID", SqlDbType.NVarChar).Value = groupCode;
-                        insCmd.Parameters.Add("@StageOrder", SqlDbType.Int).Value      = row.StageOrder;
-                        insCmd.ExecuteNonQuery();
+                        using (var delCmd = new SqlCommand(
+                            "DELETE FROM PM_GroupStages WHERE ProjGropID=@GroupCode AND IS_Deleted=0",
+                            _conn, tx))
+                        {
+                            delCmd.Parameters.Add("@GroupCode", SqlDbType.Int).Value = groupCode;
+                            delCmd.ExecuteNonQuery();
+                        }
+
+                        foreach (var row in _grpStagesSource)
+                        {
+                            using (var insCmd = new SqlCommand(
+                                "INSERT INTO PM_GroupStages(StageId,ProjGropID,StageOrder,IS_Deleted) " +
+                                "VALUES(@StageId,@ProjGropID,@StageOrder,0)", _conn, tx))
+                            {
+                                insCmd.Parameters.Add("@StageId",    SqlDbType.NVarChar).Value = row.StageID;
+                                insCmd.Parameters.Add("@ProjGropID", SqlDbType.NVarChar).Value = groupCode;
+                                insCmd.Parameters.Add("@StageOrder", SqlDbType.Int).Value      = row.StageOrder;
+                                insCmd.ExecuteNonQuery();
+                            }
+                        }
+                        tx.Commit();
+                        committed = true;
+                    }
+                    catch
+                    {
+                        try { tx.Rollback(); } catch { }
+                        throw;
                     }
                 }
 
@@ -443,9 +461,13 @@ namespace SmartAuditERP.Form_WPF
             }
             catch (Exception ex)
             {
-                string errMsg = MainClass.Language == "en"
-                    ? $"Error during saving\nError details: {ex.Message}"
-                    : $"خطأ أثناء الحفظ\nتفاصيل الخطأ: {ex.Message}";
+                string errMsg = committed
+                    ? (MainClass.Language == "en"
+                        ? $"Saved, but the subsequent screen action failed: {ex.Message}"
+                        : $"تم الحفظ، لكن تعذر إكمال إجراء الشاشة: {ex.Message}")
+                    : (MainClass.Language == "en"
+                        ? $"Error during saving\nError details: {ex.Message}"
+                        : $"خطأ أثناء الحفظ\nتفاصيل الخطأ: {ex.Message}");
                 DXMessageBox.Show(errMsg, "", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally { CloseConn(_conn); }

@@ -177,7 +177,8 @@ namespace SmartAuditERP.Form_WPF
                     branchFilter = $"inv.branch={MainClass.BranchNo} AND ";
 
                 string sql =
-                    $"SELECT ComponentId, SUM(val) AS Quantity, " +
+                    // R-140 (P7-072): the production writer stores the component in Inv_Sub.ItemId.
+                    $"SELECT inv_sub.ItemId AS ComponentId, SUM(val) AS Quantity, " +
                     $"SUM(val1 * exchange_price) AS total " +
                     $"FROM inv, inv_sub " +
                     $"WHERE {branchFilter}" +
@@ -187,7 +188,7 @@ namespace SmartAuditERP.Form_WPF
                     $" AND ProductID={itemId} " +
                     $" AND date>=@date1 AND date<=@date2 " +
                     $" AND inv.IS_Deleted=0 " +
-                    $"GROUP BY ComponentId";
+                    $"GROUP BY inv_sub.ItemId";
 
                 var adapter = new SqlDataAdapter(sql, conn);
                 adapter.SelectCommand.Parameters.Add(

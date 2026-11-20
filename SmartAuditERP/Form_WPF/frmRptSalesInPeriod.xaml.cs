@@ -129,7 +129,8 @@ namespace SmartAuditERP.Form_WPF
                     retQty += q2;
                     retTot += t2;
 
-                    if (qty == 0.0) continue;
+                    // R-141 (P7-040): return-only items still contribute a negative net.
+                    if (qty == 0.0 && retQty == 0.0) continue;
 
                     double netQty   = qty - retQty;
                     double netTotal = Math.Round(total - retTot, 2);
