@@ -1,0 +1,50 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "raw_environment_clock_observed_utc": "2026-11-20T18:40:50.552723+00:00",
+  "stage": "After successful release02 default CLI and seal,before any B31 commit or push.",
+  "check_command": [
+    "git",
+    "-c",
+    "core.whitespace=cr-at-eol",
+    "diff",
+    "--cached",
+    "--check"
+  ],
+  "check_exit_code_observed": 2,
+  "check_stdout_transcription_not_raw_stream": "docs/audit/DATE-IDENTITY-NOTE-07B31.md:53: new blank line at EOF.\ndocs/audit/PHASE-07-REMAINING-07B31.md:159: new blank line at EOF.\ndocs/audit/PHASE-07B31.md:91: new blank line at EOF.\ndocs/audit/VALIDATION-07B31.md:111: new blank line at EOF.\n",
+  "transcription_source": "Arena bash tool result of git add followed by the staged whitespace check. The subsequent git diff --cached --stat command in that && chain did not run.",
+  "issue": "Four newly authored B31 Markdown reports had one extra final blank line. Earlier unstaged diff --check did not cover untracked new files. This is an audit-document style error,not an application defect or a failing documentary unit case.",
+  "affected_documents": [
+    "DATE-IDENTITY-NOTE-07B31.md",
+    "PHASE-07-REMAINING-07B31.md",
+    "PHASE-07B31.md",
+    "VALIDATION-07B31.md"
+  ],
+  "successful_prior_release": {
+    "path": "evidence/checks-07B31-release.json",
+    "bytes": 283432,
+    "sha256": "26721f263373ca28d439440b565b8cac5032af93574c94e4d9872dbaa862d2c5",
+    "child_exit_code": 0,
+    "wrapper_exit_code_observed": 0,
+    "cases": 1034,
+    "suites": 32,
+    "errors": [],
+    "stderr_bytes": 0
+  },
+  "retained_exact_documentary_inputs": {
+    "path": "evidence/documents-at-release02-07B31.json",
+    "bytes": 618258,
+    "sha256": "a1cb4c2746757950ce0f6b867842b5878d838b38ad3b8c1f4effd5c079ad2012",
+    "exact_eight_documents": true,
+    "all944_delivery_hashes": true
+  },
+  "correction": "Normalize newly authored current Markdown EOFs to one newline and redirect current official links to a distinct final capture checks-07B31-final.json. Retain successful release02 bytes and original inputs. Recheck the full staged patch before a new default-CLI final capture and a new independent seal.",
+  "protected_or_historical_files_changed": false,
+  "tool_bytes_changed": false,
+  "historical36_archive_rewritten": false,
+  "prior_exclusive_capture_writer_replayed": false,
+  "old_seal_overwritten": false,
+  "application_remediation_performed": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0
+}

@@ -1,28 +1,27 @@
 # تدقيق SmartAuditERP — فهرس العمل
 
 **مصدر التطبيق:** `10ba215152f722c8808aea0bb672c1d1d4d9d711`؛ **الفرع:** `arena/94ae8414-smartauditerp`.
-**مدخل B30:** تسليم B29 المدفوع `3589d23a26438300d631790487eafe3aaddef7fb`،وفيه **872 مادة تدقيق و331 نتيجة مفتوحة**. حقل سياق المتابعة `2026-11-16 UTC` ورصد ساعة البيئة عند التجميد `2026-11-20T17:16:39.021633+00:00` لهما مصدران مختلفان؛لا معايرة ساعة أوتغيير لتواريخ الالتقاط المحفوظة. [المذكرة](DATE-IDENTITY-NOTE-07B30.md) تشرح ذلك إضافياً دون تحرير مذكرةB29.
+**مدخل B31:** تسليم B30 المدفوع `038a18b74acb92c35a6172d4619fee5712424489`؛ **905 مواد تدقيق و332 نتيجة مفتوحة**. مرجع تاريخ المتابعة **2026-11-16 UTC**؛ رصد ساعة البيئة الخام عند التجميد `2026-11-20T18:03:06.407876+00:00` محفوظ بدلالته المستقلة،لا معايرة أوإعادة تأريخ للأرشيف. [التفصيل](DATE-IDENTITY-NOTE-07B31.md).
 
-**تدقيق ساكن فقط؛لا تعديل تطبيق أوإصلاح أوتشغيل ERP. R4n شريحة محدودة؛7B/7 جزئيتان؛R4o/7B31 مقترح أوتقسيم مسبب؛7C لم تبدأ؛8 غير مأذونة هنا.** الإصلاح في محادثة وفرع مستقلين،وحالة بدئه وتزامنه غير معلومة؛لا repair→audit merge أوكتابة ملفاته أوإغلاق نتائج. `next_phase=8` تخطيط لا تفويض.
+**تدقيق ساكن فقط؛ لا تعديل للتطبيق أوإصلاح أوتشغيل ERP. R4o شريحة محدودة؛ 7B والمرحلة7 جزئيتان؛ R4p/7B32 مقترح أوتقسيم مسبب؛ 7C لم تبدأ؛ 8 غير مأذونة هنا.** الإصلاح في محادثة وفرع مستقلين،وحالة بدئه وتزامنه غير معلومة. لا دمج repair→audit أوكتابة ملفاته أوإغلاق نتائج. `next_phase=8` تخطيط لا تفويض.
+
+[النتيجة](PHASE-07B31.md) · [العقود](NAVIGATION-LOAD-CONTRACTS-07B31.md) · [التحقق](VALIDATION-07B31.md) · [المتبقي](PHASE-07-REMAINING-07B31.md) · [الهوية والتاريخ](DATE-IDENTITY-NOTE-07B31.md) · [النطاق](review-scope-07B31.csv) · [قرار الاختيار](evidence/scope-decision-07B31.json) · [السجل](findings.csv) · [stdout الرسمي](evidence/checks-07B31-final.json)
 
 ## الحالة الحالية — السبب قبل العدد
 
-**الأحدث [7B30/R4n](PHASE-07B30.md): P7-160 واحدة Medium/confirmed مصدرية محلية**،وإلحاق دليل واحد إلى الأصل159 دون عده من جديد. التراكمي **332 نتيجة مفتوحة بلا معالجة:2Critical/181High/148Medium/1Low؛293confirmed/32potential/7repository-gap**.
+**الأحدث: 7B31/R4o؛ P7-161 واحدة Medium/confirmed مصدرية محلية،وصفر امتدادات تاريخية.** التراكمي **333 نتيجة مفتوحة بلا معالجة: 2Critical / 181High / 149Medium / 1Low؛ 294confirmed / 32potential / 7repository-gap**.
 
-- **160 عند nonaccept:** شرط isDone وGID يحرس Navigate فقط؛بعد رجوع الحوار طبيعياً دون قبول يصل الذيل إلى رأس المحرر الحالي نفسه. يمسح InvNote،ويطلب LoadInvNo،ثم يضع ISNew؛البيع يكتب أيضاً تأثير الرأس والبنود ويصفر IsPrinted/IsUpdated قبل محاولة BindingControls.
-- **159 عند Accepted:** مسارا الإدراج المقبولان يصلان Navigate/CLR دون CheckBeforeClear مثل جذر159 السابق. عولجا كتوسعة دليل واحدة لا161 أوعد لكل محرر/علم. قبول الهدف لا يساوي CopyIntent أوAbandonDecision.
-- **حدود الإثبات:** normal nonaccepted return ومحرر وبنود غيرnull وتمام setters ورقم مرشح/فشل ونتيجة Navigate المقبولة مدخلات موردة. لا تشغيل chrome/Close أوتحديد false/null لـX،ولا مزود أوحجز رقم أوGlobalID جديد أوحفظ/خسارة/حركة مخزون مرصودة. يتوقف نموذج الأعلام قبل أحداث الربط لا stable post-event state.
-- **الضوابط:** false بهوية أوtrue مع -1 يمنعان Navigate لا الذيل؛فشل رقم مورّد لا يعيد الملاحظة والآثار السابقة؛عدم رجوع ShowDialog طبيعياً يمنع الوصول إلى الذيل لكنه ليس علاجاً؛قيم مطابقة قد تخفي أثر التعيينات. No في الجديد المحروس ضابط قائم لا intercept للإدراج.
-- **العمق:** ترشيح metadata لكل331 و78 صفاً مطابقاً للمسارات ثم الأجسام الأقرب المسماة،لاكل331/78 متن. child419C#/449XAML محليان كاملان؛12 شريحة دعم bounded،أي14 قراءة/7مسارات/6تقاطع+1جديد→427 ومتمم400=335source/61generated/4project-resource،لا نسبة قدرات أو400 مهمةC.
+- **يكفي Empty معلومة دون فشل:** في أوامر التنقل المحروسة،يستبدل `CLR` مرجع المحرر قبل قراءة الهدف. `HasRows=false` يضع `null`،ثم يخصص الأب جديداً ويعيد `CLR`؛مع رجوع التصفير والترقيم طبيعياً يصل `ISNew=true`. لا يلزم محرر dirty أوإلغاء حوار أوفشل SQL لإظهار السبب.
+- **ضابط قائم لا غياب حارس:** `No` في `CheckBeforeClear` يمنع أول كتابة. `Yes` أوclean لا يشهدان بنجاح قراءة الهدف. P7-159 وذيل دليله من B30 وP7-160 ثابتة وليستا أصلين جديدين هنا.
+- **حدود القارئ:** `void/ref/null` يلتقي فيه empty والاستثناء الخارجي؛لكن catch الصف الداخلي قد يبقي `nonnull`. لا تعتبر كل استثناء null،ولا nonnull شهادة اكتمال تحميل.
+- **حدود التصفير:** الرقم يسبق أعلام reset. CLR المشتريات قد يبتلع فشل رقم مورّد ويواصل؛في البيع قد يخرج قبل القارئ. لم نُحدث فشل provider أوWPF،ولا نفترض defaults للـSDK أوحالة مستقرة بعد الأحداث أوحذف بيانات محفوظة.
+- **عمق محدد:** 14 شريحة في5 مسارات سابقة كلها؛طريقة القارئ290 سطراً كاملة محلياً لا ملفاً كاملاً أوكل helper/SDK/متصل. الاتحاد يبقى427 والمتمم400؛هذا دفتر مسارات لا نسبة قدرات أو400 مهمةC. ترشيح332 metadata و79 صفاً مطابقاً ليس قراءة332/79 متناً.
 
-[النتيجة](PHASE-07B30.md) · [العقود](IMPORT-CANCEL-CONTRACTS-07B30.md) · [التحقق](VALIDATION-07B30.md) · [المتبقي](PHASE-07-REMAINING-07B30.md) · [الهوية والتاريخ](DATE-IDENTITY-NOTE-07B30.md) · [scope7](review-scope-07B30.csv) · [قرار النطاق](evidence/scope-decision-07B30.json) · [السجل](findings.csv) · [stdout الرسمي](evidence/checks-07B30.json)
+[NL8](evidence/navigation-load-lineage-07B31.csv) · [LO8](evidence/reader-outcome-lineage-07B31.csv) · [FE16](evidence/feature-implementation-matrix-07B31.csv) · [INV16](evidence/report-invariants-07B31.csv) · [32 خطة](evidence/acceptance-tests-07B31.csv) · [RC6](evidence/report-reconciliation-07B31.csv) · [AD8](evidence/root-adjudication-07B31.csv) · [امتدادات0](evidence/historical-extensions-07B31.csv) · [شاهد20+20](evidence/navigation-load-witnesses-07B31.json) · [RS14](evidence/residual-disposition-07B31.csv) · [SP3](evidence/split-register-07B31.csv) · [H6](evidence/handoffs-07B31.csv) · [Q6](evidence/questions-07B31.csv) · [workplan10](evidence/remaining-workplan-07B31.csv) · [backlog10](evidence/continuation-backlog-07B31.csv)
 
-[IC8](evidence/import-conversion-lineage-07B30.csv) · [IR8](evidence/import-return-lineage-07B30.csv) · [FE16](evidence/feature-implementation-matrix-07B30.csv) · [INV16](evidence/report-invariants-07B30.csv) · [RC6](evidence/report-reconciliation-07B30.csv) · [خطط32](evidence/acceptance-tests-07B30.csv) · [AD8](evidence/root-adjudication-07B30.csv) · [توسعة159 فقط](evidence/historical-extensions-07B30.csv) · [الشاهد18+18](evidence/import-cancel-witnesses-07B30.json) · [RS14](evidence/residual-disposition-07B30.csv) · [SP3](evidence/split-register-07B30.csv) · [H6](evidence/handoffs-07B30.csv) · [Q6](evidence/questions-07B30.csv) · [workplan10](evidence/remaining-workplan-07B30.csv) · [backlog10](evidence/continuation-backlog-07B30.csv)
+## النطاق — دفتر مسارات لا نسبة قدرات
 
-
-## النطاق — مسارات لا نسبة اكتمال
-
-**827 أصل تطبيق/29,128,444 بايت ثابتة.** B30:14قراءة/7مسارات/6تقاطع+1جديد→427 ومتمم400=335source/61generated/4project-resource؛جسمان419C#/449XAMLللطفلفقطو12شريحةدعم. مساراتلاقدراتأونسبةإتمامأو400مهمةC.
+14شريحة/5مساراتسابقة/0wholefiles؛طريقةقارئ290سطرلاملفكامل. تبقى427/400 وبداخلهاقدراتغيرمراجعة.
 
 | المرحلة/الجزء | مسارات نطاقها | التقاطع السابق | جديدة على الاتحاد | الاتحاد التراكمي |
 |---|---:|---:|---:|---:|
@@ -63,11 +62,9 @@
 | **7B28/R4l — محلي وشرائح** | **5** | **5** | **0** | **426** |
 | **7B29/R4m — شرائح محدودة** | **7** | **7** | **0** | **426** |
 | **7B30/R4n — childمحلي وشرائحدعم** | **7** | **6** | **1** | **427** |
+| **7B31/R4o — شرائح toolbar/reader/reset** | **5** | **5** | **0** | **427** |
 
-مقامات455/98/52التاريخيةودفاترDN8/NO6ليستحصرأوقبولكلقدرة؛[دفتر827](evidence/coverage-ledger-07B16.csv)و[كتالوج455](evidence/capability-ledger-07B17.csv)بحدودهما.
-
-
-## النتائج المفتوحة — لا معالجة أو إغلاق
+## النتائج المفتوحة — لا معالجة أوإغلاق
 
 | النطاق | العدد | حرجة | عالية | متوسطة | منخفضة |
 |---|---:|---:|---:|---:|---:|
@@ -108,28 +105,36 @@
 | **7B28 جديدة** | **1** | **0** | **0** | **1** | **0** |
 | **7B29 جديدة** | **1** | **0** | **0** | **1** | **0** |
 | **7B30 جديدة؛159إلحاقلاعدجديد** | **1** | **0** | **0** | **1** | **0** |
-| **التراكمي المفتوح** | **332** | **2** | **181** | **148** | **1** |
+| **7B31 جديدة؛صفر امتدادات** | **1** | **0** | **0** | **1** | **0** |
+| **التراكمي المفتوح** | **333** | **2** | **181** | **149** | **1** |
 
-**293confirmed/32potential/7repository-gap؛المرحلة7=160 نتيجة لا مقام قدرات.**
+294confirmed/32potential/7repository-gap؛المرحلة7=161نتيجةلامقامقدرات.
 
-اجتاز **CLI الافتراضي الفعلي B30:986 حالة وثائقية في31 مجموعة** =934 حالة محفوظة +52 جديدة؛**332 نتيجة مفتوحة و827 أصلاً مطابقاً،errors[] وexit0 وstderr فارغ**. ليس986 اختبارERP أوتنفيذ32 خطة قبول. [stdout الرسمي](evidence/checks-07B30.json) خرج عمليةCLI افتراضية مستقلة مباشرة إلى ملف حصري،بعد استكمال النصوص والفهارس؛فحصه حاجز تسليم منفصل،وليس JSON مركباً أوplaceholder أونسخة من الفحص التمهيدي أوstdout ما بعد الدفع. كل32 خطةB30 و32B29/28 و36B27 متكاملة **not-executed**؛لا إصلاح أوقياس أوقبول تشغيلي هنا.
+اجتاز **CLI الافتراضي الفعلي B31:1034 حالة وثائقية في32 مجموعة** =986 حالة محفوظة +48 جديدة؛**333 نتيجة مفتوحة و827 أصلاً مطابقاً،errors[] وexit0 وstderr الخارجية فارغة**. نُفذ الفحص التمهيدي المتكامل بعد تثبيت الأرشيف الحقيقي،ولا يساوي نجاحُ 48 حالة منفردة وحده هذا الاجتياز. [stdout الرسمي](evidence/checks-07B31-final.json) مخصص لخرج عمليةCLI افتراضية مستقلة مباشرة إلى ملف حصري **بعد اكتمال النصوص والفهارس**؛يفحصه حاجز تسليم مستقل،ولا يُركبJSONه ولا تُنسخ له نتيجة الفحص التمهيدي أوإعادة الفحص بعد الدفع. checkout التقاطه هو مدخلB31 عند`038a18b74acb92c35a6172d4619fee5712424489`،لاSHA تسليمB31 اللاحق. كل32 خطةB31 و32B30/B29/B28 و36B27 **not-executed**؛ليست1034 اختبارERP أوإصلاحاً أوقياساً أوقبولاً تشغيلياً.
 
-نُفّذت **35 وضعية تاريخية OWN فعلياً**:2–6 وA وB1–29؛كلها errors[]/exit0/827/stderr فارغ. [الأرشيف](evidence/historical-mode-verification-07B30.json) **129097 بايت**،SHA-256:`5c7a3741d12389a71f953b491ca8b94040a425562647420f6aa17c953be194d9`. يحفظ ملخصات عمليات فعلية وهويات stdout وبصمات **111 أداة تنفيذ وقت الالتقاط**،لا التيارات الكاملة أوإعادة إنتاج أرشيفB29 الأصلي. null تعني aggregate غير مبلغ عنه،لا صفراً. مدخل107 source assertions التاريخي لـB29 ولقطة dispatcher النصية منفصلان عن أدوات تنفيذ العملية الحالية111 ومعلنان في الأرشيف. [برهان الهوية](evidence/capture-time-identity-07B30.json) **7323 بايت**،SHA-256:`e53634339f83f6b2877f029b70ef85a415913ad3aecfba4bfefcc70490e3238b`؛110 أدوات مطابقة وعكس pin واحد فقط في المساعد بالذاكرة يعيد بايتاته وقت الالتقاط بالضبط. لم يعدّل الاختبار الجديد أوالموزع بعد التقاط35. كل52 حالةB30 نُفذت كاملة بعد توفر الأرشيف الحقيقي والـpin؛لا ادعاء لإعادة35 كاملة بعد pin أوالنثر والفهارس أوالدفع.
+حُفظ أيضاً [الالتقاط الأول الناجح للـCLI](evidence/checks-07B31.json) دون استبدال؛تعطل **حارس خارجي لاحق** بسبب افتراض خاطئ بأن خريطة بصمات المصدر المبلّغ عنها105 تساوي كامل الأدوات115. كل105 بصمات مطابقة،وكامل115 مفحوص مستقلاً؛لم يفشلCLI أوأي اختبار من1034 في تلك المحاولة. [مذكرة الفشل والتصحيح الإضافي](evidence/official-capture-wrapper-note01-07B31.json) تفصل exit0 للطفل عنexit1 للحارس،وتحفظ مصدره ومدخلاته. سجل`checks-07B31-final.json` مخصص لعملية إصدار جديدة منفصلة بعد هذه الإضافة،لا لإعادة وسم الالتقاط الأول أوتعديل بايتاته.
 
-## الحفظ والهوية والإذن والتوازي
+**تنظيف أسلوب الوثائق قبل التسليم:** نجح [التقاط الإصدار02](evidence/checks-07B31-release.json) ومدققه وحارسه دون أخطاء اختبارية؛ثم كشف فحصGit للمحتوى المرحّل سطراً فارغاً إضافياً في نهاية أربعة تقارير جديدة. [المذكرة الإضافية](evidence/staged-style-check-note-07B31.json) تحفظexit2 ونقل رسائله ومدخلات الالتقاط السابق كاملة؛عولج تنسيقEOF فقط مع تحديث روابط الالتقاط النهائي. [stdout النهائي الرسمي](evidence/checks-07B31-final.json) من عملية افتراضية جديدة بعد التنظيف وفحصPatch المرحّل،لا overwrite لأي التقاط أوseal سابق،ولا تغيير للأدوات أوالاختبارات أوأرشيف36.
 
-حُفظت **867 مادة دخول محمية من872 بايتياً**،وجُمّد الأصل **331 قاموساً/raw332CRLF دونBOM** كاملاً قبل التغيير. **كل حقول331 الأساسية وعناوينها وشدتها ويقينها وتصنيفها وحالتها وALLnext_phase ودليلها السابق ثابتة؛الاستثناء الوحيد إلحاق tail معلن إلى P7-159.evidence**،لا إعادة كتابة دليله السابق. القواميس330 الأخرى exact،وبادئة header وأول330 سطر نتيجة خاماً exact. الحالي **332 نتيجة/raw333CRLF**؛160 وحدها جديدة و159 ليست نتيجة جديدة. G01–236 exact وG237–240 توصيات غير منفذة لا أربع نتائج أخرى. بقيت827 أصل تطبيق/29,128,444 بايت والتجميدات الثلاثة ونسخة مصدر AST الإضافية وأنساب RS14/SP3 ومدخلاتها السابقة كاملة كبادئة ومساراتها وتصرفاتها.158 وتوسعة046 وB29 DN8/NO6/32plans ومحاولته غير المكتملة وأرشيفا34 وبرهاناه وتصحيح اسم الملف الإضافي وstdout الرسمي كلها محمية لا تعاد كتابتها.
+نُفذت **36 وضعية تاريخية OWN فعلياً**:2–6 وA وB1–30؛كلها errors[]/exit0/827/stderr الخارجية فارغة. [الأرشيف](evidence/historical-mode-verification-07B31.json) **142880 بايت**،SHA-256:`0e7675f906028a0da48e4c5d806474fb08f292c886de77df274576b24e8ab8e1`. يحفظ ملخصات عمليات فعلية وهوياتstdout وبصمات **115 أداة تنفيذ وقت الالتقاط**؛لا التيارات الكاملة ولاprefix من أرشيفB30 ولاfixture كدليل تنفيذ. null تعني aggregate غير مبلغ عنه،لا صفراً. مدخل111 source assertions التاريخي لـB30 ولقطةdispatcher النصية منفصلان عن115 أداة التنفيذ ومعلنان في الأرشيف. [برهان الهوية](evidence/capture-time-identity-07B31.json) **7936 بايت**،SHA-256:`e3c8665d069064685aa297f60a775d20de0305570e8e50eaef4680410f839760`؛114 أداة مطابقة وعكسpin واحد فقط في المساعد بالذاكرة يعيد بايتاته وقت الالتقاط بالضبط. لم يتغير الاختبار الجديد أوdispatcher بعد الالتقاط. نُفذت كل52 حالةB30 ضمن OWN332/986/31؛ثم نُفذت كل48 حالةB31 بعد توفر الأرشيف والـpin. لا ادعاء لإعادة36 كاملة بعدpin أوالنثر والفهارس أوالدفع.
 
-**كل48 حالة B29 الأصلية دون تعديل أوتخطي** تعمل في طفل صريح `OWN331/raw332CRLF/indexes/presetB29` مع `A` محلي للمجموعة. تحتاج حالتا B29 القديمتان21/39 إلى **مدخلَي source assertions التاريخيين**:تعداد107 أداة ولقطة النص الدقيقة للموزع. قدمت [لقطة dispatcher النصية](evidence/dispatcher-through-07B29.py.txt) وبصمتها المثبتة في provenance؛قرأتها assertions القديمة فقط عبر view محلي و__file__ مؤقت داخل الطفل مع restore. **ليست شيفرة dispatcher قديمة تُشغّل،ولا تعداد أدوات العملية الحالية،ولا rebaseline أواستبدال اختبار.** اختباراتB30 الجديدة40/41/45 تفحص parser/AST/بوابات19 ومجموعة111 أداة الحالية فعلياً. LIVE=B30،versioned=B29،API main default=B15 مستقلة. ALL48B28 و52B27 و48B26 و44B25/24 وبقية934 حالة سابقة محفوظة. لا global Path أوsubprocess مشترك أوdisk overlay أوskip/filter أوتعديل محمي أوإعادة كتابة أرشيف. **كل32 خطةB30 و32B29/28 و36B27 متكاملة not-executed**؛اجتياز مدقق الوثائق لا ينفذها.
+## الحفظ والهوية والإذن
 
-P4-014 وP7-132 وP7-145 تبقى **potential**،و020/021 وحواجز المال وACL والمخزون والحفظ والإنتاج باقية. تصحيحB10 الإضافي:10 محلياً مقابل120 مرجعياً وضابط equality1=10؛G138 لا يعاد تحريره. لا ERP/build/C#/VB/WPF/.NET/SQL/DataView/provider/SDK/ToDataTable/REPX أوطابعة وماسح أوبيانات أعمال وأسرار أوإصلاح وقياس وقبول تشغيلي نُفذ هنا.
+حُفظت **900 مادة دخول محمية من905 بايتياً**،وكل **332 قاموس نتيجة بكل حقل**،بما فيها جميع `next_phase` والأدلة والشدة واليقين والنوع والحالة. **بادئة raw333CRLF كاملة دونBOM مطابقة**؛ليست مجرد core أوأدلة مجتزأة. ظل P7-159 بذيله المعلن في B30 وP7-160 كما دخلا؛صفر امتدادات جديدة. الحالي333 نتيجة وraw334CRLF؛161 وحدها جديدة. **G01–240** محفوظة حرفياً،وG241–244 مقترحات غير منفذة لا أربع نتائج أخرى.
 
-[RS14](evidence/residual-disposition-07B30.csv) و[SP3](evidence/split-register-07B30.csv) تصرفات معللة لا14 موافقة. تبقى بقية import/search/linked callers/editors/writers/fields/output وDocumentRef/allowed-set/branch/reset/dirty/cancel/failure وProduct/BulkPatch/LineRef/OwnedSeed/PropertiesResult/basket/RepeatOutcome والحصر/crosswalk455FE وSDK/DTO/constructor/collections/currency/precision/templates والسياسات صراحة ضمن7B،ولا تنتقل غير المراجعة إلى7C. اختر R4o/7B31 أوsplit مسبباً بقدرة ومدخل ومصدر ومخرج واستبعاد ودليل ومالك ومدخل منقح وأثر وخطوة وحد خروج؛لا وعد مدة أوجلسات أوآخر جزء أوإتمام النظام. يسلم SHA تدقيق مدفوعاً محدداً للإصلاح المستقل دون افتراض بدئه أوتزامنه أوالدمج هنا.
+بقيت **827 أصل تطبيق / 29,128,444 بايت** والتجميدات الثلاثة ولقطة dispatcher النصية الإضافية مطابقة. ملفات B30 الخمسة ونطاقه وIC8/IR8 و32 خطته وشاهده وأرشيف35 وبرهانه وstdoutه الرسمي محمية. كذلك B29 DN8/NO6/32plans وأرشيفا34 وبرهاناه ومحاولته غير المكتملة ولقطات مصدرها وتصحيح اسم الملف الإضافي،وB28/158 وتوسعة046. لا إعادة توليد لstdout أوأرشيف سابق.
+
+**كل52 حالة B30 الأصلية دون تعديل أوتخطي** تعمل في طفل `OWN332/raw333CRLF/indexes/presetB30`. تحتاج assertions القديمة40/41/45 إلى **111 هوية مصدر تاريخية ولقطة dispatcher النصية الدقيقة**. يوردها launcher جديد عبر `A` و`Path` محليين **داخل module الاختبار التاريخي فقط**،مع استعادة النوع والفهرس وpreset حتى عند الخطأ. المسار canonical يظل canonical؛قراءة نصه هي المدخل التاريخي. `v.__file__` و`v.main.__code__` لا يتغيران،ولا يُنفذ نص dispatcher المجمد. ليس ذلك old-code execution أوتعداد أدوات التنفيذ الحالية أوrebaseline.
+
+تفحص حالات B31 الجديدة parser/AST والبوابات19 و**115 أداة حالية فعلية** مستقلة عن ذلك view؛LIVE=B31 وversionedB30 وAPI main default=B15 متميزة. كل **986 حالة سابقة** محفوظة،بما فيها52B30 و48B29 و48B28 و52B27 و48B26 و44B25/24. لا تعديل محمي أوskip/filter أومحاكاة عامة لـPath أومشاركة mutation لـsubprocess أوdisk overlay أوإعادة كتابة أرشيف. يبقى مدخل107 القديم لـB29 منفصلاً عن111 المدخل التاريخي لـB30 وعن115 أداة التنفيذ الحالية.
+
+تبقى **P4-014 وP7-132 وP7-145 potential**،و020/021 وحواجز المال وACL والمخزون والحفظ والإنتاج دون تغيير. تصحيح B10 الإضافي:10 محلياً مقابل120 مرجعياً وضابط equality1=10،دون إعادة تحريرG138. لا ERP/build/C#/VB/.NET/WPF/SQL/DataView/provider/SDK/REPX/ToDataTable أوطابعة وماسح أوبيانات أعمال وأسرار أوإصلاح وقياس وقبول تشغيلي نُفذ هنا.
 
 ### التسليمات التاريخية — أعداد وحدود وقت التسليم
 
 | المرحلة | التقرير والنموذج والتحقق | أهم الأدلة وقت التسليم |
 |---|---|---|
+|7B30|[PHASE](PHASE-07B30.md)،[IMPORT-CANCEL](IMPORT-CANCEL-CONTRACTS-07B30.md)،[VALIDATION](VALIDATION-07B30.md)،[المتبقي وقتها](PHASE-07-REMAINING-07B30.md)|160واحدةو159إلحاقفقط؛332/986/31و35OWN؛905مادةعند038a،والـstdoutالأصلي273892عند3589؛حدودB30ومدخلاتهاوتواريخهاكماهي.|
 |7B28|[PHASE](PHASE-07B28.md)،[SEARCH-SNAPSHOT](SEARCH-SNAPSHOT-CONTRACTS-07B28.md)،[VALIDATION](VALIDATION-07B28.md)،[متبقيوقتها](PHASE-07-REMAINING-07B28.md)|158واحدةMediumوتوسعة046إضافية،330تراكمياً؛LH8/FR6/FE16/INV16/RC6/32خطةnot-executed،886حالة/29مجموعةو33OWN؛5/5/0→426.834مادةعندdda1eaf،stdoutالأصليعند4364460؛المحاولةالتمهيدية01الفاشلةوالنجاحاتمستقلة.|
 |7B27|[PHASE](PHASE-07B27.md)،[INVOICE-SEARCH](INVOICE-SEARCH-CONTRACTS-07B27.md)،[VALIDATION](VALIDATION-07B27.md)،[متبقيوقتها](PHASE-07-REMAINING-07B27.md)|[scope7](review-scope-07B27.csv)،[SC8](evidence/search-criteria-lineage-07B27.csv)،[DS8](evidence/document-selection-lineage-07B27.csv)،[stdoutB27 الأصلي](evidence/checks-07B27.json)؛155–157 Medium confirmed؛329 تراكمياً و838 حالة/28 مجموعة و32OWN؛7/6/1→426/متمم401. تسليم802 مادةعند4364460،والتقاطstdout عند6eedc06 ثابت لايعاد؛المحاولةالفاشلةوالناجحةمستقلتان.|
 |7B26|[PHASE](PHASE-07B26.md)،[BULK-PRODUCT](BULK-PRODUCT-CONTRACTS-07B26.md)،[VALIDATION](VALIDATION-07B26.md)،[متبقي وقتها](PHASE-07-REMAINING-07B26.md)|[scope9](review-scope-07B26.csv)،[BE8](evidence/bulk-edit-lineage-07B26.csv)،[PW8](evidence/product-write-lineage-07B26.csv)،[stdoutB26 الأصلي](evidence/checks-07B26.json)؛153/154 Medium confirmed؛326 تراكمياً و 786 حالة/27 مجموعة و 31OWN؛9/5/4→425/متمم 402. تسليم 770 مادة عند 6eedc06، والتقاط stdout عند dd38f97 ثابت لا يعاد.|
@@ -152,30 +157,31 @@ P4-014 وP7-132 وP7-145 تبقى **potential**،و020/021 وحواجز الما
 
 - **B29/R4m — وقت تسليمه:**[PHASE](PHASE-07B29.md)؛331/934/30 وDN8/NO6 و159مرة؛34OWNreleaseبعدالتصحيحببصماتوقتها؛الأرشيفالأولوالـpreflight01وبرهاناسمملفمصَحَّحإضافياًمحفوظة.حدودB29وتواريخهكمافيتسليمهلاclaimللحالي.
 
-## أولويات مقترحة — غير منفذة
 
-1. InvoiceImportResult يحرسكلذيلالتحويلعندCancelled/Failed ولايكتفيبحمايةNavigate160.
-2. CopyIntent وAbandonDecision مستقلانعنAcceptedTarget؛acceptedimportامتداد159بحارسالتركقبلCLR.
-3. تحضيرنسخةورقممرشح/هويةبملكيةواضحةقبلالنشر؛فشلرقملاتراجعقائمعلىافتراضوالـGlobalIDلاتنشأبتغييرInvoiceNo.
-4. بيانpre-binding مقابلstablepost-event،وقائمةimpact/الأعلامصريحةمنمصدرمنقحلاSDKdefaultsأوخسارةمحفوظةمفترضة.
-5. حفظكلSP01–03ومتطلباتهاداخل7BوكلG01–236والتاريخوالمدخلاتالمجمدة؛لاإعادةعدأوإغلاق.
-6. تسليمSHAمدفوعدقيقلمحادثةالإصلاحالمستقلةدونافتراضبدءوتزامنأودمجrepair→audit.
+## أولويات غير منفذة
 
-## إعادة التحقق المحلي الآمن
+1. Preserve-on-empty وresolve-before-replace قبل أول كتابة؛newأمرصريح مستقل.
+2. LoadOutcome يميزFound/Empty/Failed/Partial معDocumentRef وworking-copy مستقلة.
+3. Noقبلالكتابة وAbandonDecisionمستقلعننتيجةالتحميل؛لاتوسعة159/160أو046هنا.
+4. فشلreset/number وrow-catchوالـSDKوالربطبعقودمصدرية،لاdefaultsأوقياسأوحفظمفترض.
+5. حفظ900/332rawprefix/G240/827وALL986السابقة؛115أداةحاليةلـB31منفصلةعن111مدخلB30.
+
+## إعادة التحقق المحلية الآمنة
 
 ```bash
 PYTHONDONTWRITEBYTECODE=1 python3 -B docs/audit/tools/validate_audit.py
-PYTHONDONTWRITEBYTECODE=1 python3 -B docs/audit/tools/validate_audit.py --phase7-part B29
-PYTHONDONTWRITEBYTECODE=1 python3 -B docs/audit/tools/run_historical_dirty_navigation_tests_07B30.py --through-part B29
-PYTHONDONTWRITEBYTECODE=1 python3 -B docs/audit/tools/validate_audit.py --phase7-part B28
-PYTHONDONTWRITEBYTECODE=1 python3 -B docs/audit/tools/check_import_cancel_witnesses.py
-PYTHONDONTWRITEBYTECODE=1 python3 -B docs/audit/tools/test_import_cancel_audit_validator.py
+PYTHONDONTWRITEBYTECODE=1 python3 -B docs/audit/tools/validate_audit.py --phase7-part B30
+PYTHONDONTWRITEBYTECODE=1 python3 -B docs/audit/tools/run_historical_import_cancel_tests_07B31.py --through-part B30
+PYTHONDONTWRITEBYTECODE=1 python3 -B docs/audit/tools/check_navigation_load_witnesses.py
+PYTHONDONTWRITEBYTECODE=1 python3 -B docs/audit/tools/test_navigation_load_audit_validator.py
 PYTHONDONTWRITEBYTECODE=1 python3 -B docs/audit/tools/collect_baseline.py --verify
 git -c core.whitespace=cr-at-eol diff --check
 ```
 
-أدوات وثائق فقط؛لا--write أوERP/SQL/build/SDK أوإصلاح/قياس/قبول. stdout الجديد بعد الدفع يحفظ مؤقتاً لا فوق الرسمي؛لا replay لكاتبات capture حصرية مستهلكة. أعداد وثائق checker ليست خطط القبول المتكاملة أوبيانات أعمال.
+stdoutبعدالدفعمؤقتلاإعادةكتابةللرسمي؛لاreplayلكاتبcaptureمستهلك.
 
 ## الخطوة التالية
 
-**R4o/7B31 مقترح أوsplit مسبب** من[المتبقي الحالي](PHASE-07-REMAINING-07B30.md) بقدرةومدخلومصدروخرجواستبعادودليلوحدومالكوinputوأثروخطوةوخروج؛لاوعدمدةأوجلساتأوآخرجزءأوإتمامالنظام. **7B/7 جزئيتان؛7C لم تبدأ؛8 غير مأذونة هنا.**
+تبقى بقية callers/dialogs/editors/fields/writers/output وDocumentRef/allowed-set/branch/reset/dirty/cancel/failure وProduct/BulkPatch/LineRef/OwnedSeed/PropertiesResult/basket/RepeatOutcome ضمن **SP01 و7B**. يبقى **SP02** حصر entry/source/output وcrosswalk455FE والدفاتر اللاحقة،و**SP03** SDK/DTO/constructors/collections/currency/precision/words/legacy/templates والسياسات ضمن7B صراحة؛لا نقل غير المراجع إلى7C.
+
+اختر R4p/7B32 أوsplit مسبباً بقدرة ومدخل ومصدر ومخرج واستبعاد ودليل وحد ومالك ومدخل منقح وأثر وخطوة وخروج. لا وعد مدة أوجلسات أوآخر جزء أوإتمام النظام. يسلم SHA تدقيق مدفوع محدد للإصلاح المستقل،دون افتراض بدئه أوتزامنه أودمج تعديلاته هنا.

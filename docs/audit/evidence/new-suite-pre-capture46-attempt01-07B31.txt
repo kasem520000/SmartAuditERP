@@ -1,0 +1,61 @@
+Targeted46 of48 NEW B31 cases before final date note/actual36 archive. Not a full48 pass;no protected test removed or skipped. Excludes new44/date-note and46/archive only.
+test_01_OWN332_raw333_three_index_strings (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_01_OWN332_raw333_three_index_strings) ... ok
+test_02_reject_bad_shape_raw_BOM_LF_source_vector (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_02_reject_bad_shape_raw_BOM_LF_source_vector) ... ok
+test_03_nested_view_and_exception_restore (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_03_nested_view_and_exception_restore) ... ok
+test_04_local_canonical_Path_reads_not_global_patch (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_04_local_canonical_Path_reads_not_global_patch) ... ok
+test_05_exact_argv_proxy_never_shared_subprocess_patch (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_05_exact_argv_proxy_never_shared_subprocess_patch) ... ok
+test_06_all332_fields_and_evidence_exact (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_06_all332_fields_and_evidence_exact) ... ok
+test_07_entire_raw333_prefix_CRLF_noBOM (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_07_entire_raw333_prefix_CRLF_noBOM) ... ok
+test_08_one161_no_extensions_or_recount (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_08_one161_no_extensions_or_recount) ... ok
+test_09_G240_exact_only241_to244 (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_09_G240_exact_only241_to244) ... ok
+test_10_documentary_sentinels_and_source_union (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_10_documentary_sentinels_and_source_union) ... ok
+test_11_ordered_NL8_LO8_mutations (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_11_ordered_NL8_LO8_mutations) ... ok
+test_12_lineage_responsibility_and_nonexecution (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_12_lineage_responsibility_and_nonexecution) ... ok
+test_13_FE16_INV16_T32_bidirectional_links (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_13_FE16_INV16_T32_bidirectional_links) ... ok
+test_14_distinct_criteria_responsibilities_not_generic_plans (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_14_distinct_criteria_responsibilities_not_generic_plans) ... ok
+test_15_RS14_ancestry_rowSHA_contracts (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_15_RS14_ancestry_rowSHA_contracts) ... ok
+test_16_all_old_inputs_routes_dispositions_retained (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_16_all_old_inputs_routes_dispositions_retained) ... ok
+test_17_SP3_all_old_inputs_prefix_and_future_status (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_17_SP3_all_old_inputs_prefix_and_future_status) ... ok
+test_18_fourB_sixC_RW10_and_BK_ancestry (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_18_fourB_sixC_RW10_and_BK_ancestry) ... ok
+test_19_witness_metadata_strict_bool_count_and_B10 (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_19_witness_metadata_strict_bool_count_and_B10) ... ok
+test_20_actual_witness_bytes_readonly_recompute (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_20_actual_witness_bytes_readonly_recompute) ... ok
+test_21_clean_purchase_known_empty_alone_two_resets (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_21_clean_purchase_known_empty_alone_two_resets) ... ok
+test_22_clean_sale_known_empty_same161 (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_22_clean_sale_known_empty_same161) ... ok
+test_23_outer_failure_before_header_same_null_path (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_23_outer_failure_before_header_same_null_path) ... ok
+test_24_outer_after_header_not_rollback (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_24_outer_after_header_not_rollback) ... ok
+test_25_found_attempts_binding_not_full_hydration (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_25_found_attempts_binding_not_full_hydration) ... ok
+test_26_inner_row_catch_nonnull_is_not_outer_null (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_26_inner_row_catch_nonnull_is_not_outer_null) ... ok
+test_27_guard_No_stops_before_first_write (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_27_guard_No_stops_before_first_write) ... ok
+test_28_guard_Yes_and_clean_not_target_success (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_28_guard_Yes_and_clean_not_target_success) ... ok
+test_29_purchase_first_number_failure_swallowed_then_reader (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_29_purchase_first_number_failure_swallowed_then_reader) ... ok
+test_30_sale_first_number_failure_escapes_before_reader (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_30_sale_first_number_failure_escapes_before_reader) ... ok
+test_31_second_number_failure_no_new_flag_default_claim (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_31_second_number_failure_no_new_flag_default_claim) ... ok
+test_32_null_original_only_fallback_no_old_editor_to_preserve (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_32_null_original_only_fallback_no_old_editor_to_preserve) ... ok
+test_33_reject_key_domain_lead_and_number_reservation_inference (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_33_reject_key_domain_lead_and_number_reservation_inference) ... ok
+test_34_strict_editor_flags_counts_tokens_and_guard_types (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_34_strict_editor_flags_counts_tokens_and_guard_types) ... ok
+test_35_unreached_inputs_rejected_and_copy_isolated (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_35_unreached_inputs_rejected_and_copy_isolated) ... ok
+test_36_ACTUAL_B31_parser_versionedB30_API15 (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_36_ACTUAL_B31_parser_versionedB30_API15) ... ok
+test_37_ACTUAL_source_19gates_B30_history_before_B31 (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_37_ACTUAL_source_19gates_B30_history_before_B31) ... ok
+test_38_ALL52_launcher_module_local_A_Path_preset_restore (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_38_ALL52_launcher_module_local_A_Path_preset_restore) ... ok
+test_39_historical111_assertions_distinct_actual115 (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_39_historical111_assertions_distinct_actual115) ... ok
+test_40_protected900_and_actual332_fullrawprefix (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_40_protected900_and_actual332_fullrawprefix) ... ok
+test_41_scope5_overlap5_new0_union427_14reads_0whole (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_41_scope5_overlap5_new0_union427_14reads_0whole) ... ok
+test_42_root161_known_empty_not_guard159_or_conversion160 (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_42_root161_known_empty_not_guard159_or_conversion160) ... ok
+test_43_actual_residuals_splits_and_substantive_two_plans_each (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_43_actual_residuals_splits_and_substantive_two_plans_each) ... ok
+test_45_synthetic36_schema_not_execution_evidence (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_45_synthetic36_schema_not_execution_evidence) ... ok
+test_47_current115_tool_AST_witness_stdlib_only (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_47_current115_tool_AST_witness_stdlib_only) ... ok
+test_48_B30_history_B29_archives_failure_and_tests_retained (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_48_B30_history_B29_archives_failure_and_tests_retained) ... FAIL
+
+======================================================================
+FAIL: test_48_B30_history_B29_archives_failure_and_tests_retained (test_navigation_load_audit_validator.NavigationLoadAuditTests.test_48_B30_history_B29_archives_failure_and_tests_retained)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/SmartAuditERP/docs/audit/tools/test_navigation_load_audit_validator.py", line 274, in test_48_B30_history_B29_archives_failure_and_tests_retained
+    self.assertTrue(any('preflight01' in n and '07B29' in n for n in old));self.assertIn('evidence/historical-mode-verification-07B29-release.json',old)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: False is not true
+
+----------------------------------------------------------------------
+Ran 46 tests in 1.225s
+
+FAILED (failures=1)

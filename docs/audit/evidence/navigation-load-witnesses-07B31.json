@@ -1,0 +1,1745 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "entry_checkout": "038a18b74acb92c35a6172d4619fee5712424489",
+  "new_root_ids": [
+    "P7-161"
+  ],
+  "extended_existing_root_ids": [],
+  "illustration_count": 20,
+  "lexical_check_count": 20,
+  "selected_source_paths": 5,
+  "source_read_slice_count": 14,
+  "whole_local_files_selected": 0,
+  "whole_reader_method_selected_lines": 290,
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 281,
+      "end": 298,
+      "encoding": "strict-utf-8",
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 350,
+      "end": 444,
+      "encoding": "strict-utf-8",
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 445,
+      "end": 548,
+      "encoding": "strict-utf-8",
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 1531,
+      "end": 1587,
+      "encoding": "strict-utf-8",
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 558,
+      "end": 570,
+      "encoding": "strict-utf-8",
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 1447,
+      "end": 1467,
+      "encoding": "strict-utf-8",
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 1546,
+      "end": 1679,
+      "encoding": "strict-utf-8",
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 2597,
+      "end": 2639,
+      "encoding": "strict-utf-8",
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml",
+      "start": 371,
+      "end": 385,
+      "encoding": "strict-utf-8",
+      "sha256": "0c519c74b0fa74213ffb19f9de07ee54b52ece09b00597c6a1fe48e369e15c11",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml",
+      "start": 1337,
+      "end": 1352,
+      "encoding": "strict-utf-8",
+      "sha256": "0c519c74b0fa74213ffb19f9de07ee54b52ece09b00597c6a1fe48e369e15c11",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml",
+      "start": 333,
+      "end": 338,
+      "encoding": "strict-utf-8",
+      "sha256": "289a5a6bce98948818d3847a9cdf50870a35ca8269416a1ac3dd293db13e4e6d",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml",
+      "start": 1220,
+      "end": 1234,
+      "encoding": "strict-utf-8",
+      "sha256": "289a5a6bce98948818d3847a9cdf50870a35ca8269416a1ac3dd293db13e4e6d",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 2789,
+      "end": 2808,
+      "encoding": "strict-utf-8",
+      "sha256": "0bab36016f53ecd18360833d1fba980290702a52a98871fb397be9e813810d91",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 3219,
+      "end": 3508,
+      "encoding": "strict-utf-8",
+      "sha256": "0bab36016f53ecd18360833d1fba980290702a52a98871fb397be9e813810d91",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    }
+  ],
+  "illustrations": [
+    {
+      "id": "ALG7B31-01",
+      "label": "empty",
+      "finding_ids": "P7-161",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:350-444;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:445-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1587;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1467;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1546-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2639;SmartAuditERP/Form_WPF/frmInvPurch.xaml:371-385;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1337-1352;SmartAuditERP/Form_WPF/frmInvSale.xaml:333-338;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234;SmartAuditERP/Class/InvoiceOper.cs:2789-2808;SmartAuditERP/Class/InvoiceOper.cs:3219-3508",
+      "supplied_inputs": {
+        "surface": "purchase",
+        "command": "next",
+        "original": {
+          "ref": "fixture-EDITOR-A",
+          "gid": "fixture-DOC-A",
+          "is_new": false,
+          "is_updated": false
+        },
+        "reader_kind": "empty",
+        "reset_plan": [
+          "normal",
+          "normal"
+        ],
+        "view_count": 2,
+        "decision": "No",
+        "candidate_number": 41
+      },
+      "trace": {
+        "surface": "purchase",
+        "command": "next",
+        "guard_denied": false,
+        "reader_called": true,
+        "reader_kind": "empty",
+        "reset_cycles": 2,
+        "explicit_new_expressions_reached": 3,
+        "number_helper_calls": 2,
+        "fallback_reached": true,
+        "binding_attempted": false,
+        "exception_escaped": false,
+        "temporary_target_header_then_outer_null": false,
+        "events": [
+          "guard-allows",
+          "pre-read.new-editor-ref",
+          "pre-read.old-visible-list-cleared",
+          "pre-read.number-boundary",
+          "pre-read.explicit-reset-flags-after-normal-number",
+          "reader.empty",
+          "reader.ref-null",
+          "null-branch.new-editor-ref",
+          "fallback.new-editor-ref",
+          "fallback.old-visible-list-cleared",
+          "fallback.number-boundary",
+          "fallback.explicit-reset-flags-after-normal-number"
+        ],
+        "state_at_source_boundary": {
+          "ref": "fixture-FRESH-3",
+          "gid": "SDK-default-not-modeled",
+          "is_new": true,
+          "is_printed": false,
+          "number": 41,
+          "target_completeness": "not-established"
+        },
+        "original_editor_ref_still_current": false,
+        "supplied_target_hydration_not_executed": true,
+        "stable_post_event_state_claimed": false,
+        "application_code_executed": false
+      },
+      "expected": {
+        "reset_cycles": 2,
+        "number_helper_calls": 2,
+        "fallback_reached": true,
+        "original_editor_ref_still_current": false,
+        "binding_attempted": false,
+        "exception_escaped": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite fixture ordering only. Ordinary preceding dependencies, reset-number outcome and reader boundary supplied; no SDK defaults/SQL rows/provider failure,stable events,saved loss or GC inferred."
+    },
+    {
+      "id": "ALG7B31-02",
+      "label": "empty",
+      "finding_ids": "P7-161",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:350-444;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:445-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1587;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1467;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1546-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2639;SmartAuditERP/Form_WPF/frmInvPurch.xaml:371-385;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1337-1352;SmartAuditERP/Form_WPF/frmInvSale.xaml:333-338;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234;SmartAuditERP/Class/InvoiceOper.cs:2789-2808;SmartAuditERP/Class/InvoiceOper.cs:3219-3508",
+      "supplied_inputs": {
+        "surface": "sale",
+        "command": "next",
+        "original": {
+          "ref": "fixture-EDITOR-A",
+          "gid": "fixture-DOC-A",
+          "is_new": false,
+          "is_updated": false
+        },
+        "reader_kind": "empty",
+        "reset_plan": [
+          "normal",
+          "normal"
+        ],
+        "view_count": 2,
+        "decision": "No",
+        "candidate_number": 41
+      },
+      "trace": {
+        "surface": "sale",
+        "command": "next",
+        "guard_denied": false,
+        "reader_called": true,
+        "reader_kind": "empty",
+        "reset_cycles": 2,
+        "explicit_new_expressions_reached": 3,
+        "number_helper_calls": 2,
+        "fallback_reached": true,
+        "binding_attempted": false,
+        "exception_escaped": false,
+        "temporary_target_header_then_outer_null": false,
+        "events": [
+          "guard-allows",
+          "pre-read.old-grid-source-unbound",
+          "pre-read.new-editor-ref",
+          "pre-read.number-boundary",
+          "pre-read.explicit-reset-flags-after-normal-number",
+          "reader.empty",
+          "reader.ref-null",
+          "null-branch.new-editor-ref",
+          "fallback.old-grid-source-unbound",
+          "fallback.new-editor-ref",
+          "fallback.number-boundary",
+          "fallback.explicit-reset-flags-after-normal-number"
+        ],
+        "state_at_source_boundary": {
+          "ref": "fixture-FRESH-3",
+          "gid": "SDK-default-not-modeled",
+          "is_new": true,
+          "is_printed": false,
+          "number": 41,
+          "target_completeness": "not-established"
+        },
+        "original_editor_ref_still_current": false,
+        "supplied_target_hydration_not_executed": true,
+        "stable_post_event_state_claimed": false,
+        "application_code_executed": false
+      },
+      "expected": {
+        "reset_cycles": 2,
+        "number_helper_calls": 2,
+        "fallback_reached": true,
+        "original_editor_ref_still_current": false,
+        "binding_attempted": false,
+        "exception_escaped": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite fixture ordering only. Ordinary preceding dependencies, reset-number outcome and reader boundary supplied; no SDK defaults/SQL rows/provider failure,stable events,saved loss or GC inferred."
+    },
+    {
+      "id": "ALG7B31-03",
+      "label": "outer-failed-before-header",
+      "finding_ids": "P7-161",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:350-444;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:445-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1587;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1467;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1546-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2639;SmartAuditERP/Form_WPF/frmInvPurch.xaml:371-385;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1337-1352;SmartAuditERP/Form_WPF/frmInvSale.xaml:333-338;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234;SmartAuditERP/Class/InvoiceOper.cs:2789-2808;SmartAuditERP/Class/InvoiceOper.cs:3219-3508",
+      "supplied_inputs": {
+        "surface": "purchase",
+        "command": "next",
+        "original": {
+          "ref": "fixture-EDITOR-A",
+          "gid": "fixture-DOC-A",
+          "is_new": false,
+          "is_updated": false
+        },
+        "reader_kind": "outer-failed-before-header",
+        "reset_plan": [
+          "normal",
+          "normal"
+        ],
+        "view_count": 2,
+        "decision": "No",
+        "candidate_number": 41
+      },
+      "trace": {
+        "surface": "purchase",
+        "command": "next",
+        "guard_denied": false,
+        "reader_called": true,
+        "reader_kind": "outer-failed-before-header",
+        "reset_cycles": 2,
+        "explicit_new_expressions_reached": 3,
+        "number_helper_calls": 2,
+        "fallback_reached": true,
+        "binding_attempted": false,
+        "exception_escaped": false,
+        "temporary_target_header_then_outer_null": false,
+        "events": [
+          "guard-allows",
+          "pre-read.new-editor-ref",
+          "pre-read.old-visible-list-cleared",
+          "pre-read.number-boundary",
+          "pre-read.explicit-reset-flags-after-normal-number",
+          "reader.outer-failed-before-header",
+          "reader.ref-null",
+          "null-branch.new-editor-ref",
+          "fallback.new-editor-ref",
+          "fallback.old-visible-list-cleared",
+          "fallback.number-boundary",
+          "fallback.explicit-reset-flags-after-normal-number"
+        ],
+        "state_at_source_boundary": {
+          "ref": "fixture-FRESH-3",
+          "gid": "SDK-default-not-modeled",
+          "is_new": true,
+          "is_printed": false,
+          "number": 41,
+          "target_completeness": "not-established"
+        },
+        "original_editor_ref_still_current": false,
+        "supplied_target_hydration_not_executed": true,
+        "stable_post_event_state_claimed": false,
+        "application_code_executed": false
+      },
+      "expected": {
+        "reset_cycles": 2,
+        "number_helper_calls": 2,
+        "fallback_reached": true,
+        "original_editor_ref_still_current": false,
+        "binding_attempted": false,
+        "exception_escaped": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite fixture ordering only. Ordinary preceding dependencies, reset-number outcome and reader boundary supplied; no SDK defaults/SQL rows/provider failure,stable events,saved loss or GC inferred."
+    },
+    {
+      "id": "ALG7B31-04",
+      "label": "outer-failed-before-header",
+      "finding_ids": "P7-161",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:350-444;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:445-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1587;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1467;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1546-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2639;SmartAuditERP/Form_WPF/frmInvPurch.xaml:371-385;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1337-1352;SmartAuditERP/Form_WPF/frmInvSale.xaml:333-338;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234;SmartAuditERP/Class/InvoiceOper.cs:2789-2808;SmartAuditERP/Class/InvoiceOper.cs:3219-3508",
+      "supplied_inputs": {
+        "surface": "sale",
+        "command": "next",
+        "original": {
+          "ref": "fixture-EDITOR-A",
+          "gid": "fixture-DOC-A",
+          "is_new": false,
+          "is_updated": false
+        },
+        "reader_kind": "outer-failed-before-header",
+        "reset_plan": [
+          "normal",
+          "normal"
+        ],
+        "view_count": 2,
+        "decision": "No",
+        "candidate_number": 41
+      },
+      "trace": {
+        "surface": "sale",
+        "command": "next",
+        "guard_denied": false,
+        "reader_called": true,
+        "reader_kind": "outer-failed-before-header",
+        "reset_cycles": 2,
+        "explicit_new_expressions_reached": 3,
+        "number_helper_calls": 2,
+        "fallback_reached": true,
+        "binding_attempted": false,
+        "exception_escaped": false,
+        "temporary_target_header_then_outer_null": false,
+        "events": [
+          "guard-allows",
+          "pre-read.old-grid-source-unbound",
+          "pre-read.new-editor-ref",
+          "pre-read.number-boundary",
+          "pre-read.explicit-reset-flags-after-normal-number",
+          "reader.outer-failed-before-header",
+          "reader.ref-null",
+          "null-branch.new-editor-ref",
+          "fallback.old-grid-source-unbound",
+          "fallback.new-editor-ref",
+          "fallback.number-boundary",
+          "fallback.explicit-reset-flags-after-normal-number"
+        ],
+        "state_at_source_boundary": {
+          "ref": "fixture-FRESH-3",
+          "gid": "SDK-default-not-modeled",
+          "is_new": true,
+          "is_printed": false,
+          "number": 41,
+          "target_completeness": "not-established"
+        },
+        "original_editor_ref_still_current": false,
+        "supplied_target_hydration_not_executed": true,
+        "stable_post_event_state_claimed": false,
+        "application_code_executed": false
+      },
+      "expected": {
+        "reset_cycles": 2,
+        "number_helper_calls": 2,
+        "fallback_reached": true,
+        "original_editor_ref_still_current": false,
+        "binding_attempted": false,
+        "exception_escaped": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite fixture ordering only. Ordinary preceding dependencies, reset-number outcome and reader boundary supplied; no SDK defaults/SQL rows/provider failure,stable events,saved loss or GC inferred."
+    },
+    {
+      "id": "ALG7B31-05",
+      "label": "outer-failed-after-header",
+      "finding_ids": "P7-161",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:350-444;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:445-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1587;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1467;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1546-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2639;SmartAuditERP/Form_WPF/frmInvPurch.xaml:371-385;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1337-1352;SmartAuditERP/Form_WPF/frmInvSale.xaml:333-338;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234;SmartAuditERP/Class/InvoiceOper.cs:2789-2808;SmartAuditERP/Class/InvoiceOper.cs:3219-3508",
+      "supplied_inputs": {
+        "surface": "purchase",
+        "command": "next",
+        "original": {
+          "ref": "fixture-EDITOR-A",
+          "gid": "fixture-DOC-A",
+          "is_new": false,
+          "is_updated": false
+        },
+        "reader_kind": "outer-failed-after-header",
+        "reset_plan": [
+          "normal",
+          "normal"
+        ],
+        "view_count": 2,
+        "decision": "No",
+        "candidate_number": 41
+      },
+      "trace": {
+        "surface": "purchase",
+        "command": "next",
+        "guard_denied": false,
+        "reader_called": true,
+        "reader_kind": "outer-failed-after-header",
+        "reset_cycles": 2,
+        "explicit_new_expressions_reached": 3,
+        "number_helper_calls": 2,
+        "fallback_reached": true,
+        "binding_attempted": false,
+        "exception_escaped": false,
+        "temporary_target_header_then_outer_null": true,
+        "events": [
+          "guard-allows",
+          "pre-read.new-editor-ref",
+          "pre-read.old-visible-list-cleared",
+          "pre-read.number-boundary",
+          "pre-read.explicit-reset-flags-after-normal-number",
+          "reader.outer-failed-after-header",
+          "reader.ref-null",
+          "null-branch.new-editor-ref",
+          "fallback.new-editor-ref",
+          "fallback.old-visible-list-cleared",
+          "fallback.number-boundary",
+          "fallback.explicit-reset-flags-after-normal-number"
+        ],
+        "state_at_source_boundary": {
+          "ref": "fixture-FRESH-3",
+          "gid": "SDK-default-not-modeled",
+          "is_new": true,
+          "is_printed": false,
+          "number": 41,
+          "target_completeness": "not-established"
+        },
+        "original_editor_ref_still_current": false,
+        "supplied_target_hydration_not_executed": true,
+        "stable_post_event_state_claimed": false,
+        "application_code_executed": false
+      },
+      "expected": {
+        "reset_cycles": 2,
+        "number_helper_calls": 2,
+        "fallback_reached": true,
+        "original_editor_ref_still_current": false,
+        "binding_attempted": false,
+        "exception_escaped": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite fixture ordering only. Ordinary preceding dependencies, reset-number outcome and reader boundary supplied; no SDK defaults/SQL rows/provider failure,stable events,saved loss or GC inferred."
+    },
+    {
+      "id": "ALG7B31-06",
+      "label": "outer-failed-after-header",
+      "finding_ids": "P7-161",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:350-444;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:445-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1587;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1467;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1546-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2639;SmartAuditERP/Form_WPF/frmInvPurch.xaml:371-385;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1337-1352;SmartAuditERP/Form_WPF/frmInvSale.xaml:333-338;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234;SmartAuditERP/Class/InvoiceOper.cs:2789-2808;SmartAuditERP/Class/InvoiceOper.cs:3219-3508",
+      "supplied_inputs": {
+        "surface": "sale",
+        "command": "next",
+        "original": {
+          "ref": "fixture-EDITOR-A",
+          "gid": "fixture-DOC-A",
+          "is_new": false,
+          "is_updated": false
+        },
+        "reader_kind": "outer-failed-after-header",
+        "reset_plan": [
+          "normal",
+          "normal"
+        ],
+        "view_count": 2,
+        "decision": "No",
+        "candidate_number": 41
+      },
+      "trace": {
+        "surface": "sale",
+        "command": "next",
+        "guard_denied": false,
+        "reader_called": true,
+        "reader_kind": "outer-failed-after-header",
+        "reset_cycles": 2,
+        "explicit_new_expressions_reached": 3,
+        "number_helper_calls": 2,
+        "fallback_reached": true,
+        "binding_attempted": false,
+        "exception_escaped": false,
+        "temporary_target_header_then_outer_null": true,
+        "events": [
+          "guard-allows",
+          "pre-read.old-grid-source-unbound",
+          "pre-read.new-editor-ref",
+          "pre-read.number-boundary",
+          "pre-read.explicit-reset-flags-after-normal-number",
+          "reader.outer-failed-after-header",
+          "reader.ref-null",
+          "null-branch.new-editor-ref",
+          "fallback.old-grid-source-unbound",
+          "fallback.new-editor-ref",
+          "fallback.number-boundary",
+          "fallback.explicit-reset-flags-after-normal-number"
+        ],
+        "state_at_source_boundary": {
+          "ref": "fixture-FRESH-3",
+          "gid": "SDK-default-not-modeled",
+          "is_new": true,
+          "is_printed": false,
+          "number": 41,
+          "target_completeness": "not-established"
+        },
+        "original_editor_ref_still_current": false,
+        "supplied_target_hydration_not_executed": true,
+        "stable_post_event_state_claimed": false,
+        "application_code_executed": false
+      },
+      "expected": {
+        "reset_cycles": 2,
+        "number_helper_calls": 2,
+        "fallback_reached": true,
+        "original_editor_ref_still_current": false,
+        "binding_attempted": false,
+        "exception_escaped": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite fixture ordering only. Ordinary preceding dependencies, reset-number outcome and reader boundary supplied; no SDK defaults/SQL rows/provider failure,stable events,saved loss or GC inferred."
+    },
+    {
+      "id": "ALG7B31-07",
+      "label": "found",
+      "finding_ids": "P7-161",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:350-444;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:445-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1587;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1467;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1546-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2639;SmartAuditERP/Form_WPF/frmInvPurch.xaml:371-385;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1337-1352;SmartAuditERP/Form_WPF/frmInvSale.xaml:333-338;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234;SmartAuditERP/Class/InvoiceOper.cs:2789-2808;SmartAuditERP/Class/InvoiceOper.cs:3219-3508",
+      "supplied_inputs": {
+        "surface": "purchase",
+        "command": "next",
+        "original": {
+          "ref": "fixture-EDITOR-A",
+          "gid": "fixture-DOC-A",
+          "is_new": false,
+          "is_updated": false
+        },
+        "reader_kind": "found",
+        "reset_plan": [
+          "normal"
+        ],
+        "view_count": 2,
+        "decision": "No",
+        "candidate_number": 41
+      },
+      "trace": {
+        "surface": "purchase",
+        "command": "next",
+        "guard_denied": false,
+        "reader_called": true,
+        "reader_kind": "found",
+        "reset_cycles": 1,
+        "explicit_new_expressions_reached": 1,
+        "number_helper_calls": 1,
+        "fallback_reached": false,
+        "binding_attempted": true,
+        "exception_escaped": false,
+        "temporary_target_header_then_outer_null": false,
+        "events": [
+          "guard-allows",
+          "pre-read.new-editor-ref",
+          "pre-read.old-visible-list-cleared",
+          "pre-read.number-boundary",
+          "pre-read.explicit-reset-flags-after-normal-number",
+          "reader.found",
+          "nonnull.branch-BindingDGV-and-controls-attempted"
+        ],
+        "state_at_source_boundary": {
+          "ref": "fixture-FRESH-1",
+          "gid": "fixture-DOC-B",
+          "is_new": false,
+          "is_printed": true,
+          "number": 41,
+          "target_completeness": "supplied-found-boundary-not-full-hydration"
+        },
+        "original_editor_ref_still_current": false,
+        "supplied_target_hydration_not_executed": true,
+        "stable_post_event_state_claimed": false,
+        "application_code_executed": false
+      },
+      "expected": {
+        "reset_cycles": 1,
+        "fallback_reached": false,
+        "binding_attempted": true,
+        "original_editor_ref_still_current": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite fixture ordering only. Ordinary preceding dependencies, reset-number outcome and reader boundary supplied; no SDK defaults/SQL rows/provider failure,stable events,saved loss or GC inferred."
+    },
+    {
+      "id": "ALG7B31-08",
+      "label": "found",
+      "finding_ids": "P7-161",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:350-444;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:445-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1587;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1467;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1546-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2639;SmartAuditERP/Form_WPF/frmInvPurch.xaml:371-385;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1337-1352;SmartAuditERP/Form_WPF/frmInvSale.xaml:333-338;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234;SmartAuditERP/Class/InvoiceOper.cs:2789-2808;SmartAuditERP/Class/InvoiceOper.cs:3219-3508",
+      "supplied_inputs": {
+        "surface": "sale",
+        "command": "next",
+        "original": {
+          "ref": "fixture-EDITOR-A",
+          "gid": "fixture-DOC-A",
+          "is_new": false,
+          "is_updated": false
+        },
+        "reader_kind": "found",
+        "reset_plan": [
+          "normal"
+        ],
+        "view_count": 2,
+        "decision": "No",
+        "candidate_number": 41
+      },
+      "trace": {
+        "surface": "sale",
+        "command": "next",
+        "guard_denied": false,
+        "reader_called": true,
+        "reader_kind": "found",
+        "reset_cycles": 1,
+        "explicit_new_expressions_reached": 1,
+        "number_helper_calls": 1,
+        "fallback_reached": false,
+        "binding_attempted": true,
+        "exception_escaped": false,
+        "temporary_target_header_then_outer_null": false,
+        "events": [
+          "guard-allows",
+          "pre-read.old-grid-source-unbound",
+          "pre-read.new-editor-ref",
+          "pre-read.number-boundary",
+          "pre-read.explicit-reset-flags-after-normal-number",
+          "reader.found",
+          "nonnull.branch-BindingDGV-and-controls-attempted"
+        ],
+        "state_at_source_boundary": {
+          "ref": "fixture-FRESH-1",
+          "gid": "fixture-DOC-B",
+          "is_new": false,
+          "is_printed": true,
+          "number": 41,
+          "target_completeness": "supplied-found-boundary-not-full-hydration"
+        },
+        "original_editor_ref_still_current": false,
+        "supplied_target_hydration_not_executed": true,
+        "stable_post_event_state_claimed": false,
+        "application_code_executed": false
+      },
+      "expected": {
+        "reset_cycles": 1,
+        "fallback_reached": false,
+        "binding_attempted": true,
+        "original_editor_ref_still_current": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite fixture ordering only. Ordinary preceding dependencies, reset-number outcome and reader boundary supplied; no SDK defaults/SQL rows/provider failure,stable events,saved loss or GC inferred."
+    },
+    {
+      "id": "ALG7B31-09",
+      "label": "row-caught-nonnull",
+      "finding_ids": "P7-161",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:350-444;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:445-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1587;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1467;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1546-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2639;SmartAuditERP/Form_WPF/frmInvPurch.xaml:371-385;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1337-1352;SmartAuditERP/Form_WPF/frmInvSale.xaml:333-338;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234;SmartAuditERP/Class/InvoiceOper.cs:2789-2808;SmartAuditERP/Class/InvoiceOper.cs:3219-3508",
+      "supplied_inputs": {
+        "surface": "purchase",
+        "command": "next",
+        "original": {
+          "ref": "fixture-EDITOR-A",
+          "gid": "fixture-DOC-A",
+          "is_new": false,
+          "is_updated": false
+        },
+        "reader_kind": "row-caught-nonnull",
+        "reset_plan": [
+          "normal"
+        ],
+        "view_count": 2,
+        "decision": "No",
+        "candidate_number": 41
+      },
+      "trace": {
+        "surface": "purchase",
+        "command": "next",
+        "guard_denied": false,
+        "reader_called": true,
+        "reader_kind": "row-caught-nonnull",
+        "reset_cycles": 1,
+        "explicit_new_expressions_reached": 1,
+        "number_helper_calls": 1,
+        "fallback_reached": false,
+        "binding_attempted": true,
+        "exception_escaped": false,
+        "temporary_target_header_then_outer_null": false,
+        "events": [
+          "guard-allows",
+          "pre-read.new-editor-ref",
+          "pre-read.old-visible-list-cleared",
+          "pre-read.number-boundary",
+          "pre-read.explicit-reset-flags-after-normal-number",
+          "reader.row-caught-nonnull",
+          "nonnull.branch-BindingDGV-and-controls-attempted"
+        ],
+        "state_at_source_boundary": {
+          "ref": "fixture-FRESH-1",
+          "gid": "fixture-DOC-B",
+          "is_new": false,
+          "is_printed": true,
+          "number": 41,
+          "target_completeness": "per-row-caught-partial-not-proven-complete"
+        },
+        "original_editor_ref_still_current": false,
+        "supplied_target_hydration_not_executed": true,
+        "stable_post_event_state_claimed": false,
+        "application_code_executed": false
+      },
+      "expected": {
+        "reset_cycles": 1,
+        "fallback_reached": false,
+        "binding_attempted": true,
+        "original_editor_ref_still_current": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite fixture ordering only. Ordinary preceding dependencies, reset-number outcome and reader boundary supplied; no SDK defaults/SQL rows/provider failure,stable events,saved loss or GC inferred."
+    },
+    {
+      "id": "ALG7B31-10",
+      "label": "row-caught-nonnull",
+      "finding_ids": "P7-161",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:350-444;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:445-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1587;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1467;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1546-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2639;SmartAuditERP/Form_WPF/frmInvPurch.xaml:371-385;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1337-1352;SmartAuditERP/Form_WPF/frmInvSale.xaml:333-338;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234;SmartAuditERP/Class/InvoiceOper.cs:2789-2808;SmartAuditERP/Class/InvoiceOper.cs:3219-3508",
+      "supplied_inputs": {
+        "surface": "sale",
+        "command": "next",
+        "original": {
+          "ref": "fixture-EDITOR-A",
+          "gid": "fixture-DOC-A",
+          "is_new": false,
+          "is_updated": false
+        },
+        "reader_kind": "row-caught-nonnull",
+        "reset_plan": [
+          "normal"
+        ],
+        "view_count": 2,
+        "decision": "No",
+        "candidate_number": 41
+      },
+      "trace": {
+        "surface": "sale",
+        "command": "next",
+        "guard_denied": false,
+        "reader_called": true,
+        "reader_kind": "row-caught-nonnull",
+        "reset_cycles": 1,
+        "explicit_new_expressions_reached": 1,
+        "number_helper_calls": 1,
+        "fallback_reached": false,
+        "binding_attempted": true,
+        "exception_escaped": false,
+        "temporary_target_header_then_outer_null": false,
+        "events": [
+          "guard-allows",
+          "pre-read.old-grid-source-unbound",
+          "pre-read.new-editor-ref",
+          "pre-read.number-boundary",
+          "pre-read.explicit-reset-flags-after-normal-number",
+          "reader.row-caught-nonnull",
+          "nonnull.branch-BindingDGV-and-controls-attempted"
+        ],
+        "state_at_source_boundary": {
+          "ref": "fixture-FRESH-1",
+          "gid": "fixture-DOC-B",
+          "is_new": false,
+          "is_printed": true,
+          "number": 41,
+          "target_completeness": "per-row-caught-partial-not-proven-complete"
+        },
+        "original_editor_ref_still_current": false,
+        "supplied_target_hydration_not_executed": true,
+        "stable_post_event_state_claimed": false,
+        "application_code_executed": false
+      },
+      "expected": {
+        "reset_cycles": 1,
+        "fallback_reached": false,
+        "binding_attempted": true,
+        "original_editor_ref_still_current": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite fixture ordering only. Ordinary preceding dependencies, reset-number outcome and reader boundary supplied; no SDK defaults/SQL rows/provider failure,stable events,saved loss or GC inferred."
+    },
+    {
+      "id": "ALG7B31-11",
+      "label": "guard-No-stops-before-first-write",
+      "finding_ids": "H7B31-03",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:350-444;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:445-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1587;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1467;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1546-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2639;SmartAuditERP/Form_WPF/frmInvPurch.xaml:371-385;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1337-1352;SmartAuditERP/Form_WPF/frmInvSale.xaml:333-338;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234;SmartAuditERP/Class/InvoiceOper.cs:2789-2808;SmartAuditERP/Class/InvoiceOper.cs:3219-3508",
+      "supplied_inputs": {
+        "surface": "purchase",
+        "command": "next",
+        "original": {
+          "ref": "fixture-EDITOR-A",
+          "gid": "fixture-DOC-A",
+          "is_new": false,
+          "is_updated": true
+        },
+        "reader_kind": null,
+        "reset_plan": [],
+        "view_count": 2,
+        "decision": "No",
+        "candidate_number": 41
+      },
+      "trace": {
+        "surface": "purchase",
+        "command": "next",
+        "guard_denied": true,
+        "reader_called": false,
+        "reader_kind": null,
+        "reset_cycles": 0,
+        "explicit_new_expressions_reached": 0,
+        "number_helper_calls": 0,
+        "fallback_reached": false,
+        "binding_attempted": false,
+        "exception_escaped": false,
+        "temporary_target_header_then_outer_null": false,
+        "events": [
+          "guard-denied"
+        ],
+        "state_at_source_boundary": {
+          "ref": "fixture-EDITOR-A",
+          "gid": "fixture-DOC-A",
+          "is_new": false,
+          "is_updated": true
+        },
+        "original_editor_ref_still_current": true,
+        "supplied_target_hydration_not_executed": true,
+        "stable_post_event_state_claimed": false,
+        "application_code_executed": false
+      },
+      "expected": {
+        "guard_denied": true,
+        "reader_called": false,
+        "reset_cycles": 0,
+        "original_editor_ref_still_current": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite fixture ordering only. Ordinary preceding dependencies, reset-number outcome and reader boundary supplied; no SDK defaults/SQL rows/provider failure,stable events,saved loss or GC inferred."
+    },
+    {
+      "id": "ALG7B31-12",
+      "label": "guard-No-stops-before-first-write",
+      "finding_ids": "H7B31-03",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:350-444;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:445-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1587;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1467;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1546-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2639;SmartAuditERP/Form_WPF/frmInvPurch.xaml:371-385;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1337-1352;SmartAuditERP/Form_WPF/frmInvSale.xaml:333-338;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234;SmartAuditERP/Class/InvoiceOper.cs:2789-2808;SmartAuditERP/Class/InvoiceOper.cs:3219-3508",
+      "supplied_inputs": {
+        "surface": "sale",
+        "command": "next",
+        "original": {
+          "ref": "fixture-EDITOR-A",
+          "gid": "fixture-DOC-A",
+          "is_new": false,
+          "is_updated": true
+        },
+        "reader_kind": null,
+        "reset_plan": [],
+        "view_count": 2,
+        "decision": "No",
+        "candidate_number": 41
+      },
+      "trace": {
+        "surface": "sale",
+        "command": "next",
+        "guard_denied": true,
+        "reader_called": false,
+        "reader_kind": null,
+        "reset_cycles": 0,
+        "explicit_new_expressions_reached": 0,
+        "number_helper_calls": 0,
+        "fallback_reached": false,
+        "binding_attempted": false,
+        "exception_escaped": false,
+        "temporary_target_header_then_outer_null": false,
+        "events": [
+          "guard-denied"
+        ],
+        "state_at_source_boundary": {
+          "ref": "fixture-EDITOR-A",
+          "gid": "fixture-DOC-A",
+          "is_new": false,
+          "is_updated": true
+        },
+        "original_editor_ref_still_current": true,
+        "supplied_target_hydration_not_executed": true,
+        "stable_post_event_state_claimed": false,
+        "application_code_executed": false
+      },
+      "expected": {
+        "guard_denied": true,
+        "reader_called": false,
+        "reset_cycles": 0,
+        "original_editor_ref_still_current": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite fixture ordering only. Ordinary preceding dependencies, reset-number outcome and reader boundary supplied; no SDK defaults/SQL rows/provider failure,stable events,saved loss or GC inferred."
+    },
+    {
+      "id": "ALG7B31-13",
+      "label": "guard-Yes-is-not-reader-success",
+      "finding_ids": "P7-161",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:350-444;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:445-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1587;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1467;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1546-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2639;SmartAuditERP/Form_WPF/frmInvPurch.xaml:371-385;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1337-1352;SmartAuditERP/Form_WPF/frmInvSale.xaml:333-338;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234;SmartAuditERP/Class/InvoiceOper.cs:2789-2808;SmartAuditERP/Class/InvoiceOper.cs:3219-3508",
+      "supplied_inputs": {
+        "surface": "purchase",
+        "command": "next",
+        "original": {
+          "ref": "fixture-EDITOR-A",
+          "gid": "fixture-DOC-A",
+          "is_new": false,
+          "is_updated": true
+        },
+        "reader_kind": "empty",
+        "reset_plan": [
+          "normal",
+          "normal"
+        ],
+        "view_count": 2,
+        "decision": "Yes",
+        "candidate_number": 41
+      },
+      "trace": {
+        "surface": "purchase",
+        "command": "next",
+        "guard_denied": false,
+        "reader_called": true,
+        "reader_kind": "empty",
+        "reset_cycles": 2,
+        "explicit_new_expressions_reached": 3,
+        "number_helper_calls": 2,
+        "fallback_reached": true,
+        "binding_attempted": false,
+        "exception_escaped": false,
+        "temporary_target_header_then_outer_null": false,
+        "events": [
+          "guard-allows",
+          "pre-read.new-editor-ref",
+          "pre-read.old-visible-list-cleared",
+          "pre-read.number-boundary",
+          "pre-read.explicit-reset-flags-after-normal-number",
+          "reader.empty",
+          "reader.ref-null",
+          "null-branch.new-editor-ref",
+          "fallback.new-editor-ref",
+          "fallback.old-visible-list-cleared",
+          "fallback.number-boundary",
+          "fallback.explicit-reset-flags-after-normal-number"
+        ],
+        "state_at_source_boundary": {
+          "ref": "fixture-FRESH-3",
+          "gid": "SDK-default-not-modeled",
+          "is_new": true,
+          "is_printed": false,
+          "number": 41,
+          "target_completeness": "not-established"
+        },
+        "original_editor_ref_still_current": false,
+        "supplied_target_hydration_not_executed": true,
+        "stable_post_event_state_claimed": false,
+        "application_code_executed": false
+      },
+      "expected": {
+        "guard_denied": false,
+        "reader_called": true,
+        "fallback_reached": true,
+        "original_editor_ref_still_current": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite fixture ordering only. Ordinary preceding dependencies, reset-number outcome and reader boundary supplied; no SDK defaults/SQL rows/provider failure,stable events,saved loss or GC inferred."
+    },
+    {
+      "id": "ALG7B31-14",
+      "label": "guard-Yes-is-not-reader-success",
+      "finding_ids": "P7-161",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:350-444;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:445-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1587;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1467;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1546-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2639;SmartAuditERP/Form_WPF/frmInvPurch.xaml:371-385;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1337-1352;SmartAuditERP/Form_WPF/frmInvSale.xaml:333-338;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234;SmartAuditERP/Class/InvoiceOper.cs:2789-2808;SmartAuditERP/Class/InvoiceOper.cs:3219-3508",
+      "supplied_inputs": {
+        "surface": "sale",
+        "command": "next",
+        "original": {
+          "ref": "fixture-EDITOR-A",
+          "gid": "fixture-DOC-A",
+          "is_new": false,
+          "is_updated": true
+        },
+        "reader_kind": "empty",
+        "reset_plan": [
+          "normal",
+          "normal"
+        ],
+        "view_count": 2,
+        "decision": "Yes",
+        "candidate_number": 41
+      },
+      "trace": {
+        "surface": "sale",
+        "command": "next",
+        "guard_denied": false,
+        "reader_called": true,
+        "reader_kind": "empty",
+        "reset_cycles": 2,
+        "explicit_new_expressions_reached": 3,
+        "number_helper_calls": 2,
+        "fallback_reached": true,
+        "binding_attempted": false,
+        "exception_escaped": false,
+        "temporary_target_header_then_outer_null": false,
+        "events": [
+          "guard-allows",
+          "pre-read.old-grid-source-unbound",
+          "pre-read.new-editor-ref",
+          "pre-read.number-boundary",
+          "pre-read.explicit-reset-flags-after-normal-number",
+          "reader.empty",
+          "reader.ref-null",
+          "null-branch.new-editor-ref",
+          "fallback.old-grid-source-unbound",
+          "fallback.new-editor-ref",
+          "fallback.number-boundary",
+          "fallback.explicit-reset-flags-after-normal-number"
+        ],
+        "state_at_source_boundary": {
+          "ref": "fixture-FRESH-3",
+          "gid": "SDK-default-not-modeled",
+          "is_new": true,
+          "is_printed": false,
+          "number": 41,
+          "target_completeness": "not-established"
+        },
+        "original_editor_ref_still_current": false,
+        "supplied_target_hydration_not_executed": true,
+        "stable_post_event_state_claimed": false,
+        "application_code_executed": false
+      },
+      "expected": {
+        "guard_denied": false,
+        "reader_called": true,
+        "fallback_reached": true,
+        "original_editor_ref_still_current": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite fixture ordering only. Ordinary preceding dependencies, reset-number outcome and reader boundary supplied; no SDK defaults/SQL rows/provider failure,stable events,saved loss or GC inferred."
+    },
+    {
+      "id": "ALG7B31-15",
+      "label": "purchase-first-number-failure-swallowed",
+      "finding_ids": "P7-161",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:350-444;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:445-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1587;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1467;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1546-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2639;SmartAuditERP/Form_WPF/frmInvPurch.xaml:371-385;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1337-1352;SmartAuditERP/Form_WPF/frmInvSale.xaml:333-338;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234;SmartAuditERP/Class/InvoiceOper.cs:2789-2808;SmartAuditERP/Class/InvoiceOper.cs:3219-3508",
+      "supplied_inputs": {
+        "surface": "purchase",
+        "command": "next",
+        "original": {
+          "ref": "fixture-EDITOR-A",
+          "gid": "fixture-DOC-A",
+          "is_new": false,
+          "is_updated": false
+        },
+        "reader_kind": "empty",
+        "reset_plan": [
+          "number-failed",
+          "normal"
+        ],
+        "view_count": 2,
+        "decision": "No",
+        "candidate_number": 41
+      },
+      "trace": {
+        "surface": "purchase",
+        "command": "next",
+        "guard_denied": false,
+        "reader_called": true,
+        "reader_kind": "empty",
+        "reset_cycles": 2,
+        "explicit_new_expressions_reached": 3,
+        "number_helper_calls": 2,
+        "fallback_reached": true,
+        "binding_attempted": false,
+        "exception_escaped": false,
+        "temporary_target_header_then_outer_null": false,
+        "events": [
+          "guard-allows",
+          "pre-read.new-editor-ref",
+          "pre-read.old-visible-list-cleared",
+          "pre-read.number-boundary",
+          "pre-read.number-failure-swallowed-by-CLR",
+          "reader.empty",
+          "reader.ref-null",
+          "null-branch.new-editor-ref",
+          "fallback.new-editor-ref",
+          "fallback.old-visible-list-cleared",
+          "fallback.number-boundary",
+          "fallback.explicit-reset-flags-after-normal-number"
+        ],
+        "state_at_source_boundary": {
+          "ref": "fixture-FRESH-3",
+          "gid": "SDK-default-not-modeled",
+          "is_new": true,
+          "is_printed": false,
+          "number": 41,
+          "target_completeness": "not-established"
+        },
+        "original_editor_ref_still_current": false,
+        "supplied_target_hydration_not_executed": true,
+        "stable_post_event_state_claimed": false,
+        "application_code_executed": false
+      },
+      "expected": {
+        "reader_called": true,
+        "fallback_reached": true,
+        "exception_escaped": false,
+        "reset_cycles": 2
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite fixture ordering only. Ordinary preceding dependencies, reset-number outcome and reader boundary supplied; no SDK defaults/SQL rows/provider failure,stable events,saved loss or GC inferred."
+    },
+    {
+      "id": "ALG7B31-16",
+      "label": "sale-first-number-failure-escapes-before-reader",
+      "finding_ids": "P7-161",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:350-444;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:445-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1587;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1467;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1546-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2639;SmartAuditERP/Form_WPF/frmInvPurch.xaml:371-385;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1337-1352;SmartAuditERP/Form_WPF/frmInvSale.xaml:333-338;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234;SmartAuditERP/Class/InvoiceOper.cs:2789-2808;SmartAuditERP/Class/InvoiceOper.cs:3219-3508",
+      "supplied_inputs": {
+        "surface": "sale",
+        "command": "next",
+        "original": {
+          "ref": "fixture-EDITOR-A",
+          "gid": "fixture-DOC-A",
+          "is_new": false,
+          "is_updated": false
+        },
+        "reader_kind": null,
+        "reset_plan": [
+          "number-failed"
+        ],
+        "view_count": 2,
+        "decision": "No",
+        "candidate_number": 41
+      },
+      "trace": {
+        "surface": "sale",
+        "command": "next",
+        "guard_denied": false,
+        "reader_called": false,
+        "reader_kind": null,
+        "reset_cycles": 1,
+        "explicit_new_expressions_reached": 1,
+        "number_helper_calls": 1,
+        "fallback_reached": false,
+        "binding_attempted": false,
+        "exception_escaped": true,
+        "temporary_target_header_then_outer_null": false,
+        "events": [
+          "guard-allows",
+          "pre-read.old-grid-source-unbound",
+          "pre-read.new-editor-ref",
+          "pre-read.number-boundary",
+          "pre-read.number-failure-escapes-CLR"
+        ],
+        "state_at_source_boundary": {
+          "ref": "fixture-FRESH-1",
+          "gid": "SDK-default-not-modeled",
+          "is_new": null,
+          "is_printed": null,
+          "number": null,
+          "target_completeness": "not-established"
+        },
+        "original_editor_ref_still_current": false,
+        "supplied_target_hydration_not_executed": true,
+        "stable_post_event_state_claimed": false,
+        "application_code_executed": false
+      },
+      "expected": {
+        "reader_called": false,
+        "fallback_reached": false,
+        "exception_escaped": true,
+        "reset_cycles": 1,
+        "original_editor_ref_still_current": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite fixture ordering only. Ordinary preceding dependencies, reset-number outcome and reader boundary supplied; no SDK defaults/SQL rows/provider failure,stable events,saved loss or GC inferred."
+    },
+    {
+      "id": "ALG7B31-17",
+      "label": "fallback-number-failure",
+      "finding_ids": "P7-161",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:350-444;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:445-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1587;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1467;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1546-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2639;SmartAuditERP/Form_WPF/frmInvPurch.xaml:371-385;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1337-1352;SmartAuditERP/Form_WPF/frmInvSale.xaml:333-338;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234;SmartAuditERP/Class/InvoiceOper.cs:2789-2808;SmartAuditERP/Class/InvoiceOper.cs:3219-3508",
+      "supplied_inputs": {
+        "surface": "purchase",
+        "command": "next",
+        "original": {
+          "ref": "fixture-EDITOR-A",
+          "gid": "fixture-DOC-A",
+          "is_new": false,
+          "is_updated": false
+        },
+        "reader_kind": "empty",
+        "reset_plan": [
+          "normal",
+          "number-failed"
+        ],
+        "view_count": 2,
+        "decision": "No",
+        "candidate_number": 41
+      },
+      "trace": {
+        "surface": "purchase",
+        "command": "next",
+        "guard_denied": false,
+        "reader_called": true,
+        "reader_kind": "empty",
+        "reset_cycles": 2,
+        "explicit_new_expressions_reached": 3,
+        "number_helper_calls": 2,
+        "fallback_reached": true,
+        "binding_attempted": false,
+        "exception_escaped": false,
+        "temporary_target_header_then_outer_null": false,
+        "events": [
+          "guard-allows",
+          "pre-read.new-editor-ref",
+          "pre-read.old-visible-list-cleared",
+          "pre-read.number-boundary",
+          "pre-read.explicit-reset-flags-after-normal-number",
+          "reader.empty",
+          "reader.ref-null",
+          "null-branch.new-editor-ref",
+          "fallback.new-editor-ref",
+          "fallback.old-visible-list-cleared",
+          "fallback.number-boundary",
+          "fallback.number-failure-swallowed-by-CLR"
+        ],
+        "state_at_source_boundary": {
+          "ref": "fixture-FRESH-3",
+          "gid": "SDK-default-not-modeled",
+          "is_new": null,
+          "is_printed": null,
+          "number": null,
+          "target_completeness": "not-established"
+        },
+        "original_editor_ref_still_current": false,
+        "supplied_target_hydration_not_executed": true,
+        "stable_post_event_state_claimed": false,
+        "application_code_executed": false
+      },
+      "expected": {
+        "reader_called": true,
+        "fallback_reached": true,
+        "exception_escaped": false,
+        "reset_cycles": 2
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite fixture ordering only. Ordinary preceding dependencies, reset-number outcome and reader boundary supplied; no SDK defaults/SQL rows/provider failure,stable events,saved loss or GC inferred."
+    },
+    {
+      "id": "ALG7B31-18",
+      "label": "fallback-number-failure",
+      "finding_ids": "P7-161",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:350-444;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:445-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1587;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1467;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1546-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2639;SmartAuditERP/Form_WPF/frmInvPurch.xaml:371-385;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1337-1352;SmartAuditERP/Form_WPF/frmInvSale.xaml:333-338;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234;SmartAuditERP/Class/InvoiceOper.cs:2789-2808;SmartAuditERP/Class/InvoiceOper.cs:3219-3508",
+      "supplied_inputs": {
+        "surface": "sale",
+        "command": "next",
+        "original": {
+          "ref": "fixture-EDITOR-A",
+          "gid": "fixture-DOC-A",
+          "is_new": false,
+          "is_updated": false
+        },
+        "reader_kind": "empty",
+        "reset_plan": [
+          "normal",
+          "number-failed"
+        ],
+        "view_count": 2,
+        "decision": "No",
+        "candidate_number": 41
+      },
+      "trace": {
+        "surface": "sale",
+        "command": "next",
+        "guard_denied": false,
+        "reader_called": true,
+        "reader_kind": "empty",
+        "reset_cycles": 2,
+        "explicit_new_expressions_reached": 3,
+        "number_helper_calls": 2,
+        "fallback_reached": true,
+        "binding_attempted": false,
+        "exception_escaped": true,
+        "temporary_target_header_then_outer_null": false,
+        "events": [
+          "guard-allows",
+          "pre-read.old-grid-source-unbound",
+          "pre-read.new-editor-ref",
+          "pre-read.number-boundary",
+          "pre-read.explicit-reset-flags-after-normal-number",
+          "reader.empty",
+          "reader.ref-null",
+          "null-branch.new-editor-ref",
+          "fallback.old-grid-source-unbound",
+          "fallback.new-editor-ref",
+          "fallback.number-boundary",
+          "fallback.number-failure-escapes-CLR"
+        ],
+        "state_at_source_boundary": {
+          "ref": "fixture-FRESH-3",
+          "gid": "SDK-default-not-modeled",
+          "is_new": null,
+          "is_printed": null,
+          "number": null,
+          "target_completeness": "not-established"
+        },
+        "original_editor_ref_still_current": false,
+        "supplied_target_hydration_not_executed": true,
+        "stable_post_event_state_claimed": false,
+        "application_code_executed": false
+      },
+      "expected": {
+        "reader_called": true,
+        "fallback_reached": true,
+        "exception_escaped": true,
+        "reset_cycles": 2
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite fixture ordering only. Ordinary preceding dependencies, reset-number outcome and reader boundary supplied; no SDK defaults/SQL rows/provider failure,stable events,saved loss or GC inferred."
+    },
+    {
+      "id": "ALG7B31-19",
+      "label": "null-original-no-old-invoice-to-preserve",
+      "finding_ids": "P7-161",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:350-444;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:445-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1587;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1467;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1546-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2639;SmartAuditERP/Form_WPF/frmInvPurch.xaml:371-385;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1337-1352;SmartAuditERP/Form_WPF/frmInvSale.xaml:333-338;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234;SmartAuditERP/Class/InvoiceOper.cs:2789-2808;SmartAuditERP/Class/InvoiceOper.cs:3219-3508",
+      "supplied_inputs": {
+        "surface": "purchase",
+        "command": "first",
+        "original": null,
+        "reader_kind": "empty",
+        "reset_plan": [
+          "normal"
+        ],
+        "view_count": 2,
+        "decision": "No",
+        "candidate_number": 41
+      },
+      "trace": {
+        "surface": "purchase",
+        "command": "first",
+        "guard_denied": false,
+        "reader_called": true,
+        "reader_kind": "empty",
+        "reset_cycles": 1,
+        "explicit_new_expressions_reached": 2,
+        "number_helper_calls": 1,
+        "fallback_reached": true,
+        "binding_attempted": false,
+        "exception_escaped": false,
+        "temporary_target_header_then_outer_null": false,
+        "events": [
+          "guard-allows",
+          "reader.empty",
+          "reader.ref-null",
+          "null-branch.new-editor-ref",
+          "fallback.new-editor-ref",
+          "fallback.old-visible-list-cleared",
+          "fallback.number-boundary",
+          "fallback.explicit-reset-flags-after-normal-number"
+        ],
+        "state_at_source_boundary": {
+          "ref": "fixture-FRESH-2",
+          "gid": "SDK-default-not-modeled",
+          "is_new": true,
+          "is_printed": false,
+          "number": 41,
+          "target_completeness": "not-established"
+        },
+        "original_editor_ref_still_current": false,
+        "supplied_target_hydration_not_executed": true,
+        "stable_post_event_state_claimed": false,
+        "application_code_executed": false
+      },
+      "expected": {
+        "reader_called": true,
+        "reset_cycles": 1,
+        "fallback_reached": true,
+        "number_helper_calls": 1
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite fixture ordering only. Ordinary preceding dependencies, reset-number outcome and reader boundary supplied; no SDK defaults/SQL rows/provider failure,stable events,saved loss or GC inferred."
+    },
+    {
+      "id": "ALG7B31-20",
+      "label": "null-original-no-old-invoice-to-preserve",
+      "finding_ids": "P7-161",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:350-444;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:445-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1587;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1447-1467;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1546-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2639;SmartAuditERP/Form_WPF/frmInvPurch.xaml:371-385;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1337-1352;SmartAuditERP/Form_WPF/frmInvSale.xaml:333-338;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234;SmartAuditERP/Class/InvoiceOper.cs:2789-2808;SmartAuditERP/Class/InvoiceOper.cs:3219-3508",
+      "supplied_inputs": {
+        "surface": "sale",
+        "command": "first",
+        "original": null,
+        "reader_kind": "empty",
+        "reset_plan": [
+          "normal"
+        ],
+        "view_count": 2,
+        "decision": "No",
+        "candidate_number": 41
+      },
+      "trace": {
+        "surface": "sale",
+        "command": "first",
+        "guard_denied": false,
+        "reader_called": true,
+        "reader_kind": "empty",
+        "reset_cycles": 1,
+        "explicit_new_expressions_reached": 2,
+        "number_helper_calls": 1,
+        "fallback_reached": true,
+        "binding_attempted": false,
+        "exception_escaped": false,
+        "temporary_target_header_then_outer_null": false,
+        "events": [
+          "guard-allows",
+          "reader.empty",
+          "reader.ref-null",
+          "null-branch.new-editor-ref",
+          "fallback.old-grid-source-unbound",
+          "fallback.new-editor-ref",
+          "fallback.number-boundary",
+          "fallback.explicit-reset-flags-after-normal-number"
+        ],
+        "state_at_source_boundary": {
+          "ref": "fixture-FRESH-2",
+          "gid": "SDK-default-not-modeled",
+          "is_new": true,
+          "is_printed": false,
+          "number": 41,
+          "target_completeness": "not-established"
+        },
+        "original_editor_ref_still_current": false,
+        "supplied_target_hydration_not_executed": true,
+        "stable_post_event_state_claimed": false,
+        "application_code_executed": false
+      },
+      "expected": {
+        "reader_called": true,
+        "reset_cycles": 1,
+        "fallback_reached": true,
+        "number_helper_calls": 1
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite fixture ordering only. Ordinary preceding dependencies, reset-number outcome and reader boundary supplied; no SDK defaults/SQL rows/provider failure,stable events,saved loss or GC inferred."
+    }
+  ],
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B31-01",
+      "boundary": "purchase-four-toolbar-clicks",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml:1337-1352",
+      "finding_ids": "P7-161",
+      "source_application_executed": false,
+      "limit": "Lexical observation in selected static source,not C#/VB compilation or provider/SDK semantics."
+    },
+    {
+      "id": "ST7B31-02",
+      "boundary": "sale-four-toolbar-clicks",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234",
+      "finding_ids": "P7-161",
+      "source_application_executed": false,
+      "limit": "Lexical observation in selected static source,not C#/VB compilation or provider/SDK semantics."
+    },
+    {
+      "id": "ST7B31-03",
+      "boundary": "purchase-toolbar-has-guard",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:504-546",
+      "finding_ids": "P7-161",
+      "source_application_executed": false,
+      "limit": "Lexical observation in selected static source,not C#/VB compilation or provider/SDK semantics."
+    },
+    {
+      "id": "ST7B31-04",
+      "boundary": "sale-toolbar-has-guard",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2639",
+      "finding_ids": "P7-161",
+      "source_application_executed": false,
+      "limit": "Lexical observation in selected static source,not C#/VB compilation or provider/SDK semantics."
+    },
+    {
+      "id": "ST7B31-05",
+      "boundary": "purchase-clears-before-reader",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502",
+      "finding_ids": "P7-161",
+      "source_application_executed": false,
+      "limit": "Lexical observation in selected static source,not C#/VB compilation or provider/SDK semantics."
+    },
+    {
+      "id": "ST7B31-06",
+      "boundary": "sale-clears-before-reader",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1643-1660",
+      "finding_ids": "P7-161",
+      "source_application_executed": false,
+      "limit": "Lexical observation in selected static source,not C#/VB compilation or provider/SDK semantics."
+    },
+    {
+      "id": "ST7B31-07",
+      "boundary": "purchase-CLR-replaces-and-clears-before-reset",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1568",
+      "finding_ids": "P7-161",
+      "source_application_executed": false,
+      "limit": "Lexical observation in selected static source,not C#/VB compilation or provider/SDK semantics."
+    },
+    {
+      "id": "ST7B31-08",
+      "boundary": "sale-CLR-reset-outside-local-catch",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1607-1641",
+      "finding_ids": "P7-161",
+      "source_application_executed": false,
+      "limit": "Lexical observation in selected static source,not C#/VB compilation or provider/SDK semantics."
+    },
+    {
+      "id": "ST7B31-09",
+      "boundary": "reader-void-ref-contract",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:3219-3236",
+      "finding_ids": "P7-161",
+      "source_application_executed": false,
+      "limit": "Lexical observation in selected static source,not C#/VB compilation or provider/SDK semantics."
+    },
+    {
+      "id": "ST7B31-10",
+      "boundary": "reader-no-row-sets-null",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:3496-3508",
+      "finding_ids": "P7-161",
+      "source_application_executed": false,
+      "limit": "Lexical observation in selected static source,not C#/VB compilation or provider/SDK semantics."
+    },
+    {
+      "id": "ST7B31-11",
+      "boundary": "reader-outer-exception-same-null",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:3502-3508",
+      "finding_ids": "P7-161",
+      "source_application_executed": false,
+      "limit": "Lexical observation in selected static source,not C#/VB compilation or provider/SDK semantics."
+    },
+    {
+      "id": "ST7B31-12",
+      "boundary": "row-local-exception-is-not-outer-null",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:3476-3487",
+      "finding_ids": "P7-161",
+      "source_application_executed": false,
+      "limit": "Lexical observation in selected static source,not C#/VB compilation or provider/SDK semantics."
+    },
+    {
+      "id": "ST7B31-13",
+      "boundary": "purchase-null-branch-allocates-and-clears",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502",
+      "finding_ids": "P7-161",
+      "source_application_executed": false,
+      "limit": "Lexical observation in selected static source,not C#/VB compilation or provider/SDK semantics."
+    },
+    {
+      "id": "ST7B31-14",
+      "boundary": "sale-null-branch-allocates-and-clears",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1643-1660",
+      "finding_ids": "P7-161",
+      "source_application_executed": false,
+      "limit": "Lexical observation in selected static source,not C#/VB compilation or provider/SDK semantics."
+    },
+    {
+      "id": "ST7B31-15",
+      "boundary": "purchase-reset-number-precedes-new-flag",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:350-407",
+      "finding_ids": "P7-161",
+      "source_application_executed": false,
+      "limit": "Lexical observation in selected static source,not C#/VB compilation or provider/SDK semantics."
+    },
+    {
+      "id": "ST7B31-16",
+      "boundary": "sale-reset-number-precedes-new-flag",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1546-1605",
+      "finding_ids": "P7-161",
+      "source_application_executed": false,
+      "limit": "Lexical observation in selected static source,not C#/VB compilation or provider/SDK semantics."
+    },
+    {
+      "id": "ST7B31-17",
+      "boundary": "purchase-number-publishes-candidate",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:281-298",
+      "finding_ids": "P7-161",
+      "source_application_executed": false,
+      "limit": "Lexical observation in selected static source,not C#/VB compilation or provider/SDK semantics."
+    },
+    {
+      "id": "ST7B31-18",
+      "boundary": "sale-number-publishes-candidate",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570",
+      "finding_ids": "P7-161",
+      "source_application_executed": false,
+      "limit": "Lexical observation in selected static source,not C#/VB compilation or provider/SDK semantics."
+    },
+    {
+      "id": "ST7B31-19",
+      "boundary": "candidate-is-MAX-plus-one-not-reservation",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:2789-2808",
+      "finding_ids": "P7-161",
+      "source_application_executed": false,
+      "limit": "Lexical observation in selected static source,not C#/VB compilation or provider/SDK semantics."
+    },
+    {
+      "id": "ST7B31-20",
+      "boundary": "InvoiceNo-really-reads-id-not-a-key-domain-defect",
+      "documented_text_observation_matches": true,
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:3271-3285",
+      "finding_ids": "P7-161",
+      "source_application_executed": false,
+      "limit": "Lexical observation in selected static source,not C#/VB compilation or provider/SDK semantics."
+    }
+  ],
+  "errors": [],
+  "application_code_imported_or_executed": false,
+  "dotnet_wpf_sql_or_SDK_executed": false,
+  "provider_failure_observed": false,
+  "SDK_defaults_or_row_hydration_executed": false,
+  "stable_post_event_state_claimed": false,
+  "database_commit_or_saved_loss_claimed": false,
+  "original_reference_release_or_GC_claimed": false,
+  "application_remediation_performed": false,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "scanner_or_printer_tests_executed": 0,
+  "reset_and_reader_outcomes_are_supplied": true,
+  "per_row_caught_exception_is_not_outer_null": true,
+  "guard_No_prevents_first_write": true,
+  "all332_historical_bodies_or_all_callers_reviewed": false,
+  "retained_additive_B10_arithmetic_erratum": {
+    "local_cost": 10,
+    "reference_cost": 120,
+    "equality1_control": 10,
+    "protected_G138_not_rewritten": true
+  },
+  "unadjudicated_leads_not_extra_findings": [
+    "Per-row swallowed errors and partial hydration need independent source/schema/DTO chain;not another finding here.",
+    "Connection/reader ownership not measured;no leak claim.",
+    "Dirty-notification propagation not settled;159 remains unchanged.",
+    "Actual provider,SDK constructor/collection,setter,binding and schema outcomes remain external contracts."
+  ]
+}
