@@ -167,7 +167,7 @@ namespace SmartAuditERP.Form_WPF
             try
             {
                 string sql =
-                    $"SELECT SUM(val), SUM(val * exchange_price) " +
+                    $"SELECT SUM(val), SUM(val1 * exchange_price) " +
                     $"FROM inv, inv_sub " +
                     $"WHERE {branchFilter} Inv_Sub.ItemId={itemId} " +
                     $"AND date>=@date1 AND date<=@date2 " +

@@ -82,6 +82,8 @@ namespace SmartAuditERP.Form_WPF
                 // Do not reload intermediate month/year selections during reset.
                 _loaded = false;
                 _periodLoadFailed = true;
+                cmbMonth.IsEnabled = true;
+                cmbYear.IsEnabled = true;
                 _salarySource.Clear();
                 txtDate.DateTime = DateTime.Now;
                 LoadNextNo();
@@ -746,6 +748,105 @@ namespace SmartAuditERP.Form_WPF
         #endregion
 
         #region Load Grid Data
+
+        // Load the report selection only after Window_Loaded has initialized the form.
+        // Assemble a complete temporary snapshot before publishing identity or rows.
+        public bool OpenSavedDocument(string globalId)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(globalId))
+                    throw new InvalidOperationException("هوية الاستحقاق غير متاحة.");
+
+                var header = new DataTable();
+                var details = new DataTable();
+                using (var db = MainClass.ConnObj())
+                {
+                    using (var cmd = new SqlCommand(
+                        "SELECT id,GlobalID,EntryGlobalID,date,month,year,Notes FROM Salary_Res WHERE GlobalID=@id AND IS_Deleted=0", db))
+                    {
+                        cmd.Parameters.Add("@id", SqlDbType.NVarChar).Value = globalId;
+                        using (var adapter = new SqlDataAdapter(cmd)) adapter.Fill(header);
+                    }
+                    if (header.Rows.Count != 1)
+                        throw new InvalidOperationException("تعذر تحديد مستند استحقاق واحد غير محذوف.");
+                    using (var cmd = new SqlCommand(@"SELECT SD.res_emp, E.name, E.AccCode,
+                        SD.Basic, SD.Houses, SD.travel, SD.sal_add, SD.sal_Sub, SD.Net
+                        FROM Salary_Res_Details SD LEFT JOIN Employees E ON SD.res_emp=E.id
+                        WHERE SD.GlobalId=@id", db))
+                    {
+                        cmd.Parameters.Add("@id", SqlDbType.NVarChar).Value = globalId;
+                        using (var adapter = new SqlDataAdapter(cmd)) adapter.Fill(details);
+                    }
+                }
+                if (details.Rows.Count == 0)
+                    throw new InvalidOperationException("لا توجد تفاصيل محفوظة للاستحقاق.");
+
+                DataRow head = header.Rows[0];
+                int month = Convert.ToInt32(head["month"]);
+                int year = Convert.ToInt32(head["year"]);
+                int documentNo = Convert.ToInt32(head["id"]);
+                DateTime date = Convert.ToDateTime(head["date"]);
+                string entryId = Convert.ToString(head["EntryGlobalID"]);
+                string savedId = Convert.ToString(head["GlobalID"]);
+                if (month < 1 || month > cmbMonth.Items.Count || year < 2000 || year > 2100 ||
+                    string.IsNullOrWhiteSpace(savedId) || string.IsNullOrWhiteSpace(entryId))
+                    throw new InvalidOperationException("فترة أو هوية المستند المحفوظ غير صالحة.");
+
+                var rows = new System.Collections.Generic.List<SalaryRow>();
+                foreach (DataRow row in details.Rows)
+                {
+                    decimal basic = Convert.ToDecimal(row["Basic"]);
+                    decimal house = Convert.ToDecimal(row["Houses"]);
+                    decimal travel = Convert.ToDecimal(row["travel"]);
+                    decimal addition = Convert.ToDecimal(row["sal_add"]);
+                    rows.Add(new SalaryRow
+                    {
+                        DgvNo = rows.Count + 1,
+                        Emp = Convert.ToInt32(row["res_emp"]),
+                        Empnam = Convert.ToString(row["name"]),
+                        AccCode = Convert.ToDouble(row["AccCode"]),
+                        BasicSal = basic, HousSal = house, TravelSal = travel,
+                        Sal_add = addition, Sal_Sub = Convert.ToDecimal(row["sal_Sub"]),
+                        Total = basic + house + travel + addition,
+                        Net_Sal = Convert.ToDecimal(row["Net"]),
+                        Notes = Convert.ToString(head["Notes"])
+                    });
+                }
+
+                _loaded = false;
+                _periodLoadFailed = true;
+                _salarySource.Clear();
+                foreach (var row in rows) _salarySource.Add(row);
+                GridControl1.ItemsSource = _salarySource;
+                resNo = documentNo;
+                _code = documentNo;
+                _globalID = savedId;
+                _entryGlobalID = entryId;
+                txtNo.Text = documentNo.ToString();
+                TxtGlobalID.Text = savedId;
+                txtEntryGlobalId.Text = entryId;
+                txtDate.DateTime = date;
+                txtTime.Text = date.ToString("HH:mm:ss");
+                cmbMonth.SelectedIndex = month - 1;
+                cmbYear.SelectedItem = year.ToString();
+                cmbMonth.IsEnabled = false;
+                cmbYear.IsEnabled = false;
+                IsNew = false;
+                btnviewEntry.Visibility = Visibility.Visible;
+                TabControl1.SelectedIndex = 0;
+                _periodLoadFailed = false;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _periodLoadFailed = true;
+                _salarySource.Clear();
+                DXMessageBox.Show("تعذر تحميل الاستحقاق المحفوظ: " + ex.Message,
+                    "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+        }
 
         public void LoadDataToGridview(string entryGlobalId)
         {

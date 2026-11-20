@@ -188,16 +188,16 @@ namespace SmartAuditERP.Form_WPF
                     double pQty = 0, pTotal = 0, pRetQty = 0, pRetTotal = 0;
                     double sQty = 0, sTotal = 0, sRetQty = 0, sRetTotal = 0;
 
-                    ExecuteItemQuery($"select sum(val),sum(val*exchange_price) from {baseWhere} and inv.proc_type=1 and inv_sub.proc_type=1 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
+                    ExecuteItemQuery($"select sum(val),sum(val1*exchange_price) from {baseWhere} and inv.proc_type=1 and inv_sub.proc_type=1 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
                         conn, dtFrom.ToShortDateString(), dtTo.ToString(), ref pQty, ref pTotal);
 
-                    ExecuteItemQuery($"select sum(val),sum(val*exchange_price) from {baseWhere} and inv.proc_type=2 and inv_sub.proc_type=1 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
+                    ExecuteItemQuery($"select sum(val),sum(val1*exchange_price) from {baseWhere} and inv.proc_type=2 and inv_sub.proc_type=1 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
                         conn, dtFrom.ToShortDateString(), dtTo.ToString(), ref pRetQty, ref pRetTotal);
 
-                    ExecuteItemQuery($"select sum(val),sum(val*exchange_price) from {baseWhere} and inv.proc_type=1 and inv_sub.proc_type=2 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
+                    ExecuteItemQuery($"select sum(val),sum(val1*exchange_price) from {baseWhere} and inv.proc_type=1 and inv_sub.proc_type=2 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
                         conn, dtFrom.ToShortDateString(), dtTo.ToString(), ref sQty, ref sTotal);
 
-                    ExecuteItemQuery($"select sum(val),sum(val*exchange_price) from {baseWhere} and inv.proc_type=2 and inv_sub.proc_type=2 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
+                    ExecuteItemQuery($"select sum(val),sum(val1*exchange_price) from {baseWhere} and inv.proc_type=2 and inv_sub.proc_type=2 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
                         conn, dtFrom.ToShortDateString(), dtTo.ToString(), ref sRetQty, ref sRetTotal);
 
                     double netPQty   = pQty   - pRetQty;

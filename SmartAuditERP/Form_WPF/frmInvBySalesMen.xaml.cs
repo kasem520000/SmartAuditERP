@@ -33,8 +33,6 @@ namespace SmartAuditERP.Form_WPF
         private string _defPrinter = string.Empty;
         private string _rptName = string.Empty;
         private string _rptUrl = string.Empty;
-        private double _defaultVAT = 0.0;
-        private bool _priceIncVAT = false;
 
         private ObservableCollection<SalesManRowItem> _itemsList;
         private string _resultFromDate = "";
@@ -118,21 +116,6 @@ namespace SmartAuditERP.Form_WPF
                     catch { /* تجاهل */ }
                 }
 
-                // إعدادات عامة (ضريبة)
-                var adapter2 = new SqlDataAdapter(
-                    "SELECT * FROM SettingGeneral WHERE Inv_Id=2", _conn);
-                var table2 = new DataTable();
-                adapter2.Fill(table2);
-
-                if (table2.Rows.Count == 1)
-                {
-                    try
-                    {
-                        _priceIncVAT = Convert.ToBoolean(table2.Rows[0]["PriceIncVAT"]);
-                        _defaultVAT = SafeDouble(table2.Rows[0]["MainVAT"]);
-                    }
-                    catch { /* تجاهل */ }
-                }
             }
             catch (Exception ex) { ShowError("خطأ في تحميل الإعدادات", ex); }
         }
@@ -274,7 +257,9 @@ namespace SmartAuditERP.Form_WPF
                 double netVal = SafeDouble(sub["total"]);
                 double discount = SafeDouble(sub["ItDiscount"]);
 
-                if (_priceIncVAT) netVal -= taxVal;
+                if (row["PriceIncVAT"] == DBNull.Value)
+                    throw new InvalidOperationException("تعذر تحديد شمول الضريبة لفاتورة محفوظة؛ راجع البيانات التاريخية.");
+                if (Convert.ToBoolean(row["PriceIncVAT"])) netVal -= taxVal;
 
                 // نوع الحركة
                 string processType = string.Empty;

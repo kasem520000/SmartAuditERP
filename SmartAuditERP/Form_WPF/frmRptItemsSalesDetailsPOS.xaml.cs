@@ -190,6 +190,7 @@ namespace SmartAuditERP.Form_WPF
                       INNER JOIN ItemsCategory ON Items.group_id = ItemsCategory.id
                       INNER JOIN inv ON inv.InvGlobalID = inv_sub.InvGlobalID
                       WHERE Items.IS_Deleted=0
+                        AND inv.IS_Deleted=0
                         AND inv_sub.ProductId=0
                         AND inv.inv_type=3";
 

@@ -256,7 +256,7 @@ namespace SmartAuditERP.Form_WPF
 
                 // الاستعلام الأساسي
                 string baseQuery = $@"
-                    SELECT SUM(val * exchange_price) 
+                    SELECT SUM(val1 * exchange_price)
                     FROM inv 
                     INNER JOIN inv_sub ON inv.InvGlobalID = inv_sub.InvGlobalID
                     INNER JOIN Customers ON inv.cust_id = Customers.id

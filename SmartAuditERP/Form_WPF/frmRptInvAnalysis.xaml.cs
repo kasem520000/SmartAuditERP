@@ -437,6 +437,13 @@ namespace SmartAuditERP.Form_WPF
             return filter;
         }
 
+        private string GetEmployeeFilter()
+        {
+            if (GetCheckState(chkAllEmp)) return "";
+            int employeeId = Convert.ToInt32(GetSelectedValue(cmbEmp));
+            return $"inv.sales_emp={employeeId} and ";
+        }
+
         private object GetSelectedValue(ComboBox combo)
         {
             object val = null;
@@ -499,7 +506,7 @@ namespace SmartAuditERP.Form_WPF
 
             // من فواتير الشراء
             var adp = new SqlDataAdapter(
-                $"select sum(val),sum(val*exchange_price) from inv,inv_sub " +
+                $"select sum(val),sum(val1*exchange_price) from inv,inv_sub " +
                 $"where inv_sub.ItemId={itemId} and date <=@date2 " +
                 $"and inv.proc_type=1 and inv_sub.proc_type=1 " +
                 $"and inv.InvGlobalID=inv_sub.InvGlobalID and IS_Deleted=0",
@@ -517,7 +524,7 @@ namespace SmartAuditERP.Form_WPF
 
             // من مرتجعات الشراء
             adp = new SqlDataAdapter(
-                $"select sum(val),sum(val*exchange_price) from inv,inv_sub " +
+                $"select sum(val),sum(val1*exchange_price) from inv,inv_sub " +
                 $"where ItemId={itemId} and date <=@date2 " +
                 $"and inv.proc_type=3 and inv.InvGlobalID=inv_sub.InvGlobalID and IS_Deleted=0",
                 conn);
@@ -560,7 +567,7 @@ namespace SmartAuditERP.Form_WPF
             double unitCost = 0.0;
 
             var adp = new SqlDataAdapter(
-                $"select sum(val),sum(val*exchange_price) from inv,inv_sub " +
+                $"select sum(val),sum(val1*exchange_price) from inv,inv_sub " +
                 $"where inv_sub.ItemId={itemId} and date <=@date2 " +
                 $"and inv.inv_type=1 and inv.proc_type=1 and inv_sub.proc_type=1 " +
                 $"and inv.InvGlobalID=inv_sub.InvGlobalID and IS_Deleted=0",
@@ -577,7 +584,7 @@ namespace SmartAuditERP.Form_WPF
             }
 
             var adp2 = new SqlDataAdapter(
-                $"select sum(val),sum(val*exchange_price) from inv,inv_sub " +
+                $"select sum(val),sum(val1*exchange_price) from inv,inv_sub " +
                 $"where ItemId={itemId} and date <=@date2 " +
                 $"and inv.inv_type=1 and inv.proc_type=3 " +
                 $"and inv.InvGlobalID=inv_sub.InvGlobalID and IS_Deleted=0",
@@ -639,7 +646,12 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
-                var adp = new SqlDataAdapter("select CategoryId,name from ItemsCategory", conn);
+                bool allGroups = GetCheckState(chkAllGroups);
+                int groupId = allGroups ? 0 : Convert.ToInt32(GetSelectedValue(cmbGroups));
+                var adp = new SqlDataAdapter(
+                    "select id,name from ItemsCategory where (@allGroups=1 OR id=@groupId)", conn);
+                adp.SelectCommand.Parameters.Add("@allGroups", SqlDbType.Bit).Value = allGroups;
+                adp.SelectCommand.Parameters.Add("@groupId", SqlDbType.Int).Value = groupId;
                 var dt = new DataTable();
                 adp.Fill(dt);
 
@@ -661,14 +673,15 @@ namespace SmartAuditERP.Form_WPF
                 object custVal = GetSelectedValue(cmbCust);
                 object salesVal = GetSelectedValue(cmbSales);
 
+                string employeeFilter = GetEmployeeFilter();
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    string filter = "";
+                    string filter = employeeFilter;
                     if (!allSafe) filter += $"[stock]={safeVal} and ";
                     if (!allStock) filter += $"[safe]={stockVal} and ";
                     if (!allCust) filter += $"cust_id={custVal} and ";
                     if (!allSales) filter += $"salesman={salesVal} and ";
-                    filter += $"ItemsCategory.CategoryId={dt.Rows[i]["CategoryId"]} and ";
+                    filter += $"ItemsCategory.id={dt.Rows[i]["id"]} and ";
                     filter += " date>=@date1 and date<=@date2 and ";
 
                     double netTotal = 0, netDiscount = 0, netQty = 0, netCost = 0;
@@ -792,9 +805,10 @@ namespace SmartAuditERP.Form_WPF
                 object salesVal = GetSelectedValue(cmbSales);
                 object groupVal = GetSelectedValue(cmbGroups);
 
+                string employeeFilter = GetEmployeeFilter();
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    string filter = "";
+                    string filter = employeeFilter;
                     if (!allSafe) filter += $"[stock]={safeVal} and ";
                     if (!allStock) filter += $"[safe]={stockVal} and ";
                     if (!allCust) filter += $"cust_id={custVal} and ";
@@ -922,9 +936,10 @@ namespace SmartAuditERP.Form_WPF
                 object salesVal = GetSelectedValue(cmbSales);
                 object groupVal = GetSelectedValue(cmbGroups);
 
+                string employeeFilter = GetEmployeeFilter();
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    string filter = "";
+                    string filter = employeeFilter;
                     if (!allSafe) filter += $"[stock]={safeVal} and ";
                     if (!allStock) filter += $"[safe]={stockVal} and ";
                     filter += $"cust_id={dt.Rows[i]["id"]} and ";
@@ -1050,9 +1065,10 @@ namespace SmartAuditERP.Form_WPF
                 object custVal = GetSelectedValue(cmbCust);
                 object groupVal = GetSelectedValue(cmbGroups);
 
+                string employeeFilter = GetEmployeeFilter();
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    string filter = "";
+                    string filter = employeeFilter;
                     if (!allSafe) filter += $"[stock]={safeVal} and ";
                     if (!allStock) filter += $"[safe]={stockVal} and ";
                     if (!allCust) filter += $"cust_id={custVal} and ";
@@ -1322,9 +1338,10 @@ namespace SmartAuditERP.Form_WPF
                 object salesVal = GetSelectedValue(cmbSales);
                 object groupVal = GetSelectedValue(cmbGroups);
 
+                string employeeFilter = GetEmployeeFilter();
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    string filter = "";
+                    string filter = employeeFilter;
                     if (!allSafe) filter += $"[stock]={safeVal} and ";
                     if (!allStock) filter += $"[safe]={stockVal} and ";
                     if (!allCust) filter += $"cust_id={custVal} and ";
@@ -1463,9 +1480,10 @@ namespace SmartAuditERP.Form_WPF
                 object salesVal = GetSelectedValue(cmbSales);
                 object groupVal = GetSelectedValue(cmbGroups);
 
+                string employeeFilter = GetEmployeeFilter();
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    string filter = "";
+                    string filter = employeeFilter;
                     if (!allSafe) filter += $"[stock]={safeVal} and ";
                     if (!allStock) filter += $"[safe]={stockVal} and ";
                     if (!allCust) filter += $"cust_id={custVal} and ";
@@ -1594,9 +1612,10 @@ namespace SmartAuditERP.Form_WPF
                 object salesVal = GetSelectedValue(cmbSales);
                 object groupVal = GetSelectedValue(cmbGroups);
 
+                string employeeFilter = GetEmployeeFilter();
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    string filter = "";
+                    string filter = employeeFilter;
                     // Repair R-104 (audit finding P7-081): [stock] is the
                     // selected treasury, not the selected warehouse.
                     if (!allSafe) filter += $"[stock]={safeVal} and ";

@@ -376,7 +376,7 @@ namespace SmartAuditERP.Form_WPF
             {
                 // الوارد (proc_type=1)
                 string sql1 =
-                    $"SELECT SUM(val), SUM(val * exchange_price) " +
+                    $"SELECT SUM(val), SUM(val1 * exchange_price) " +
                     $"FROM inv, inv_sub " +
                     $"WHERE {branchFilter} ItemId={itemId} " +
                     $"  AND inv.proc_type=1 AND inv_sub.proc_type=1 " +
@@ -399,7 +399,7 @@ namespace SmartAuditERP.Form_WPF
 
                 // المنتج (proc_type=3)
                 string sql2 =
-                    $"SELECT SUM(val), SUM(val * exchange_price) " +
+                    $"SELECT SUM(val), SUM(val1 * exchange_price) " +
                     $"FROM inv, inv_sub " +
                     $"WHERE {branchFilter} ItemId={itemId} " +
                     $"  AND inv.proc_type=3 " +

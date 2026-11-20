@@ -126,31 +126,31 @@ namespace SmartAuditERP.Form_WPF
                     double saleRetQty = 0, saleRetTotal = 0;
 
                     // مشتريات
-                    ExecuteQuery($"select sum(val),sum(val*exchange_price) from inv,inv_sub where {branchFilter} Inv_Sub.ItemId={itemId} and {dateFilter} inv.inv_type=1 and inv.proc_type=1 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
+                    ExecuteQuery($"select sum(val),sum(val1*exchange_price) from inv,inv_sub where {branchFilter} Inv_Sub.ItemId={itemId} and {dateFilter} inv.inv_type=1 and inv.proc_type=1 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
                         conn, dtFrom.ToShortDateString(), dtTo.ToString(), ref purchQty, ref purchTotal);
 
                     // مرتجع مشتريات
-                    ExecuteQuery($"select sum(val),sum(val*exchange_price) from inv,inv_sub where {branchFilter} Inv_Sub.ItemId={itemId} and {dateFilter} inv.inv_type=1 and inv.proc_type=2 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
+                    ExecuteQuery($"select sum(val),sum(val1*exchange_price) from inv,inv_sub where {branchFilter} Inv_Sub.ItemId={itemId} and {dateFilter} inv.inv_type=1 and inv.proc_type=2 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
                         conn, dtFrom.ToShortDateString(), dtTo.ToString(), ref purchRetQty, ref purchRetTotal);
 
                     // مبيعات
-                    ExecuteQuery($"select sum(val),sum(val*exchange_price) from inv,inv_sub where {branchFilter} Inv_Sub.ItemId={itemId} and {dateFilter} inv.inv_type=2 and inv.proc_type=1 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
+                    ExecuteQuery($"select sum(val),sum(val1*exchange_price) from inv,inv_sub where {branchFilter} Inv_Sub.ItemId={itemId} and {dateFilter} inv.inv_type=2 and inv.proc_type=1 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
                         conn, dtFrom.ToShortDateString(), dtTo.ToString(), ref saleQty, ref saleTotal);
 
                     // مرتجع مبيعات
-                    ExecuteQuery($"select sum(val),sum(val*exchange_price) from inv,inv_sub where {branchFilter} Inv_Sub.ItemId={itemId} and {dateFilter} inv.inv_type=2 and inv.proc_type=2 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
+                    ExecuteQuery($"select sum(val),sum(val1*exchange_price) from inv,inv_sub where {branchFilter} Inv_Sub.ItemId={itemId} and {dateFilter} inv.inv_type=2 and inv.proc_type=2 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
                         conn, dtFrom.ToShortDateString(), dtTo.ToString(), ref saleRetQty, ref saleRetTotal);
 
                     // POS مبيعات
                     double posQty = 0, posTotal = 0;
-                    ExecuteQuery($"select sum(val),sum(val*exchange_price) from inv,inv_sub where {branchFilter} Inv_Sub.ItemId={itemId} and {dateFilter} inv.inv_type=3 and inv.proc_type=1 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
+                    ExecuteQuery($"select sum(val),sum(val1*exchange_price) from inv,inv_sub where {branchFilter} Inv_Sub.ItemId={itemId} and {dateFilter} inv.inv_type=3 and inv.proc_type=1 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
                         conn, dtFrom.ToShortDateString(), dtTo.ToString(), ref posQty, ref posTotal);
                     saleQty   += posQty;
                     saleTotal += posTotal;
 
                     // مرتجع POS
                     double posRetQty = 0, posRetTotal = 0;
-                    ExecuteQuery($"select sum(val),sum(val*exchange_price) from inv,inv_sub where {branchFilter} Inv_Sub.ItemId={itemId} and {dateFilter} inv.inv_type=3 and inv.proc_type=2 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
+                    ExecuteQuery($"select sum(val),sum(val1*exchange_price) from inv,inv_sub where {branchFilter} Inv_Sub.ItemId={itemId} and {dateFilter} inv.inv_type=3 and inv.proc_type=2 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
                         conn, dtFrom.ToShortDateString(), dtTo.ToString(), ref posRetQty, ref posRetTotal);
                     saleRetQty   += posRetQty;
                     saleRetTotal += posRetTotal;

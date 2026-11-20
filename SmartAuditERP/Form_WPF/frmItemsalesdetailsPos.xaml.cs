@@ -164,6 +164,15 @@ namespace SmartAuditERP.Form_WPF
                 ResetSummaries();
 
                 StringBuilder filterBuilder = new StringBuilder();
+                bool allUsers = ckAllUsers.IsChecked == true;
+                int selectedUser = 0;
+                if (!allUsers)
+                {
+                    if (cmbusers.SelectedValue == null ||
+                        !int.TryParse(cmbusers.SelectedValue.ToString(), out selectedUser))
+                        throw new InvalidOperationException("يرجى اختيار مستخدم أو تحديد الكل.");
+                    filterBuilder.Append(" AND Inv.sales_emp = @userId ");
+                }
 
                 if (!chkAllPeriod.IsChecked == true)
                 {
@@ -180,7 +189,7 @@ namespace SmartAuditERP.Form_WPF
                            ISNULL(exchange_price,0) AS exchange_price,
                            ISNULL(discount,0) AS discount,
                            ((val1 * exchange_price) - discount) AS sum,
-                           sales_emp, cust_id, unit, taxval
+                           sales_emp, cust_id, unit, taxval, Inv.PriceIncVAT
                     FROM Inv
                     INNER JOIN Inv_Sub ON Inv.InvGlobalID = Inv_Sub.InvGlobalID
                     WHERE {branchFilter} Inv.inv_type=3 AND Inv_Sub.ItemId > 0 AND Inv.IS_Deleted=0
@@ -188,6 +197,8 @@ namespace SmartAuditERP.Form_WPF
                     ORDER BY date DESC";
 
                 SqlDataAdapter adapter = new SqlDataAdapter(sql, conn);
+                if (!allUsers)
+                    adapter.SelectCommand.Parameters.Add("@userId", SqlDbType.Int).Value = selectedUser;
 
                 DateTime dateFrom = txtDateFrom.SelectedDate ?? DateTime.Today;
                 DateTime dateTo = (txtDateTo.SelectedDate ?? DateTime.Today).AddHours(24);
@@ -212,10 +223,6 @@ namespace SmartAuditERP.Form_WPF
                 foreach (DataRow row in queryResult.Rows)
                 {
                     int procType = Convert.ToInt32(row["proc_type"]);
-                    int invType = Convert.ToInt32(row["inv_type"]);
-
-                    InvoiceObj invoiceObj = new InvoiceObj(invType, procType);
-
                     bool isValidRow = false;
                     bool isPlus = false;
                     string invTypeText = "";
@@ -247,11 +254,14 @@ namespace SmartAuditERP.Form_WPF
                     double exchPrice = Convert.ToDouble(row["exchange_price"]);
                     double discount = Convert.ToDouble(row["discount"]);
 
-                    double totalBeforeTax = invoiceObj.PriceIncVAT
+                    if (row["PriceIncVAT"] == DBNull.Value)
+                        throw new InvalidOperationException("تعذر تحديد شمول الضريبة لفاتورة محفوظة؛ راجع البيانات التاريخية.");
+                    bool priceIncludesVat = Convert.ToBoolean(row["PriceIncVAT"]);
+                    double totalBeforeTax = priceIncludesVat
                         ? sumVal - taxVal
                         : sumVal;
 
-                    double totalWithTax = invoiceObj.PriceIncVAT
+                    double totalWithTax = priceIncludesVat
                         ? sumVal
                         : sumVal + taxVal;
 
@@ -293,6 +303,10 @@ namespace SmartAuditERP.Form_WPF
             }
             catch (Exception ex)
             {
+                _dataRows.Clear();
+                GridControl1.ItemsSource = null;
+                lblRowCount.Text = "عدد السجلات: 0";
+                CalculateAndShowSummaries();
                 ShowError(ex);
                 ProgressBar1.Visibility = Visibility.Collapsed;
             }

@@ -3981,17 +3981,17 @@ CREATE PROCEDURE [dbo].[GetSalesByCategory]
 	@branch  [int] ,
 	@inv_type  [int] ,
 	@StartDate  dateTime ,
-	@EndDate  dateTime 
+	@EndDate  dateTime
 
 WITH EXECUTE AS CALLER
 AS
 BEGIN
 select TOP 5 ItemsCategory.name as CategoryName,  ItemsCategory.CategoryID, sum(Sales) as TotalSales,sum(ReturnSales) as ReturnSales , sum(Sales-ReturnSales) as SaleNet  from
 (select  ItemId ,  sum(val1*exchange_price) as Sales ,0 as ReturnSales
- from inv  left join inv_sub on inv.InvGlobalID =Inv_Sub.InvGlobalID   where (@branch is null or branch =@branch ) and (inv_type=@inv_type ) and inv.proc_type=1 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by ItemId 
+ from inv  left join inv_sub on inv.InvGlobalID =Inv_Sub.InvGlobalID   where inv.IS_Deleted=0 and (@branch is null or branch =@branch ) and (inv_type=@inv_type ) and inv.proc_type=1 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by ItemId
 union
  select   ItemId ,  0 as Sales ,sum(val1*exchange_price) as ReturnSales
- from inv  left join inv_sub on inv.InvGlobalID =Inv_Sub.InvGlobalID  where (@branch is null or branch =@branch ) and (inv_type=@inv_type) and inv.proc_type=2 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by ItemId   ) as tb left join Items on Items.id= tb.ItemId left join ItemsCategory on Items.group_id= ItemsCategory.CategoryId  group by CategoryID, ItemsCategory.name  order by SaleNet desc
+ from inv  left join inv_sub on inv.InvGlobalID =Inv_Sub.InvGlobalID  where inv.IS_Deleted=0 and (@branch is null or branch =@branch ) and (inv_type=@inv_type) and inv.proc_type=2 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by ItemId   ) as tb left join Items on Items.id= tb.ItemId left join ItemsCategory on Items.group_id= ItemsCategory.CategoryId  group by CategoryID, ItemsCategory.name  order by SaleNet desc
  END
 GO
 /****** Object:  StoredProcedure [dbo].[GetSalesByItems]    Script Date: 10/2/2022 2:34:06 PM ******/
@@ -4006,17 +4006,17 @@ CREATE PROCEDURE [dbo].[GetSalesByItems]
 	@branch  [int] ,
 	@inv_type  [int] ,
 	@StartDate  dateTime ,
-	@EndDate  dateTime 
+	@EndDate  dateTime
 
 WITH EXECUTE AS CALLER
 AS
 BEGIN
 select TOP 5  Name as ItemName, ItemId, sum(Sales) as TotalSales,sum(ReturnSales) as ReturnSales , sum(Sales-ReturnSales) as SaleNet  from
-(select  ItemId ,  sum(val*exchange_price) as Sales ,0 as ReturnSales
- from inv  left join inv_sub on inv.InvGlobalID =Inv_Sub.InvGlobalID   where (@branch is null or branch =@branch ) and (inv_type=@inv_type  ) and inv.proc_type=1 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by ItemId 
-union select  ItemId ,  0 as Sales ,sum(val*exchange_price) as ReturnSales
- from inv  left join inv_sub on inv.InvGlobalID =Inv_Sub.InvGlobalID  where (@branch is null or branch =@branch ) and (inv_type=@inv_type) and inv.proc_type=2 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by ItemId   
- ) as tb left join Items on Items.id= tb.ItemId where ItemId Is Not Null group by ItemId,name  order   by TotalSales DESC 
+(select  ItemId ,  sum(val1*exchange_price) as Sales ,0 as ReturnSales
+ from inv  left join inv_sub on inv.InvGlobalID =Inv_Sub.InvGlobalID   where inv.IS_Deleted=0 and (@branch is null or branch =@branch ) and (inv_type=@inv_type  ) and inv.proc_type=1 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by ItemId
+union select  ItemId ,  0 as Sales ,sum(val1*exchange_price) as ReturnSales
+ from inv  left join inv_sub on inv.InvGlobalID =Inv_Sub.InvGlobalID  where inv.IS_Deleted=0 and (@branch is null or branch =@branch ) and (inv_type=@inv_type) and inv.proc_type=2 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by ItemId
+ ) as tb left join Items on Items.id= tb.ItemId where ItemId Is Not Null group by ItemId,name  order   by TotalSales DESC
  END
 GO
 /****** Object:  StoredProcedure [dbo].[GetSalesByOrderType]    Script Date: 10/2/2022 2:34:32 PM ******/
@@ -4031,16 +4031,16 @@ CREATE   PROCEDURE [dbo].[GetSalesByOrderType]
 	@branch  [int] ,
 	@inv_type  [int] ,
 	@StartDate  dateTime ,
-	@EndDate  dateTime 
+	@EndDate  dateTime
 
 WITH EXECUTE AS CALLER
 AS
 BEGIN
 select '' as OrderTypeName, OrderTypeID, sum(Sales) as TotalSales,sum(ReturnSales) as ReturnSales , sum(Sales-ReturnSales) as SaleNet  from
 (select OrderType as OrderTypeID , count(*) as InvCount, sum(cash+visa) as Sales ,0 as ReturnSales
-from inv where (@branch is null or branch =@branch ) and (inv_type=2 or inv_type=3) and proc_type=1 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by OrderType
+from inv where inv.IS_Deleted=0 and (@branch is null or branch =@branch ) and (inv_type=@inv_type) and proc_type=1 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by OrderType
 union select OrderType as OrderTypeID , 0as InvCount, 0 as Sales ,sum(cash+visa) as ReturnSales
-from inv where (@branch is null or branch =@branch ) and (inv_type=2 or inv_type=3) and proc_type=2 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by OrderType   ) as tb group by OrderTypeID
+from inv where inv.IS_Deleted=0 and (@branch is null or branch =@branch ) and (inv_type=@inv_type) and proc_type=2 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by OrderType   ) as tb group by OrderTypeID
 END
 GO
 /****** Object:  StoredProcedure [dbo].[GetSalesByPaymentMethods]    Script Date: 10/2/2022 2:35:19 PM ******/
@@ -4055,26 +4055,26 @@ CREATE PROCEDURE [dbo].[GetSalesByPaymentMethods]
 	@branch  [int] ,
 	@inv_type  [int] ,
 	@StartDate  dateTime ,
-	@EndDate  dateTime 
+	@EndDate  dateTime
 
 WITH EXECUTE AS CALLER
 AS
 BEGIN
 select '' as PayMethod, PayTypeID, sum(Sales) as TotalSales,sum(ReturnSales) as ReturnSales , sum(Sales-ReturnSales) as SaleNet  from
-(select pay_type as PayTypeID , count(*) as InvCount, CASE 
-WHEN  pay_type = 1  THEN  sum(tot_net) 
-WHEN  pay_type = 2 THEN   sum(visa) 
+(select pay_type as PayTypeID , count(*) as InvCount, CASE
+WHEN  pay_type = 1  THEN  sum(tot_net)
+WHEN  pay_type = 2 THEN   sum(visa)
 WHEN  pay_type = 4 THEN   sum(visa + cash)
-WHEN  pay_type = -1 THEN  sum(tot_net) 
+WHEN  pay_type = -1 THEN  sum(tot_net)
 End as Sales ,0 as ReturnSales
-from inv where (@branch is null or branch =@branch ) and (inv_type=2 or inv_type=3) and proc_type=1 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by pay_type
-union select pay_type as PayTypeID , 0as InvCount, 0 as Sales ,CASE 
-WHEN  pay_type = 1  THEN  sum(tot_net) 
-WHEN  pay_type = 2 THEN   sum(visa) 
+from inv where inv.IS_Deleted=0 and (@branch is null or branch =@branch ) and (inv_type=@inv_type) and proc_type=1 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by pay_type
+union select pay_type as PayTypeID , 0as InvCount, 0 as Sales ,CASE
+WHEN  pay_type = 1  THEN  sum(tot_net)
+WHEN  pay_type = 2 THEN   sum(visa)
 WHEN  pay_type = 4 THEN   sum(visa + cash)
-WHEN  pay_type = -1 THEN  sum(tot_net) 
+WHEN  pay_type = -1 THEN  sum(tot_net)
 End as  ReturnSales
-from inv where (@branch is null or branch =@branch ) and (inv_type=2 or inv_type=3) and proc_type=2 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by pay_type   ) as tb group by PayTypeID
+from inv where inv.IS_Deleted=0 and (@branch is null or branch =@branch ) and (inv_type=@inv_type) and proc_type=2 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by pay_type   ) as tb group by PayTypeID
 END
 GO
 /****** Object:  StoredProcedure [dbo].[MonthlySales]    Script Date: 10/2/2022 2:35:56 PM ******/
@@ -49013,17 +49013,35 @@ CREATE PROCEDURE [dbo].[GetSalesByCategory]
 	@branch  [int] ,
 	@inv_type  [int] ,
 	@StartDate  dateTime ,
-	@EndDate  dateTime 
+	@EndDate  dateTime
 
 WITH EXECUTE AS CALLER
 AS
 BEGIN
 select TOP 5 ItemsCategory.name as CategoryName,  ItemsCategory.CategoryID, sum(Sales) as TotalSales,sum(ReturnSales) as ReturnSales , sum(Sales-ReturnSales) as SaleNet  from
 (select  ItemId ,  sum(val1*exchange_price) as Sales ,0 as ReturnSales
- from inv  left join inv_sub on inv.InvGlobalID =Inv_Sub.InvGlobalID   where (@branch is null or branch =@branch ) and (inv_type=@inv_type ) and inv.proc_type=1 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by ItemId 
+ from inv  left join inv_sub on inv.InvGlobalID =Inv_Sub.InvGlobalID   where inv.IS_Deleted=0 and (@branch is null or branch =@branch ) and (inv_type=@inv_type ) and inv.proc_type=1 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by ItemId
 union
  select   ItemId ,  0 as Sales ,sum(val1*exchange_price) as ReturnSales
- from inv  left join inv_sub on inv.InvGlobalID =Inv_Sub.InvGlobalID  where (@branch is null or branch =@branch ) and (inv_type=@inv_type) and inv.proc_type=2 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by ItemId   ) as tb left join Items on Items.id= tb.ItemId left join ItemsCategory on Items.group_id= ItemsCategory.CategoryId  group by CategoryID, ItemsCategory.name  order by SaleNet desc
+ from inv  left join inv_sub on inv.InvGlobalID =Inv_Sub.InvGlobalID  where inv.IS_Deleted=0 and (@branch is null or branch =@branch ) and (inv_type=@inv_type) and inv.proc_type=2 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by ItemId   ) as tb left join Items on Items.id= tb.ItemId left join ItemsCategory on Items.group_id= ItemsCategory.CategoryId  group by CategoryID, ItemsCategory.name  order by SaleNet desc
+ END')
+GO
+exec('
+ALTER PROCEDURE [dbo].[GetSalesByCategory]
+	@branch  [int] ,
+	@inv_type  [int] ,
+	@StartDate  dateTime ,
+	@EndDate  dateTime
+
+WITH EXECUTE AS CALLER
+AS
+BEGIN
+select TOP 5 ItemsCategory.name as CategoryName,  ItemsCategory.CategoryID, sum(Sales) as TotalSales,sum(ReturnSales) as ReturnSales , sum(Sales-ReturnSales) as SaleNet  from
+(select  ItemId ,  sum(val1*exchange_price) as Sales ,0 as ReturnSales
+ from inv  left join inv_sub on inv.InvGlobalID =Inv_Sub.InvGlobalID   where inv.IS_Deleted=0 and (@branch is null or branch =@branch ) and (inv_type=@inv_type ) and inv.proc_type=1 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by ItemId
+union
+ select   ItemId ,  0 as Sales ,sum(val1*exchange_price) as ReturnSales
+ from inv  left join inv_sub on inv.InvGlobalID =Inv_Sub.InvGlobalID  where inv.IS_Deleted=0 and (@branch is null or branch =@branch ) and (inv_type=@inv_type) and inv.proc_type=2 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by ItemId   ) as tb left join Items on Items.id= tb.ItemId left join ItemsCategory on Items.group_id= ItemsCategory.CategoryId  group by CategoryID, ItemsCategory.name  order by SaleNet desc
  END')
 GO
 /****** Object:  StoredProcedure [dbo].[GetSalesByItems]    Script Date: 11/1/2021 12:20:01 PM ******/
@@ -49033,17 +49051,35 @@ CREATE PROCEDURE [dbo].[GetSalesByItems]
 	@branch  [int] ,
 	@inv_type  [int] ,
 	@StartDate  dateTime ,
-	@EndDate  dateTime 
+	@EndDate  dateTime
 
 WITH EXECUTE AS CALLER
 AS
 BEGIN
 select TOP 5  Name as ItemName, ItemId, sum(Sales) as TotalSales,sum(ReturnSales) as ReturnSales , sum(Sales-ReturnSales) as SaleNet  from
-(select  ItemId ,  sum(val*exchange_price) as Sales ,0 as ReturnSales
- from inv  left join inv_sub on inv.InvGlobalID =Inv_Sub.InvGlobalID   where (@branch is null or branch =@branch ) and (inv_type=@inv_type  ) and inv.proc_type=1 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by ItemId 
-union select  ItemId ,  0 as Sales ,sum(val*exchange_price) as ReturnSales
- from inv  left join inv_sub on inv.InvGlobalID =Inv_Sub.InvGlobalID  where (@branch is null or branch =@branch ) and (inv_type=@inv_type) and inv.proc_type=2 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by ItemId   
- ) as tb left join Items on Items.id= tb.ItemId where ItemId Is Not Null group by ItemId,name  order   by TotalSales DESC 
+(select  ItemId ,  sum(val1*exchange_price) as Sales ,0 as ReturnSales
+ from inv  left join inv_sub on inv.InvGlobalID =Inv_Sub.InvGlobalID   where inv.IS_Deleted=0 and (@branch is null or branch =@branch ) and (inv_type=@inv_type  ) and inv.proc_type=1 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by ItemId
+union select  ItemId ,  0 as Sales ,sum(val1*exchange_price) as ReturnSales
+ from inv  left join inv_sub on inv.InvGlobalID =Inv_Sub.InvGlobalID  where inv.IS_Deleted=0 and (@branch is null or branch =@branch ) and (inv_type=@inv_type) and inv.proc_type=2 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by ItemId
+ ) as tb left join Items on Items.id= tb.ItemId where ItemId Is Not Null group by ItemId,name  order   by TotalSales DESC
+ END')
+GO
+exec('
+ALTER PROCEDURE [dbo].[GetSalesByItems]
+	@branch  [int] ,
+	@inv_type  [int] ,
+	@StartDate  dateTime ,
+	@EndDate  dateTime
+
+WITH EXECUTE AS CALLER
+AS
+BEGIN
+select TOP 5  Name as ItemName, ItemId, sum(Sales) as TotalSales,sum(ReturnSales) as ReturnSales , sum(Sales-ReturnSales) as SaleNet  from
+(select  ItemId ,  sum(val1*exchange_price) as Sales ,0 as ReturnSales
+ from inv  left join inv_sub on inv.InvGlobalID =Inv_Sub.InvGlobalID   where inv.IS_Deleted=0 and (@branch is null or branch =@branch ) and (inv_type=@inv_type  ) and inv.proc_type=1 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by ItemId
+union select  ItemId ,  0 as Sales ,sum(val1*exchange_price) as ReturnSales
+ from inv  left join inv_sub on inv.InvGlobalID =Inv_Sub.InvGlobalID  where inv.IS_Deleted=0 and (@branch is null or branch =@branch ) and (inv_type=@inv_type) and inv.proc_type=2 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by ItemId
+ ) as tb left join Items on Items.id= tb.ItemId where ItemId Is Not Null group by ItemId,name  order   by TotalSales DESC
  END')
 GO
 /****** Object:  StoredProcedure [dbo].[GetSalesByOrderType]    Script Date: 11/1/2021 12:20:01 PM ******/
@@ -49053,16 +49089,33 @@ CREATE   PROCEDURE [dbo].[GetSalesByOrderType]
 	@branch  [int] ,
 	@inv_type  [int] ,
 	@StartDate  dateTime ,
-	@EndDate  dateTime 
+	@EndDate  dateTime
 
 WITH EXECUTE AS CALLER
 AS
 BEGIN
 select '''' as OrderTypeName, OrderTypeID, sum(Sales) as TotalSales,sum(ReturnSales) as ReturnSales , sum(Sales-ReturnSales) as SaleNet  from
 (select OrderType as OrderTypeID , count(*) as InvCount, sum(cash+visa) as Sales ,0 as ReturnSales
-from inv where (@branch is null or branch =@branch ) and (inv_type=2 or inv_type=3) and proc_type=1 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by OrderType
+from inv where inv.IS_Deleted=0 and (@branch is null or branch =@branch ) and (inv_type=@inv_type) and proc_type=1 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by OrderType
 union select OrderType as OrderTypeID , 0as InvCount, 0 as Sales ,sum(cash+visa) as ReturnSales
-from inv where (@branch is null or branch =@branch ) and (inv_type=2 or inv_type=3) and proc_type=2 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by OrderType   ) as tb group by OrderTypeID
+from inv where inv.IS_Deleted=0 and (@branch is null or branch =@branch ) and (inv_type=@inv_type) and proc_type=2 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by OrderType   ) as tb group by OrderTypeID
+END')
+GO
+exec('
+ALTER PROCEDURE [dbo].[GetSalesByOrderType]
+	@branch  [int] ,
+	@inv_type  [int] ,
+	@StartDate  dateTime ,
+	@EndDate  dateTime
+
+WITH EXECUTE AS CALLER
+AS
+BEGIN
+select '''' as OrderTypeName, OrderTypeID, sum(Sales) as TotalSales,sum(ReturnSales) as ReturnSales , sum(Sales-ReturnSales) as SaleNet  from
+(select OrderType as OrderTypeID , count(*) as InvCount, sum(cash+visa) as Sales ,0 as ReturnSales
+from inv where inv.IS_Deleted=0 and (@branch is null or branch =@branch ) and (inv_type=@inv_type) and proc_type=1 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by OrderType
+union select OrderType as OrderTypeID , 0as InvCount, 0 as Sales ,sum(cash+visa) as ReturnSales
+from inv where inv.IS_Deleted=0 and (@branch is null or branch =@branch ) and (inv_type=@inv_type) and proc_type=2 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by OrderType   ) as tb group by OrderTypeID
 END')
 GO
 /****** Object:  StoredProcedure [dbo].[GetSalesByPaymentMethods]    Script Date: 11/1/2021 12:20:01 PM ******/
@@ -49072,26 +49125,53 @@ CREATE PROCEDURE [dbo].[GetSalesByPaymentMethods]
 	@branch  [int] ,
 	@inv_type  [int] ,
 	@StartDate  dateTime ,
-	@EndDate  dateTime 
+	@EndDate  dateTime
 
 WITH EXECUTE AS CALLER
 AS
 BEGIN
 select '''' as PayMethod, PayTypeID, sum(Sales) as TotalSales,sum(ReturnSales) as ReturnSales , sum(Sales-ReturnSales) as SaleNet  from
-(select pay_type as PayTypeID , count(*) as InvCount,CASE 
-WHEN  pay_type = 1  THEN  sum(tot_net) 
-WHEN  pay_type = 2 THEN   sum(visa) 
+(select pay_type as PayTypeID , count(*) as InvCount,CASE
+WHEN  pay_type = 1  THEN  sum(tot_net)
+WHEN  pay_type = 2 THEN   sum(visa)
 WHEN  pay_type = 4 THEN   sum(visa + cash)
-WHEN  pay_type = -1 THEN  sum(tot_net) 
+WHEN  pay_type = -1 THEN  sum(tot_net)
 End as Sales ,0 as ReturnSales
-from inv where (@branch is null or branch =@branch ) and (inv_type=2 or inv_type=3) and proc_type=1 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by pay_type
-union select pay_type as PayTypeID , 0as InvCount, 0 as Sales ,CASE 
-WHEN  pay_type = 1  THEN  sum(tot_net) 
-WHEN  pay_type = 2 THEN   sum(visa) 
+from inv where inv.IS_Deleted=0 and (@branch is null or branch =@branch ) and (inv_type=@inv_type) and proc_type=1 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by pay_type
+union select pay_type as PayTypeID , 0as InvCount, 0 as Sales ,CASE
+WHEN  pay_type = 1  THEN  sum(tot_net)
+WHEN  pay_type = 2 THEN   sum(visa)
 WHEN  pay_type = 4 THEN   sum(visa + cash)
-WHEN  pay_type = -1 THEN  sum(tot_net) 
+WHEN  pay_type = -1 THEN  sum(tot_net)
 End as ReturnSales
-from inv where (@branch is null or branch =@branch ) and (inv_type=2 or inv_type=3) and proc_type=2 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by pay_type   ) as tb group by PayTypeID
+from inv where inv.IS_Deleted=0 and (@branch is null or branch =@branch ) and (inv_type=@inv_type) and proc_type=2 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by pay_type   ) as tb group by PayTypeID
+END')
+GO
+exec('
+ALTER PROCEDURE [dbo].[GetSalesByPaymentMethods]
+	@branch  [int] ,
+	@inv_type  [int] ,
+	@StartDate  dateTime ,
+	@EndDate  dateTime
+
+WITH EXECUTE AS CALLER
+AS
+BEGIN
+select '''' as PayMethod, PayTypeID, sum(Sales) as TotalSales,sum(ReturnSales) as ReturnSales , sum(Sales-ReturnSales) as SaleNet  from
+(select pay_type as PayTypeID , count(*) as InvCount,CASE
+WHEN  pay_type = 1  THEN  sum(tot_net)
+WHEN  pay_type = 2 THEN   sum(visa)
+WHEN  pay_type = 4 THEN   sum(visa + cash)
+WHEN  pay_type = -1 THEN  sum(tot_net)
+End as Sales ,0 as ReturnSales
+from inv where inv.IS_Deleted=0 and (@branch is null or branch =@branch ) and (inv_type=@inv_type) and proc_type=1 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by pay_type
+union select pay_type as PayTypeID , 0as InvCount, 0 as Sales ,CASE
+WHEN  pay_type = 1  THEN  sum(tot_net)
+WHEN  pay_type = 2 THEN   sum(visa)
+WHEN  pay_type = 4 THEN   sum(visa + cash)
+WHEN  pay_type = -1 THEN  sum(tot_net)
+End as ReturnSales
+from inv where inv.IS_Deleted=0 and (@branch is null or branch =@branch ) and (inv_type=@inv_type) and proc_type=2 and (@StartDate is null or date&gt;=@StartDate)and (@EndDate is null or date&lt;=@EndDate)group by pay_type   ) as tb group by PayTypeID
 END')
 GO
 /****** Object:  StoredProcedure [dbo].[MonthlySales]    Script Date: 11/1/2021 12:20:01 PM ******/
