@@ -853,5 +853,6 @@ print("RESULT: PASS - %d checks. Every announced container now has a writer of i
 print("a real workbook for *.xlsx, comma CSV for *.csv, tab text for *.txt, and the HTML *.xls")
 print("option says what it is; a container a screen cannot produce is refused before writing.")
 print("The same contract now holds on the five screens the batch-nine sweep found outside the")
-print("finding's evidence list, with their dialogs untouched and one projection per container.")
+print("finding's evidence list: the three editor dialogs are unchanged, while the two HTML")
+print("options are relabelled, and CSV uses its own writer.")
 sys.exit(0)
