@@ -481,9 +481,11 @@ namespace SmartAuditERP
                 }
 
                 // ── مزامنة البيانات الرئيسية ───────────────────────
-                // ✅ إصلاح: مطابق للأصل في المقارنة (AddHours(2) >= Now)
+                // Repair R-052 (audit finding P5-017): fire WHEN DUE - once the last successful sync plus two
+                // hours has been reached or passed. The inverted comparison formerly ran catch-up only while
+                // the timestamp was still FRESH and stalled it after long offline gaps, exactly when needed.
                 if (DateTime.Compare(
-                        CardsLastSync.AddHours(2.0), DateTime.Now) >= 0)
+                        CardsLastSync.AddHours(2.0), DateTime.Now) <= 0)
                 {
                     var syncOp = new SyncOperation();
                     new Thread(() => syncOp.ReadCardsDataOnline()).Start();
