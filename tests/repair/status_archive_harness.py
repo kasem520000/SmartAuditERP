@@ -92,7 +92,7 @@ check('serial VAT POS duplicate batch classifications retain partial scope',
           for fid, rid in [('P7-128', 'R-127'), ('P7-075', 'R-129')])
       and all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
           for fid, rid in [('P7-135', 'R-126'), ('P7-143', 'R-128')])
-      and rules['audit_delivery'] == 'B36')
+      and rules['audit_delivery'] == 'B37')
 check('rental production print purchase and HTML batch has bounded statuses',
       all(by_id[fid]['repair_status'] == 'closed_in_scope' and by_id[fid]['repair_ids'] == rid
           for fid, rid in [('P7-074', 'R-130'), ('P7-119', 'R-132'), ('P7-098', 'R-134')])
@@ -165,7 +165,7 @@ check('project file, picker and contract findings remain partial',
           for fid, rid in [('P7-019', 'R-196'), ('P7-145', 'R-198'), ('P7-037', 'R-199'),
                            ('P7-011', 'R-200'), ('P7-012', 'R-201'), ('P7-013', 'R-202')])
       and by_id['P7-016']['repair_ids'] == 'R-192; R-197'
-      and rules['audit_commit'].startswith('a83cb66')
+      and rules['audit_commit'].startswith('0423c61')
       and all(by_id[fid]['repair_status'] == 'partial_open' for fid in ('P7-157', 'P7-159', 'P7-160')))
 
 check('purchase and packing batch remains partial',
@@ -201,9 +201,15 @@ check('scale, tax, requirement and fingerprint results remain partial',
 check('unit pricing and marine safety guards remain partial',
       all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
           for fid, rid in [('P7-142', 'R-233'), ('P7-026', 'R-234')]))
-check('four unresolved findings remain pending review',
+check('two unresolved findings remain pending review',
       {r['id'] for r in rows if r['repair_status'] == 'pending_review'} ==
-      {'P7-024', 'P7-032', 'P7-084', 'P7-102'})
+      {'P7-024', 'P7-032'})
+check('commercial report and balance failure guards remain partial',
+      all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P7-084', 'R-238'), ('P7-102', 'R-237')]))
+check('transfer picker follow-ups remain partial',
+      all(by_id[fid]['repair_status'] == 'partial_open' and rid in by_id[fid]['repair_ids'].split('; ')
+          for fid, rid in [('P7-159', 'R-236'), ('P7-160', 'R-235')]))
 
 owner = (ROOT / 'docs/repairs/OWNER_DECISIONS.md').read_text(encoding='utf-8')
 sections = {

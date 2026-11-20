@@ -470,12 +470,12 @@ print("Part D: the owner-bound design was not implemented")
 app_source = b""
 for path in glob.glob("SmartAuditERP/**/*.cs", recursive=True):
     app_source += open(path, "rb").read()
-check("D1 no typed navigation outcome, request or document reference entered the application",
+check("D1 no full typed navigation outcome, request or document reference entered the application",
       all(tok not in app_source for tok in (b"LoadOutcome", b"NavigationRequest", b"ReaderOutcome",
                                             b"enum NavigationResult")) and
       all(tok not in (pur_nav + sal_nav + io_nav + pos_nav + trf_nav + ctr_nav)
           for tok in ("Outcome", "enum ", "working copy")))
-check("D2 no new member, field or type was added to any of the six screens",
+check("D2 all six public void navigation APIs and a single target per screen are retained",
       all(text.count("private void Navigate") == 0 and text.count("public void Navigate(string") == 1
           for text in (PUR, SAL, INOUT, POS, TRF, CTR)) and
       PUR.count("InvoiceDGV target") == 1 and SAL.count("InvoiceDGV target") == 1 and
