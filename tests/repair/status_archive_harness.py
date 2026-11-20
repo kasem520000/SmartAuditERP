@@ -172,6 +172,11 @@ check('purchase and packing batch remains partial',
       all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
           for fid, rid in [('P7-149', 'R-203'), ('P7-150', 'R-133; R-204'), ('P7-152', 'R-205')]))
 
+check('cost statement and guarded report batch stays partial',
+      all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P7-052', 'R-206'), ('P7-053', 'R-207'), ('P7-114', 'R-208'),
+                           ('P7-090', 'R-209'), ('P7-071', 'R-210'), ('P7-069', 'R-211')]))
+
 owner = (ROOT / 'docs/repairs/OWNER_DECISIONS.md').read_text(encoding='utf-8')
 sections = {
     'deferred_blocked': owner.split('## أولاً:', 1)[1].split('## ثانياً:', 1)[0],

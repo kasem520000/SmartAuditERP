@@ -60,6 +60,19 @@ for name in ('CrystalLiteDB','AlterDb'):
     check(name+' current statement filters active and non-deleted', 'AND e.state = 1' in main and 'AND e.is_Deleted = 0' in main)
     check(name+' removed-state mutant detected', 'AND e.state = 1' not in main.replace('AND e.state = 1',''))
 check('inserted state comments do not break dynamic SQL quoting', "statement's active entries" not in values['AlterDb'] and values['AlterDb'].count('-- Match active entries in the detailed statement') == 2)
+# Scan the outer SQL string: doubled quotes belong to the embedded procedure.
+dynamic = values['AlterDb']
+start = dynamic.index("EXEC('Create PROCEDURE [dbo].[GetAccountStatement]") + len("EXEC('")
+idx = start
+while idx < len(dynamic):
+    if dynamic[idx] == "'":
+        if idx + 1 < len(dynamic) and dynamic[idx + 1] == "'":
+            idx += 2
+            continue
+        break
+    idx += 1
+check('dynamic procedure SQL string closes after the complete body',
+      dynamic[start:idx].rstrip().endswith('END;') and dynamic[idx:idx+2] == "')" and dynamic[start:idx].count('AND e.state = 1') == 2)
 check('existing upgrade procedure remains conditional, no forced ALTER', "OBJECT_ID('dbo.GetAccountStatement')" in values['AlterDb'] and 'ALTER PROCEDURE [dbo].[GetAccountStatement]' not in values['AlterDb'])
 db.execute('create table entry(state int, deleted int, amount int)')
 db.executemany('insert into entry values(?,?,?)', [(1,0,10),(0,0,50),(1,1,90),(None,0,100)])
