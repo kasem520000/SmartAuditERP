@@ -127,4 +127,9 @@ with tempfile.TemporaryDirectory() as temp:
     finally:
         builder.AUDIT = original
 check('B35 linked return scope remains open', all(by_id[fid]['repair_status'] == 'partial_open' for fid in ('P7-159', 'P7-160')) and 'R-161' in by_id['P7-159']['repair_ids'] and by_id['P4-013']['repair_status'] == 'deferred_blocked')
+check('period and totals batch keeps bounded classifications',
+      by_id['P7-062']['repair_status'] == 'closed_in_scope' and by_id['P7-062']['repair_ids'] == 'R-162' and
+      all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P7-111', 'R-163'), ('P7-112', 'R-164'), ('P7-127', 'R-165'),
+                           ('P7-073', 'R-166'), ('P7-094', 'R-167'), ('P7-006', 'R-168'), ('P7-120', 'R-169')]))
 print('RESULT: PASS — archive consistency checks; classifications are not WPF or SQL acceptance.')
