@@ -1,0 +1,560 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "entry_checkout": "436446091caf82c05ec01817bed5d18b4ea9fb34",
+  "source_head": "10ba215152f722c8808aea0bb672c1d1d4d9d711",
+  "method": "Source hashes/lexical checks plus finite supplied-record predicate illustrations; NEVER C#/VB/WPF/SQL/DataView execution",
+  "application_code_imported_or_executed": false,
+  "dotnet_wpf_sql_or_DataView_executed": false,
+  "application_remediation_performed": false,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "all_callers_or_external_DTOs_body_reviewed": false,
+  "actual_WPF_event_order_or_count_claimed": false,
+  "financial_or_status_policy_invented": false,
+  "external_DTO_constructor_defaults_assumed": false,
+  "database_commit_or_saved_loss_claimed": false,
+  "provider_failure_or_partial_fill_observed": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "scanner_or_printer_tests_executed": 0,
+  "B_R4l_bounded_not_whole7B_closure": true,
+  "unresolved_external_contracts_and_explicit_splits_retained": true,
+  "selected_paths_strict_utf8_decode": true,
+  "prior045_046_085_155_156_157_not_recounted": true,
+  "new_root_ids": [
+    "P7-158"
+  ],
+  "extended_existing_root_ids": [
+    "P7-046"
+  ],
+  "illustration_count": 16,
+  "lexical_check_count": 16,
+  "selected_source_paths": 5,
+  "whole_local_search_files_selected": 2,
+  "source_read_slice_count": 6,
+  "retained_additive_B10_arithmetic_erratum": {
+    "local_cost": 10,
+    "reference_cost": 120,
+    "equality1_control": 10,
+    "protected_G138_not_rewritten": true
+  },
+  "unadjudicated_source_leads_not_additional_findings": [
+    "period/postponed source-view reconciliation",
+    "DataView quoting/culture/invalid numeric input",
+    "return eligibility/failure policy",
+    "external DTO/reader/Loaded/complete save outcome"
+  ],
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "start": 1,
+      "end": 698,
+      "whole_local_file_selected": true,
+      "sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml",
+      "start": 1,
+      "end": 561,
+      "whole_local_file_selected": true,
+      "sha256": "ee3ccdf5945caacbe667945b01b67103649a095fe160967c24e465624a353b31",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 481,
+      "end": 548,
+      "whole_local_file_selected": false,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 2641,
+      "end": 2662,
+      "whole_local_file_selected": false,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 3219,
+      "end": 3290,
+      "whole_local_file_selected": false,
+      "sha256": "0bab36016f53ecd18360833d1fba980290702a52a98871fb397be9e813810d91",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 2610,
+      "end": 2699,
+      "whole_local_file_selected": false,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    }
+  ],
+  "illustrations": [
+    {
+      "id": "ALG7B28-01",
+      "title": "Nonblank maximum10 applies the cap",
+      "finding_ids": "P7-158",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:173-186;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:492-508;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:549-565;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:316-331",
+      "actual": [
+        [
+          "fixture-A"
+        ],
+        true
+      ],
+      "expected": [
+        [
+          "fixture-A"
+        ],
+        true
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Restricted integer net values5/20 and explicit handlers; not .NET numeric/culture/DataView parsing or WPF events."
+    },
+    {
+      "id": "ALG7B28-02",
+      "title": "Empty maximum skips ApplyFilter despite full master",
+      "finding_ids": "P7-158",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:173-186;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:492-508;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:549-565;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:316-331",
+      "actual": [
+        [
+          "fixture-A"
+        ],
+        false,
+        [
+          "fixture-A",
+          "fixture-B"
+        ]
+      ],
+      "expected": [
+        [
+          "fixture-A"
+        ],
+        false,
+        [
+          "fixture-A",
+          "fixture-B"
+        ]
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Restricted integer net values5/20 and explicit handlers; not .NET numeric/culture/DataView parsing or WPF events."
+    },
+    {
+      "id": "ALG7B28-03",
+      "title": "ASCII whitespace also skips the same maximum branch",
+      "finding_ids": "P7-158",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:173-186;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:492-508;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:549-565;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:316-331",
+      "actual": [
+        [
+          "fixture-A"
+        ],
+        false
+      ],
+      "expected": [
+        [
+          "fixture-A"
+        ],
+        false
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Same158 root, not a second whitespace or Unicode parsing finding. Restricted integer net values5/20 and explicit handlers; not .NET numeric/culture/DataView parsing or WPF events."
+    },
+    {
+      "id": "ALG7B28-04",
+      "title": "Nonempty wider maximum re-applies from the complete master",
+      "finding_ids": "P7-158",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:173-186;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:492-508;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:549-565;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:316-331",
+      "actual": [
+        [
+          "fixture-A",
+          "fixture-B"
+        ],
+        true
+      ],
+      "expected": [
+        [
+          "fixture-A",
+          "fixture-B"
+        ],
+        true
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Positive control: neither fixed-process source155 nor a missing source row is needed. Restricted integer net values5/20 and explicit handlers; not .NET numeric/culture/DataView parsing or WPF events."
+    },
+    {
+      "id": "ALG7B28-05",
+      "title": "Empty minimum unconditionally re-applies the filter",
+      "finding_ids": "P7-158",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:173-186;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:492-508;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:549-565;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:316-331",
+      "actual": [
+        [
+          "fixture-A",
+          "fixture-B"
+        ],
+        true
+      ],
+      "expected": [
+        [
+          "fixture-A",
+          "fixture-B"
+        ],
+        true
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Restricted integer net values5/20 and explicit handlers; not .NET numeric/culture/DataView parsing or WPF events."
+    },
+    {
+      "id": "ALG7B28-06",
+      "title": "Another explicit filter action can recover the stale max view",
+      "finding_ids": "P7-158",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:173-186;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:492-508;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:549-565;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:316-331",
+      "actual": [
+        "fixture-A",
+        "fixture-B"
+      ],
+      "expected": [
+        "fixture-A",
+        "fixture-B"
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Counter-control, not an application fix or an event-order assertion."
+    },
+    {
+      "id": "ALG7B28-07",
+      "title": "Explicit successful Clear reload can recover both rows",
+      "finding_ids": "P7-158",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:236-254;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:327-334;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:549-596",
+      "actual": [
+        "fixture-A",
+        "fixture-B"
+      ],
+      "expected": [
+        "fixture-A",
+        "fixture-B"
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Only final supplied successful reload. Does not accept caller eligibility reset156 or hidden event counts."
+    },
+    {
+      "id": "ALG7B28-08",
+      "title": "Initially empty maximum with an already current view has no drift",
+      "finding_ids": "P7-158",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:173-186;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:492-508;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:549-565;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:316-331",
+      "actual": [
+        "fixture-A",
+        "fixture-B"
+      ],
+      "expected": [
+        "fixture-A",
+        "fixture-B"
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "A prior cap is required for this counterexample; no claim every empty field is wrong."
+    },
+    {
+      "id": "ALG7B28-09",
+      "title": "Failed reload leaves empty master but old independent display",
+      "finding_ids": "P7-046",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:49-66;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:189-211;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:310-334;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:567-596;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:391-414",
+      "actual": [
+        [],
+        [
+          "fixture-A"
+        ],
+        false,
+        true
+      ],
+      "expected": [
+        [],
+        [
+          "fixture-A"
+        ],
+        false,
+        true
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "A successful old display is supplied, then a source failure is stipulated after explicit master.Clear. No provider or business execution."
+    },
+    {
+      "id": "ALG7B28-10",
+      "title": "Supplied partial master failure also does not publish replacement",
+      "finding_ids": "P7-046",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:49-66;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:189-211;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:310-334;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:567-596;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:391-414",
+      "actual": [
+        [
+          "fixture-B"
+        ],
+        [
+          "fixture-A"
+        ]
+      ],
+      "expected": [
+        [
+          "fixture-B"
+        ],
+        [
+          "fixture-A"
+        ]
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Partial contents are stipulated only; no actual partial-fill behavior measured. A successful old display is supplied, then a source failure is stipulated after explicit master.Clear. No provider or business execution."
+    },
+    {
+      "id": "ALG7B28-11",
+      "title": "Ordinary double-click exports the old displayed identity",
+      "finding_ids": "P7-046",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:310-334",
+      "actual": {
+        "done": true,
+        "gid": "fixture-A"
+      },
+      "expected": {
+        "done": true,
+        "gid": "fixture-A"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Existing displayed selected row supplied; not a WPF gesture, Return guard or SQL execution."
+    },
+    {
+      "id": "ALG7B28-12",
+      "title": "Consumer still matches old GID and branch, not requested day20",
+      "finding_ids": "P7-046",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:49-66;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:189-211;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:310-334;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:567-596;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:391-414;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502;SmartAuditERP/Class/InvoiceOper.cs:3219-3290",
+      "actual": [
+        [
+          "fixture-A"
+        ],
+        [
+          10
+        ]
+      ],
+      "expected": [
+        [
+          "fixture-A"
+        ],
+        [
+          10
+        ]
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Only selected predicate boundary; no completed Navigate render, financial save or lost GlobalID061 claim."
+    },
+    {
+      "id": "ALG7B28-13",
+      "title": "A successful replacement publishes only the new display",
+      "finding_ids": "P7-046",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:310-334;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:492-508;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:567-596",
+      "actual": [
+        "fixture-B"
+      ],
+      "expected": [
+        "fixture-B"
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "A successful old display is supplied, then a source failure is stipulated after explicit master.Clear. No provider or business execution."
+    },
+    {
+      "id": "ALG7B28-14",
+      "title": "A successful empty replacement removes old display rows",
+      "finding_ids": "P7-046",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:327-334;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:567-596",
+      "actual": [],
+      "expected": [],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Distinguishes successful empty from failed/unknown, not a database result measured here."
+    },
+    {
+      "id": "ALG7B28-15",
+      "title": "Default not-done result is not consumed",
+      "finding_ids": "P7-046",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:49-66;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662",
+      "actual": [],
+      "expected": [],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Positive guard on explicitly supplied result fields; no external DTO/default assumption."
+    },
+    {
+      "id": "ALG7B28-16",
+      "title": "Different branch remains a positive nonmatch control",
+      "finding_ids": "P7-046",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662",
+      "actual": [],
+      "expected": [],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "No deployed authorization or uniqueness proof; only the branch predicate on supplied rows."
+    }
+  ],
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B28-01",
+      "title": "master and display are independent; ItemsSource is display",
+      "finding_ids": "P7-046",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:49-66",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical source observation only; not executing the application, provider, parser, event loop, SDK or business policy."
+    },
+    {
+      "id": "ST7B28-02",
+      "title": "ApplyFilter is inside nonblank maximum guard",
+      "finding_ids": "P7-158",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:178-186",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical source observation only; not executing the application, provider, parser, event loop, SDK or business policy."
+    },
+    {
+      "id": "ST7B28-03",
+      "title": "minimum handler unconditionally calls ApplyFilter",
+      "finding_ids": "P7-158",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:173-176",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical source observation only; not executing the application, provider, parser, event loop, SDK or business policy."
+    },
+    {
+      "id": "ST7B28-04",
+      "title": "maximum predicate is optional only when parse succeeds",
+      "finding_ids": "P7-158",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:549-565",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical source observation only; not executing the application, provider, parser, event loop, SDK or business policy."
+    },
+    {
+      "id": "ST7B28-05",
+      "title": "both price fields are wired TextChanged",
+      "finding_ids": "P7-158",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:316-331",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical source observation only; not executing the application, provider, parser, event loop, SDK or business policy."
+    },
+    {
+      "id": "ST7B28-06",
+      "title": "each date handler clears master then calls reload",
+      "finding_ids": "P7-046",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:189-211",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical source observation only; not executing the application, provider, parser, event loop, SDK or business policy."
+    },
+    {
+      "id": "ST7B28-07",
+      "title": "Fill must finish before ApplyFilter and catch only writes console",
+      "finding_ids": "P7-046",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:310-334",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical source observation only; not executing the application, provider, parser, event loop, SDK or business policy."
+    },
+    {
+      "id": "ST7B28-08",
+      "title": "display refresh is separate and clears display only when reached",
+      "finding_ids": "P7-046",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:492-508;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:567-596",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical source observation only; not executing the application, provider, parser, event loop, SDK or business policy."
+    },
+    {
+      "id": "ST7B28-09",
+      "title": "ordinary double click exports row GID and done",
+      "finding_ids": "P7-046",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical source observation only; not executing the application, provider, parser, event loop, SDK or business policy."
+    },
+    {
+      "id": "ST7B28-10",
+      "title": "Enter also exports an explicitly valid displayed row",
+      "finding_ids": "P7-046",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:89-116",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical source observation only; not executing the application, provider, parser, event loop, SDK or business policy."
+    },
+    {
+      "id": "ST7B28-11",
+      "title": "purchase caller consumes done and GID with branch only",
+      "finding_ids": "P7-046",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical source observation only; not executing the application, provider, parser, event loop, SDK or business policy."
+    },
+    {
+      "id": "ST7B28-12",
+      "title": "Navigate forwards the query to BindingInvoice",
+      "finding_ids": "P7-046",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical source observation only; not executing the application, provider, parser, event loop, SDK or business policy."
+    },
+    {
+      "id": "ST7B28-13",
+      "title": "selected reader maps supplied row identity",
+      "finding_ids": "P7-046",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:3219-3290",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical source observation only; not executing the application, provider, parser, event loop, SDK or business policy."
+    },
+    {
+      "id": "ST7B28-14",
+      "title": "selected sales caller is a bounded supporting comparison",
+      "finding_ids": "P7-046",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2610-2699",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical source observation only; not executing the application, provider, parser, event loop, SDK or business policy. This is not all sales caller paths or a second finding."
+    },
+    {
+      "id": "ST7B28-15",
+      "title": "Clear has an explicit reload at the end",
+      "finding_ids": "P7-158",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:236-254",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical source observation only; not executing the application, provider, parser, event loop, SDK or business policy. Does not approve the mandatory-condition loss156."
+    },
+    {
+      "id": "ST7B28-16",
+      "title": "period and postponed remain separately named leads",
+      "finding_ids": "H7B28-05",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:219-229",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical source observation only; not executing the application, provider, parser, event loop, SDK or business policy. Period/postponed/quoting/return are not adjudicated extra findings here."
+    }
+  ],
+  "errors": []
+}

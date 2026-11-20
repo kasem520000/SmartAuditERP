@@ -1,0 +1,47 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "entry": "436446091caf82c05ec01817bed5d18b4ea9fb34",
+  "authority": [
+    "PHASE-07-REMAINING-07B27.md",
+    "evidence/split-register-07B27.csv",
+    "evidence/residual-disposition-07B27.csv"
+  ],
+  "selected_upstream_split": "SP7B27-01",
+  "selected_capability": "optional maximum removal and explicit source-failure publication/selection health",
+  "selected_source_to_output": "price/date controls→master/source→display→ordinary selection→purchase caller/Navigate→selected reader",
+  "exclusions": "all-period/postponed/quoting/return policies, all other callers/fields, full reader/DTO/save/stock/financial/ACL/runtime/C-axis acceptance",
+  "static_exit": "158 branch demonstrated plus046 additive extension and success/min/max/branch/not-done controls; each selected contract has limits/owner/redacted input/impact/next step/two not-executed plans; preserve797/all329/G228/original827/ancestries/freezes",
+  "bookkeeping": {
+    "selected_paths": 5,
+    "prior_union": 426,
+    "overlap": 5,
+    "new": 0,
+    "union": 426,
+    "complement": 401,
+    "complement_kinds": {
+      "source": 336,
+      "project-or-resource": 4,
+      "generated-artifact": 61
+    }
+  },
+  "new_paths": [],
+  "historical_metadata_screen_count": 329,
+  "historical_body_review_claim": false,
+  "historical_comparison_depth": "all329-title-severity-certainty-summaries-plus-path-filtered-metadata-and-selected-nearest-doc-bodies-source-chains-not-all-historical-bodies",
+  "bounded_read_slice_count": 6,
+  "whole_local_search_files": 2,
+  "whole_local_search_lines": {
+    "code_behind": 698,
+    "xaml": 561
+  },
+  "one_new_root": [
+    "P7-158"
+  ],
+  "one_existing_root_extended": [
+    "P7-046"
+  ],
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "counts_are_completion_percent_or_sessions": false,
+  "next_part": "R4m/7B29 proposed or reasoned split; no duration/session/last-part claim"
+}

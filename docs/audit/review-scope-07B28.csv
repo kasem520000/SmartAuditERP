@@ -1,0 +1,6 @@
+path,review_state,ranges,focus
+SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs,whole-local-search-or-selected-consumer-reader-static-slices-not-runtime-certified,1-698,إعادةقراءةكاملsearchالمحليمعبقيةسلاسلcaller/readerمقاطعفقط؛لاWPF/SQL/DataViewأوكلcaller/DTO/body.
+SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml,whole-local-search-or-selected-consumer-reader-static-slices-not-runtime-certified,1-561,إعادةقراءةكاملsearchالمحليمعبقيةسلاسلcaller/readerمقاطعفقط؛لاWPF/SQL/DataViewأوكلcaller/DTO/body.
+SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs,whole-local-search-or-selected-consumer-reader-static-slices-not-runtime-certified,481-548;2641-2662,إعادةقراءةكاملsearchالمحليمعبقيةسلاسلcaller/readerمقاطعفقط؛لاWPF/SQL/DataViewأوكلcaller/DTO/body.
+SmartAuditERP/Class/InvoiceOper.cs,whole-local-search-or-selected-consumer-reader-static-slices-not-runtime-certified,3219-3290,إعادةقراءةكاملsearchالمحليمعبقيةسلاسلcaller/readerمقاطعفقط؛لاWPF/SQL/DataViewأوكلcaller/DTO/body.
+SmartAuditERP/Form_WPF/frmInvSale.xaml.cs,whole-local-search-or-selected-consumer-reader-static-slices-not-runtime-certified,2610-2699,إعادةقراءةكاملsearchالمحليمعبقيةسلاسلcaller/readerمقاطعفقط؛لاWPF/SQL/DataViewأوكلcaller/DTO/body.
