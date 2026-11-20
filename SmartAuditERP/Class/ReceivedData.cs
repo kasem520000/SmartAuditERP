@@ -1055,25 +1055,33 @@ namespace SmartAuditERP
 				using (SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString))
 				{
 					sqlConnection.Open();
-					foreach (ListOperationPermission permissions in permissionsList)
+					// Repair R-056 (audit finding P5-013): reset each employee's mutable grants exactly ONCE, up front.
+					// The old layout deleted OperNo>7 rows and deactivated the remainder PER incoming row, erasing
+					// whatever earlier rows of the very same message had just inserted - and could strike unrelated
+					// siblings when several employees shared one payload - leaving only the final row behind.
+					foreach (var resetEmp in permissionsList.Select(p => p.emp).Distinct().ToList())
 					{
 						SqlCommand sqlCommand;
-						sqlCommand = new SqlCommand("delete from OperationPermission where OperNo>7 and  emp=" + Conversions.ToString(permissions.emp), sqlConnection);
-						sqlCommand.Parameters.AddWithValue("@emp", permissions.emp);
+						sqlCommand = new SqlCommand("delete from OperationPermission where OperNo>7 and  emp=" + Conversions.ToString(resetEmp), sqlConnection);
+						sqlCommand.Parameters.AddWithValue("@emp", resetEmp);
 						sqlCommand.ExecuteNonQuery();
-						sqlCommand = new SqlCommand("update  OperationPermission set Activated= 0  where  emp=" + Conversions.ToString(permissions.emp), sqlConnection);
-						sqlCommand.Parameters.AddWithValue("@emp", permissions.emp);
+						sqlCommand = new SqlCommand("update  OperationPermission set Activated= 0  where  emp=" + Conversions.ToString(resetEmp), sqlConnection);
+						sqlCommand.Parameters.AddWithValue("@emp", resetEmp);
 						sqlCommand.ExecuteNonQuery();
-						sqlCommand = new SqlCommand("insert into OperationPermission(emp,OperNo,pwd,lastChanged,IS_Deleted,OperVal,Activated)values(@emp,@OperNo,@pwd,@lastChanged,@IS_Deleted,@OperVal,@Activated)", sqlConnection);
-						sqlCommand.Parameters.AddWithValue("@id", permissions.id);
-						sqlCommand.Parameters.AddWithValue("@emp", permissions.emp);
-						sqlCommand.Parameters.AddWithValue("@Pwd", permissions.Pwd);
-						sqlCommand.Parameters.AddWithValue("@OperNo", permissions.OperNo);
-						sqlCommand.Parameters.AddWithValue("@OperVal", permissions.OperVal);
-						sqlCommand.Parameters.AddWithValue("@lastChanged", permissions.lastChanged);
-						sqlCommand.Parameters.AddWithValue("@IS_Deleted", permissions.IS_Deleted);
-						sqlCommand.Parameters.AddWithValue("@Activated", permissions.Activated);
-						sqlCommand.ExecuteNonQuery();
+					}
+					foreach (ListOperationPermission permissions in permissionsList)
+					{
+						SqlCommand sqlCommand2;
+						sqlCommand2 = new SqlCommand("insert into OperationPermission(emp,OperNo,pwd,lastChanged,IS_Deleted,OperVal,Activated)values(@emp,@OperNo,@pwd,@lastChanged,@IS_Deleted,@OperVal,@Activated)", sqlConnection);
+						sqlCommand2.Parameters.AddWithValue("@id", permissions.id);
+						sqlCommand2.Parameters.AddWithValue("@emp", permissions.emp);
+						sqlCommand2.Parameters.AddWithValue("@Pwd", permissions.Pwd);
+						sqlCommand2.Parameters.AddWithValue("@OperNo", permissions.OperNo);
+						sqlCommand2.Parameters.AddWithValue("@OperVal", permissions.OperVal);
+						sqlCommand2.Parameters.AddWithValue("@lastChanged", permissions.lastChanged);
+						sqlCommand2.Parameters.AddWithValue("@IS_Deleted", permissions.IS_Deleted);
+						sqlCommand2.Parameters.AddWithValue("@Activated", permissions.Activated);
+						sqlCommand2.ExecuteNonQuery();
 					}
 				}
 				if (ReceivedData.conn.State == ConnectionState.Open)
