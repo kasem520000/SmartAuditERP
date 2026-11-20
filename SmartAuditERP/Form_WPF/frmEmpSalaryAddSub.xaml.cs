@@ -416,9 +416,10 @@ namespace SmartAuditERP.Form_WPF
 
                 if (SaveReceipt(receipt, entry, IsNew))
                 {
+                    // Repair R-120 (P7-007): ClearForm leaves a new form; do not
+                    // attach it to the unrelated maximum ID after a successful save.
                     ClearForm();
                     LoadGrid(string.Empty);
-                    UpdateCodeFromDatabase();
 
                     DXMessageBox.Show(
                         GetMessage("✅ تم الحفظ", "✅ Saved successfully"),
@@ -876,24 +877,6 @@ namespace SmartAuditERP.Form_WPF
                 cmd.Parameters.Add("@Cash", SqlDbType.Int).Value = 0;
                 cmd.Parameters.Add("@Bank", SqlDbType.Int).Value
                     = cmbDepositTo.EditValue ?? 0;
-            }
-        }
-
-        private void UpdateCodeFromDatabase()
-        {
-            try
-            {
-                if (_conn.State != ConnectionState.Open)
-                    _conn.Open();
-
-                using var cmd = new SqlCommand(
-                    "SELECT MAX(id) FROM EmpSalaryAddSub", _conn);
-                _currentCode = Convert.ToInt32(cmd.ExecuteScalar());
-            }
-            finally
-            {
-                if (_conn.State != ConnectionState.Closed)
-                    _conn.Close();
             }
         }
 

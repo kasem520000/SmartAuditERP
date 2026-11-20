@@ -619,7 +619,9 @@ namespace SmartAuditERP
                         firstDetail.FillRatio.ToString();
                 }
 
-                frmItemProperties2.ShowDialog();
+                // Repair R-123 (P7-151): cancellation must not overwrite the line.
+                if (frmItemProperties2.ShowDialog() != true)
+                    return;
 
                 // بناء الوصف كما في الكود الأصلي
                 string description =

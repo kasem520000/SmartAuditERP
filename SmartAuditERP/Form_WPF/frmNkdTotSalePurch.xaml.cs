@@ -344,19 +344,8 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
-                if (string.IsNullOrWhiteSpace(RptUrl))
-                {
-                    DXMessageBox.Show("يجب تحديد مسار التقرير", "", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-
-                string fullPath = Path.Combine(RptUrl, RptName);
-                if (!Directory.Exists(RptUrl) || !File.Exists(fullPath))
-                {
-                    DXMessageBox.Show("المسار الحالي للتقارير غير موجود أو تم تعديله", "خطأ", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-
+                // Repair R-124 (P7-097): this path renders a FlowDocument,
+                // not the configured REPX; preserve its data and dialog guards.
                 FlowDocument document = BuildPrintDocument();
 
                 if (printMode == 2)

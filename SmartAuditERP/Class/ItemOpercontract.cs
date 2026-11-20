@@ -1399,7 +1399,9 @@ namespace SmartAuditERP
                     propForm.txtWidth.Text = firstDetail.FillRatio.ToString();
                 }
 
-                propForm.ShowDialog();
+                // Repair R-123 (P7-151): keep the existing line on cancellation.
+                if (propForm.ShowDialog() != true)
+                    return;
 
                 string desc = $"{propForm.lblHeight.Text}: {propForm.txtHeight.Text.Trim()}" +
                               $"{Environment.NewLine}{propForm.lblWidth.Text}: {propForm.txtWidth.Text.Trim()}" +

@@ -791,20 +791,8 @@ namespace SmartAuditERP.Form_WPF
                     SearchByID(0);
                 }
             }
-            else if (frm.ISDone && frm.ItemId <= 0)
-            {
-                if (RowIndex >= 0 && RowIndex < _gridSource.Count)
-                    _gridSource.RemoveAt(RowIndex);
-            }
-            else
-            {
-                try
-                {
-                    if (RowIndex >= 0 && RowIndex < _gridSource.Count)
-                        _gridSource.RemoveAt(RowIndex);
-                }
-                catch { }
-            }
+            // Repair R-122 (P7-148): no row belongs to this picker attempt.
+            // Cancellation or an invalid result must not remove the focused row.
         }
 
         #endregion

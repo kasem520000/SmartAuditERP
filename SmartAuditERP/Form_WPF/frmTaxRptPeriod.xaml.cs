@@ -116,8 +116,7 @@ namespace SmartAuditERP.Form_WPF
 
             LoadVATtype();
 
-            cmbQuartars.IsEnabled = false;
-            cmbMonthly.IsEnabled = false;
+            UpdatePeriodControls();
 
             loadPrintSettings();
             LoadBranches();
@@ -219,7 +218,7 @@ namespace SmartAuditERP.Form_WPF
         #region Date Helpers
         // ══════════════════════════════════════════════
 
-        private void SetDate()
+        private bool SetDate()
         {
             try
             {
@@ -228,11 +227,13 @@ namespace SmartAuditERP.Form_WPF
                 {
                     DateFrom = txtDateFrom.DateTime.Date;
                     DateTo = txtDateTo.DateTime.Date.AddDays(1);
-                    return;
+                    return true;
                 }
 
                 if (ckQuart.IsChecked.GetValueOrDefault())
                 {
+                    if (cmbQuartars.SelectedIndex < 0 || cmbQuartars.SelectedIndex > 3)
+                        return false;
                     switch (cmbQuartars.SelectedIndex)
                     {
                         case 0:
@@ -256,16 +257,29 @@ namespace SmartAuditERP.Form_WPF
                 else if (ckMonthly.IsChecked.GetValueOrDefault())
                 {
                     int idx = cmbMonthly.SelectedIndex; // 0-based
+                    if (idx < 0 || idx > 11) return false;
                     int month = idx + 1;
                     int daysInMonth = DateTime.DaysInMonth(currYear, month);
                     txtDateFrom.DateTime = new DateTime(currYear, month, 1);
                     txtDateTo.DateTime = new DateTime(currYear, month, daysInMonth);
                 }
+                return true;
             }
             catch (Exception ex)
             {
                 DXMessageBox.Show("خطأ\n" + ex.Message);
+                return false;
             }
+        }
+
+        private bool PreparePeriod()
+        {
+            if (SetDate()) return true;
+            _reportPublished = false;
+            ClearReportCells();
+            DXMessageBox.Show("يرجى اختيار شهر أو ربع صالح للفترة المحددة.",
+                "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return false;
         }
 
         private DateTime GetDateFrom() => txtDateFrom.DateTime.Date;
@@ -756,8 +770,12 @@ namespace SmartAuditERP.Form_WPF
             {
                 FromDate = txtDateFrom.DateTime.ToShortDateString(),
                 ToDate = txtDateTo.DateTime.ToShortDateString(),
-                Quartars = (cmbQuartars.SelectedItem as System.Windows.Controls.ComboBoxItem)?.Content?.ToString() ?? string.Empty,
-                Monthly = (cmbMonthly.SelectedItem as System.Windows.Controls.ComboBoxItem)?.Content?.ToString() ?? string.Empty,
+                Quartars = ckQuart.IsChecked == true
+                    ? ((cmbQuartars.SelectedItem as System.Windows.Controls.ComboBoxItem)?.Content?.ToString() ?? string.Empty)
+                    : string.Empty,
+                Monthly = ckMonthly.IsChecked == true
+                    ? ((cmbMonthly.SelectedItem as System.Windows.Controls.ComboBoxItem)?.Content?.ToString() ?? string.Empty)
+                    : string.Empty,
 
                 A1 = GetCellText(txtNetSale),
                 A2 = GetCellText(txtIncomes),
@@ -888,6 +906,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnShow_Click(object sender, RoutedEventArgs e)
         {
+            if (!PreparePeriod()) return;
             try { ShowDetails22(); }
             catch (Exception ex) { DXMessageBox.Show("خطأ\n" + ex.Message); }
         }
@@ -908,6 +927,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnSalesDetails_Click(object sender, RoutedEventArgs e)
         {
+            if (!PreparePeriod()) return;
             try
             {
                 var frm = new frmTaxInvDetails();
@@ -929,6 +949,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnPurchesDetails_Click(object sender, RoutedEventArgs e)
         {
+            if (!PreparePeriod()) return;
             try
             {
                 var frm = new frmTaxInvDetails();
@@ -954,47 +975,46 @@ namespace SmartAuditERP.Form_WPF
         #region CheckBox / ComboBox Events
         // ══════════════════════════════════════════════
 
+        // Repair R-125 (P7-126): always derive the controls from the final
+        // checkbox state, including the nested Unchecked event of the other mode.
+        private void UpdatePeriodControls()
+        {
+            bool quarterly = ckQuart.IsChecked == true;
+            bool monthly = ckMonthly.IsChecked == true;
+            cmbQuartars.IsEnabled = quarterly;
+            cmbMonthly.IsEnabled = monthly;
+            txtDateFrom.IsEnabled = !quarterly && !monthly;
+            txtDateTo.IsEnabled = !quarterly && !monthly;
+            _reportPublished = false;
+            ClearReportCells();
+            if (quarterly || monthly) SetDate();
+        }
+
         private void ckQuart_CheckedChanged(object sender, RoutedEventArgs e)
         {
-            if (ckQuart.IsChecked.GetValueOrDefault())
-            {
-                cmbQuartars.IsEnabled = true;
-                cmbMonthly.IsEnabled = false;
-                ckMonthly.IsChecked = false;
-            }
-            else
-            {
-                cmbQuartars.IsEnabled = false;
-                cmbMonthly.IsEnabled = false;
-            }
+            if (!IsLoaded) return;
+            if (ckQuart.IsChecked == true) ckMonthly.IsChecked = false;
+            UpdatePeriodControls();
         }
 
         private void ckMonthly_CheckedChanged(object sender, RoutedEventArgs e)
         {
-            if (ckMonthly.IsChecked.GetValueOrDefault())
-            {
-                cmbQuartars.IsEnabled = false;
-                txtDateFrom.IsEnabled = false;
-                txtDateTo.IsEnabled = false;
-                cmbMonthly.IsEnabled = true;
-                ckQuart.IsChecked = false;
-            }
-            else
-            {
-                cmbMonthly.IsEnabled = false;
-                cmbQuartars.IsEnabled = false;
-                txtDateTo.IsEnabled = true;
-                txtDateFrom.IsEnabled = true;
-            }
+            if (!IsLoaded) return;
+            if (ckMonthly.IsChecked == true) ckQuart.IsChecked = false;
+            UpdatePeriodControls();
         }
 
         private void cmbQuartars_SelectionChanged(object sender,
             System.Windows.Controls.SelectionChangedEventArgs e)
-            => SetDate();
+        {
+            if (IsLoaded && ckQuart.IsChecked == true) UpdatePeriodControls();
+        }
 
         private void cmbMonthly_SelectionChanged(object sender,
             System.Windows.Controls.SelectionChangedEventArgs e)
-            => SetDate();
+        {
+            if (IsLoaded && ckMonthly.IsChecked == true) UpdatePeriodControls();
+        }
 
         private void chkAllBranches_CheckedChanged(object sender, RoutedEventArgs e)
         {

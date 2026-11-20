@@ -240,8 +240,11 @@ namespace SmartAuditERP.Form_WPF
 
         private void LoadBokNo()
         {
+            Code = -1;
+            ProcID = -1;
             txtNo.Text = "";
             int nextNum = 1;
+            bool loaded = false;
 
             try
             {
@@ -251,21 +254,22 @@ namespace SmartAuditERP.Form_WPF
                     "select Bid from Booking where IsDeleted=0", conn);
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
+                loaded = true;
 
                 if (dt.Rows.Count > 0)
-                {
-                    try { nextNum = dt.Rows.Count + 1; }
-                    catch { }
-                }
+                    nextNum = dt.Rows.Count + 1;
             }
-            catch { }
+            catch (Exception ex)
+            {
+                MessageBox.Show("تعذر تحميل رقم حجز جديد: " + ex.Message,
+                    "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             finally
             {
                 if (conn.State != ConnectionState.Closed) conn.Close();
             }
 
-            txtNo.Text = nextNum.ToString();
-            Code = -1;
+            if (loaded) txtNo.Text = nextNum.ToString();
         }
 
         private void LoadMainSettings()
@@ -736,9 +740,16 @@ namespace SmartAuditERP.Form_WPF
                 }
 
                 transaction.Commit();
+                transaction = null;
+                // Repair R-121 (P7-023): a blank form after saving is new,
+                // never an invisible continuation of the previous booking.
+                Code = -1;
+                ProcID = -1;
+                txtNo.Text = "";
                 MessageBox.Show(" تم حفظ الحجز",
                     "", MessageBoxButton.OK, MessageBoxImage.Information);
                 ClearAll();
+                LoadBokNo();
             }
             catch (Exception ex)
             {
