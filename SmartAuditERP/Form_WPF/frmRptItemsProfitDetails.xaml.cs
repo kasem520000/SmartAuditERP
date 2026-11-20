@@ -709,24 +709,36 @@ namespace SmartAuditERP.Form_WPF
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                     $"أرباح_مواد_{DateTime.Now:yyyyMMdd_HHmm}.csv");
 
-                using var writer = new System.IO.StreamWriter(
-                    path, false, System.Text.Encoding.UTF8);
-
-                writer.WriteLine(
-                    "م,المستودع,نوع العملية,التاريخ,الرقم,رمز المادة," +
-                    "المادة,الوحدة,الكمية,متوسط التكلفة,إجمالي التكلفة," +
-                    "السعر,المجموع,الإجمالي,الخصم,الربح,نسبة الربح");
+                // Repair R-084 (audit finding P7-048): bare cells with N2 money, so a material name holding a
+                // comma added a column and a cost holding a thousands separator split into two.
+                // The shared writer quotes by rule and money leaves invariant.
+                var export = SpreadsheetExport.Begin(path, SpreadsheetExport.CsvDelimiter);
+                export.Header("م", "المستودع", "نوع العملية", "التاريخ", "الرقم", "رمز المادة",
+                              "المادة", "الوحدة", "الكمية", "متوسط التكلفة", "إجمالي التكلفة", "السعر",
+                              "المجموع", "الإجمالي", "الخصم", "الربح", "نسبة الربح");
 
                 foreach (var item in ProfitList)
                 {
-                    writer.WriteLine(
-                        $"{item.DgvNo},{item.DgvStore},{item.DgvInvType}," +
-                        $"{item.DgvDate},{item.DgvInvNo},{item.DgvItemCode}," +
-                        $"{item.DgvItem},{item.DgvUnit}," +
-                        $"{item.DgvQty:N2},{item.DgvAvgCost:N2},{item.DgvTotAvg:N2}," +
-                        $"{item.DgvPrice:N2},{item.DgvTotal:N2},{item.DgvSum:N2}," +
-                        $"{item.DgvDiscount:N2},{item.DgvProfit:N2},{item.DgvProfitPerc}");
+                    export.Row(SpreadsheetExport.Text(item.DgvNo),
+                               SpreadsheetExport.Text(item.DgvStore),
+                               SpreadsheetExport.Text(item.DgvInvType),
+                               SpreadsheetExport.Text(item.DgvDate),
+                               SpreadsheetExport.Text(item.DgvInvNo),
+                               SpreadsheetExport.Text(item.DgvItemCode),
+                               SpreadsheetExport.Text(item.DgvItem),
+                               SpreadsheetExport.Text(item.DgvUnit),
+                               SpreadsheetExport.Money(item.DgvQty),
+                               SpreadsheetExport.Money(item.DgvAvgCost),
+                               SpreadsheetExport.Money(item.DgvTotAvg),
+                               SpreadsheetExport.Money(item.DgvPrice),
+                               SpreadsheetExport.Money(item.DgvTotal),
+                               SpreadsheetExport.Money(item.DgvSum),
+                               SpreadsheetExport.Money(item.DgvDiscount),
+                               SpreadsheetExport.Money(item.DgvProfit),
+                               SpreadsheetExport.Text(item.DgvProfitPerc));
                 }
+
+                export.Save();
 
                 Process.Start(new ProcessStartInfo(path)
                 { UseShellExecute = true });

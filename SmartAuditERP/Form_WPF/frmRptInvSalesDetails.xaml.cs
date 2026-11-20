@@ -853,42 +853,41 @@ namespace SmartAuditERP.Form_WPF
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                     $"فواتير_مبيعات_{DateTime.Now:yyyyMMdd_HHmm}.csv");
 
-                using (var writer = new System.IO.StreamWriter(
-                           outputPath, false,
-                           System.Text.Encoding.UTF8))
-                {
-                    writer.WriteLine(
-                        "#,نوع الفاتورة,رقم الفاتورة,التاريخ,الوقت," +
-                        "نوع الدفع,المدفوع,العميل,نقدي,شبكة," +
-                        "المجموع,الخصم,الإجمالي,الضريبة,ضريبة إضافية," +
-                        "إجمالي الضريبة,الصافي,المستودع,الفرع,المندوب,المستخدم");
+                // Repair R-084 (audit finding P7-048): bare cells with N2 money, so a client or salesman name
+                // holding a comma added a column and an amount holding a thousands separator
+                // split into two. The shared writer quotes by rule and money leaves invariant.
+                var export = SpreadsheetExport.Begin(outputPath, SpreadsheetExport.CsvDelimiter);
+                export.Header("#", "نوع الفاتورة", "رقم الفاتورة", "التاريخ", "الوقت", "نوع الدفع",
+                              "المدفوع", "العميل", "نقدي", "شبكة", "المجموع", "الخصم",
+                              "الإجمالي", "الضريبة", "ضريبة إضافية", "إجمالي الضريبة", "الصافي", "المستودع",
+                              "الفرع", "المندوب", "المستخدم");
 
-                    foreach (var item in InvoicesList)
-                    {
-                        writer.WriteLine(
-                            $"{item.AutoIncrementID}," +
-                            $"{item.InvoiceTypeTxt}," +
-                            $"{item.InvoiceNo}," +
-                            $"{item.InvDate:yyyy/MM/dd}," +
-                            $"{item.InvoiceTime}," +
-                            $"{item.PaymentTxt}," +
-                            $"{item.Paid:N2}," +
-                            $"{item.ClientTxt}," +
-                            $"{item.Paycash:N2}," +
-                            $"{item.PayATM:N2}," +
-                            $"{item.SumPrice:N2}," +
-                            $"{item.TotDiscount:N2}," +
-                            $"{item.Total:N2}," +
-                            $"{item.VAT:N2}," +
-                            $"{item.ExtraVAT:N2}," +
-                            $"{item.TotalTax:N2}," +
-                            $"{item.Net:N2}," +
-                            $"{item.InvertoryTxt}," +
-                            $"{item.BranchTxt}," +
-                            $"{item.SalesmanTxt}," +
-                            $"{item.UserTxt}");
-                    }
+                foreach (var item in InvoicesList)
+                {
+                    export.Row(SpreadsheetExport.Text(item.AutoIncrementID),
+                               SpreadsheetExport.Text(item.InvoiceTypeTxt),
+                               SpreadsheetExport.Text(item.InvoiceNo),
+                               $"{item.InvDate:yyyy/MM/dd}",
+                               SpreadsheetExport.Text(item.InvoiceTime),
+                               SpreadsheetExport.Text(item.PaymentTxt),
+                               SpreadsheetExport.Money(item.Paid),
+                               SpreadsheetExport.Text(item.ClientTxt),
+                               SpreadsheetExport.Money(item.Paycash),
+                               SpreadsheetExport.Money(item.PayATM),
+                               SpreadsheetExport.Money(item.SumPrice),
+                               SpreadsheetExport.Money(item.TotDiscount),
+                               SpreadsheetExport.Money(item.Total),
+                               SpreadsheetExport.Money(item.VAT),
+                               SpreadsheetExport.Money(item.ExtraVAT),
+                               SpreadsheetExport.Money(item.TotalTax),
+                               SpreadsheetExport.Money(item.Net),
+                               SpreadsheetExport.Text(item.InvertoryTxt),
+                               SpreadsheetExport.Text(item.BranchTxt),
+                               SpreadsheetExport.Text(item.SalesmanTxt),
+                               SpreadsheetExport.Text(item.UserTxt));
                 }
+
+                export.Save();
 
                 Process.Start(new ProcessStartInfo(outputPath)
                 { UseShellExecute = true });

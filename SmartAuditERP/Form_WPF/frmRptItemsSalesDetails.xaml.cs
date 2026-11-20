@@ -568,19 +568,23 @@ namespace SmartAuditERP.Form_WPF
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                     $"ItemsSales_{DateTime.Now:yyyyMMdd_HHmmss}.csv");
 
-                using (var sw = new System.IO.StreamWriter(filePath,
-                    false, System.Text.Encoding.UTF8))
+                // Repair R-084 (audit finding P7-048): every cell was wrapped in quotes by hand and the N2
+                // amounts kept their thousands separator, so an item name holding a quote broke
+                // the record and an amount split into two. The shared writer quotes by rule.
+                var export = SpreadsheetExport.Begin(filePath, SpreadsheetExport.CsvDelimiter);
+                export.Header("م", "رمز الصنف", "الصنف", "الكمية", "صافي البيع", "الفئة");
+
+                foreach (var r in _gridData)
                 {
-                    sw.WriteLine("\"م\",\"رمز الصنف\",\"الصنف\",\"الكمية\",\"صافي البيع\",\"الفئة\"");
-                    foreach (var r in _gridData)
-                        sw.WriteLine(
-                            $"\"{r.DgvNo}\"," +
-                            $"\"{r.DgvItemCode}\"," +
-                            $"\"{r.DgvItem}\"," +
-                            $"\"{r.DgvQty:N2}\"," +
-                            $"\"{r.DgvNetSales:N2}\"," +
-                            $"\"{r.DgvCategory}\"");
+                    export.Row(SpreadsheetExport.Text(r.DgvNo),
+                               SpreadsheetExport.Text(r.DgvItemCode),
+                               SpreadsheetExport.Text(r.DgvItem),
+                               SpreadsheetExport.Money(r.DgvQty),
+                               SpreadsheetExport.Money(r.DgvNetSales),
+                               SpreadsheetExport.Text(r.DgvCategory));
                 }
+
+                export.Save();
 
                 Process.Start(new ProcessStartInfo(filePath)
                     { UseShellExecute = true });

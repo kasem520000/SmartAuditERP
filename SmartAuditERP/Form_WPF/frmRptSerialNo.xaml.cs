@@ -364,20 +364,25 @@ namespace SmartAuditERP.Form_WPF
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                     $"تسلسلات_{DateTime.Now:yyyyMMdd_HHmm}.csv");
 
-                using var writer = new System.IO.StreamWriter(
-                    path, false, System.Text.Encoding.UTF8);
-
-                writer.WriteLine(
-                    "م,الصنف,رمز الصنف,التسلسل,نوع الفاتورة," +
-                    "رقم الفاتورة,التاريخ,الفرع");
+                // Repair R-084 (audit finding P7-048): bare cells, so an item name or a serial holding a
+                // comma added a column. The shared writer quotes by rule and the eight columns
+                // keep their names.
+                var export = SpreadsheetExport.Begin(path, SpreadsheetExport.CsvDelimiter);
+                export.Header("م", "الصنف", "رمز الصنف", "التسلسل", "نوع الفاتورة", "رقم الفاتورة", "التاريخ", "الفرع");
 
                 foreach (var item in SerialList)
                 {
-                    writer.WriteLine(
-                        $"{item.DgvNo},{item.ItemName},{item.ItemCode}," +
-                        $"{item.ItemSerialNo},{item.InvType}," +
-                        $"{item.InvNo},{item.InvDate},{item.BranchName}");
+                    export.Row(SpreadsheetExport.Text(item.DgvNo),
+                               SpreadsheetExport.Text(item.ItemName),
+                               SpreadsheetExport.Text(item.ItemCode),
+                               SpreadsheetExport.Text(item.ItemSerialNo),
+                               SpreadsheetExport.Text(item.InvType),
+                               SpreadsheetExport.Text(item.InvNo),
+                               SpreadsheetExport.Text(item.InvDate),
+                               SpreadsheetExport.Text(item.BranchName));
                 }
+
+                export.Save();
 
                 Process.Start(new ProcessStartInfo(path)
                 { UseShellExecute = true });

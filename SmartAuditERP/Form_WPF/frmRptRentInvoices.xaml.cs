@@ -494,27 +494,27 @@ namespace SmartAuditERP.Form_WPF
 
                 string filePath = dlg.FileName;
 
-                using (var sw = new System.IO.StreamWriter(filePath,
-                    false, System.Text.Encoding.UTF8))
-                {
-                    // رأس الأعمدة
-                    sw.WriteLine("\"الرقم\",\"المركب\",\"الفئة\",\"الصافي\"," +
-                                 "\"التاريخ\",\"العميل\",\"المستخدم\",\"الجوال\",\"ضمن الخطة\"");
+                // Repair R-084 (audit finding P7-048): every cell was wrapped in quotes by hand, so a value
+                // holding a quote broke the record and nothing doubled it. The shared writer
+                // quotes only what could break a record and doubles inner quotes.
+                var export = SpreadsheetExport.Begin(filePath, SpreadsheetExport.CsvDelimiter);
+                export.Header("الرقم", "المركب", "الفئة", "الصافي", "التاريخ",
+                              "العميل", "المستخدم", "الجوال", "ضمن الخطة");
 
-                    foreach (DataRowView drv in source)
-                    {
-                        sw.WriteLine(
-                            $"\"{drv["id"]}\"," +
-                            $"\"{drv["marine"]}\"," +
-                            $"\"{drv["Groupcode"]}\"," +
-                            $"\"{drv["Net"]}\"," +
-                            $"\"{drv["date1"]}\"," +
-                            $"\"{drv["cust"]}\"," +
-                            $"\"{drv["emp"]}\"," +
-                            $"\"{drv["mobile"]}\"," +
-                            $"\"{drv["InPlan"]}\"");
-                    }
+                foreach (DataRowView drv in source)
+                {
+                    export.Row(SpreadsheetExport.Text(drv["id"]),
+                               SpreadsheetExport.Text(drv["marine"]),
+                               SpreadsheetExport.Text(drv["Groupcode"]),
+                               SpreadsheetExport.Text(drv["Net"]),
+                               SpreadsheetExport.Text(drv["date1"]),
+                               SpreadsheetExport.Text(drv["cust"]),
+                               SpreadsheetExport.Text(drv["emp"]),
+                               SpreadsheetExport.Text(drv["mobile"]),
+                               SpreadsheetExport.Text(drv["InPlan"]));
                 }
+
+                export.Save();
 
                 DXMessageBox.Show($"تم حفظ الملف في:\n{filePath}",
                     "تم التصدير", MessageBoxButton.OK, MessageBoxImage.Information);

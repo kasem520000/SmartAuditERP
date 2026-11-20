@@ -693,48 +693,51 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
-                var sb = new StringBuilder();
-                sb.AppendLine("م,نوع الإشعار,رقم الإشعار,رقم المرجع,التاريخ,الوقت," +
-                              "العميل,نقدي,شبكة,المجموع,الخصم,الإجمالي," +
-                              "الضريبة,ضريبة إضافية,إجمالي الضريبة,الصافي," +
-                              "المستودع,الفرع,المندوب,المستخدم");
+                // Repair R-084 (audit finding P7-048): bare cells with N2 money, so a client name holding a
+                // comma added a column and an amount holding a thousands separator split into
+                // two. The shared writer quotes by rule and money leaves invariant.
+                string fileName = $"InvNotifications_{DateTime.Now:yyyyMMdd_HHmm}.csv";
+                var export = SpreadsheetExport.Begin(fileName, SpreadsheetExport.CsvDelimiter);
+                export.Header("م", "نوع الإشعار", "رقم الإشعار", "رقم المرجع", "التاريخ", "الوقت",
+                              "العميل", "نقدي", "شبكة", "المجموع", "الخصم", "الإجمالي",
+                              "الضريبة", "ضريبة إضافية", "إجمالي الضريبة", "الصافي", "المستودع", "الفرع",
+                              "المندوب", "المستخدم");
 
                 foreach (var inv in _invoicesList)
                 {
-                    sb.AppendLine(
-                        $"{inv.AutoIncrementID}," +
-                        $"{inv.InvoiceTypeTxt}," +
-                        $"{inv.InvoiceNo}," +
-                        $"{inv.ReffNo}," +
-                        $"{inv.InvDate:d}," +
-                        $"{inv.InvoiceTime}," +
-                        $"{inv.ClientTxt}," +
-                        $"{inv.Paycash:N2}," +
-                        $"{inv.PayATM:N2}," +
-                        $"{inv.SumPrice:N2}," +
-                        $"{inv.TotDiscount:N2}," +
-                        $"{inv.Total:N2}," +
-                        $"{inv.VAT:N2}," +
-                        $"{inv.ExtraVAT:N2}," +
-                        $"{inv.TotalTax:N2}," +
-                        $"{inv.Net:N2}," +
-                        $"{inv.InvertoryName}," +
-                        $"{inv.BranchTxt}," +
-                        $"{inv.SalesmanTxt}," +
-                        $"{inv.UserTxt}");
+                    export.Row(SpreadsheetExport.Text(inv.AutoIncrementID),
+                               SpreadsheetExport.Text(inv.InvoiceTypeTxt),
+                               SpreadsheetExport.Text(inv.InvoiceNo),
+                               SpreadsheetExport.Text(inv.ReffNo),$"{inv.InvDate:d}",
+                               SpreadsheetExport.Text(inv.InvoiceTime),
+                               SpreadsheetExport.Text(inv.ClientTxt),
+                               SpreadsheetExport.Money(inv.Paycash),
+                               SpreadsheetExport.Money(inv.PayATM),
+                               SpreadsheetExport.Money(inv.SumPrice),
+                               SpreadsheetExport.Money(inv.TotDiscount),
+                               SpreadsheetExport.Money(inv.Total),
+                               SpreadsheetExport.Money(inv.VAT),
+                               SpreadsheetExport.Money(inv.ExtraVAT),
+                               SpreadsheetExport.Money(inv.TotalTax),
+                               SpreadsheetExport.Money(inv.Net),
+                               SpreadsheetExport.Text(inv.InvertoryName),
+                               SpreadsheetExport.Text(inv.BranchTxt),
+                               SpreadsheetExport.Text(inv.SalesmanTxt),
+                               SpreadsheetExport.Text(inv.UserTxt));
                 }
 
-                // إضافة صف المجاميع
-                sb.AppendLine(
-                    $",,,,,,المجاميع," +
-                    $"{_sumPaycash:N2},{_sumPayATM:N2}," +
-                    $"{_sumSumPrice:N2},{_sumDiscount:N2}," +
-                    $"{_sumTotal:N2},{_sumVAT:N2}," +
-                    $"{_sumExtraVAT:N2},{_sumTotalTax:N2}," +
-                    $"{_sumNet:N2}");
+                // سجل المجاميع كما كان: ست خلايا فارغة ثم التسمية ثم تسعة مبالغ،
+                // أي أضيق من الرأس بأربعة أعمدة فرع ومستخدم ومستودع لا مجاميع لها.
+                export.Row("","","","","","","المجاميع",SpreadsheetExport.Money(_sumPaycash),
+                           SpreadsheetExport.Money(_sumPayATM),
+                           SpreadsheetExport.Money(_sumSumPrice),
+                           SpreadsheetExport.Money(_sumDiscount),
+                           SpreadsheetExport.Money(_sumTotal),SpreadsheetExport.Money(_sumVAT),
+                           SpreadsheetExport.Money(_sumExtraVAT),
+                           SpreadsheetExport.Money(_sumTotalTax),
+                           SpreadsheetExport.Money(_sumNet));
 
-                string fileName = $"InvNotifications_{DateTime.Now:yyyyMMdd_HHmm}.csv";
-                File.WriteAllText(fileName, sb.ToString(), Encoding.UTF8);
+                export.Save();
 
                 System.Diagnostics.Process.Start(
                     new System.Diagnostics.ProcessStartInfo(fileName)

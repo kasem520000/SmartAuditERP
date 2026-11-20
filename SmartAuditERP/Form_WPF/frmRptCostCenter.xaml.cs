@@ -669,24 +669,35 @@ namespace SmartAuditERP.Form_WPF
             {
                 if (_dataSource.Count == 0) return;
 
-                var sb = new StringBuilder();
-                sb.AppendLine("الرمز,مركز التكلفة,رصيد افتتاحي مدين,رصيد افتتاحي دائن," +
-                              "حركة مدين,حركة دائن,رصيد مدين,رصيد دائن," +
-                              "رصيد ختامي مدين,رصيد ختامي دائن,اسم الحساب,العملية,رقم العملية,التاريخ");
+                // Repair R-084 (audit finding P7-048): the cells were joined bare, so an account name holding
+                // a comma added a column and an N2 balance holding a thousands separator split
+                // into two. The shared writer announces one schema: it quotes whatever could
+                // break a record and money leaves as an invariant number.
+                string fileName = "CostCenter_Export.csv";
+                var export = SpreadsheetExport.Begin(fileName, SpreadsheetExport.CsvDelimiter);
+                export.Header("الرمز", "مركز التكلفة", "رصيد افتتاحي مدين", "رصيد افتتاحي دائن", "حركة مدين",
+                              "حركة دائن", "رصيد مدين", "رصيد دائن", "رصيد ختامي مدين", "رصيد ختامي دائن",
+                              "اسم الحساب", "العملية", "رقم العملية", "التاريخ");
 
                 foreach (var row in _dataSource)
                 {
-                    sb.AppendLine(
-                        $"{row.DgvAccount},{row.DgvCostCenter}," +
-                        $"{row.DgvDeptIntial:N2},{row.DgvCreditIntial:N2}," +
-                        $"{row.DgvDebtorMovement:N2},{row.DgvCreditorMovement:N2}," +
-                        $"{row.DgvDeptBlc:N2},{row.DgvCreditBlc:N2}," +
-                        $"{row.DgvDeptFinal:N2},{row.DgvCreditFinal:N2}," +
-                        $"{row.DgvAccName},{row.DgvOperationType},{row.DgvOperationNo},{row.DgvDate}");
+                    export.Row(SpreadsheetExport.Text(row.DgvAccount),
+                               SpreadsheetExport.Text(row.DgvCostCenter),
+                               SpreadsheetExport.Money(row.DgvDeptIntial),
+                               SpreadsheetExport.Money(row.DgvCreditIntial),
+                               SpreadsheetExport.Money(row.DgvDebtorMovement),
+                               SpreadsheetExport.Money(row.DgvCreditorMovement),
+                               SpreadsheetExport.Money(row.DgvDeptBlc),
+                               SpreadsheetExport.Money(row.DgvCreditBlc),
+                               SpreadsheetExport.Money(row.DgvDeptFinal),
+                               SpreadsheetExport.Money(row.DgvCreditFinal),
+                               SpreadsheetExport.Text(row.DgvAccName),
+                               SpreadsheetExport.Text(row.DgvOperationType),
+                               SpreadsheetExport.Text(row.DgvOperationNo),
+                               SpreadsheetExport.Text(row.DgvDate));
                 }
 
-                string fileName = "CostCenter_Export.csv";
-                File.WriteAllText(fileName, sb.ToString(), Encoding.UTF8);
+                export.Save();
 
                 System.Diagnostics.Process.Start(
                     new System.Diagnostics.ProcessStartInfo(fileName)

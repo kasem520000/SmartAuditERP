@@ -409,26 +409,31 @@ namespace SmartAuditERP.Form_WPF
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                     $"مبيعات_مجموعات_{DateTime.Now:yyyyMMdd_HHmm}.csv");
 
-                using var writer = new System.IO.StreamWriter(
-                    path, false, System.Text.Encoding.UTF8);
-
-                // رأس
-                writer.WriteLine(
-                    "اسم المجموعة,رمز المجموعة,اسم الصنف,رمز الصنف," +
-                    "الكمية,الإجمالي,الضريبة,الصافي,الخصم");
+                // Repair R-084 (audit finding P7-048): bare cells with N2 money, so a group name, an item name
+                // or a code holding a comma added a column and an amount holding a thousands
+                // separator split into two. The shared writer quotes by rule.
+                var export = SpreadsheetExport.Begin(path, SpreadsheetExport.CsvDelimiter);
+                export.Header("اسم المجموعة", "رمز المجموعة", "اسم الصنف", "رمز الصنف",
+                              "الكمية", "الإجمالي", "الضريبة", "الصافي",
+                              "الخصم");
 
                 foreach (var cat in CategoryList)
                 {
                     foreach (var item in cat.ItemDetails)
                     {
-                        writer.WriteLine(
-                            $"{cat.Name},{cat.Code}," +
-                            $"{item.ItemName},{item.ItemCode}," +
-                            $"{item.Qty:N2},{item.Total:N2}," +
-                            $"{item.ItemVat:N2},{item.ItemNet:N2}," +
-                            $"{item.InvDiscount:N2}");
+                        export.Row(SpreadsheetExport.Text(cat.Name),
+                                   SpreadsheetExport.Text(cat.Code),
+                                   SpreadsheetExport.Text(item.ItemName),
+                                   SpreadsheetExport.Text(item.ItemCode),
+                                   SpreadsheetExport.Money(item.Qty),
+                                   SpreadsheetExport.Money(item.Total),
+                                   SpreadsheetExport.Money(item.ItemVat),
+                                   SpreadsheetExport.Money(item.ItemNet),
+                                   SpreadsheetExport.Money(item.InvDiscount));
                     }
                 }
+
+                export.Save();
 
                 Process.Start(new ProcessStartInfo(path)
                 { UseShellExecute = true });
