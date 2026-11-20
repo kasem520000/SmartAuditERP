@@ -144,13 +144,28 @@ namespace SmartAuditERP
 			ConnectBroker.mqttClient.MqttMsgPublishReceived += handler;
 		}
 
+		// Repair R-058 (audit finding P5-010): every publisher prepends the passcode ONCE before the JSON
+		// payload (see SendData string.Concat(str0: passcode, str1: json)); strip exactly that leading copy.
+		// The old global Replace also deleted the sequence from inside names/notes/barcodes/ids whenever it
+		// appeared there, silently mutating values or corrupting the JSON. Prefix absence is tolerated (left
+		// untouched) to keep legacy interop; a typed envelope with version/length/hash stays tracked under
+		// INV5-10, and an empty passcode strips nothing by construction.
+		private static string StripPasscodeEnvelope(string decrypted)
+		{
+			if (!string.IsNullOrEmpty(ReceivedData._passcode) && decrypted != null && decrypted.StartsWith(ReceivedData._passcode))
+			{
+				return decrypted.Substring(ReceivedData._passcode.Length);
+			}
+			return decrypted;
+		}
+
 		private static void MqttMsgReceivedOper(object sender, MqttMsgPublishEventArgs e)
 		{
 			try
 			{
 				string cipherText;
 				cipherText = Encoding.UTF8.GetString(e.Message);
-				cipherText = ReceivedData.ConEncrypt.DecryptString(cipherText, ReceivedData._passcode).Replace(ReceivedData._passcode, "");
+				cipherText = ReceivedData.StripPasscodeEnvelope(ReceivedData.ConEncrypt.DecryptString(cipherText, ReceivedData._passcode));
 				if (string.IsNullOrWhiteSpace(cipherText))
 				{
 					Console.WriteLine("Received an empty or invalid message.");
@@ -267,7 +282,7 @@ namespace SmartAuditERP
 				string cipherText;
 				cipherText = Encoding.UTF8.GetString(e.Message);
 				_ = ReceivedData._passcode;
-				cipherText = ReceivedData.ConEncrypt.DecryptString(cipherText, ReceivedData._passcode).Replace(ReceivedData._passcode, "");
+				cipherText = ReceivedData.StripPasscodeEnvelope(ReceivedData.ConEncrypt.DecryptString(cipherText, ReceivedData._passcode));
 				string topic;
 				topic = e.Topic;
 				if (topic.EndsWith("AccountCust"))
@@ -354,7 +369,7 @@ namespace SmartAuditERP
 				string cipherText;
 				cipherText = Encoding.UTF8.GetString(e.Message);
 				_ = ReceivedData._passcode;
-				cipherText = ReceivedData.ConEncrypt.DecryptString(cipherText, ReceivedData._passcode).Replace(ReceivedData._passcode, "");
+				cipherText = ReceivedData.StripPasscodeEnvelope(ReceivedData.ConEncrypt.DecryptString(cipherText, ReceivedData._passcode));
 				string topic;
 				topic = e.Topic;
 				if (topic.EndsWith("Items"))
