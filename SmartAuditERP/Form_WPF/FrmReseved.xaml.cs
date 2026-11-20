@@ -81,9 +81,9 @@ namespace SmartAuditERP.Form_WPF
             {
                 // Do not reload intermediate month/year selections during reset.
                 _loaded = false;
-                _periodLoadFailed = false;
-                txtDate.DateTime = DateTime.Now;
+                _periodLoadFailed = true;
                 _salarySource.Clear();
+                txtDate.DateTime = DateTime.Now;
                 LoadNextNo();
                 txtEntryGlobalId.Text = "";
                 TxtGlobalID.Text      = "";
@@ -104,8 +104,14 @@ namespace SmartAuditERP.Form_WPF
                         break;
                     }
                 }
+                _periodLoadFailed = false;
             }
-            catch { }
+            catch (Exception ex)
+            {
+                _salarySource.Clear();
+                DXMessageBox.Show("تعذر تهيئة المستند: " + ex.Message,
+                    "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         #endregion

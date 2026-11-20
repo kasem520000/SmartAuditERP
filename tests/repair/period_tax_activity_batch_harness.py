@@ -63,6 +63,9 @@ check('old invalid date mutation is detected',not period_contract(refresh.replac
 check('partial data failure mutation detected',not period_contract(refresh,load.replace('_salarySource.Clear();\n                DXMessageBox.Show("خطأ في تحميل البيانات:', 'DXMessageBox.Show("خطأ في تحميل البيانات:'),save,printing))
 check('save gate mutation detected',not period_contract(refresh,load,save.replace('_periodLoadFailed','false'),printing))
 check('reset suppresses selection handlers during defaults',reset.index('_loaded = false;') < reset.index('cmbMonth.SelectedIndex'))
+check('reset invalidates and clears before work, validating only after completion',
+      reset.index('_periodLoadFailed = true;') < reset.index('_salarySource.Clear();') < reset.index('txtDate.DateTime') < reset.index('_periodLoadFailed = false;')
+      and '_salarySource.Clear();' in reset[reset.index('catch (Exception ex)'):])
 check('both period events refresh',res.count('RefreshSelectedPeriod(true);')==1 and res.count('RefreshSelectedPeriod(false);')==1)
 check('saved identity prevents recomputing under its ID', 'txtEntryGlobalId.Text' in refresh and 'TxtGlobalID.Text' in refresh and refresh.index('return;') < refresh.index('LoadEmpData(cond);'))
 check('tax projection preserves components and derives total',tax_contract(projection))
