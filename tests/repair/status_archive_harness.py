@@ -3,6 +3,7 @@
 import collections
 import csv
 import importlib.util
+import re
 from pathlib import Path
 import subprocess
 import sys
@@ -137,4 +138,21 @@ check('inventory payroll barcode and navigation batch stays bounded',
       all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
           for fid, rid in [('P7-005', 'R-170'), ('P7-092', 'R-172'), ('P7-138', 'R-173'),
                            ('P7-064', 'R-174'), ('P7-057', 'R-175'), ('P7-045', 'R-176'), ('P7-113', 'R-177')]))
+
+check('financial guard and reports remain partial, payroll load remains under review',
+      all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P7-001', 'R-178'), ('P7-029', 'R-179'), ('P7-051', 'R-180'),
+                           ('P7-070', 'R-181'), ('P7-078', 'R-182'), ('P7-100', 'R-183')])
+      and by_id['P7-002']['repair_status'] == 'pending_review')
+
+owner = (ROOT / 'docs/repairs/OWNER_DECISIONS.md').read_text(encoding='utf-8')
+sections = {
+    'deferred_blocked': owner.split('## أولاً:', 1)[1].split('## ثانياً:', 1)[0],
+    'partial_open': owner.split('## ثانياً:', 1)[1].split('## ثالثاً:', 1)[0],
+}
+for status, section in sections.items():
+    listed = re.findall(r'^- \*\*(P[1-7]-\d{3})(?:\s|\*)', section, re.M)
+    expected = {row['id'] for row in rows if row['repair_status'] == status}
+    check('owner list matches ' + status, len(listed) == len(set(listed)) and set(listed) == expected)
+
 print('RESULT: PASS — archive consistency checks; classifications are not WPF or SQL acceptance.')
