@@ -73,9 +73,8 @@ namespace SmartAuditERP.Form_WPF
             RSAkeysnssd = new RSAEncryptDecrypt();
             branchId = 1;
 
-            this.Loaded += Window_Loaded;
-            this.Closing += Window_Closing;
-            this.KeyDown += Window_KeyDown;
+            // Repair R-099 (P7-162 event-ownership expansion): XAML already
+            // registers Loaded, Closing and KeyDown for this window.
 
             this.FlowDirection = FlowDirection.LeftToRight;
         }

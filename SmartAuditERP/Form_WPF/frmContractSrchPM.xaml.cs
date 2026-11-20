@@ -48,7 +48,8 @@ namespace SmartAuditERP.Form_WPF
             InitializeComponent();
 
             this.Loaded += Window_Loaded;
-            this.Deactivated += Window_Deactivated;
+            // Repair R-100 (P7-162 event-ownership expansion): XAML already
+            // registers Deactivated; Loaded is registered only here.
         }
 
         #endregion
