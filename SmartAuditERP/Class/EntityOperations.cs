@@ -961,7 +961,7 @@ public class EntityOperations
             {
                 if (customer == null)
                 {
-                    goto IL_0b02;
+                    continue;
                 }
                 SqlCommand sqlCommand;
                 sqlCommand = ((Convert.ToDouble(Operators.ConcatenateObject("", new SqlCommand("Select COUNT(*) from Customers where id= " + customer.CustomerID, sqlConnection).ExecuteScalar())) != 0.0) ? new SqlCommand("update Customers set name=@name,country=@country,city=@city,area=@area,act=@act,national_id=@national_id,tel=@tel,mobile=@mobile,fax=@fax,email=@email,notes=@notes,type=@type,tax_no=@tax_no,AccountCode=@AccountCode,IdScan=@IdScan,Branch=@Branch,ISCredit=@ISCredit,PlotIdentification=@PlotIdentification,BuildingNumber = @BuildingNumber, StreetName=@StreetName, AdditionalStreetName=@AdditionalStreetName, District=@District,PostalZone=@PostalZone,CrNo=@CrNo,maxdepit=@maxdepit,area2=@area2,city2=@city2 where id=" + customer.CustomerID, sqlConnection) : new SqlCommand("SET IDENTITY_INSERT [dbo].[Customers] ON insert into Customers(id,name,country,city,area,act,national_id,tel,mobile,fax,email,notes,type,tax_no,IS_Deleted,AccountCode,IdScan,Branch,ISCredit,PlotIdentification,BuildingNumber,StreetName,AdditionalStreetName,District,PostalZone,CrNo,maxdepit,area2,city2) values (@id,@name,@country,@city,@area,@act,@national_id,@tel,@mobile,@fax,@email,@notes,@type,@tax_no,@IS_Deleted,@AccountCode,@IdScan,@Branch,@ISCredit,@PlotIdentification,@BuildingNumber,@StreetName,@AdditionalStreetName,@District,@PostalZone,@CrNo,@maxdepit,@area2,@city2) SET IDENTITY_INSERT [dbo].[Customers] off", sqlConnection));
@@ -1110,7 +1110,7 @@ public class EntityOperations
                 {
                     if (!customer.IsCredit)
                     {
-                        goto IL_0b02;
+                        continue;
                     }
                     TreeAccount treeAccount;
                     treeAccount = new TreeAccount();
@@ -1136,7 +1136,7 @@ public class EntityOperations
                         {
                             new AccountCRUD(Sync.APIUrl).AddTreeAccount(list);
                         }
-                        goto IL_0b02;
+                        continue;
                     }
                     result = false;
                 }
@@ -1144,7 +1144,7 @@ public class EntityOperations
                 {
                     if (!(customer.IsCredit & (Convert.ToInt32(customer.Maxdept) == 1)))
                     {
-                        goto IL_0b02;
+                        continue;
                     }
                     customer.isClient = true;
                     parentCode = Common.CurrentBranch.CustomersAcc;
@@ -1172,16 +1172,19 @@ public class EntityOperations
                         {
                             new AccountCRUD(Sync.APIUrl).AddTreeAccount(list2);
                         }
-                        goto IL_0b02;
+                        continue;
                     }
                     result = false;
                 }
                 goto end_IL_0009;
-            IL_0b02:
-                if (Sync.ActiveSync & (Sync.SyncType > 0))
-                {
-                    new CustomerCRUD(Sync.APIUrl).AddCustomer(customers);
-                }
+            }
+            // Repair R-055 (audit finding P5-022): the full customer batch used to be echoed to the cloud
+            // ONCE PER ROW inside the loop, replaying the whole payload N times (and again after null
+            // rows). Echo it exactly once after every row processed successfully; aborted runs skip it,
+            // matching the old abort contract without the duplicate chatter.
+            if (Sync.ActiveSync & (Sync.SyncType > 0))
+            {
+                new CustomerCRUD(Sync.APIUrl).AddCustomer(customers);
             }
             result = true;
         end_IL_0009:;
@@ -1765,6 +1768,15 @@ public class EntityOperations
                     {
                         new SqlCommand("insert into EmpBranches(emp,branch)values(" + EmbBranch.EmployeeId + "," + Conversions.ToString(EmbBranch.BranchId) + ")", sqlConnection).ExecuteNonQuery();
                     }
+                    sqlCommand = new SqlCommand("update Employees set name=@name ,manag=@manag ,dep=@dep ,state=@state ,job=@job  ,birth_date=@birth_date ,insurance_no=@insurance_no ,work_date=@work_date ,marital_state=@marital_state ,nationality=@nationality ,sex=@sex ,tel=@tel ,mobile=@mobile ,email=@email ,address=@address ,notes=@notes ,image=@image ,salary_basic=@salary_basic ,house=@house, travel=@travel, food=@food, medical=@medical, salary_add=@salary_add ,salary_other=@salary_other ,IS_Deleted=@IS_Deleted ,AccCode=@AccCode , CardNo=@CardNo , BankNo=@BankNo , BankName=@BankName where id=" + Conversions.ToString(employee.EmpId), sqlConnection);
+                }
+                else
+                {
+                    // Repair R-053 (audit finding P5-019): a server-pushed update for an EMPLOYEE THAT
+                    // ALREADY EXISTS used to fall through both branches and run the SELECT COUNT text via
+                    // ExecuteNonQuery - a silent no-op, so downloaded changes never landed. Run the same
+                    // UPDATE here. EmpBranches membership stays gated on local edits until the branch-link
+                    // payload contract is defined (the flat list cannot be attributed per employee).
                     sqlCommand = new SqlCommand("update Employees set name=@name ,manag=@manag ,dep=@dep ,state=@state ,job=@job  ,birth_date=@birth_date ,insurance_no=@insurance_no ,work_date=@work_date ,marital_state=@marital_state ,nationality=@nationality ,sex=@sex ,tel=@tel ,mobile=@mobile ,email=@email ,address=@address ,notes=@notes ,image=@image ,salary_basic=@salary_basic ,house=@house, travel=@travel, food=@food, medical=@medical, salary_add=@salary_add ,salary_other=@salary_other ,IS_Deleted=@IS_Deleted ,AccCode=@AccCode , CardNo=@CardNo , BankNo=@BankNo , BankName=@BankName where id=" + Conversions.ToString(employee.EmpId), sqlConnection);
                 }
                 sqlCommand.Parameters.Add("@id", SqlDbType.Int).Value = employee.EmpId;
