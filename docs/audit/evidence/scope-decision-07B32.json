@@ -1,0 +1,53 @@
+{
+  "authority": [
+    "PHASE-07-REMAINING-07B31.md",
+    "evidence/split-register-07B31.csv",
+    "evidence/residual-disposition-07B31.csv",
+    "evidence/remaining-workplan-07B31.csv",
+    "evidence/continuation-backlog-07B31.csv"
+  ],
+  "selected_upstream_split": "SP7B31-01",
+  "entry": "0bbadbe9f86a7ded7bbb1d2bcce209c7eda551fb",
+  "selected_capability": "ملكيةClosingوKeyDownفيالبيعوضابطالمشترياتوحارساnew/closeوحقلاInvNote/ReffNo؛الفصلبينCancel/HandledوdirtycontractوحدطلبValidateInvoice.",
+  "selection_reason": "كشفمسارالحقولوالحراسازدواجXAML/constructor؛نختبرسبباًمصدرّياًواحداًونبقيانتشارdirtyغيرمحسومبلاافتراضSDK.",
+  "bookkeeping": {
+    "selected_paths": 5,
+    "prior_union": 427,
+    "overlap": 5,
+    "new": 0,
+    "union": 427,
+    "complement": 400,
+    "complement_kinds": {
+      "source": 335,
+      "generated-artifact": 61,
+      "project-or-resource": 4
+    }
+  },
+  "selected_contract_slices": 22,
+  "exploratory_context_slices": 9,
+  "whole_local_files": 0,
+  "historical_metadata_screen_count": 333,
+  "parent_path_matched_metadata_rows": 27,
+  "all_historical_bodies_reviewed": false,
+  "new_root_ids": [
+    "P7-162"
+  ],
+  "existing_root_extensions": [],
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "counts_are_completion_percent_or_sessions": false,
+  "owner_role": "مالك WPF وملكيةتسجيلالأوامر",
+  "required_redacted_input": "مالكواحدلتسجيلhandlerوهويةinstance ومصفوفةNo/Yes/clean وF5/HandledمقابلF6وحدأولكتابة. مصدرمنقحوبصمةلـIsUpdatedوsetterيInvNote/ReffNo،وتمييزassignment/value-change/user-edit/binding؛unknownيبقىغيرمحسوم.",
+  "impact_if_unavailable": "يثبتالازدواجنصياًولايثبتعددحفظأوانتشارdirtyأوقبولتشغيلي.",
+  "next_step": "توحيدملكيةالأمرمعضابطF5والتأكيدقبلأولكتابةدونتعديلتطبيقهنا.",
+  "static_exit_criterion": "NoيحميأولكتابةوF5لاتعممعلىF6؛كلأمرلهentry/source/outputودليلوحد.",
+  "exclusions": [
+    "حصر دورة حياة كل النوافذ خارج هذه الشريحة، دون بدء محور C3 أو ترحيل بقية SP01 إليه.",
+    "سلوك SDK/setters والـBAML المنشور وكل المتصلين.",
+    "كل ValidateInvoice/save/SQL/stock/ACL/financial acceptance.",
+    "حصر455FE وبقيةSP02/03 وسياسات العملة والدقة والقوالب."
+  ],
+  "entry_point": "frmInvSale/frmInvPurch:constructor+XAML → Closing/KeyDown وTextChanged وbtnNew",
+  "source_contract": "22 شريحة مصرّح بها في5 ملفات أصلية،مع9 سياق؛العقود الخارجية للـSDK وBAML والجدولة معلّقة.",
+  "output_boundary": "نتيجة162مصدرية واحدة؛Cancel علىحدالمعالج وطلباتValidateInvoice فقط؛dirty غير محسوم."
+}

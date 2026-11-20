@@ -1,0 +1,17 @@
+id,feature_ids,required_invariant,finding_ids,evidence,acceptance_ids,runtime_status
+INV7B32-01,FE7B32-01,تسجيل واحد مقصود لكلhandler/instance عند تهيئة النافذة.,P7-162,SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16,P7B32T-01;P7B32T-02,not-executed
+INV7B32-02,FE7B32-02,قرار واحد من المستخدم للطلب نفسه مع المحافظة على فيتو مستقل.,P7-162,SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-250,P7B32T-03;P7B32T-04,not-executed
+INV7B32-03,FE7B32-03,طلب تحقق واحد مقصود لكلF6 منالمحرر نفسه.,P7-162,SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:252-317;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16,P7B32T-05;P7B32T-06,not-executed
+INV7B32-04,FE7B32-04,لاينفذالأمرثانيةبعدHandled=true وفقعقدالمسارالعادي.,P7-162,SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:252-317;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2563-2574,P7B32T-07;P7B32T-08,not-executed
+INV7B32-05,FE7B32-05,كلحدثلهمالكوتصرفمسندأوhandoff؛132تبقىpotential.,H7B32-05,SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:65-94;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-16,P7B32T-09;P7B32T-10,not-executed
+INV7B32-06,FE7B32-06,لاينسبازدواجالبيعإلىالمشترياتمنتماثلالأسماء.,H7B32-03,SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:67-88;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753,P7B32T-11;P7B32T-12,not-executed
+INV7B32-07,FE7B32-07,كلتغييررأسلهأثرdirtyموثقأوعقدغيرمحسومصريح.,H7B32-02,SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3528-3542;SmartAuditERP/Form_WPF/frmInvSale.xaml:404-409;SmartAuditERP/Form_WPF/frmInvSale.xaml:580-585,P7B32T-13;P7B32T-14,not-executed
+INV7B32-08,FE7B32-08,إسنادرأسالمشترياتلاينتحلإثباتdirtyأوhydration.,H7B32-02,SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2071-2087;SmartAuditERP/Form_WPF/frmInvPurch.xaml:525-533;SmartAuditERP/Form_WPF/frmInvPurch.xaml:548-556,P7B32T-15;P7B32T-16,not-executed
+INV7B32-09,FE7B32-09,كلحارسيسمىمصدرعدهوعتبتهوحدوديقينه.,H7B32-02;H7B32-03,SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1662-1679;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1571-1594,P7B32T-17;P7B32T-18,not-executed
+INV7B32-10,FE7B32-10,Noيبقيحدأولكتابةغيرمبلوغضمنالأمرالمختار.,H7B32-03,SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2563-2574;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1571-1594;SmartAuditERP/Form_WPF/frmInvSale.xaml:1264-1271;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1431-1439,P7B32T-19;P7B32T-20,not-executed
+INV7B32-11,FE7B32-11,لايخلطCancelفيClosingمعقناعHandledفيKeyDown.,H7B32-05,SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-250;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2753,P7B32T-21;P7B32T-22,not-executed
+INV7B32-12,FE7B32-12,كلادعاءsnapshotdirtyلهcallerوsnapshotإصدارمحددان.,H7B32-02,SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3790-3803;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1662-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-250,P7B32T-23;P7B32T-24,not-executed
+INV7B32-13,FE7B32-13,لايُعتمدسلوكDTOمنإسممكتبةأونتيجةبحثعنclass.,H7B32-02,SmartAuditERP/SmartAuditERP.csproj:130-152,P7B32T-25;P7B32T-26,not-executed
+INV7B32-14,FE7B32-14,لاخسارةأوحفظمكررأوقياسlatencyمننموذجالأحداث.,H7B32-04,SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:252-317,P7B32T-27;P7B32T-28,not-executed
+INV7B32-15,FE7B32-15,كل333قاموساًوكاملraw334prefixبلااستثناءأوامتداد.,H7B32-06,none-documentary-metadata,P7B32T-29;P7B32T-30,not-executed
+INV7B32-16,FE7B32-16,7B/7جزئيتانو7Cلمتبدأو8غيرمأذونةوالإصلاحمستقل.,H7B32-06,none-documentary-metadata,P7B32T-31;P7B32T-32,not-executed
