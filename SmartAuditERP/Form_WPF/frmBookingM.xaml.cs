@@ -666,15 +666,18 @@ namespace SmartAuditERP.Form_WPF
                 cmd.Parameters.Add("@bank", SqlDbType.Int).Value = -1;
                 cmd.ExecuteNonQuery();
 
-                // إدراج أو تحديث Booking
-                if (Code == -1)
+                // BookingAddition.bookId refers to Booking.Bid, not the displayed
+                // row-count-based proposal and not the rental invoice identity.
+                bool isNewBooking = Code == -1;
+                int bookingId = Code;
+                if (isNewBooking)
                 {
                     cmd = new SqlCommand(
                         "insert into Booking(InvID,MarineId,UserId,ClientId,Bdate," +
                         "dateIn,PeriodHour,PeriodMinute,Price,status,BookingType," +
                         "notes,IsDeleted) values(@invId,@MarineId,@UserId,@ClientId," +
                         "@Bdate,@dateIn,@PeriodHour,@PeriodMinute,@Price,@status," +
-                        "@BookingType,@notes,@IsDeleted)", conn, transaction);
+                        "@BookingType,@notes,@IsDeleted); SELECT CAST(SCOPE_IDENTITY() AS int)", conn, transaction);
                     cmd.Parameters.Add("@InvID", SqlDbType.Int).Value = ProcID;
                 }
                 else
@@ -684,8 +687,11 @@ namespace SmartAuditERP.Form_WPF
                         "ClientId=@ClientId,Bdate=@Bdate,dateIn=@dateIn," +
                         "PeriodHour=@PeriodHour,PeriodMinute=@PeriodMinute," +
                         "Price=@Price,status=@status,BookingType=@BookingType," +
-                        "notes=@notes,IsDeleted=@IsDeleted where InvId=" + ProcID,
+                        "notes=@notes,IsDeleted=@IsDeleted " +
+                        "where Bid=@BookingId AND InvId=@InvID AND IsDeleted=0",
                         conn, transaction);
+                    cmd.Parameters.Add("@BookingId", SqlDbType.Int).Value = bookingId;
+                    cmd.Parameters.Add("@InvID", SqlDbType.Int).Value = ProcID;
                 }
 
                 cmd.Parameters.Add("@MarineId", SqlDbType.Int).Value =
@@ -706,18 +712,27 @@ namespace SmartAuditERP.Form_WPF
                 cmd.Parameters.Add("@notes", SqlDbType.NVarChar).Value =
                     " حجز رقم" + txtNo.Text;
                 cmd.Parameters.Add("@IsDeleted", SqlDbType.Bit).Value = 0;
-                cmd.ExecuteNonQuery();
+                if (isNewBooking)
+                {
+                    object insertedId = cmd.ExecuteScalar();
+                    if (insertedId == null || insertedId == DBNull.Value ||
+                        (bookingId = Convert.ToInt32(insertedId)) <= 0)
+                        throw new InvalidOperationException("تعذر تحديد هوية الحجز المُدرج.");
+                }
+                else if (cmd.ExecuteNonQuery() != 1)
+                    throw new InvalidOperationException("هوية الحجز أو الفاتورة لم تعد مطابقة؛ لم يتم الحفظ.");
 
-                // حذف الإضافات القديمة
-                new SqlCommand(
-                    "delete BookingAddition where bookId=" + Code,
-                    conn, transaction).ExecuteNonQuery();
+                // Replace additions for the same persisted booking identity.
+                using (var deleteAdditions = new SqlCommand(
+                    "DELETE FROM BookingAddition WHERE bookId=@BookingId", conn, transaction))
+                {
+                    deleteAdditions.Parameters.Add("@BookingId", SqlDbType.Int).Value = bookingId;
+                    deleteAdditions.ExecuteNonQuery();
+                }
 
                 // إدراج الإضافات الجديدة
                 if (_dgvDataList.Count > 0)
                 {
-                    double.TryParse(txtNo.Text, out double bookNo);
-
                     foreach (BookingAdditionItem item in _dgvDataList)
                     {
                         SqlCommand insertCmd = new SqlCommand(
@@ -726,7 +741,7 @@ namespace SmartAuditERP.Form_WPF
                             "@Price,@quanty,@notes,@IsDeleted)", conn, transaction);
 
                         insertCmd.Parameters.Add("@bookId", SqlDbType.Int).Value =
-                            (int)bookNo;
+                            bookingId;
                         insertCmd.Parameters.Add("@AditionID", SqlDbType.Int).Value =
                             item.Id;
                         insertCmd.Parameters.Add("@Price", SqlDbType.Float).Value =

@@ -207,6 +207,7 @@ namespace SmartAuditERP.Form_WPF
                     $"where PM_Stages.IS_Deleted=0 " +
                     $"and PM_Stages.id=PM_GroupStages.StageID " +
                     $"and PM_GroupStages.ProjGropID={code} " +
+                    $"and PM_GroupStages.IS_Deleted=0 " +
                     $"order by StageOrder",
                     conn);
                 var dt = new DataTable();
@@ -246,6 +247,15 @@ namespace SmartAuditERP.Form_WPF
         private void LoadProjectStage(int code)
         {
             Stageslist.Clear();
+            StageID = -1;
+            _filesSource.Clear();
+            foreach (UIElement child in StagesPanel.Children)
+                if (child is Button button)
+                {
+                    button.Content = "";
+                    button.Visibility = Visibility.Collapsed;
+                    button.Background = Brushes.White;
+                }
 
             try
             {
@@ -256,6 +266,7 @@ namespace SmartAuditERP.Form_WPF
                     $"where PM_Stages.IS_Deleted=0 " +
                     $"and PM_Stages.id=PM_ProjStages.StageID " +
                     $"and PM_ProjStages.ProjID={ProjNo} " +
+                    $"and PM_ProjStages.IS_Deleted=0 " +
                     $"order by StageOrder",
                     conn);
                 var dt = new DataTable();
@@ -297,7 +308,7 @@ namespace SmartAuditERP.Form_WPF
                     }
 
                     bool isClosed = cmbStatus.SelectedValue != null &&
-                                    Convert.ToInt32(cmbStatus.SelectedValue) == 3;
+                                    Convert.ToInt32(cmbStatus.SelectedValue) == 4;
 
                     for (int i = 0; i < Stageslist.Count && i < stageBtns.Count; i++)
                     {
@@ -358,35 +369,78 @@ namespace SmartAuditERP.Form_WPF
                 clickedBtn.Background = Brushes.LightGreen;
         }
 
+        private bool HasCurrentProject()
+        {
+            return rbProject.IsChecked == true && ProjNo > 0 &&
+                int.TryParse(txtProjectNo.Text, out int displayedProject) &&
+                displayedProject == ProjNo;
+        }
+
         private bool CheckPreviousStage()
         {
-            var adapter = new SqlDataAdapter(
-                $"select * from PM_ProjectFiles where Proj_ID={ProjNo} and StageNo={StageID}",
-                conn);
-            var dt = new DataTable();
-            adapter.Fill(dt);
+            if (!HasCurrentProject() || Stageslist.Count == 0 || Stageslist.Count > 6)
+            {
+                DXMessageBox.Show("يجب تحميل مشروع ومراحله المعروضة قبل الاعتماد");
+                return false;
+            }
 
-            if (dt.Rows.Count > 0) return true;
-            DXMessageBox.Show("يجب إرفاق على الأقل ملف لكل مرحلة سابقة");
-            return false;
+            bool selectedFound = false;
+            foreach (var stage in Stageslist)
+            {
+                if (!int.TryParse(stage.Id, out int stageId)) return false;
+                using (var cmd = new SqlCommand(
+                    "SELECT COUNT(*) FROM PM_ProjectFiles WHERE Proj_ID=@Project " +
+                    "AND StageNo=@Stage AND ISNULL(IS_Deleted,0)=0", conn))
+                {
+                    cmd.Parameters.Add("@Project", SqlDbType.Int).Value = ProjNo;
+                    cmd.Parameters.Add("@Stage", SqlDbType.Int).Value = stageId;
+                    bool opened = conn.State != ConnectionState.Open;
+                    try
+                    {
+                        if (opened) conn.Open();
+                        if (Convert.ToInt32(cmd.ExecuteScalar()) == 0)
+                        {
+                            DXMessageBox.Show("يجب إرفاق ملف غير محذوف لكل مرحلة حتى المرحلة المحددة");
+                            return false;
+                        }
+                    }
+                    finally { if (opened) conn.Close(); }
+                }
+                if (stageId == StageID) { selectedFound = true; break; }
+            }
+            if (!selectedFound) DXMessageBox.Show("يجب تحديد مرحلة صالحة للاعتماد");
+            return selectedFound;
         }
 
         private bool CheckAccreditatedStages()
         {
-            foreach (var stage in Stageslist)
+            if (!HasCurrentProject() || Stageslist.Count == 0 || Stageslist.Count > 6)
             {
-                var adapter = new SqlDataAdapter(
-                    $"select ProjID from PM_ProjStages where ProjID={ProjNo} " +
-                    $"and StageId={stage.Id} and IsAccredit=0",
-                    conn);
-                var dt = new DataTable();
-                adapter.Fill(dt);
-
-                if (dt.Rows.Count > 0)
+                DXMessageBox.Show("يجب تحميل مشروع ومراحل صالحة لا تتجاوز ست مراحل قبل الإغلاق");
+                return false;
+            }
+            using (var cmd = new SqlCommand(
+                "SELECT COUNT(*), SUM(CASE WHEN ISNULL(IsAccredit,0)=0 THEN 1 ELSE 0 END) " +
+                "FROM PM_ProjStages WHERE ProjID=@Project AND IS_Deleted=0", conn))
+            {
+                cmd.Parameters.Add("@Project", SqlDbType.Int).Value = ProjNo;
+                bool opened = conn.State != ConnectionState.Open;
+                try
                 {
-                    DXMessageBox.Show($"{stage.Order} يوجد مراحل غير معتمدة، مرحلة رقم");
-                    return false;
+                    if (opened) conn.Open();
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        reader.Read();
+                        int count = reader.GetInt32(0);
+                        int unapproved = reader.IsDBNull(1) ? 0 : reader.GetInt32(1);
+                        if (count != Stageslist.Count || unapproved != 0)
+                        {
+                            DXMessageBox.Show("تغيرت المراحل أو توجد مرحلة غير معتمدة؛ أعد تحميل المشروع");
+                            return false;
+                        }
+                    }
                 }
+                finally { if (opened) conn.Close(); }
             }
             return true;
         }
@@ -396,7 +450,7 @@ namespace SmartAuditERP.Form_WPF
             try
             {
                 if (cmbStatus.SelectedValue != null &&
-                    Convert.ToInt32(cmbStatus.SelectedValue) == 3)
+                    Convert.ToInt32(cmbStatus.SelectedValue) == 4)
                 {
                     DXMessageBox.Show("المشروع مغلق، لا يسمح بإضافة ملف جديد",
                         "", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -429,7 +483,7 @@ namespace SmartAuditERP.Form_WPF
                 {
                     // إضافة جديدة
                     if (cmbStatus.SelectedValue != null &&
-                        Convert.ToInt32(cmbStatus.SelectedValue) == 3)
+                        Convert.ToInt32(cmbStatus.SelectedValue) == 4)
                     {
                         DXMessageBox.Show("المشروع مغلق، لا يسمح بإضافة ملف جديد",
                             "", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -772,10 +826,14 @@ namespace SmartAuditERP.Form_WPF
 
                 var cmd = new SqlCommand(
                     $"UPDATE PM_ProjStages SET IsAccredit=1, CloseDate=@CloseDate " +
-                    $"where ProjID={ProjNo} and StageId={StageID}", conn);
-                cmd.Parameters.Add("@CloseDate", SqlDbType.DateTime).Value =
-                    DateTime.Now.ToShortDateString();
-                cmd.ExecuteNonQuery();
+                    "where ProjID=@Project AND StageId=@Stage AND IS_Deleted=0 AND ISNULL(IsAccredit,0)=0 " +
+                    "AND (SELECT COUNT(*) FROM PM_ProjStages WHERE ProjID=@Project " +
+                    "AND StageId=@Stage AND IS_Deleted=0)=1", conn);
+                cmd.Parameters.Add("@Project", SqlDbType.Int).Value = ProjNo;
+                cmd.Parameters.Add("@Stage", SqlDbType.Int).Value = StageID;
+                cmd.Parameters.Add("@CloseDate", SqlDbType.DateTime).Value = DateTime.Now;
+                if (cmd.ExecuteNonQuery() != 1)
+                    throw new InvalidOperationException("تغيرت المرحلة أو توجد مراحل مكررة؛ أعد تحميل المشروع.");
 
                 DXMessageBox.Show("تم اعتماد المرحلة");
             }
@@ -788,19 +846,17 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnCloseProject_Click(object sender, RoutedEventArgs e)
         {
-            if (!CheckAccreditatedStages()) return;
-
-            if (DXMessageBox.Show("هل أنت متأكد من إغلاق المشروع؟", "تأكيد",
-                MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No) return;
-
             try
             {
+                if (!CheckAccreditatedStages()) return;
+                if (DXMessageBox.Show("هل أنت متأكد من إغلاق المشروع؟", "تأكيد",
+                    MessageBoxButton.YesNo, MessageBoxImage.Question) != MessageBoxResult.Yes) return;
                 if (conn.State == ConnectionState.Closed) conn.Open();
 
                 var cmd = new SqlCommand(
                     $"UPDATE PM_Projects SET statusPk=@statusPk, EndDate=@EndDate " +
                     $"WHERE id={txtProjectNo.Text}", conn);
-                cmd.Parameters.Add("@statusPK", SqlDbType.Int).Value      = 3;
+                cmd.Parameters.Add("@statusPK", SqlDbType.Int).Value      = 4;
                 cmd.Parameters.Add("@EndDate",  SqlDbType.DateTime).Value = DateTime.Now.ToShortDateString();
                 cmd.ExecuteNonQuery();
 
@@ -815,37 +871,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnCloseContract_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                if (conn.State == ConnectionState.Closed) conn.Open();
-
-                string cond = $"ContractPK={txtContrNo.Text} and statusPK<3 and ";
-
-                var adapter = new SqlDataAdapter(
-                    $"select id from PM_Projects where {cond} IS_Deleted=0", conn);
-                var dt = new DataTable();
-                adapter.Fill(dt);
-
-                if (dt.Rows.Count > 0)
-                { DXMessageBox.Show("يوجد مشروع أو أكثر تحت التنفيذ ضمن العقد"); return; }
-
-                if (DXMessageBox.Show("هل أنت متأكد من إغلاق العقد؟", "تأكيد",
-                    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No) return;
-
-                var cmd = new SqlCommand(
-                    $"UPDATE PM_ContractInv SET statusPk=@statusPk, EndDate=@EndDate " +
-                    $"WHERE ContrNo={txtContrNo.Text}", conn);
-                cmd.Parameters.Add("@statusPK", SqlDbType.Int).Value      = 3;
-                cmd.Parameters.Add("@EndDate",  SqlDbType.DateTime).Value = DateTime.Now.ToShortDateString();
-                cmd.ExecuteNonQuery();
-
-                DXMessageBox.Show("تم إغلاق العقد");
-            }
-            catch (Exception ex) { DXMessageBox.Show(ex.Message); }
-            finally
-            {
-                if (conn.State != ConnectionState.Closed) conn.Close();
-            }
+            // ContrNo is a business number, whereas PM_Projects.ContractPK is
+            // an internal identity. Do not close a possibly unrelated contract.
+            DXMessageBox.Show("إغلاق العقد غير متاح حتى التحقق من هوية العقد ومشروعاته.");
         }
 
         private void btnSearch_Click(object sender, RoutedEventArgs e)

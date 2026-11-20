@@ -398,6 +398,13 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
+                // The cycle window has only six stage buttons; refuse plans it cannot operate.
+                if (_grpStagesSource.Count > 6)
+                {
+                    DXMessageBox.Show("لا يمكن حفظ أكثر من ست مراحل للمجموعة في شاشة الدورة الحالية");
+                    return;
+                }
+
                 string confirmMsg = MainClass.Language == "en"
                     ? "Do you want to save group stages?"
                     : "هل تريد حفظ مراحل المجموعة؟";

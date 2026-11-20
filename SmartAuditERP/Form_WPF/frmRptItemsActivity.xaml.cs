@@ -27,6 +27,8 @@ namespace SmartAuditERP.Form_WPF
         private SqlConnection conn1;
 
         private int selectedItemId;
+        private int _partyFilterVersion;
+        private bool _calculatingActivity;
         public  int ItemId;
 
         private bool PrintHeader;
@@ -167,8 +169,20 @@ namespace SmartAuditERP.Form_WPF
 
         public void CalcStock()
         {
+            if (_calculatingActivity) return;
+            _calculatingActivity = true;
+            int partyVersion = _partyFilterVersion;
             try
             {
+                // A party-filtered stock balance has no defined treatment for
+                // transfers, production and other movements without a party.
+                // Do not present the unfiltered result as a filtered one.
+                ClearActivityResults();
+                if (chkAllClients.IsChecked != true)
+                {
+                    DXMessageBox.Show("تصفية حركة الأصناف حسب العميل أو المورد غير متاحة حتى اعتماد سياسة الحركات دون طرف.");
+                    return;
+                }
                 // ─── بناء جملة الأصناف ───
                 string itemsSql = "SELECT id, name, code FROM Items WHERE IS_Deleted=0";
 
@@ -197,13 +211,6 @@ namespace SmartAuditERP.Form_WPF
                 if (ckTotalPeriod.IsChecked != true)
                     extraFilter += " AND Inv.date>=@date1 AND Inv.date<=@date2";
 
-                if (chkAllClients.IsChecked != true && cmbClients.SelectedIndex > -1)
-                {
-                    // cmbClients هنا static items (نص) وليس id
-                    // إذا كان مرتبطًا بـ DataSource يحتوي id، استخدم SelectedValue
-                    // هنا نتجاهله لأن القائمة نصية في XAML
-                }
-
                 // ─── تهيئة الجدول ───
                 _gridData.Clear();
                 ProgressBar1.Maximum = dtItems.Rows.Count;
@@ -222,6 +229,11 @@ namespace SmartAuditERP.Form_WPF
                     System.Windows.Application.Current.Dispatcher.Invoke(
                         System.Windows.Threading.DispatcherPriority.Background,
                         new Action(() => { }));
+                    if (partyVersion != _partyFilterVersion)
+                    {
+                        ClearActivityResults();
+                        return;
+                    }
 
                     DataRow itemRow   = dtItems.Rows[i];
                     int     itemDbId  = Convert.ToInt32(itemRow["id"]);
@@ -309,8 +321,10 @@ namespace SmartAuditERP.Form_WPF
             }
             catch (Exception ex)
             {
+                ClearActivityResults();
                 DXMessageBox.Show("خطأ في حساب الحركة:\n" + ex.Message);
             }
+            finally { _calculatingActivity = false; }
         }
 
         // ─── Helper: جلب مجموع val بحسب inv_type و proc_type ───
@@ -571,6 +585,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void PrintDevexpress(int printMode)
         {
+            if (_calculatingActivity) return;
             RptUrl  = MainClass.ReportsPath;
             RptName = "rptItemsTotalGrd.repx";
             defPrinter = MainClass.ReportsPrinter;
@@ -668,9 +683,7 @@ namespace SmartAuditERP.Form_WPF
                 {
                     MainItemCode  = txtItemCode.Text,
                     MainItemName  = txtItemName.Text,
-                    Clint         = cmbClients.SelectedIndex > -1
-                                    ? (cmbClients.SelectedItem as ComboBoxItem)?.Content?.ToString() ?? ""
-                                    : "",
+                    Clint         = (cmbClients.SelectedItem as DataRowView)?["name"]?.ToString() ?? "",
                     ItemCode      = row.DgvItemCode,
                     ItemName      = row.DgvItemName,
                     Quantity      = row.DgvBalnce.ToString("N2"),
@@ -708,6 +721,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void ExportToExcel()
         {
+            if (_calculatingActivity) return;
             try
             {
                 if (_gridData.Count == 0)
@@ -893,16 +907,30 @@ namespace SmartAuditERP.Form_WPF
             cmbBranch.IsEnabled = ChkAllBranch.IsChecked != true;
         }
 
+        private void ClearActivityResults()
+        {
+            _gridData.Clear();
+            lblSumBalance.Text = "0";
+            lblSumTotalCost.Text = "0";
+            lblCountItems.Text = "0";
+            ProgressBar1.Value = 0;
+        }
+
         private void chkAllClients_CheckedChanged(object sender, RoutedEventArgs e)
         {
             if (!IsLoaded) return;
+            _partyFilterVersion++;
+            ClearActivityResults();
+            cmbClients.SelectedIndex = -1;
             cmbClients.IsEnabled = false;
         }
 
         private void chkClients_CheckedChanged(object sender, RoutedEventArgs e)
         {
-            if (chkClients.IsChecked == true)
+            if (IsLoaded && chkClients.IsChecked == true)
             {
+                _partyFilterVersion++;
+                ClearActivityResults();
                 LoadClients(1);
                 cmbClients.IsEnabled = true;
             }
@@ -910,8 +938,10 @@ namespace SmartAuditERP.Form_WPF
 
         private void chkSuplier_CheckedChanged(object sender, RoutedEventArgs e)
         {
-            if (chkSuplier.IsChecked == true)
+            if (IsLoaded && chkSuplier.IsChecked == true)
             {
+                _partyFilterVersion++;
+                ClearActivityResults();
                 LoadClients(2);
                 cmbClients.IsEnabled = true;
             }
@@ -928,6 +958,8 @@ namespace SmartAuditERP.Form_WPF
 
         private void LoadClients(short clientType)
         {
+            cmbClients.SelectedIndex = -1;
+            cmbClients.ItemsSource = null;
             try
             {
                 var adapter = new SqlDataAdapter(
@@ -936,13 +968,10 @@ namespace SmartAuditERP.Form_WPF
                 var dt = new DataTable();
                 adapter.Fill(dt);
 
-                if (dt.Rows.Count > 0)
-                {
-                    cmbClients.DisplayMemberPath = "name";
-                    cmbClients.SelectedValuePath = "id";
-                    cmbClients.ItemsSource       = dt.DefaultView;
-                    cmbClients.SelectedIndex     = -1;
-                }
+                cmbClients.DisplayMemberPath = "name";
+                cmbClients.SelectedValuePath = "id";
+                cmbClients.ItemsSource       = dt.DefaultView;
+                cmbClients.SelectedIndex     = -1;
             }
             catch (Exception ex)
             {

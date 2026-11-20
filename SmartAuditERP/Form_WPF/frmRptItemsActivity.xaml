@@ -431,17 +431,7 @@
                                 </StackPanel>
                                 <ComboBox x:Name="cmbClients"
                                           Style="{StaticResource ModernComboBox}"
-                                          IsEnabled="False">
-                                    <ComboBoxItem>المشتريات</ComboBoxItem>
-                                    <ComboBoxItem>المبيعات</ComboBoxItem>
-                                    <ComboBoxItem>نقطة البيع</ComboBoxItem>
-                                    <ComboBoxItem>فاتورة إدخال</ComboBoxItem>
-                                    <ComboBoxItem>فاتورة إخراج</ComboBoxItem>
-                                    <ComboBoxItem>فاتورة إنتاج</ComboBoxItem>
-                                    <ComboBoxItem>تسوية جردية</ComboBoxItem>
-                                    <ComboBoxItem>مناقلة</ComboBoxItem>
-                                    <ComboBoxItem>بضاعة أول مدة</ComboBoxItem>
-                                </ComboBox>
+                                          IsEnabled="False"/>
                             </StackPanel>
                         </Border>
 
