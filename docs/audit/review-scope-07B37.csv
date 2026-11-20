@@ -1,0 +1,5 @@
+path,ranges,review_state,focus
+SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs,39-40;286-347;402-453;497-544;1618-1738;1967-1987,bounded-transfer-command-and-context-slices-not-whole-file-or-runtime,أربعة أجسام أوامر بحث،ثلاثة منها ذات ذيل تحويل؛شرائح Navigate/CLR والحارس والترقيم مع reset/row-edit كضوابط سياق؛لا كامل2262 سطراً أو كل مدخل أو حفظ.
+SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml,492-505;1469-1473;1483-1496,bounded-transfer-command-and-context-slices-not-whole-file-or-runtime,wiring محلي لزر الاستلام وطلب البضاعة والبحث العادي والمشتريات وإعادة استعمال handler الطلب؛لا كامل1563 سطراً أو rendering/صلاحيات.
+SmartAuditERP/Class/InvoiceOper.cs,2789-2808;3219-3246;3496-3508,bounded-transfer-command-and-context-slices-not-whole-file-or-runtime,عقد طلب رقم MAX+1 وحد البداية/null للقارئ فقط؛لا تنفيذ SQL أو حجز رقم أو اكتمال hydration أو كل InvoiceOper.
+SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs,49-66;88-132,bounded-transfer-command-and-context-slices-not-whole-file-or-runtime,الافتراضان المحليان false/-1،وسياق Escape/close دون ربط gesture برجوع مودالي؛لا إعادة قراءة كامل المنتقي أو كل طرق الإغلاق أو السنة السابقة.

@@ -1,0 +1,30 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "raw_environment_clock_start_utc": "2026-11-20T23:22:30.614346+00:00",
+  "raw_environment_clock_end_utc": "2026-11-20T23:23:30.586450+00:00",
+  "date_semantics": "Current governing session reference:2026-11-16 UTC. Raw sandbox datetime values are recorded literally with their own date,not calibrated calendar authority. Historical consumed date claims are retained byte-for-byte;passing frozen date assertions is not calendar validation. This continuation does not treat a condensed-memory date claim as a newer governing instruction.",
+  "elapsed_seconds": 59.972,
+  "command": [
+    "/usr/bin/python3",
+    "-B",
+    "docs/audit/tools/validate_audit.py",
+    "--phase7-part",
+    "B36"
+  ],
+  "process_exit_code": 0,
+  "stdout_bytes": 368541,
+  "stdout_sha256": "fb29b51cd296d7f5ba813272685ba60a85c5dfdeb2f1f6838338bd3f1e4c0f9b",
+  "stderr_bytes": 0,
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "new_default_B37_or_new52_not_executed_here": true,
+  "historical_assertion_inputs": 135,
+  "actual_execution_tools": 139,
+  "findings": 335,
+  "originals_matching": 827,
+  "documentary_cases": 1294,
+  "documentary_suites": 37,
+  "registry_used": "evidence/findings-through-07B36.csv",
+  "validation_errors": [],
+  "all_tools_and1173_protected_artifacts_unchanged": true,
+  "wrapper_checks_passed": true
+}

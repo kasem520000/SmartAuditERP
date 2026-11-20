@@ -1,0 +1,26 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "raw_environment_clock_start_utc": "2026-11-20T23:22:29.010977+00:00",
+  "raw_environment_clock_end_utc": "2026-11-20T23:22:30.529929+00:00",
+  "date_semantics": "Current governing session reference:2026-11-16 UTC. Raw sandbox datetime values are recorded literally with their own date,not calibrated calendar authority. Historical consumed date claims are retained byte-for-byte;passing frozen date assertions is not calendar validation. This continuation does not treat a condensed-memory date claim as a newer governing instruction.",
+  "elapsed_seconds": 1.519,
+  "command": [
+    "/usr/bin/python3",
+    "-B",
+    "docs/audit/tools/run_historical_invoice_picker_tests_07B37.py",
+    "--through-part",
+    "B36"
+  ],
+  "process_exit_code": 0,
+  "stdout_bytes": 0,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_bytes": 354,
+  "stderr_sha256": "d6016954acc17e132faa624650448b7cc563977758a8ad4b40ba9ad3a0f257e9",
+  "new_default_B37_or_new52_not_executed_here": true,
+  "historical_assertion_inputs": 135,
+  "actual_execution_tools": 139,
+  "tests_reported": 52,
+  "all_original_cases_executed_unmodified": true,
+  "all_tools_and1173_protected_artifacts_unchanged": true,
+  "wrapper_checks_passed": true
+}

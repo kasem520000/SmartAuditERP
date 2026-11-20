@@ -1,0 +1,48 @@
+{
+  "entry": "a83cb66108241ad51ab4f08fbff3fe5f361d58a0",
+  "selected_upstream_split": "SP7B36-01",
+  "selected_capability": "Three transfer-editor picker commands:ReceiveQuantity,InventoryOrder and InsertPurch,from command-specific request through supplied normal dialog return,acceptance-only Navigate and unconditional in-memory conversion/number-request tails. Ordinary invoice search is a no-tail control. Number helper catches,field ProcType versus header ProcType,and typed-load absence are bounded contracts or unresolved policy,not newly allocated defects. Four previously selected source paths;no whole-file completion.",
+  "entry_point": "XAML لأوامر receive/order/purchase ومعهاsearchضابط،ثمnewpickerوShowDialogالمطلوبقبلرجوعمورّد.",
+  "source_contract": "أجسامالأوامرالمحليةوشرطNavigateالمفردوأذيالالذاكرةومساعدرقمذيcatchمحلي؛16contract+5contextفي4مساراتقديمة،0wholebody.",
+  "output_boundary": "حدكتاباتheader/proc/number/combined/label/ISNewبشروطنجاحsettersورجوعhelperموردة؛لاfinalUIأوSave/stockأوحجزرقمأوCompleteLoad.",
+  "owner_role": "مالك المنتج وقصد أمر المناقلة",
+  "required_redacted_input": "مصفوفة SearchRequest/CopyIntent/ReceiveIntent للأوامر1/8 و1/14 و1/1 والضابط2/8؛نتيجة Accepted/Cancelled/Failed وحد رجوع صريح بأمثلة رمزية.",
+  "impact_if_unavailable": "دون السياسة لا يصير قبول الهدف قرار ترك أو تحويل،ولا يثبت اسم زر أو hint دعم كل أنواع المصدر.",
+  "next_step": "فصل نتيجة اختيار الهدف عن قصد تحويل الرأس وAbandonDecision؛تثبيت المدخل والأهلية وحد النشر لكل أمر.",
+  "static_exit_criterion": "عند nonaccept لا يصل أي تحويل غير مصرح به؛والقبول يحمل هوية الطلب والقصد لا مجرد done/-1.",
+  "exclusions": [
+    "لا كامل المحرر أو كل caller/field/writer/output،ولا السنة السابقة أو زرReturn المنفصل أو chrome/Loaded،ولا SDK/DTO defaults/alias أو تنفيذ provider/SQL أو حفظ أو مخزون أو قبول تشغيلي.",
+    "بقيةالأوامروالسنةالسابقةوزرReturnوLoaded/chromeومالكيةSDKليستشهادةمنوجودqueryأوClose.",
+    "field/headerProcTypeاختلافمصدرمثبتلكننتيجتهالتجاريةوسياسةالأرقامغيرمحسومةولافindingإضافية.",
+    "لاfinanciallossأوSQLأوproviderأواختبارفشلواقعيأوتعريفenum/defaults/aliasمنرأسرمزي."
+  ],
+  "bookkeeping": {
+    "selected_paths": 4,
+    "prior_union": 428,
+    "overlap": 4,
+    "new": 0,
+    "union": 428,
+    "complement": 399,
+    "complement_kinds": {
+      "source": 334,
+      "generated-artifact": 61,
+      "project-or-resource": 4
+    }
+  },
+  "historical_metadata_screen_count": 335,
+  "parent_path_matched_metadata_rows": 71,
+  "selected_prior_report_sections": 8,
+  "additional_selected_extension_contract_sections": 2,
+  "all_historical_bodies_reviewed": false,
+  "selected_contract_slices": 16,
+  "exploratory_context_slices": 5,
+  "whole_local_source_bodies_reread": 0,
+  "newly_completed_local_files": 0,
+  "new_root_ids": [],
+  "existing_root_extensions": [],
+  "registry_entire_raw_bytes_unchanged": true,
+  "counts_are_completion_percent_or_sessions": false,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "repair_start_sync_known": false
+}

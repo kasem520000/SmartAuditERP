@@ -1,0 +1,1692 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "entry_checkout": "a83cb66108241ad51ab4f08fbff3fe5f361d58a0",
+  "new_root_ids": [],
+  "extended_existing_root_ids": [],
+  "existing_roots_deepened_without_registry_change": [
+    "P7-159",
+    "P7-160"
+  ],
+  "application_code_imported_or_executed": false,
+  "dotnet_wpf_sql_or_SDK_executed": false,
+  "dialog_modal_return_or_Loaded_order_observed": false,
+  "real_query_or_conversion_failures_executed": false,
+  "source_enum_or_external_InvoiceDGV_contract_proved": false,
+  "all_callers_or_historical_bodies_certified": false,
+  "modal_header_field_number_and_failure_values_supplied": true,
+  "number_helper_catch_return_distinct_from_nonreturn": true,
+  "field_header_proc_difference_policy_unresolved": true,
+  "previous_year_return_button_and_other_callers_not_certified": true,
+  "repair_start_or_sync_known": false,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "application_remediation_performed": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "illustration_count": 20,
+  "lexical_check_count": 20,
+  "selected_source_paths": 4,
+  "contract_slices": 16,
+  "context_slices": 5,
+  "whole_local_source_bodies_reread": 0,
+  "newly_completed_local_files": 0,
+  "illustrations": [
+    {
+      "id": "ALG7B37-01",
+      "title": "four command requests not one universal picker contract",
+      "value": [
+        {
+          "route": "search",
+          "proc": 2,
+          "inv_type": 8,
+          "local_proc_disable_instruction_present": false,
+          "mandatory_status_predicate": "none",
+          "branch_predicate_at_Navigate": true,
+          "kind_proc_deleted_or_status_rechecked_at_Navigate": false,
+          "permission_settings_effects_or_runtime_control_enablement_proved": false
+        },
+        {
+          "route": "receive",
+          "proc": 1,
+          "inv_type": 8,
+          "local_proc_disable_instruction_present": true,
+          "mandatory_status_predicate": "InvoiceStatus-equals-1",
+          "branch_predicate_at_Navigate": true,
+          "kind_proc_deleted_or_status_rechecked_at_Navigate": false,
+          "permission_settings_effects_or_runtime_control_enablement_proved": false
+        },
+        {
+          "route": "order",
+          "proc": 1,
+          "inv_type": 14,
+          "local_proc_disable_instruction_present": true,
+          "mandatory_status_predicate": "none",
+          "branch_predicate_at_Navigate": false,
+          "kind_proc_deleted_or_status_rechecked_at_Navigate": false,
+          "permission_settings_effects_or_runtime_control_enablement_proved": false
+        },
+        {
+          "route": "purchase",
+          "proc": 1,
+          "inv_type": 1,
+          "local_proc_disable_instruction_present": true,
+          "mandatory_status_predicate": "none",
+          "branch_predicate_at_Navigate": false,
+          "kind_proc_deleted_or_status_rechecked_at_Navigate": false,
+          "permission_settings_effects_or_runtime_control_enablement_proved": false
+        }
+      ],
+      "assertions_passed": true,
+      "finding_ids": "H7B37-01",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1642-1738",
+      "source_application_executed": false,
+      "limit": "رؤوس وأعلام ورجوع طبيعي وحدود فشل وأرقام موردة؛لا WPF/SQL/SDK أو final UI/aliasing أو نجاح حفظ أو حجز رقم."
+    },
+    {
+      "id": "ALG7B37-02",
+      "title": "ordinary search nonaccept is no-tail control",
+      "value": {
+        "request": {
+          "route": "search",
+          "proc": 2,
+          "inv_type": 8,
+          "local_proc_disable_instruction_present": false,
+          "mandatory_status_predicate": "none",
+          "branch_predicate_at_Navigate": true,
+          "kind_proc_deleted_or_status_rechecked_at_Navigate": false,
+          "permission_settings_effects_or_runtime_control_enablement_proved": false
+        },
+        "before": {
+          "header": {
+            "slot": "head-A",
+            "kind": "fixture-kind",
+            "proc": 2,
+            "is_new": false,
+            "invoice_no": 7,
+            "combined": "combined-A",
+            "gid": "doc-A",
+            "note": "fixture-note"
+          },
+          "field_proc": 2,
+          "field_type": 8,
+          "label": "collapsed"
+        },
+        "header": {
+          "slot": "head-A",
+          "kind": "fixture-kind",
+          "proc": 2,
+          "is_new": false,
+          "invoice_no": 7,
+          "combined": "combined-A",
+          "gid": "doc-A",
+          "note": "fixture-note"
+        },
+        "field_proc": 2,
+        "field_type": 8,
+        "label": "collapsed",
+        "dirty_supplied": false,
+        "modal_boundary_supplied": "normal",
+        "navigate_requested": false,
+        "check_before_clear_called": false,
+        "number_request": null,
+        "events": [
+          "ShowDialog-requested",
+          "normal-modal-return-supplied"
+        ],
+        "new_flag_tail_reached": false,
+        "typed_load_success_proved": false,
+        "SDK_setters_or_aliasing_or_final_UI_state_proved": false,
+        "application_source_or_provider_executed": false,
+        "number_reserved": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1642-1657",
+      "source_application_executed": false,
+      "limit": "رؤوس وأعلام ورجوع طبيعي وحدود فشل وأرقام موردة؛لا WPF/SQL/SDK أو final UI/aliasing أو نجاح حفظ أو حجز رقم."
+    },
+    {
+      "id": "ALG7B37-03",
+      "title": "nonaccept receive writes header and editor operation then numbering and label",
+      "value": {
+        "request": {
+          "route": "receive",
+          "proc": 1,
+          "inv_type": 8,
+          "local_proc_disable_instruction_present": true,
+          "mandatory_status_predicate": "InvoiceStatus-equals-1",
+          "branch_predicate_at_Navigate": true,
+          "kind_proc_deleted_or_status_rechecked_at_Navigate": false,
+          "permission_settings_effects_or_runtime_control_enablement_proved": false
+        },
+        "before": {
+          "header": {
+            "slot": "head-A",
+            "kind": "fixture-kind",
+            "proc": 2,
+            "is_new": false,
+            "invoice_no": 7,
+            "combined": "combined-A",
+            "gid": "doc-A",
+            "note": "fixture-note"
+          },
+          "field_proc": 2,
+          "field_type": 8,
+          "label": "collapsed"
+        },
+        "header": {
+          "slot": "head-A",
+          "kind": "fixture-kind",
+          "proc": 1,
+          "is_new": false,
+          "invoice_no": 41,
+          "combined": "fixture-code-1-41",
+          "gid": "doc-A",
+          "note": "fixture-note"
+        },
+        "field_proc": 1,
+        "field_type": 8,
+        "label": "visible",
+        "dirty_supplied": false,
+        "modal_boundary_supplied": "normal",
+        "navigate_requested": false,
+        "check_before_clear_called": false,
+        "number_request": {
+          "inv_type": 8,
+          "proc_type": 1,
+          "candidate_supplied": 41,
+          "not_from_header_proc": true
+        },
+        "events": [
+          "ShowDialog-requested",
+          "normal-modal-return-supplied",
+          "header-ProcType-written-1",
+          "field-ProcType-written-1",
+          "LoadInvoiceNumber-called-using-editor-fields",
+          "header-InvoiceNo-written-with-supplied-candidate",
+          "combined-id-symbolic-write-after-text-not-entity-reservation",
+          "LoadInvoiceNumber-returned-no-typed-success",
+          "receive-label-visible-instruction-reached"
+        ],
+        "new_flag_tail_reached": false,
+        "typed_load_success_proved": false,
+        "SDK_setters_or_aliasing_or_final_UI_state_proved": false,
+        "application_source_or_provider_executed": false,
+        "number_reserved": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1659-1685",
+      "source_application_executed": false,
+      "limit": "رؤوس وأعلام ورجوع طبيعي وحدود فشل وأرقام موردة؛لا WPF/SQL/SDK أو final UI/aliasing أو نجاح حفظ أو حجز رقم."
+    },
+    {
+      "id": "ALG7B37-04",
+      "title": "nonaccept order conversion tail still reached",
+      "value": {
+        "request": {
+          "route": "order",
+          "proc": 1,
+          "inv_type": 14,
+          "local_proc_disable_instruction_present": true,
+          "mandatory_status_predicate": "none",
+          "branch_predicate_at_Navigate": false,
+          "kind_proc_deleted_or_status_rechecked_at_Navigate": false,
+          "permission_settings_effects_or_runtime_control_enablement_proved": false
+        },
+        "before": {
+          "header": {
+            "slot": "head-A",
+            "kind": "fixture-kind",
+            "proc": 2,
+            "is_new": false,
+            "invoice_no": 7,
+            "combined": "combined-A",
+            "gid": "doc-A",
+            "note": "fixture-note"
+          },
+          "field_proc": 2,
+          "field_type": 8,
+          "label": "collapsed"
+        },
+        "header": {
+          "slot": "head-A",
+          "kind": "SafesTransferTo",
+          "proc": 2,
+          "is_new": true,
+          "invoice_no": 41,
+          "combined": "fixture-code-2-41",
+          "gid": "doc-A",
+          "note": "fixture-note"
+        },
+        "field_proc": 2,
+        "field_type": 8,
+        "label": "collapsed",
+        "dirty_supplied": false,
+        "modal_boundary_supplied": "normal",
+        "navigate_requested": false,
+        "check_before_clear_called": false,
+        "number_request": {
+          "inv_type": 8,
+          "proc_type": 2,
+          "candidate_supplied": 41,
+          "not_from_header_proc": true
+        },
+        "events": [
+          "ShowDialog-requested",
+          "normal-modal-return-supplied",
+          "header-InvoiceType-written-symbolic-SafesTransferTo",
+          "header-ProcType-written-2-not-field",
+          "LoadInvoiceNumber-called-using-editor-fields",
+          "header-InvoiceNo-written-with-supplied-candidate",
+          "combined-id-symbolic-write-after-text-not-entity-reservation",
+          "LoadInvoiceNumber-returned-no-typed-success",
+          "ISNew-true-instruction-reached"
+        ],
+        "new_flag_tail_reached": true,
+        "typed_load_success_proved": false,
+        "SDK_setters_or_aliasing_or_final_UI_state_proved": false,
+        "application_source_or_provider_executed": false,
+        "number_reserved": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1687-1711",
+      "source_application_executed": false,
+      "limit": "رؤوس وأعلام ورجوع طبيعي وحدود فشل وأرقام موردة؛لا WPF/SQL/SDK أو final UI/aliasing أو نجاح حفظ أو حجز رقم."
+    },
+    {
+      "id": "ALG7B37-05",
+      "title": "nonaccept purchase shares mechanism160 not a per-button defect",
+      "value": {
+        "request": {
+          "route": "purchase",
+          "proc": 1,
+          "inv_type": 1,
+          "local_proc_disable_instruction_present": true,
+          "mandatory_status_predicate": "none",
+          "branch_predicate_at_Navigate": false,
+          "kind_proc_deleted_or_status_rechecked_at_Navigate": false,
+          "permission_settings_effects_or_runtime_control_enablement_proved": false
+        },
+        "before": {
+          "header": {
+            "slot": "head-A",
+            "kind": "fixture-kind",
+            "proc": 2,
+            "is_new": false,
+            "invoice_no": 7,
+            "combined": "combined-A",
+            "gid": "doc-A",
+            "note": "fixture-note"
+          },
+          "field_proc": 2,
+          "field_type": 8,
+          "label": "collapsed"
+        },
+        "header": {
+          "slot": "head-A",
+          "kind": "SafesTransferTo",
+          "proc": 2,
+          "is_new": true,
+          "invoice_no": 41,
+          "combined": "fixture-code-2-41",
+          "gid": "doc-A",
+          "note": "fixture-note"
+        },
+        "field_proc": 2,
+        "field_type": 8,
+        "label": "collapsed",
+        "dirty_supplied": false,
+        "modal_boundary_supplied": "normal",
+        "navigate_requested": false,
+        "check_before_clear_called": false,
+        "number_request": {
+          "inv_type": 8,
+          "proc_type": 2,
+          "candidate_supplied": 41,
+          "not_from_header_proc": true
+        },
+        "events": [
+          "ShowDialog-requested",
+          "normal-modal-return-supplied",
+          "header-InvoiceType-written-symbolic-SafesTransferTo",
+          "header-ProcType-written-2-not-field",
+          "LoadInvoiceNumber-called-using-editor-fields",
+          "header-InvoiceNo-written-with-supplied-candidate",
+          "combined-id-symbolic-write-after-text-not-entity-reservation",
+          "LoadInvoiceNumber-returned-no-typed-success",
+          "ISNew-true-instruction-reached"
+        ],
+        "new_flag_tail_reached": true,
+        "typed_load_success_proved": false,
+        "SDK_setters_or_aliasing_or_final_UI_state_proved": false,
+        "application_source_or_provider_executed": false,
+        "number_reserved": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1713-1738",
+      "source_application_executed": false,
+      "limit": "رؤوس وأعلام ورجوع طبيعي وحدود فشل وأرقام موردة؛لا WPF/SQL/SDK أو final UI/aliasing أو نجاح حفظ أو حجز رقم."
+    },
+    {
+      "id": "ALG7B37-06",
+      "title": "sentinel also skips only Navigate not conversion tail",
+      "value": {
+        "request": {
+          "route": "order",
+          "proc": 1,
+          "inv_type": 14,
+          "local_proc_disable_instruction_present": true,
+          "mandatory_status_predicate": "none",
+          "branch_predicate_at_Navigate": false,
+          "kind_proc_deleted_or_status_rechecked_at_Navigate": false,
+          "permission_settings_effects_or_runtime_control_enablement_proved": false
+        },
+        "before": {
+          "header": {
+            "slot": "head-A",
+            "kind": "fixture-kind",
+            "proc": 2,
+            "is_new": false,
+            "invoice_no": 7,
+            "combined": "combined-A",
+            "gid": "doc-A",
+            "note": "fixture-note"
+          },
+          "field_proc": 2,
+          "field_type": 8,
+          "label": "collapsed"
+        },
+        "header": {
+          "slot": "head-A",
+          "kind": "SafesTransferTo",
+          "proc": 2,
+          "is_new": true,
+          "invoice_no": 41,
+          "combined": "fixture-code-2-41",
+          "gid": "doc-A",
+          "note": "fixture-note"
+        },
+        "field_proc": 2,
+        "field_type": 8,
+        "label": "collapsed",
+        "dirty_supplied": false,
+        "modal_boundary_supplied": "normal",
+        "navigate_requested": false,
+        "check_before_clear_called": false,
+        "number_request": {
+          "inv_type": 8,
+          "proc_type": 2,
+          "candidate_supplied": 41,
+          "not_from_header_proc": true
+        },
+        "events": [
+          "ShowDialog-requested",
+          "normal-modal-return-supplied",
+          "header-InvoiceType-written-symbolic-SafesTransferTo",
+          "header-ProcType-written-2-not-field",
+          "LoadInvoiceNumber-called-using-editor-fields",
+          "header-InvoiceNo-written-with-supplied-candidate",
+          "combined-id-symbolic-write-after-text-not-entity-reservation",
+          "LoadInvoiceNumber-returned-no-typed-success",
+          "ISNew-true-instruction-reached"
+        ],
+        "new_flag_tail_reached": true,
+        "typed_load_success_proved": false,
+        "SDK_setters_or_aliasing_or_final_UI_state_proved": false,
+        "application_source_or_provider_executed": false,
+        "number_reserved": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1687-1711",
+      "source_application_executed": false,
+      "limit": "رؤوس وأعلام ورجوع طبيعي وحدود فشل وأرقام موردة؛لا WPF/SQL/SDK أو final UI/aliasing أو نجاح حفظ أو حجز رقم."
+    },
+    {
+      "id": "ALG7B37-07",
+      "title": "sentinel test not a validated nonempty DocumentRef",
+      "value": {
+        "request": {
+          "route": "receive",
+          "proc": 1,
+          "inv_type": 8,
+          "local_proc_disable_instruction_present": true,
+          "mandatory_status_predicate": "InvoiceStatus-equals-1",
+          "branch_predicate_at_Navigate": true,
+          "kind_proc_deleted_or_status_rechecked_at_Navigate": false,
+          "permission_settings_effects_or_runtime_control_enablement_proved": false
+        },
+        "before": {
+          "header": {
+            "slot": "head-A",
+            "kind": "fixture-kind",
+            "proc": 2,
+            "is_new": false,
+            "invoice_no": 7,
+            "combined": "combined-A",
+            "gid": "doc-A",
+            "note": "fixture-note"
+          },
+          "field_proc": 2,
+          "field_type": 8,
+          "label": "collapsed"
+        },
+        "header": {
+          "slot": "head-A",
+          "kind": "fixture-kind",
+          "proc": 1,
+          "is_new": false,
+          "invoice_no": 41,
+          "combined": "fixture-code-1-41",
+          "gid": "doc-A",
+          "note": "fixture-note"
+        },
+        "field_proc": 1,
+        "field_type": 8,
+        "label": "visible",
+        "dirty_supplied": false,
+        "modal_boundary_supplied": "normal",
+        "navigate_requested": true,
+        "check_before_clear_called": false,
+        "number_request": {
+          "inv_type": 8,
+          "proc_type": 1,
+          "candidate_supplied": 41,
+          "not_from_header_proc": true
+        },
+        "events": [
+          "ShowDialog-requested",
+          "normal-modal-return-supplied",
+          "Navigate-requested-without-local-CheckBeforeClear",
+          "Navigate-void-return-and-output-snapshot-supplied",
+          "header-ProcType-written-1",
+          "field-ProcType-written-1",
+          "LoadInvoiceNumber-called-using-editor-fields",
+          "header-InvoiceNo-written-with-supplied-candidate",
+          "combined-id-symbolic-write-after-text-not-entity-reservation",
+          "LoadInvoiceNumber-returned-no-typed-success",
+          "receive-label-visible-instruction-reached"
+        ],
+        "new_flag_tail_reached": false,
+        "typed_load_success_proved": false,
+        "SDK_setters_or_aliasing_or_final_UI_state_proved": false,
+        "application_source_or_provider_executed": false,
+        "number_reserved": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "H7B37-01",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1659-1685",
+      "source_application_executed": false,
+      "limit": "رؤوس وأعلام ورجوع طبيعي وحدود فشل وأرقام موردة؛لا WPF/SQL/SDK أو final UI/aliasing أو نجاح حفظ أو حجز رقم."
+    },
+    {
+      "id": "ALG7B37-08",
+      "title": "ShowDialog request is not supplied return",
+      "value": {
+        "request": {
+          "route": "purchase",
+          "proc": 1,
+          "inv_type": 1,
+          "local_proc_disable_instruction_present": true,
+          "mandatory_status_predicate": "none",
+          "branch_predicate_at_Navigate": false,
+          "kind_proc_deleted_or_status_rechecked_at_Navigate": false,
+          "permission_settings_effects_or_runtime_control_enablement_proved": false
+        },
+        "before": {
+          "header": {
+            "slot": "head-A",
+            "kind": "fixture-kind",
+            "proc": 2,
+            "is_new": false,
+            "invoice_no": 7,
+            "combined": "combined-A",
+            "gid": "doc-A",
+            "note": "fixture-note"
+          },
+          "field_proc": 2,
+          "field_type": 8,
+          "label": "collapsed"
+        },
+        "header": {
+          "slot": "head-A",
+          "kind": "fixture-kind",
+          "proc": 2,
+          "is_new": false,
+          "invoice_no": 7,
+          "combined": "combined-A",
+          "gid": "doc-A",
+          "note": "fixture-note"
+        },
+        "field_proc": 2,
+        "field_type": 8,
+        "label": "collapsed",
+        "dirty_supplied": false,
+        "modal_boundary_supplied": "not-returned",
+        "navigate_requested": false,
+        "check_before_clear_called": false,
+        "number_request": null,
+        "events": [
+          "ShowDialog-requested"
+        ],
+        "new_flag_tail_reached": false,
+        "typed_load_success_proved": false,
+        "SDK_setters_or_aliasing_or_final_UI_state_proved": false,
+        "application_source_or_provider_executed": false,
+        "number_reserved": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1713-1738",
+      "source_application_executed": false,
+      "limit": "رؤوس وأعلام ورجوع طبيعي وحدود فشل وأرقام موردة؛لا WPF/SQL/SDK أو final UI/aliasing أو نجاح حفظ أو حجز رقم."
+    },
+    {
+      "id": "ALG7B37-09",
+      "title": "pre-return exception boundary does not reach tail",
+      "value": {
+        "request": {
+          "route": "receive",
+          "proc": 1,
+          "inv_type": 8,
+          "local_proc_disable_instruction_present": true,
+          "mandatory_status_predicate": "InvoiceStatus-equals-1",
+          "branch_predicate_at_Navigate": true,
+          "kind_proc_deleted_or_status_rechecked_at_Navigate": false,
+          "permission_settings_effects_or_runtime_control_enablement_proved": false
+        },
+        "before": {
+          "header": {
+            "slot": "head-A",
+            "kind": "fixture-kind",
+            "proc": 2,
+            "is_new": false,
+            "invoice_no": 7,
+            "combined": "combined-A",
+            "gid": "doc-A",
+            "note": "fixture-note"
+          },
+          "field_proc": 2,
+          "field_type": 8,
+          "label": "collapsed"
+        },
+        "header": {
+          "slot": "head-A",
+          "kind": "fixture-kind",
+          "proc": 2,
+          "is_new": false,
+          "invoice_no": 7,
+          "combined": "combined-A",
+          "gid": "doc-A",
+          "note": "fixture-note"
+        },
+        "field_proc": 2,
+        "field_type": 8,
+        "label": "collapsed",
+        "dirty_supplied": false,
+        "modal_boundary_supplied": "throws-before-return",
+        "navigate_requested": false,
+        "check_before_clear_called": false,
+        "number_request": null,
+        "events": [
+          "ShowDialog-requested",
+          "outer-error-handler-boundary-supplied"
+        ],
+        "new_flag_tail_reached": false,
+        "typed_load_success_proved": false,
+        "SDK_setters_or_aliasing_or_final_UI_state_proved": false,
+        "application_source_or_provider_executed": false,
+        "number_reserved": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "H7B37-05",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1659-1685",
+      "source_application_executed": false,
+      "limit": "رؤوس وأعلام ورجوع طبيعي وحدود فشل وأرقام موردة؛لا WPF/SQL/SDK أو final UI/aliasing أو نجاح حفظ أو حجز رقم."
+    },
+    {
+      "id": "ALG7B37-10",
+      "title": "clean nonaccept also reaches tail independently of dirty policy",
+      "value": {
+        "request": {
+          "route": "order",
+          "proc": 1,
+          "inv_type": 14,
+          "local_proc_disable_instruction_present": true,
+          "mandatory_status_predicate": "none",
+          "branch_predicate_at_Navigate": false,
+          "kind_proc_deleted_or_status_rechecked_at_Navigate": false,
+          "permission_settings_effects_or_runtime_control_enablement_proved": false
+        },
+        "before": {
+          "header": {
+            "slot": "head-A",
+            "kind": "fixture-kind",
+            "proc": 2,
+            "is_new": false,
+            "invoice_no": 7,
+            "combined": "combined-A",
+            "gid": "doc-A",
+            "note": "fixture-note"
+          },
+          "field_proc": 2,
+          "field_type": 8,
+          "label": "collapsed"
+        },
+        "header": {
+          "slot": "head-A",
+          "kind": "SafesTransferTo",
+          "proc": 2,
+          "is_new": true,
+          "invoice_no": 41,
+          "combined": "fixture-code-2-41",
+          "gid": "doc-A",
+          "note": "fixture-note"
+        },
+        "field_proc": 2,
+        "field_type": 8,
+        "label": "collapsed",
+        "dirty_supplied": false,
+        "modal_boundary_supplied": "normal",
+        "navigate_requested": false,
+        "check_before_clear_called": false,
+        "number_request": {
+          "inv_type": 8,
+          "proc_type": 2,
+          "candidate_supplied": 41,
+          "not_from_header_proc": true
+        },
+        "events": [
+          "ShowDialog-requested",
+          "normal-modal-return-supplied",
+          "header-InvoiceType-written-symbolic-SafesTransferTo",
+          "header-ProcType-written-2-not-field",
+          "LoadInvoiceNumber-called-using-editor-fields",
+          "header-InvoiceNo-written-with-supplied-candidate",
+          "combined-id-symbolic-write-after-text-not-entity-reservation",
+          "LoadInvoiceNumber-returned-no-typed-success",
+          "ISNew-true-instruction-reached"
+        ],
+        "new_flag_tail_reached": true,
+        "typed_load_success_proved": false,
+        "SDK_setters_or_aliasing_or_final_UI_state_proved": false,
+        "application_source_or_provider_executed": false,
+        "number_reserved": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1687-1711;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:523-544",
+      "source_application_executed": false,
+      "limit": "رؤوس وأعلام ورجوع طبيعي وحدود فشل وأرقام موردة؛لا WPF/SQL/SDK أو final UI/aliasing أو نجاح حفظ أو حجز رقم."
+    },
+    {
+      "id": "ALG7B37-11",
+      "title": "accepted target not AbandonDecision159 and supplied Navigate output",
+      "value": {
+        "request": {
+          "route": "receive",
+          "proc": 1,
+          "inv_type": 8,
+          "local_proc_disable_instruction_present": true,
+          "mandatory_status_predicate": "InvoiceStatus-equals-1",
+          "branch_predicate_at_Navigate": true,
+          "kind_proc_deleted_or_status_rechecked_at_Navigate": false,
+          "permission_settings_effects_or_runtime_control_enablement_proved": false
+        },
+        "before": {
+          "header": {
+            "slot": "head-A",
+            "kind": "fixture-kind",
+            "proc": 2,
+            "is_new": false,
+            "invoice_no": 7,
+            "combined": "combined-A",
+            "gid": "doc-A",
+            "note": "fixture-note"
+          },
+          "field_proc": 2,
+          "field_type": 8,
+          "label": "collapsed"
+        },
+        "header": {
+          "slot": "head-B",
+          "kind": "fixture-kind",
+          "proc": 1,
+          "is_new": false,
+          "invoice_no": 41,
+          "combined": "fixture-code-1-41",
+          "gid": "doc-B",
+          "note": "fixture-note"
+        },
+        "field_proc": 1,
+        "field_type": 8,
+        "label": "visible",
+        "dirty_supplied": true,
+        "modal_boundary_supplied": "normal",
+        "navigate_requested": true,
+        "check_before_clear_called": false,
+        "number_request": {
+          "inv_type": 8,
+          "proc_type": 1,
+          "candidate_supplied": 41,
+          "not_from_header_proc": true
+        },
+        "events": [
+          "ShowDialog-requested",
+          "normal-modal-return-supplied",
+          "Navigate-requested-without-local-CheckBeforeClear",
+          "Navigate-void-return-and-output-snapshot-supplied",
+          "header-ProcType-written-1",
+          "field-ProcType-written-1",
+          "LoadInvoiceNumber-called-using-editor-fields",
+          "header-InvoiceNo-written-with-supplied-candidate",
+          "combined-id-symbolic-write-after-text-not-entity-reservation",
+          "LoadInvoiceNumber-returned-no-typed-success",
+          "receive-label-visible-instruction-reached"
+        ],
+        "new_flag_tail_reached": false,
+        "typed_load_success_proved": false,
+        "SDK_setters_or_aliasing_or_final_UI_state_proved": false,
+        "application_source_or_provider_executed": false,
+        "number_reserved": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1659-1685;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:402-420",
+      "source_application_executed": false,
+      "limit": "رؤوس وأعلام ورجوع طبيعي وحدود فشل وأرقام موردة؛لا WPF/SQL/SDK أو final UI/aliasing أو نجاح حفظ أو حجز رقم."
+    },
+    {
+      "id": "ALG7B37-12",
+      "title": "adjacent guarded navigation No control only",
+      "value": {
+        "prompt_condition_supplied": true,
+        "blocks_navigation": true,
+        "runtime_dialog_observed": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:523-544;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1618-1640",
+      "source_application_executed": false,
+      "limit": "رؤوس وأعلام ورجوع طبيعي وحدود فشل وأرقام موردة؛لا WPF/SQL/SDK أو final UI/aliasing أو نجاح حفظ أو حجز رقم."
+    },
+    {
+      "id": "ALG7B37-13",
+      "title": "void Navigate null fallback is not typed successful load",
+      "value": {
+        "request": {
+          "route": "order",
+          "proc": 1,
+          "inv_type": 14,
+          "local_proc_disable_instruction_present": true,
+          "mandatory_status_predicate": "none",
+          "branch_predicate_at_Navigate": false,
+          "kind_proc_deleted_or_status_rechecked_at_Navigate": false,
+          "permission_settings_effects_or_runtime_control_enablement_proved": false
+        },
+        "before": {
+          "header": {
+            "slot": "head-A",
+            "kind": "fixture-kind",
+            "proc": 2,
+            "is_new": false,
+            "invoice_no": 7,
+            "combined": "combined-A",
+            "gid": "doc-A",
+            "note": "fixture-note"
+          },
+          "field_proc": 2,
+          "field_type": 8,
+          "label": "collapsed"
+        },
+        "header": {
+          "slot": "fallback-supplied",
+          "kind": "SafesTransferTo",
+          "proc": 2,
+          "is_new": true,
+          "invoice_no": 41,
+          "combined": "fixture-code-2-41",
+          "gid": "fixture-fallback",
+          "note": "fixture-note"
+        },
+        "field_proc": 2,
+        "field_type": 8,
+        "label": "collapsed",
+        "dirty_supplied": false,
+        "modal_boundary_supplied": "normal",
+        "navigate_requested": true,
+        "check_before_clear_called": false,
+        "number_request": {
+          "inv_type": 8,
+          "proc_type": 2,
+          "candidate_supplied": 41,
+          "not_from_header_proc": true
+        },
+        "events": [
+          "ShowDialog-requested",
+          "normal-modal-return-supplied",
+          "Navigate-requested-without-local-CheckBeforeClear",
+          "Navigate-void-return-and-output-snapshot-supplied",
+          "header-InvoiceType-written-symbolic-SafesTransferTo",
+          "header-ProcType-written-2-not-field",
+          "LoadInvoiceNumber-called-using-editor-fields",
+          "header-InvoiceNo-written-with-supplied-candidate",
+          "combined-id-symbolic-write-after-text-not-entity-reservation",
+          "LoadInvoiceNumber-returned-no-typed-success",
+          "ISNew-true-instruction-reached"
+        ],
+        "new_flag_tail_reached": true,
+        "typed_load_success_proved": false,
+        "SDK_setters_or_aliasing_or_final_UI_state_proved": false,
+        "application_source_or_provider_executed": false,
+        "number_reserved": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "H7B37-02",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:402-420;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1687-1711;SmartAuditERP/Class/InvoiceOper.cs:3496-3508",
+      "source_application_executed": false,
+      "limit": "رؤوس وأعلام ورجوع طبيعي وحدود فشل وأرقام موردة؛لا WPF/SQL/SDK أو final UI/aliasing أو نجاح حفظ أو حجز رقم."
+    },
+    {
+      "id": "ALG7B37-14",
+      "title": "helper catch can return then ISNew true with previous number",
+      "value": {
+        "request": {
+          "route": "purchase",
+          "proc": 1,
+          "inv_type": 1,
+          "local_proc_disable_instruction_present": true,
+          "mandatory_status_predicate": "none",
+          "branch_predicate_at_Navigate": false,
+          "kind_proc_deleted_or_status_rechecked_at_Navigate": false,
+          "permission_settings_effects_or_runtime_control_enablement_proved": false
+        },
+        "before": {
+          "header": {
+            "slot": "head-A",
+            "kind": "fixture-kind",
+            "proc": 2,
+            "is_new": false,
+            "invoice_no": 7,
+            "combined": "combined-A",
+            "gid": "doc-A",
+            "note": "fixture-note"
+          },
+          "field_proc": 2,
+          "field_type": 8,
+          "label": "collapsed"
+        },
+        "header": {
+          "slot": "head-A",
+          "kind": "SafesTransferTo",
+          "proc": 2,
+          "is_new": true,
+          "invoice_no": 7,
+          "combined": "combined-A",
+          "gid": "doc-A",
+          "note": "fixture-note"
+        },
+        "field_proc": 2,
+        "field_type": 8,
+        "label": "collapsed",
+        "dirty_supplied": false,
+        "modal_boundary_supplied": "normal",
+        "navigate_requested": false,
+        "check_before_clear_called": false,
+        "number_request": {
+          "inv_type": 8,
+          "proc_type": 2,
+          "candidate_supplied": 41,
+          "not_from_header_proc": true
+        },
+        "events": [
+          "ShowDialog-requested",
+          "normal-modal-return-supplied",
+          "header-InvoiceType-written-symbolic-SafesTransferTo",
+          "header-ProcType-written-2-not-field",
+          "LoadInvoiceNumber-called-using-editor-fields",
+          "helper-catch-and-error-report-return-supplied",
+          "LoadInvoiceNumber-returned-no-typed-success",
+          "ISNew-true-instruction-reached"
+        ],
+        "new_flag_tail_reached": true,
+        "typed_load_success_proved": false,
+        "SDK_setters_or_aliasing_or_final_UI_state_proved": false,
+        "application_source_or_provider_executed": false,
+        "number_reserved": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "H7B37-05",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:329-347;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1713-1738",
+      "source_application_executed": false,
+      "limit": "رؤوس وأعلام ورجوع طبيعي وحدود فشل وأرقام موردة؛لا WPF/SQL/SDK أو final UI/aliasing أو نجاح حفظ أو حجز رقم."
+    },
+    {
+      "id": "ALG7B37-15",
+      "title": "caught after number can leave prior combined and still label instruction",
+      "value": {
+        "request": {
+          "route": "receive",
+          "proc": 1,
+          "inv_type": 8,
+          "local_proc_disable_instruction_present": true,
+          "mandatory_status_predicate": "InvoiceStatus-equals-1",
+          "branch_predicate_at_Navigate": true,
+          "kind_proc_deleted_or_status_rechecked_at_Navigate": false,
+          "permission_settings_effects_or_runtime_control_enablement_proved": false
+        },
+        "before": {
+          "header": {
+            "slot": "head-A",
+            "kind": "fixture-kind",
+            "proc": 2,
+            "is_new": false,
+            "invoice_no": 7,
+            "combined": "combined-A",
+            "gid": "doc-A",
+            "note": "fixture-note"
+          },
+          "field_proc": 2,
+          "field_type": 8,
+          "label": "collapsed"
+        },
+        "header": {
+          "slot": "head-A",
+          "kind": "fixture-kind",
+          "proc": 1,
+          "is_new": false,
+          "invoice_no": 41,
+          "combined": "combined-A",
+          "gid": "doc-A",
+          "note": "fixture-note"
+        },
+        "field_proc": 1,
+        "field_type": 8,
+        "label": "visible",
+        "dirty_supplied": false,
+        "modal_boundary_supplied": "normal",
+        "navigate_requested": false,
+        "check_before_clear_called": false,
+        "number_request": {
+          "inv_type": 8,
+          "proc_type": 1,
+          "candidate_supplied": 41,
+          "not_from_header_proc": true
+        },
+        "events": [
+          "ShowDialog-requested",
+          "normal-modal-return-supplied",
+          "header-ProcType-written-1",
+          "field-ProcType-written-1",
+          "LoadInvoiceNumber-called-using-editor-fields",
+          "header-InvoiceNo-written-with-supplied-candidate",
+          "helper-catch-and-error-report-return-supplied",
+          "LoadInvoiceNumber-returned-no-typed-success",
+          "receive-label-visible-instruction-reached"
+        ],
+        "new_flag_tail_reached": false,
+        "typed_load_success_proved": false,
+        "SDK_setters_or_aliasing_or_final_UI_state_proved": false,
+        "application_source_or_provider_executed": false,
+        "number_reserved": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "H7B37-05",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:329-347;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1659-1685",
+      "source_application_executed": false,
+      "limit": "رؤوس وأعلام ورجوع طبيعي وحدود فشل وأرقام موردة؛لا WPF/SQL/SDK أو final UI/aliasing أو نجاح حفظ أو حجز رقم."
+    },
+    {
+      "id": "ALG7B37-16",
+      "title": "nonreturn boundary unlike caught-return stops new flag",
+      "value": {
+        "request": {
+          "route": "order",
+          "proc": 1,
+          "inv_type": 14,
+          "local_proc_disable_instruction_present": true,
+          "mandatory_status_predicate": "none",
+          "branch_predicate_at_Navigate": false,
+          "kind_proc_deleted_or_status_rechecked_at_Navigate": false,
+          "permission_settings_effects_or_runtime_control_enablement_proved": false
+        },
+        "before": {
+          "header": {
+            "slot": "head-A",
+            "kind": "fixture-kind",
+            "proc": 2,
+            "is_new": false,
+            "invoice_no": 7,
+            "combined": "combined-A",
+            "gid": "doc-A",
+            "note": "fixture-note"
+          },
+          "field_proc": 2,
+          "field_type": 8,
+          "label": "collapsed"
+        },
+        "header": {
+          "slot": "head-A",
+          "kind": "SafesTransferTo",
+          "proc": 2,
+          "is_new": false,
+          "invoice_no": 7,
+          "combined": "combined-A",
+          "gid": "doc-A",
+          "note": "fixture-note"
+        },
+        "field_proc": 2,
+        "field_type": 8,
+        "label": "collapsed",
+        "dirty_supplied": false,
+        "modal_boundary_supplied": "normal",
+        "navigate_requested": false,
+        "check_before_clear_called": false,
+        "number_request": {
+          "inv_type": 8,
+          "proc_type": 2,
+          "candidate_supplied": 41,
+          "not_from_header_proc": true
+        },
+        "events": [
+          "ShowDialog-requested",
+          "normal-modal-return-supplied",
+          "header-InvoiceType-written-symbolic-SafesTransferTo",
+          "header-ProcType-written-2-not-field",
+          "LoadInvoiceNumber-called-using-editor-fields",
+          "helper-nonreturn-supplied-not-all-errors-caught"
+        ],
+        "new_flag_tail_reached": false,
+        "typed_load_success_proved": false,
+        "SDK_setters_or_aliasing_or_final_UI_state_proved": false,
+        "application_source_or_provider_executed": false,
+        "number_reserved": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "H7B37-05",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:329-347;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1687-1711",
+      "source_application_executed": false,
+      "limit": "رؤوس وأعلام ورجوع طبيعي وحدود فشل وأرقام موردة؛لا WPF/SQL/SDK أو final UI/aliasing أو نجاح حفظ أو حجز رقم."
+    },
+    {
+      "id": "ALG7B37-17",
+      "title": "field1 remains numbering request while header2 is written;policy unresolved",
+      "value": {
+        "request": {
+          "route": "order",
+          "proc": 1,
+          "inv_type": 14,
+          "local_proc_disable_instruction_present": true,
+          "mandatory_status_predicate": "none",
+          "branch_predicate_at_Navigate": false,
+          "kind_proc_deleted_or_status_rechecked_at_Navigate": false,
+          "permission_settings_effects_or_runtime_control_enablement_proved": false
+        },
+        "before": {
+          "header": {
+            "slot": "head-A",
+            "kind": "fixture-kind",
+            "proc": 1,
+            "is_new": false,
+            "invoice_no": 41,
+            "combined": "fixture-code-1-41",
+            "gid": "doc-A",
+            "note": "fixture-note"
+          },
+          "field_proc": 1,
+          "field_type": 8,
+          "label": "collapsed"
+        },
+        "header": {
+          "slot": "head-A",
+          "kind": "SafesTransferTo",
+          "proc": 2,
+          "is_new": true,
+          "invoice_no": 41,
+          "combined": "fixture-code-1-41",
+          "gid": "doc-A",
+          "note": "fixture-note"
+        },
+        "field_proc": 1,
+        "field_type": 8,
+        "label": "collapsed",
+        "dirty_supplied": false,
+        "modal_boundary_supplied": "normal",
+        "navigate_requested": false,
+        "check_before_clear_called": false,
+        "number_request": {
+          "inv_type": 8,
+          "proc_type": 1,
+          "candidate_supplied": 41,
+          "not_from_header_proc": true
+        },
+        "events": [
+          "ShowDialog-requested",
+          "normal-modal-return-supplied",
+          "header-InvoiceType-written-symbolic-SafesTransferTo",
+          "header-ProcType-written-2-not-field",
+          "LoadInvoiceNumber-called-using-editor-fields",
+          "header-InvoiceNo-written-with-supplied-candidate",
+          "combined-id-symbolic-write-after-text-not-entity-reservation",
+          "LoadInvoiceNumber-returned-no-typed-success",
+          "ISNew-true-instruction-reached"
+        ],
+        "new_flag_tail_reached": true,
+        "typed_load_success_proved": false,
+        "SDK_setters_or_aliasing_or_final_UI_state_proved": false,
+        "application_source_or_provider_executed": false,
+        "number_reserved": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "H7B37-04",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:329-347;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1659-1711",
+      "source_application_executed": false,
+      "limit": "رؤوس وأعلام ورجوع طبيعي وحدود فشل وأرقام موردة؛لا WPF/SQL/SDK أو final UI/aliasing أو نجاح حفظ أو حجز رقم."
+    },
+    {
+      "id": "ALG7B37-18",
+      "title": "unchanged candidate need not hide other conversion writes",
+      "value": {
+        "request": {
+          "route": "purchase",
+          "proc": 1,
+          "inv_type": 1,
+          "local_proc_disable_instruction_present": true,
+          "mandatory_status_predicate": "none",
+          "branch_predicate_at_Navigate": false,
+          "kind_proc_deleted_or_status_rechecked_at_Navigate": false,
+          "permission_settings_effects_or_runtime_control_enablement_proved": false
+        },
+        "before": {
+          "header": {
+            "slot": "head-A",
+            "kind": "fixture-kind",
+            "proc": 2,
+            "is_new": false,
+            "invoice_no": 7,
+            "combined": "combined-A",
+            "gid": "doc-A",
+            "note": "fixture-note"
+          },
+          "field_proc": 2,
+          "field_type": 8,
+          "label": "collapsed"
+        },
+        "header": {
+          "slot": "head-A",
+          "kind": "SafesTransferTo",
+          "proc": 2,
+          "is_new": true,
+          "invoice_no": 7,
+          "combined": "fixture-code-2-7",
+          "gid": "doc-A",
+          "note": "fixture-note"
+        },
+        "field_proc": 2,
+        "field_type": 8,
+        "label": "collapsed",
+        "dirty_supplied": false,
+        "modal_boundary_supplied": "normal",
+        "navigate_requested": false,
+        "check_before_clear_called": false,
+        "number_request": {
+          "inv_type": 8,
+          "proc_type": 2,
+          "candidate_supplied": 7,
+          "not_from_header_proc": true
+        },
+        "events": [
+          "ShowDialog-requested",
+          "normal-modal-return-supplied",
+          "header-InvoiceType-written-symbolic-SafesTransferTo",
+          "header-ProcType-written-2-not-field",
+          "LoadInvoiceNumber-called-using-editor-fields",
+          "header-InvoiceNo-written-with-supplied-candidate",
+          "combined-id-symbolic-write-after-text-not-entity-reservation",
+          "LoadInvoiceNumber-returned-no-typed-success",
+          "ISNew-true-instruction-reached"
+        ],
+        "new_flag_tail_reached": true,
+        "typed_load_success_proved": false,
+        "SDK_setters_or_aliasing_or_final_UI_state_proved": false,
+        "application_source_or_provider_executed": false,
+        "number_reserved": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1713-1738;SmartAuditERP/Class/InvoiceOper.cs:2789-2808",
+      "source_application_executed": false,
+      "limit": "رؤوس وأعلام ورجوع طبيعي وحدود فشل وأرقام موردة؛لا WPF/SQL/SDK أو final UI/aliasing أو نجاح حفظ أو حجز رقم."
+    },
+    {
+      "id": "ALG7B37-19",
+      "title": "supplied null header stops at first dereference,not default invention",
+      "value": {
+        "request": {
+          "route": "receive",
+          "proc": 1,
+          "inv_type": 8,
+          "local_proc_disable_instruction_present": true,
+          "mandatory_status_predicate": "InvoiceStatus-equals-1",
+          "branch_predicate_at_Navigate": true,
+          "kind_proc_deleted_or_status_rechecked_at_Navigate": false,
+          "permission_settings_effects_or_runtime_control_enablement_proved": false
+        },
+        "before": {
+          "header": null,
+          "field_proc": 2,
+          "field_type": 8,
+          "label": "collapsed"
+        },
+        "header": null,
+        "field_proc": 2,
+        "field_type": 8,
+        "label": "collapsed",
+        "dirty_supplied": false,
+        "modal_boundary_supplied": "normal",
+        "navigate_requested": false,
+        "check_before_clear_called": false,
+        "number_request": null,
+        "events": [
+          "ShowDialog-requested",
+          "normal-modal-return-supplied",
+          "null-header-dereference-boundary-supplied-outer-catch"
+        ],
+        "new_flag_tail_reached": false,
+        "typed_load_success_proved": false,
+        "SDK_setters_or_aliasing_or_final_UI_state_proved": false,
+        "application_source_or_provider_executed": false,
+        "number_reserved": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "H7B37-02",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1659-1685",
+      "source_application_executed": false,
+      "limit": "رؤوس وأعلام ورجوع طبيعي وحدود فشل وأرقام موردة؛لا WPF/SQL/SDK أو final UI/aliasing أو نجاح حفظ أو حجز رقم."
+    },
+    {
+      "id": "ALG7B37-20",
+      "title": "order and purchase gid-only versus receive branch predicate;support unresolved",
+      "value": {
+        "route": "order",
+        "proc": 1,
+        "inv_type": 14,
+        "local_proc_disable_instruction_present": true,
+        "mandatory_status_predicate": "none",
+        "branch_predicate_at_Navigate": false,
+        "kind_proc_deleted_or_status_rechecked_at_Navigate": false,
+        "permission_settings_effects_or_runtime_control_enablement_proved": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "H7B37-04",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1659-1738",
+      "source_application_executed": false,
+      "limit": "رؤوس وأعلام ورجوع طبيعي وحدود فشل وأرقام موردة؛لا WPF/SQL/SDK أو final UI/aliasing أو نجاح حفظ أو حجز رقم."
+    }
+  ],
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B37-01",
+      "title": "receive XAML wiring",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml:492-505",
+      "finding_ids": "P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصوص وحدود ساكنة فقط؛لا تنفيذ تعليمات C# أو تكافؤ كل SDK/events أو فرض عيب لكل اختلاف سياسة."
+    },
+    {
+      "id": "ST7B37-02",
+      "title": "footer two routes plus reused order handler",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml:1483-1496",
+      "finding_ids": "P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصوص وحدود ساكنة فقط؛لا تنفيذ تعليمات C# أو تكافؤ كل SDK/events أو فرض عيب لكل اختلاف سياسة."
+    },
+    {
+      "id": "ST7B37-03",
+      "title": "ordinary search request and no post-Navigate number tail",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1642-1657",
+      "finding_ids": "P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصوص وحدود ساكنة فقط؛لا تنفيذ تعليمات C# أو تكافؤ كل SDK/events أو فرض عيب لكل اختلاف سياسة."
+    },
+    {
+      "id": "ST7B37-04",
+      "title": "receive request1/8 and mandatory condition",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1659-1672",
+      "finding_ids": "P7-156",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصوص وحدود ساكنة فقط؛لا تنفيذ تعليمات C# أو تكافؤ كل SDK/events أو فرض عيب لكل اختلاف سياسة."
+    },
+    {
+      "id": "ST7B37-05",
+      "title": "receive single-statement gate before unconditional tail",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1671-1685",
+      "finding_ids": "P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصوص وحدود ساكنة فقط؛لا تنفيذ تعليمات C# أو تكافؤ كل SDK/events أو فرض عيب لكل اختلاف سياسة."
+    },
+    {
+      "id": "ST7B37-06",
+      "title": "order request1/14",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1687-1700",
+      "finding_ids": "H7B37-01",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصوص وحدود ساكنة فقط؛لا تنفيذ تعليمات C# أو تكافؤ كل SDK/events أو فرض عيب لكل اختلاف سياسة."
+    },
+    {
+      "id": "ST7B37-07",
+      "title": "order conversion after gated Navigate",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1699-1711",
+      "finding_ids": "P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصوص وحدود ساكنة فقط؛لا تنفيذ تعليمات C# أو تكافؤ كل SDK/events أو فرض عيب لكل اختلاف سياسة."
+    },
+    {
+      "id": "ST7B37-08",
+      "title": "purchase request1/1",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1713-1726",
+      "finding_ids": "H7B37-01",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصوص وحدود ساكنة فقط؛لا تنفيذ تعليمات C# أو تكافؤ كل SDK/events أو فرض عيب لكل اختلاف سياسة."
+    },
+    {
+      "id": "ST7B37-09",
+      "title": "purchase same unguarded conversion tail",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1725-1738",
+      "finding_ids": "P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصوص وحدود ساكنة فقط؛لا تنفيذ تعليمات C# أو تكافؤ كل SDK/events أو فرض عيب لكل اختلاف سياسة."
+    },
+    {
+      "id": "ST7B37-10",
+      "title": "number helper uses editor fields not header operation",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:329-347",
+      "finding_ids": "H7B37-04",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصوص وحدود ساكنة فقط؛لا تنفيذ تعليمات C# أو تكافؤ كل SDK/events أو فرض عيب لكل اختلاف سياسة."
+    },
+    {
+      "id": "ST7B37-11",
+      "title": "helper local catch and error report after number/text/combined sequence",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:329-347",
+      "finding_ids": "H7B37-05",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصوص وحدود ساكنة فقط؛لا تنفيذ تعليمات C# أو تكافؤ كل SDK/events أو فرض عيب لكل اختلاف سياسة."
+    },
+    {
+      "id": "ST7B37-12",
+      "title": "no editor ProcType2 write in order/purchase tails",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1687-1738",
+      "finding_ids": "H7B37-04",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصوص وحدود ساكنة فقط؛لا تنفيذ تعليمات C# أو تكافؤ كل SDK/events أو فرض عيب لكل اختلاف سياسة."
+    },
+    {
+      "id": "ST7B37-13",
+      "title": "Navigate clears before reader and has null new fallback",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:402-420",
+      "finding_ids": "P7-159",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصوص وحدود ساكنة فقط؛لا تنفيذ تعليمات C# أو تكافؤ كل SDK/events أو فرض عيب لكل اختلاف سياسة."
+    },
+    {
+      "id": "ST7B37-14",
+      "title": "CLR new assignment ordered,not all side effects certified",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:497-522",
+      "finding_ids": "P7-159",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصوص وحدود ساكنة فقط؛لا تنفيذ تعليمات C# أو تكافؤ كل SDK/events أو فرض عيب لكل اختلاف سياسة."
+    },
+    {
+      "id": "ST7B37-15",
+      "title": "guard is local and adjacent four navigation handlers call it",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1618-1640",
+      "finding_ids": "P7-159",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصوص وحدود ساكنة فقط؛لا تنفيذ تعليمات C# أو تكافؤ كل SDK/events أو فرض عيب لكل اختلاف سياسة."
+    },
+    {
+      "id": "ST7B37-16",
+      "title": "picker commands do not call that guard locally",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1642-1738",
+      "finding_ids": "P7-159",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصوص وحدود ساكنة فقط؛لا تنفيذ تعليمات C# أو تكافؤ كل SDK/events أو فرض عيب لكل اختلاف سياسة."
+    },
+    {
+      "id": "ST7B37-17",
+      "title": "InvoiceNo reads MAX+1 by field request not reservation",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:2789-2808",
+      "finding_ids": "H7B37-04",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصوص وحدود ساكنة فقط؛لا تنفيذ تعليمات C# أو تكافؤ كل SDK/events أو فرض عيب لكل اختلاف سياسة."
+    },
+    {
+      "id": "ST7B37-18",
+      "title": "reader null exit and outer catch retained not entire hydration",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:3496-3508",
+      "finding_ids": "H7B37-02",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصوص وحدود ساكنة فقط؛لا تنفيذ تعليمات C# أو تكافؤ كل SDK/events أو فرض عيب لكل اختلاف سياسة."
+    },
+    {
+      "id": "ST7B37-19",
+      "title": "fresh picker false and sentinel explicit,not all closing paths",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:49-66",
+      "finding_ids": "P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصوص وحدود ساكنة فقط؛لا تنفيذ تعليمات C# أو تكافؤ كل SDK/events أو فرض عيب لكل اختلاف سياسة."
+    },
+    {
+      "id": "ST7B37-20",
+      "title": "another row-edit context explicitly syncs field,not all callers reviewed",
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1967-1987",
+      "finding_ids": "H7B37-04",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصوص وحدود ساكنة فقط؛لا تنفيذ تعليمات C# أو تكافؤ كل SDK/events أو فرض عيب لكل اختلاف سياسة."
+    }
+  ],
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "start": 39,
+      "end": 40,
+      "total_lines": 2262,
+      "sha256": "87c814a3194cad2f8b896665a9a542373fa63485318bb373f08ab13e6bdbf234",
+      "read_mode": "selected-contract-slice"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "start": 329,
+      "end": 347,
+      "total_lines": 2262,
+      "sha256": "87c814a3194cad2f8b896665a9a542373fa63485318bb373f08ab13e6bdbf234",
+      "read_mode": "selected-contract-slice"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "start": 402,
+      "end": 420,
+      "total_lines": 2262,
+      "sha256": "87c814a3194cad2f8b896665a9a542373fa63485318bb373f08ab13e6bdbf234",
+      "read_mode": "selected-contract-slice"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "start": 497,
+      "end": 522,
+      "total_lines": 2262,
+      "sha256": "87c814a3194cad2f8b896665a9a542373fa63485318bb373f08ab13e6bdbf234",
+      "read_mode": "selected-contract-slice"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "start": 523,
+      "end": 544,
+      "total_lines": 2262,
+      "sha256": "87c814a3194cad2f8b896665a9a542373fa63485318bb373f08ab13e6bdbf234",
+      "read_mode": "selected-contract-slice"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "start": 1642,
+      "end": 1657,
+      "total_lines": 2262,
+      "sha256": "87c814a3194cad2f8b896665a9a542373fa63485318bb373f08ab13e6bdbf234",
+      "read_mode": "selected-contract-slice"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "start": 1659,
+      "end": 1685,
+      "total_lines": 2262,
+      "sha256": "87c814a3194cad2f8b896665a9a542373fa63485318bb373f08ab13e6bdbf234",
+      "read_mode": "selected-contract-slice"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "start": 1687,
+      "end": 1711,
+      "total_lines": 2262,
+      "sha256": "87c814a3194cad2f8b896665a9a542373fa63485318bb373f08ab13e6bdbf234",
+      "read_mode": "selected-contract-slice"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "start": 1713,
+      "end": 1738,
+      "total_lines": 2262,
+      "sha256": "87c814a3194cad2f8b896665a9a542373fa63485318bb373f08ab13e6bdbf234",
+      "read_mode": "selected-contract-slice"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml",
+      "start": 492,
+      "end": 505,
+      "total_lines": 1563,
+      "sha256": "8f3fe15b35bf2919f12d790fa4ec060b0dafc20e68d1921e1d33ac8265e164da",
+      "read_mode": "selected-contract-slice"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml",
+      "start": 1469,
+      "end": 1473,
+      "total_lines": 1563,
+      "sha256": "8f3fe15b35bf2919f12d790fa4ec060b0dafc20e68d1921e1d33ac8265e164da",
+      "read_mode": "selected-contract-slice"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml",
+      "start": 1483,
+      "end": 1496,
+      "total_lines": 1563,
+      "sha256": "8f3fe15b35bf2919f12d790fa4ec060b0dafc20e68d1921e1d33ac8265e164da",
+      "read_mode": "selected-contract-slice"
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 2789,
+      "end": 2808,
+      "total_lines": 5520,
+      "sha256": "0bab36016f53ecd18360833d1fba980290702a52a98871fb397be9e813810d91",
+      "read_mode": "selected-contract-slice"
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 3219,
+      "end": 3246,
+      "total_lines": 5520,
+      "sha256": "0bab36016f53ecd18360833d1fba980290702a52a98871fb397be9e813810d91",
+      "read_mode": "selected-contract-slice"
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 3496,
+      "end": 3508,
+      "total_lines": 5520,
+      "sha256": "0bab36016f53ecd18360833d1fba980290702a52a98871fb397be9e813810d91",
+      "read_mode": "selected-contract-slice"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "start": 49,
+      "end": 66,
+      "total_lines": 698,
+      "sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "read_mode": "selected-contract-slice"
+    }
+  ],
+  "context_reads_not_command_certification": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "start": 286,
+      "end": 328,
+      "total_lines": 2262,
+      "sha256": "87c814a3194cad2f8b896665a9a542373fa63485318bb373f08ab13e6bdbf234",
+      "read_mode": "context-not-certified-command"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "start": 421,
+      "end": 453,
+      "total_lines": 2262,
+      "sha256": "87c814a3194cad2f8b896665a9a542373fa63485318bb373f08ab13e6bdbf234",
+      "read_mode": "context-not-certified-command"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "start": 1618,
+      "end": 1640,
+      "total_lines": 2262,
+      "sha256": "87c814a3194cad2f8b896665a9a542373fa63485318bb373f08ab13e6bdbf234",
+      "read_mode": "context-not-certified-command"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "start": 1967,
+      "end": 1987,
+      "total_lines": 2262,
+      "sha256": "87c814a3194cad2f8b896665a9a542373fa63485318bb373f08ab13e6bdbf234",
+      "read_mode": "context-not-certified-command"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "start": 88,
+      "end": 132,
+      "total_lines": 698,
+      "sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "read_mode": "context-not-certified-command"
+    }
+  ],
+  "whole_local_rereads_not_new_completions": [],
+  "retained_additive_B10_arithmetic_erratum": {
+    "local_cost": 10,
+    "reference_cost": 120,
+    "equality1_control": 10,
+    "protected_G138_not_rewritten": true
+  },
+  "errors": []
+}

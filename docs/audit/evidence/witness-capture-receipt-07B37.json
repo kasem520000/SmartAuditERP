@@ -1,0 +1,22 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "environment_clock_observed_start_utc": "2026-11-20T23:18:14.533070+00:00",
+  "environment_clock_observed_end_utc": "2026-11-20T23:18:14.597786+00:00",
+  "date_semantics": "Current governing session reference:2026-11-16 UTC. Raw sandbox datetime values are recorded literally with their own date,not calibrated calendar authority. Historical consumed date claims are retained byte-for-byte;passing frozen date assertions is not calendar validation. This continuation does not treat a condensed-memory date claim as a newer governing instruction.",
+  "command": [
+    "/usr/bin/python3",
+    "-B",
+    "docs/audit/tools/check_transfer_picker_witnesses.py"
+  ],
+  "process_exit_code": 0,
+  "stdout_bytes": 66073,
+  "stdout_sha256": "49ef0d41357f37d271476167536fb2ee3c5ceb92cc7c2b1d6004b2618c7df06b",
+  "stderr_bytes": 0,
+  "stdout_written_directly_by_actual_process": true,
+  "inert_illustrations": 20,
+  "lexical_checks": 20,
+  "operational_plans_not_executed": 32,
+  "precheck_passed_scratch_stdout_sha256": "49ef0d41357f37d271476167536fb2ee3c5ceb92cc7c2b1d6004b2618c7df06b",
+  "precheck_matches_direct_capture": true,
+  "application_code_or_ERP_or_SQL_or_SDK_executed": false
+}
