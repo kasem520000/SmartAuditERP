@@ -1338,38 +1338,9 @@ namespace SmartAuditERP
 
         public static void LoadCustomerPrice(ref InvoiceItem NewItem, int CustomerId)
         {
-            SqlConnection conn = MainClass.ConnObj();
-
-            DataTable dt1 = new DataTable();
-            new SqlDataAdapter(
-                $"SELECT ISNULL(Pricing, -1) AS Pricing FROM Customers " +
-                $"WHERE id={CustomerId} AND IS_Deleted=0", conn).Fill(dt1);
-
-            if (dt1.Rows.Count == 0) return;
-
-            int pricing = SafeToInt(dt1.Rows[0]["Pricing"]);
-
-            DataTable dt2 = new DataTable();
-            new SqlDataAdapter(
-                $"SELECT ISNULL(purch_price, 0) AS purch_price, " +
-                $"ISNULL(sale_price, 0) AS sale_price, " +
-                $"ISNULL(CompetitorPrice, sale_price) AS CompetitorPrice, " +
-                $"ISNULL(WholesalePrice, sale_price) AS WholesalePrice, " +
-                $"ISNULL(ConsumerPrice, sale_price) AS ConsumerPrice " +
-                $"FROM ItemPrices WHERE ItemID={NewItem.ItemId}", conn).Fill(dt2);
-
-            if (dt2.Rows.Count == 0) return;
-
-            switch (pricing)
-            {
-                case 1: NewItem.ItemPrice = SafeToDouble(dt2.Rows[0]["sale_price"]); break;
-                case 2: NewItem.ItemPrice = SafeToDouble(dt2.Rows[0]["purch_price"]); break;
-                case 3: NewItem.ItemPrice = ItemOper.RecentPurchPrice(NewItem.ItemId); break;
-                case 4: NewItem.ItemPrice = ItemOper.Cost(NewItem.ItemId); break;
-                case 5: NewItem.ItemPrice = SafeToDouble(dt2.Rows[0]["CompetitorPrice"]); break;
-                case 6: NewItem.ItemPrice = SafeToDouble(dt2.Rows[0]["WholesalePrice"]); break;
-                case 7: NewItem.ItemPrice = SafeToDouble(dt2.Rows[0]["ConsumerPrice"]); break;
-            }
+            // Both contract and ordinary invoices must use the same unit-aware
+            // customer price selection and ambiguity handling.
+            ItemOper.LoadCustomerPrice(ref NewItem, CustomerId);
         }
 
         public static void LoadItemDetails(InvoiceDGV Invo, ref InvoiceItem NewItem)

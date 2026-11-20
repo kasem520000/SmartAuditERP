@@ -984,62 +984,64 @@ namespace SmartAuditERP
 
         public static void LoadCustomerPrice(ref InvoiceItem newItem, int customerId)
         {
-            SqlConnection conn = MainClass.ConnObj();
+            double unitPrice = newItem.ItemPrice;
             try
             {
-                int pricing = -1;
-
-                using (SqlDataAdapter adapter = new SqlDataAdapter(
-                    "SELECT ISNULL(Pricing,-1) AS Pricing" +
-                    $" FROM Customers" +
-                    $" WHERE id={customerId} AND IS_Deleted=0", conn))
+                using (SqlConnection conn = MainClass.ConnObj())
                 {
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt);
-                    if (dt.Rows.Count == 0) return;
-                    pricing = ToInt(dt.Rows[0]["Pricing"]);
-                }
-
-                using (SqlDataAdapter adapter = new SqlDataAdapter(
-                    "SELECT ISNULL(purch_price,0) AS purch_price," +
-                    " ISNULL(sale_price,0) AS sale_price," +
-                    " ISNULL(CompetitorPrice,sale_price) AS CompetitorPrice," +
-                    " ISNULL(WholesalePrice,sale_price) AS WholesalePrice," +
-                    " ISNULL(ConsumerPrice,sale_price) AS ConsumerPrice" +
-                    $" FROM ItemPrices WHERE ItemID={newItem.ItemId}", conn))
-                {
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt);
-                    if (dt.Rows.Count == 0) return;
-
-                    DataRow row = dt.Rows[0];
-                    switch (pricing)
+                    int pricing;
+                    using (var adapter = new SqlDataAdapter(
+                        "SELECT ISNULL(Pricing,-1) AS Pricing FROM Customers " +
+                        "WHERE id=@customer AND IS_Deleted=0", conn))
                     {
-                        case 1:
-                            newItem.ItemPrice = ToDouble(row["sale_price"]);
-                            break;
-                        case 2:
-                            newItem.ItemPrice = ToDouble(row["purch_price"]);
-                            break;
-                        case 3:
-                            newItem.ItemPrice = RecentPurchPrice(newItem.ItemId);
-                            break;
-                        case 4:
-                            newItem.ItemPrice = Cost(newItem.ItemId);
-                            break;
-                        case 5:
-                            newItem.ItemPrice = ToDouble(row["CompetitorPrice"]);
-                            break;
-                        case 6:
-                            newItem.ItemPrice = ToDouble(row["WholesalePrice"]);
-                            break;
-                        case 7:
-                            newItem.ItemPrice = ToDouble(row["ConsumerPrice"]);
-                            break;
+                        adapter.SelectCommand.Parameters.Add("@customer", SqlDbType.Int).Value = customerId;
+                        var customers = new DataTable();
+                        adapter.Fill(customers);
+                        if (customers.Rows.Count == 0) return;
+                        pricing = ToInt(customers.Rows[0]["Pricing"]);
+                    }
+                    if (pricing < 1 || pricing > 7) return;
+                    if (pricing == 3 || pricing == 4)
+                    {
+                        ShowAttentionMsg("تعذر اعتماد سعر العميل المبني على التكلفة أو آخر شراء لهذه الوحدة؛ يرجى مراجعة السعر الظاهر.");
+                        return;
+                    }
+
+                    using (var adapter = new SqlDataAdapter(
+                        "SELECT TOP (2) ISNULL(p.purch_price,0) AS purch_price, " +
+                        "ISNULL(p.sale_price,0) AS sale_price, " +
+                        "ISNULL(p.CompetitorPrice,p.sale_price) AS CompetitorPrice, " +
+                        "ISNULL(p.WholesalePrice,p.sale_price) AS WholesalePrice, " +
+                        "ISNULL(p.ConsumerPrice,p.sale_price) AS ConsumerPrice " +
+                        "FROM ItemPrices p " +
+                        "WHERE p.ItemID=@item AND p.UnitID=@unit AND p.IS_Deleted=0", conn))
+                    {
+                        adapter.SelectCommand.Parameters.Add("@item", SqlDbType.Int).Value = newItem.ItemId;
+                        adapter.SelectCommand.Parameters.Add("@unit", SqlDbType.Int).Value = newItem.UnitID;
+                        var prices = new DataTable();
+                        adapter.Fill(prices);
+                        if (newItem.UnitID <= 0 || prices.Rows.Count != 1)
+                        {
+                            ShowAttentionMsg("تعذر تحديد سعر العميل لهذه الوحدة بشكل فريد؛ يرجى مراجعة السعر الظاهر.");
+                            return;
+                        }
+                        DataRow row = prices.Rows[0];
+                        switch (pricing)
+                        {
+                            case 1: newItem.ItemPrice = ToDouble(row["sale_price"]); break;
+                            case 2: newItem.ItemPrice = ToDouble(row["purch_price"]); break;
+                            case 5: newItem.ItemPrice = ToDouble(row["CompetitorPrice"]); break;
+                            case 6: newItem.ItemPrice = ToDouble(row["WholesalePrice"]); break;
+                            case 7: newItem.ItemPrice = ToDouble(row["ConsumerPrice"]); break;
+                        }
                     }
                 }
             }
-            catch { }
+            catch
+            {
+                newItem.ItemPrice = unitPrice;
+                ShowAttentionMsg("تعذر التحقق من سعر العميل؛ يرجى مراجعة السعر الظاهر.");
+            }
         }
 
         #endregion

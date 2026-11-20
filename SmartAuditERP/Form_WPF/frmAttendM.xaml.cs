@@ -553,39 +553,10 @@ namespace SmartAuditERP.Form_WPF
 
         private void MarineExit(int marineId)
         {
-            try
-            {
-                if (conn.State != ConnectionState.Open) conn.Open();
-                var transaction = conn.BeginTransaction();
-
-                var selectedDate = GetSelectedDate();
-                Ayear = selectedDate.Year;
-                AMonth = selectedDate.Month;
-                Aday = selectedDate.Day;
-
-                var cmd = new SqlCommand(
-                    "update Attendance set _inOutMode=1 " +
-                    "Where _enrollNumber=" + marineId +
-                    " And _year=" + Ayear +
-                    " And _month=" + AMonth +
-                    " And _day=" + Aday,
-                    conn, transaction);
-                cmd.ExecuteNonQuery();
-                transaction.Commit();
-
-                var row = GetSelectedRow();
-                if (row != null) attendRows.Remove(row);
-                rowSelected2 = -1;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("خطأ: " + ex.Message, "",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            finally
-            {
-                if (conn.State == ConnectionState.Open) conn.Close();
-            }
+            // Do not rewrite the day's raw attendance events. A separate,
+            // auditable exit event and its operational contract are required.
+            MessageBox.Show("تسجيل خروج المركب متوقف مؤقتاً لحماية سجل الحضور؛ يلزم اعتماد آلية خروج تحفظ الأحداث الأصلية.",
+                "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         private void MarineAttend(int marineId)
