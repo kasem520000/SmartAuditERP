@@ -429,9 +429,9 @@ namespace SmartAuditERP.Form_WPF
                     item.Bank     = Convert.ToInt32(row["bank"]);
 
                     // النقدي / الشبكة
+                    // Preserve the recorded payment instead of assuming a cash
+                    // invoice is fully settled; cash and net can differ.
                     item.Paycash = Convert.ToDouble(row["cash"]);
-                    if (payTypeInt == 1)
-                        item.Paycash = Convert.ToDouble(row["tot_net"]);
                     item.PayATM = Convert.ToDouble(row["visa"]);
 
                     // نوع الدفع نصي

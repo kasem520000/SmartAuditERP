@@ -45,6 +45,8 @@ namespace SmartAuditERP.Form_WPF
         private double ReturnIncome;
         private double Income;
         private string LoadQry;
+        private string _resultFromDate = "";
+        private string _resultToDate = "";
 
         // DataTable الكاملة قبل الفلتر
         private DataTable _dtable = new DataTable();
@@ -202,6 +204,10 @@ namespace SmartAuditERP.Form_WPF
 
                 _dtable = new DataTable();
                 adapter.Fill(_dtable);
+                // Snapshot criteria used by this successful SQL load, not controls
+                // that may be edited before printing. Number lookup bypasses dates.
+                _resultFromDate = string.IsNullOrEmpty(Cond) ? "الكل" : txtFromDate.DateTime.Date.ToShortDateString();
+                _resultToDate = string.IsNullOrEmpty(Cond) ? "الكل" : txtToDate.DateTime.Date.ToShortDateString();
 
                 _dataView            = new DataView(_dtable);
                 dgvItems.ItemsSource = _dataView;
@@ -398,8 +404,8 @@ namespace SmartAuditERP.Form_WPF
                     RptType     = "تقرير فواتير التأجير",
                     InvDate     = drv["date1"].ToString(),
                     InvTime     = drv["date1"].ToString(),
-                    FromDate    = txtFromDate.DateTime.ToShortDateString(),
-                    ToDate      = txtToDate.DateTime.ToShortDateString(),
+                    FromDate    = _resultFromDate,
+                    ToDate      = _resultToDate,
                     PrintDate   = DateTime.Now.ToShortDateString(),
                     Address     = address,
                     Mobile      = mobile,

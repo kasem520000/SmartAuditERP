@@ -42,7 +42,7 @@ def category_contract(s):
     for checkbox, combo, ident in [('CheckBoxgroup','cmbCategry','categoryId'),('Che_user','cmbUser','userId'),('chk_branch','cmbBranch','branchId'),('chkSalesman','cmbSalesman','salesmanId')]:
         if not re.search(r'%s.IsChecked != true\s*&&\s*\(%s.SelectedIndex < 0 \|\| !int.TryParse\(Convert.ToString\(%s.SelectedValue\), out %s\)\)' % (checkbox, combo, combo, ident), s): return False
     return all(x in s for x in ('AND CategoryId={categoryId}', 'AND Items.group_id={categoryId}',
-                                  'AND Safe_Emps={userId}', 'AND inv.branch={branchId}', 'AND inv.salesman={salesmanId}'))
+                                  'AND inv.sales_emp={userId}', 'AND inv.branch={branchId}', 'AND inv.salesman={salesmanId}'))
 def button_contract(s):
     s = clean(s)
     return 'CLR();' not in s and s.index('_loaded = true;') < s.index('LoadEmpData(cond);')

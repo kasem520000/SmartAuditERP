@@ -1918,6 +1918,11 @@ namespace SmartAuditERP
             ref decimal itemPrice, ref decimal itemQuantity,
             bool isMultiText)
         {
+            // Failure must never preserve a caller's previous successful identity.
+            itemId = 0;
+            unitId = 0;
+            itemPrice = 0m;
+            itemQuantity = 0m;
             try
             {
                 SqlConnection conn = MainClass.ConnObj();
@@ -1972,6 +1977,13 @@ namespace SmartAuditERP
                     try
                     {
                         string shortBarcode = barcode.Substring(0, 7);
+                        string payload = barcode.Substring(7, 5);
+                        if (!payload.All(ch => ch >= '0' && ch <= '9') ||
+                            !int.TryParse(payload, out int rawPayload) || rawPayload <= 0)
+                        {
+                            if (!isMultiText) ShowAttentionMsg("بيانات باركود الميزان غير صالحة");
+                            return;
+                        }
 
                         using (SqlDataAdapter adapter = new SqlDataAdapter(
                             "Select Items.id, Items.group_id," +
@@ -1997,64 +2009,44 @@ namespace SmartAuditERP
                                     if (wscale == 1)
                                     {
                                         // وزن (كيلو)
-                                        double weightVal =
-                                            (int)Math.Round(
-                                                ToDouble(
-                                                    barcode.Substring(7, 2))) +
-                                            (int)Math.Round(
-                                                ToDouble(
-                                                    barcode.Substring(9, 3))) /
-                                            1000.0;
+                                        decimal weightVal = rawPayload / 1000m;
 
                                         itemId = ToInt(dt.Rows[0]["id"]);
                                         unitId = ToInt(dt.Rows[0]["unit"]);
                                         itemPrice = default;
-                                        itemQuantity = new decimal(weightVal);
+                                        itemQuantity = weightVal;
                                     }
                                     else if (wscale == 2)
                                     {
                                         // سعر مضمّن
-                                        double priceVal =
-                                            (int)Math.Round(
-                                                ToDouble(
-                                                    barcode.Substring(7, 3))) +
-                                            (int)Math.Round(
-                                                ToDouble(
-                                                    barcode.Substring(10, 2))) /
-                                            100.0;
+                                        decimal priceVal = rawPayload / 100m;
 
                                         itemId = ToInt(dt.Rows[0]["id"]);
                                         unitId = ToInt(dt.Rows[0]["unit"]);
-                                        itemPrice = new decimal(priceVal);
+                                        itemPrice = priceVal;
                                         itemQuantity = default;
                                     }
                                     else if (wscale == 3)
                                     {
                                         // سعر مضمّن مع حساب الكمية
-                                        double priceVal =
-                                            (int)Math.Round(
-                                                ToDouble(
-                                                    barcode.Substring(7, 3))) +
-                                            (int)Math.Round(
-                                                ToDouble(
-                                                    barcode.Substring(10, 2))) /
-                                            100.0;
-
-                                        itemId = ToInt(dt.Rows[0]["id"]);
-                                        unitId = ToInt(dt.Rows[0]["unit"]);
-                                        itemPrice =
-                                            new decimal(Math.Round(priceVal, 2));
+                                        decimal priceVal = rawPayload / 100m;
 
                                         decimal salePrice = 0;
                                         if (dt.Rows[0]["SalePrice"] != DBNull.Value)
                                             salePrice = new decimal(
                                                 ToDouble(dt.Rows[0]["SalePrice"]));
+                                        decimal quantity = salePrice > 0
+                                            ? Math.Round(priceVal / salePrice, 3) : 0;
+                                        if (quantity <= 0)
+                                        {
+                                            if (!isMultiText) ShowAttentionMsg("تعذر حساب كمية باركود الميزان");
+                                            return;
+                                        }
 
-                                        itemQuantity = salePrice > 0
-                                            ? Math.Round(
-                                                decimal.Divide(itemPrice, salePrice), 3)
-                                            : default;
-
+                                        itemId = ToInt(dt.Rows[0]["id"]);
+                                        unitId = ToInt(dt.Rows[0]["unit"]);
+                                        itemPrice = priceVal;
+                                        itemQuantity = quantity;
                                         IsPriceFromBarcode = true;
                                     }
                                 }

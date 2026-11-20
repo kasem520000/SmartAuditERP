@@ -37,6 +37,9 @@ namespace SmartAuditERP.Form_WPF
         private bool _priceIncVAT = false;
 
         private ObservableCollection<SalesManRowItem> _itemsList;
+        private string _resultFromDate = "";
+        private string _resultToDate = "";
+        private bool _resultReady;
 
         #endregion
 
@@ -152,6 +155,7 @@ namespace SmartAuditERP.Form_WPF
 
             try
             {
+                _resultReady = false;
                 _itemsList.Clear();
                 ProgressBar1.Value = 0;
                 ProgressBar1.Maximum = 100;
@@ -163,6 +167,8 @@ namespace SmartAuditERP.Form_WPF
                 DateTime fromDate = (txtDateFrom.SelectedDate ?? DateTime.Today).Date;
                 DateTime toDate = (txtDateTo.SelectedDate ?? DateTime.Today).Date.AddDays(1);
                 _empName = salesmanId == null ? "الكل" : cmbEmps.Text;
+                _resultFromDate = allPeriod ? "الكل" : fromDate.ToShortDateString();
+                _resultToDate = allPeriod ? "الكل" : toDate.AddDays(-1).ToShortDateString();
                 await Task.Run(() =>
                 {
                     ShowInvoiceResults(salesmanId, allPeriod, fromDate, toDate);
@@ -171,9 +177,12 @@ namespace SmartAuditERP.Form_WPF
                 });
 
                 RecalculateSummary();
+                _resultReady = true;
             }
             catch (Exception ex)
             {
+                _itemsList.Clear();
+                RecalculateSummary();
                 ShowError("خطأ في عرض النتائج", ex);
             }
             finally
@@ -235,10 +244,7 @@ namespace SmartAuditERP.Form_WPF
                     Dispatcher.Invoke(() => ProgressBar1.Value++);
                 }
             }
-            catch (Exception ex)
-            {
-                Dispatcher.Invoke(() => ShowError("خطأ في تحميل الفواتير", ex));
-            }
+            catch { throw; }
         }
 
         private void ProcessInvoiceRow(DataRow row)
@@ -340,10 +346,7 @@ namespace SmartAuditERP.Form_WPF
                 if (procType == 1.0)
                     LoadCreditNotes(SafeInt(row["id"]), SafeInt(row["salesman"]));
             }
-            catch (Exception ex)
-            {
-                Dispatcher.Invoke(() => ShowError("خطأ في معالجة صف الفاتورة", ex));
-            }
+            catch { throw; }
         }
 
         private void LoadCreditNotes(int invoiceId, int salesmanId)
@@ -393,7 +396,7 @@ namespace SmartAuditERP.Form_WPF
                     Dispatcher.Invoke(() => _itemsList.Add(item));
                 }
             }
-            catch { /* تجاهل */ }
+            catch { throw; }
         }
 
         private void LoadReceiptsByType(int receiptType, string label,
@@ -460,7 +463,7 @@ namespace SmartAuditERP.Form_WPF
                     Dispatcher.Invoke(() => _itemsList.Add(item));
                 }
             }
-            catch { /* تجاهل */ }
+            catch { throw; }
         }
 
         #endregion
@@ -574,9 +577,9 @@ namespace SmartAuditERP.Form_WPF
             _rptName = "rptInvBySalesMen.repx";
             _defPrinter = MainClass.ReportsPrinter;
 
-            if (_itemsList.Count == 0)
+            if (!_resultReady || _itemsList.Count == 0)
             {
-                DXMessageBox.Show("لا توجد عمليات بالجدول",
+                DXMessageBox.Show("لا توجد نتائج جاهزة للعرض",
                     "", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }
@@ -643,8 +646,8 @@ namespace SmartAuditERP.Form_WPF
                 list.Add(new InventoryData
                 {
                     EmpName = _empName,
-                    FromDate = txtDateFrom.SelectedDate?.ToShortDateString() ?? string.Empty,
-                    ToDate = txtDateTo.SelectedDate?.ToShortDateString() ?? string.Empty,
+                    FromDate = _resultFromDate,
+                    ToDate = _resultToDate,
                     ProcessType = row.ProcessType,
                     InvDate = row.InvDate,
                     InvoiceNo = row.InvoiceNo.ToString(),
@@ -671,9 +674,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnExport_Click(object sender, RoutedEventArgs e)
         {
-            if (_itemsList.Count == 0)
+            if (!_resultReady || _itemsList.Count == 0)
             {
-                DXMessageBox.Show("لا توجد بيانات للتصدير",
+                DXMessageBox.Show("لا توجد نتائج جاهزة للتصدير",
                     "", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
             }

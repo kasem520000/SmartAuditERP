@@ -236,6 +236,9 @@ namespace SmartAuditERP.Form_WPF
                     double reSalesVal = GetSumVal(itemDbId, 2, 2, branchFilter, extraFilter, dateFrom, dateTo);
                     double posVal     = GetSumVal(itemDbId, 3, 1, branchFilter, extraFilter, dateFrom, dateTo);
                     double rePosVal   = GetSumVal(itemDbId, 3, 2, branchFilter, extraFilter, dateFrom, dateTo);
+                    // Production writes direction on each Inv_Sub line, not the header.
+                    double productionIn = GetSumVal(itemDbId, 6, 1, branchFilter, extraFilter, dateFrom, dateTo, isProcOnSub: true);
+                    double productionOut = GetSumVal(itemDbId, 6, 2, branchFilter, extraFilter, dateFrom, dateTo, isProcOnSub: true);
                     // R-135 (P7-056): transfer direction is on the invoice;
                     // adjustment direction is on each adjustment detail line.
                     double transToVal = GetSumVal(itemDbId, 8, 1, branchFilter, extraFilter, dateFrom, dateTo, isProcOnInv: true);
@@ -251,6 +254,7 @@ namespace SmartAuditERP.Form_WPF
                                    - posVal   + rePosVal
                                    + transToVal - transFrVal
                                    + safeAdjVal - safeAdjRet
+                                   + productionIn - productionOut
                                    + entryInv   - outInv;
 
                     // تجاهل الأصناف بدون أي حركة
@@ -260,7 +264,8 @@ namespace SmartAuditERP.Form_WPF
                                         rePosVal   != 0 || transToVal!= 0 ||
                                         transFrVal != 0 || safeAdjVal!= 0||
                                         safeAdjRet != 0 || entryInv  != 0 ||
-                                        outInv     != 0);
+                                        outInv     != 0 || productionIn != 0 ||
+                                        productionOut != 0);
                     if (!hasMovement) continue;
 
                     // ─── حساب متوسط التكلفة ───
@@ -284,6 +289,8 @@ namespace SmartAuditERP.Form_WPF
                         DgvReSales    = reSalesVal,
                         DgvPOS        = posVal,
                         DgvRePOS      = rePosVal,
+                        DgvProductionIn = productionIn,
+                        DgvProductionOut = productionOut,
                         DgvTransTo    = transToVal,
                         DgvTransFrom  = transFrVal,
                         DgvEntryInv   = entryInv,
@@ -676,6 +683,8 @@ namespace SmartAuditERP.Form_WPF
                     ReturnSell    = row.DgvReSales.ToString("N2"),
                     Pos           = row.DgvPOS.ToString("N2"),
                     RePos         = row.DgvRePOS.ToString("N2"),
+                    ProductionIn  = row.DgvProductionIn.ToString("N2"),
+                    ProductionOut = row.DgvProductionOut.ToString("N2"),
                     TransFrom     = row.DgvTransFrom.ToString("N2"),
                     TransTo       = row.DgvTransTo.ToString("N2"),
                     InputInv      = row.DgvEntryInv.ToString("N2"),
@@ -722,6 +731,8 @@ namespace SmartAuditERP.Form_WPF
                 dt.Columns.Add("مرتجع المبيعات",typeof(double));
                 dt.Columns.Add("نقطة البيع",     typeof(double));
                 dt.Columns.Add("مرتجع POS",      typeof(double));
+                dt.Columns.Add("إنتاج",          typeof(double));
+                dt.Columns.Add("مستهلك في الإنتاج", typeof(double));
                 dt.Columns.Add("مناقلة مرسلة",   typeof(double));
                 dt.Columns.Add("مناقلة مستلمة",  typeof(double));
                 dt.Columns.Add("فاتورة إدخال",   typeof(double));
@@ -737,6 +748,7 @@ namespace SmartAuditERP.Form_WPF
                         r.DgvFirstVal, r.DgvPurch,    r.DgvRePurch,
                         r.DgvSales,    r.DgvReSales,
                         r.DgvPOS,      r.DgvRePOS,
+                        r.DgvProductionIn, r.DgvProductionOut,
                         r.DgvTransTo,  r.DgvTransFrom,
                         r.DgvEntryInv, r.DgvOutInv,
                         r.DgvSafeAdj,  r.DgvSafeAdjRet);

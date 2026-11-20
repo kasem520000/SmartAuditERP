@@ -279,10 +279,18 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
+                // A failed lookup must not leave a previous accrual identity usable.
+                TxtResGlobalID.Text = "";
+                TxtAccCode.Text = "";
                 if (cmbEmp.SelectedValue == null) return;
                 int empId = Convert.ToInt32(cmbEmp.SelectedValue);
-                string month = cmbMonth.Text;
-                string year  = cmbYear.Text;
+                if (!int.TryParse(cmbMonth.Text, out int month) || month < 1 || month > 12 ||
+                    !int.TryParse(cmbYear.Text, out int year) || year < 1 || year > 9999)
+                {
+                    DXMessageBox.Show("يرجى اختيار شهر وسنة صالحين.", "تنبيه",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
 
                 var adapter = new SqlDataAdapter(
                     $"SELECT ISNULL(E.id,0) AS id, ISNULL(E.name,'') AS name, " +
@@ -298,13 +306,16 @@ namespace SmartAuditERP.Form_WPF
                     $"FROM Salary_Res RS " +
                     $"LEFT JOIN Salary_Res_Details SD ON SD.GlobalId=RS.GlobalId " +
                     $"LEFT JOIN Employees E ON SD.res_emp=E.id " +
-                    $"WHERE E.id={empId} " +
-                    $"AND RS.month={month} AND RS.year={year}",
+                    "WHERE E.id=@employee " +
+                    "AND RS.month=@month AND RS.year=@year AND RS.IS_Deleted=0",
                     conn);
+                adapter.SelectCommand.Parameters.Add("@employee", SqlDbType.Int).Value = empId;
+                adapter.SelectCommand.Parameters.Add("@month", SqlDbType.Int).Value = month;
+                adapter.SelectCommand.Parameters.Add("@year", SqlDbType.Int).Value = year;
                 var dt = new DataTable();
                 adapter.Fill(dt);
 
-                if (dt.Rows.Count > 0)
+                if (dt.Rows.Count == 1)
                 {
                     DataRow row = dt.Rows[0];
 
@@ -326,8 +337,10 @@ namespace SmartAuditERP.Form_WPF
                 }
                 else
                 {
-                    DXMessageBox.Show("لا يوجد رواتب مستحقة للموظف.", "تنبيه",
-                                    MessageBoxButton.OK, MessageBoxImage.Information);
+                    DXMessageBox.Show(dt.Rows.Count == 0
+                        ? "لا يوجد استحقاق غير محذوف للموظف."
+                        : "توجد عدة استحقاقات للموظف والفترة؛ يلزم تحديد الاستحقاق الصحيح.",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
             catch (Exception ex)
@@ -669,6 +682,7 @@ namespace SmartAuditERP.Form_WPF
         private void BtnAll_Click(object sender, RoutedEventArgs e)
         {
             TxtHous.Text    = "";
+            TxtTravel.Text  = "";
             txtNet.Text     = "";
             txtNotes.Text   = "";
             txtSalaryAdd.Text = "";

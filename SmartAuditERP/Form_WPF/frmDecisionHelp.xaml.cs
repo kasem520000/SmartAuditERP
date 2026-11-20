@@ -221,6 +221,8 @@ namespace SmartAuditERP.Form_WPF
                     double saleReturn = GetSumVal(branchFilter, itemId, safeFilter, 2, 2, null);
                     double rentOutcome = GetSumVal(branchFilter, itemId, safeFilter, 3, 1, null);
                     double rentReturn = GetSumVal(branchFilter, itemId, safeFilter, 3, 2, null);
+                    double productionIn = GetSumVal(branchFilter, itemId, safeFilter, 6, null, 1);
+                    double productionOut = GetSumVal(branchFilter, itemId, safeFilter, 6, null, 2);
                     double adjIncome = GetSumVal(branchFilter, itemId, null, 8, 1, null);
                     double adjOutcome = GetSumVal(branchFilter, itemId, null, 8, 2, null);
                     double transferIn = GetSumVal(branchFilter, itemId, null, 7, 1, 1);
@@ -230,14 +232,16 @@ namespace SmartAuditERP.Form_WPF
                         openingStock != 0 || purchaseIncome != 0 ||
                         saleOutcome != 0 || adjIncome != 0 ||
                         adjOutcome != 0 || transferIn != 0 ||
-                        transferOut != 0;
+                        transferOut != 0 || purchaseReturn != 0 || saleReturn != 0 ||
+                        rentOutcome != 0 || rentReturn != 0 ||
+                        productionIn != 0 || productionOut != 0;
 
                     if (hasMovement)
                     {
                         double totalIncome = openingStock + purchaseIncome - purchaseReturn
-                                             + adjIncome + transferIn;
+                                             + adjIncome + transferIn + productionIn;
                         double totalOutcome = saleOutcome - saleReturn + rentOutcome - rentReturn
-                                             + adjOutcome + transferOut;
+                                             + adjOutcome + transferOut + productionOut;
                         double balance = totalIncome - totalOutcome;
 
                         double slackRate = totalIncome != 0

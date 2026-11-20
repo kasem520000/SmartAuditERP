@@ -646,6 +646,13 @@
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>
 
+                                <!-- اتجاه الإنتاج على سطر الحركة -->
+                                <DataGridTextColumn Header="إنتاج"
+                                                    Binding="{Binding DgvProductionIn, StringFormat=N2}"
+                                                    Width="95"/>
+                                <DataGridTextColumn Header="مستهلك في الإنتاج"
+                                                    Binding="{Binding DgvProductionOut, StringFormat=N2}"
+                                                    Width="120"/>
                                 <!-- مناقلة مرسلة -->
                                 <DataGridTextColumn Header="مناقلة مرسلة"
                                                     Binding="{Binding DgvTransTo, StringFormat=N2}"

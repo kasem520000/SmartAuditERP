@@ -45,6 +45,12 @@ namespace SmartAuditERP.Form_WPF
         /// <summary>إجمالي مرتجع نقطة البيع</summary>
         public double DgvRePOS      { get; set; }
 
+        /// <summary>كمية الإنتاج المضافة</summary>
+        public double DgvProductionIn { get; set; }
+
+        /// <summary>كمية المكونات المستهلكة</summary>
+        public double DgvProductionOut { get; set; }
+
         /// <summary>مناقلة مرسلة (تحويل للخارج)</summary>
         public double DgvTransTo    { get; set; }
 

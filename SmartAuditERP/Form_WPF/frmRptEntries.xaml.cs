@@ -26,6 +26,10 @@ namespace SmartAuditERP.Form_WPF
         private int    _resType       = -1;
         private string _globalId      = "-1";
         private string _receiptGlobalId = "";
+        // Cursor is captured from the successfully read row, not editable controls.
+        private DateTime? _navigationDate;
+        private int _navigationId;
+        private string _navigationGlobalId;
 
         private bool   _printHeader   = true;
         private bool   _printFooter   = true;
@@ -159,7 +163,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void LoadLastEntry()
         {
-            Navigate($"SELECT TOP 1 * FROM Entry WHERE {GetBranchCondition()} IS_Deleted=0 ORDER BY date DESC");
+            Navigate($"SELECT TOP 1 * FROM Entry WHERE {GetBranchCondition()} IS_Deleted=0 AND date IS NOT NULL ORDER BY date DESC, id DESC, GlobalID DESC");
         }
 
         private string GetBranchCondition()
@@ -188,14 +192,18 @@ namespace SmartAuditERP.Form_WPF
 
         #region Navigation
 
-        public void Navigate(string sqlQuery)
+        public void Navigate(string sqlQuery) => NavigateCore(sqlQuery, null);
+
+        private void NavigateCore(string sqlQuery, SqlParameter[] parameters)
         {
             try
             {
                 EnsureOpen(_conn);
                 using (var cmd = new SqlCommand(sqlQuery, _conn))
-                using (var dr  = cmd.ExecuteReader())
-                    ReadData(dr);
+                {
+                    if (parameters != null) cmd.Parameters.AddRange(parameters);
+                    using (var dr = cmd.ExecuteReader()) ReadData(dr);
+                }
             }
             catch (Exception ex)
             {
@@ -211,9 +219,18 @@ namespace SmartAuditERP.Form_WPF
                 if (!dr.HasRows) return;
                 dr.Read();
 
+                // Entries without a date cannot be ordered chronologically.
+                if (dr["date"] == DBNull.Value)
+                    throw new InvalidOperationException("لا يمكن التنقل في قيد بلا تاريخ.");
+                DateTime rowDate = Convert.ToDateTime(dr["date"]);
+                int rowId = Convert.ToInt32(dr["id"]);
+                string rowGlobalId = dr["GlobalId"].ToString();
                 _detailSource.Clear();
-                _code     = Convert.ToInt32(dr["id"]);
-                _globalId = dr["GlobalId"].ToString();
+                _code = rowId;
+                _globalId = rowGlobalId;
+                _navigationDate = rowDate;
+                _navigationId = rowId;
+                _navigationGlobalId = rowGlobalId;
 
                 txtEntryGID.Text = _globalId;
                 txtNo.Text       = _code.ToString();
@@ -328,16 +345,31 @@ namespace SmartAuditERP.Form_WPF
         #region Navigation Buttons
 
         private void btnFirst_Click(object sender, RoutedEventArgs e)
-            => Navigate($"SELECT TOP 1 * FROM Entry WHERE {GetBranchCondition()} IS_Deleted=0 ORDER BY date ASC");
+            => Navigate($"SELECT TOP 1 * FROM Entry WHERE {GetBranchCondition()} IS_Deleted=0 AND date IS NOT NULL ORDER BY date ASC, id ASC, GlobalID ASC");
 
-        private void btnPrevious_Click(object sender, RoutedEventArgs e)
-            => Navigate($"SELECT TOP 1 * FROM Entry WHERE {GetBranchCondition()} IS_Deleted=0 AND id<{_code} ORDER BY date DESC");
+        private void btnPrevious_Click(object sender, RoutedEventArgs e) => NavigateAdjacent(false);
 
-        private void btnNext_Click(object sender, RoutedEventArgs e)
-            => Navigate($"SELECT TOP 1 * FROM Entry WHERE {GetBranchCondition()} IS_Deleted=0 AND id>{_code} ORDER BY date ASC");
+        private void btnNext_Click(object sender, RoutedEventArgs e) => NavigateAdjacent(true);
 
-        private void btnLast_Click(object sender, RoutedEventArgs e)
-            => Navigate($"SELECT TOP 1 * FROM Entry WHERE {GetBranchCondition()} IS_Deleted=0 ORDER BY date DESC");
+        private void btnLast_Click(object sender, RoutedEventArgs e) => LoadLastEntry();
+
+        private void NavigateAdjacent(bool next)
+        {
+            if (!_navigationDate.HasValue || string.IsNullOrEmpty(_navigationGlobalId)) return;
+            string comparison = next ? ">" : "<";
+            string order = next ? "ASC" : "DESC";
+            // Filter and sort by the same total key; GlobalID is the DDL primary key.
+            string sql = $"SELECT TOP 1 * FROM Entry WHERE {GetBranchCondition()} " +
+                $"IS_Deleted=0 AND date IS NOT NULL AND (date {comparison} @cursorDate OR " +
+                $"(date = @cursorDate AND (id {comparison} @cursorId OR " +
+                $"(id = @cursorId AND GlobalID {comparison} @cursorGlobal)))) " +
+                $"ORDER BY date {order}, id {order}, GlobalID {order}";
+            NavigateCore(sql, new[] {
+                new SqlParameter("@cursorDate", SqlDbType.DateTime) { Value = _navigationDate.Value },
+                new SqlParameter("@cursorId", SqlDbType.Int) { Value = _navigationId },
+                new SqlParameter("@cursorGlobal", SqlDbType.NVarChar, 50) { Value = _navigationGlobalId }
+            });
+        }
 
         #endregion
 
@@ -428,8 +460,9 @@ namespace SmartAuditERP.Form_WPF
         {
             if (dgvSrch.SelectedItem is EntrySearchRow row)
             {
-                _globalId = row.GlobalID;
-                Navigate($"SELECT * FROM Entry WHERE GlobalID=N'{_globalId}'");
+                NavigateCore("SELECT * FROM Entry WHERE GlobalID=@selectedId", new[] {
+                    new SqlParameter("@selectedId", SqlDbType.NVarChar, 50) { Value = row.GlobalID }
+                });
                 TabControl1.SelectedIndex = 0;
                 BtnShowSuorce.Visibility = Visibility.Visible;
             }

@@ -100,6 +100,8 @@ namespace SmartAuditERP
         [DisplayName("فاتورة ادخال")]
         public string InputInv { get; set; } = string.Empty;
 
+        public string ProductionIn { get; set; } = string.Empty;
+        public string ProductionOut { get; set; } = string.Empty;
         public string TransTo { get; set; } = string.Empty;
         public string TransFrom { get; set; } = string.Empty;
         public string RePos { get; set; } = string.Empty;

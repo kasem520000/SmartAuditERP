@@ -188,7 +188,7 @@ namespace SmartAuditERP.Form_WPF
 
                 // المستخدم
                 if (Che_user.IsChecked != true)
-                    condWhere += $" AND Safe_Emps={userId}";
+                    condWhere += $" AND inv.sales_emp={userId}";
 
                 // الفترة
                 if (Che_time.IsChecked != true)
