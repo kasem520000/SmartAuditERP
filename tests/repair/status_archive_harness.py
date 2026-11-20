@@ -152,6 +152,13 @@ check('payroll navigation and sales report findings remain partial',
       and by_id['P7-001']['repair_status'] == 'partial_open'
       and by_id['P7-082']['repair_status'] == 'pending_review')
 
+check('booking project and activity batch remains partial and guarded',
+      all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P7-022', 'R-190'), ('P7-015', 'R-191'), ('P7-016', 'R-192'),
+                           ('P7-017', 'R-193'), ('P7-058', 'R-194'), ('P7-010', 'R-195')])
+      and by_id['P7-023']['repair_status'] == 'partial_open'
+      and by_id['P7-011']['repair_status'] == 'pending_review')
+
 owner = (ROOT / 'docs/repairs/OWNER_DECISIONS.md').read_text(encoding='utf-8')
 sections = {
     'deferred_blocked': owner.split('## أولاً:', 1)[1].split('## ثانياً:', 1)[0],
