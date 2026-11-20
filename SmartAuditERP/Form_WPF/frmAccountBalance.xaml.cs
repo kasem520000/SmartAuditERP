@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows;
@@ -202,6 +202,14 @@ namespace SmartAuditERP.Form_WPF
                 // 2. جلب الحركات من قاعدة البيانات
                 DataTable dtMovements = GetAccountMovements(accountCode, startDateTime, endDateTime);
 
+                // Repair R-038 (audit finding P3-022): the aggregate projection legitimately does
+                // not return Entry_sub-level notes (grouping would make them meaningless), yet this
+                // consumer read row["subNotes"] unconditionally - every aggregate row threw before
+                // reaching the grid. Honour the two projections: sub-line notes exist only in the
+                // detailed path; aggregate rows carry the header note, exactly what the fallback
+                // below already preferred.
+                bool hasSubNotes = dtMovements.Columns.Contains("subNotes");
+
                 // 3. معالجة الحركات وحساب الرصيد المتراكم
                 int rank = 1;
                 foreach (DataRow row in dtMovements.Rows)
@@ -222,7 +230,10 @@ namespace SmartAuditERP.Form_WPF
                     string branchName = Common.GetBranchName(Convert.ToInt32(row["Branch"]));
                     string entryType = Common.ResrirectionType(Convert.ToInt32(row["type"]));
 
-                    string notes = row["subNotes"] != DBNull.Value ? row["subNotes"].ToString() : row["notes"].ToString();
+                    // R-038 (P3-022): read the sub-line column only when the projection supplies it.
+                    string notes = (hasSubNotes && row["subNotes"] != DBNull.Value)
+                        ? row["subNotes"].ToString()
+                        : row["notes"].ToString();
 
                     dtResult.Rows.Add(
                         rank++,
