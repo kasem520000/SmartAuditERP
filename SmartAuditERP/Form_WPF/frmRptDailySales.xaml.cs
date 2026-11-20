@@ -209,17 +209,29 @@ namespace SmartAuditERP.Form_WPF
             {
                 if (_dataSource.Count == 0) return;
 
-                var sb = new StringBuilder();
-                sb.AppendLine("الرقم,التاريخ,اليوم,الإجمالي قبل الضريبة,الضريبة,الإجمالي");
+                // Repair R-083 (audit finding P7-048): bare cells with N2 money, so a day name
+                // holding a comma added a column and a total holding a thousands separator split
+                // into two. The shared writer announces one schema for rows and totals alike.
+                string fileName = "DailySales.csv";
+                var export = SpreadsheetExport.Begin(fileName, SpreadsheetExport.CsvDelimiter);
+                export.Header("الرقم", "التاريخ", "اليوم", "الإجمالي قبل الضريبة", "الضريبة", "الإجمالي");
 
                 foreach (var row in _dataSource)
-                    sb.AppendLine($"{row.Dgnos},{row.Ddates:d},{row.daydv}," +
-                                  $"{row.Total:N2},{row.TotalTax:N2},{row.totsal:N2}");
+                {
+                    export.Row(SpreadsheetExport.Text(row.Dgnos),
+                               $"{row.Ddates:d}",
+                               SpreadsheetExport.Text(row.daydv),
+                               SpreadsheetExport.Money(row.Total),
+                               SpreadsheetExport.Money(row.TotalTax),
+                               SpreadsheetExport.Money(row.totsal));
+                }
 
-                sb.AppendLine($",,الإجمالي,{_grandTotalBeforeTax:N2},{_grandTotalTax:N2},{_grandTotal:N2}");
+                export.Row("", "", "الإجمالي",
+                           SpreadsheetExport.Money(_grandTotalBeforeTax),
+                           SpreadsheetExport.Money(_grandTotalTax),
+                           SpreadsheetExport.Money(_grandTotal));
 
-                string fileName = "DailySales.csv";
-                File.WriteAllText(fileName, sb.ToString(), Encoding.UTF8);
+                export.Save();
 
                 System.Diagnostics.Process.Start(
                     new System.Diagnostics.ProcessStartInfo(fileName)

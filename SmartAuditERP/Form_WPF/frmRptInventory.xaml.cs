@@ -654,9 +654,14 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
-                var sb = new StringBuilder();
-                sb.AppendLine("رقم الفاتورة,التاريخ,العميل/المورد,المستخدم,الفرع," +
-                              "المجموع,الخصم,الإجمالي,الضريبة,الصافي");
+                // Repair R-083 (audit finding P7-048): bare cells and N2 money, so a client or a
+                // user name holding a comma added a column and an amount holding a thousands
+                // separator split into two. One announced schema now covers the rows and the
+                // totals record alike.
+                string fileName = $"{this.Title}_{DateTime.Now:yyyyMMdd_HHmm}.csv";
+                var export = SpreadsheetExport.Begin(fileName, SpreadsheetExport.CsvDelimiter);
+                export.Header("رقم الفاتورة", "التاريخ", "العميل/المورد", "المستخدم", "الفرع",
+                              "المجموع", "الخصم", "الإجمالي", "الضريبة", "الصافي");
 
                 foreach (var inv in _invoicesList)
                 {
@@ -667,21 +672,25 @@ namespace SmartAuditERP.Form_WPF
                     // truth number (Inv.id) used by every other binding of this same list.
                     // (Notes are not dropped by design elsewhere; adding a dedicated notes
                     // column would be a separate enhancement, out of scope here.)
-                    sb.AppendLine(
-                        $"{inv.InvoiceNo},{inv.InvDate:d},{inv.Customer}," +
-                        $"{inv.User},{inv.Branch}," +
-                        $"{inv.SumPrice:N2},{inv.TotDiscount:N2}," +
-                        $"{inv.Total:N2},{inv.VAT:N2},{inv.Net:N2}");
+                    export.Row(SpreadsheetExport.Text(inv.InvoiceNo),
+                               $"{inv.InvDate:d}",
+                               SpreadsheetExport.Text(inv.Customer),
+                               SpreadsheetExport.Text(inv.User),
+                               SpreadsheetExport.Text(inv.Branch),
+                               SpreadsheetExport.Money(inv.SumPrice),
+                               SpreadsheetExport.Money(inv.TotDiscount),
+                               SpreadsheetExport.Money(inv.Total),
+                               SpreadsheetExport.Money(inv.VAT),
+                               SpreadsheetExport.Money(inv.Net));
                 }
 
                 // إضافة المجاميع
-                sb.AppendLine(
-                    $",,,,الإجمالي," +
-                    $"{_sum:N2},{_discount:N2}," +
-                    $"{_nTotal:N2},{_nVAT:N2},{_nNet:N2}");
+                export.Row("", "", "", "", "الإجمالي",
+                           SpreadsheetExport.Money(_sum), SpreadsheetExport.Money(_discount),
+                           SpreadsheetExport.Money(_nTotal), SpreadsheetExport.Money(_nVAT),
+                           SpreadsheetExport.Money(_nNet));
 
-                string fileName = $"{this.Title}_{DateTime.Now:yyyyMMdd_HHmm}.csv";
-                File.WriteAllText(fileName, sb.ToString(), Encoding.UTF8);
+                export.Save();
 
                 System.Diagnostics.Process.Start(
                     new System.Diagnostics.ProcessStartInfo(fileName)

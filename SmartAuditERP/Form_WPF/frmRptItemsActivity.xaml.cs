@@ -745,17 +745,10 @@ namespace SmartAuditERP.Form_WPF
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                     $"ItemsActivity_{DateTime.Now:yyyyMMdd_HHmmss}.csv");
 
-                using (var sw = new System.IO.StreamWriter(filePath,
-                    false, System.Text.Encoding.UTF8))
-                {
-                    // رأس الأعمدة
-                    sw.WriteLine(string.Join(",",
-                        dt.Columns.Cast<DataColumn>().Select(c => $"\"{c.ColumnName}\"")));
-                    // البيانات
-                    foreach (DataRow row in dt.Rows)
-                        sw.WriteLine(string.Join(",",
-                            row.ItemArray.Select(v => $"\"{v}\"")));
-                }
+                // Repair R-083 (audit finding P7-048): every cell was wrapped in quotes by hand
+                // with no doubling of an inner quote, so an item or store name holding one broke
+                // the record and shifted the columns after it. The shared writer quotes by rule.
+                SpreadsheetExport.WriteDataTable(filePath, dt, SpreadsheetExport.CsvDelimiter);
 
                 // فتح الملف
                 Process.Start(new ProcessStartInfo(filePath)

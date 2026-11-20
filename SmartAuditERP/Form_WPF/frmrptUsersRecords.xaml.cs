@@ -140,20 +140,23 @@ namespace SmartAuditERP.Form_WPF
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                     $"سجلات_مستخدمين_{DateTime.Now:yyyyMMdd_HHmm}.csv");
 
-                using var writer = new System.IO.StreamWriter(
-                    path, false, System.Text.Encoding.UTF8);
-
-                writer.WriteLine("م,التاريخ,الجهاز,العملية,المستخدم");
+                // Repair R-083 (audit finding P7-048): the message cell was wrapped in quotes by
+                // hand while the others were bare, and no quote inside any cell was doubled, so a
+                // logged message holding a quote or a comma broke the record. The shared writer
+                // quotes by rule instead.
+                var export = SpreadsheetExport.Begin(path, SpreadsheetExport.CsvDelimiter);
+                export.Header("م", "التاريخ", "الجهاز", "العملية", "المستخدم");
 
                 foreach (var item in LogList)
                 {
-                    writer.WriteLine(
-                        $"{item.Id}," +
-                        $"{item.LogDate:MM/d/yyyy hh:mm tt}," +
-                        $"{item.Logger}," +
-                        $"\"{item.Message}\"," +
-                        $"{item.EmpName}");
+                    export.Row(SpreadsheetExport.Text(item.Id),
+                               $"{item.LogDate:MM/d/yyyy hh:mm tt}",
+                               SpreadsheetExport.Text(item.Logger),
+                               SpreadsheetExport.Text(item.Message),
+                               SpreadsheetExport.Text(item.EmpName));
                 }
+
+                export.Save();
 
                 Process.Start(new ProcessStartInfo(path)
                 { UseShellExecute = true });

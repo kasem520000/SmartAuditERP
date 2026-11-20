@@ -205,17 +205,22 @@ namespace SmartAuditERP.Form_WPF
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                     $"أرصدة_تسلسلات_{DateTime.Now:yyyyMMdd_HHmm}.csv");
 
-                using var writer = new System.IO.StreamWriter(
-                    path, false, System.Text.Encoding.UTF8);
-
-                writer.WriteLine("م,الصنف,رمز الصنف,التسلسل,العدد");
+                // Repair R-083 (audit finding P7-048): bare cells with N2 money, so an item name
+                // or a serial holding a comma added a column and a count holding a thousands
+                // separator split into two. The shared writer quotes by rule.
+                var export = SpreadsheetExport.Begin(path, SpreadsheetExport.CsvDelimiter);
+                export.Header("م", "الصنف", "رمز الصنف", "التسلسل", "العدد");
 
                 foreach (var item in SummaryList)
                 {
-                    writer.WriteLine(
-                        $"{item.DgvNo},{item.ItemName},{item.ItemCode}," +
-                        $"{item.ItemSerialNo},{item.SerialQty:N2}");
+                    export.Row(SpreadsheetExport.Text(item.DgvNo),
+                               SpreadsheetExport.Text(item.ItemName),
+                               SpreadsheetExport.Text(item.ItemCode),
+                               SpreadsheetExport.Text(item.ItemSerialNo),
+                               SpreadsheetExport.Money(item.SerialQty));
                 }
+
+                export.Save();
 
                 Process.Start(new ProcessStartInfo(path)
                 { UseShellExecute = true });

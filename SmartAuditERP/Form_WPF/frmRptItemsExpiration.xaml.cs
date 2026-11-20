@@ -332,27 +332,28 @@ namespace SmartAuditERP.Form_WPF
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                     $"{this.Title}_{DateTime.Now:yyyyMMdd_HHmmss}.csv");
 
-                using (var sw = new System.IO.StreamWriter(filePath,
-                    false, System.Text.Encoding.UTF8))
-                {
-                    sw.WriteLine("\"م\",\"رمز الصنف\",\"الصنف\",\"المستودع\"," +
-                                 "\"الكمية\",\"تاريخ الإنتهاء\"," +
-                                 "\"باقي سنوات\",\"باقي أشهر\",\"باقي أيام\"");
+                // Repair R-083 (audit finding P7-048): every cell was wrapped in quotes by hand
+                // with no doubling of an inner quote and money written in a local display format,
+                // so an item or store name holding a quote broke the record. The shared writer
+                // quotes by rule and writes the stock as an invariant number.
+                var export = SpreadsheetExport.Begin(filePath, SpreadsheetExport.CsvDelimiter);
+                export.Header("م", "رمز الصنف", "الصنف", "المستودع", "الكمية", "تاريخ الإنتهاء",
+                              "باقي سنوات", "باقي أشهر", "باقي أيام");
 
-                    foreach (var r in _gridData)
-                    {
-                        sw.WriteLine(
-                            $"\"{r.AutoIncrementID}\"," +
-                            $"\"{r.ItemCode}\"," +
-                            $"\"{r.ItemName}\"," +
-                            $"\"{r.StoreName}\"," +
-                            $"\"{r.ItemStock:N2}\"," +
-                            $"\"{(r.ItemExpire.HasValue ? r.ItemExpire.Value.ToShortDateString() : "")}\"," +
-                            $"\"{r.RemaindeYear}\"," +
-                            $"\"{r.RemaindeMonths}\"," +
-                            $"\"{r.RemaindeDays}\"");
-                    }
+                foreach (var r in _gridData)
+                {
+                    export.Row(SpreadsheetExport.Text(r.AutoIncrementID),
+                               SpreadsheetExport.Text(r.ItemCode),
+                               SpreadsheetExport.Text(r.ItemName),
+                               SpreadsheetExport.Text(r.StoreName),
+                               SpreadsheetExport.Money(r.ItemStock),
+                               r.ItemExpire.HasValue ? r.ItemExpire.Value.ToShortDateString() : "",
+                               SpreadsheetExport.Text(r.RemaindeYear),
+                               SpreadsheetExport.Text(r.RemaindeMonths),
+                               SpreadsheetExport.Text(r.RemaindeDays));
                 }
+
+                export.Save();
 
                 Process.Start(new ProcessStartInfo(filePath)
                     { UseShellExecute = true });

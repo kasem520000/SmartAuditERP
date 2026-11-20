@@ -275,17 +275,27 @@ namespace SmartAuditERP.Form_WPF
                 string filePath = System.IO.Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop), fileName);
 
-                using (var writer = new System.IO.StreamWriter(filePath,
-                       false, System.Text.Encoding.UTF8))
+                // Repair R-083 (audit finding P7-048): bare cells with N2 money, so a note or a
+                // branch name holding a comma added a column and an amount holding a thousands
+                // separator split into two - the record shape depended on the data.
+                var export = SpreadsheetExport.Begin(filePath, SpreadsheetExport.CsvDelimiter);
+                export.Header("#", "الرقم", "التاريخ", "قيمة السند", "الضريبة", "الصافي",
+                              "الفرع", "البيان", "النوع");
+
+                foreach (var item in _items)
                 {
-                    writer.WriteLine("#,الرقم,التاريخ,قيمة السند,الضريبة,الصافي,الفرع,البيان,النوع");
-                    foreach (var item in _items)
-                    {
-                        writer.WriteLine($"{item.Rank},{item.ReceiptNo},{item.OperDate}," +
-                                         $"{item.Payment:N2},{item.VAT:N2},{item.DgvNet:N2}," +
-                                         $"{item.BranchName},{item.ReceiptNote},{item.DgvreceiptType}");
-                    }
+                    export.Row(SpreadsheetExport.Text(item.Rank),
+                               SpreadsheetExport.Text(item.ReceiptNo),
+                               SpreadsheetExport.Text(item.OperDate),
+                               SpreadsheetExport.Money(item.Payment),
+                               SpreadsheetExport.Money(item.VAT),
+                               SpreadsheetExport.Money(item.DgvNet),
+                               SpreadsheetExport.Text(item.BranchName),
+                               SpreadsheetExport.Text(item.ReceiptNote),
+                               SpreadsheetExport.Text(item.DgvreceiptType));
                 }
+
+                export.Save();
 
                 Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
                 SetStatus("تم التصدير بنجاح");

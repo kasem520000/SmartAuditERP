@@ -44,6 +44,106 @@ namespace SmartAuditERP
         }
 
         /// <summary>
+        /// Money cell for a row property of any type, so no caller has to know the property's
+        /// declared type to export it safely: numbers leave invariant with two decimals and no
+        /// group separator, an already formatted text passes through unchanged, and anything else
+        /// is written as text.
+        /// </summary>
+        public static string Money(object value)
+        {
+            switch (value)
+            {
+                case null:
+                    return string.Empty;
+                case string text:
+                    return text;
+                case double d:
+                    return Money(d);
+                case decimal m:
+                    return Money(m);
+                case float f:
+                    return Money((double)f);
+                case int i:
+                    return Money((double)i);
+                case long l:
+                    return Money((double)l);
+                case short sh:
+                    return Money((double)sh);
+                default:
+                    return Text(value);
+            }
+        }
+
+        /// <summary>
+        /// Text cell for a value of any type: strings pass through byte for byte, and every other
+        /// value is formatted in the invariant culture so a decimal separator can never depend on
+        /// the machine locale and split a bare field.
+        /// </summary>
+        public static string Text(object value)
+        {
+            switch (value)
+            {
+                case null:
+                    return string.Empty;
+                case string text:
+                    return text;
+                case IFormattable formattable:
+                    return formattable.ToString(null, CultureInfo.InvariantCulture);
+                default:
+                    return value.ToString() ?? string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Starts a delimited file with the announced schema. Call sites need no collection or
+        /// LINQ imports: Header and Row take the cells of one record each.
+        /// </summary>
+        public static ExportFile Begin(string path, char delimiter)
+        {
+            return new ExportFile(path, delimiter);
+        }
+
+        /// <summary>One delimited file being composed record by record.</summary>
+        public sealed class ExportFile
+        {
+            private readonly string _path;
+            private readonly char _delimiter;
+            private readonly List<string> _header = new List<string>();
+            private readonly List<List<string>> _rows = new List<List<string>>();
+            private bool _hasHeader;
+
+            internal ExportFile(string path, char delimiter)
+            {
+                _path = path;
+                _delimiter = delimiter;
+            }
+
+            /// <summary>Sets the header record; cells are encoded when the file is saved.</summary>
+            public ExportFile Header(params string[] cells)
+            {
+                _hasHeader = true;
+                _header.Clear();
+                _header.AddRange(cells);
+                return this;
+            }
+
+            /// <summary>Adds one data record; cells are encoded when the file is saved.</summary>
+            public ExportFile Row(params string[] cells)
+            {
+                var row = new List<string>(cells.Length);
+                row.AddRange(cells);
+                _rows.Add(row);
+                return this;
+            }
+
+            /// <summary>Writes the file under the announced schema.</summary>
+            public void Save()
+            {
+                Write(_path, _delimiter, _hasHeader ? _header : null, _rows);
+            }
+        }
+
+        /// <summary>
         /// Encodes one cell for the announced schema. Content is preserved byte for byte: the cell
         /// is quoted when it could otherwise break the structure, and inner quotes are doubled.
         /// </summary>

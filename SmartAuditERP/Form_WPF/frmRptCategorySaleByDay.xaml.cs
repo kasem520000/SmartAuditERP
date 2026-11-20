@@ -241,20 +241,27 @@ namespace SmartAuditERP.Form_WPF
             {
                 if (_dataSource.Count == 0) return;
 
-                var sb = new StringBuilder();
-                sb.AppendLine("#,الرمز,المجموعة,اليوم,التاريخ,الإجمالي");
+                // Repair R-083 (audit finding P7-048): bare cells with N2 money, so a group name
+                // holding a comma added a column and a total holding a thousands separator split
+                // into two. The shared writer quotes whatever could break a record and writes
+                // money as an invariant number.
+                string fileName = $"CategorySaleByDay_{DateTime.Now:yyyyMMdd_HHmm}.csv";
+                var export = SpreadsheetExport.Begin(fileName, SpreadsheetExport.CsvDelimiter);
+                export.Header("#", "الرمز", "المجموعة", "اليوم", "التاريخ", "الإجمالي");
 
                 foreach (var row in _dataSource)
                 {
-                    sb.AppendLine(
-                        $"{row.RowIndex},{row.CtgyCode},{row.CtgyName}," +
-                        $"{row.SaleDay},{row.CtgyDate:d},{row.CtgyTotale:N2}");
+                    export.Row(SpreadsheetExport.Text(row.RowIndex),
+                               SpreadsheetExport.Text(row.CtgyCode),
+                               SpreadsheetExport.Text(row.CtgyName),
+                               SpreadsheetExport.Text(row.SaleDay),
+                               $"{row.CtgyDate:d}",
+                               SpreadsheetExport.Money(row.CtgyTotale));
                 }
 
-                sb.AppendLine($",,,,الإجمالي,{_grandTotal:N2}");
+                export.Row("", "", "", "", "الإجمالي", SpreadsheetExport.Money(_grandTotal));
 
-                string fileName = $"CategorySaleByDay_{DateTime.Now:yyyyMMdd_HHmm}.csv";
-                File.WriteAllText(fileName, sb.ToString(), Encoding.UTF8);
+                export.Save();
 
                 System.Diagnostics.Process.Start(
                     new System.Diagnostics.ProcessStartInfo(fileName)

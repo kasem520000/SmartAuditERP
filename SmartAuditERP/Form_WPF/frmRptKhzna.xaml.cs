@@ -400,18 +400,26 @@ namespace SmartAuditERP.Form_WPF
 
                 string path = dlg.FileName;
 
-                using var writer = new System.IO.StreamWriter(
-                    path, false, System.Text.Encoding.UTF8);
-
-                writer.WriteLine("م,العملية,الرقم,التاريخ,وارد,صادر,الرصيد,البيان");
+                // Repair R-083 (audit finding P7-048): bare cells with N2 money, so a note or a
+                // process name holding a comma added a column and an amount holding a thousands
+                // separator split into two. The shared writer announces one schema and quotes
+                // whatever could break a record.
+                var export = SpreadsheetExport.Begin(path, SpreadsheetExport.CsvDelimiter);
+                export.Header("م", "العملية", "الرقم", "التاريخ", "وارد", "صادر", "الرصيد", "البيان");
 
                 foreach (var row in KhznaList)
                 {
-                    writer.WriteLine(
-                        $"{row.RowNo},{row.ProcessType},{row.ProcessNo}," +
-                        $"{row.RestDate},{row.Income:N2},{row.Outcome:N2}," +
-                        $"{row.Balance:N2},{row.Note}");
+                    export.Row(SpreadsheetExport.Text(row.RowNo),
+                               SpreadsheetExport.Text(row.ProcessType),
+                               SpreadsheetExport.Text(row.ProcessNo),
+                               SpreadsheetExport.Text(row.RestDate),
+                               SpreadsheetExport.Money(row.Income),
+                               SpreadsheetExport.Money(row.Outcome),
+                               SpreadsheetExport.Money(row.Balance),
+                               SpreadsheetExport.Text(row.Note));
                 }
+
+                export.Save();
 
                 DXMessageBox.Show($"تم حفظ الملف في:\n{path}", "تم",
                                 MessageBoxButton.OK, MessageBoxImage.Information);

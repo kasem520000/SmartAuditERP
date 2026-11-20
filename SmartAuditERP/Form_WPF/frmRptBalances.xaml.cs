@@ -486,23 +486,31 @@ namespace SmartAuditERP.Form_WPF
             {
                 if (_balancesSource.Count == 0) return;
 
-                var sb = new StringBuilder();
-                sb.AppendLine("الحساب,اسم الحساب,رصيد افتتاحي مدين,رصيد افتتاحي دائن," +
-                              "حركة مدين,حركة دائن,رصيد مدين,رصيد دائن," +
-                              "رصيد ختامي مدين,رصيد ختامي دائن");
+                // Repair R-083 (audit finding P7-048): the cells were joined bare, so an account
+                // name holding a comma added a column and an N2 amount holding a thousands
+                // separator split into two. The shared writer announces one schema: it quotes
+                // whatever could break a record and money leaves as an invariant number.
+                string fileName = "Balances_Export.csv";
+                var export = SpreadsheetExport.Begin(fileName, SpreadsheetExport.CsvDelimiter);
+                export.Header("الحساب", "اسم الحساب", "رصيد افتتاحي مدين", "رصيد افتتاحي دائن",
+                              "حركة مدين", "حركة دائن", "رصيد مدين", "رصيد دائن",
+                              "رصيد ختامي مدين", "رصيد ختامي دائن");
 
                 foreach (var row in _balancesSource)
                 {
-                    sb.AppendLine(
-                        $"{row.DgvAccount},{row.DgvAccName}," +
-                        $"{row.DgvDeptIntial:N2},{row.DgvCreditIntial:N2}," +
-                        $"{row.DgvDebtorMovement:N2},{row.DgvCreditorMovement:N2}," +
-                        $"{row.DgvDeptBlc:N2},{row.DgvCreditBlc:N2}," +
-                        $"{row.DgvDeptFinal:N2},{row.DgvCreditFinal:N2}");
+                    export.Row(SpreadsheetExport.Text(row.DgvAccount),
+                               SpreadsheetExport.Text(row.DgvAccName),
+                               SpreadsheetExport.Money(row.DgvDeptIntial),
+                               SpreadsheetExport.Money(row.DgvCreditIntial),
+                               SpreadsheetExport.Money(row.DgvDebtorMovement),
+                               SpreadsheetExport.Money(row.DgvCreditorMovement),
+                               SpreadsheetExport.Money(row.DgvDeptBlc),
+                               SpreadsheetExport.Money(row.DgvCreditBlc),
+                               SpreadsheetExport.Money(row.DgvDeptFinal),
+                               SpreadsheetExport.Money(row.DgvCreditFinal));
                 }
 
-                string fileName = "Balances_Export.csv";
-                File.WriteAllText(fileName, sb.ToString(), Encoding.UTF8);
+                export.Save();
 
                 System.Diagnostics.Process.Start(
                     new System.Diagnostics.ProcessStartInfo(fileName)
