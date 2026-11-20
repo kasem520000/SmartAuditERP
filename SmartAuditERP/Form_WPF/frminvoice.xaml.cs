@@ -1499,7 +1499,9 @@ namespace SmartAuditERP.Form_WPF
                 return;
             }
             this.saveInvoice();
-            if (this.MarId != 0) this.MarineExit(this.MarId);
+            // R-047 (P4-025): flip marine attendance ONLY for an invoice that actually saved;
+            // previously it ran for every non-zero MarId regardless of outcome.
+            if (this.MarId != 0 && this.ISInserted) this.MarineExit(this.MarId);
             if (this.ISInserted)
             {
                 this.PrintDevexpress();
@@ -1693,6 +1695,11 @@ namespace SmartAuditERP.Form_WPF
                                 ? "خطأ أثناء الحفظ"
                                 : "error in saving",
                             "", MessageBoxButton.OK, MessageBoxImage.Error);
+                        // Repair R-047 (audit finding P4-025): a rolled-back entry used to fall
+                        // through into ISInserted=true, so the rental screen announced success,
+                        // printed and cleared over a save that never committed. Stop here; only the
+                        // committed paths below may reach the success flag.
+                        return;
                     }
                 }
                 else
