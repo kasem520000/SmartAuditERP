@@ -482,19 +482,21 @@ namespace SmartAuditERP.Form_WPF
 
         public void Navigate(string sqlStr)
         {
+            // Repair R-093 (audit finding P7-161): the same resolve-before-replace contract the two
+            // editors named by the finding got as R-092. This screen cleared first, so a target that
+            // does not exist - or a reader that threw - left a blank document where the user's own
+            // stood, with no difference between the two outcomes.
+            InvoiceDGV target = new InvoiceDGV();
+            InvoiceOper.BindingInvoice(ref target, sqlStr);
+            if (target == null) return;
+
             CLR();
-            InvoiceOper.BindingInvoice(ref Invoic, sqlStr);
-            if (Invoic != null)
-            {
-                txtNo.Background =
-                    System.Windows.Media.Brushes.WhiteSmoke;
-                RefreshGrid();
-                BindingControls();
-            }
-            else
-            {
-                Invoic = new InvoiceDGV();
-            }
+            Invoic = target;
+
+            txtNo.Background =
+                System.Windows.Media.Brushes.WhiteSmoke;
+            RefreshGrid();
+            BindingControls();
         }
 
         private void btnFirst_Click(object sender, RoutedEventArgs e)

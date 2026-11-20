@@ -1900,22 +1900,21 @@ namespace SmartAuditERP.Form_WPF
 
         public void Navigate(string sqlQuery)
         {
+            // Repair R-093 (audit finding P7-161): the same resolve-before-replace contract the two
+            // editors named by the finding got as R-092, against this screen's own reader, which
+            // nulls its reference on an empty result and on an exception just the same. An absent or
+            // failed target no longer leaves a blank contract where the user's own stood.
+            Invoicecontract target = new Invoicecontract();
+            InvoiceOperContract.BindingInvoice(ref target, sqlQuery);
+            if (target == null) return;
+
             if (Invoic != null) CLR();
+            Invoic = target;
 
-            InvoiceOperContract.BindingInvoice(ref Invoic, sqlQuery);
-
-            if (Invoic != null)
-            {
-                GridControl1.ItemsSource = Invoic.InvoiceItems;
-                GridControl1.RefreshData();
-                BindingDGV();
-                BindingControls();
-            }
-            else
-            {
-                Invoic = new Invoicecontract();
-                CLR();
-            }
+            GridControl1.ItemsSource = Invoic.InvoiceItems;
+            GridControl1.RefreshData();
+            BindingDGV();
+            BindingControls();
         }
 
         private void btnFirst_Click(object sender, RoutedEventArgs e)

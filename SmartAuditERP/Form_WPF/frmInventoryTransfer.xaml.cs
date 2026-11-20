@@ -403,16 +403,22 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
-                if (_invoic != null && !_isLoading)
+                // Repair R-093 (audit finding P7-161): the same resolve-before-replace contract the
+                // two editors named by the finding got as R-092. An absent target - or a reader that
+                // threw - used to leave a blank transfer document where the user's own stood. The
+                // loading path keeps filling the instance it already holds, exactly as before; only
+                // the outcome changes, and the reset still runs on its own condition alone.
+                bool willClear = _invoic != null && !_isLoading;
+                InvoiceDGV target = (willClear || _invoic == null)
+                    ? new InvoiceDGV()
+                    : _invoic;
+                InvoiceOper.BindingInvoice(ref target, sqlStr);
+                if (target == null) return;
+
+                if (willClear)
                     CLR();
 
-                InvoiceOper.BindingInvoice(ref _invoic, sqlStr);
-
-                if (_invoic == null)
-                {
-                    _invoic = new InvoiceDGV();
-                    return;
-                }
+                _invoic = target;
 
                 if (_invoic.InvoiceType != InvoiceType.SafesTransferTo)
                     _invoic.InvNote = string.Empty;
