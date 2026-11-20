@@ -1217,6 +1217,29 @@ namespace SmartAuditERP.Form_WPF
             {
                 this.btnSave.IsEnabled = false;
 
+                // Repair R-049 (audit finding P4-031): plain save must enforce the SAME row
+                // contract as Save-with-print - a non-empty item list with strictly positive
+                // quantities. The two buttons used to disagree, so invoices one button refused
+                // sailed through the other. Messages mirror the print path verbatim.
+                // (Residual documented: btnSavePrint still skips the period/reference prompts;
+                // unifying every check into one shared validator belongs to BLK-P3-002.)
+                if (_invoiceItems.Count == 0)
+                {
+                    MessageBox.Show("لا يمكن حفظ الفاتورة بدون أصناف");
+                    this.btnSave.IsEnabled = true;
+                    return;
+                }
+
+                foreach (var item in _invoiceItems)
+                {
+                    if (item.ItemQuantity <= 0)
+                    {
+                        MessageBox.Show("لا يمكن حفظ الفاتورة يوجد كميات أقل أو تساوي الصفر");
+                        this.btnSave.IsEnabled = true;
+                        return;
+                    }
+                }
+
                 if (!double.TryParse(this.txtNet.Text, out double netVal) ||
                     (netVal <= 0.0 && this.InvType != 9))
                 {
