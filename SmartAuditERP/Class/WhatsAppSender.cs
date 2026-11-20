@@ -108,6 +108,15 @@ namespace SmartAuditERP
 		{
 			try
 			{
+				// Repair R-069 (audit finding P6-033): validate the attachment BEFORE opening the chat or sending
+				// anything. Previously the text message could reach the conversation and the attach dialog open
+				// before a missing file aborted the flow, leaving a half-sent notification behind the false result.
+				// Delivery evidence beyond the UI click stays documented as residual.
+				if (string.IsNullOrWhiteSpace(invoiceFilePath) || !File.Exists(invoiceFilePath))
+				{
+					MessageBox.Show("❌ لم يتم العثور على الملف: " + invoiceFilePath, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					return false;
+				}
 				string text;
 				text = customerPhone.Trim();
 				// Repair R-064 (audit finding P6-032): explicit international forms must not be mangled by a blind
@@ -192,11 +201,7 @@ namespace SmartAuditERP
 				}
 				((IJavaScriptExecutor)this.driver).ExecuteScript("arguments[0].click();", webElement2);
 				await Task.Delay(2000);
-				if (!File.Exists(invoiceFilePath))
-				{
-					MessageBox.Show("❌ لم يتم العثور على الملف: " + invoiceFilePath, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-					return false;
-				}
+				// R-069: attachment existence was already enforced pre-flight; nothing further can abort mid-send.
 				this.wait.Until([SpecialName] (IWebDriver d) => d.FindElement(By.CssSelector("input[type='file']"))).SendKeys(invoiceFilePath);
 				await Task.Delay(4000);
 				IWebElement webElement3;
