@@ -94,6 +94,15 @@ namespace SmartAuditERP.Form_WPF
                     _defaultLayout[col] = (col.Width, col.Visibility);
             RestoreSavedLayout();
 
+            // Order is the explicit index contract of BuildProcTypeCondition.
+            bool isAr = string.Equals(MainClass.Language, "ar", StringComparison.OrdinalIgnoreCase);
+            cmbProcType.ItemsSource = isAr
+                ? new[] { "المشتريات", "المبيعات", "نقاط البيع", "الإدخال", "الإخراج",
+                          "الإنتاج", "التسويات", "المناقلات", "أول المدة",
+                          "إشعار دائن مبيعات", "إشعار مدين مبيعات", "إشعار مدين مشتريات", "إشعار دائن مشتريات" }
+                : new[] { "Purchases", "Sales", "POS", "Goods receipt", "Goods issue",
+                          "Production", "Adjustments", "Transfers", "Opening stock",
+                          "Sales credit note", "Sales debit note", "Purchase debit note", "Purchase credit note" };
             LoadSafes();
             LoadBranches();
             LoadPrintSettings();
@@ -294,6 +303,9 @@ namespace SmartAuditERP.Form_WPF
                     (cmbClients.SelectedIndex < 0 ||
                      !int.TryParse(Convert.ToString(cmbClients.SelectedValue), out clientFilter)))
                     throw new InvalidOperationException("يرجى اختيار العميل أو المورد.");
+
+                if (chkAllProcType.IsChecked != true && cmbProcType.SelectedIndex < 0)
+                    throw new InvalidOperationException("يرجى اختيار نوع العملية.");
 
                 double incomeTotal  = 0.0;
                 double outcomeTotal = 0.0;
@@ -870,8 +882,8 @@ namespace SmartAuditERP.Form_WPF
                         ? "تسوية جردية مخرجة" : "Store Adjustment Out";
                     break;
                 case 7:
-                    rdInvType1.Content = isAr ? "مناقلة من" : "Store Transfer Sent";
-                    rdInvType2.Content = isAr ? "مناقلة إلى" : "Store Transfer Received";
+                    rdInvType1.Content = isAr ? "مناقلة إلى" : "Store Transfer Received";
+                    rdInvType2.Content = isAr ? "مناقلة من" : "Store Transfer Sent";
                     break;
             }
         }

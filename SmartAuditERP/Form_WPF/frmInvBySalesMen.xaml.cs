@@ -156,11 +156,18 @@ namespace SmartAuditERP.Form_WPF
                 ProgressBar1.Value = 0;
                 ProgressBar1.Maximum = 100;
 
+                // Snapshot UI criteria on the dispatcher once for all three queries.
+                int? salesmanId = chkAll.IsChecked == true ? (int?)null
+                    : Convert.ToInt32(cmbEmps.SelectedValue);
+                bool allPeriod = chkAllPeriod.IsChecked == true;
+                DateTime fromDate = (txtDateFrom.SelectedDate ?? DateTime.Today).Date;
+                DateTime toDate = (txtDateTo.SelectedDate ?? DateTime.Today).Date.AddDays(1);
+                _empName = salesmanId == null ? "الكل" : cmbEmps.Text;
                 await Task.Run(() =>
                 {
-                    ShowInvoiceResults();
-                    LoadClientReceiptVouchers();
-                    LoadGeneralReceiptVouchers();
+                    ShowInvoiceResults(salesmanId, allPeriod, fromDate, toDate);
+                    LoadReceiptsByType(5, "سند قبض عميل", salesmanId, allPeriod, fromDate, toDate);
+                    LoadReceiptsByType(7, "سند قبض", salesmanId, allPeriod, fromDate, toDate);
                 });
 
                 RecalculateSummary();
@@ -175,7 +182,7 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
-        private void ShowInvoiceResults()
+        private void ShowInvoiceResults(int? salesmanId, bool allPeriod, DateTime fromDate, DateTime toDate)
         {
             try
             {
@@ -183,11 +190,11 @@ namespace SmartAuditERP.Form_WPF
                 string periodFilter = string.Empty;
                 string branchFilter = string.Empty;
 
-                if (chkAll.IsChecked != true && cmbEmps.SelectedValue != null)
-                    empFilter = $" AND Inv.salesman = {cmbEmps.SelectedValue}";
+                if (salesmanId.HasValue)
+                    empFilter = $" AND Inv.salesman = {salesmanId.Value}";
 
-                if (chkAllPeriod.IsChecked != true)
-                    periodFilter = " AND date>=@date1 AND date<=@date2 ";
+                if (!allPeriod)
+                    periodFilter = " AND date>=@date1 AND date<@date2 ";
 
                 if (MainClass.BranchNo != -1)
                     branchFilter = $"inv.branch={MainClass.BranchNo} AND ";
@@ -207,11 +214,6 @@ namespace SmartAuditERP.Form_WPF
 
                 if (!string.IsNullOrEmpty(periodFilter))
                 {
-                    DateTime fromDate = Dispatcher.Invoke(()
-                        => txtDateFrom.SelectedDate ?? DateTime.Today);
-                    DateTime toDate = Dispatcher.Invoke(()
-                        => txtDateTo.SelectedDate ?? DateTime.Today).AddHours(24);
-
                     adapter.SelectCommand.Parameters
                         .Add("@date1", SqlDbType.DateTime).Value = fromDate;
                     adapter.SelectCommand.Parameters
@@ -226,10 +228,6 @@ namespace SmartAuditERP.Form_WPF
                     ProgressBar1.Maximum = mainTable.Rows.Count;
                     ProgressBar1.Value = 0;
                 });
-
-                _empName = chkAll.IsChecked == true
-                    ? "الكل"
-                    : Dispatcher.Invoke(() => cmbEmps.Text);
 
                 foreach (DataRow row in mainTable.Rows)
                 {
@@ -398,42 +396,32 @@ namespace SmartAuditERP.Form_WPF
             catch { /* تجاهل */ }
         }
 
-        private void LoadClientReceiptVouchers()
-        {
-            LoadReceiptsByType(5, "سند قبض عميل");
-        }
-
-        private void LoadGeneralReceiptVouchers()
-        {
-            LoadReceiptsByType(7, "سند قبض");
-        }
-
-        private void LoadReceiptsByType(int receiptType, string label)
+        private void LoadReceiptsByType(int receiptType, string label,
+            int? salesmanId, bool allPeriod, DateTime fromDate, DateTime toDate)
         {
             try
             {
                 string empFilter = string.Empty;
 
-                if (chkAll.IsChecked != true && cmbEmps.SelectedValue != null)
-                    empFilter = $" AND SalesManID={cmbEmps.SelectedValue}";
+                if (salesmanId.HasValue)
+                    empFilter = $" AND SalesManID={salesmanId.Value}";
 
-                DateTime fromDate = Dispatcher.Invoke(()
-                    => txtDateFrom.SelectedDate ?? DateTime.Today);
-                DateTime toDate = Dispatcher.Invoke(()
-                    => txtDateTo.SelectedDate ?? DateTime.Today).AddHours(24);
-
+                string periodFilter = allPeriod ? "" :
+                    " AND ReceiptDate >= @date1 AND ReceiptDate < @date2";
                 var adapter = new SqlDataAdapter($@"
                     SELECT * FROM Receipts
                     WHERE  SalesManID <> -1
-                      AND  ReceiptDate >= @date1
-                      AND  ReceiptDate <= @date2
                       AND  ISDeleted = 0
                       AND  ReceiptType = {receiptType}
-                           {empFilter}",
+                           {empFilter}
+                           {periodFilter}",
                     _conn);
 
-                adapter.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = fromDate;
-                adapter.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = toDate;
+                if (!allPeriod)
+                {
+                    adapter.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = fromDate;
+                    adapter.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = toDate;
+                }
 
                 var table = new DataTable();
                 adapter.Fill(table);
@@ -488,7 +476,7 @@ namespace SmartAuditERP.Form_WPF
 
             foreach (var row in _itemsList)
             {
-                sumVal += row.Value;
+                sumVal += row.IsPlus == 1 ? row.Value : -row.Value;
 
                 if (row.IsPlus == 1)
                 {
@@ -784,7 +772,7 @@ namespace SmartAuditERP.Form_WPF
             worksheet.Cell(summaryRow, 5).Style.Font.Bold = true;
 
             worksheet.Cell(summaryRow, 6).Value =
-                items.Sum(x => x.Value);
+                items.Sum(x => x.IsPlus == 1 ? x.Value : -x.Value);
             worksheet.Cell(summaryRow, 7).Value =
                 items.Where(x => x.IsPlus == 1).Sum(x => x.SalesComm)
                 - items.Where(x => x.IsPlus == -1).Sum(x => x.SalesComm);

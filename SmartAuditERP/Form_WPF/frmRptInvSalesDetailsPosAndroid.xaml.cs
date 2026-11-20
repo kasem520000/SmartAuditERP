@@ -348,11 +348,15 @@ namespace SmartAuditERP.Form_WPF
                     }
                 }
 
-                // الضريبة
+                // Reuse the projected aggregate rather than filtering the
+                // unrelated persisted header column with the same name.
+                string freeVatExpression = "(SELECT ISNULL(SUM(CASE WHEN taxval=0 " +
+                    "THEN (val1*exchange_price) ELSE 0 END),0) " +
+                    "FROM Inv_Sub WHERE InvGlobalID=Inv.InvGlobalID)";
                 if (rbWithVat.IsChecked == true)
-                    where += " FreeVATSales=0 and ";
+                    where += freeVatExpression + "=0 and ";
                 else if (rbNoVAT.IsChecked == true)
-                    where += " FreeVATSales>0 and ";
+                    where += freeVatExpression + ">0 and ";
 
                 // التواريخ
                 DateTime dateFrom = DateTime.Today;
@@ -389,9 +393,7 @@ namespace SmartAuditERP.Form_WPF
                     "inv.notes AS notes, " +
                     "(SELECT ISNULL(SUM(discount),0) " +
                     " FROM Inv_Sub WHERE InvGlobalID=Inv.InvGlobalID) AS ItemDiscount, " +
-                    "(SELECT ISNULL(SUM(CASE WHEN taxval=0 " +
-                    " THEN (val1*exchange_price) ELSE 0 END),0) " +
-                    " FROM Inv_Sub WHERE InvGlobalID=Inv.InvGlobalID) AS FreeVATSales, " +
+                    freeVatExpression + " AS FreeVATSales, " +
                     "Customers.name AS CustName, " +
                     "Users.username AS username, " +
                     "Branches.name AS BranchName, " +

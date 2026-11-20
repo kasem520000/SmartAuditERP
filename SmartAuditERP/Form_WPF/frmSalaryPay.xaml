@@ -347,12 +347,13 @@
                                            Style="{StaticResource FieldLabel}"/>
                                 <TextBox x:Name="txtSalaryAdd" Grid.Column="10"
                                          Style="{StaticResource ModernTextBox}"
-                                         Background="#E8F5E9"/>
+                                         Background="#E8F5E9" TextChanged="txtTotSalary_TextChanged"/>
 
                                 <TextBlock Grid.Column="12" Text="🔴 الخصومات:"
                                            Style="{StaticResource FieldLabel}"/>
                                 <TextBox x:Name="txtSalarySub" Grid.Column="13"
-                                         Style="{StaticResource RedTextBox}"/>
+                                         Style="{StaticResource RedTextBox}"
+                                         TextChanged="txtTotSalary_TextChanged"/>
                             </Grid>
 
                             <!-- الصف 5: الصافي + ملاحظات -->

@@ -247,10 +247,8 @@ namespace SmartAuditERP.Form_WPF
                              $"FROM inv WHERE {branchFilter}{typeFilter}{dateFilter}IS_Deleted=0 " +
                              "ORDER BY date DESC";
 
-                var fromDate = DateTime.Parse(
-                    txtDateFrom.DateTime.ToShortDateString() + " 00:00:00");
-                var toDate   = DateTime.Parse(
-                    txtDateTo.DateTime.ToShortDateString()   + " 23:59:59");
+                var fromDate = txtDateFrom.DateTime.Date;
+                var toDate = txtDateTo.DateTime.Date.AddDays(1);
 
                 var adapter = new SqlDataAdapter(sql, conn);
                 adapter.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = fromDate;
@@ -270,7 +268,7 @@ namespace SmartAuditERP.Form_WPF
                                   "ORDER BY date DESC";
                     var adapter2 = new SqlDataAdapter(sql2, conn);
                     adapter2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = fromDate;
-                    adapter2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = toDate.AddHours(24);
+                    adapter2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = toDate;
                     var table2 = new DataTable();
                     adapter2.Fill(table2);
                     mainTable.Merge(table2);
@@ -293,15 +291,16 @@ namespace SmartAuditERP.Form_WPF
                 if (Invtype == 1)
                     ProcessPurchasesWithoutSubs(branchFilter, typeFilter, dateFilter, fromDate, toDate);
 
+                bool allPeriod = ckTotalPeriod.IsChecked == true;
                 // المصروفات (ReceiptType=9)
                 if ((Invtype == 1 && chkAll.IsChecked == true) ||
                     (Inv_Type == 1 && Proc_Type == 1))
-                    ProcessExpenseReceipts(fromDate, toDate);
+                    ProcessExpenseReceipts(fromDate, toDate, allPeriod);
 
                 // المقبوضات (ReceiptType=10)
                 if ((Invtype == 2 && chkAll.IsChecked == true) ||
                     (Inv_Type == 2 && Proc_Type == 1))
-                    ProcessIncomeReceipts(fromDate, toDate);
+                    ProcessIncomeReceipts(fromDate, toDate, allPeriod);
 
                 UpdateSummaryCards();
             }
@@ -450,10 +449,8 @@ namespace SmartAuditERP.Form_WPF
                              "Inv.InvGlobalID NOT IN (SELECT InvGlobalID FROM Inv_Sub) " +
                              "ORDER BY date DESC";
                 var adapter = new SqlDataAdapter(sql, conn);
-                adapter.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value =
-                    fromDate.ToShortDateString();
-                adapter.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value =
-                    toDate.AddHours(24).ToShortDateString();
+                adapter.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = fromDate;
+                adapter.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = toDate;
                 var table = new DataTable();
                 adapter.Fill(table);
 
@@ -521,19 +518,20 @@ namespace SmartAuditERP.Form_WPF
 
         #region Process Expense / Income Receipts
 
-        private void ProcessExpenseReceipts(DateTime fromDate, DateTime toDate)
+        private void ProcessExpenseReceipts(DateTime fromDate, DateTime toDate, bool allPeriod)
         {
             try
             {
                 var adapter = new SqlDataAdapter(
                     $"SELECT * FROM Receipts WHERE ReceiptType=9 " +
                     $"AND branchID={MainClass.BranchNo} " +
-                    $"AND ReceiptDate>=@date1 AND ReceiptDate<@date2 " +
+                    (allPeriod ? "" : "AND ReceiptDate>=@date1 AND ReceiptDate<@date2 ") +
                     $"AND Receipts.ISDeleted=0", conn);
-                adapter.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value =
-                    fromDate.ToShortDateString();
-                adapter.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value =
-                    toDate.AddHours(24).ToShortDateString();
+                if (!allPeriod)
+                {
+                    adapter.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = fromDate;
+                    adapter.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = toDate;
+                }
                 var table = new DataTable();
                 adapter.Fill(table);
 
@@ -568,19 +566,21 @@ namespace SmartAuditERP.Form_WPF
             catch { }
         }
 
-        private void ProcessIncomeReceipts(DateTime fromDate, DateTime toDate)
+        private void ProcessIncomeReceipts(DateTime fromDate, DateTime toDate, bool allPeriod)
         {
             try
             {
                 var adapter = new SqlDataAdapter(
                     $"SELECT * FROM Receipts WHERE ReceiptType=10 " +
                     $"AND branchID={MainClass.BranchNo} " +
-                    $"AND ReceiptDate>=@date1 AND Paymenttype=1 " +
-                    $"AND ReceiptDate<@date2 AND Receipts.ISDeleted=0", conn);
-                adapter.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value =
-                    fromDate.ToShortDateString();
-                adapter.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value =
-                    toDate.AddHours(24).ToShortDateString();
+                    $"AND Paymenttype=1 " +
+                    (allPeriod ? "" : "AND ReceiptDate>=@date1 AND ReceiptDate<@date2 ") +
+                    $"AND Receipts.ISDeleted=0", conn);
+                if (!allPeriod)
+                {
+                    adapter.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = fromDate;
+                    adapter.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = toDate;
+                }
                 var table = new DataTable();
                 adapter.Fill(table);
 

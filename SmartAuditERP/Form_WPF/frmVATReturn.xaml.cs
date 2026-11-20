@@ -430,6 +430,7 @@ namespace SmartAuditERP.Form_WPF
                             salesBase -= netBase;
                             salesVAT -= vatAmt;
                             extraVAT -= extraVatAmt;
+                            salesNotTax -= nonTaxable;
                             break;
                     }
                 }
@@ -549,6 +550,7 @@ namespace SmartAuditERP.Form_WPF
                         case 2:
                             purchBase -= netBase;
                             purchVAT -= vatAmt;
+                            purchNotTax -= nonTaxable;
                             break;
                     }
                 }

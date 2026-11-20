@@ -162,8 +162,11 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
-                if (!string.IsNullOrEmpty(txtInvNo.Text))
-                    Cond = "";
+                // Date editors do not wire the old ValueChanged handlers.
+                // Preserve invoice-number search across the date range.
+                Cond = string.IsNullOrEmpty(txtInvNo.Text)
+                    ? " AND RentInvoice.date>=@date1 AND RentInvoice.date<@date2 "
+                    : "";
 
                 LoadQry =
                     "SELECT RentInvoice.proc_id AS proc_id, " +
@@ -189,10 +192,10 @@ namespace SmartAuditERP.Form_WPF
 
                 if (!string.IsNullOrEmpty(Cond))
                 {
-                    DateTime dateTo2 = txtToDate.DateTime.AddHours(24.0);
+                    DateTime dateTo2 = txtToDate.DateTime.Date.AddDays(1);
                     adapter.SelectCommand.Parameters.Add(
                         "@date1", SqlDbType.DateTime).Value
-                        = txtFromDate.DateTime.ToShortDateString();
+                        = txtFromDate.DateTime.Date;
                     adapter.SelectCommand.Parameters.Add(
                         "@date2", SqlDbType.DateTime).Value = dateTo2;
                 }
@@ -203,7 +206,8 @@ namespace SmartAuditERP.Form_WPF
                 _dataView            = new DataView(_dtable);
                 dgvItems.ItemsSource = _dataView;
 
-                CalcIncome();
+                // Reapply the visible criteria, including invoice number, after reload.
+                GenerateFilter();
             }
             catch (Exception ex)
             {

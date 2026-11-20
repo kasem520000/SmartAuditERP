@@ -210,7 +210,7 @@ namespace SmartAuditERP.Form_WPF
                         $"AND Entry_sub.acc_no={accNo}", conn);
                     prevAdapter.SelectCommand.Parameters.Add(
                         "@date1", SqlDbType.DateTime).Value =
-                        dateFrom.ToShortDateString();
+                        dt1;
 
                     var prevDt = new DataTable();
                     prevAdapter.Fill(prevDt);
@@ -229,7 +229,7 @@ namespace SmartAuditERP.Form_WPF
                         RowNo       = KhznaList.Count + 1,
                         ProcessType = "رصيد سابق",
                         ProcessNo   = "",
-                        RestDate    = dateFrom.AddDays(-1).ToShortDateString(),
+                        RestDate    = dt1.ToString("g"),
                         Income      = prevIncome,
                         Outcome     = prevExpense,
                         Balance     = priorBalance,
