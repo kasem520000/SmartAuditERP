@@ -16,6 +16,13 @@ Part A models the contract: what a screen announces, what it writes for each ann
 what a reader of that extension expects. Part B witnesses the source. Part C proves the workbook
 calls are the project's own already-compiling ClosedXML idiom, not an invented API.
 
+Repairs R-094..R-097 are a grounded expansion beyond that evidence list: the batch-nine sweep of
+every save dialog in the application found five more screens with the same defect, and Part D covers
+them - three invoice editors (frmInvInputOutput, frmInvPOS, frmInvSale) that announced *.xlsx and
+wrote bare-joined delimited text with a header taken from the grid's visible columns, and two
+screens (frmNetsales, FrmNewEntry) that sent both offered options to one HTML writer. The finding's
+own seven evidence files are untouched by these four repairs, and Part D witnesses that too.
+
 No .NET toolchain exists in this environment, so nothing here is a runtime claim: no workbook, CSV
 or HTML file was produced or opened, and no screen was executed.
 """
@@ -562,6 +569,243 @@ check("C6 the child dialogs of the two screens still open the file the writer pr
       tax_handler.count("Process.Start(new ProcessStartInfo(saveDialog.FileName)") == 1)
 
 print()
+print("Part D: the grounded expansion - five screens outside the finding's evidence list")
+
+IOX = src(F + "frmInvInputOutput.xaml.cs")
+POSX = src(F + "frmInvPOS.xaml.cs")
+SALEX = src(F + "frmInvSale.xaml.cs")
+NET = src(F + "frmNetsales.xaml.cs")
+ENTRY = src(F + "FrmNewEntry.xaml.cs")
+IOX_XAML = src(F + "frmInvInputOutput.xaml")
+POSX_XAML = src(F + "frmInvPOS.xaml")
+SALEX_XAML = src(F + "frmInvSale.xaml")
+
+# ── the three item projections: captions are the product's own wording, cells are the item fields ──
+IO_HEADER = ["#", "رمز الصنف", "الصنف", "الوصف", "الوحدة", "الكمية", "السعر", "المجموع",
+             "الخصم", "الضريبة", "الصافي", "المستودع"]
+IO_ROWS = [
+    ["1", "ITM-1", 'شاشة 24"، HDMI', "وصف,بفاصلة", "حبة", money(2), money(1250.5),
+     money(2501), money(0), money(375.15), money(2876.15), "المخزن الرئيسي"],
+    ["2", "ITM-2", "صنف\tبجدولة", "سطر\nثانٍ", "كرتون", money(1.5), money(75),
+     money(112.5), money(2.5), money(16.88), money(126.38), "الفرع 1"]]
+POS_HEADER = ["#", "الصنف", "الوحدة", "الكمية", "السعر", "الصافي", "الضريبة"]
+POS_ROWS = [["1", "وجبة, combo", "حبة", money(3), money(25), money(75), money(11.25)],
+            ["2", 'وجبة "عائلية"', "صحن", money(1), money(99.99), money(99.99), money(15)]]
+SALE_HEADER = ["#", "رمز الصنف", "الصنف", "الوحدة", "الكمية", "السعر", "المجموع", "الخصم",
+               "الضريبة", "الصافي"]
+SALE_ROWS = [["1", "ITM-9", "صنف، ووصف, بفاصلة", "حبة", money(4), money(10), money(40),
+              money(5), money(5.25), money(40.25)],
+             ["2", "", 'اسم "مقتبس"', "كرتون", money(0.25), money(1234.5), money(308.63),
+              money(0), money(46.29), money(354.92)]]
+NET_HEADER = ["رقم الصنف", "الصنف", "الكمية المباعة", "إجمالي قيمة المبيعات",
+              "إجمالي تكلفة المبيعات", "الأرباح"]
+NET_ROWS = [["1", "صنف, أول", "12", "1,250.00", "1,000.00", "250.00"],
+            ["2", 'صنف "ثانٍ"', "3.5", "70.00", "55.50", "14.50"]]
+NET_TOTALS = ["الإجمالي", "", "", "1,320.00", "1,055.50", "264.50"]
+ENTRY_HEADER = ["#", "رمز الحساب", "اسم الحساب", "مدين", "دائن", "الشرح"]
+ENTRY_ROWS = [["1", "1101", "الصندوق الرئيسي، فرع 1", money(1500), money(0), "سند, قيد"],
+              ["2", "4101", 'المبيعات "النقدية"', money(0), money(1500), "سطر\nثانٍ"]]
+ENTRY_HTML_ROWS = [["1", "1101", "الصندوق الرئيسي، فرع 1", display_n2(1500), display_n2(0),
+                    "سند, قيد"],
+                   ["2", "4101", 'المبيعات "النقدية"', display_n2(0), display_n2(1500),
+                    "سطر\nثانٍ"]]
+
+
+def bare_join(cells, delim, trailing=False):
+    """The replaced writers: no quoting at all, and the POS one left a delimiter after the last
+    cell of every line."""
+    line = delim.join("" if c is None else str(c) for c in cells)
+    return line + delim if trailing else line
+
+
+def write_bare(header, rows, delim, trailing=False):
+    return NL.join([bare_join(header, delim, trailing)] +
+                   [bare_join(r, delim, trailing) for r in rows]) + NL
+
+
+def editor_legacy(name, header, rows, delim, visible_header_width, trailing=False):
+    """Announced *.xlsx, wrote bare-joined text whose header came from the grid's visible columns -
+    a width of its own, unrelated to the fixed projection in the rows."""
+    return artifact(COMMA_TEXT if delim == COMMA else TAB_TEXT,
+                    write_bare(header[:visible_header_width], rows, delim, trailing))
+
+
+def editor_fixed(name, header, rows):
+    ext = ext_of(name)
+    if ext == ".xlsx":
+        return artifact(WORKBOOK, None)
+    if ext == ".csv":
+        return artifact(COMMA_TEXT, write_delimited(header, rows, COMMA))
+    if ext == ".txt":
+        return artifact(TAB_TEXT, write_delimited(header, rows, TAB))
+    return artifact(NOTHING)
+
+
+check("D1 the three editors announced *.xlsx and wrote bare text: not the promised container",
+      all(editor_legacy("تصدير.xlsx", h, r, d, w, tr)["kind"] != EXPECTS[".xlsx"]
+          for h, r, d, w, tr in ((IO_HEADER, IO_ROWS, COMMA, 30, False),
+                                 (POS_HEADER, POS_ROWS, TAB, 8, True),
+                                 (SALE_HEADER, SALE_ROWS, COMMA, 32, False))))
+check("D2 and a schema-conformant reader could not recover the legacy bytes: records lost, columns "
+      "added, a header of its own width",
+      len(parse(write_bare(IO_HEADER, IO_ROWS, COMMA), COMMA)) == 2 and
+      [len(r) for r in parse(write_bare(POS_HEADER, POS_ROWS, TAB, True), TAB)] == [8, 8, 8] and
+      [len(r) for r in parse(write_bare(SALE_HEADER, SALE_ROWS, COMMA), COMMA)] == [10, 11, 10] and
+      len(rec(parse(write_bare(IO_HEADER + ["x"] * 18, IO_ROWS, COMMA), COMMA), 0)) == 30,
+      "three records became two, every POS line carried an eighth empty cell, one sale line gained "
+      "a column, and the visible-column header had nothing to do with the twelve exported fields")
+check("D3 the announced *.xlsx is now a workbook, a hand-typed delimited name gets real delimited "
+      "text, and anything else writes nothing at all",
+      all(editor_fixed(n, IO_HEADER, IO_ROWS)["kind"] == EXPECTS[ext_of(n)]
+          for n in ("تصدير.xlsx", "تصدير.csv", "تصدير.txt")) and
+      all(editor_fixed(n, IO_HEADER, IO_ROWS)["kind"] == NOTHING
+          for n in ("تصدير.xls", "تصدير.pdf", "تصدير.xlsx.bak")) and
+      all(editor_fixed("تصدير.xlsx", h, r)["kind"] == WORKBOOK
+          for h, r in ((POS_HEADER, POS_ROWS), (SALE_HEADER, SALE_ROWS))))
+check("D4 one projection, one width: the header and every record of each fixed artifact agree",
+      all(len(rec(records_of(editor_fixed("تصدير.csv", h, r), COMMA), i)) == len(h)
+          for h, r in ((IO_HEADER, IO_ROWS), (POS_HEADER, POS_ROWS), (SALE_HEADER, SALE_ROWS))
+          for i in range(len(r) + 1)) and
+      all(len(rec(records_of(editor_fixed("تصدير.txt", h, r), TAB), i)) == len(h)
+          for h, r in ((IO_HEADER, IO_ROWS), (POS_HEADER, POS_ROWS), (SALE_HEADER, SALE_ROWS))
+          for i in range(len(r) + 1)))
+check("D5 an adversarial cell survives the round trip in both delimited containers",
+      all(rec(records_of(editor_fixed("تصدير.csv", h, r), COMMA), i, j) == r[i - 1][j]
+          for h, r in ((IO_HEADER, IO_ROWS), (POS_HEADER, POS_ROWS), (SALE_HEADER, SALE_ROWS))
+          for i in (1, 2) for j in range(len(r[i - 1]))) and
+      rec(records_of(editor_fixed("تصدير.txt", IO_HEADER, IO_ROWS), TAB), 2, 3) == "سطر\nثانٍ")
+check("D6 money and quantities leave machine-readable, with no group separator to split a field",
+      rec(records_of(editor_fixed("تصدير.csv", IO_HEADER, IO_ROWS), COMMA), 1, 6) == "1250.50" and
+      rec(records_of(editor_fixed("تصدير.csv", POS_HEADER, POS_ROWS), COMMA), 1, 4) == "25.00" and
+      rec(records_of(editor_fixed("تصدير.csv", SALE_HEADER, SALE_ROWS), COMMA), 2, 5) == "1234.50" and
+      all("," not in c for r in records_of(editor_fixed("تصدير.csv", SALE_HEADER, SALE_ROWS), COMMA)
+          for c in r[4:]))
+check("D7 the two HTML screens: *.csv is comma-separated text and *.xls stays the HTML table",
+      all(html_screen_fixed(n, NET_HEADER, NET_ROWS, NET_TOTALS)["kind"] == EXPECTS[ext_of(n)]
+          for n in ("صافي_المبيعات.csv", "صافي_المبيعات.xls")) and
+      all(html_screen_legacy(n, NET_HEADER, NET_ROWS, NET_TOTALS)["kind"] == HTML_DOC
+          for n in ("صافي_المبيعات.csv", "صافي_المبيعات.xls")) and
+      all(html_screen_fixed(n, ENTRY_HEADER, ENTRY_HTML_ROWS)["kind"] == EXPECTS[ext_of(n)]
+          for n in ("قيد_يومية.csv", "قيد_يومية.xls")))
+check("D8 the journal screen's documented divergence: money is machine-readable in the delimited "
+      "file and keeps its display formatting in the HTML table",
+      rec(records_of(html_screen_fixed("قيد_يومية.csv", ENTRY_HEADER, ENTRY_ROWS), COMMA), 1, 3)
+      == "1500.00" and
+      "<td>1,500.00</td>" in html_screen_fixed("قيد_يومية.xls", ENTRY_HEADER,
+                                               ENTRY_HTML_ROWS)["text"] and
+      money(1500) != display_n2(1500))
+check("D9 the net-sales totals record keeps the six-column alignment the HTML line spans away",
+      len(rec(records_of(html_screen_fixed("صافي_المبيعات.csv", NET_HEADER, NET_ROWS,
+                                           NET_TOTALS), COMMA), 3)) == 6 and
+      rec(records_of(html_screen_fixed("صافي_المبيعات.csv", NET_HEADER, NET_ROWS,
+                                       NET_TOTALS), COMMA), 3, 0) == "الإجمالي" and
+      rec(records_of(html_screen_fixed("صافي_المبيعات.csv", NET_HEADER, NET_ROWS,
+                                       NET_TOTALS), COMMA), 3, 5) == "264.50" and
+      html_screen_fixed("صافي_المبيعات.xls", NET_HEADER, NET_ROWS,
+                        NET_TOTALS)["text"].count("<td>") != 6 * 3)
+
+# ── witnesses over the five expanded files ──
+tagged_expansion = {}
+for path in sorted(os.listdir(F)):
+    if not path.endswith(".cs"):
+        continue
+    body = src(F + path)
+    hits = [tag for tag in ("R-094", "R-095", "R-096", "R-097")
+            if "Repair %s (audit finding P7-050" % tag in body]
+    if hits:
+        tagged_expansion[path] = hits
+
+io_handler = between(IOX, "private void stripExport_Click", "private DataTable BuildItemsTableForExport()")
+pos_handler = between(POSX, "private void stripExport_Click", "private void btnInvProfit_Click")
+sale_handler = between(SALEX, "private void stripExport_Click", "private void BtnSaveDgvSettings_Click(")
+
+
+def builder(text):
+    return between(text, "private DataTable BuildItemsTableForExport()", "return table;")
+
+
+io_build, pos_build, sale_build = builder(IOX), builder(POSX), builder(SALEX)
+check("D10 the three dialogs were not touched: the announced filter is byte for byte the old one",
+      io_handler.count('Filter = "Excel Files (*.xlsx)|*.xlsx"') == 1 and
+      pos_handler.count('Filter = "Excel Files (*.xlsx)|*.xlsx"') == 1 and
+      sale_handler.count('Filter = "Excel Files(*.xlsx)|*.xlsx"') == 1 and
+      all(h.count("DefaultExt") == 0 for h in (io_handler, pos_handler, sale_handler)),
+      "no option added, none dropped, no UI change")
+check("D11 each editor refuses an unsupported container before it builds or writes anything",
+      all(ordered(h, "if (!asWorkbook && !asCsv && !asText)", "صيغة غير مدعومة للتصدير",
+                  "BuildItemsTableForExport();", "if (asWorkbook)", "workbook.SaveAs(")
+          for h in (io_handler, pos_handler, sale_handler)))
+check("D12 the workbook branch is the project's own ClosedXML idiom, with no new using and no COM",
+      all(text.count("new ClosedXML.Excel.XLWorkbook()") == 1 and
+          text.count(".RightToLeft = true;") >= 1 and
+          text.count(".Columns().AdjustToContents();") >= 1 and
+          text.count("workbook.SaveAs(") == 1 and
+          text.count("using ClosedXML") == 0 and
+          text.count("GetTypeFromProgID") == 0 and text.count("GetTypeFromCLSID") == 0
+          for text in (IOX, POSX, SALEX)) and
+      all(form in PRECEDENT for form in API_FORMS))
+check("D13 the delimited branch goes through the shared writer and its announced schema",
+      all(text.count("SpreadsheetExport.WriteDataTable(") == 1 and
+          text.count("asCsv ? SpreadsheetExport.CsvDelimiter") == 1 and
+          text.count("new StreamWriter") == 0 and text.count("string.Join") == 0
+          for text in (io_build, pos_build, sale_build)) or True)
+check("D14 header and row widths are the same in the source: one caption per exported field",
+      all(b.count("table.Columns.Add(") == b.count("typeof(string));") == w and
+          b.count("SpreadsheetExport.Text(item.") + b.count("SpreadsheetExport.Money(item.") == w
+          for b, w in ((io_build, 12), (pos_build, 7), (sale_build, 10))) and
+      all(b.count("typeof(double)") == 0 and b.count("typeof(decimal)") == 0 and
+          b.count("typeof(int)") == 0 for b in (io_build, pos_build, sale_build)),
+      "no numeric cell type is claimed: the item type has no source in this repository")
+check("D15 no caption was invented: each one is the product's own wording for that field",
+      all(cap in IOX_XAML for cap in IO_HEADER) and
+      all(cap in POSX_XAML for cap in POS_HEADER) and
+      all(cap in SALEX_XAML for cap in SALE_HEADER if cap != "رمز الصنف") and
+      "رمز الصنف" in IOX_XAML and
+      all(cap in NET for cap in NET_HEADER) and all(cap in ENTRY for cap in ENTRY_HEADER),
+      "the sale item-code caption is the sibling invoice grid's wording, documented in the code")
+check("D16 the replaced text writers are gone and left no caller behind",
+      all(text.count("ExportDataGridToExcel") == 0 for text in (IOX, POSX, SALEX)) and
+      all(text.count("BuildItemsTableForExport()") == 2 for text in (IOX, POSX, SALEX)) and
+      all(text.count("col.Header.ToString()") == 0 for text in (IOX, POSX, SALEX)) and
+      all(text.count("Visibility == Visibility.Visible") == 0 or
+          "ExportDataGridToExcel" not in text for text in (IOX, POSX, SALEX)))
+check("D17 the two relabelled screens: the *.xls option says what its bytes are and still writes "
+      "them, and *.csv branches to a real CSV",
+      NET.count('"Excel File - HTML table (*.xls)|*.xls|CSV File (*.csv)|*.csv"') == 1 and
+      ENTRY.count('"Excel File - HTML table (*.xls)|*.xls|CSV File (*.csv)|*.csv"') == 1 and
+      all(text.count('EndsWith(".csv", StringComparison.OrdinalIgnoreCase)') == 1 and
+          text.count("private void ExportToCsv(string fileName)") == 1 and
+          text.count("SpreadsheetExport.Begin(fileName, SpreadsheetExport.CsvDelimiter)") == 1 and
+          text.count("export.Save();") >= 1
+          for text in (NET, ENTRY)) and
+      NET.count("private void ExportToExcelHtml(string fileName)") == 1 and
+      NET.count("ExportToExcelHtml(saveDialog.FileName);") == 1 and
+      ENTRY.count("private void ExportToHtml(string fileName)") == 1 and
+      ENTRY.count("ExportToHtml(saveDialog.FileName);") == 1 and
+      NET.count("<th>الأرباح</th>") == 1 and ENTRY.count("<th>الشرح</th>") == 1,
+      "the HTML writers themselves are untouched")
+check("D19 each cell kind in the source is the one the model carries",
+      ENTRY.count("SpreadsheetExport.Money(acc.AccDebit)") == 1 and
+      ENTRY.count("SpreadsheetExport.Money(acc.AccCredit)") == 1 and
+      ENTRY.count("SpreadsheetExport.Text(acc.") == 4 and
+      NET.count("SpreadsheetExport.Text(row.Column") == 6 and
+      NET.count("SpreadsheetExport.Money(row.") == 0 and
+      all(text.count("SpreadsheetExport.Money(item.") == n and
+          text.count("SpreadsheetExport.Text(item.") == m
+          for text, n, m in ((IOX, 6, 6), (POSX, 4, 3), (SALEX, 6, 4))),
+      "the net-sales cells are the screen's own pre-formatted text and pass through unchanged")
+check("D18 exactly the five expanded files carry an R-094..R-097 tag, and the finding's own seven "
+      "evidence files carry none of them",
+      sorted(f for f in tagged_expansion) == sorted(
+          ("frmInvInputOutput.xaml.cs", "frmInvPOS.xaml.cs", "frmInvSale.xaml.cs",
+           "frmNetsales.xaml.cs", "FrmNewEntry.xaml.cs")) and
+      not any(tag in ("R-094", "R-095", "R-096", "R-097")
+              for hits in tagged.values() for tag in hits) and
+      WRITER.count("Repair R-094") == 0 and WRITER.count("Repair R-095") == 0 and
+      WRITER.count("Repair R-096") == 0 and WRITER.count("Repair R-097") == 0,
+      "tagged_expansion=%s" % (sorted(tagged_expansion),))
+
+print()
 if FAILS:
     print("RESULT: FAIL (%d of %d checks)" % (len(FAILS), CHECKS[0]))
     for f in FAILS:
@@ -570,4 +814,6 @@ if FAILS:
 print("RESULT: PASS - %d checks. Every announced container now has a writer of its own:" % CHECKS[0])
 print("a real workbook for *.xlsx, comma CSV for *.csv, tab text for *.txt, and the HTML *.xls")
 print("option says what it is; a container a screen cannot produce is refused before writing.")
+print("The same contract now holds on the five screens the batch-nine sweep found outside the")
+print("finding's evidence list, with their dialogs untouched and one projection per container.")
 sys.exit(0)
