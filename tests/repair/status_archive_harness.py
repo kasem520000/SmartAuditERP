@@ -80,6 +80,12 @@ check('follow-up batch and previously fixed export are recorded with scope',
       and all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
           for fid, rid in [('P7-096', 'R-115'), ('P7-091', 'R-116'), ('P7-003', 'R-117'), ('P7-008', 'R-118')])
       and by_id['P7-009']['repair_status'] != 'closed_in_scope')
+check('editor and period batch has bounded and partial classifications',
+      all(by_id[fid]['repair_status'] == 'closed_in_scope' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P7-007', 'R-120'), ('P7-148', 'R-122'), ('P7-097', 'R-124'), ('P7-126', 'R-125')])
+      and all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P7-023', 'R-121'), ('P7-151', 'R-123')])
+      and all(by_id[fid]['repair_status'] != 'closed_in_scope' for fid in ('P7-022', 'P7-024', 'P7-152')))
 check('plan-only repairs are included and P5-027 remains partial',
       by_id['P5-010']['repair_ids'] == 'R-058' and by_id['P5-027']['repair_ids'] == 'R-057'
       and by_id['P5-027']['repair_status'] == 'partial_open')
