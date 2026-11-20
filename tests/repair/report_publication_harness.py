@@ -287,7 +287,48 @@ check("B9 static: the three acceptance paths carry the guard",
       SRCH.count("if (_snapshotValid && _rowIndex > -1 && _rowIndex < _displayRows.Count)") == 1 and
       SRCH.count("if (row == null || !_snapshotValid) return;") == 1 and
       SRCH.count("if (!_snapshotValid) return;") == 1 and
-      SRCH.count("Repair R-079") == 5)
+      SRCH.count("_snapshotValid") == 8 and SRCH.count("Repair R-079") == 6)
+
+PUR = open("SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs", encoding="utf-8").read()
+
+
+def purchase_consumer(rules, dialog, row, requested_type=1):
+    """frmInvPurch.btnInvSrch_Click_1: what the editor actually loads."""
+    if not (dialog.ISDone and dialog.accepted_id == row["InvGlobalID"]):
+        return "nothing"
+    if rules == "fixed":
+        if not dialog.valid:                     # source-result validity, separate from the id
+            return "refused-invalid-source"
+        if row.get("SourceInvType", 0) > 0 and row["SourceInvType"] != requested_type:
+            return "refused-out-of-type"
+    return "loaded:%s" % row["InvGlobalID"]
+
+
+class AcceptedDialog:
+    """The dialog as the consumer sees it: an accepted id plus the validity of its source."""
+
+    def __init__(self, accepted_id, valid):
+        self.ISDone = accepted_id is not None
+        self.accepted_id = accepted_id
+        self.valid = valid
+
+
+ROW = {"InvGlobalID": "G-2", "SourceInvType": 1}
+check("B10 the consumer separates a usable document id from a valid search result",
+      purchase_consumer("legacy", AcceptedDialog("G-2", False), ROW) == "loaded:G-2" and
+      purchase_consumer("fixed", AcceptedDialog("G-2", False), ROW) == "refused-invalid-source" and
+      purchase_consumer("fixed", AcceptedDialog("G-2", True), ROW) == "loaded:G-2" and
+      purchase_consumer("fixed", AcceptedDialog("G-2", True), dict(ROW, SourceInvType=20))
+      == "refused-out-of-type" and
+      purchase_consumer("fixed", AcceptedDialog(None, True), ROW) == "nothing")
+consumer_src = PUR[PUR.index("private void btnInvSrch_Click_1"):]
+check("B11 static: validity is published to consumers and checked before the type guard",
+      SRCH.count("public bool   SnapshotValid => _snapshotValid;") == 1 and
+      consumer_src.count("if (!frm.SnapshotValid)") == 1 and
+      consumer_src.index("if (!frm.SnapshotValid)") < consumer_src.index("if (frm.SelectedInvType > 0")
+      < consumer_src.index("this.Navigate(") and
+      "نتيجة البحث غير صالحة لهذا الطلب، أعد البحث قبل اختيار مستند" in consumer_src and
+      PUR.index("if (frm.ISDone &&") < PUR.index("if (!frm.SnapshotValid)"))
 
 print()
 if FAILS:
