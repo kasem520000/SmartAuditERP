@@ -121,15 +121,36 @@ namespace SmartAuditERP
         {
             try
             {
+                // Repair R-067 (audit finding P6-024): encode the path value, honour the business body instead
+                // of discarding it, and never report success with an empty Ticket - consumers read its fields
+                // directly. The wrapper only guarantees the number today; subject/status render as unavailable
+                // until the details DTO is completed server-side (tracked residual).
                 var response = await _httpClient
-                    .GetAsync($"{_apiBaseUrl}/api/Tickets/Number/{ticketNumber}");
+                    .GetAsync($"{_apiBaseUrl}/api/Tickets/Number/{Uri.EscapeDataString(ticketNumber)}");
 
                 string responseBody = await response.Content.ReadAsStringAsync();
 
                 if (response.IsSuccessStatusCode)
                 {
-                    JsonConvert.DeserializeObject<TicketDetailsApiResponse>(responseBody);
-                    return new TicketDetailsResponse { Success = true };
+                    var apiDetails = JsonConvert.DeserializeObject<TicketDetailsApiResponse>(responseBody);
+                    if (apiDetails == null || !apiDetails.Success)
+                    {
+                        return new TicketDetailsResponse
+                        {
+                            Success = false,
+                            Message = "رفض الطلب أو تعذر قراءة رد الخادم"
+                        };
+                    }
+                    return new TicketDetailsResponse
+                    {
+                        Success = true,
+                        Ticket = new TicketDetails
+                        {
+                            TicketNumber = string.IsNullOrWhiteSpace(apiDetails.TicketNumber)
+                                ? ticketNumber
+                                : apiDetails.TicketNumber
+                        }
+                    };
                 }
 
                 return new TicketDetailsResponse

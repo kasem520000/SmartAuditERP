@@ -164,9 +164,13 @@ namespace SmartAuditERP.Form_WPF
             {
                 var result = await apiClient.GetTicketAsync(ticketNumber);
 
-                if (result.Success)
+                if (result.Success && result.Ticket != null)
                 {
-                    MessageBox.Show($"الموضوع: {result.Ticket.Subject}\nالحالة: {result.Ticket.Status}");
+                    // R-067: show whatever the endpoint guarantees today; fuller details await contract completion.
+                    MessageBox.Show(
+                        $"رقم التذكرة: {result.Ticket.TicketNumber}\n" +
+                        $"الموضوع: {result.Ticket.Subject ?? "(غير متوفر)"}\n" +
+                        $"الحالة: {result.Ticket.Status ?? "(غير متوفر)"}");
                 }
                 else
                 {
