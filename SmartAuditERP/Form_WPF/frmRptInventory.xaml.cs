@@ -58,6 +58,8 @@ namespace SmartAuditERP.Form_WPF
         // ═══ قائمة الفواتير ═══
         private InvoiceObj _invObj;
         private List<InvoiceTxt> _invoicesList;
+        private bool _isClosing;
+        private string _resultType = "", _resultFrom = "", _resultTo = "";
 
         #endregion
 
@@ -113,6 +115,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
+            _isClosing = true;
             _conn?.Close();
         }
 
@@ -329,94 +332,104 @@ namespace SmartAuditERP.Form_WPF
 
             btnView.IsEnabled = false;
             ProgressBar1.Value = 0;
-
-            await Task.Run(() => ShowInvoice());
-
-            CalculateSummaries();
-            btnView.IsEnabled = true;
-            ProgressBar1.Value = 100;
-        }
-
-        private void ShowInvoice()
-        {
+            GridControl2.ItemsSource = null;
+            _invoicesList = null;
+            ResetSummaries();
             try
             {
-                Dispatcher.Invoke(() => GridControl2.ItemsSource = null);
-
-                if (_invoicesList != null)
-                    _invoicesList.Clear();
-
-                // ═══ بناء شروط SQL ═══
-                string cond = $"inv.Inv_type={Invtype} AND inv.proc_type={_procType} AND ";
-
-                // الفرع
-                if (chkAllBranches.IsChecked != true
-                    && cmbBranches.SelectedIndex > -1
-                    && cmbBranches.SelectedValue != null)
-                    cond += $"inv.branch={cmbBranches.SelectedValue} AND ";
-
-                // المورد/العميل
-                if (ckAllClients.IsChecked != true
-                    && cmbClients.SelectedIndex > -1
-                    && cmbClients.SelectedValue != null)
-                    cond += $" cust_id={cmbClients.SelectedValue} AND ";
-
-                // المستخدم
-                if (ckAllUsers.IsChecked != true
-                    && cmbusers.SelectedIndex > -1
-                    && cmbusers.SelectedValue != null)
-                    cond += $" sales_emp={cmbusers.SelectedValue} AND ";
-
-                // المستودع
-                if (ckAllStore.IsChecked != true
-                    && cmbStore.SelectedValue != null)
-                    cond += $" inv.safe={cmbStore.SelectedValue} AND ";
-
-                // التواريخ
-                DateTime fromDate = DateTime.Parse(
-                    txtFromDate.DateTime.ToShortDateString() + " " +
-                    (txtStartTime.Text ?? "00:00"));
-                DateTime toDate = DateTime.Parse(
-                    txtToDate.DateTime.ToShortDateString() + " " +
-                    (txtEndTime.Text ?? "23:59"));
-
-                if (ckTotalPeriod.IsChecked != true)
-                    cond += " date BETWEEN @date1 AND @date2 AND ";
-
-                // ═══ بناء الاستعلام الكامل ═══
-                string sqlstr =
-                    $"SELECT Inv.*, " +
-                    $"(SELECT ISNULL(SUM(Inv_Sub.val1 * Inv_Sub.exchange_price), 0) " +
-                    $" FROM Inv_Sub WHERE InvGlobalID=Inv.InvGlobalID) AS sumPrice, " +
-                    $"(SELECT ISNULL(SUM(discount), 0) " +
-                    $" FROM Inv_Sub WHERE InvGlobalID=Inv.InvGlobalID) AS ItemDiscount, " +
-                    $"(SELECT ISNULL(SUM(CASE WHEN taxval=0 THEN (val1*exchange_price) ELSE 0 END), 0) " +
-                    $" FROM Inv_Sub WHERE InvGlobalID=Inv.InvGlobalID) AS FreeVATSales, " +
-                    $"Customers.name AS CustName, " +
-                    $"Users.username AS username, " +
-                    $"Branches.name AS BranchName " +
-                    $"FROM Inv " +
-                    $"LEFT JOIN Customers ON inv.cust_id=Customers.id " +
-                    $"LEFT JOIN Users ON inv.sales_emp=Users.emp " +
-                    $"LEFT JOIN Branches ON inv.branch=Branches.id " +
-                    $"WHERE {cond} Inv.IS_Deleted=0 ORDER BY date DESC";
-
-                // ═══ استدعاء InvoiceOper لجلب البيانات ═══
-                _invoicesList = new InvoiceOper().BindingListOfInvoices1(
-                    sqlstr, withItems: false, fromDate, toDate);
-
-                // ═══ ربط البيانات بالـ DataGrid ═══
-                Dispatcher.Invoke(() =>
+                // R-151 (P7-054): snapshot every control on the UI thread before the query.
+                var request = BuildInvoiceQuery();
+                string typeLabel = cmbType.Text;
+                string fromLabel = txtFromDate.DateTime.ToString();
+                string toLabel = txtToDate.DateTime.ToString();
+                var rows = await Task.Run(() => new InvoiceOper().BindingListOfInvoices1(
+                    request.sql, withItems: false, request.fromDate, request.toDate));
+                if (_isClosing) return;
+                var current = BuildInvoiceQuery();
+                if (request != current || typeLabel != cmbType.Text ||
+                    fromLabel != txtFromDate.DateTime.ToString() || toLabel != txtToDate.DateTime.ToString())
                 {
-                    GridControl2.ItemsSource = _invoicesList;
-                });
+                    DXMessageBox.Show("تغيرت معايير التقرير أثناء التحميل، أعد العرض.");
+                    return;
+                }
+                _resultType = typeLabel;
+                _resultFrom = fromLabel;
+                _resultTo = toLabel;
+                _invoicesList = rows;
+                GridControl2.ItemsSource = _invoicesList;
+                CalculateSummaries();
+                ProgressBar1.Value = 100;
             }
             catch (Exception ex)
             {
-                Dispatcher.Invoke(() =>
+                if (!_isClosing)
                     DXMessageBox.Show("خطأ في تحميل البيانات: " + ex.Message,
-                        "", MessageBoxButton.OK, MessageBoxImage.Error));
+                        "", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            finally
+            {
+                if (!_isClosing) btnView.IsEnabled = true;
+            }
+        }
+
+        private (string sql, DateTime fromDate, DateTime toDate) BuildInvoiceQuery()
+        {
+            // ═══ بناء شروط SQL ═══
+            string cond = $"inv.Inv_type={Invtype} AND inv.proc_type={_procType} AND ";
+
+            // الفرع
+            if (chkAllBranches.IsChecked != true
+                && cmbBranches.SelectedIndex > -1
+                && cmbBranches.SelectedValue != null)
+                cond += $"inv.branch={cmbBranches.SelectedValue} AND ";
+
+            // المورد/العميل
+            if (ckAllClients.IsChecked != true
+                && cmbClients.SelectedIndex > -1
+                && cmbClients.SelectedValue != null)
+                cond += $" cust_id={cmbClients.SelectedValue} AND ";
+
+            // المستخدم
+            if (ckAllUsers.IsChecked != true
+                && cmbusers.SelectedIndex > -1
+                && cmbusers.SelectedValue != null)
+                cond += $" sales_emp={cmbusers.SelectedValue} AND ";
+
+            // المستودع
+            if (ckAllStore.IsChecked != true
+                && cmbStore.SelectedValue != null)
+                cond += $" inv.safe={cmbStore.SelectedValue} AND ";
+
+            // التواريخ
+            DateTime fromDate = DateTime.Parse(
+                txtFromDate.DateTime.ToShortDateString() + " " +
+                (txtStartTime.Text ?? "00:00"));
+            DateTime toDate = DateTime.Parse(
+                txtToDate.DateTime.ToShortDateString() + " " +
+                (txtEndTime.Text ?? "23:59"));
+
+            if (ckTotalPeriod.IsChecked != true)
+                cond += " date BETWEEN @date1 AND @date2 AND ";
+
+            // ═══ بناء الاستعلام الكامل ═══
+            string sqlstr =
+                $"SELECT Inv.*, " +
+                $"(SELECT ISNULL(SUM(Inv_Sub.val1 * Inv_Sub.exchange_price), 0) " +
+                $" FROM Inv_Sub WHERE InvGlobalID=Inv.InvGlobalID) AS sumPrice, " +
+                $"(SELECT ISNULL(SUM(discount), 0) " +
+                $" FROM Inv_Sub WHERE InvGlobalID=Inv.InvGlobalID) AS ItemDiscount, " +
+                $"(SELECT ISNULL(SUM(CASE WHEN taxval=0 THEN (val1*exchange_price) ELSE 0 END), 0) " +
+                $" FROM Inv_Sub WHERE InvGlobalID=Inv.InvGlobalID) AS FreeVATSales, " +
+                $"Customers.name AS CustName, " +
+                $"Users.username AS username, " +
+                $"Branches.name AS BranchName " +
+                $"FROM Inv " +
+                $"LEFT JOIN Customers ON inv.cust_id=Customers.id " +
+                $"LEFT JOIN Users ON inv.sales_emp=Users.emp " +
+                $"LEFT JOIN Branches ON inv.branch=Branches.id " +
+                $"WHERE {cond} Inv.IS_Deleted=0 ORDER BY date DESC";
+
+            return (sqlstr, fromDate, toDate);
         }
 
         #endregion
@@ -498,37 +511,33 @@ namespace SmartAuditERP.Form_WPF
                 string globalId = invTxt.InvGlobalID;
                 int procType = invTxt.ProcType;
 
-                switch (cmbType.SelectedIndex)
+                // R-158 (P7-131): route by the stored row type, not a later UI selection.
+                switch ((int)invTxt.InvoiceType)
                 {
-                    case 0: // مناقلة مرسلة
-                    case 1: // مناقلة مستلمة
+                    case 8:
                         OpenInventoryTransfer(globalId, procType);
                         break;
-
-                    case 2: // بضاعة أول مدة
+                    case 9:
                         OpenBeginningInventory(globalId, procType);
                         break;
-
-                    case 3: // أمر توريد مخزني
-                        OpenInputOutput(4, globalId, procType,
-                            "أمر توريد مخزني (فاتورة إدخال)");
+                    case 4:
+                        OpenInputOutput(4, globalId, procType, "أمر توريد مخزني (فاتورة إدخال)");
                         break;
-
-                    case 4: // أمر صرف مخزني
-                        OpenInputOutput(5, globalId, procType,
-                            "أمر صرف مخزني (فاتورة إخراج)");
+                    case 5:
+                        OpenInputOutput(5, globalId, procType, "أمر صرف مخزني (فاتورة إخراج)");
                         break;
-
-                    case 5: // أمر إنتاج
+                    case 6:
                         OpenProductionOrder(globalId, procType);
                         break;
-
-                    case 6: // طلب بضاعة
+                    case 14:
                         OpenInputOutput(14, globalId, procType, "طلب بضاعة");
                         break;
-
-                    case 7: // تسوية جردية
-                        OpenSafeAdjust(globalId, procType);
+                    case 7:
+                        // There is no proven persisted global-ID link to SafesAdjust.
+                        DXMessageBox.Show("تعذر فتح التسوية: ربط حركة المخزون بالتسوية الأصلية غير مثبت.");
+                        break;
+                    default:
+                        DXMessageBox.Show("نوع المستند غير مدعوم في هذه الشاشة.");
                         break;
                 }
             }
@@ -623,16 +632,6 @@ namespace SmartAuditERP.Form_WPF
             frm.Activate();
         }
 
-        private void OpenSafeAdjust(string globalId, int procType)
-        {
-            var frm = new frmSafeAdjust();
-            frm.Show();
-            frm.Navigate(
-                $"SELECT * FROM Inv WHERE IS_Deleted=0 AND inv_type=7 " +
-                $"AND proc_type={procType} AND InvGlobalID=N'{globalId}'");
-            frm.Activate();
-        }
-
         #endregion
 
         #region Button Events
@@ -674,9 +673,9 @@ namespace SmartAuditERP.Form_WPF
                     // column would be a separate enhancement, out of scope here.)
                     export.Row(SpreadsheetExport.Text(inv.InvoiceNo),
                                $"{inv.InvDate:d}",
-                               SpreadsheetExport.Text(inv.Customer),
-                               SpreadsheetExport.Text(inv.User),
-                               SpreadsheetExport.Text(inv.Branch),
+                               SpreadsheetExport.Text(inv.ClientTxt),
+                               SpreadsheetExport.Text(inv.UserTxt),
+                               SpreadsheetExport.Text(inv.BranchTxt),
                                SpreadsheetExport.Money(inv.SumPrice),
                                SpreadsheetExport.Money(inv.TotDiscount),
                                SpreadsheetExport.Money(inv.Total),
@@ -744,15 +743,44 @@ namespace SmartAuditERP.Form_WPF
 
             try
             {
-                // ═══ استخدام كلاس Report الموجود في المشروع ═══
+                // R-152 (P7-055): project the actual WPF report rows instead of
+                // passing null to the legacy WinForms GridView bridge.
+                var printRows = new List<InventoryData>();
+                foreach (var inv in _invoicesList)
+                    printRows.Add(new InventoryData
+                    {
+                        ProcessType = _resultType,
+                        InventoryType = _resultType,
+                        InvType = inv.InvoiceTypeTxt,
+                        InvoiceNo = inv.InvoiceNo.ToString(),
+                        RefsInvNo = inv.ReffNo,
+                        InvDate = inv.InvDate.ToShortDateString(),
+                        InvTime = inv.InvoiceTime,
+                        Clint = inv.ClientTxt,
+                        EmpName = inv.UserTxt,
+                        BranchName = inv.BranchTxt,
+                        SafeName = inv.InvertoryName,
+                        Total = inv.SumPrice.ToString("N2"),
+                        NetDiscount = inv.TotDiscount.ToString("N2"),
+                        NetBeforeTax = inv.Total.ToString("N2"),
+                        Tax = inv.VAT.ToString("N2"),
+                        Net = inv.Net.ToString("N2"),
+                        Sum = _sum.ToString("N2"),
+                        SumNetDiscount = _discount.ToString("N2"),
+                        Total1 = _nTotal.ToString("N2"),
+                        SumTax = _nVAT.ToString("N2"),
+                        NetTotal = _nNet.ToString("N2"),
+                        FromDate = _resultFrom,
+                        ToDate = _resultTo,
+                        User = Common.GetEmpName(MainClass.EmpNo),
+                        PrintDate = DateTime.Now.ToShortDateString()
+                    });
+                var data = new DataSet("Name");
+                data.Tables.Add(UtilitiesProj.Common.ToDataTable(printRows));
                 var report = new Report();
                 report.Printing(
                     printType,
-                    report.BindToData(
-                        null, // GridView2 غير مستخدم في WPF
-                        cmbType.Text,
-                        txtFromDate.DateTime.ToString(),
-                        txtToDate.DateTime.ToString()),
+                    data,
                     _rptUrl,
                     _rptName,
                     _defPrinter,

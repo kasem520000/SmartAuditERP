@@ -17,7 +17,7 @@ namespace SmartAuditERP.Form_WPF
         /// <summary>الكمية المباعة الصافية</summary>
         public double DgvQty         { get; set; }
 
-        /// <summary>متوسط التكلفة / إجمالي التكلفة</summary>
+        /// <summary>إجمالي تكلفة الكمية الصافية؛ الاسم القديم محفوظ لتوافق الربط.</summary>
         public double DgvAvgCost     { get; set; }
 
         /// <summary>صافي المبيعات بعد الخصم</summary>

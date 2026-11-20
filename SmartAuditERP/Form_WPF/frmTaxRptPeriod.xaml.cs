@@ -573,7 +573,8 @@ namespace SmartAuditERP.Form_WPF
                 }
 
                 // ── Sales totals ────────────────────────────────────────────
-                double netSales = Math.Round(netSaleVal + receiptTotal + rentNet, 2);
+                // R-148 (P7-044): the displayed non-taxed row belongs in the base total too.
+                double netSales = Math.Round(netSaleVal + salesOutTaxVal + receiptTotal + rentNet, 2);
                 double netSalesTax = Math.Round(taxNetSaleVal + receiptVAT + rentVAT, 2);
 
                 // ── Purchase invoices ───────────────────────────────────────
@@ -660,7 +661,7 @@ namespace SmartAuditERP.Form_WPF
 
 
                 // ── Purchase totals ─────────────────────────────────────────
-                double netPurches = Math.Round(netPurchVal + expTotal, 2);
+                double netPurches = Math.Round(netPurchVal + purchOutTaxVal + expTotal, 2);
                 double netPurchesTax = Math.Round(taxNetPurchVal + expVAT, 2);
 
                 // ── Net VAT ─────────────────────────────────────────────────

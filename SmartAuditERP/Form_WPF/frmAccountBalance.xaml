@@ -155,7 +155,7 @@
                     <!-- Year Previews -->
                     <Label Content="سنوات سابقة" Style="{StaticResource FilterLabel}" Margin="0,20,0,0"/>
                     <ComboBox x:Name="CmbYearPreviews" Style="{StaticResource ModernComboBox}" 
-                              DropDownOpened="CmbYearPreviews_DropDown" SelectionChanged="CmbYearPreviews_SelectionChanged"/>
+                              DropDownOpened="CmbYearPreviews_DropDown"/>
 
                     <!-- Zoom Controls -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15">

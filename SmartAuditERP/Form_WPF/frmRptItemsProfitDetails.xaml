@@ -293,6 +293,7 @@
                                          Grid.Column="0"
                                          Style="{StaticResource ModernTextBox}"
                                          IsEnabled="False"
+                                         TextChanged="ItemText_Changed"
                                          KeyDown="txtItemName_KeyDown"/>
                                 <Button Grid.Column="1"
                                         Content="🔍"
@@ -310,7 +311,8 @@
                                      Style="{StaticResource ModernTextBox}"
                                      IsEnabled="False"
                                      TextAlignment="Center"
-                                     KeyDown="txtItemCode_KeyDown"/>
+                                     TextChanged="ItemText_Changed"
+                                         KeyDown="txtItemCode_KeyDown"/>
                         </StackPanel>
                     </Border>
 

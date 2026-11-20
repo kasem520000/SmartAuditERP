@@ -39,6 +39,8 @@ namespace SmartAuditERP.Form_WPF
 
         private string StyleFile;
         private string StyleFolder;
+        private readonly Dictionary<DataGridColumn, (DataGridLength Width, Visibility Visibility)> _defaultLayout
+            = new Dictionary<DataGridColumn, (DataGridLength, Visibility)>();
         private string cond;
 
         // مصدر البيانات — DataTable معبأ في الكود
@@ -86,6 +88,11 @@ namespace SmartAuditERP.Form_WPF
         {
             txtDateFrom.DateTime = DateTime.Today;
             txtDateTo.DateTime   = DateTime.Today;
+
+            if (_defaultLayout.Count == 0)
+                foreach (DataGridColumn col in GridControl1.Columns)
+                    _defaultLayout[col] = (col.Width, col.Visibility);
+            RestoreSavedLayout();
 
             LoadSafes();
             LoadBranches();
@@ -343,7 +350,7 @@ namespace SmartAuditERP.Form_WPF
 
                 string sql =
                     $"SELECT {condTop} " +
-                    "Inv_sub.store AS safe, Inv.proc_type, " +
+                    "Inv.InvGlobalID, Inv_sub.store AS safe, Inv.proc_type, " +
                     "Inv_sub.proc_type AS ProcTypeSub, date, Inv.id, " +
                     "ItemId, val, val1, exchange_price, " +
                     "(exchange_price/NULLIF(UnitEquality,0)) AS price, " +
@@ -381,7 +388,8 @@ namespace SmartAuditERP.Form_WPF
                     int    procType    = Convert.ToInt32(row["proc_type"]);
                     int    procTypeSub = Convert.ToInt32(row["ProcTypeSub"]);
 
-                    string rightCond = invType == 7
+                    // R-147 (P7-060): production and adjustment direction is on the line.
+                    string rightCond = (invType == 6 || invType == 7)
                         ? $"AND ProcType={procTypeSub}"
                         : $"AND ProcType={procType}";
 
@@ -436,6 +444,9 @@ namespace SmartAuditERP.Form_WPF
                         DgvItemCode  = row["ItemCode"]?.ToString() ?? "",
                         DgvItemName  = row["ItemName"]?.ToString() ?? "",
                         DgvInvNo     = row["id"]?.ToString() ?? "",
+                        InvGlobalID  = row["InvGlobalID"]?.ToString() ?? "",
+                        InvTypeCode  = invType,
+                        HeaderProcType = procType,
                         DgvRefNo     = row["Reff_No"]?.ToString() ?? "",
                         DgvDate      = Convert.ToDateTime(row["date"])
                                                .ToShortDateString(),
@@ -494,8 +505,8 @@ namespace SmartAuditERP.Form_WPF
                 4  => " and Inv.inv_type=5 ",
 
                 5  => rdAll ? " and Inv.inv_type=6 "
-                    : rdIn  ? " and inv.proc_type=1 and Inv.inv_type=6 "
-                    :         " and inv.proc_type=2 and Inv.inv_type=6 ",
+                    : rdIn  ? " and inv_sub.proc_type=1 and Inv.inv_type=6 "
+                    :         " and inv_sub.proc_type=2 and Inv.inv_type=6 ",
 
                 6  => rdAll ? " and Inv.inv_type=7 "
                     : rdIn  ? " and inv_sub.proc_type=1 and Inv.inv_type=7 "
@@ -1015,6 +1026,53 @@ namespace SmartAuditERP.Form_WPF
             menu.IsOpen = true;
         }
 
+        // R-154 (P7-121): restore only known, uniquely named columns with safe values.
+        private void RestoreSavedLayout()
+        {
+            if (!File.Exists(StyleFile)) return;
+            try
+            {
+                var settings = new System.Xml.XmlReaderSettings
+                {
+                    DtdProcessing = System.Xml.DtdProcessing.Prohibit,
+                    XmlResolver = null,
+                    MaxCharactersInDocument = 1000000
+                };
+                var doc = new System.Xml.XmlDocument { XmlResolver = null };
+                using (var reader = System.Xml.XmlReader.Create(StyleFile, settings))
+                    doc.Load(reader);
+                if (doc.DocumentElement?.Name != "GridLayout")
+                    throw new InvalidDataException("ملف المظهر غير صالح.");
+
+                var columns = GridControl1.Columns.Cast<DataGridColumn>()
+                    .GroupBy(c => c.Header?.ToString() ?? "")
+                    .Where(g => g.Count() == 1)
+                    .ToDictionary(g => g.Key, g => g.First());
+                var seen = new HashSet<string>();
+                foreach (System.Xml.XmlNode node in doc.DocumentElement.ChildNodes)
+                {
+                    if (node.Name != "Column" || node.Attributes == null) continue;
+                    string header = node.Attributes["Header"]?.Value;
+                    if (header == null || !seen.Add(header) || !columns.TryGetValue(header, out var col)) continue;
+                    string widthText = node.Attributes["Width"]?.Value;
+                    if ((double.TryParse(widthText, System.Globalization.NumberStyles.Float,
+                            System.Globalization.CultureInfo.InvariantCulture, out double width) ||
+                         double.TryParse(widthText, System.Globalization.NumberStyles.Float,
+                            System.Globalization.CultureInfo.CurrentCulture, out width)) &&
+                        !double.IsNaN(width) && !double.IsInfinity(width) && width >= 1 && width <= 10000)
+                        col.Width = new DataGridLength(width);
+                    if (Enum.TryParse(node.Attributes["Visibility"]?.Value, out Visibility visibility) &&
+                        (visibility == Visibility.Visible || visibility == Visibility.Hidden || visibility == Visibility.Collapsed))
+                        col.Visibility = visibility;
+                }
+            }
+            catch (Exception ex)
+            {
+                DXMessageBox.Show("تعذر استعادة مظهر الجدول: " + ex.Message,
+                    "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
         private void MenuItemSaveSetting_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -1022,25 +1080,22 @@ namespace SmartAuditERP.Form_WPF
                 if (!Directory.Exists(StyleFolder))
                     Directory.CreateDirectory(StyleFolder);
 
-                using var writer = new System.Xml.XmlTextWriter(
-                    StyleFile, System.Text.Encoding.UTF8);
-                writer.WriteStartDocument();
-                writer.WriteStartElement("GridLayout");
-
-                foreach (DataGridColumn col in GridControl1.Columns)
+                using (var writer = new System.Xml.XmlTextWriter(StyleFile, System.Text.Encoding.UTF8))
                 {
-                    writer.WriteStartElement("Column");
-                    writer.WriteAttributeString("Header",
-                        col.Header?.ToString() ?? "");
-                    writer.WriteAttributeString("Width",
-                        col.ActualWidth.ToString("F1"));
-                    writer.WriteAttributeString("Visibility",
-                        col.Visibility.ToString());
+                    writer.WriteStartDocument();
+                    writer.WriteStartElement("GridLayout");
+                    foreach (DataGridColumn col in GridControl1.Columns)
+                    {
+                        writer.WriteStartElement("Column");
+                        writer.WriteAttributeString("Header", col.Header?.ToString() ?? "");
+                        double width = col.ActualWidth > 0 ? col.ActualWidth : col.Width.DisplayValue;
+                        writer.WriteAttributeString("Width", width.ToString("F1", System.Globalization.CultureInfo.InvariantCulture));
+                        writer.WriteAttributeString("Visibility", col.Visibility.ToString());
+                        writer.WriteEndElement();
+                    }
                     writer.WriteEndElement();
+                    writer.WriteEndDocument();
                 }
-
-                writer.WriteEndElement();
-                writer.WriteEndDocument();
 
                 DXMessageBox.Show("تم حفظ مظهر الجدول بنجاح.", "حفظ",
                                 MessageBoxButton.OK, MessageBoxImage.Information);
@@ -1057,6 +1112,11 @@ namespace SmartAuditERP.Form_WPF
             try
             {
                 if (File.Exists(StyleFile)) File.Delete(StyleFile);
+                foreach (var entry in _defaultLayout)
+                {
+                    entry.Key.Width = entry.Value.Width;
+                    entry.Key.Visibility = entry.Value.Visibility;
+                }
                 DXMessageBox.Show("تم إعادة الإعدادات الافتراضية.", "تم",
                                 MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -1075,185 +1135,84 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnOpenInvoice_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button btn && btn.Tag is ItemActivityRow_ActivityDetailed item)
+            if (sender is not Button btn || btn.Tag is not ItemActivityRow_ActivityDetailed item)
+                return;
+            try
             {
-                try
-                {
-                    string invType = item.DgvInvType;
-                    string invNoStr = item.DgvInvNo;
-
-                    if (string.IsNullOrEmpty(invType) ||
-                        string.IsNullOrEmpty(invNoStr))
-                        return;
-
-                    OpenInvoiceByType(invType, invNoStr);
-                }
-                catch (Exception ex)
-                {
-                    DXMessageBox.Show($"خطأ:\n{ex.Message}", "خطأ",
-                                    MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                OpenInvoiceByIdentity(item);
+            }
+            catch (Exception ex)
+            {
+                DXMessageBox.Show($"خطأ:\n{ex.Message}", "خطأ",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
-        private void OpenInvoiceByType(string invType, string invNo)
+        // R-155 (P7-061): route by stored codes and global ID, never translated text or local number.
+        private void OpenInvoiceByIdentity(ItemActivityRow_ActivityDetailed item)
         {
-            switch (invType)
+            if (string.IsNullOrWhiteSpace(item.InvGlobalID))
             {
-                case "فاتورة مبيعات":
-                    OpenForm<frmInvSale>(f =>
-                    {
-                        f.InvType  = 2; f.ProcType = 1;
-                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND inv_type=2 AND proc_type=1 AND id={invNo}");
-                    });
-                    break;
+                DXMessageBox.Show("هوية المستند غير متاحة.");
+                return;
+            }
+            int type = item.InvTypeCode, proc = item.HeaderProcType;
+            string id = item.InvGlobalID.Replace("'", "''");
+            string sql = $"SELECT * FROM Inv WHERE IS_Deleted=0 AND inv_type={type} " +
+                         $"AND proc_type={proc} AND InvGlobalID=N'{id}'";
 
-                case "مرتجع مبيعات":
-                case "مرتجع مبيعات ":
-                    OpenForm<frmInvSale>(f =>
-                    {
-                        f.Title = "مرتجع مبيعات";
-                        f.InvType  = 2; f.ProcType = 2;
-                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND inv_type=2 AND proc_type=2 AND id={invNo}");
-                    });
+            switch (type)
+            {
+                case 2 when proc == 1 || proc == 2:
+                    OpenForm<frmInvSale>(f => { f.InvType = type; f.ProcType = proc; }, f => f.Navigate(sql));
                     break;
-
-                case "فاتورة مشتريات":
-                    OpenForm<frmInvPurch>(f =>
-                    {
-                        f.InvType  = 1; f.ProcType = 1;
-                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND inv_type=1 AND proc_type=1 AND id={invNo}");
-                    });
+                case 1 when proc == 1 || proc == 2:
+                    OpenForm<frmInvPurch>(f => { f.InvType = type; f.ProcType = proc; }, f => f.Navigate(sql));
                     break;
-
-                case "مرتجع مشتريات":
-                    OpenForm<frmInvPurch>(f =>
-                    {
-                        f.Title = "مرتجع مشتريات";
-                        f.InvType  = 1; f.ProcType = 2;
-                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND inv_type=1 AND proc_type=2 AND id={invNo}");
-                    });
+                case 3 when proc == 1 || proc == 2:
+                    OpenForm<frmInvPOS>(f => { f.InvType = type; f.ProcType = proc; }, f => f.Navigate(sql));
                     break;
-
-                case "نقطة بيع":
-                    OpenForm<frmInvPOS>(f =>
-                    {
-                        f.ProcType = 1; f.InvType = 3;
-                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND inv_type=3 AND proc_type=1 AND id={invNo}");
-                    });
+                case 9 when proc == 1:
+                    OpenForm<frmInvPurch>(f => { f.InvType = type; f.ProcType = proc; f.Title = "بضاعة أول مدة"; }, f => f.Navigate(sql));
                     break;
-
-                case "مرتجع نقطة بيع":
-                    OpenForm<frmInvPOS>(f =>
-                    {
-                        f.Title = "مرتجع"; f.ProcType = 2; f.InvType = 3;
-                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND inv_type=3 AND proc_type=2 AND id={invNo}");
-                    });
+                case 4 when proc == 1:
+                case 5 when proc == 1:
+                    OpenForm<frmInvInputOutput>(f => { f.InvType = type; f.ProcType = proc; }, f => f.Navigate(sql));
                     break;
-
-                case "بضاعة أول مدة":
-                    OpenForm<frmInvPurch>(f =>
-                    {
-                        f.Title = "بضاعة أول مدة";
-                        f.InvType  = 9; f.ProcType = 1;
-                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND inv_type=9 AND proc_type=1 AND id={invNo}");
-                    });
+                case 6 when proc == 1:
+                    OpenForm<frmProductionOrder>(f => { f.InvType = type; f.ProcType = proc; }, f => f.Navigate(sql));
                     break;
-
-                case "فاتورة الإدخال":
-                    OpenForm<frmInvInputOutput>(f =>
-                    {
-                        f.InvType = 4; f.ProcType = 1;
-                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND proc_type=1 AND inv_type=4 AND id={invNo}");
-                    });
+                case 8 when proc == 1 || proc == 2:
+                    OpenForm<frmInventoryTransfer>(f => { f.InvType = type; f.ProcType = proc; }, f => f.Navigate(sql));
                     break;
-
-                case "فاتورة الإخراج":
-                    OpenForm<frmInvInputOutput>(f =>
-                    {
-                        f.Title = "فاتورة إخراج";
-                        f.InvType = 5; f.ProcType = 1;
-                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND proc_type=1 AND inv_type=5 AND id={invNo}");
-                    });
-                    break;
-
-                case "إنتاج":
-                    OpenWindow<frmProductionOrder>(f =>
-                    {
-                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND proc_type=1 AND inv_type=6 AND id={invNo}");
-                    });
-                    break;
-
-                case "مستهلك في الإنتاج":
-                    OpenWindow<frmProductionOrder>(f =>
-                    {
-                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND proc_type=2 AND inv_type=6 AND id={invNo}");
-                    });
-                    break;
-
-                case "مناقلة إلى":
-                    OpenWindow<frmInventoryTransfer>(f =>
-                    {
-                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND proc_type=1 AND inv_type=8 AND id={invNo}");
-                    });
-                    break;
-
-                case "مناقلة من":
-                    OpenWindow<frmInventoryTransfer>(f =>
-                    {
-                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND proc_type=2 AND inv_type=8 AND id={invNo}");
-                    });
-                    break;
-
-                case "تسوية جردية مدخلة":
-                case "تسوية جردية مخرجة":
-                    OpenForm<frmSafeAdjust>(f =>
-                    {
-                        f.Navigate($"SELECT * FROM SafesAdjust WHERE id={invNo}");
-                    });
+                // SafesAdjust has no persisted global-ID link; a local number alone is not proof.
+                default:
+                    DXMessageBox.Show("لا يمكن فتح مصدر هذا النوع بهوية موثوقة من هذا التقرير.");
                     break;
             }
         }
 
-        /// <summary>Helper لفتح نموذج WinForms بشكل موحد</summary>
-        private static void OpenForm<T>(Action<T> configure)
+        // R-156 (P7-132): type configuration precedes Loaded, navigation follows it once.
+        private static void OpenForm<T>(Action<T> configure, Action<T> navigate)
             where T : System.Windows.Window, new()
         {
             var form = new T();
             configure(form);
+            RoutedEventHandler loaded = null;
+            loaded = (sender, args) =>
+            {
+                form.Loaded -= loaded;
+                try { navigate(form); }
+                catch (Exception ex)
+                {
+                    DXMessageBox.Show("تعذر تحميل المستند: " + ex.Message,
+                        "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            };
+            form.Loaded += loaded;
             form.WindowState = WindowState.Maximized;
             form.Show();
             form.Activate();
-        }
-
-        private static void OpenWindow<T>(Action<T> configure)
-    where T : System.Windows.Window, new()
-        {
-            // إنشاء نسخة من النافذة (WPF Window)
-            var window = new T();
-
-            // تنفيذ الإعدادات المرسلة (مثل التوجيه أو تمرير البيانات)
-            configure(window);
-
-            // إعدادات العرض الخاصة بـ WPF
-            window.WindowState = System.Windows.WindowState.Maximized;
-            window.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
-
-            window.Show();
-            window.Activate();
         }
 
         #endregion

@@ -20,6 +20,7 @@ namespace SmartAuditERP.Form_WPF
     {
         #region Fields
         private SqlConnection _connection = MainClass.ConnObj();
+        private readonly string _initialConnectionString;
         private int _selectedAccountCode = -1;
         private int _restrictionType = -1;
         private string _reportPath = MainClass.ReportsPath;
@@ -36,6 +37,7 @@ namespace SmartAuditERP.Form_WPF
         public frmAccountBalance()
         {
             InitializeComponent();
+            _initialConnectionString = _connection.ConnectionString;
             this.Loaded += frmAccountBalance_Loaded;
         }
 
@@ -681,22 +683,31 @@ namespace SmartAuditERP.Form_WPF
         #region Event Handlers
         private void btnShow_Click(object sender, RoutedEventArgs e)
         {
-            // التعامل مع السنوات السابقة
-            if (MainClass.ReturnYearPreviews && CmbYearPreviews.SelectedValue != null)
+            // R-149 (P7-115): use a private selected-year connection on every run.
+            SqlConnection original = _connection;
+            try
             {
-                MainClass.originalConnStr = MainClass.connstr;
-                MainClass.connstr = $"server={MainClass.Server};database={CmbYearPreviews.SelectedValue};trusted_connection=true";
-                _connection = MainClass.ConnObj();
+                var builder = new SqlConnectionStringBuilder(_initialConnectionString);
+                if (CmbYearPreviews.SelectedIndex >= 0)
+                {
+                    string database = Convert.ToString(CmbYearPreviews.SelectedValue);
+                    if (string.IsNullOrWhiteSpace(database))
+                        throw new InvalidOperationException("السنة المختارة لا تحدد قاعدة بيانات.");
+                    builder.InitialCatalog = database;
+                }
+                using (var selectedConnection = new SqlConnection(builder.ConnectionString))
+                {
+                    _connection = selectedConnection;
+                    ShowAccountData();
+                }
             }
-
-            ShowAccountData();
-
-            // استعادة الاتصال الأصلي
-            if (MainClass.ReturnYearPreviews)
+            catch (Exception ex)
             {
-                MainClass.connstr = MainClass.originalConnStr;
-                MainClass.ReturnYearPreviews = false;
-                _connection = MainClass.ConnObj();
+                MessageBox.Show("خطأ في الاتصال بالسنة المختارة: " + ex.Message);
+            }
+            finally
+            {
+                _connection = original;
             }
         }
 
@@ -847,13 +858,7 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
-        private void CmbYearPreviews_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (CmbYearPreviews.SelectedIndex > 0)
-                MainClass.ReturnYearPreviews = true;
-            else
-                MainClass.ReturnYearPreviews = false;
-        }
+
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {

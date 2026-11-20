@@ -370,7 +370,7 @@
                         <DataGrid.Columns>
 
                             <DataGridTextColumn Header="رقم الفاتورة"
-                                                Binding="{Binding InvNo}"
+                                                Binding="{Binding InvoiceNo}"
                                                 Width="100">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock" BasedOn="{StaticResource CenterCell}"/>
@@ -386,7 +386,7 @@
                             </DataGridTextColumn>
 
                             <DataGridTextColumn Header="العميل/المورد"
-                                                Binding="{Binding Customer}"
+                                                Binding="{Binding ClientTxt}"
                                                 Width="140">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock" BasedOn="{StaticResource CenterCell}"/>
@@ -394,7 +394,7 @@
                             </DataGridTextColumn>
 
                             <DataGridTextColumn Header="المستخدم"
-                                                Binding="{Binding User}"
+                                                Binding="{Binding UserTxt}"
                                                 Width="100">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock" BasedOn="{StaticResource CenterCell}"/>
@@ -402,7 +402,7 @@
                             </DataGridTextColumn>
 
                             <DataGridTextColumn Header="الفرع"
-                                                Binding="{Binding Branch}"
+                                                Binding="{Binding BranchTxt}"
                                                 Width="100">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock" BasedOn="{StaticResource CenterCell}"/>

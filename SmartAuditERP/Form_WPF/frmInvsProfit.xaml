@@ -407,33 +407,38 @@
                         <dxg:GridColumn FieldName="DgvInvGlobalID" Visible="False"/>
                         <dxg:GridColumn FieldName="DgvOperType" Visible="False"/>
                         <dxg:GridColumn FieldName="DgvProcType" Visible="False"/>
+                        <dxg:GridColumn FieldName="DgvTotalSigned" Visible="False"/>
+                        <dxg:GridColumn FieldName="DgvDiscountSigned" Visible="False"/>
+                        <dxg:GridColumn FieldName="DgvSumSigned" Visible="False"/>
+                        <dxg:GridColumn FieldName="DgvCostSigned" Visible="False"/>
+                        <dxg:GridColumn FieldName="DgvProfitSigned" Visible="False"/>
 
                     </dxg:GridControl.Columns>
 
                     <!-- الملخصات تكون هنا فقط -->
                     <dxg:GridControl.TotalSummary>
-                        <dxg:GridSummaryItem FieldName="DgvTotal"
-                                 SummaryType="Custom"
+                        <dxg:GridSummaryItem FieldName="DgvTotalSigned"
+                                 SummaryType="Sum"
                                  ShowInColumn="DgvTotal"
                                  DisplayFormat="{}{0:0.##}"/>
 
-                        <dxg:GridSummaryItem FieldName="DgvDiscount"
-                                 SummaryType="Custom"
+                        <dxg:GridSummaryItem FieldName="DgvDiscountSigned"
+                                 SummaryType="Sum"
                                  ShowInColumn="DgvDiscount"
                                  DisplayFormat="{}{0:0.##}"/>
 
-                        <dxg:GridSummaryItem FieldName="DgvSum"
-                                 SummaryType="Custom"
+                        <dxg:GridSummaryItem FieldName="DgvSumSigned"
+                                 SummaryType="Sum"
                                  ShowInColumn="DgvSum"
                                  DisplayFormat="{}{0:0.##}"/>
 
-                        <dxg:GridSummaryItem FieldName="DgvCost"
-                                 SummaryType="Custom"
+                        <dxg:GridSummaryItem FieldName="DgvCostSigned"
+                                 SummaryType="Sum"
                                  ShowInColumn="DgvCost"
                                  DisplayFormat="{}{0:0.##}"/>
 
-                        <dxg:GridSummaryItem FieldName="DgvProfit"
-                                 SummaryType="Custom"
+                        <dxg:GridSummaryItem FieldName="DgvProfitSigned"
+                                 SummaryType="Sum"
                                  ShowInColumn="DgvProfit"
                                  DisplayFormat="{}{0:0.##}"/>
                     </dxg:GridControl.TotalSummary>

@@ -246,7 +246,12 @@ namespace SmartAuditERP.Form_WPF
                                 FROM Receipts
                                 LEFT JOIN SalesMen  ON SalesMen.ID  = Receipts.SalesManID
                                 LEFT JOIN Customers ON Customers.ID  = Receipts.ClientID
-                                LEFT JOIN Users     ON Users.emp     = Receipts.EmpId
+                                -- R-153 (P7-110): one display row per employee; do not guess
+                                -- which account created a receipt when several share that employee.
+                                LEFT JOIN (SELECT emp,
+                                    CASE WHEN COUNT(*) > 1 THEN N'عدة مستخدمين'
+                                         ELSE MAX(username) END AS username
+                                    FROM Users GROUP BY emp) Users ON Users.emp = Receipts.EmpId
                                 {whereClause}
                                 ORDER BY Receipts.ReceiptNo";
 

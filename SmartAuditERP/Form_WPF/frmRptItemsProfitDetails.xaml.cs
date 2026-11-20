@@ -194,7 +194,7 @@ namespace SmartAuditERP.Form_WPF
                 // الصنف
                 if (chkAll.IsChecked != true)
                 {
-                    if (string.IsNullOrWhiteSpace(txtItemName.Text))
+                    if (SelectedId <= 0 || string.IsNullOrWhiteSpace(txtItemName.Text))
                     {
                         DXMessageBox.Show("اختر مادة.", "تنبيه",
                                         MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -503,6 +503,7 @@ namespace SmartAuditERP.Form_WPF
         {
             if (!IsLoaded) return;
             bool isAll = chkAll.IsChecked == true;
+            InvalidateItemResult();
             txtItemName.IsEnabled = !isAll;
             txtItemCode.IsEnabled = !isAll;
 
@@ -542,6 +543,20 @@ namespace SmartAuditERP.Form_WPF
         // ══════════════════════════════════════════════
         #region Item Search
         // ══════════════════════════════════════════════
+
+        // R-150 (P7-085): edited display text no longer identifies the previous item.
+        private void ItemText_Changed(object sender, TextChangedEventArgs e)
+        {
+            SelectedId = -1;
+            InvalidateItemResult();
+        }
+
+        private void InvalidateItemResult()
+        {
+            if (!IsLoaded) return;
+            ProfitList?.Clear();
+            UpdateSummaryCards();
+        }
 
         private void txtItemName_KeyDown(object sender, KeyEventArgs e)
         {
@@ -584,9 +599,10 @@ namespace SmartAuditERP.Form_WPF
 
                 if (dt.Rows.Count > 0)
                 {
-                    SelectedId       = Convert.ToInt32(dt.Rows[0]["id"]);
                     txtItemCode.Text = dt.Rows[0]["Code"]?.ToString() ?? "";
                     txtItemName.Text = dt.Rows[0]["name"]?.ToString() ?? "";
+                    SelectedId = Convert.ToInt32(dt.Rows[0]["id"]);
+                    InvalidateItemResult();
                 }
                 else
                 {
@@ -612,9 +628,10 @@ namespace SmartAuditERP.Form_WPF
 
                 if (dt.Rows.Count > 0)
                 {
-                    SelectedId       = Convert.ToInt32(dt.Rows[0]["id"]);
                     txtItemCode.Text = dt.Rows[0]["Code"]?.ToString() ?? "";
                     txtItemName.Text = dt.Rows[0]["name"]?.ToString() ?? "";
+                    SelectedId = Convert.ToInt32(dt.Rows[0]["id"]);
+                    InvalidateItemResult();
                 }
                 else
                 {
@@ -644,9 +661,10 @@ namespace SmartAuditERP.Form_WPF
 
                 if (form.ISDone && form.ItemId > 0)
                 {
-                    SelectedId       = form.ItemId;
-                    txtItemCode.Text = Common.GetItemCode(SelectedId);
+                    txtItemCode.Text = Common.GetItemCode(form.ItemId);
                     txtItemName.Text = form.Itemname;
+                    SelectedId = form.ItemId;
+                    InvalidateItemResult();
                 }
             }
             catch (Exception ex)
@@ -674,7 +692,7 @@ namespace SmartAuditERP.Form_WPF
             }
 
             if (chkAll.IsChecked != true &&
-                string.IsNullOrWhiteSpace(txtItemName.Text))
+                (SelectedId <= 0 || string.IsNullOrWhiteSpace(txtItemName.Text)))
             {
                 DXMessageBox.Show("يجب اختيار الصنف.", "تنبيه",
                                 MessageBoxButton.OK, MessageBoxImage.Warning);

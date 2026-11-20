@@ -965,13 +965,33 @@ namespace SmartAuditERP.Form_WPF
                 tempView.PopulateColumns();
 
                 var report = new Report();
-                report.Printing(
-                    printType,
-                    report.BindToData(
+                // R-159 (P7-093): use the signed totals shown by this screen,
+                // not empty summary metadata on the temporary WinForms grid.
+                var printData = report.BindToData(
                         tempView,
                         cmbType.Text,
                         txtFromDate.DateTime.ToShortDateString(),
-                        txtToDate.DateTime.ToShortDateString()),
+                        txtToDate.DateTime.ToShortDateString());
+                if (printData.Tables.Count == 0 || printData.Tables[0].Rows.Count == 0)
+                    throw new InvalidOperationException("تعذر تجهيز بيانات التقرير للطباعة.");
+                double signedPaid = InvoicesList.Where(x => x.ProcType == 1).Sum(x => x.Paid)
+                    - InvoicesList.Where(x => x.ProcType == 2).Sum(x => x.Paid);
+                foreach (DataRow row in printData.Tables[0].Rows)
+                {
+                    row["Sum"] = lblTotalSumPrice.Text;
+                    row["SumNetDiscount"] = lblTotalDiscount.Text;
+                    row["Total1"] = lblTotalTotal.Text;
+                    row["SumTax"] = lblTotalVAT.Text;
+                    row["SummaryExtraTax"] = lblTotalExtraVAT.Text;
+                    row["SummaryTotalTax"] = lblTotalTax.Text;
+                    row["NetTotal"] = lblTotalNet.Text;
+                    row["SummaryCash"] = lblTotalCash.Text;
+                    row["SummaryNetwork"] = lblTotalATM.Text;
+                    row["SummaryPaid"] = signedPaid.ToString("N2");
+                }
+                report.Printing(
+                    printType,
+                    printData,
                     RptUrl, RptName, defPrinter, 1);
             }
             catch (Exception ex)

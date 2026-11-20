@@ -24,6 +24,10 @@ namespace SmartAuditERP.Form_WPF
         public string DgvItemCode   { get; set; } = "";
         public string DgvItemName   { get; set; } = "";
         public string DgvInvNo      { get; set; } = "";
+        // R-155/R-156: preserve database identity independently of display labels.
+        public string InvGlobalID   { get; set; } = "";
+        public int InvTypeCode      { get; set; }
+        public int HeaderProcType   { get; set; }
         public string DgvRefNo      { get; set; } = "";
         public string DgvDate       { get; set; } = "";
         public string DgvClient     { get; set; } = "";

@@ -460,8 +460,8 @@
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>
 
-                                <!-- متوسط التكلفة -->
-                                <DataGridTextColumn Header="متوسط التكلفة"
+                                <!-- R-157 (P7-039): this value is total cost, not unit average. -->
+                                <DataGridTextColumn Header="إجمالي التكلفة"
                                                     Binding="{Binding DgvAvgCost, StringFormat=N2}"
                                                     Width="110">
                                     <DataGridTextColumn.ElementStyle>

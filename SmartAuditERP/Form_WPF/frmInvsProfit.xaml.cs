@@ -457,10 +457,20 @@ namespace SmartAuditERP.Form_WPF
                     Dispatcher.Invoke(() => ProgressBar1.Value++);
                 }
 
+                // R-160 (P7-101): expose signed values for the grid's standard Sum
+                // summaries. Keep the existing full-result accumulators for printing.
+                foreach (string field in new[] { "DgvTotal", "DgvDiscount", "DgvSum", "DgvCost", "DgvProfit" })
+                {
+                    string signedField = field + "Signed";
+                    resultTable.Columns.Add(signedField, typeof(double));
+                    foreach (DataRow row in resultTable.Rows)
+                    {
+                        double sign = Convert.ToInt32(row["DgvProcType"]) == 1 ? 1 : -1;
+                        row[signedField] = sign * GetDouble(row[field]);
+                    }
+                }
                 _currentDataTable = resultTable;
                 GridControl1.ItemsSource = resultTable.DefaultView;
-
-                // تحديث ملخصات مخصصة
                 RecalculateCustomSummaries();
             }
             catch (Exception ex) { ShowError(ex.Message); }

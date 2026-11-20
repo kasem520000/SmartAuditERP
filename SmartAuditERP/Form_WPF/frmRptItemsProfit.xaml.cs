@@ -200,7 +200,8 @@ namespace SmartAuditERP.Form_WPF
                     var r3 = GetSaleData(itemId, 3, 1, branchFilter, fullFilter, dateFrom, dateTo);
                     salesQty       += r3.qty;
                     salesTotal     += r3.itemTotal;
-                    salesDiscount  += r3.discount * 2; // كما في الكود الأصلي
+                    // R-146 (P7-038): POS item discount is applied once, as for sales.
+                    salesDiscount  += r3.discount;
                     salesInvDisc   += r3.invDiscount;
                     salesAvgCost   += r3.avgCost;
                     salesTotalCost += r3.totalCost;
@@ -566,7 +567,7 @@ namespace SmartAuditERP.Form_WPF
                 var header = new List<string>
                 {
                     "م", "رمز المادة", "المادة", "الكمية",
-                    "متوسط التكلفة", "صافي البيع", "الربح", "نسبة الربح"
+                    "إجمالي التكلفة", "صافي البيع", "الربح", "نسبة الربح"
                 };
 
                 var rows = new List<List<string>>();
