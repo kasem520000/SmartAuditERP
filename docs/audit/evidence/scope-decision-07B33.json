@@ -1,0 +1,53 @@
+{
+  "authority": [
+    "PHASE-07-REMAINING-07B32.md",
+    "evidence/split-register-07B32.csv",
+    "evidence/residual-disposition-07B32.csv",
+    "evidence/remaining-workplan-07B32.csv",
+    "evidence/continuation-backlog-07B32.csv"
+  ],
+  "selected_upstream_split": "SP7B32-01",
+  "entry": "3f747085b8f91762f7626dd45331ca1f5ba9e9c1",
+  "selected_capability": "انتقال defPrinter المشتركة في محرر البيع من RptPrintPDF إلى RptPrint،مع بوابات المصدر وتجاوزات الوسيط المحلي في Print.Printing وضوابط معاينة/instance مستقلة.",
+  "selection_reason": "توجد كتابة مصدرية محلية إلى خاصية auto-property غير فارغة قبل التحضير،والطباعة العادية لا تستبدلها إلا عند الفراغ؛لا حاجة لافتراض setter خارجي أو output فعلي.",
+  "bookkeeping": {
+    "selected_paths": 6,
+    "prior_union": 427,
+    "overlap": 6,
+    "new": 0,
+    "union": 427,
+    "complement": 400,
+    "complement_kinds": {
+      "source": 335,
+      "generated-artifact": 61,
+      "project-or-resource": 4
+    }
+  },
+  "selected_contract_slices": 20,
+  "exploratory_context_slices": 9,
+  "whole_local_files": 0,
+  "historical_metadata_screen_count": 334,
+  "parent_path_matched_metadata_rows": 37,
+  "all_historical_bodies_reviewed": false,
+  "new_root_ids": [
+    "P7-163"
+  ],
+  "existing_root_extensions": [],
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "counts_are_completion_percent_or_sessions": false,
+  "owner_role": "مالك WPF والتقارير وملكية طابعة محرر الفاتورة",
+  "required_redacted_input": "عقد OutputRequest مستقل لاسم الطابعة ونوع الإخراج،وقيمة أولية منقحة وصريحة؛سياسة picker وtype3 ونجاح/فشل التحضير دون بيانات أعمال أو أسماء أجهزة فعلية.",
+  "impact_if_unavailable": "تثبت كتابة الخاصية وحملها للطلب التالي؛لا يثبت إصدار PDF أو ورق أو حالة spooler أو حفظ إعداد دائم.",
+  "next_step": "فصل اختيار طابعة العملية عن إعداد الـinstance المشترك،ومراجعة every entry/source/output ببراهين وحدود دون إصلاح التطبيق هنا.",
+  "static_exit_criterion": "خروج PDF ونجاحه أو فشله لا يبدل طابعة الطلب العادي التالي ضمن instance نفسها؛التجاوزات والبوابات مميزة مع بقاء القبول التشغيلي غير منفذ.",
+  "entry_point": "قائمة ExportPDF ثم btnPrint في frmInvSale نفسها؛أعلام printed/updated ورجوع MappingInvoice موردة صراحة قبل wrapper.",
+  "source_contract": "20 شريحة تعاقدية و9 سياق في6 مسارات سابقة؛خاصية محلية وسيطة string by value؛SDK/DTO/binding/REPX/device غير منفذة أو معتمدة.",
+  "output_boundary": "قيمة defPrinter عند خروج wrapper ووسيط الطلب العادي اللاحق ثم اختيار اسم report.PrinterName المشروط؛لا PDF فعلي أو ورق أو نتيجة نجاح.",
+  "exclusions": [
+    "بقية callers/editors/outputs والحقول والكتّاب وDocumentRef/allowed-set/branch/reset/dirty/cancel/failure تبقى SP01/7B،لا فتح7C.",
+    "حصر455FE والدفاتر اللاحقة وsupported/optional/unsupported يبقى SP02/7B،لا نسبة اكتمال من union427.",
+    "SDK/DTO/constructors/collections/currency/precision/policies/templates وبقية المحركات تبقى SP03/7B؛غياب المصدر ليس غياب قدرة.",
+    "كل ERP/build/C#/VB/.NET/WPF/SQL/provider/SDK/REPX/طابعة/ماسح/حفظ/دفع/بريد/قياس/قبول أو إصلاح خارج الإذن."
+  ]
+}

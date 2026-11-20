@@ -1,0 +1,3034 @@
+{
+  "comparison_depth": "all334-title-metadata-and37-five-path-registry-rows-plus24-selected-prior-report-bodies-and-bounded-output-source-not-all-historical-bodies",
+  "title_metadata_rows": [
+    {
+      "id": "P1-001",
+      "title": "اعتماديات تجميع محلية خارج المستودع",
+      "severity": "High",
+      "certainty": "repository-gap",
+      "type": "build",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-002",
+      "title": "دعم WinForms غير مصرح به صراحة في مشروع يستخدمه",
+      "severity": "High",
+      "certainty": "potential",
+      "type": "build",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-003",
+      "title": "عقد اسم أداة التحديث لا يطابق مخرجات المشروع",
+      "severity": "High",
+      "certainty": "repository-gap",
+      "type": "packaging",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-004",
+      "title": "ملفات الإصدار والسجل وقوالب التقارير غير مرفقة بالنشر الموصوف",
+      "severity": "High",
+      "certainty": "repository-gap",
+      "type": "packaging",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-005",
+      "title": "لا توجد مشاريع اختبارات أو خط CI متتبع في النسخة المفحوصة",
+      "severity": "Medium",
+      "certainty": "repository-gap",
+      "type": "quality",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-006",
+      "title": "مخرجات bin وobj وملفات مستخدم متتبعة بلا gitignore",
+      "severity": "Low",
+      "certainty": "repository-gap",
+      "type": "repository-hygiene",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-007",
+      "title": "تهيئة القاعدة تمنح حسابا ثابتا sysadmin وتغير إعدادات sa",
+      "severity": "Critical",
+      "certainty": "confirmed",
+      "type": "security",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-008",
+      "title": "بوابات إدارية بكلمات ثابتة وحساب دعم بتوليد متوقع",
+      "severity": "Critical",
+      "certainty": "confirmed",
+      "type": "security",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-009",
+      "title": "حفظ كلمات مرور التطبيق وقاعدة البيانات نصيا رغم عدم التذكر",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "secrets",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-010",
+      "title": "تخزين واسترجاع كلمات مرور المستخدمين كنص أصلي",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "secrets",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-011",
+      "title": "إدراج كلمة المرور داخل SQL مباشرة عند تغييرها",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "sql-injection",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-012",
+      "title": "تطبيق الصلاحيات لا يرفض افتراضيا عند غياب السجل أو فشل الاستعلام",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "authorization",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-013",
+      "title": "تطبيق صلاحيات WPF على الشجرة المرئية قبل عرض النوافذ",
+      "severity": "High",
+      "certainty": "potential",
+      "type": "authorization",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-014",
+      "title": "اتصال MQTT بدون TLS أو بيانات مصادقة في المسار المفحوص",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "transport-security",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-015",
+      "title": "رفع النسخة الاحتياطية عبر FTP باعتماد ثابت دون TLS ظاهر",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "backup-security",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-016",
+      "title": "بدء التشغيل لا يتوقف بناء على فشل ISSecureLogin",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "authentication",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-017",
+      "title": "تحديث حالة الدخول والنوافذ على نسخ جديدة غير المعروضة",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "window-state",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-018",
+      "title": "تحميل الإعدادات المحلية يتجاهل SQL Authentication",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "connection",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-019",
+      "title": "كتابات التشغيل تحت مجلد البرنامج قد تفشل مع صلاحيات المستخدم القياسي",
+      "severity": "Medium",
+      "certainty": "potential",
+      "type": "deployment",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-020",
+      "title": "تثبيت حزمة التحديث دون تحقق توقيع أو بيان موثوق للملفات",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "update-security",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-021",
+      "title": "فروع فشل في أداة التحديث تترك الإغلاق ممنوعا",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "update-state",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-022",
+      "title": "فشل نسخ ملف لا يمنع إعلان نجاح تثبيت جميع الملفات",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "update-integrity",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-023",
+      "title": "فشل النسخة الاحتياطية لا يوقف التحديث ولا توجد استعادة تلقائية",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "recovery",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-024",
+      "title": "إيقاف جميع عمليات البرنامج بالاسم دون ربط PID أو مسار",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "process-lifecycle",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-025",
+      "title": "اختيار أول مرفق وتحليل JSON يدويا دون عقد حزمة واضح",
+      "severity": "Medium",
+      "certainty": "potential",
+      "type": "release-contract",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-026",
+      "title": "معالج التحديث القديم يتقدم للنجاح دون فحص نتيجة التنزيل أو الاستبدال",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "legacy-updater",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-027",
+      "title": "تسجيل إصدار قاعدة البيانات بعد فشل دفعات من الترقية",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "database-migration",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-028",
+      "title": "ترقية المخطط دون بوابة صيانة أو قفل مشترك بين النسخ",
+      "severity": "High",
+      "certainty": "potential",
+      "type": "database-concurrency",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-029",
+      "title": "تقسيم سكربتات SQL على كل ظهور نصي لـ GO",
+      "severity": "Medium",
+      "certainty": "potential",
+      "type": "sql-batch-parser",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-030",
+      "title": "إعادة عرض نافذة WPF مغلقة من مرجع static محفوظ",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "wpf-lifecycle",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-031",
+      "title": "تهيئة سجل SQL تستخدم اسم قاعدة البيانات كاسم مستخدم طرفي",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "audit-logging",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-032",
+      "title": "توسيع تاريخ الترخيص عند الاتصال أو التحديث دون تحقق استحقاق ظاهر",
+      "severity": "Medium",
+      "certainty": "potential",
+      "type": "business-rule",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P1-033",
+      "title": "أزرار أعمال موصولة بمعالجات فارغة في شاشات موجودة",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "functional-incompleteness",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P2-001",
+      "title": "تعطيل الأزرار لا يمنع تنفيذ الأوامر عبر المسارات البديلة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "authorization",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P2-002",
+      "title": "القفل يقبل عودة الحوار دون نتيجة مصادقة ناجحة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "session-lock",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P2-003",
+      "title": "تبديل المستخدم يبقي نوافذ WPF واختصارات وسياق سحابة من الجلسة السابقة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "session-isolation",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P2-004",
+      "title": "تحميل صلاحيات موظف آخر يراكم اختيارات الموظف السابق",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "permission-administration",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P2-005",
+      "title": "شجرة صلاحيات الشاشات لا تربط الأطفال وخيارات التحديد بنموذجها",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "permission-ui",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P2-006",
+      "title": "عقد صلاحيات الإنشاء والتعديل غير متسق بين المحرر والمنفذ",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "permission-contract",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P2-007",
+      "title": "خلط معرف سجل المستخدم ومعرف الموظف في إدارة الهوية والصلاحيات",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "identity-mapping",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P2-008",
+      "title": "الرقم السريع لا يضمن هوية فريدة عند التعديل والتحويل الرقمي",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "pin-authentication",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P2-009",
+      "title": "إيقاف الحساب من شاشة المستخدمين محجوب عند وجود تاريخ مالي",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "account-lifecycle",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P2-010",
+      "title": "عزل حسابات الفروع لا يطبق باتساق على الدليل وميزان المراجعة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "branch-isolation",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P2-011",
+      "title": "اختيار المخزن والخزينة لا يتقاطع مع الفرع ويستعمل موارد افتراضية دون تعيين",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "resource-isolation",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P2-012",
+      "title": "سياسة TLS والتحقق من هوية خادم SQL غير مفروضة في بناء الاتصال",
+      "severity": "Medium",
+      "certainty": "potential",
+      "type": "sql-transport",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P2-013",
+      "title": "حذف مرفق واحد يمسح سجلات جميع مرفقات المستند",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "attachment-integrity",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P2-014",
+      "title": "أنواع صفوف المرفقات لا تطابق عقد عارضها في مسارات نشطة",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "attachment-contract",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P2-015",
+      "title": "مرفقات تذكرة الدعم السابقة تبقى مختارة بعد المسح والنجاح وإعادة فتح النافذة",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "privacy",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P2-016",
+      "title": "مسار المرفق من القاعدة يستخدم للفتح والحذف دون حصر المسار أو النوع",
+      "severity": "High",
+      "certainty": "potential",
+      "type": "file-trust-boundary",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P3-001",
+      "title": "حارس الفترة المستخدم يسمح دائما ولا يفرض إقفال الفترات",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "accounting-period",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P3-002",
+      "title": "حفظ القيد المشترك لا يفرض التوازن أو صلاحية البنود ويقبل قائمة فارغة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "posting-invariants",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P3-003",
+      "title": "المستندات والقيود المرتبطة تعتمد بمعاملات مستقلة قابلة للافتراق",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "financial-atomicity",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P3-004",
+      "title": "حفظ السند بقيد null يعيد النجاح دون اعتماد معاملة السند",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "false-save-success",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P3-005",
+      "title": "تخصيص MAX+1 غير محجوز وقد يتحول تصادم معرف القيد إلى استبدال",
+      "severity": "High",
+      "certainty": "potential",
+      "type": "document-numbering",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P3-006",
+      "title": "تعديل القيد يستبدل تفاصيله دون تحقق إصدار أو سجل مالي مركزي سابق",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "financial-edit-history",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P3-007",
+      "title": "فحص توازن مقرب مع حفظ double وfloat دون تطبيع المبالغ المحفوظة",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "monetary-precision",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P3-008",
+      "title": "ربط الخزينة والبنك والطرف يتجاهل الكود المخزن ويعيد البحث بالاسم",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "ledger-account-mapping",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P3-009",
+      "title": "إنشاء سند قبض العميل والسند الضريبي يهمل GlobalID الإلزامي",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "receipt-insert-contract",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P3-010",
+      "title": "تعديل وحذف سند العميل والضريبة لا يحدثان القيد المرتبط",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "receipt-ledger-lifecycle",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P3-011",
+      "title": "تعديل وحذف سند بنوع معين يستهدفان الرقم والفرع دون نوع السند أو GlobalID",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "receipt-identity-scope",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P3-012",
+      "title": "إعادة الإغلاق تضع الضريبة والإضافات والتأمين في الجانب المدين عند زيادتها",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "shift-journal-direction",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P3-013",
+      "title": "إعادة الإغلاق تجمع مرتجع الشبكة مع المبيعات بدلا من طرحه",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "shift-network-refund",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P3-014",
+      "title": "مسار إغلاق اليومية الفعلي يقرر عدم وجود فواتير دائما ولا يكمل الحفظ",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "shift-close-incomplete",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P3-015",
+      "title": "إعادة احتساب الإغلاق تعدل نقدية فواتير الموظف خارج الفرع والمدى والمعاملة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "shift-source-data-mutation",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P3-016",
+      "title": "إعادة الإغلاق تضيف استقطاع العجز كل مرة وتنسبه للمنفذ لا لصاحب الوردية",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "shift-reclose-idempotency",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P3-017",
+      "title": "تغيير الفترة النشطة وفحص التداخل ليسا عملية ذرية مقيدة في المخطط",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "period-state-atomicity",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P3-018",
+      "title": "إعادة فتح الفترة تمحو معلومات إقفالها والتسجيل يستخدم هوية Windows",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "period-audit-history",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P3-019",
+      "title": "ميزان المراجعة يسقط الرصيد السابق في التجميع والحسابات الفرعية فقط",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "trial-balance-carryforward",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P3-020",
+      "title": "قائمة الدخل تلغي أثر المرتجعات والخصم وتعيد عد صافي المبيعات في البطاقات",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "income-statement-aggregation",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P3-021",
+      "title": "كشف الحساب يخلط إشارة الرصيد السابق مع طبيعة الدائن ويعكس عرضه",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "ledger-running-balance",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P3-022",
+      "title": "كشف الحساب التجميعي يقرأ عمود subNotes غير المعاد من استعلامه",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "ledger-aggregation-contract",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P3-023",
+      "title": "كشف الحساب الرئيسي يقارن نهاية اليوم بمنتصف الليل فيستبعد حركاته اللاحقة",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "ledger-date-boundary",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P3-024",
+      "title": "ترحيل معرف القيود القديمة يربط بالرقم المحلي دون الفرع",
+      "severity": "High",
+      "certainty": "potential",
+      "type": "legacy-financial-migration",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P3-025",
+      "title": "تعديل تاريخ الإشعار يبقي تاريخ رأسه القديم ويغير تاريخ قيده",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "note-header-ledger-date",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-001",
+      "title": "مرتجع نقطة البيع المرتبط يثبت أثر السطور كخروج بدلاً من دخول",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "pos-linked-return-direction",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-002",
+      "title": "تعليق فاتورة نقطة البيع يغير حالة الرأس دون تصفير أثر سطور البيع",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "pos-hold-line-movement",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-003",
+      "title": "خصم الفاتورة يعيد حساب الرأس مع بقاء ضريبة وإجمالي السطر السابقين",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "invoice-discount-line-header-ledger",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-004",
+      "title": "إعادة حساب الخصم تستبدل صافي الاستقطاع بصافي لا يطرحه",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "discount-withholding-overwrite",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-005",
+      "title": "ربح الفاتورة يتراكم من المجاميع المرحلية فيتغير بترتيب السطور",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "invoice-profit-prefix-sum",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-006",
+      "title": "الربط يعيد تسعير التكلفة بمتوسط الفرع أو الصفر متجاوزاً اختيار التكلفة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "cost-policy-save-repricing",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-007",
+      "title": "معادلة المتوسط تضم المرتجع الداخل بسعر تبادله ولا تمثل تكلفة تاريخية متحركة",
+      "severity": "High",
+      "certainty": "potential",
+      "type": "average-cost-sales-return-policy",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-008",
+      "title": "إجراء تقييم المخزون يستقبل تاريخ التقرير ولا يستعمله",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "historical-inventory-cutoff",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-009",
+      "title": "UNION قد يسقط مجاميع مخازن متطابقة بعد إخفاء هويتها",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "warehouse-union-deduplication",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-010",
+      "title": "تصحيح تكلفة السالب يعيد كتابة حركات خارج الفرع والمخزن وبمفتاح صنف لا سطر",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "negative-cost-cross-scope-rewrite",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-011",
+      "title": "توسيع مكونات الصنف أثناء الربط يعدل القائمة الأصلية ويمكن تكراره بالمعاينة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "composite-mapping-side-effects",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-012",
+      "title": "حراس المرتجعات لا يبنون رصيداً متبقياً للكمية ويرجعون من أول مقارنة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "return-cumulative-quantity-contract",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-013",
+      "title": "اختيار جزء من الفاتورة يطابق الصنف وحده فيعدل ويحتفظ بكل سطوره",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "partial-return-line-identity",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-014",
+      "title": "حارس المخزون يعتمد رصيداً محملاً ولا يعيد التحقق الذري عند الحفظ",
+      "severity": "High",
+      "certainty": "potential",
+      "type": "stock-availability-save-race",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-015",
+      "title": "فتح الدفع يعدل حالة الفاتورة قبل التأكيد ولا يعيدها عند الإلغاء",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "payment-cancellation-local-state",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-016",
+      "title": "مرتجع POS دون نموذج دفع يسجل دفعة كاملة ثم يصفر مبالغ الرأس",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "pos-no-dialog-refund-payment-disagreement",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-017",
+      "title": "اعتماد التسوية يثبت قبل نجاح حفظ الحركة وعلى اتصال مستقل",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "stocktake-approval-before-movement",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-018",
+      "title": "إلغاء تأكيد التسوية قد يترك معاملة مفتوحة ومسودة الحفظ تغلق الاتصال الآخر",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "stocktake-transaction-lifetime",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-019",
+      "title": "المناقلة تحفظ جانبيها بلا عقد نجاح مشترك وزر الطباعة يسلك فرعاً مختلفاً",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "inventory-transfer-workflow-outcomes",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-020",
+      "title": "حفظ الإنتاج لا يورد كل معاملات استعلامات الرأس والبنود المشتركة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "production-sql-parameter-contract",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-021",
+      "title": "تعديل الإنتاج يعيد تخصيص هوية جديدة بدلاً من هوية الأمر المحمل",
+      "severity": "High",
+      "certainty": "potential",
+      "type": "production-update-identity-regeneration",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-022",
+      "title": "تغيير وحدة المنتج وتغيير كميته يستعملان عاملَي تحويل مختلفين للمكونات",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "production-unit-event-disagreement",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-023",
+      "title": "التسليم الجزئي والكلي يختلفان في وحدة الكمية ولا يحفظان متبقي كل سطر",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "delivery-unit-row-remaining-contract",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-024",
+      "title": "كاتب التسليم يبتلع فشل الحفظ ويتيح للواجهة إعلان نجاحه",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "delivery-swallowed-failure-success",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-025",
+      "title": "فاتورة التأجير قد تعلن الإدراج وتغير الحضور البحري بعد فشل الحفظ",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "rental-marine-false-success",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-026",
+      "title": "تحميل سعر وحدة موجودة يرجع مبكراً قبل تطبيق سياسة تسعير الفاتورة",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "unit-price-policy-bypass",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-027",
+      "title": "عرض الفئة لا يقيد تفاصيله بالعرض المختار وفرع هدية الصنف لا ينفذ أثره",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "promotion-parent-and-noop-branch",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-028",
+      "title": "حالة السعر المضمن بالباركود static فتغير حساب أصناف ميزان أخرى",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "barcode-price-static-state",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-029",
+      "title": "اختيار السيريال يجمع المخزون خارج موقعه وقد يمحو التفاصيل عند الإغلاق",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "serial-scope-and-cancellation",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-030",
+      "title": "تقييم شاشة الجرد يستعلم أعمدة غير الموجودة في تعريف البنود المرفق ويرجع صفراً عند الخطأ",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "inventory-report-supplied-schema-contract",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-031",
+      "title": "زرا حفظ المشتريات وحفظها مع الطباعة لا يفرضان الشروط نفسها",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "purchase-save-command-validation-parity",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P4-032",
+      "title": "حوار اختيار جزء من العقد يتلقى نموذجاً ويعدل نموذج فاتورة آخر",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "contract-partial-selection-wrong-model",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-001",
+      "title": "فحص اتصال MQTT يستبدل العميل والهوية بدلاً من إعادة استعمال جلسة الاستقبال",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "mqtt-client-lifecycle",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-002",
+      "title": "الوصول إلى وسيط MQTT مشروط بنجاح ICMP إلى عنوان إنترنت خارجي",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "mqtt-internet-probe-gate",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-003",
+      "title": "طابور الأصناف يكتب itemid ثم يقرأ id من نموذج مختلف",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "offline-item-queue-json-contract",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-004",
+      "title": "طابور MQTT يكتب بإعادة كتابة ملف كامل خارج معاملة المستند ودون تنسيق ظاهر",
+      "severity": "High",
+      "certainty": "potential",
+      "type": "offline-outbox-atomicity-and-file-race",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-005",
+      "title": "ملفا طابور MQTT لا يحملان سياق قاعدة البيانات أو العميل أو الوجهة",
+      "severity": "High",
+      "certainty": "potential",
+      "type": "offline-queue-context-namespace",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-006",
+      "title": "تفريغ طابور MQTT لا ينتظر اعتماد المستقبل وقد يحدث بعد تخطي النشر",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "mqtt-queue-clear-before-application-ack",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-007",
+      "title": "إعادة إرسال المستندات لا تطابق شكل المواضيع وحالة أحرف مستقبلها",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "mqtt-publisher-subscriber-topic-drift",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-008",
+      "title": "أعلام الاشتراك لا تتوافق مع معالجات العملاء والحسابات والمخازن والعروض",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "mqtt-subscription-dispatch-flag-contract",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-009",
+      "title": "تحديثات أصناف منفردة تتشارك موضوعاً retained واحداً بدلاً من سجل تغييرات",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "mqtt-retained-delta-not-backlog",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-010",
+      "title": "إزالة passcode من كل النص المفكوك تغير قيم JSON لا بادئة الغلاف فقط",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "mqtt-envelope-global-passcode-replacement",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-011",
+      "title": "تمييز الفرع المرسل بواسطة StartsWith لا يطابق صيغة المعرف العالمي",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "mqtt-origin-branch-prefix-identity",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-012",
+      "title": "استقبال تفاصيل MQTT يستبدلها بكتابات مستقلة ولا يعرّف تفريغ مجموعة فارغة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "mqtt-aggregate-detail-commit-boundary",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-013",
+      "title": "كل صف صلاحية تشغيل وارد يلغي الصفوف السابقة للموظف نفسه",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "mqtt-permission-reset-inside-row-loop",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-014",
+      "title": "فحص وجود السيريال يربط ItemId بمعرف صف السيريال لا معرف الصنف",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "mqtt-serial-upsert-key-disagreement",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-015",
+      "title": "دورة API تؤكد الاستلام وتحذف عميل Android دون نتيجة اعتماد محلية",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "http-received-ack-without-local-save-result",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-016",
+      "title": "القيد المولد عند الاستيراد يبحث بالرقم المحلي بعد حفظ رابط رأس فارغ",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "android-generated-ledger-document-link",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-017",
+      "title": "شرط تحديث التعاريف الدوري يفضل التاريخ الحديث ويتوقف عند تأخره",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "master-sync-staleness-predicate",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-018",
+      "title": "علامة التعاريف تتقدم بوقت الجهاز دون اشتراط نجاح كل الحفظ المحلي",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "master-sync-cursor-after-failed-or-racing-apply",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-019",
+      "title": "تنزيل الموظف الموجود ينفذ SELECT بدلاً من تحديث بياناته وتعييناته",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "employee-download-existing-row-no-update",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-020",
+      "title": "تنزيل تعيينات المخازن والخزائن لا يزيل عضوية سحبت من المصدر",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "resource-membership-sync-does-not-revoke",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-021",
+      "title": "بعض تنزيلات التعاريف تصفر الحذف أو لا تنقل حذف العناصر التابعة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "master-data-tombstone-and-child-removal-contract",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-022",
+      "title": "حفظ العملاء أثناء التنزيل يعيد رفع الدفعة كلها مرة لكل عميل",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "customer-download-full-batch-echo",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-023",
+      "title": "استيراد لقطة المخزون يراكمها في الوضع النشط غير السحابي ويتجاهل اللقطة الفارغة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "stock-snapshot-replacement-contract",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-024",
+      "title": "إجراء رصيد مخزون السحابة يستقبل المخزن ثم لا يرشح به",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "cloud-stock-warehouse-filter-ignored",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-025",
+      "title": "رفع مخزون الفرع يوسم كل الكميات بوحدة رقم1 دون اشتقاق وحدة الصنف",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "stock-snapshot-hardcoded-unit-identity",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-026",
+      "title": "دورة السحابة تستدعي تنظيف الطابور حتى بعد رفض الدفعة وتعيد الباقي فقط",
+      "severity": "High",
+      "certainty": "potential",
+      "type": "cloud-batch-queue-cleanup-without-success-boundary",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-027",
+      "title": "شاشتا مزامنة القيود والسندات تثبتان Sync=1 قبل نتيجة الإرسال",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "manual-sync-status-before-remote-ack",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-028",
+      "title": "المؤقت والنقر والمهام الخلفية لا يضمنون دورة مزامنة واحدة لكل سياق",
+      "severity": "High",
+      "certainty": "potential",
+      "type": "sync-async-void-single-flight-session-fence",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-029",
+      "title": "عقد نتيجة المزامنة يعيد false بعد الإرسال وtrue لرد HTTP غير مفحوص",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "sync-result-contract-false-and-unchecked-http-status",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-030",
+      "title": "مؤشرات النجاح تعرض المزامنة نشطة دون جمع نتائج الحفظ والإرسال",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "sync-ui-green-not-commit-health",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P5-031",
+      "title": "نمطا نهاية اليوم والوردية يدخلان المزامنة الفورية والمؤقت مثل النمط الدوري",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "sync-mode-schedule-read-interval-contract",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-001",
+      "title": "تصنيف الفاتورة الضريبية يختلف بين حارس الحفظ ومحول ZATCA",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "zatca-inconsistent-invoice-classification",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-002",
+      "title": "سياسة الإرسال اليدوي وإيقاف ZATCA لا تتطابق مع بوابات التنفيذ المخزنة بالذاكرة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "zatca-runtime-policy-drift",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-003",
+      "title": "محول ZATCA يختزل الفئات الضريبية وخصومات المعدلات المتعددة إلى قيم ثابتة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "zatca-tax-category-and-allowance-mapping",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-004",
+      "title": "توليد ZATCA يقرب الكمية وسعر الوحدة مبكراً ويمر بمقامات غير محروسة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "zatca-precision-rounding-and-zero-denominator",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-005",
+      "title": "مراجع السلسلة الضريبية مشتقة من رقم ناقص1 داخل النوع لا من تسلسل وحدة إصدار صريح",
+      "severity": "High",
+      "certainty": "potential",
+      "type": "tax-device-sequence-and-retry-identity",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-006",
+      "title": "نجاح ZATCA يستنتج من غياب الأخطاء وتضيع الاستجابة الفعلية في الغلاف المحلي",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "zatca-outcome-and-response-propagation",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-007",
+      "title": "إرسال الضريبة وحفظ المستند المحلي يتركان فجوات قبول بعيد وحالة محلية غير معتمدة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "zatca-remote-success-local-commit-boundary",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-008",
+      "title": "الإرسال اليدوي الناجح لا يحفظ UUID وQR وXML المعادين من ZATCA",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "zatca-manual-result-archive-gap",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-009",
+      "title": "متابعة الفواتير تعرض العقود لكن محمل الصف المختار يبحث في Inv وحده",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "tax-manual-contract-source-dispatch",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-010",
+      "title": "حفظ إعداد ZATCA يستمر بعد فشل إنشاء الاعتماد ويستبدل شهادة قائمة دون وحدة اعتماد",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "zatca-onboarding-failure-and-destructive-replacement",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-011",
+      "title": "فرعا إنشاء صف اعتماد ZATCA الجديد لا يطابقان أعمدة INSERT وقيمه ومعاملاته",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "zatca-fresh-credential-insert-contract",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-012",
+      "title": "قارئ اعتماد ZATCA يختار حقول الإنتاج مهما كانت بيئة الطلب",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "zatca-environment-credential-binding",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-013",
+      "title": "محول فاتورة ETA يقرب الكمية إلى عدد صحيح بينما يحسب القيمة من الكمية الأصلية",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "eta-invoice-fractional-quantity-loss",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-014",
+      "title": "محول إشعار ETA الدائن يكتب نص Boolean بدلاً من المرجع المدخل",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "eta-credit-reference-boolean-conversion",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-015",
+      "title": "محولا ETA يسقطان وقت الإصدار والفاتورة تلحق Z دون تحويل UTC",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "eta-issuance-time-loss-and-timezone",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-016",
+      "title": "إرسال فاتورة ETA يعيد false حتى بعد تحديث UUID ويخلط القبول الأولي بحالة المستند",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "eta-invoice-outcome-and-submission-correlation",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-017",
+      "title": "إرسال إيصال ETA يعيد true لكل رد غير استثنائي ثم تختم المتابعة الفاتورة مرسلة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "eta-receipt-success-regardless-of-sdk-status",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-018",
+      "title": "مدخل إيصال ETA لا يوفق صافي الرأس وتفصيل الخصومات والاستقطاع مع بنوده",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "eta-receipt-header-line-amount-contract",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-019",
+      "title": "BaseUrl إيصال ETA غير الإنتاجي يشير إلى مضيف الهوية بدلاً من API الموثق",
+      "severity": "High",
+      "certainty": "potential",
+      "type": "eta-receipt-preproduction-host-contract",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-020",
+      "title": "استدعاء جهاز الدفع يسبق استكمال التحقق من المبلغ والباقي في حواري POS",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "payment-terminal-before-final-validation",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-021",
+      "title": "لا يظهر ربط دائم لمحاولة الجهاز بالدفعة المحلية أو مسار unknown قبل إعادة الدفع",
+      "severity": "High",
+      "certainty": "potential",
+      "type": "payment-attempt-correlation-reconciliation-and-single-flight",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-022",
+      "title": "أزرار اختبار الدفع تبني طلبات بيع لا فحص اتصال محايداً وNeo لا ينتظر النتيجة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "payment-settings-test-has-sale-side-effect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-023",
+      "title": "حذف آخر ربط دفع سحابي من الواجهة لا يحذف صفه المحفوظ",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "cloud-payment-mapping-empty-replacement",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-024",
+      "title": "عميل تفاصيل تذكرة الدعم يهمل الجسم المحلل ويعيد نجاحاً مع Ticket غير مهيأ",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "support-ticket-details-mapping",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-025",
+      "title": "طلبات الدعم تخلط HTTP2xx بنجاح الأعمال وتعيد القائمة الفاشلة كأنها خالية",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "support-http-body-and-query-result-contract",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-026",
+      "title": "توقيع ملف الترخيص المحلي SHA256 غير سري ولا يربط الحمولة بالجهاز الحالي",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "license-cache-authenticity-and-device-binding",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-027",
+      "title": "زمن التحقق الأوفلاين يتجمد عند آخر تاريخ شبكة بدلاً من تقدم الوقت",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "license-offline-time-anchor-does-not-progress",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-028",
+      "title": "فشل تجديد الترخيص قد يمحو cache صالحاً والحفظ الفاشل لا يمنع true",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "license-refresh-last-known-good-and-save-result",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-029",
+      "title": "دورة OAuth لسلة في المستودع لا تتجاوز تبادل code بعائد access token فقط",
+      "severity": "Medium",
+      "certainty": "repository-gap",
+      "type": "salla-oauth-lifecycle-repository-gap",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-030",
+      "title": "عينة سلة تعد أول صفحة وتضيف منتجاً ثابتاً ولا تثبت دورة ربط الطلب بالمحاسبة والمخزون",
+      "severity": "Medium",
+      "certainty": "repository-gap",
+      "type": "salla-commerce-pagination-and-erp-application-gap",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-031",
+      "title": "جلسة WhatsApp تحتفظ بملف Chrome ثابت لا يرتبط بسياق ERP وتطلب تعطيل sandbox",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "whatsapp-browser-session-profile-isolation",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-032",
+      "title": "تهيئة رقم WhatsApp تضيف966 حتى للأرقام الدولية التي تبدأ بعلامة زائد",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "whatsapp-recipient-country-normalization",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-033",
+      "title": "نتيجة WhatsApp تخلط نقرة الإرسال بالتسليم وقد ترسل النص قبل فشل الملف",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "whatsapp-partial-message-and-delivery-outcome",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-034",
+      "title": "نافذة البريد ترفق آخر ملف إغلاق ثابت تلقائياً دون ربطه بالوردية الحالية",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "smtp-implicit-stale-cross-context-attachment",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P6-035",
+      "title": "فرع بريد إغلاق Android يستدعي الإرسال مرتين عندما يكون Type=3 والطابعة محددة",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "android-shift-email-duplicate-dispatch",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-001",
+      "title": "استحقاق الرواتب يمرر صفوف SalaryRow إلى رابط يقيدها كـDataRow ثم يسمح بالحفظ دون قيد",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "payroll-accrual-row-contract-null-posting",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-002",
+      "title": "فتح الاستحقاق من تقريره يخلط DataView بمصدر الحفظ الداخلي ويمحو هويات التحميل عند Loaded",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "payroll-report-editor-load-state-source",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-003",
+      "title": "إعادة تحميل تفاصيل الاستحقاق لا تستعيد Emp فيصبح معرف الموظف صفراً عند إعادة الحفظ",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "payroll-reload-employee-identity-loss",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-004",
+      "title": "حفظ صرف الراتب يكتب SalaryPay دون إنشاء سند مالي أو قيد مرتبط موثوق",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "salary-payment-no-linked-financial-posting",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-005",
+      "title": "احتساب الصرف يختار أول استحقاق للموظف والفترة دون استبعاد الاستحقاق المحذوف",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "salary-source-deleted-accrual-first-row",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-006",
+      "title": "تغيير حوافز أو خصومات صرف الراتب لا يعيد احتساب صافي المبلغ المحفوظ",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "salary-net-recalculation-event-gap",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-007",
+      "title": "نجاح حفظ إضافة أو خصم يعيد ربط النموذج الفارغ بآخر سجل بدلاً من إبقائه جديداً",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "salary-add-sub-reset-max-update-target",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-008",
+      "title": "استيراد البصمة قد يترك الجهاز معطلاً لأن إعادة تمكينه ليست في finally",
+      "severity": "High",
+      "certainty": "potential",
+      "type": "biometric-device-enable-failure-cleanup",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-009",
+      "title": "فجوة اعتماد SQL ومسح سجل البصمة بلا مفتاح منع تكرار تسمح بإعادة إدخال الدفعة",
+      "severity": "Medium",
+      "certainty": "potential",
+      "type": "biometric-ingestion-replay-idempotency",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-010",
+      "title": "تعديل عقد PM يخلط ContrNo التجاري مع Contr_id الأساسي",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "pm-contract-business-number-primary-id-confusion",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-011",
+      "title": "كل إعادة حفظ للعقد تنشئ مشروعات جديدة دون مصالحة هوية المشروعات السابقة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "pm-contract-edit-recreates-linked-projects",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-012",
+      "title": "رأس عقد PM يحفظ ضريبته صفراً رغم احتساب ضريبة البنود واستخدامها في القيد",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "pm-contract-header-vat-zero-vs-lines",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-013",
+      "title": "إعادة فتح بنود العقد تغير صافي البند وتفقد تكلفة النموذج قبل إعادة الحفظ",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "pm-contract-reload-net-and-cost-roundtrip",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-014",
+      "title": "قيود PM اليدوية لا تطابق عقد GlobalID وجدول التفاصيل في المخطط المرفق",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "pm-journal-supplied-schema-incompatibility",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-015",
+      "title": "دورة المشروع تعتبر الحالة3 إغلاقاً بينما بيانات PM المرفقة تعرفها تحت التنفيذ",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "pm-project-status-seed-code-disagreement",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-016",
+      "title": "حارس اعتماد المرحلة يفحص ملف الحالية فقط وإغلاق المشروع قد يقبل قائمة مراحل فارغة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "pm-stage-predecessor-and-empty-close-validation",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-017",
+      "title": "إعداد مراحل المجموعة يسمح بأكثر من ست مراحل لكن دورة المشروع تعرض ستاً فقط",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "pm-configurable-stages-fixed-six-ui",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-018",
+      "title": "استبدال مراحل المجموعة يحذفها ثم يدرجها دون معاملة مشتركة",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "pm-stage-template-delete-insert-no-transaction",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-019",
+      "title": "رفع ملف المشروع يرسل مسار جهاز المستخدم إلى OPENROWSET على خادم SQL",
+      "severity": "Medium",
+      "certainty": "potential",
+      "type": "pm-file-client-path-sql-server-bulk-read",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-020",
+      "title": "تعميد المشروع يعتمد حالة واجهة قديمة ولا يحجز انتقال الحالة والقيد مرة واحدة",
+      "severity": "High",
+      "certainty": "potential",
+      "type": "pm-accredit-ui-guard-no-compare-swap",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-021",
+      "title": "عقد بنود طلب الاحتياج لا يطابق DDL المرفق من حيث الحذف وتعدد البنود",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "pm-requirement-detail-ddl-read-write-contract",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-022",
+      "title": "إضافات الحجز تربط برقم محسوب من عدد الصفوف لا بـBid الناتج من الإدراج",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "booking-addition-guessed-parent-identity",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-023",
+      "title": "تفريغ شاشة الحجز بعد الحفظ يبقي هوية التعديل ورقم العرض السابق",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "booking-post-save-reset-keeps-edit-identity",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-024",
+      "title": "المسار المحلي لحجز المركب لا يثبت حاجزاً ذرياً لتداخل المواعيد",
+      "severity": "High",
+      "certainty": "potential",
+      "type": "booking-capacity-overlap-local-contract",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-025",
+      "title": "بحث الحجز يعيد تعبئة المجموعة التي يجري تعدادها داخل foreach",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "booking-search-enumeration-mutated-collection",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-026",
+      "title": "خروج المركب يعيد كتابة كل أحداث حضوره في اليوم بدلاً من حفظ حدث خروج مستقل",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "marine-attendance-rewrites-raw-day-events",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-027",
+      "title": "نموذج الموظف يستعمل Items.Clear بعد ربط جدول الفروع بـItemsSource",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "employee-branches-itemssource-clear-contract",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-028",
+      "title": "حفظ الموظف يصفر بدلات ويمحو حقول ملف معروضة بدلاً من حفظ قيم الشاشة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "employee-profile-salary-fields-zeroed-on-save",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-029",
+      "title": "معاينة فاتورة البيع تستبدل سجلات السيريال دون حفظ تغييرات المستند",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "preview-persistent-serial-write",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-030",
+      "title": "محرك الطباعة ينفذ نسخة واحدة عند طلب طباعة بعدد نسخ صفر أو سالب",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "print-copy-count-fallthrough",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-031",
+      "title": "محرك طباعة الفاتورة يبتلع فشل القالب أو الطابعة ولا يعيد نتيجة للمستدعي",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "print-output-outcome-swallowed",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-032",
+      "title": "إعادة الطباعة تبني هوية الطرف وأسماء البنود من التعاريف الحالية لا من لقطة إصدار مثبتة",
+      "severity": "High",
+      "certainty": "potential",
+      "type": "reprint-live-masterdata-snapshot",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-033",
+      "title": "ربط الطباعة يختزل سيريالات متعددة إلى الأخير ويقرأ دفعة الصنف بأول صف دون هوية السطر",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "print-detail-identity-collapse",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-034",
+      "title": "التفقيط العربي يفصل الكسور بالنقطة ويبترها بدل تسوية مبلغ واحد بدقة العملة",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "amount-words-culture-and-truncation",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-035",
+      "title": "اسم العملة في التفقيط العربي والإنجليزي يختلف للرمز نفسه ويسقط إلى ريال افتراضي",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "amount-words-currency-language-drift",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-036",
+      "title": "فحص تفرد الباركود يربط جدولي الوحدات والباركود ضرباً ديكارتياً فيفوت التكرار عند خلو أحدهما",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "barcode-duplicate-cartesian-check",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-037",
+      "title": "طباعة الباركود الممسوح تحتفظ برمز الوحدة وتضع سعر الصنف الأساسي بدلاً من سعر تلك الوحدة",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "barcode-label-unit-price-disagreement",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-038",
+      "title": "تقرير أرباح المواد يطرح خصم صنف POS مرتين مقابل مرة لبقية البيع والمرتجع",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "profit-report-pos-double-discount",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-039",
+      "title": "عمود متوسط التكلفة في تقرير الأرباح يحمل إجمالي تكلفة الكمية ويصدر بالتسمية نفسها",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "profit-report-unit-cost-label",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-040",
+      "title": "حركة المواد خلال الفترة تسقط الصنف الذي له مرتجع فقط بلا بيع داخل الفترة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "period-report-return-only-omission",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-041",
+      "title": "إجمالي حركة المواد يضرب كمية الأساس في سعر وحدة البيع فيضاعف قيمة العبوات",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "period-report-primary-quantity-times-unit-price",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-042",
+      "title": "ملخص طباعة تبويب الفواتير يقرأ مجموع تبويب المواد الذي يمسح قبل العرض",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "period-invoice-print-summary-wrong-source",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-043",
+      "title": "تجزئة تقرير الضريبة تقسم مبيعات بلا ضريبة بمعدل الرأس وتتجاهل خصمها العام",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "tax-report-header-rate-exempt-base-discount",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-044",
+      "title": "إجمالي المبيعات والمشتريات في التقرير الضريبي لا يضم صف المعفى المعروض",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "tax-report-total-excludes-exempt",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-045",
+      "title": "معاينة التقرير قد تضع معايير فترة جديدة فوق نتائج الاستعلام السابق دون إعادة حساب",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "report-criteria-result-snapshot-drift",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-046",
+      "title": "فشل مصدر متأخر في تقرير الضريبة يترك خلايا جديدة وأخرى قديمة قابلة للطباعة معاً",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "tax-report-partial-ui-publication",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-047",
+      "title": "إسقاط بيانات طباعة المشتريات يضع نسبة ضريبة إضافية مكان مبلغها ويصفر حقولاً مالية أخرى",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "purchase-report-lossy-output-projection",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-048",
+      "title": "تصدير CSV/TSV لا يرمز الفواصل والاقتباسات والأسطر وتنسيق الألوف ترميز خلايا صحيحاً",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "spreadsheet-delimited-cell-encoding",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-049",
+      "title": "تصدير خلايا نصية غير موثوقة يسمح ببادئات صيغ عند فتح الملف ببرنامج جداول",
+      "severity": "High",
+      "certainty": "potential",
+      "type": "spreadsheet-active-content-boundary",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-050",
+      "title": "تصدير المشتريات يعرض XLSX وCSV لكنه يكتب TSV أياً كان الامتداد المختار",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "spreadsheet-extension-format-contract",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-051",
+      "title": "التقرير الضريبي يعرض صافي التأجير الشامل للضريبة في عمود الأساس قبل الضريبة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "tax-report-rent-gross-as-net-base",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-052",
+      "title": "تحديد مركز التكلفة لا يثبت عضوية الشجرة ويقبل مراكز غير تابعة في التجميع",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-053",
+      "title": "افتتاحيات مراكز التكلفة تطابق المركز وحده وتكرر أول حساب وتسقط الافتتاحي بلا حركة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-054",
+      "title": "قائمة الفواتير المخزنية تقرأ عناصر WPF من Task.Run خارج Dispatcher",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-055",
+      "title": "معاينة قائمة الفواتير المخزنية تمرر null إلى جسر البيانات بدل صفوف التقرير",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-056",
+      "title": "حركة المواد التجميعية تضع التسوية نوع7 في أعمدة المناقلة والمناقلة نوع8 في التسوية",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-057",
+      "title": "حركة المواد التجميعية لا تقرأ نوع الإنتاج6 فتسقط أصنافه وأثره من الرصيد",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-058",
+      "title": "اختيار العميل في حركة المواد لا يرشّح استعلامات الحركة",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-059",
+      "title": "خيار آخر حركة يطلب TOP1 مع ترتيب تصاعدي فيعيد الأقدم",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-060",
+      "title": "تفصيل حركة المادة يحدد اتجاه مكونات الإنتاج من رأس الفاتورة لا من سطرها",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-061",
+      "title": "فتح الفاتورة من حركة المادة يعتمد اسم العرض والرقم المحلي ويفقد هوية الفرع",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-062",
+      "title": "كشف الصندوق يحسب السابق حتى منتصف الليل لا حتى وقت البداية المختار",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-063",
+      "title": "تصدير قائمة الفواتير المخزنية يكتب الملاحظات مكان رقم الفاتورة",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-064",
+      "title": "تنقل عارض القيود يرشح بالرقم ويرتب بالتاريخ فيتخطى قيوداً عند اختلاف ترتيبهما",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-065",
+      "title": "كل الفروع في القوائم المالية يجمع الأستاذ ويبقي المخزون لفرع واحد",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-066",
+      "title": "إجراءا رسوم الدفع والطلب يتجاهلان نوع الفاتورة المرسل ويجمعان البيع و POS",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-067",
+      "title": "استعلامات رسوم المبيعات المرفقة لا تستبعد الفواتير المحذوفة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-068",
+      "title": "أول اختيار فعلي للمجموعة والمستخدم والفرع لا يدخل مرشحات تقرير الفئات",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-069",
+      "title": "تقرير الفئات يحسب الضريبة والصافي بنسبة 15 بالمئة ثابتة بدلاً من بيانات البنود",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-070",
+      "title": "توزيع الخصم في تقريري الفئات يستعمل سعر الوحدة دون كمية السطر",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-071",
+      "title": "مصدر طباعة تقرير الفئات ينقل رأساً واحداً ولا ينقل مجموعاته أو بنوده",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-072",
+      "title": "قارئ مكونات تقرير الإنتاج يطلب ComponentId خلاف عقد Inv_Sub والكاتب المرفق",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-073",
+      "title": "تواريخ تقرير التأجير لا ترتبط بمعيار الاستعلام في مسار العرض المحلي",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-074",
+      "title": "مرشح DataView للتأجير يدرج النصوص دون ترميز علامات الاقتباس",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-075",
+      "title": "زر بحث الصنف يبقى معطلاً في تقريري السيريال فلا يحدد ItemId من الواجهة",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-076",
+      "title": "مرشح مستخدم تقرير الفئات يطلب عمود Safe_Emps غير الوارد في عقد مصدريه",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-077",
+      "title": "حاسبتا تكلفة تحليل الفواتير تقربان كمية المقام إلى عدد صحيح قبل القسمة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-078",
+      "title": "تجميع الصنف في تحليل الفواتير يطبق آخر تكلفة مقروءة على كامل كمية الفترة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-079",
+      "title": "التجميع الشهري لتحليل الفواتير يوسع الفترة المطلوبة إلى حدود الشهر دون تقاطع",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-080",
+      "title": "مرشح المستخدم ومعيار المجموعة لا يطبقان في تجميعات من تحليل الفواتير",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-081",
+      "title": "تجميع المخزن في تحليل الفواتير يبني مرشح الخزينة من قيمة المستودع",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-082",
+      "title": "مرشح الفئة في تحليل الفواتير يبقي صافي الرأس كاملاً مقابل تكلفة البنود المصفاة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-083",
+      "title": "تجميعا الصنف والمجموعة في تحليل الفواتير يعرضان المجموع قبل الخصم والخصم صفراً",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-084",
+      "title": "شروط نوع واتجاه تحليل الفواتير تسقط المرتجع وبيع POS العادي من صافي المخزن",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-085",
+      "title": "تعديل نص الصنف في الأرباح التفصيلية يبقي SelectedId السابق عند عرض التقرير",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-086",
+      "title": "قارئ إشعارات الفواتير يطرح الضريبة الإضافية من VAT المحفوظة كحقل مستقل",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-087",
+      "title": "تفاصيل المشتريات تربط معرف المستودع بجدول الخزائن عند جلب الاسم",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-088",
+      "title": "خيار كل الفروع في تفاصيل المشتريات يبقي قيد الفرع المختار سابقاً",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-089",
+      "title": "منتقيا تاريخ تحليل الفواتير موضوعان في خلية Grid نفسها",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-090",
+      "title": "أوامر تغيير الدفع في تقرير المبيعات تكتب InvTotal ولا تصالح حالة السداد وتفاصيله",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-091",
+      "title": "إغلاق حوار تغيير العميل بلا اختيار يمرر ClientId الصفري إلى تحديث الفواتير",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-092",
+      "title": "قارئا POS وأندرويد يستبدلان النقد المحفوظ بصافي الفاتورة دون مراعاة السداد الجزئي",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-093",
+      "title": "جسور الطباعة المؤقتة لا تنقل المجاميع الموقعة إلى مصدر التقرير",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-094",
+      "title": "مرشح ضريبة أندرويد يستعمل FreeVATSales المحفوظة بينما يعرض قيمة معاد حسابها",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-095",
+      "title": "تفاصيل أصناف POS تعيد تفسير شمول السعر للضريبة بإعداد النوع الحالي لا بعلم الفاتورة المحفوظ",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-096",
+      "title": "تفاصيل أصناف POS تقرب الكمية قبل ضرب السعر فتخالف قيمة السطر المحسوبة من الكمية الأصلية",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-097",
+      "title": "مخرجا تفاصيل POS وإجمالي البيع والشراء يحجبان FlowDocument بفحص REPX لا يحمّلانه",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-098",
+      "title": "تصديرا HTML في تفاصيل POS وإجمالي البيع والشراء يدرجان نصوص البيانات كترميز خام",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-099",
+      "title": "مرشح مرتجعات كشف مركز التكلفة يحتفظ بالنوع السابق لأن فهارس الخيارات لا تصل إلى فرع التحويل",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-100",
+      "title": "تصفية أرباح الفواتير تقارن InvProfit المحفوظ بدلاً من الربح المعروض وفق التكلفة المختارة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-101",
+      "title": "ملخصات أرباح الفواتير معرفة كـCustom بلا ربط الحاسبة اليدوية بخلايا الملخص",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-102",
+      "title": "تحويلات أرصدة الأصناف تستعمل مرجع inv غير المعرّف وعمود currency بدل ItemId",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-103",
+      "title": "افتراضي طباعة الفواتير يبدأ دائماً بـA4 دون استرجاع القيمة المحفوظة",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-104",
+      "title": "حفظ افتراضي الطباعة يعلن النجاح دون التحقق من تحديث صف الإعداد",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-105",
+      "title": "قائمة مجموعات دعم القرار تغير نطاق الأهلية عند تبديل اللغة بدلاً من تغيير الاسم فقط",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-106",
+      "title": "ملخص السندات يصفر الصافي عند NULL في أحد المبلغين رغم عرض المبلغ الآخر بقيمته",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-107",
+      "title": "طلبات سجل المستخدمين المتداخلة تضيف نتائجها إلى المجموعة المشتركة بلا تمييز جيل الطلب",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-108",
+      "title": "فتح ملف سجل المستخدمين للتطبيق الخارجي يسبق إغلاق الكاتب وقد يتيح قراءة ملف غير مكتمل",
+      "severity": "Medium",
+      "certainty": "potential",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-109",
+      "title": "معيار فترة تقرير الرواتب يتسع إلى كل الفترات عند فشل تحويل الشهر أو السنة",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-110",
+      "title": "ربط ملخص السندات بالمستخدم عبر الموظف قد يكرر السند ومبلغه عند تعدد صفوف المستخدمين",
+      "severity": "Medium",
+      "certainty": "potential",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-111",
+      "title": "إجمالي قيمة تقرير المندوبين يجمع المرتجع والإشعار كقيم موجبة خلاف إشارة العمولة",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-112",
+      "title": "خيار كل الفترة في تقرير المندوبين يوسع الفواتير وحدها ويبقي السندات مقيدة بالتاريخ",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-113",
+      "title": "قارئ إشعارات المندوبين يطلب Notes خلاف كاتب ومخطط CreditDeptNotes المرفقين",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-114",
+      "title": "إجراء كشف الحساب الرئيسي المرفق لا يستبعد القيود الملغاة خلاف الكشف المفصل",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-115",
+      "title": "إعادة عرض كشف سنة سابقة ترجع للقاعدة الحالية رغم بقاء السنة المختارة",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-116",
+      "title": "تصدير قائمة الدخل يكتب مسار CSV آخر ثم يعلن ويفتح مسار XLSX المختار",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-117",
+      "title": "اعتماد مخزون صفري للميزانية يسقط إلى التقييم التلقائي لأن الصفر يمثل عدم الاختيار",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-118",
+      "title": "المستوى الثالث لميزان المراجعة يعيد صفوف المستوى الثاني ولا يصل إلى أحفاد الشجرة",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-119",
+      "title": "طباعة ميزان المراجعة المحلية تسقط عمودي الرصيد السابق الموجودين في الجدول وتصدير HTML",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-120",
+      "title": "قائمة نوع العملية في حركة الصنف التفصيلية لا تعبأ فتظل مرشحات النوع غير قابلة للاختيار",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-121",
+      "title": "حفظ مظهر جدول حركة الصنف التفصيلية يكتب XML دون مسار لاستعادته عند فتح النافذة",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-122",
+      "title": "واجهة LastProcess لحركة الصنف تتلقى المخزن ولا تلغي خيار كل المستودعات قبل الاستعلام",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-123",
+      "title": "زر عرض استحقاق الرواتب يعيد الشهر والسنة المختارين إلى الفترة الحالية قبل التحميل",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-124",
+      "title": "تغيير شهر الاستحقاق إلى شهر أقصر قد يبقي مبالغ الشهر السابق تحت الفترة الجديدة",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-125",
+      "title": "جزء سندات القبض في الإقرار الضريبي يثبت فرع الجلسة ويتجاهل الفرع المختار وكل الفروع",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-126",
+      "title": "التبديل بين النمط الشهري والربعي يعطل قائمة الفترة الجديدة بسبب معالج إلغاء النمط الآخر",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-127",
+      "title": "الإقرار الضريبي البديل لا يطرح مرتجع المبيعات والمشتريات من مجموع المبالغ بلا ضريبة",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-128",
+      "title": "تفاصيل الضريبة تورث علم IsVAT بين طلبات المشتريات بلا بنود فتسقط صفوفاً خاضعة",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-129",
+      "title": "متصلو آخر حركة الطرف لا يحافظون على نوع العميل أو المورد المختار",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-130",
+      "title": "أمر آخر حركة للعميل في واجهة الإدخال والإخراج يرسل معرف طرف فارغاً فيطلب حركة كل الأطراف",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-131",
+      "title": "فتح التسوية من قائمة المخزون يمرر رأس Inv إلى قارئ SafesAdjust",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-132",
+      "title": "فتح محرر الفاتورة من حركة المادة يحمّل المستند قبل Loaded الذي يعيد حالة الجديد",
+      "severity": "High",
+      "certainty": "potential",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-133",
+      "title": "إعادة فتح الإنتاج لا تستعيد BaseQty فتتوقف إعادة تحجيم المكونات أو تصفرها عند تغيير الوحدة",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-134",
+      "title": "قارئ مكونات الإنتاج يقرب الكمية والسعر قبل بناء نموذج التحرير",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-135",
+      "title": "إعادة حفظ POS غير الإلكتروني تستبدل تاريخ الفاتورة المحملة بوقت الحفظ",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-136",
+      "title": "محررات البيع والشراء والإدخال والإخراج تهمل كمية وسعر باركود الميزان بعد فكهما",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-137",
+      "title": "مطابقة بادئة ميزان الصنف تختار أول وحدة من جميع وحداته دون تقييد وحدة الرمز",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-138",
+      "title": "فشل تحويل حمولة الميزان الرقمية يسقط إلى صفر مع هوية صنف ناجحة فتقبل POS قيماً بديلة",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-139",
+      "title": "التفقيط العربي يقرأ اثنتي عشرة خانة ثابتة دون حارس للمقادير الأوسع",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-140",
+      "title": "مسار الفاتورة البديل يترك حقل عملة بيانات الطباعة فارغاً رغم تمريرها إلى التفقيط",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-141",
+      "title": "طباعة سندي الصرف وقبض أندرويد تحول فشل قراءة المبلغ إلى صفر مع إبقاء النص الأصلي",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-142",
+      "title": "مسارا تسعير العميل يستبدلان سعر الوحدة بسعر صف الصنف دون مراعاة وحدة السعر",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-143",
+      "title": "حوار الصنف المكرر يعكس إضافة الكمية والبند الجديد عند قارئي الأصناف المختارين",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-144",
+      "title": "استيراد العقد يطبق قيم الصف على آخر بند مطابق دون نتيجة إدراج أو إلغاء",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-145",
+      "title": "قائمة نتائج البحث تتراكم دون إزالة ما ألغي تحديده مع عقد اختيار نهائي غير محسوم",
+      "severity": "Medium",
+      "certainty": "potential",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-146",
+      "title": "إضافة دفعة أصناف متميزة تستبدل البند السابق في محرر المبيعات بدلاً من إلحاقها",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-147",
+      "title": "استيراد الفواتير يفقد قيم الصف أثناء استبداله ببند جديد في المحررين المختارين",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-148",
+      "title": "إلغاء بحث الصنف يحذف صف المشتريات الحالي دون التحقق أنه صف تمهيدي",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-149",
+      "title": "فرع البند المكرر يكتب فوق آخر صف في المشتريات بدلاً من صف نتيجة مستقل",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-150",
+      "title": "إزالة صف قبل الصنف المكرر تترك إعادة الحساب على فهرسه القديم في المشتريات",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-151",
+      "title": "مساعد خصائص المادة يطبق الكمية الصفرية بعد رجوع الحوار دون تأكيد",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-152",
+      "title": "حساب التعبئة يعيد إدخال ناتجه فيضرب الكمية مجدداً عند الاستدعاء المتتابع",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-153",
+      "title": "التعديل الجماعي للأصناف يستبدل قيمة التعبئة المدخلة بثابت 2",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-154",
+      "title": "الحفظ العام لتعديل الأصناف يغير سعر الرأس ويبقي سعر الوحدة الموجودة دون تحديث",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-155",
+      "title": "اختيار نوع عملية آخر في بحث الفواتير يرشح لقطة مقيدة بالعملية الأصلية",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-156",
+      "title": "تغيير التاريخ أو مسح بحث المناقلة يسقط شرط أهلية المستند الذي مرره المتصل",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-157",
+      "title": "بحث المشتريات يضم مستندات النوع 20 ويعيدها إلى قارئ لا يقيد النوع المطلوب",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-158",
+      "title": "مسح حد السعر الأعلى في بحث الفواتير يبقي المرشح السابق حتى إجراء تصفية آخر",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-159",
+      "title": "قبول بحث الفواتير يستبدل المسودة غير المحفوظة دون حارس التنقل في البيع والشراء",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-160",
+      "title": "الرجوع من إدراج فاتورة دون قبول يغير الفاتورة الحالية في البيع والشراء",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-161",
+      "title": "غياب هدف التنقل أو فشل قارئه يصفّر محرر الفاتورة الحالي دون تمييز النتيجة",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    },
+    {
+      "id": "P7-162",
+      "title": "ازدواج ربط أحداث محرر البيع يكرر تأكيد الإغلاق وطلب التحقق للحفظ",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated"
+    }
+  ],
+  "five_path_screen": [
+    "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+    "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+    "SmartAuditERP/Form_WPF/frmInvSale.xaml",
+    "SmartAuditERP/Form_WPF/frmInvPurch.xaml",
+    "SmartAuditERP/Class/Print.cs"
+  ],
+  "path_matching_registry_rows": [
+    {
+      "id": "P1-004",
+      "row_sha256": "1127f57f91e55f32dc0809b297fb4c92b6f4119e3173b1c9adb1ff98530ec8c5"
+    },
+    {
+      "id": "P1-017",
+      "row_sha256": "e55e877b3c35d287daf72efb1c7159f6514e5cb557cf61f28f0e4fc619dd3609"
+    },
+    {
+      "id": "P2-001",
+      "row_sha256": "ae55fc351a8c7b7d794388e9f37ae43a812df23d25a51592b90ad1852eddd93e"
+    },
+    {
+      "id": "P2-014",
+      "row_sha256": "65f5f7070591f5b713ae3a7bd0752adc7b64c30b7a177426fb00fa8e7f9e5555"
+    },
+    {
+      "id": "P3-006",
+      "row_sha256": "837e0767f5fbeb46ae0713e4ece425d477855c91fcacb149e520787b25e13b27"
+    },
+    {
+      "id": "P4-003",
+      "row_sha256": "90c5bc4bd64aebf3e080742c747c05cd4a2aaad80a5501161ee473f507f44194"
+    },
+    {
+      "id": "P4-005",
+      "row_sha256": "eaa44a067ea5cf3144ba27c7ef5be9172c67f2e36e2ed76bdb70b86ea0ee2fb5"
+    },
+    {
+      "id": "P4-006",
+      "row_sha256": "2464e9e406c663c89173abf7e5fa37404fc3d330270cbfc79cd618dfc03ff83f"
+    },
+    {
+      "id": "P4-011",
+      "row_sha256": "02a24c2cbfd7aeba47504da91bda5e7c0ea11b43210703dc37df4e4b9f30bdc1"
+    },
+    {
+      "id": "P4-012",
+      "row_sha256": "51a00b6f6ea1bfad61ce56c89cc12b745924f456627606d61309fe198f6d7338"
+    },
+    {
+      "id": "P4-014",
+      "row_sha256": "9d1b24aee1475dc810caad622344debb943c3a710e234a4794455467d3c4b4c4"
+    },
+    {
+      "id": "P4-031",
+      "row_sha256": "0b5cbdfda0dbcff14e232cbef7134db84b8c437b31c0af94323f3f8ccb2738bc"
+    },
+    {
+      "id": "P5-004",
+      "row_sha256": "885f797062a1d28842428f35476c125a79e8cd16829304b5366e356bdbf265f0"
+    },
+    {
+      "id": "P5-005",
+      "row_sha256": "5949121f9bf0ea56bac32aad913afc45096ebed5608138255014110ceb4bf143"
+    },
+    {
+      "id": "P6-016",
+      "row_sha256": "dd68e333d4bc3dd6bf2a375340801db9a2f230f6553dc1c5a84cdf9054ca3c74"
+    },
+    {
+      "id": "P6-017",
+      "row_sha256": "8ee3f8200b089387c6b14d2184832f26ff400c25bc77f69e36efc82e34de5d57"
+    },
+    {
+      "id": "P6-031",
+      "row_sha256": "b87faf560bb08dbd2f71f073c288864cd2745a0142afc8c1d9373e1f94b19442"
+    },
+    {
+      "id": "P6-032",
+      "row_sha256": "7130cb1c1d4c99ced49a0d0c0af974de60bd23c3988c1ab709f207afcaa7e7e4"
+    },
+    {
+      "id": "P6-033",
+      "row_sha256": "66d2b6b11493218218ecc4a7964d2ad0c32f44873e7e453cf51c629152ed5e3e"
+    },
+    {
+      "id": "P6-034",
+      "row_sha256": "20b493905f07c9db19623cb89ef4040319785caefe0e77187cfd9c226fb7377b"
+    },
+    {
+      "id": "P7-030",
+      "row_sha256": "ce9aa90707d847e392e9e36d8f2e1c972449352b83d651a4082b235c077b2876"
+    },
+    {
+      "id": "P7-031",
+      "row_sha256": "529e11a6308f48cbe8b460c011bfce8bd5de8a363201668c6c6ea24ba4436268"
+    },
+    {
+      "id": "P7-032",
+      "row_sha256": "4a5cc8163545184274be35f425387d2f83edfdf0f2ceb4e01013e3dd9ded8280"
+    },
+    {
+      "id": "P7-033",
+      "row_sha256": "8b4b084c26fd037b95b050fe8d7a5ee9c28a677e0dc9e7583a1c12f591d0b508"
+    },
+    {
+      "id": "P7-034",
+      "row_sha256": "57b9c252873b105ceb2e0835e507236eb1eab8d0693ba3fc49d0933c686a58c0"
+    },
+    {
+      "id": "P7-035",
+      "row_sha256": "5fb488a7c09b79cf5b36933963bc211fdd072a0e959345d3763186f6607a7b5f"
+    },
+    {
+      "id": "P7-122",
+      "row_sha256": "e76303894afe9bf99a49d294b2129a12b159c1335c3b359431621c477afd87d3"
+    },
+    {
+      "id": "P7-129",
+      "row_sha256": "425aceae4f86a8e31f24d08289fc5e6d96a47d57a3847719949d6edb8be69bad"
+    },
+    {
+      "id": "P7-132",
+      "row_sha256": "edece1c982c8bb4169ab1fa5b66003c6ad117685d27aaf7f10cf52943486e4a3"
+    },
+    {
+      "id": "P7-136",
+      "row_sha256": "fc18b4e5f08c82b8ead0083e671d64cb5005f19a96fff1aebe59db168954f7bf"
+    },
+    {
+      "id": "P7-139",
+      "row_sha256": "e4c6458989e277f0fab38aca2963a6fc3a5ffcd54dca67fe9f44b3e85a8e82e0"
+    },
+    {
+      "id": "P7-140",
+      "row_sha256": "ee416dcef4a2a2cc2bcb0a85572a6cfa3d1fed640c0773453e9a8d3d4a3da504"
+    },
+    {
+      "id": "P7-157",
+      "row_sha256": "5e69a25324123f37d4dfa17b0d4c13c246f85579b2d0315c77174482ce978380"
+    },
+    {
+      "id": "P7-159",
+      "row_sha256": "bbc72920c52e5eabf085bfde09692596e7299128792d51c2be31b4ab834ddf0c"
+    },
+    {
+      "id": "P7-160",
+      "row_sha256": "885bcfcf229c765a110b5aa4a476e4ac2d75f02830f3472aa89e6d5db05e92c4"
+    },
+    {
+      "id": "P7-161",
+      "row_sha256": "bbd4b327ac9f50bc050b6b092adc49507c548183f8fd421d61b52391a3e00a08"
+    },
+    {
+      "id": "P7-162",
+      "row_sha256": "0bb3267cd6387b0eac06bbab52b5d3705e86e628d6ef20083884d31a256a3d0a"
+    }
+  ],
+  "selected_prior_finding_sections": [
+    {
+      "finding_id": "P7-029",
+      "artifact": "PHASE-07B1.md",
+      "start": 41,
+      "end": 52,
+      "artifact_sha256": "8d0be98a42794321dcf100a46dff4f72ba3cff4680752df56204f671d5188b93",
+      "review_depth": "selected-report-finding-section-not-whole-report-or-all-original-evidence"
+    },
+    {
+      "finding_id": "P7-030",
+      "artifact": "PHASE-07B1.md",
+      "start": 53,
+      "end": 64,
+      "artifact_sha256": "8d0be98a42794321dcf100a46dff4f72ba3cff4680752df56204f671d5188b93",
+      "review_depth": "selected-report-finding-section-not-whole-report-or-all-original-evidence"
+    },
+    {
+      "finding_id": "P7-031",
+      "artifact": "PHASE-07B1.md",
+      "start": 65,
+      "end": 76,
+      "artifact_sha256": "8d0be98a42794321dcf100a46dff4f72ba3cff4680752df56204f671d5188b93",
+      "review_depth": "selected-report-finding-section-not-whole-report-or-all-original-evidence"
+    },
+    {
+      "finding_id": "P7-032",
+      "artifact": "PHASE-07B1.md",
+      "start": 77,
+      "end": 88,
+      "artifact_sha256": "8d0be98a42794321dcf100a46dff4f72ba3cff4680752df56204f671d5188b93",
+      "review_depth": "selected-report-finding-section-not-whole-report-or-all-original-evidence"
+    },
+    {
+      "finding_id": "P7-033",
+      "artifact": "PHASE-07B1.md",
+      "start": 89,
+      "end": 100,
+      "artifact_sha256": "8d0be98a42794321dcf100a46dff4f72ba3cff4680752df56204f671d5188b93",
+      "review_depth": "selected-report-finding-section-not-whole-report-or-all-original-evidence"
+    },
+    {
+      "finding_id": "P7-046",
+      "artifact": "PHASE-07B1.md",
+      "start": 245,
+      "end": 256,
+      "artifact_sha256": "8d0be98a42794321dcf100a46dff4f72ba3cff4680752df56204f671d5188b93",
+      "review_depth": "selected-report-finding-section-not-whole-report-or-all-original-evidence"
+    },
+    {
+      "finding_id": "P7-103",
+      "artifact": "PHASE-07B7.md",
+      "start": 142,
+      "end": 162,
+      "artifact_sha256": "4b3635d5f954e42a3e954a8e51c81ee926e1fd487b3278c303c4dd9006009042",
+      "review_depth": "selected-report-finding-section-not-whole-report-or-all-original-evidence"
+    },
+    {
+      "finding_id": "P7-104",
+      "artifact": "PHASE-07B7.md",
+      "start": 163,
+      "end": 183,
+      "artifact_sha256": "4b3635d5f954e42a3e954a8e51c81ee926e1fd487b3278c303c4dd9006009042",
+      "review_depth": "selected-report-finding-section-not-whole-report-or-all-original-evidence"
+    },
+    {
+      "finding_id": "P7-115",
+      "artifact": "PHASE-07B11.md",
+      "start": 63,
+      "end": 74,
+      "artifact_sha256": "9260a9da13185b1b41146a75d5b6f15cb10ea9825636e8a4b4a40e6206249900",
+      "review_depth": "selected-report-finding-section-not-whole-report-or-all-original-evidence"
+    },
+    {
+      "finding_id": "P7-126",
+      "artifact": "PHASE-07B15.md",
+      "start": 84,
+      "end": 101,
+      "artifact_sha256": "ae7c850785e09db148a504e95ada82c19f04b9d723eca4227f90fc545f9f2b4c",
+      "review_depth": "selected-report-finding-section-not-whole-report-or-all-original-evidence"
+    },
+    {
+      "finding_id": "P7-132",
+      "artifact": "PHASE-07B19.md",
+      "start": 67,
+      "end": 78,
+      "artifact_sha256": "b265a52b3b05d8c7769ea6db52a8bb8b907bf51b4316d01ce598772d38f9ba03",
+      "review_depth": "selected-report-finding-section-not-whole-report-or-all-original-evidence"
+    },
+    {
+      "finding_id": "P7-140",
+      "artifact": "PHASE-07B21.md",
+      "start": 41,
+      "end": 56,
+      "artifact_sha256": "93029c6f13a475f94cc8655cec7e7a7050bbc4c8010b3494461775d49c493980",
+      "review_depth": "selected-report-finding-section-not-whole-report-or-all-original-evidence"
+    },
+    {
+      "finding_id": "P7-145",
+      "artifact": "PHASE-07B23.md",
+      "start": 21,
+      "end": 36,
+      "artifact_sha256": "5945f5ba0203608c324a4c6baa832c6398eecf88dda2fa01cd1dac4d2120f410",
+      "review_depth": "selected-report-finding-section-not-whole-report-or-all-original-evidence"
+    },
+    {
+      "finding_id": "P7-157",
+      "artifact": "PHASE-07B27.md",
+      "start": 72,
+      "end": 97,
+      "artifact_sha256": "fe07ae637c071f029d5a4c13f4c32ff4a023bdecd883024c594b0710aa2c25dc",
+      "review_depth": "selected-report-finding-section-not-whole-report-or-all-original-evidence"
+    },
+    {
+      "finding_id": "P7-158",
+      "artifact": "PHASE-07B28.md",
+      "start": 27,
+      "end": 44,
+      "artifact_sha256": "37bd2af4b9a0456405639a133c9c08dafff20ae9f0c38eb3921f9ffd4a014fee",
+      "review_depth": "selected-report-finding-section-not-whole-report-or-all-original-evidence"
+    },
+    {
+      "finding_id": "P7-159",
+      "artifact": "PHASE-07B29.md",
+      "start": 26,
+      "end": 47,
+      "artifact_sha256": "b8566ffa88e99754fa4a38400ad3f353792842d4ca3620d5d6175d5cdc90a31d",
+      "review_depth": "selected-report-finding-section-not-whole-report-or-all-original-evidence"
+    },
+    {
+      "finding_id": "P7-160",
+      "artifact": "PHASE-07B30.md",
+      "start": 26,
+      "end": 56,
+      "artifact_sha256": "1a517fcead7798736a39b6be28d44916997fdf714c52e711d19323f17e775106",
+      "review_depth": "selected-report-finding-section-not-whole-report-or-all-original-evidence"
+    },
+    {
+      "finding_id": "P7-161",
+      "artifact": "PHASE-07B31.md",
+      "start": 28,
+      "end": 37,
+      "artifact_sha256": "f43102591389a5b3e9981040cee7189c8f56b8f4914d26874b49b773d8f6f625",
+      "review_depth": "selected-report-finding-section-not-whole-report-or-all-original-evidence"
+    },
+    {
+      "finding_id": "P7-162",
+      "artifact": "PHASE-07B32.md",
+      "start": 32,
+      "end": 71,
+      "artifact_sha256": "3eb57590052d3f615957f7a7278e6d87e4f6dbcb73410c025709062b8d7752ee",
+      "review_depth": "selected-report-finding-section-not-whole-report-or-all-original-evidence"
+    },
+    {
+      "finding_id": "P6-033",
+      "artifact": "PHASE-06.md",
+      "start": 702,
+      "end": 719,
+      "artifact_sha256": "a3899a3da1717b6443723d2d03ed719b794edb74782f4ca0cd63993a1ff7e701",
+      "review_depth": "selected-report-finding-section-not-whole-report-or-all-original-evidence"
+    },
+    {
+      "finding_id": "P6-035",
+      "artifact": "PHASE-06.md",
+      "start": 738,
+      "end": 755,
+      "artifact_sha256": "a3899a3da1717b6443723d2d03ed719b794edb74782f4ca0cd63993a1ff7e701",
+      "review_depth": "selected-report-finding-section-not-whole-report-or-all-original-evidence"
+    },
+    {
+      "finding_id": "P4-015",
+      "artifact": "PHASE-04.md",
+      "start": 216,
+      "end": 225,
+      "artifact_sha256": "864cb8bc2680eb41a6d93728cc10ae46e6e3c29b272969379f64ebdc96561e02",
+      "review_depth": "selected-report-finding-section-not-whole-report-or-all-original-evidence"
+    },
+    {
+      "finding_id": "P3-005",
+      "artifact": "PHASE-03.md",
+      "start": 105,
+      "end": 112,
+      "artifact_sha256": "a1595297adbb2aaef2f9e7ced202b5f407bfe5df650282ec4090b2f9fd783792",
+      "review_depth": "selected-report-finding-section-not-whole-report-or-all-original-evidence"
+    },
+    {
+      "finding_id": "P1-030",
+      "artifact": "PHASE-01.md",
+      "start": 309,
+      "end": 315,
+      "artifact_sha256": "2566950e50bbdf1bfeaca2a186c10b4ac70d7f661853a8ca24931ea492deaf55",
+      "review_depth": "selected-report-finding-section-not-whole-report-or-all-original-evidence"
+    }
+  ],
+  "all_historical_bodies_reviewed": false,
+  "source_and_body_screen_is_not_complete_capability_census": true,
+  "new_root_ids": [
+    "P7-163"
+  ],
+  "existing_root_extensions": []
+}
