@@ -1747,7 +1747,9 @@ namespace SmartAuditERP.Form_WPF
                             xtraReport.ShowPreviewDialog();
                             break;
                         case 3:
-                            this.SendEmail(xtraReport);
+                            // Repair R-065 (audit finding P6-035): the shared SendEmail right after the switch already
+                            // covers Type 3; sending here too delivered every Android closing email twice. Print/preview
+                            // arms keep their single trailing send unchanged.
                             break;
                     }
                     this.SendEmail(xtraReport);
