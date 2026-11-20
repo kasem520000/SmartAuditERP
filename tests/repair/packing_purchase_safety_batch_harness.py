@@ -25,6 +25,8 @@ s=read('frmItemProperties.xaml.cs')
 check('packing request is separate from internally displayed result',packing_contract(s))
 check('feedback mutant detected',not packing_contract(s.replace('netQntyValue = ParseNumber(_packingInputText, 0);','netQntyValue = ParseNumber(txtNetQnty.Text, 0);')))
 check('height focus feedback mutant detected',not packing_contract(s.replace('ItemProperty != 2 || _packingHeightEdited','true')))
+load = section(s, 'private void frmItemProperties_Load(', '#endregion')
+check('default initialization clears height edit state', load.index('Calc();') < load.index('_packingHeightEdited = false;'))
 check('height user edit tracks rounding and dirty state', '_packingHeightEdited = true;' in s and '_packingRoundUp = Math.Abs(height % 1.0)' in s)
 check('changing property resets stale request', '_packingInputText = null;' in section(s,'private void cmbItemProperties_SelectedIndexChanged(', '\n    }\n}'))
 

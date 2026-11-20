@@ -62,6 +62,8 @@ namespace SmartAuditERP.Form_WPF
 
                 ApplyPropertyMode();
                 Calc();
+                // Loading defaults is not a user edit of the height.
+                _packingHeightEdited = false;
             }
             catch (Exception ex)
             {
