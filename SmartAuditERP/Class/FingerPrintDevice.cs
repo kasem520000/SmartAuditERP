@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.CompilerServices;
+using log4net;
 using zkemkeeper;
 
 namespace SmartAuditERP
@@ -18,6 +19,8 @@ namespace SmartAuditERP
 		private static SqlConnection conn = MainClass.ConnObj();
 
 		private static int iMachineNumber;
+
+		private static readonly ILog Logger = LogManager.GetLogger(typeof(FingerPrintDevice));
 
 		[DllImport("kernel32", CharSet = CharSet.Ansi, ExactSpelling = true, SetLastError = true)]
 		private static extern void Sleep(long dwMilliseconds);
@@ -47,17 +50,22 @@ namespace SmartAuditERP
 
 		public static void loadAttendData()
 		{
-			if (FingerPrintDevice.conn.State != ConnectionState.Open)
-			{
-				FingerPrintDevice.conn.Open();
-			}
-			SqlTransaction sqlTransaction;
-			sqlTransaction = FingerPrintDevice.conn.BeginTransaction();
+			bool enableAttemptNeeded = false;
 			try
 			{
+				if (FingerPrintDevice.conn.State != ConnectionState.Open)
+					FingerPrintDevice.conn.Open();
+				SqlTransaction sqlTransaction = FingerPrintDevice.conn.BeginTransaction();
 				new SqlCommand();
 				new ListViewItem("Items", 0);
-				FingerPrintDevice.axCZKEM1.EnableDevice(FingerPrintDevice.iMachineNumber, bFlag: false);
+				// Repair R-118 (P7-008): even an exception during the COM call
+				// can leave the actual device state unknown; always attempt recovery.
+				enableAttemptNeeded = true;
+				if (!FingerPrintDevice.axCZKEM1.EnableDevice(FingerPrintDevice.iMachineNumber, bFlag: false))
+				{
+					Logger.Error("Fingerprint device disable failed; import was not started.");
+					return;
+				}
 				if (FingerPrintDevice.axCZKEM1.ReadGeneralLogData(FingerPrintDevice.iMachineNumber))
 				{
 					int dwTMachineNumber = default(int);
@@ -103,18 +111,33 @@ namespace SmartAuditERP
 					{
 					}
 				}
-				FingerPrintDevice.axCZKEM1.EnableDevice(FingerPrintDevice.iMachineNumber, bFlag: true);
 			}
-			catch (Exception projectError)
+			catch (Exception ex)
 			{
-				ProjectData.SetProjectError(projectError);
-				ProjectData.ClearProjectError();
+				Logger.Error("Fingerprint import failed (" + ex.GetType().Name + ").");
 			}
 			finally
 			{
-				if (FingerPrintDevice.conn.State != ConnectionState.Closed)
+				if (enableAttemptNeeded)
 				{
-					FingerPrintDevice.conn.Close();
+					try
+					{
+						if (!FingerPrintDevice.axCZKEM1.EnableDevice(FingerPrintDevice.iMachineNumber, bFlag: true))
+							Logger.Error("Fingerprint device re-enable failed; manual intervention may be required.");
+					}
+					catch (Exception ex)
+					{
+						Logger.Error("Fingerprint device re-enable failed (" + ex.GetType().Name + ").");
+					}
+				}
+				try
+				{
+					if (FingerPrintDevice.conn.State != ConnectionState.Closed)
+						FingerPrintDevice.conn.Close();
+				}
+				catch (Exception ex)
+				{
+					Logger.Error("Fingerprint connection cleanup failed (" + ex.GetType().Name + ").");
 				}
 			}
 		}

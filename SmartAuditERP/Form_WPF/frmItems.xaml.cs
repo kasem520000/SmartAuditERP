@@ -424,7 +424,7 @@ namespace SmartAuditERP.Form_WPF
             {
                 string sql = (MainClass.Language == "ar")
                     ? "select id,name from ItemsCategory where type=2 order by id"
-                    : "Select id, Case WHEN len(nameEn)=0 then [name] ELSE nameEn END AS name from ItemsCategory";
+                    : "Select id, Case WHEN len(nameEn)=0 then [name] ELSE nameEn END AS name from ItemsCategory where type=2 order by id";
 
                 var adapter = new SqlDataAdapter(sql, conn);
                 var dt = new DataTable();

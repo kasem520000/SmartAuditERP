@@ -1332,11 +1332,12 @@ namespace SmartAuditERP.Form_WPF
         // ── تغيير الحساب (العميل)
         private void toolCustomers_Click(object sender, RoutedEventArgs e)
         {
-            addNewItem();
-            Chang_Customer();
+            // Repair R-116 (P7-091): a closed or failed search is not a choice.
+            if (addNewItem())
+                Chang_Customer();
         }
 
-        private void addNewItem()
+        private bool addNewItem()
         {
             try
             {
@@ -1349,17 +1350,26 @@ namespace SmartAuditERP.Form_WPF
                 form.lblName.Foreground = Brushes.Black;
                 form.lblMobile.Foreground = Brushes.Black;
                 form.ShowDialog();
+                if (form.ClientId <= 0) return false;
                 Client_id = form.ClientId.ToString();
+                return true;
             }
             catch (Exception ex)
             {
                 DXMessageBox.Show($"خطأ:\n{ex.Message}", "خطأ",
                                 MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
         }
 
         public void Chang_Customer()
         {
+            if (_Client_id <= 0)
+            {
+                DXMessageBox.Show("يرجى اختيار عميل صالح.", "تنبيه",
+                                MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
             var selected = GetSelectedItems();
             if (selected.Count == 0)
             {

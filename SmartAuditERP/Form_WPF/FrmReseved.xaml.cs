@@ -419,6 +419,12 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
+                // Repair R-117 (P7-003): validate every selected employee before
+                // attempting any write, so a missing identity cannot pass silently.
+                foreach (SalaryRow row in selectedRows)
+                    if (!ValidateWorkDate(row.Emp) || !ValidateNetSalaryRow(row))
+                        return;
+
                 ref string entryGlobalID = ref _entryGlobalID;
                 int entryNo = 27;
                 EntryOper.GetEntryGlobalID(ref entryGlobalID, ref entryNo);
@@ -441,10 +447,6 @@ namespace SmartAuditERP.Form_WPF
 
                 foreach (SalaryRow row in selectedRows)
                 {
-                    // التحقق من صلاحية الراتب
-                    if (!ValidateWorkDate(row.Emp) || !ValidateNetSalaryRow(row))
-                        return;
-
                     var resvd = new Reseved.resvd
                     {
                         GlobalID      = _globalID,
@@ -546,6 +548,12 @@ namespace SmartAuditERP.Form_WPF
 
         private bool ValidateWorkDate(int empId)
         {
+            if (empId <= 0)
+            {
+                DXMessageBox.Show("معرف الموظف غير صالح.", "تنبيه",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
             try
             {
                 EnsureOpen(conn);
@@ -556,6 +564,12 @@ namespace SmartAuditERP.Form_WPF
                     var dt = new DataTable();
                     da.Fill(dt);
 
+                    if (dt.Rows.Count == 0)
+                    {
+                        DXMessageBox.Show("الموظف المحدد غير موجود.", "تنبيه",
+                            MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return false;
+                    }
                     if (dt.Rows.Count > 0)
                     {
                         if (dt.Rows[0]["work_date"] == DBNull.Value)
@@ -579,7 +593,12 @@ namespace SmartAuditERP.Form_WPF
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                DXMessageBox.Show("تعذر التحقق من الموظف: " + ex.Message,
+                    "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
             finally { CloseConn(conn); }
             return true;
         }
@@ -773,6 +792,7 @@ namespace SmartAuditERP.Form_WPF
                             Total     = total,
                             Sal_Sub   = subSal,
                             Net_Sal   = net,
+                            Emp       = Convert.ToInt32(row["id"]),
                             Notes     = "إستحقاق راتب"
                         });
                     }
@@ -866,6 +886,7 @@ namespace SmartAuditERP.Form_WPF
                             Total     = total,
                             Sal_Sub   = subSal,
                             Net_Sal   = net,
+                            Emp       = Convert.ToInt32(row["id"]),
                             Notes     = row["Notes"].ToString()
                         });
                     }

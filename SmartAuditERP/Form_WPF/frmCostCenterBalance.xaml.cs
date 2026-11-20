@@ -225,6 +225,16 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
+                // Repair R-119 (P7-099): a specific type requires a valid choice,
+                // rather than silently reusing an old type or widening to all types.
+                if (chkEntryType.IsChecked != true && Restype < 0)
+                {
+                    GridControl1.ItemsSource = null;
+                    ClearTotals();
+                    ShowMsg("اختر نوع القيد", "", MessageBoxImage.Warning);
+                    return;
+                }
+
                 var dataTable = BuildDataTable();
                 double totalDebit = 0.0;
                 double totalCredit = 0.0;
@@ -1005,8 +1015,10 @@ namespace SmartAuditERP.Form_WPF
                 int selectedIndex = cmbEntryType.SelectedIndex;
                 if (selectedIndex >= 0 && selectedIndex <= 13)
                     Restype = selectedIndex;
-                else if (selectedIndex >= 21 && selectedIndex <= 23)
+                else if (selectedIndex >= 14 && selectedIndex <= 16)
                     Restype = selectedIndex + 7;
+                else
+                    Restype = -1;
             }
             catch (Exception ex)
             {

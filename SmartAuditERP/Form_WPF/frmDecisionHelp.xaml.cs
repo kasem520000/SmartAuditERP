@@ -111,7 +111,7 @@ namespace SmartAuditERP.Form_WPF
         {
             string query = MainClass.Language == "ar"
                 ? "SELECT id, name FROM ItemsCategory WHERE type=2 ORDER BY id"
-                : "SELECT id, CASE WHEN LEN(nameEn)=0 THEN name ELSE nameEn END AS name FROM ItemsCategory";
+                : "SELECT id, CASE WHEN LEN(nameEn)=0 THEN name ELSE nameEn END AS name FROM ItemsCategory WHERE type=2 ORDER BY id";
 
             FillComboBox(cmbGroups, query, "name", "id");
         }

@@ -241,7 +241,9 @@ namespace SmartAuditERP.Form_WPF
 
                     double sumVal = Convert.ToDouble(row["sum"]);
                     double taxVal = Convert.ToDouble(row["taxval"]);
-                    double val1 = Math.Round(Convert.ToDouble(row["val1"]), 2);
+                    // Repair R-115 (P7-096): preserve the stored quantity for arithmetic;
+                    // the existing presentation formats still round displayed quantities.
+                    double val1 = Convert.ToDouble(row["val1"]);
                     double exchPrice = Convert.ToDouble(row["exchange_price"]);
                     double discount = Convert.ToDouble(row["discount"]);
 

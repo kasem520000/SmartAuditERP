@@ -345,7 +345,8 @@ namespace SmartAuditERP.Form_WPF
                     NetDiscount  = row.Minus.ToString("N2"),
                     NetTotal     = row.TotNet.ToString("N2"),
                     InventoryType= this.Title,
-                    SumSell      = txtSumSale.Text,
+                    // Repair R-113 (P7-042): use the invoice tab's signed total.
+                    SumSell      = Math.Round(_sumSale2, 2).ToString("N2"),
                     User         = Common.GetEmpName(MainClass.EmpNo),
                     PrintDate    = DateTime.Now.ToShortDateString(),
                 });
