@@ -617,8 +617,13 @@ namespace SmartAuditERP
 				sqlConnection.Open();
 				foreach (ItemSerialNo itemSerialNo in itemSerialNoList)
 				{
+					// Repair R-051 (audit finding P5-014): the existence probe bound the ROW id where it meant the
+					// ITEM id, so an already-stored serial counted as absent (re-INSERT / clash) or an unrelated
+					// item's row could match by accident. Probe the same natural identity the INSERT establishes:
+					// (ItemId, SerialNo) -> replays now converge on the UPDATE branch. Stable-serial governance
+					// beyond this alignment stays documented under INV5-15.
 					using SqlCommand sqlCommand = new SqlCommand("SELECT COUNT(*) FROM ItemSerialNo WHERE ItemId = @ItemId and SerialNo=@SerialNo", sqlConnection);
-					sqlCommand.Parameters.AddWithValue("@ItemId", itemSerialNo.Id);
+					sqlCommand.Parameters.AddWithValue("@ItemId", itemSerialNo.ItemId);
 					sqlCommand.Parameters.AddWithValue("@SerialNo", itemSerialNo.SerialNo);
 					SqlCommand sqlCommand2;
 					sqlCommand2 = ((Convert.ToInt32(RuntimeHelpers.GetObjectValue(sqlCommand.ExecuteScalar())) <= 0) ? new SqlCommand("INSERT INTO ItemSerialNo (Id, ItemId, SerialNo, InvGlobalID) VALUES (@Id, @ItemId, @SerialNo, @InvGlobalID)", sqlConnection) : new SqlCommand("UPDATE ItemSerialNo SET ItemId = @ItemId, SerialNo = @SerialNo, InvGlobalID = @InvGlobalID WHERE Id = @Id", sqlConnection));
