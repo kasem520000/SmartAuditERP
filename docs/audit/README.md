@@ -1,25 +1,25 @@
 # تدقيق SmartAuditERP — فهرس العمل
 
-**المرجع المعتمد للجلسة:** 2026-11-16 UTC؛ **الفرع:** `arena/94ae8414-smartauditerp`.<br>
+**تاريخ مرجع المهمة:**2026-11-16 UTC؛ **الفرع:** `arena/94ae8414-smartauditerp`.<br>
 **مصدر التطبيق الأصلي:** `10ba215152f722c8808aea0bb672c1d1d4d9d711`.<br>
-**دخول 7B25 بعد B24 المدفوع:** `45a2a504db4f82927a286ce425f21a82bcee7a84` مع 708 مواد و 322 نتيجة. ساعة sandbox المرصودة في freeze هي `2026-11-19T23:46:45.007507+00:00`، مختلفة عن المرجع لا تستبدله. [إيضاح إضافي للتاريخ والالتقاط](DATE-IDENTITY-NOTE-07B25.md) يحفظ captureB24f37c37c منفصلاً عن delivery-entry45a2a50؛ لا إعادة تأريخ أو توليد المحفوظ.
+**دخول 7B26 بعد B25 المدفوع:** `dd38f97e844dc60ea64ae00fa40ef588e49752d7`،739 مادة و 324 نتيجة. رصد ساعة تجميد الدخول `2026-11-20T00:28:14.175407+00:00` مستقل عن مرجع المهمة، لا ندعي مطابقتهما أو معايرة الساعة. [إيضاح الهوية](DATE-IDENTITY-NOTE-07B26.md) يحفظ captureB25 عند 45a2a50 مختلفاً عن تسليمه dd38f97؛ لا إعادة تأريخ أو توليد المحفوظ.
 
-**7B/7 جزئيتان؛R4i محدود بشريحة SP01، لا كل R4/7B؛R4j/7B26 مقترح أو split مسبب؛7C لم تبدأ؛8 غير مأذونة ولم تبدأ هنا.** محادثة الإصلاح مستقلة على فرعها؛ لا إصلاح تطبيق أو ملفات إصلاح أو repair→audit merge هنا، ولا نفترض بدءها أو تزامنها.
+**7B/7 جزئيتان؛R4j شريحة SP01 محدودة لا كل R4/7B؛R4k/7B27 مقترح أو split مسبب؛7C لم تبدأ؛8 غير مأذونة ولم تبدأ هنا.** الإصلاح في محادثة وفرع مستقلين، لا repair→audit merge أو ملفات إصلاح أو إغلاق نتائج هنا، ولا نفترض بدءه أو تزامنه. next_phase8 تخطيط لا إذن.
 
 ## الحالة الحالية — السبب قبل العدد
 
-**الأحدث [7B25/R4i](PHASE-07B25.md):** نتيجة خصائص المادة 2..4 واستقرار حساب التعبئة 2. أضيفت **P7-151/152، نتيجتان Medium confirmed من المصدر المحلي بشروطه**؛ التراكمي **324 نتيجة مفتوحة بلا معالجة**؛ صفر historical extensions وصفر تعديل تطبيق.
+**الأحدث [7B26/R4j](PHASE-07B26.md):** التعديل الجماعي لقيمة التعبئة وسعر الرأس والوحدة، مع أوامر السعر المنفصلة. أضيفت **P7-153/154، نتيجتان Medium confirmed من المصدر المحلي وبشروطه**؛ التراكمي **326 نتيجة مفتوحة بلا معالجة**؛ صفر historical extensions وصفر تعديل تطبيق.
 
-- **151 — ملكية النتيجة:** بعد ShowDialog دون التقاط bool? يطبق helper الحقل العام NetQnty الذي يبدأ 0 ولا يكتبه إلا Insert؛ نص موجب ليس تأكيداً. على رجوع طبيعي دون Insert تصبح كمية البند والتفصيل 0 ويتغير الوصف. نجاح lookup/عودة loader مفروضان عند حد Add؛ لا خسارة حفظ نهائية أو إغلاق WPF مرصود.
-- **152 — feedback الحساب:** packing يقرأ نص net الناتج السابق ويضرب count مجدداً؛20→60→180 في نداءين مورّدين width10/count3. الحارس الداخلي يحمي nested لا sequential. count1/zero و area/linear ضوابط، لا سياسة packing أو.NET/culture/rounding أو عدد أحداث فعلي معتمد.
-- **الوصول لا يُفترض:** Sale Description مخفي افتراضياً و InputOutput column helper يعيد empty؛ لا وصول غير مشروط لتحرير بند قائم أو missing-feature من اسم handler. InvoiceDGV helper ثانٍ نفس 151 لا finding ثالثة أو إثبات أن Invoicecontract loader تفتح الحوار.
-- **العمق والحواجز:** كامل 318C#/313XAML للحوار محلياً،23 قراءة في 10 مسارات لا كل المتصلين/SDK DTOs/477bodies/callgraph/455FE. قرئت 322 خلاصة عنوان/يقين و metadata filter والأجسام الأقرب المسماة، لا كل 322 متناً.014/132/145 potential و 020/021 والمال/ACL/stock/save/production والعقود السابقة باقية.
+- **153 — قيمة الإدخال لا كود الخاصية:** يتحقق المعالج من تعبئة 12/24 ثم يعين PackingValue=2.0؛ الكاتب يمرر 2 إلى@FillValue/FillValue، ويتصل الحقل بـFillRatio/عرض الحوار. input2 ضابط تطابق و 0 محروس وعدم الاختيار يبقي الأصل؛ لا SQL أو سياسة تعبئة أو خسارة حفظ مرصودة.
+- **154 — سعر الرأس غير سعر الوحدة القائمة:** general يغير scalar20/8 ويبقي main-unit10/6 دون اختيار الوحدة؛ الكاتب يورد المصدرين مستقلاً، والمستهلك المطابق يقرأ القديم. same-unit يفتح gate ويزامن، و fallback البيع بلا صف يقرأ الرأس؛ ليست سياسة تحويل لكل وحدة أو حفظاً مرصوداً.
+- **الأوامر والحدود:** أربعة أوامر سعر منفصلة تختبر flags وتعدل scalar/children؛ لا تخلطها بزر التطبيق العام أو تعد checkbox finding ثالثة. لا BOM/parent/default0 أو خسارة حقول من constructor/SDK غير مفحوص، ولا اعتماد remap/ratio/زيادة موحدة لكل الوحدات.
+- **العمق والحواجز:** كامل 378C#/469XAML للمحرر محلياً و 15 قراءة/9 مسارات، لا كل Product fields/callers/SDK/477bodies/callgraph/455FE.324 خلاصة عنوان/يقين و metadata مصفاة ثم أقرب أجسام وثائقية وسلاسل مسماة، لا كل 324 متناً.026/142/151/152 و 021/028/133/134 لا تعاد؛014/132/145 potential و 020/021 والمال/ACL/stock/save/production باقية.
 
-[العقود](PROPERTY-DIALOG-CONTRACTS-07B25.md) · [DG8](evidence/dialog-result-lineage-07B25.csv) · [PK8](evidence/packing-calculation-lineage-07B25.csv) · [FE16](evidence/feature-implementation-matrix-07B25.csv) · [INV16](evidence/report-invariants-07B25.csv) · [RC4](evidence/report-reconciliation-07B25.csv) · [خطط 32](evidence/acceptance-tests-07B25.csv) · [التحقق](VALIDATION-07B25.md) · [الشاهد 16+16/23 قراءة](evidence/property-dialog-witnesses-07B25.json) · [scope10](review-scope-07B25.csv) · [قرار النطاق](evidence/scope-decision-07B25.json) · [AD8](evidence/root-adjudication-07B25.csv) · [extensions0](evidence/historical-extensions-07B25.csv) · [RS14](evidence/residual-disposition-07B25.csv) · [SP3](evidence/split-register-07B25.csv) · [H6](evidence/handoffs-07B25.csv) · [Q6](evidence/questions-07B25.csv) · [المتبقي](PHASE-07-REMAINING-07B25.md) · [workplan10](evidence/remaining-workplan-07B25.csv) · [backlog10](evidence/continuation-backlog-07B25.csv)
+[العقود](BULK-PRODUCT-CONTRACTS-07B26.md) · [BE8](evidence/bulk-edit-lineage-07B26.csv) · [PW8](evidence/product-write-lineage-07B26.csv) · [FE16](evidence/feature-implementation-matrix-07B26.csv) · [INV16](evidence/report-invariants-07B26.csv) · [RC4](evidence/report-reconciliation-07B26.csv) · [خطط 32](evidence/acceptance-tests-07B26.csv) · [التحقق](VALIDATION-07B26.md) · [الشاهد 16+16/15 قراءة](evidence/bulk-product-witnesses-07B26.json) · [scope9](review-scope-07B26.csv) · [القرار](evidence/scope-decision-07B26.json) · [AD8](evidence/root-adjudication-07B26.csv) · [extensions0](evidence/historical-extensions-07B26.csv) · [RS14](evidence/residual-disposition-07B26.csv) · [SP3](evidence/split-register-07B26.csv) · [H6](evidence/handoffs-07B26.csv) · [Q6](evidence/questions-07B26.csv) · [المتبقي](PHASE-07-REMAINING-07B26.md) · [workplan10](evidence/remaining-workplan-07B26.csv) · [backlog10](evidence/continuation-backlog-07B26.csv)
 
 ## النطاق — مسارات لا نسبة اكتمال
 
-**827 أصل تطبيق/29,128,444 بايت ثابتة.** اختيرت 23 شريحة في 10 مسارات؛8 تقاطع معاتحاد 419 ومساران جديدان هما frmItemProperties C#/XAML،فيصير 421. المكمل 406=341source/61generated/4project-resource، لا نسبة أو 406 مهام 7C. كامل 631 سطراً للحوار محلياً لايعني كل المتصلين أو whole-feature؛داخل الاتحاد أيضاً مقاطع وقدرات باقية.
+**827 أصل تطبيق/29,128,444 بايت ثابتة.**15 قراءة في 9 مسارات،ومنها كامل 847 سطراً للمحرر الجماعي محلياً؛5overlap/4new على 421→425،ومكمل 402=337source/61generated/4project-resource. لا نسبة أو 402 مهمة 7C؛داخل الاتحاد أيضاً مقاطع وقدرات غير مراجعة.
 
 | المرحلة/الجزء | مسارات نطاقها | التقاطع السابق | جديدة على الاتحاد | الاتحاد التراكمي |
 |---|---:|---:|---:|---:|
@@ -54,9 +54,10 @@
 |7B22/R4f — تاريخياً|12|8|4|416|
 |7B23/R4g — تاريخياً|12|10|2|418|
 |7B24/R4h — تاريخياً|10|9|1|419|
-| **7B25/R4i — محلي وشرائح** | **10** | **8** | **2** | **421** |
+|7B25/R4i — تاريخياً|10|8|2|421|
+| **7B26/R4j — محلي وشرائح** | **9** | **5** | **4** | **425** |
 
-مقامات 455/98/52 التاريخية بحدودها؛ لا تغيّرها DG8/PK8 أو RO10/DO8 أو SB8/IM8 أو أعداد نتائج البحث، ولا تصادق على كل feature. [دفتر 827](evidence/coverage-ledger-07B16.csv) و[كتالوج 455 التاريخي](evidence/capability-ledger-07B17.csv) لا يرفعان الشرائح إلى أجسام كاملة.
+مقامات 455/98/52 التاريخية بحدودها؛BE8/PW8 و DG8/PK8 والدفاتر السابقة ليست حصر كل القدرات أو تصديق كل feature. [دفتر 827](evidence/coverage-ledger-07B16.csv) و[كتالوج 455 التاريخي](evidence/capability-ledger-07B17.csv) لا يرفعان الشرائح إلى أجسام كاملة.
 
 ## النتائج المفتوحة — لا معالجة أو إغلاق
 
@@ -93,29 +94,31 @@
 |7B22 تاريخياً|3|0|0|3|0|
 |7B23 تاريخياً|3|0|0|3|0|
 |7B24 تاريخياً|3|0|0|3|0|
-| **7B25 جديدة** | **2** | **0** | **0** | **2** | **0** |
-| **التراكمي المفتوح** | **324** | **2** | **181** | **140** | **1** |
+|7B25 تاريخياً|2|0|0|2|0|
+| **7B26 جديدة** | **2** | **0** | **0** | **2** | **0** |
+| **التراكمي المفتوح** | **326** | **2** | **181** | **142** | **1** |
 
-**285confirmed/32potential/7repository-gap؛ المرحلة 7=152 نتيجة لا مقام ميزات.**
+**287confirmed/32potential/7repository-gap؛المرحلة 7=154 نتيجة،لا مقام ميزات.**
 
-اجتاز فحص B25 الصريح **738 حالة وثائقية في 26 مجموعة** =694 محفوظة +44 جديدة؛324 نتيجة و 827 أصلاً مطابقاً و errors[]/exit0/stderr فارغ. [stdoutB25 الرسمي](evidence/checks-07B25.json) يلتقط مباشرة من CLI الافتراضي عند اكتمال التسليم، لا JSON مركباً من المجاميع؛ ولا يستبدل بفحص ما بعد الدفع. نُفذت 30 وضعية تاريخية OWN فعلياً بمدخلاتها وأدوات وقت التقاطها: exit0/827/errors[]/stderr فارغ؛ لا ادعاء إعادة كل 30 بأدوات نهائية بعد تثبيت SHA وتصحيح دمج إحالات RC والنثر/push. **كل 32 خطة قبول not-executed**؛ لا ERP أو إصلاح أو قياس أو قبول هنا.
+اجتاز فحص B26 عبر CLI الافتراضي الفعلي **786 حالة وثائقية في27 مجموعة** =738 محفوظة +48 جديدة؛326 نتيجة/827 أصلاً مطابقاً/errors[]/exit0/stderr فارغ. ليست786 اختبار ERP أو تنفيذ32 خطة قبول. [stdoutB26 الرسمي](evidence/checks-07B26.json) يلتقط مباشرة من CLI الافتراضي بعد اكتمال المواد، لا JSON مركباً من المجاميع، ولا يستبدل بفحص ما بعد الدفع. نُفذت **31 وضعية تاريخية OWN فعلياً**:2–6،A،B1–25؛كلها exit0/errors[]/827/stderr فارغ بأدوات وقت الالتقاط، ومنها B25/OWN324/raw325CRLF/indexes وALL44 أصلية وB24/ALL44 منفصلة محفوظة. ليستsynthetic31 fixture أو ادعاء إعادة31 بأدوات نهائية بعد pin والنثر والفهارس والدفع. أرشيف31 الحقيقي **85405 بايت**/SHA`e77cca247569f3700c95d2ac2d3de84d7f092177acba79ae55b9dfbc43a000a6` يحفظ هويات stdout وبصمات أدوات وقت التقاطها عند dd38f97. يبقى أرشيف30B25 وstdoutB25 وجميع734 مادة محمية كما سُلّمت؛لا final-wholesale أوpostpush replay مزعوم. **كل 32 خطة قبول متكاملة not-executed**؛ لا ERP أو إصلاح أو قياس وقبول هنا.
 
 ## الحفظ والهوية والإذن والتوازي
 
-**الحفظ:** [provenance703](evidence/provenance-07B25.json)/[frozen322](evidence/findings-through-07B24.csv)/[exactB24indexes](evidence/shared-indexes-through-07B24.json) تحمي 703 مواد وكل 322 قاموساً بكل حقل و ALLnext_phase/evidence وبادئة raw323CRLF/noBOM و G01–215 و 827 أصلاً/29,128,444 بايت وثلاثة freezes. الجديد 151/152 و G216–219 فقط؛ التوصيات ليست findings إضافية. السجل الحالي 324/raw325CRLF يبدأ بالقديم حرفياً. [stdoutB24 الأصلي](evidence/checks-07B24.json) ثابت 208993 بايت/SHA`5866e39e46d6075ca186059bdf8d860f2d66c3330ac400859ae334fb3d80c69b`، على capturef37c37c لا delivery45a2a50؛ لا يعاد بعد الدفع.
+**الحفظ:** [provenance734](evidence/provenance-07B26.json)/[frozen324](evidence/findings-through-07B25.csv)/[exactB25indexes](evidence/shared-indexes-through-07B25.json) تحمي 734 من 739 مادة دخول، وكل 324 قاموساً بكل حقل و ALLnext_phase/evidence وبادئة raw325CRLF/noBOM و G01–219 و 827 أصلاً/29,128,444 بايت وثلاث freezes. الحالي 326/raw327CRLF يبدأ بالقديم حرفياً. الجديد 153/154 و G220–223 توصيات فقط لا أربع نتائج إضافية؛ صفر extensions. [stdoutB25 الأصلي](evidence/checks-07B25.json) ثابت 218939 بايت/SHA`82e5fdc23dc719341a8992d3f1b696f71c985de31285eae4df4b4963ebbee437`،capture45a2a50 لا delivery-entrydd38f97؛ لا يعاد بعد الدفع.
 
-**CLI/التاريخ:** actual defaultB25 و API main defaultB15 محفوظ. B24 يأخذ OWN322/raw323CRLF/indexes و**كل 44 حالة أصلية** في [طفل presetB24 صريح](tools/run_historical_row_ownership_tests_07B25.py) مع A محلي للمجموعة؛B23/44 و B22/40 و B21/36 و B20/32 و B19/36 و B18/28 محفوظة. لا protected edit/skip/filter/globalPath/sharedsubprocess mutation/diskoverlay/rebaseline/archive rewrite. [أرشيف 30 الحقيقي](evidence/historical-mode-verification-07B25.json) يحتفظ بأدوات وقت الالتقاط؛null تعني aggregate غير مبلغ عنه لا 0؛ليس fixture30 أو final-wholesale/postpush replay.
+**CLI/التاريخ:** actual defaultB26 و API main defaultB15 منفصلان. B25 يأخذ OWN324/raw325CRLF/indexes و**كل 44 حالة أصلية** في [طفل presetB25 صريح](tools/run_historical_property_dialog_tests_07B26.py) مع A محلي؛B24 OWN322/ALL44 وطفله/versioned preset منفصلان،و B23/44 و B22/40 و B21/36 و B20/32 و B19/36 و B18/28 محفوظة. لا protected edit/skip/filter/global Path/shared subprocess mutation/disk overlay/rebaseline/archive rewrite. [أرشيف 31 الحقيقي](evidence/historical-mode-verification-07B26.json) لا synthetic31 fixture، ويحفظ بصمات أدوات وقت الالتقاط؛null تعني aggregate غير مبلغ عنه، لا 0؛لا ادعاء final-wholesale أو postpush replay.
 
-**الحواجز:** كل 32 خطة not-executed؛014/132/145 potential و 020/021 والمال/ACL/stock/save/production لم تعتمد أو تعالج. تصويب B10 الإضافي 10 مقابل 120 و equality1=10؛G138 المحمي باقٍ. لا تطبيق/build/C#/VB/.NET/WPF/SQL/Excel/provider/SDK/UtilitiesProj/ToDataTable/REPX أو طابعة/ماسح أو بيانات أعمال/أسرار أو إصلاح/قياس/قبول، ولا سياسة packing أوعملة مخترعة.
+**الحواجز:**014/132/145 potential و 020/021 والمال/ACL/stock/save/production والعقود السابقة لم تعتمد أو تعالج. تصويب B10 الإضافي 10 محلياً مقابل 120 مرجعياً وعند equality1 كلاهما 10؛G138 المحمي باقٍ. لا application/build/C#/VB/.NET/WPF/SQL/Excel/provider/SDK/UtilitiesProj/ToDataTable/REPX أو طابعة/ماسح أو بيانات أعمال وأسرار أو إصلاح وقياس وقبول أو سياسة تعبئة ووحدة ومال مخترعة.
 
-**التوازي المأذون:** هذا الفرع يسجل التدقيق فقط؛ تقدم محادثة الإصلاح آخر SHA راجعته وتدمج تاريخ التدقيق في فرعها بحفظ تعديلاتها دون overwrite/rewrite. لا repair→audit merge أو ملفات إصلاح هنا، ولا نفترض أنها بدأت أو تزامنت. next_phase8 تخطيط لا إذن لهذا المسار.
+**التوازي:** يسلم SHA تدقيق مدفوع محدد للمحادثة المستقلة كي تدخل تاريخه في فرع إصلاحها بحفظ تعديلاتها وتعلن آخر SHA راجعته؛ لا نفترض بدءها أو تزامنها، ولا repair→audit merge أو كتابة ملفات إصلاح أو إغلاق findings هنا. next_phase8 تخطيط لا إذن لهذا الفرع.
 
-**RS14 ليست موافقات:** كل upstream ID/artifact/rowSHA/contracts والمدخل السابق كاملاً وكل mapped route/disposition محفوظة. SP01–03 تبقي بقية callers/dialogs/editors/writers/output والحصر و SDK/words/currency/legacy/sign/zero/precision/templates وسياسة التعبئة ضمن 7B؛ لا نقل صامت إلى 7C أو وعد بآخر جزء.
+**RS14 ليست موافقات:** كل upstream ID/artifact/rowSHA/contracts والمدخل السابق كاملاً كبادئة وكل mapped route/disposition محفوظة. SP01–03 تبقي بقية Product fields/callers/dialogs/editors/writers/output والحصر و SDK/DTO/constructor/collections/currency/words/legacy/sign/zero/precision/templates والسياسات ضمن 7B؛ لا نقل صامت إلى 7C أو وعد بآخر جزء.
 
 ### التسليمات التاريخية — أعداد وحدود وقت التسليم
 
 | المرحلة | التقرير والنموذج والتحقق | أهم الأدلة وقت التسليم |
 |---|---|---|
+|7B25|[PHASE](PHASE-07B25.md)،[PROPERTY-DIALOG](PROPERTY-DIALOG-CONTRACTS-07B25.md)،[VALIDATION](VALIDATION-07B25.md)،[المتبقي وقتها](PHASE-07-REMAINING-07B25.md)|[scope10](review-scope-07B25.csv)،[DG8](evidence/dialog-result-lineage-07B25.csv)،[PK8](evidence/packing-calculation-lineage-07B25.csv)،[stdoutB25 الأصلي](evidence/checks-07B25.json)؛151/152 Medium confirmed محلياً؛324 تراكمياً و738 حالة/26 مجموعة و30OWN؛10/8/2→421/مكمل406. تسليم739 مادة عندdd38f97،وstdout الحقيقيcapture45a2a50 ثابت لا يعاد.|
 |7B24|[PHASE](PHASE-07B24.md)،[ROW-OWNERSHIP](ROW-OWNERSHIP-CONTRACTS-07B24.md)،[VALIDATION](VALIDATION-07B24.md)،[المتبقي وقتها](PHASE-07-REMAINING-07B24.md)|[scope10](review-scope-07B24.csv)،[RO10](evidence/row-ownership-lineage-07B24.csv)،[DO8](evidence/repeat-outcome-lineage-07B24.csv)،[stdoutB24 الأصلي](evidence/checks-07B24.json)؛148–150 Medium confirmed محلياً،322 تراكمياً،694 حالة/25 مجموعة و29OWN؛10/9/1→419 ومكمل408. دفع708 مواد عند45a2a50،وstdout الحقيقيcapturef37c37c ثابت لا يعاد بعد الدفع.|
 |7B23|[PHASE](PHASE-07B23.md)، [ITEM-INGRESS](ITEM-INGRESS-CONTRACTS-07B23.md)، [VALIDATION](VALIDATION-07B23.md)، [المتبقي وقتها](PHASE-07-REMAINING-07B23.md)|[scope12](review-scope-07B23.csv)، [SB8](evidence/selection-batch-lineage-07B23.csv)، [IM8](evidence/import-field-lineage-07B23.csv)، [stdoutB23 الأصلي](evidence/checks-07B23.json)؛145 potential و146/147 confirmed بحدودها؛319 تراكمياً،650 حالة/24 مجموعة و28 OWN؛12/10/2→418 ومكمل409. دفع678 مادة عندf37c37c، وstdout الحقيقيcapture3276579 ثابت لا يعاد بعد الدفع.|
 |7B22|[PHASE](PHASE-07B22.md)، [CONTRACT-ITEM](CONTRACT-ITEM-CONTRACTS-07B22.md)، [VALIDATION](VALIDATION-07B22.md)، [المتبقي وقتها](PHASE-07-REMAINING-07B22.md)|[scope12](review-scope-07B22.csv)، [EN8](evidence/entry-reachability-07B22.csv)، [UP8](evidence/unit-price-lineage-07B22.csv)، [checksB22 الأصلي](evidence/checks-07B22.json)؛142–144 بحدودها،316 تراكمياً و606 حالة/23 مجموعة و27 وضعيةتاريخية؛12/8/4→416/مكمل411؛دفع648 مادةعند3276579. stdoutالحقيقيcaptureb1f9524 ثابتلايعادبعدالدفع.|
@@ -132,29 +135,30 @@
 |7B11|[PHASE-07B11](PHASE-07B11.md)، [ACCOUNT-STATEMENT-CONTRACTS](ACCOUNT-STATEMENT-CONTRACTS-07B11.md)، [VALIDATION](VALIDATION-07B11.md)|[scope21](review-scope-07B11.csv)، [FE23](evidence/feature-implementation-matrix-07B11.csv)، [INV23](evidence/report-invariants-07B11.csv)، [RC6](evidence/report-reconciliation-07B11.csv)، [plans25](evidence/acceptance-tests-07B11.csv)، [witness20+20](evidence/report-witnesses-07B11.json)، [checksB11 الأصلي](evidence/checks-07B11.json)؛ 2 جديدة/287 تراكمياً و 14 ذيلاً و union386 ومكمل 441 و 315 محفوظة وقتالتسليم؛ لا ERP. دفع 343 ملفاً عند 670ae77 مكتمل. |
 |7B10|[PHASE-07B10](PHASE-07B10.md)، [SALESMAN-CONTRACTS](SALESMAN-REPORT-CONTRACTS-07B10.md)، [VALIDATION](VALIDATION-07B10.md)|[scope23](review-scope-07B10.csv)، [FE23](evidence/feature-implementation-matrix-07B10.csv)، [INV23](evidence/report-invariants-07B10.csv)، [RC6](evidence/report-reconciliation-07B10.csv)، [plans26](evidence/acceptance-tests-07B10.csv)، [witness20+20](evidence/report-witnesses-07B10.json)، [checksB10 الأصلي](evidence/checks-07B10.json)؛ 3 جديدة/285 تراكمياً و 13 ذيلاً و union381 ومكمل 446 و 292 محفوظة وقت التسليم؛ لا ERP. شرح EX7B10-06 وG138 المحميان قال20 مقابل120؛ الصحيح **2×5=10 محلياً مقابل2×12×5=120 مرجعياً**، وعندequality1 كلاهما10. G144 والشواهد اللاحقة إضافية فقط؛ لا إعادة تحرير للأرشيف أوchecks أوG138، ولا يصادق المدقق على كل نثر قديم.
 
-## أولويات مقترحة — لم تنفذ
+## أولويات مقترحة — غير منفذة
 
-1. PropertiesResult بهوية وحالة وقيم مستقلة؛ لا تطبيق scalar0/نص غير مؤكد من رجوع طبيعي للحوار151.
-2. افصل net الطلب الأصلي عن net الناتج وعرف وحدات وقواعد التعبئة؛ الاستدعاء المتتابع لايضربcount مجدداً152.
-3. حدد دعم ووصول كل مدخل: Sale Description مخفي وInputOutput helper فارغ وInvoiceDGV ليست Invoicecontract؛ لا فرض missing-feature من الاسم.
-4. OwnedSeed/LineRef/Outcome لـ148،وهدف مستقل لـ149،وحساب ذات المرجع بعد الإزالة150؛143/146 و144/145/147 محفوظة بلا إعادةعد.
-5. أبق عقود packing/ceil/culture وpriceUnit/عملة/SDK وDocumentRef/allowed-set/branch/reset/dirty وبقية SP01–03 وحواجز المال/ACL/stock/save مفتوحة بمالك ومدخل وأثر وخطة.
-6. سلّم SHA تدقيق محدداً لمسار الإصلاح المنفصل،دون افتراض بدءه أو تزامنه ودون دمج إصلاحاته أو تغيير حالات findings هنا.
+1. اجعل patch التعبئة يحمل القيمة المتحقق منها لاcode2، ويرفض المدخل بسبب واضح أو يحفظه153.
+2. عرف وحدة السعر المقصودة في general وصالح سعر الرأس وصفها الموجود154؛لا تشترط اختيار الوحدة نفسها لمجرد تحديث السعر،ولا تفرض20 على كل وحدة مختلفة.
+3. افصل footer العام عن أوامر السعر الأربعة وno-change/set/clear وflags؛اطلب عقدDTO/constructor/collections قبل أي حكمBOM/default0 أوفقدحقول.
+4. حافظ على PropertiesResult/LineRef151 واستقرار packing152 وOwnedSeed/RepeatOutcome148–150 وأصول143/146/144/145/147؛لا إعادة عد أوامتداد هنا.
+5. أبق سياسات packing/unit/price/culture/SDK/currency وبقيةSP01–03 وحواجز المال/ACL/stock/save/production مفتوحة بمالك ومدخل وأثر وخطة.
+6. سلّم SHA تدقيق مدفوعاً محدداً للإصلاح المستقل دون افتراض بدء أو تزامن أو دمج تعديلاته هنا.
 
 ## إعادة التحقق المحلي الآمن
 
 ```bash
 PYTHONDONTWRITEBYTECODE=1 python3 -B docs/audit/tools/validate_audit.py
+PYTHONDONTWRITEBYTECODE=1 python3 -B docs/audit/tools/validate_audit.py --phase7-part B25
+PYTHONDONTWRITEBYTECODE=1 python3 -B docs/audit/tools/run_historical_property_dialog_tests_07B26.py --through-part B25
 PYTHONDONTWRITEBYTECODE=1 python3 -B docs/audit/tools/validate_audit.py --phase7-part B24
-PYTHONDONTWRITEBYTECODE=1 python3 -B docs/audit/tools/run_historical_row_ownership_tests_07B25.py --through-part B24
-PYTHONDONTWRITEBYTECODE=1 python3 -B docs/audit/tools/check_property_dialog_witnesses.py
-PYTHONDONTWRITEBYTECODE=1 python3 -B docs/audit/tools/test_property_dialog_audit_validator.py
+PYTHONDONTWRITEBYTECODE=1 python3 -B docs/audit/tools/check_bulk_product_witnesses.py
+PYTHONDONTWRITEBYTECODE=1 python3 -B docs/audit/tools/test_bulk_product_audit_validator.py
 PYTHONDONTWRITEBYTECODE=1 python3 -B docs/audit/tools/collect_baseline.py --verify
 git -c core.whitespace=cr-at-eol diff --check
 ```
 
-أدوات وثائق فقط؛ لا --write أو بناء/تشغيل ERP/SQL أو طباعة/تصدير أعمال أو إصلاح أو قياس. تحفظ إعادة الفحص في `/tmp` لا فوق الأرشيف الرسمي بعد push. كل32 خطة not-executed مهما نجح checker.
+أدوات وثائق فقط؛لا --write أو ERP/SQL أو بناء أو إصلاح وقياس وقبول. تحفظ إعادة الفحص في مساحة مؤقتة لا فوقstdout الرسمي بعدpush. كل32 خطة قبول متكاملةnot-executed مهما نجح checker.
 
 ## الخطوة التالية
 
-**R4j/7B26 مقترح أو split إضافي مسبب** من [المتبقي الحالي](PHASE-07-REMAINING-07B25.md)،بقدرة ومدخل ومصدر ومخرج ودليل وحد ومالك ومدخل منقح وأثر وخطوة ومعيار خروج. لا وعد مدة أو جلسات أو جزء أخير. **7B/7 جزئيتان؛R4i محدود لا كلR4/SP01؛7C لم تبدأ؛8 غير مأذونة هنا.** تسلّم هوية SHA التدقيق للمحادثة الموازية دون افتراض بدءها أو دمج إصلاحاتها هنا.
+**R4k/7B27 مقترح أوsplit مسبب** من[المتبقي الحالي](PHASE-07-REMAINING-07B26.md)،بمدخل ومصدر ومخرج واستبعاد وحد خروج ودليل ومالك ومدخل منقح وأثر وخطوة وخطة؛لا وعد مدة أوجلسات أوجزء أخير. **7B/7جزئيتان؛R4jمحدود؛7Cلمتبدأ؛8غيرمأذونةهنا.** تسلم هويةSHA المدفوعة لمسار الإصلاح المستقل دون افتراض بدءه أوتزامنه.

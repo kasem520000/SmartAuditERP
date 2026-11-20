@@ -1,0 +1,53 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "entry": "dd38f97e844dc60ea64ae00fa40ef588e49752d7",
+  "authority": [
+    "PHASE-07-REMAINING-07B25.md",
+    "evidence/split-register-07B25.csv",
+    "evidence/residual-disposition-07B25.csv"
+  ],
+  "selected_upstream_split": "SP7B25-01",
+  "selected_capability": "directory-selected bulk product general-apply packing and header-vs-existing-unit prices, with separate price-command/parameter/fallback/single-editor controls",
+  "input": "supplied successful positive directory IDs, Product-shaped existing header/unit data and valid integer command inputs, explicit property/unit/permission states; no SDK defaults assumed",
+  "source": "locally whole378-line bulk editor C# and469-line XAML plus bounded directory/reader/writer parameters/SQL text/matched-unit consumer/single-editor controls",
+  "output": "in-memory Product/PackingValue/price/units and SQL parameter plan, selected reader source; not executed SQL/commit/stock/saved losses or business unit/price policies",
+  "exit": "each capability evidence/limit/owner/redacted input/impact/next step/two unexecuted plans, root/residual/split decisions and preserved inputs/current documentary checks",
+  "exclusions": [
+    "not all Product fields/callers/477bodies/455FE/capability census",
+    "no external DTO constructor/collections/default0, BOM/zero-field/checkbox third root inferred",
+    "no user-intent/unit-remap/ratio/all-unit pricing/business rounding policy invented",
+    "not actual WPF event count/SQL/SDK/provider/commit/save/financial/stock/ACL/production acceptance",
+    "independent repairs not merged or presumed started/synchronized, no protected capture/date rewrite"
+  ],
+  "bookkeeping": {
+    "selected_paths": 9,
+    "prior_union": 421,
+    "overlap": 5,
+    "new": 4,
+    "union": 425,
+    "complement": 402,
+    "complement_kinds": {
+      "source": 337,
+      "generated-artifact": 61,
+      "project-or-resource": 4
+    }
+  },
+  "new_paths": [
+    "SmartAuditERP/Form_WPF/frmEditItems.xaml",
+    "SmartAuditERP/Form_WPF/frmEditItems.xaml.cs",
+    "SmartAuditERP/Form_WPF/frmItemsDir.xaml",
+    "SmartAuditERP/Form_WPF/frmItemsDir.xaml.cs"
+  ],
+  "bounded_read_slice_count": 15,
+  "whole_local_editor_files": 2,
+  "whole_local_editor_lines": {
+    "code_behind": 378,
+    "xaml": 469
+  },
+  "historical_metadata_screen_count": 324,
+  "historical_comparison_depth": "all324-title-certainty-summaries-plus-path-filtered-metadata-and-selected-nearest-doc-bodies-source-chains-not-all-historical-bodies",
+  "historical_body_review_claim": false,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "counts_are_completion_percent_or_sessions": false
+}
