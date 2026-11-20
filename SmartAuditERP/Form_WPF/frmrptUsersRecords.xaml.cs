@@ -89,7 +89,8 @@ namespace SmartAuditERP.Form_WPF
                 int? employeeId = null;
                 if (chkAll.IsChecked != true)
                 {
-                    if (!int.TryParse(cmbUsers.SelectedValue?.ToString(), out int selectedId) || selectedId <= 0)
+                    if (cmbUsers.SelectedIndex < 0 ||
+                        !int.TryParse(cmbUsers.SelectedValue?.ToString(), out int selectedId))
                     {
                         DXMessageBox.Show("يرجى اختيار مستخدم.", "تنبيه",
                                           MessageBoxButton.OK, MessageBoxImage.Warning);
