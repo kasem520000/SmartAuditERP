@@ -49,6 +49,10 @@ namespace SmartAuditERP.Form_WPF
         // Repair R-076 (audit finding P7-156): the mandatory condition the CALLER supplied before
         // ShowDialog (document eligibility), kept apart from the optional filters this form owns.
         private string                               _callerCond;
+        // Repair R-079 (audit finding P7-046, extension B28): whether the displayed rows come from
+        // a source that actually succeeded; a failed load must not leave the previous snapshot
+        // selectable as if it answered the current request.
+        private bool                                 _snapshotValid;
 
         #endregion
 
@@ -73,6 +77,7 @@ namespace SmartAuditERP.Form_WPF
             Cond         = string.Empty;
             _snapshotProc = -1;
             _callerCond   = string.Empty;
+            _snapshotValid = false;
 
             dgvItems.ItemsSource = _displayRows;
         }
@@ -112,7 +117,9 @@ namespace SmartAuditERP.Form_WPF
         {
             if (e.Key == Key.Return)
             {
-                if (_rowIndex > -1 && _rowIndex < _displayRows.Count)
+                // Repair R-079 (audit finding P7-046, extension B28): never accept from a snapshot
+                // whose source failed, whatever the last selected index was.
+                if (_snapshotValid && _rowIndex > -1 && _rowIndex < _displayRows.Count)
                 {
                     try
                     {
@@ -319,7 +326,7 @@ namespace SmartAuditERP.Form_WPF
             try
             {
                 var row = dgvItems.SelectedItem as InvoiceSrchRow;
-                if (row == null) return;
+                if (row == null || !_snapshotValid) return;   // Repair R-079 (P7-046 ext. B28)
 
                 ISDone      = true;
                 InvGlobalID = row.InvGlobalID;
@@ -339,6 +346,7 @@ namespace SmartAuditERP.Form_WPF
         {
             if (sender is not Button btn) return;
             if (btn.Tag is not InvoiceSrchRow row) return;
+            if (!_snapshotValid) return;   // Repair R-079 (P7-046 ext. B28): stale snapshot
 
             if (IsPreviousReturned(row.InvGlobalID))
             {
@@ -380,9 +388,22 @@ namespace SmartAuditERP.Form_WPF
 
                 adapter.Fill(_masterTable);
                 ApplyFilter();
+                _snapshotValid = true;
             }
             catch (Exception ex)
             {
+                // Repair R-079 (audit finding P7-046, extension B28): the master table may already
+                // have been cleared by the caller and the fill may have failed halfway, while the
+                // display still held the PREVIOUS successful rows - selectable, so a caller could
+                // accept a document this request never returned. A failed load now publishes
+                // failure: no rows, no acceptance, and a status saying the source failed. A
+                // known-empty result is a different state and still shows its zero count.
+                _snapshotValid = false;
+                _displayRows.Clear();
+                _rowIndex = -1;
+                lblStatus.Text = MainClass.Language == "ar"
+                    ? "⚠ فشل تحميل نتائج البحث، لا توجد نتائج صالحة للاختيار"
+                    : "⚠ Loading the search results failed; nothing valid to select";
                 Console.WriteLine(ex.Message);
             }
         }
