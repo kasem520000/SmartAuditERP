@@ -1,0 +1,90 @@
+{
+  "entry": "e6f022ab5df771aab9631886ad713a8a7e6dfbfa",
+  "selected_upstream_split": "SP7B34-01",
+  "authority": [
+    "PHASE-07-REMAINING-07B34.md",
+    "evidence/split-register-07B34.csv",
+    "evidence/residual-disposition-07B34.csv",
+    "evidence/remaining-workplan-07B34.csv",
+    "evidence/continuation-backlog-07B34.csv"
+  ],
+  "selected_capability": "Current-year linked-return entry in sale(2,2) and purchase(1,2):abandon decision,ref caller state,first picker gate,nested item result and pre-publication conversion boundaries only.",
+  "entry_point": "XAMLlinked-insert→sale(2,2)/purchase(1,2)فقط؛ReturnYearPreviews=falseوحالةdirtyوقرارYes/Noمورّدان.",
+  "source_contract": "CLR/CheckBeforeClear/void-new→InsertFromInv(ref...)→firstpicker→BindingInvoice→childfield/ISDone→parentconversion؛الـsnapshotsوالـnormalreturnsوفشلالحدموردة.",
+  "output_boundary": "أولتعيينجديدوحدref/childfieldوالتعييناتالصريحةقبلCalcRows/BindingDGV/BindingControls؛لاثباتأعلامأوUIنهائيةأوحفظ.",
+  "owner_role": "مالك WPF وأوامر الإدراج ونتائج الحوارين",
+  "required_redacted_input": "عقد typed لكل أمر وللبحث والبنود:Accepted/Cancelled/Failed وحالة Stay مع generation وDocumentRef؛مراقب حدود اصطناعي وسياسة الإغلاق دون جلسةWPF أوبياناتعمل.",
+  "impact_if_unavailable": "عودة void أوShowDialog الطبيعية لا تحمل نتيجة مركبة؛قد يصل الأب إلى التصفير أو التحويل بعد رفض محلي أو إلغاء الطفل.",
+  "next_step": "تحديد أول كتابة ومالكها وقرار قابل للتمرير؛تحضير البحث والبنود خارج حالة الأب ثم Apply واحد بعد اكتمال القرارين وفق سياسة المالك.",
+  "static_exit_criterion": "رفض الأمر الفرعي يصل للمستدعي؛لا يعد شرط التعيين النهائي حماية لكتابة ref سبقت حوار البنود.",
+  "exclusions": [
+    "لاERP/build/C#/VB/.NET/WPF/ShowDialog/SQL/provider/SDK/REPX/ToDataTable/طابعة/ماسحأوبياناتعملأوأسرارأوحفظأوحجزرقمأوإصلاحأوقياسأوقبولنفذ.",
+    "السنةالسابقةوفروعquotationو21/22/23والعقودوكلcallerآخرخارجالحكم؛سياقالمصدرلايعتمدها.",
+    "لاتثبتtokensمرجعيةCLRأوalias/cloneأوdefaultsأواكتمالhydrationأوكلdirtynotificationsأوغيابحمايةمنعقدخارجيغيرمتتبع.",
+    "ليستقراءةكل335متناًأو83متناًأوحصر455FEأوكلقدرة؛بقيةSP01–03ضمن7Bلا7C."
+  ],
+  "bookkeeping": {
+    "selected_paths": 7,
+    "prior_union": 427,
+    "overlap": 6,
+    "new": 1,
+    "union": 428,
+    "complement": 399,
+    "complement_kinds": {
+      "source": 334,
+      "project-or-resource": 4,
+      "generated-artifact": 61
+    }
+  },
+  "historical_metadata_screen_count": 335,
+  "parent_path_matched_metadata_rows": 83,
+  "selected_prior_report_sections": 15,
+  "all_historical_bodies_reviewed": false,
+  "selected_contract_slices": 24,
+  "exploratory_context_slices": 11,
+  "whole_local_files": 0,
+  "scope_blank_only_gap_merges": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 1606,
+      "end": 1606,
+      "all_blank": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 2769,
+      "end": 2769,
+      "all_blank": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 1570,
+      "end": 1570,
+      "all_blank": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 2206,
+      "end": 2206,
+      "all_blank": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs",
+      "start": 91,
+      "end": 91,
+      "all_blank": true
+    }
+  ],
+  "new_root_ids": [],
+  "existing_root_extensions": [],
+  "existing_roots_deepened_without_registry_change": [
+    "P4-013",
+    "P7-159",
+    "P7-160"
+  ],
+  "registry_entire_raw_bytes_unchanged": true,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "counts_are_completion_percent_or_sessions": false,
+  "repair_start_sync_known": false
+}

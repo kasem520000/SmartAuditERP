@@ -1,0 +1,13 @@
+{
+  "kind": "second-pre-author-in-memory-witness-build-attempt-not-CLI-or-unit-suite",
+  "process_exit_code": 1,
+  "source_at_attempt_sha256": "c0aca7c8dfa0744ff10711afd3f34722c5c8c225f3a42243e9306d53cf274cc6",
+  "stdout_bytes": 0,
+  "error_type": "ValueError",
+  "error_message": "substring not found",
+  "failing_lexical_observation": "ST7B35-10 started at3982 but BindingInvoice is at3981,inside the already-selected adjacent3976..3982 slice.",
+  "correction": "Use3976..4007 to include the already-read gate,binding and item-result sequence;no semantic expectation or protected code changed.",
+  "application_source_or_protected_artifacts_changed": false,
+  "validator_or_historical_tests_relaxed": false,
+  "erp_runtime_tests_executed": 0
+}

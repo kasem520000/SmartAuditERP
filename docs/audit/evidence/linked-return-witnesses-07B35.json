@@ -1,0 +1,1698 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "entry_checkout": "e6f022ab5df771aab9631886ad713a8a7e6dfbfa",
+  "new_root_ids": [],
+  "extended_existing_root_ids": [],
+  "existing_roots_deepened_without_registry_change": [
+    "P4-013",
+    "P7-159",
+    "P7-160"
+  ],
+  "selected_source_paths": 7,
+  "selected_contract_slices": 24,
+  "context_slices_not_certified": 11,
+  "whole_local_files_selected": 0,
+  "illustration_count": 20,
+  "lexical_check_count": 20,
+  "application_code_imported_or_executed": false,
+  "dotnet_wpf_sql_or_SDK_executed": false,
+  "actual_dialog_gesture_or_reference_aliasing_or_complete_hydration_proved": false,
+  "save_or_number_reservation_or_financial_loss_proved": false,
+  "application_remediation_performed": false,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "all_callers_or_historical_bodies_certified": false,
+  "dirty_normal_returns_reader_snapshots_and_failures_are_supplied": true,
+  "child_field_reset_not_inferred_parent_ref_rollback": true,
+  "stop_before_CalcRows_and_bindings": true,
+  "prior_root_classifications_not_promoted": true,
+  "retained_additive_B10_arithmetic_erratum": {
+    "local_cost": 10,
+    "reference_cost": 120,
+    "equality1_control": 10,
+    "protected_G138_not_rewritten": true
+  },
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 2721,
+      "end": 2733,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 2734,
+      "end": 2747,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 2748,
+      "end": 2768,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 2173,
+      "end": 2182,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 2207,
+      "end": 2232,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 3941,
+      "end": 3975,
+      "sha256": "0bab36016f53ecd18360833d1fba980290702a52a98871fb397be9e813810d91",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 3976,
+      "end": 3982,
+      "sha256": "0bab36016f53ecd18360833d1fba980290702a52a98871fb397be9e813810d91",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 3983,
+      "end": 4005,
+      "sha256": "0bab36016f53ecd18360833d1fba980290702a52a98871fb397be9e813810d91",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 4006,
+      "end": 4015,
+      "sha256": "0bab36016f53ecd18360833d1fba980290702a52a98871fb397be9e813810d91",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs",
+      "start": 28,
+      "end": 33,
+      "sha256": "c6586a20d39094991b159f739c7cee441c5cf388c10186ee8702cce519dfbfb1",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs",
+      "start": 49,
+      "end": 66,
+      "sha256": "c6586a20d39094991b159f739c7cee441c5cf388c10186ee8702cce519dfbfb1",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs",
+      "start": 73,
+      "end": 90,
+      "sha256": "c6586a20d39094991b159f739c7cee441c5cf388c10186ee8702cce519dfbfb1",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs",
+      "start": 92,
+      "end": 116,
+      "sha256": "c6586a20d39094991b159f739c7cee441c5cf388c10186ee8702cce519dfbfb1",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs",
+      "start": 299,
+      "end": 339,
+      "sha256": "c6586a20d39094991b159f739c7cee441c5cf388c10186ee8702cce519dfbfb1",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs",
+      "start": 340,
+      "end": 368,
+      "sha256": "c6586a20d39094991b159f739c7cee441c5cf388c10186ee8702cce519dfbfb1",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml",
+      "start": 1,
+      "end": 14,
+      "sha256": "a62214bca1641c80bfdb491ebb9335c32bf85ae0b6286a37b3088fb74f3b5e08",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml",
+      "start": 161,
+      "end": 190,
+      "sha256": "a62214bca1641c80bfdb491ebb9335c32bf85ae0b6286a37b3088fb74f3b5e08",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml",
+      "start": 602,
+      "end": 604,
+      "sha256": "289a5a6bce98948818d3847a9cdf50870a35ca8269416a1ac3dd293db13e4e6d",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml",
+      "start": 535,
+      "end": 542,
+      "sha256": "0c519c74b0fa74213ffb19f9de07ee54b52ece09b00597c6a1fe48e369e15c11",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 1607,
+      "end": 1641,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 1662,
+      "end": 1679,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 1531,
+      "end": 1569,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 1571,
+      "end": 1593,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 2563,
+      "end": 2571,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    }
+  ],
+  "exploratory_source_reads_not_capability_certification": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 177,
+      "end": 238,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 94,
+      "end": 160,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 1546,
+      "end": 1605,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 350,
+      "end": 407,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 558,
+      "end": 570,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 281,
+      "end": 298,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 2770,
+      "end": 2846,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 2183,
+      "end": 2205,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 2848,
+      "end": 2863,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 3219,
+      "end": 3246,
+      "sha256": "0bab36016f53ecd18360833d1fba980290702a52a98871fb397be9e813810d91",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 3496,
+      "end": 3508,
+      "sha256": "0bab36016f53ecd18360833d1fba980290702a52a98871fb397be9e813810d91",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    }
+  ],
+  "illustrations": [
+    {
+      "id": "ALG7B35-01",
+      "title": "Sale clears before either picker result",
+      "supplied_boundary_trace": {
+        "editor": "sale",
+        "parent_value": "source-B",
+        "child_value": "child-reset-value",
+        "parent_note": "",
+        "global_id": "DOC-B",
+        "combined_id": "supplied-new-number-token",
+        "reference": "COMBINED-B",
+        "is_new": true,
+        "search_gate_passed": true,
+        "item_done": false,
+        "clear_calls": 1,
+        "events": [
+          {
+            "kind": "no-local-abandon-call-in-selected-sale-route"
+          },
+          {
+            "kind": "parent-new-assignment-and-completed-reset",
+            "ctor_defaults_inferred": false
+          },
+          {
+            "kind": "helper-entered",
+            "public_result_type": "void"
+          },
+          {
+            "kind": "BindingInvoice-ref-boundary-before-item-result",
+            "outcome": "found"
+          },
+          {
+            "kind": "child-field-assigned-from-ref-value",
+            "CLR_aliasing_proved": false
+          },
+          {
+            "kind": "CloseWithoutResult-replaces-child-field-not-parent-ref"
+          },
+          {
+            "kind": "helper-normal-void-return-no-rollback-assignment"
+          },
+          {
+            "kind": "parent-conversion-prefix",
+            "proc_type": 2,
+            "impact": 1,
+            "payment_scalars_set_to_zero": true
+          },
+          {
+            "kind": "sale-reference-before-number",
+            "value": "COMBINED-B"
+          },
+          {
+            "kind": "LoadInvNo-boundary",
+            "returns": true,
+            "reservation_proved": false
+          },
+          {
+            "kind": "CalcItemsDiscountRates-boundary",
+            "returns": true
+          },
+          {
+            "kind": "parent-ISNew-written-after-untyped-return"
+          }
+        ],
+        "terminal": "before-CalcRows-and-bindings-not-stable-UI-state"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-159;P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2721-2768",
+      "source_application_executed": false,
+      "limit": "Supplied current-year branch,dirty flags,normal dialog returns,ref-boundary reader values and return/failure tokens only. Not CLR pointer equality,SDK defaults/aliasing,complete hydration,WPF gestures/event order,SQL,number reservation,stock/payment/save or deployed loss proof. Stop before CalcRows/BindingDGV/BindingControls;other linked/quotation/year/contract paths excluded."
+    },
+    {
+      "id": "ALG7B35-02",
+      "title": "Purchase No returns only from void new;linked branch still clears",
+      "supplied_boundary_trace": {
+        "editor": "purchase",
+        "parent_value": "source-B",
+        "child_value": "child-reset-value",
+        "parent_note": "",
+        "global_id": "DOC-B",
+        "combined_id": "supplied-new-number-token",
+        "reference": "DOC-B",
+        "is_new": true,
+        "search_gate_passed": true,
+        "item_done": false,
+        "clear_calls": 1,
+        "events": [
+          {
+            "kind": "void-new-command-returned",
+            "guard_asked": true,
+            "guard_blocks": true
+          },
+          {
+            "kind": "parent-new-assignment-and-completed-reset",
+            "ctor_defaults_inferred": false
+          },
+          {
+            "kind": "helper-entered",
+            "public_result_type": "void"
+          },
+          {
+            "kind": "BindingInvoice-ref-boundary-before-item-result",
+            "outcome": "found"
+          },
+          {
+            "kind": "child-field-assigned-from-ref-value",
+            "CLR_aliasing_proved": false
+          },
+          {
+            "kind": "CloseWithoutResult-replaces-child-field-not-parent-ref"
+          },
+          {
+            "kind": "helper-normal-void-return-no-rollback-assignment"
+          },
+          {
+            "kind": "parent-conversion-prefix",
+            "proc_type": 2,
+            "impact": 2,
+            "payment_scalars_set_to_zero": true
+          },
+          {
+            "kind": "LoadInvNo-boundary",
+            "returns": true,
+            "reservation_proved": false
+          },
+          {
+            "kind": "purchase-item-impact-loop-boundary",
+            "non_null_items_supplied": true
+          },
+          {
+            "kind": "purchase-reference-after-number",
+            "value": "DOC-B"
+          },
+          {
+            "kind": "parent-ISNew-written-after-untyped-return"
+          }
+        ],
+        "terminal": "before-CalcRows-and-bindings-not-stable-UI-state"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1571-1593;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2173-2182",
+      "source_application_executed": false,
+      "limit": "Supplied current-year branch,dirty flags,normal dialog returns,ref-boundary reader values and return/failure tokens only. Not CLR pointer equality,SDK defaults/aliasing,complete hydration,WPF gestures/event order,SQL,number reservation,stock/payment/save or deployed loss proof. Stop before CalcRows/BindingDGV/BindingControls;other linked/quotation/year/contract paths excluded."
+    },
+    {
+      "id": "ALG7B35-03",
+      "title": "Purchase Yes can reach two completed CLR calls",
+      "supplied_boundary_trace": {
+        "editor": "purchase",
+        "parent_value": "source-B",
+        "child_value": "child-reset-value",
+        "parent_note": "",
+        "global_id": "DOC-B",
+        "combined_id": "supplied-new-number-token",
+        "reference": "DOC-B",
+        "is_new": true,
+        "search_gate_passed": true,
+        "item_done": false,
+        "clear_calls": 2,
+        "events": [
+          {
+            "kind": "void-new-command-returned",
+            "guard_asked": true,
+            "guard_blocks": false
+          },
+          {
+            "kind": "parent-new-assignment-and-completed-reset",
+            "ctor_defaults_inferred": false
+          },
+          {
+            "kind": "parent-new-assignment-and-completed-reset",
+            "ctor_defaults_inferred": false
+          },
+          {
+            "kind": "helper-entered",
+            "public_result_type": "void"
+          },
+          {
+            "kind": "BindingInvoice-ref-boundary-before-item-result",
+            "outcome": "found"
+          },
+          {
+            "kind": "child-field-assigned-from-ref-value",
+            "CLR_aliasing_proved": false
+          },
+          {
+            "kind": "CloseWithoutResult-replaces-child-field-not-parent-ref"
+          },
+          {
+            "kind": "helper-normal-void-return-no-rollback-assignment"
+          },
+          {
+            "kind": "parent-conversion-prefix",
+            "proc_type": 2,
+            "impact": 2,
+            "payment_scalars_set_to_zero": true
+          },
+          {
+            "kind": "LoadInvNo-boundary",
+            "returns": true,
+            "reservation_proved": false
+          },
+          {
+            "kind": "purchase-item-impact-loop-boundary",
+            "non_null_items_supplied": true
+          },
+          {
+            "kind": "purchase-reference-after-number",
+            "value": "DOC-B"
+          },
+          {
+            "kind": "parent-ISNew-written-after-untyped-return"
+          }
+        ],
+        "terminal": "before-CalcRows-and-bindings-not-stable-UI-state"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1593;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2173-2182",
+      "source_application_executed": false,
+      "limit": "Supplied current-year branch,dirty flags,normal dialog returns,ref-boundary reader values and return/failure tokens only. Not CLR pointer equality,SDK defaults/aliasing,complete hydration,WPF gestures/event order,SQL,number reservation,stock/payment/save or deployed loss proof. Stop before CalcRows/BindingDGV/BindingControls;other linked/quotation/year/contract paths excluded."
+    },
+    {
+      "id": "ALG7B35-04",
+      "title": "Direct new No control really blocks its own clear",
+      "supplied_boundary_trace": {
+        "guard_asked": true,
+        "guard_blocks": true,
+        "clear_calls": 0,
+        "current_value": "draft-A",
+        "returns_typed_abandon_decision": false
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1571-1593",
+      "source_application_executed": false,
+      "limit": "Supplied current-year branch,dirty flags,normal dialog returns,ref-boundary reader values and return/failure tokens only. Not CLR pointer equality,SDK defaults/aliasing,complete hydration,WPF gestures/event order,SQL,number reservation,stock/payment/save or deployed loss proof. Stop before CalcRows/BindingDGV/BindingControls;other linked/quotation/year/contract paths excluded."
+    },
+    {
+      "id": "ALG7B35-05",
+      "title": "Search rejection prevents bind,not preclear or conversion",
+      "supplied_boundary_trace": {
+        "editor": "sale",
+        "parent_value": "reset-value",
+        "child_value": null,
+        "parent_note": "",
+        "global_id": "unknown-constructor-GID",
+        "combined_id": "supplied-new-number-token",
+        "reference": "supplied-reset-number",
+        "is_new": true,
+        "search_gate_passed": false,
+        "item_done": false,
+        "clear_calls": 1,
+        "events": [
+          {
+            "kind": "no-local-abandon-call-in-selected-sale-route"
+          },
+          {
+            "kind": "parent-new-assignment-and-completed-reset",
+            "ctor_defaults_inferred": false
+          },
+          {
+            "kind": "helper-entered",
+            "public_result_type": "void"
+          },
+          {
+            "kind": "search-gate-rejected-no-BindingInvoice"
+          },
+          {
+            "kind": "helper-normal-void-return-no-rollback-assignment"
+          },
+          {
+            "kind": "parent-conversion-prefix",
+            "proc_type": 2,
+            "impact": 1,
+            "payment_scalars_set_to_zero": true
+          },
+          {
+            "kind": "sale-reference-before-number",
+            "value": "supplied-reset-number"
+          },
+          {
+            "kind": "LoadInvNo-boundary",
+            "returns": true,
+            "reservation_proved": false
+          },
+          {
+            "kind": "CalcItemsDiscountRates-boundary",
+            "returns": true
+          },
+          {
+            "kind": "parent-ISNew-written-after-untyped-return"
+          }
+        ],
+        "terminal": "before-CalcRows-and-bindings-not-stable-UI-state"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:3976-3982;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2748-2768",
+      "source_application_executed": false,
+      "limit": "Supplied current-year branch,dirty flags,normal dialog returns,ref-boundary reader values and return/failure tokens only. Not CLR pointer equality,SDK defaults/aliasing,complete hydration,WPF gestures/event order,SQL,number reservation,stock/payment/save or deployed loss proof. Stop before CalcRows/BindingDGV/BindingControls;other linked/quotation/year/contract paths excluded."
+    },
+    {
+      "id": "ALG7B35-06",
+      "title": "Done with sentinel still rejects only helper binding",
+      "supplied_boundary_trace": {
+        "editor": "sale",
+        "parent_value": "reset-value",
+        "child_value": null,
+        "parent_note": "",
+        "global_id": "unknown-constructor-GID",
+        "combined_id": "supplied-new-number-token",
+        "reference": "supplied-reset-number",
+        "is_new": true,
+        "search_gate_passed": false,
+        "item_done": false,
+        "clear_calls": 1,
+        "events": [
+          {
+            "kind": "no-local-abandon-call-in-selected-sale-route"
+          },
+          {
+            "kind": "parent-new-assignment-and-completed-reset",
+            "ctor_defaults_inferred": false
+          },
+          {
+            "kind": "helper-entered",
+            "public_result_type": "void"
+          },
+          {
+            "kind": "search-gate-rejected-no-BindingInvoice"
+          },
+          {
+            "kind": "helper-normal-void-return-no-rollback-assignment"
+          },
+          {
+            "kind": "parent-conversion-prefix",
+            "proc_type": 2,
+            "impact": 1,
+            "payment_scalars_set_to_zero": true
+          },
+          {
+            "kind": "sale-reference-before-number",
+            "value": "supplied-reset-number"
+          },
+          {
+            "kind": "LoadInvNo-boundary",
+            "returns": true,
+            "reservation_proved": false
+          },
+          {
+            "kind": "CalcItemsDiscountRates-boundary",
+            "returns": true
+          },
+          {
+            "kind": "parent-ISNew-written-after-untyped-return"
+          }
+        ],
+        "terminal": "before-CalcRows-and-bindings-not-stable-UI-state"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:3976-3982;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2748-2768",
+      "source_application_executed": false,
+      "limit": "Supplied current-year branch,dirty flags,normal dialog returns,ref-boundary reader values and return/failure tokens only. Not CLR pointer equality,SDK defaults/aliasing,complete hydration,WPF gestures/event order,SQL,number reservation,stock/payment/save or deployed loss proof. Stop before CalcRows/BindingDGV/BindingControls;other linked/quotation/year/contract paths excluded."
+    },
+    {
+      "id": "ALG7B35-07",
+      "title": "Nested child cancel does not restore pre-bind ref contents",
+      "supplied_boundary_trace": {
+        "editor": "sale",
+        "parent_value": "source-B",
+        "child_value": "child-reset-value",
+        "parent_note": "",
+        "global_id": "DOC-B",
+        "combined_id": "supplied-new-number-token",
+        "reference": "COMBINED-B",
+        "is_new": true,
+        "search_gate_passed": true,
+        "item_done": false,
+        "clear_calls": 1,
+        "events": [
+          {
+            "kind": "no-local-abandon-call-in-selected-sale-route"
+          },
+          {
+            "kind": "parent-new-assignment-and-completed-reset",
+            "ctor_defaults_inferred": false
+          },
+          {
+            "kind": "helper-entered",
+            "public_result_type": "void"
+          },
+          {
+            "kind": "BindingInvoice-ref-boundary-before-item-result",
+            "outcome": "found"
+          },
+          {
+            "kind": "child-field-assigned-from-ref-value",
+            "CLR_aliasing_proved": false
+          },
+          {
+            "kind": "CloseWithoutResult-replaces-child-field-not-parent-ref"
+          },
+          {
+            "kind": "helper-normal-void-return-no-rollback-assignment"
+          },
+          {
+            "kind": "parent-conversion-prefix",
+            "proc_type": 2,
+            "impact": 1,
+            "payment_scalars_set_to_zero": true
+          },
+          {
+            "kind": "sale-reference-before-number",
+            "value": "COMBINED-B"
+          },
+          {
+            "kind": "LoadInvNo-boundary",
+            "returns": true,
+            "reservation_proved": false
+          },
+          {
+            "kind": "CalcItemsDiscountRates-boundary",
+            "returns": true
+          },
+          {
+            "kind": "parent-ISNew-written-after-untyped-return"
+          }
+        ],
+        "terminal": "before-CalcRows-and-bindings-not-stable-UI-state"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:3982-4015;SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:351-368",
+      "source_application_executed": false,
+      "limit": "Supplied current-year branch,dirty flags,normal dialog returns,ref-boundary reader values and return/failure tokens only. Not CLR pointer equality,SDK defaults/aliasing,complete hydration,WPF gestures/event order,SQL,number reservation,stock/payment/save or deployed loss proof. Stop before CalcRows/BindingDGV/BindingControls;other linked/quotation/year/contract paths excluded."
+    },
+    {
+      "id": "ALG7B35-08",
+      "title": "Insert-all explicit acceptance is a distinct control",
+      "supplied_boundary_trace": {
+        "editor": "sale",
+        "parent_value": "source-B",
+        "child_value": "source-B",
+        "parent_note": "",
+        "global_id": "DOC-B",
+        "combined_id": "supplied-new-number-token",
+        "reference": "COMBINED-B",
+        "is_new": true,
+        "search_gate_passed": true,
+        "item_done": true,
+        "clear_calls": 1,
+        "events": [
+          {
+            "kind": "no-local-abandon-call-in-selected-sale-route"
+          },
+          {
+            "kind": "parent-new-assignment-and-completed-reset",
+            "ctor_defaults_inferred": false
+          },
+          {
+            "kind": "helper-entered",
+            "public_result_type": "void"
+          },
+          {
+            "kind": "BindingInvoice-ref-boundary-before-item-result",
+            "outcome": "found"
+          },
+          {
+            "kind": "child-field-assigned-from-ref-value",
+            "CLR_aliasing_proved": false
+          },
+          {
+            "kind": "item-result-accepted",
+            "route": "all"
+          },
+          {
+            "kind": "final-ref-assignment-gated-by-item-done"
+          },
+          {
+            "kind": "helper-normal-void-return-no-rollback-assignment"
+          },
+          {
+            "kind": "parent-conversion-prefix",
+            "proc_type": 2,
+            "impact": 1,
+            "payment_scalars_set_to_zero": true
+          },
+          {
+            "kind": "sale-reference-before-number",
+            "value": "COMBINED-B"
+          },
+          {
+            "kind": "LoadInvNo-boundary",
+            "returns": true,
+            "reservation_proved": false
+          },
+          {
+            "kind": "CalcItemsDiscountRates-boundary",
+            "returns": true
+          },
+          {
+            "kind": "parent-ISNew-written-after-untyped-return"
+          }
+        ],
+        "terminal": "before-CalcRows-and-bindings-not-stable-UI-state"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:105-116;SmartAuditERP/Class/InvoiceOper.cs:4002-4007",
+      "source_application_executed": false,
+      "limit": "Supplied current-year branch,dirty flags,normal dialog returns,ref-boundary reader values and return/failure tokens only. Not CLR pointer equality,SDK defaults/aliasing,complete hydration,WPF gestures/event order,SQL,number reservation,stock/payment/save or deployed loss proof. Stop before CalcRows/BindingDGV/BindingControls;other linked/quotation/year/contract paths excluded."
+    },
+    {
+      "id": "ALG7B35-09",
+      "title": "Selected acceptance is supplied,not inferred from modal return",
+      "supplied_boundary_trace": {
+        "editor": "sale",
+        "parent_value": "source-B",
+        "child_value": "source-B",
+        "parent_note": "",
+        "global_id": "DOC-B",
+        "combined_id": "supplied-new-number-token",
+        "reference": "COMBINED-B",
+        "is_new": true,
+        "search_gate_passed": true,
+        "item_done": true,
+        "clear_calls": 1,
+        "events": [
+          {
+            "kind": "no-local-abandon-call-in-selected-sale-route"
+          },
+          {
+            "kind": "parent-new-assignment-and-completed-reset",
+            "ctor_defaults_inferred": false
+          },
+          {
+            "kind": "helper-entered",
+            "public_result_type": "void"
+          },
+          {
+            "kind": "BindingInvoice-ref-boundary-before-item-result",
+            "outcome": "found"
+          },
+          {
+            "kind": "child-field-assigned-from-ref-value",
+            "CLR_aliasing_proved": false
+          },
+          {
+            "kind": "item-result-accepted",
+            "route": "selected"
+          },
+          {
+            "kind": "final-ref-assignment-gated-by-item-done"
+          },
+          {
+            "kind": "helper-normal-void-return-no-rollback-assignment"
+          },
+          {
+            "kind": "parent-conversion-prefix",
+            "proc_type": 2,
+            "impact": 1,
+            "payment_scalars_set_to_zero": true
+          },
+          {
+            "kind": "sale-reference-before-number",
+            "value": "COMBINED-B"
+          },
+          {
+            "kind": "LoadInvNo-boundary",
+            "returns": true,
+            "reservation_proved": false
+          },
+          {
+            "kind": "CalcItemsDiscountRates-boundary",
+            "returns": true
+          },
+          {
+            "kind": "parent-ISNew-written-after-untyped-return"
+          }
+        ],
+        "terminal": "before-CalcRows-and-bindings-not-stable-UI-state"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P4-013;P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:299-339;SmartAuditERP/Class/InvoiceOper.cs:4002-4007",
+      "source_application_executed": false,
+      "limit": "Supplied current-year branch,dirty flags,normal dialog returns,ref-boundary reader values and return/failure tokens only. Not CLR pointer equality,SDK defaults/aliasing,complete hydration,WPF gestures/event order,SQL,number reservation,stock/payment/save or deployed loss proof. Stop before CalcRows/BindingDGV/BindingControls;other linked/quotation/year/contract paths excluded."
+    },
+    {
+      "id": "ALG7B35-10",
+      "title": "Empty selection stays open before a separately supplied close",
+      "supplied_boundary_trace": {
+        "editor": "sale",
+        "parent_value": "source-B",
+        "child_value": "child-reset-value",
+        "parent_note": "",
+        "global_id": "DOC-B",
+        "combined_id": "supplied-new-number-token",
+        "reference": "COMBINED-B",
+        "is_new": true,
+        "search_gate_passed": true,
+        "item_done": false,
+        "clear_calls": 1,
+        "events": [
+          {
+            "kind": "no-local-abandon-call-in-selected-sale-route"
+          },
+          {
+            "kind": "parent-new-assignment-and-completed-reset",
+            "ctor_defaults_inferred": false
+          },
+          {
+            "kind": "helper-entered",
+            "public_result_type": "void"
+          },
+          {
+            "kind": "BindingInvoice-ref-boundary-before-item-result",
+            "outcome": "found"
+          },
+          {
+            "kind": "child-field-assigned-from-ref-value",
+            "CLR_aliasing_proved": false
+          },
+          {
+            "kind": "empty-selection-returns-without-close-or-accept"
+          },
+          {
+            "kind": "CloseWithoutResult-replaces-child-field-not-parent-ref"
+          },
+          {
+            "kind": "helper-normal-void-return-no-rollback-assignment"
+          },
+          {
+            "kind": "parent-conversion-prefix",
+            "proc_type": 2,
+            "impact": 1,
+            "payment_scalars_set_to_zero": true
+          },
+          {
+            "kind": "sale-reference-before-number",
+            "value": "COMBINED-B"
+          },
+          {
+            "kind": "LoadInvNo-boundary",
+            "returns": true,
+            "reservation_proved": false
+          },
+          {
+            "kind": "CalcItemsDiscountRates-boundary",
+            "returns": true
+          },
+          {
+            "kind": "parent-ISNew-written-after-untyped-return"
+          }
+        ],
+        "terminal": "before-CalcRows-and-bindings-not-stable-UI-state"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P4-013;P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:299-339;SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:351-368",
+      "source_application_executed": false,
+      "limit": "Supplied current-year branch,dirty flags,normal dialog returns,ref-boundary reader values and return/failure tokens only. Not CLR pointer equality,SDK defaults/aliasing,complete hydration,WPF gestures/event order,SQL,number reservation,stock/payment/save or deployed loss proof. Stop before CalcRows/BindingDGV/BindingControls;other linked/quotation/year/contract paths excluded."
+    },
+    {
+      "id": "ALG7B35-11",
+      "title": "No normal first-dialog return means no parent conversion",
+      "supplied_boundary_trace": {
+        "editor": "sale",
+        "parent_value": "reset-value",
+        "child_value": null,
+        "parent_note": "unknown-constructor-note",
+        "global_id": "unknown-constructor-GID",
+        "combined_id": "supplied-reset-number",
+        "reference": "-1",
+        "is_new": true,
+        "search_gate_passed": false,
+        "item_done": false,
+        "clear_calls": 1,
+        "events": [
+          {
+            "kind": "no-local-abandon-call-in-selected-sale-route"
+          },
+          {
+            "kind": "parent-new-assignment-and-completed-reset",
+            "ctor_defaults_inferred": false
+          },
+          {
+            "kind": "helper-entered",
+            "public_result_type": "void"
+          }
+        ],
+        "terminal": "search-dialog-nonreturn-supplied"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:3976-3982;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2748-2768",
+      "source_application_executed": false,
+      "limit": "Supplied current-year branch,dirty flags,normal dialog returns,ref-boundary reader values and return/failure tokens only. Not CLR pointer equality,SDK defaults/aliasing,complete hydration,WPF gestures/event order,SQL,number reservation,stock/payment/save or deployed loss proof. Stop before CalcRows/BindingDGV/BindingControls;other linked/quotation/year/contract paths excluded."
+    },
+    {
+      "id": "ALG7B35-12",
+      "title": "No normal item-dialog return leaves bound state,not parent tail",
+      "supplied_boundary_trace": {
+        "editor": "sale",
+        "parent_value": "source-B",
+        "child_value": "source-B",
+        "parent_note": "supplied-loaded-note",
+        "global_id": "DOC-B",
+        "combined_id": "COMBINED-B",
+        "reference": "-1",
+        "is_new": false,
+        "search_gate_passed": true,
+        "item_done": false,
+        "clear_calls": 1,
+        "events": [
+          {
+            "kind": "no-local-abandon-call-in-selected-sale-route"
+          },
+          {
+            "kind": "parent-new-assignment-and-completed-reset",
+            "ctor_defaults_inferred": false
+          },
+          {
+            "kind": "helper-entered",
+            "public_result_type": "void"
+          },
+          {
+            "kind": "BindingInvoice-ref-boundary-before-item-result",
+            "outcome": "found"
+          },
+          {
+            "kind": "child-field-assigned-from-ref-value",
+            "CLR_aliasing_proved": false
+          }
+        ],
+        "terminal": "item-dialog-nonreturn-supplied"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:3982-4007",
+      "source_application_executed": false,
+      "limit": "Supplied current-year branch,dirty flags,normal dialog returns,ref-boundary reader values and return/failure tokens only. Not CLR pointer equality,SDK defaults/aliasing,complete hydration,WPF gestures/event order,SQL,number reservation,stock/payment/save or deployed loss proof. Stop before CalcRows/BindingDGV/BindingControls;other linked/quotation/year/contract paths excluded."
+    },
+    {
+      "id": "ALG7B35-13",
+      "title": "Null ref outcome is not a successful converted invoice",
+      "supplied_boundary_trace": {
+        "editor": "sale",
+        "parent_value": null,
+        "child_value": null,
+        "parent_note": "unknown-constructor-note",
+        "global_id": "unknown-constructor-GID",
+        "combined_id": "supplied-reset-number",
+        "reference": "-1",
+        "is_new": true,
+        "search_gate_passed": true,
+        "item_done": false,
+        "clear_calls": 1,
+        "events": [
+          {
+            "kind": "no-local-abandon-call-in-selected-sale-route"
+          },
+          {
+            "kind": "parent-new-assignment-and-completed-reset",
+            "ctor_defaults_inferred": false
+          },
+          {
+            "kind": "helper-entered",
+            "public_result_type": "void"
+          },
+          {
+            "kind": "BindingInvoice-ref-boundary-before-item-result",
+            "outcome": "null"
+          },
+          {
+            "kind": "helper-catch-after-null-access-no-typed-failure"
+          },
+          {
+            "kind": "helper-normal-void-return-no-rollback-assignment"
+          }
+        ],
+        "terminal": "parent-null-access-boundary-not-success"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:3982-4015;SmartAuditERP/Class/InvoiceOper.cs:3496-3508",
+      "source_application_executed": false,
+      "limit": "Supplied current-year branch,dirty flags,normal dialog returns,ref-boundary reader values and return/failure tokens only. Not CLR pointer equality,SDK defaults/aliasing,complete hydration,WPF gestures/event order,SQL,number reservation,stock/payment/save or deployed loss proof. Stop before CalcRows/BindingDGV/BindingControls;other linked/quotation/year/contract paths excluded."
+    },
+    {
+      "id": "ALG7B35-14",
+      "title": "Supplied nonnull partial snapshot has no typed completion gate",
+      "supplied_boundary_trace": {
+        "editor": "sale",
+        "parent_value": "partial-B",
+        "child_value": "child-reset-value",
+        "parent_note": "",
+        "global_id": "DOC-B",
+        "combined_id": "supplied-new-number-token",
+        "reference": "COMBINED-B",
+        "is_new": true,
+        "search_gate_passed": true,
+        "item_done": false,
+        "clear_calls": 1,
+        "events": [
+          {
+            "kind": "no-local-abandon-call-in-selected-sale-route"
+          },
+          {
+            "kind": "parent-new-assignment-and-completed-reset",
+            "ctor_defaults_inferred": false
+          },
+          {
+            "kind": "helper-entered",
+            "public_result_type": "void"
+          },
+          {
+            "kind": "BindingInvoice-ref-boundary-before-item-result",
+            "outcome": "partial"
+          },
+          {
+            "kind": "child-field-assigned-from-ref-value",
+            "CLR_aliasing_proved": false
+          },
+          {
+            "kind": "CloseWithoutResult-replaces-child-field-not-parent-ref"
+          },
+          {
+            "kind": "helper-normal-void-return-no-rollback-assignment"
+          },
+          {
+            "kind": "parent-conversion-prefix",
+            "proc_type": 2,
+            "impact": 1,
+            "payment_scalars_set_to_zero": true
+          },
+          {
+            "kind": "sale-reference-before-number",
+            "value": "COMBINED-B"
+          },
+          {
+            "kind": "LoadInvNo-boundary",
+            "returns": true,
+            "reservation_proved": false
+          },
+          {
+            "kind": "CalcItemsDiscountRates-boundary",
+            "returns": true
+          },
+          {
+            "kind": "parent-ISNew-written-after-untyped-return"
+          }
+        ],
+        "terminal": "before-CalcRows-and-bindings-not-stable-UI-state"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:3982-4015;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2748-2768",
+      "source_application_executed": false,
+      "limit": "Supplied current-year branch,dirty flags,normal dialog returns,ref-boundary reader values and return/failure tokens only. Not CLR pointer equality,SDK defaults/aliasing,complete hydration,WPF gestures/event order,SQL,number reservation,stock/payment/save or deployed loss proof. Stop before CalcRows/BindingDGV/BindingControls;other linked/quotation/year/contract paths excluded."
+    },
+    {
+      "id": "ALG7B35-15",
+      "title": "Caught helper failure after bound state returns no typed failure",
+      "supplied_boundary_trace": {
+        "editor": "sale",
+        "parent_value": "source-B",
+        "child_value": null,
+        "parent_note": "",
+        "global_id": "DOC-B",
+        "combined_id": "supplied-new-number-token",
+        "reference": "COMBINED-B",
+        "is_new": true,
+        "search_gate_passed": true,
+        "item_done": false,
+        "clear_calls": 1,
+        "events": [
+          {
+            "kind": "no-local-abandon-call-in-selected-sale-route"
+          },
+          {
+            "kind": "parent-new-assignment-and-completed-reset",
+            "ctor_defaults_inferred": false
+          },
+          {
+            "kind": "helper-entered",
+            "public_result_type": "void"
+          },
+          {
+            "kind": "BindingInvoice-ref-boundary-before-item-result",
+            "outcome": "found"
+          },
+          {
+            "kind": "helper-catch-returned-after-bound-state"
+          },
+          {
+            "kind": "helper-normal-void-return-no-rollback-assignment"
+          },
+          {
+            "kind": "parent-conversion-prefix",
+            "proc_type": 2,
+            "impact": 1,
+            "payment_scalars_set_to_zero": true
+          },
+          {
+            "kind": "sale-reference-before-number",
+            "value": "COMBINED-B"
+          },
+          {
+            "kind": "LoadInvNo-boundary",
+            "returns": true,
+            "reservation_proved": false
+          },
+          {
+            "kind": "CalcItemsDiscountRates-boundary",
+            "returns": true
+          },
+          {
+            "kind": "parent-ISNew-written-after-untyped-return"
+          }
+        ],
+        "terminal": "before-CalcRows-and-bindings-not-stable-UI-state"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:4008-4015;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2748-2768",
+      "source_application_executed": false,
+      "limit": "Supplied current-year branch,dirty flags,normal dialog returns,ref-boundary reader values and return/failure tokens only. Not CLR pointer equality,SDK defaults/aliasing,complete hydration,WPF gestures/event order,SQL,number reservation,stock/payment/save or deployed loss proof. Stop before CalcRows/BindingDGV/BindingControls;other linked/quotation/year/contract paths excluded."
+    },
+    {
+      "id": "ALG7B35-16",
+      "title": "Number nonreturn follows sale reference but precedes purchase reference",
+      "supplied_boundary_trace": {
+        "sale": {
+          "editor": "sale",
+          "parent_value": "source-B",
+          "child_value": "child-reset-value",
+          "parent_note": "",
+          "global_id": "DOC-B",
+          "combined_id": "COMBINED-B",
+          "reference": "COMBINED-B",
+          "is_new": false,
+          "search_gate_passed": true,
+          "item_done": false,
+          "clear_calls": 1,
+          "events": [
+            {
+              "kind": "no-local-abandon-call-in-selected-sale-route"
+            },
+            {
+              "kind": "parent-new-assignment-and-completed-reset",
+              "ctor_defaults_inferred": false
+            },
+            {
+              "kind": "helper-entered",
+              "public_result_type": "void"
+            },
+            {
+              "kind": "BindingInvoice-ref-boundary-before-item-result",
+              "outcome": "found"
+            },
+            {
+              "kind": "child-field-assigned-from-ref-value",
+              "CLR_aliasing_proved": false
+            },
+            {
+              "kind": "CloseWithoutResult-replaces-child-field-not-parent-ref"
+            },
+            {
+              "kind": "helper-normal-void-return-no-rollback-assignment"
+            },
+            {
+              "kind": "parent-conversion-prefix",
+              "proc_type": 2,
+              "impact": 1,
+              "payment_scalars_set_to_zero": true
+            },
+            {
+              "kind": "sale-reference-before-number",
+              "value": "COMBINED-B"
+            },
+            {
+              "kind": "LoadInvNo-boundary",
+              "returns": false,
+              "reservation_proved": false
+            }
+          ],
+          "terminal": "number-nonreturn-after-earlier-writes"
+        },
+        "purchase": {
+          "editor": "purchase",
+          "parent_value": "source-B",
+          "child_value": "child-reset-value",
+          "parent_note": "",
+          "global_id": "DOC-B",
+          "combined_id": "COMBINED-B",
+          "reference": "-1",
+          "is_new": false,
+          "search_gate_passed": true,
+          "item_done": false,
+          "clear_calls": 1,
+          "events": [
+            {
+              "kind": "void-new-command-returned",
+              "guard_asked": true,
+              "guard_blocks": true
+            },
+            {
+              "kind": "parent-new-assignment-and-completed-reset",
+              "ctor_defaults_inferred": false
+            },
+            {
+              "kind": "helper-entered",
+              "public_result_type": "void"
+            },
+            {
+              "kind": "BindingInvoice-ref-boundary-before-item-result",
+              "outcome": "found"
+            },
+            {
+              "kind": "child-field-assigned-from-ref-value",
+              "CLR_aliasing_proved": false
+            },
+            {
+              "kind": "CloseWithoutResult-replaces-child-field-not-parent-ref"
+            },
+            {
+              "kind": "helper-normal-void-return-no-rollback-assignment"
+            },
+            {
+              "kind": "parent-conversion-prefix",
+              "proc_type": 2,
+              "impact": 2,
+              "payment_scalars_set_to_zero": true
+            },
+            {
+              "kind": "LoadInvNo-boundary",
+              "returns": false,
+              "reservation_proved": false
+            }
+          ],
+          "terminal": "number-nonreturn-after-earlier-writes"
+        }
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2748-2768;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2207-2232",
+      "source_application_executed": false,
+      "limit": "Supplied current-year branch,dirty flags,normal dialog returns,ref-boundary reader values and return/failure tokens only. Not CLR pointer equality,SDK defaults/aliasing,complete hydration,WPF gestures/event order,SQL,number reservation,stock/payment/save or deployed loss proof. Stop before CalcRows/BindingDGV/BindingControls;other linked/quotation/year/contract paths excluded."
+    },
+    {
+      "id": "ALG7B35-17",
+      "title": "Sale uses combined ID;purchase uses GlobalID at different orders",
+      "supplied_boundary_trace": {
+        "sale": "COMBINED-B",
+        "purchase": "DOC-B"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2755-2768;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2219-2232",
+      "source_application_executed": false,
+      "limit": "Supplied current-year branch,dirty flags,normal dialog returns,ref-boundary reader values and return/failure tokens only. Not CLR pointer equality,SDK defaults/aliasing,complete hydration,WPF gestures/event order,SQL,number reservation,stock/payment/save or deployed loss proof. Stop before CalcRows/BindingDGV/BindingControls;other linked/quotation/year/contract paths excluded."
+    },
+    {
+      "id": "ALG7B35-18",
+      "title": "P4-013 existing ItemId selection updates/keeps both distinct lines",
+      "supplied_boundary_trace": {
+        "done": true,
+        "closed": true,
+        "rows": [
+          {
+            "line": "L-A",
+            "item": "I-A",
+            "quantity": 7,
+            "discount": 2
+          },
+          {
+            "line": "L-B",
+            "item": "I-A",
+            "quantity": 7,
+            "discount": 2
+          }
+        ]
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P4-013",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:299-348",
+      "source_application_executed": false,
+      "limit": "Supplied current-year branch,dirty flags,normal dialog returns,ref-boundary reader values and return/failure tokens only. Not CLR pointer equality,SDK defaults/aliasing,complete hydration,WPF gestures/event order,SQL,number reservation,stock/payment/save or deployed loss proof. Stop before CalcRows/BindingDGV/BindingControls;other linked/quotation/year/contract paths excluded."
+    },
+    {
+      "id": "ALG7B35-19",
+      "title": "Repeated ItemId selections have last-writer effect,not a new root",
+      "supplied_boundary_trace": {
+        "done": true,
+        "closed": true,
+        "rows": [
+          {
+            "line": "L-A",
+            "item": "I-A",
+            "quantity": 4,
+            "discount": 1
+          },
+          {
+            "line": "L-B",
+            "item": "I-A",
+            "quantity": 4,
+            "discount": 1
+          }
+        ]
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P4-013",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:315-348",
+      "source_application_executed": false,
+      "limit": "Supplied current-year branch,dirty flags,normal dialog returns,ref-boundary reader values and return/failure tokens only. Not CLR pointer equality,SDK defaults/aliasing,complete hydration,WPF gestures/event order,SQL,number reservation,stock/payment/save or deployed loss proof. Stop before CalcRows/BindingDGV/BindingControls;other linked/quotation/year/contract paths excluded."
+    },
+    {
+      "id": "ALG7B35-20",
+      "title": "Clean nonaccept also reaches conversion;dirty notifications not presumed",
+      "supplied_boundary_trace": {
+        "editor": "purchase",
+        "parent_value": "reset-value",
+        "child_value": null,
+        "parent_note": "",
+        "global_id": "unknown-constructor-GID",
+        "combined_id": "supplied-new-number-token",
+        "reference": "unknown-constructor-GID",
+        "is_new": true,
+        "search_gate_passed": false,
+        "item_done": false,
+        "clear_calls": 2,
+        "events": [
+          {
+            "kind": "void-new-command-returned",
+            "guard_asked": false,
+            "guard_blocks": false
+          },
+          {
+            "kind": "parent-new-assignment-and-completed-reset",
+            "ctor_defaults_inferred": false
+          },
+          {
+            "kind": "parent-new-assignment-and-completed-reset",
+            "ctor_defaults_inferred": false
+          },
+          {
+            "kind": "helper-entered",
+            "public_result_type": "void"
+          },
+          {
+            "kind": "search-gate-rejected-no-BindingInvoice"
+          },
+          {
+            "kind": "helper-normal-void-return-no-rollback-assignment"
+          },
+          {
+            "kind": "parent-conversion-prefix",
+            "proc_type": 2,
+            "impact": 2,
+            "payment_scalars_set_to_zero": true
+          },
+          {
+            "kind": "LoadInvNo-boundary",
+            "returns": true,
+            "reservation_proved": false
+          },
+          {
+            "kind": "purchase-item-impact-loop-boundary",
+            "non_null_items_supplied": true
+          },
+          {
+            "kind": "purchase-reference-after-number",
+            "value": "unknown-constructor-GID"
+          },
+          {
+            "kind": "parent-ISNew-written-after-untyped-return"
+          }
+        ],
+        "terminal": "before-CalcRows-and-bindings-not-stable-UI-state"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P7-159;P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1571-1593;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2173-2182;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2207-2232",
+      "source_application_executed": false,
+      "limit": "Supplied current-year branch,dirty flags,normal dialog returns,ref-boundary reader values and return/failure tokens only. Not CLR pointer equality,SDK defaults/aliasing,complete hydration,WPF gestures/event order,SQL,number reservation,stock/payment/save or deployed loss proof. Stop before CalcRows/BindingDGV/BindingControls;other linked/quotation/year/contract paths excluded."
+    }
+  ],
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B35-01",
+      "title": "Sale XAML click wiring",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml:602-604",
+      "finding_ids": "P7-159",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical selected-slice observation only;not compilation,SDK contract,DTO aliasing,UI event order,all callers or operational acceptance."
+    },
+    {
+      "id": "ST7B35-02",
+      "title": "Purchase XAML wiring and default collapsed state",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml:535-542",
+      "finding_ids": "P7-159",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical selected-slice observation only;not compilation,SDK contract,DTO aliasing,UI event order,all callers or operational acceptance."
+    },
+    {
+      "id": "ST7B35-03",
+      "title": "Sale(2,2) calls linked return",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2721-2733",
+      "finding_ids": "P7-159",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical selected-slice observation only;not compilation,SDK contract,DTO aliasing,UI event order,all callers or operational acceptance."
+    },
+    {
+      "id": "ST7B35-04",
+      "title": "Sale CLR precedes void helper then conversion",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2746-2768",
+      "finding_ids": "P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical selected-slice observation only;not compilation,SDK contract,DTO aliasing,UI event order,all callers or operational acceptance."
+    },
+    {
+      "id": "ST7B35-05",
+      "title": "Purchase void-new call cannot propagate a typed decision",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2173-2182",
+      "finding_ids": "P7-159",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical selected-slice observation only;not compilation,SDK contract,DTO aliasing,UI event order,all callers or operational acceptance."
+    },
+    {
+      "id": "ST7B35-06",
+      "title": "Direct new honors its local guard",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1589-1593",
+      "finding_ids": "P7-159",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical selected-slice observation only;not compilation,SDK contract,DTO aliasing,UI event order,all callers or operational acceptance."
+    },
+    {
+      "id": "ST7B35-07",
+      "title": "Guard No predicate and count are explicit",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1571-1587",
+      "finding_ids": "P7-159",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical selected-slice observation only;not compilation,SDK contract,DTO aliasing,UI event order,all callers or operational acceptance."
+    },
+    {
+      "id": "ST7B35-08",
+      "title": "Helper public result is void",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:3941-3975",
+      "finding_ids": "P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical selected-slice observation only;not compilation,SDK contract,DTO aliasing,UI event order,all callers or operational acceptance."
+    },
+    {
+      "id": "ST7B35-09",
+      "title": "First search gate precedes ref binding",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:3976-3982",
+      "finding_ids": "P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical selected-slice observation only;not compilation,SDK contract,DTO aliasing,UI event order,all callers or operational acceptance."
+    },
+    {
+      "id": "ST7B35-10",
+      "title": "Caller ref hydration precedes nested item result",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:3976-4007",
+      "finding_ids": "P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical selected-slice observation only;not compilation,SDK contract,DTO aliasing,UI event order,all callers or operational acceptance."
+    },
+    {
+      "id": "ST7B35-11",
+      "title": "Child field assigned from parent value before ShowDialog",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:3983-4005",
+      "finding_ids": "P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical selected-slice observation only;not compilation,SDK contract,DTO aliasing,UI event order,all callers or operational acceptance."
+    },
+    {
+      "id": "ST7B35-12",
+      "title": "Only final ref assignment is under item ISDone",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:4002-4007",
+      "finding_ids": "P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical selected-slice observation only;not compilation,SDK contract,DTO aliasing,UI event order,all callers or operational acceptance."
+    },
+    {
+      "id": "ST7B35-13",
+      "title": "Helper catch clears project error without typed rethrow result",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:4008-4015",
+      "finding_ids": "P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical selected-slice observation only;not compilation,SDK contract,DTO aliasing,UI event order,all callers or operational acceptance."
+    },
+    {
+      "id": "ST7B35-14",
+      "title": "Child starts with explicit ISDone false",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:49-66",
+      "finding_ids": "P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical selected-slice observation only;not compilation,SDK contract,DTO aliasing,UI event order,all callers or operational acceptance."
+    },
+    {
+      "id": "ST7B35-15",
+      "title": "Child Close/Escape call CloseWithoutResult",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:73-97",
+      "finding_ids": "P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical selected-slice observation only;not compilation,SDK contract,DTO aliasing,UI event order,all callers or operational acceptance."
+    },
+    {
+      "id": "ST7B35-16",
+      "title": "CloseWithoutResult replaces child inv then false and Close",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:351-368",
+      "finding_ids": "P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical selected-slice observation only;not compilation,SDK contract,DTO aliasing,UI event order,all callers or operational acceptance."
+    },
+    {
+      "id": "ST7B35-17",
+      "title": "Insert-all writes true without selected-ID projection",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:105-116",
+      "finding_ids": "P4-013",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical selected-slice observation only;not compilation,SDK contract,DTO aliasing,UI event order,all callers or operational acceptance."
+    },
+    {
+      "id": "ST7B35-18",
+      "title": "Selected update and pruning use ItemId,not original LineRef",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:299-348",
+      "finding_ids": "P4-013",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical selected-slice observation only;not compilation,SDK contract,DTO aliasing,UI event order,all callers or operational acceptance."
+    },
+    {
+      "id": "ST7B35-19",
+      "title": "Sale reference assignment precedes LoadInvNo",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2746-2768",
+      "finding_ids": "P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical selected-slice observation only;not compilation,SDK contract,DTO aliasing,UI event order,all callers or operational acceptance."
+    },
+    {
+      "id": "ST7B35-20",
+      "title": "Purchase LoadInvNo precedes GlobalID reference",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2207-2232",
+      "finding_ids": "P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical selected-slice observation only;not compilation,SDK contract,DTO aliasing,UI event order,all callers or operational acceptance."
+    }
+  ],
+  "errors": [],
+  "limit": "Supplied current-year branch,dirty flags,normal dialog returns,ref-boundary reader values and return/failure tokens only. Not CLR pointer equality,SDK defaults/aliasing,complete hydration,WPF gestures/event order,SQL,number reservation,stock/payment/save or deployed loss proof. Stop before CalcRows/BindingDGV/BindingControls;other linked/quotation/year/contract paths excluded."
+}
