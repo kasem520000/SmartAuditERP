@@ -29,6 +29,8 @@ namespace SmartAuditERP.Form_WPF
         public  int    _Type       = 1;
         public  int    _FormType   = 1;
         public  double _Stock      = 0.0;
+        // R-137 (P7-117): zero can be an explicitly approved inventory value.
+        private bool _hasApprovedStock;
 
         private bool   PrintHeader = true;
         private bool   PrintFooter = true;
@@ -314,7 +316,7 @@ namespace SmartAuditERP.Form_WPF
                 if (invNameDt.Rows.Count > 0)
                     inventoryName = invNameDt.Rows[0][0].ToString();
 
-                double stockCost = _Stock != 0.0
+                double stockCost = (_hasApprovedStock || _Stock != 0.0)
                     ? _Stock
                     : Inventory.InventoryCost(selectedBranch.HasValue ? selectedBranch.Value : MainClass.BranchNo, txtToDate.SelectedDate ?? DateTime.Today);
 
@@ -423,7 +425,10 @@ namespace SmartAuditERP.Form_WPF
                 safeGrd.ShowDialog();
 
                 if (safeGrd.ISDone)
+                {
                     _Stock = safeGrd._stockTotal;
+                    _hasApprovedStock = true;
+                }
             }
             catch (Exception ex)
             {

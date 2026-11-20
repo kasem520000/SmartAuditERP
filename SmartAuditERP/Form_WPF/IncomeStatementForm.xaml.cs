@@ -717,13 +717,22 @@ namespace SmartAuditERP.Form_WPF
 
                 var saveDialog = new Microsoft.Win32.SaveFileDialog
                 {
-                    Filter = "Excel Files|*.xlsx",
+                    // R-136 (P7-116): the existing writer produces CSV, not XLSX.
+                    Filter = "CSV Files (*.csv)|*.csv",
+                    DefaultExt = ".csv",
+                    AddExtension = true,
                     Title = "تصدير قائمة الدخل",
                     FileName = "قائمة_الدخل_" + DateTime.Now.ToString("yyyy-MM-dd")
                 };
 
                 if (saveDialog.ShowDialog() == true)
                 {
+                    if (!string.Equals(Path.GetExtension(saveDialog.FileName), ".csv", StringComparison.OrdinalIgnoreCase))
+                    {
+                        DXMessageBox.Show("يرجى اختيار ملف بامتداد CSV.", "تنبيه",
+                            MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
                     ExportToExcel(saveDialog.FileName);
                     DXMessageBox.Show("تم التصدير بنجاح!\n" + saveDialog.FileName, "نجح",
                         MessageBoxButton.OK, MessageBoxImage.Information);
@@ -752,8 +761,7 @@ namespace SmartAuditERP.Form_WPF
             // so an amount holding a thousands separator split into two columns while the other
             // four cells were quoted by hand. The shared writer quotes by rule and money leaves
             // as an invariant number.
-            var export = SpreadsheetExport.Begin(filePath.Replace(".xlsx", ".csv"),
-                                                 SpreadsheetExport.CsvDelimiter);
+            var export = SpreadsheetExport.Begin(filePath, SpreadsheetExport.CsvDelimiter);
             export.Header("المجموعة", "رقم الحساب", "اسم الحساب", "الرصيد", "ملاحظات");
 
             foreach (var row in _incomeRows)

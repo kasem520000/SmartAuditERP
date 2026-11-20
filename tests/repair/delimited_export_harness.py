@@ -608,9 +608,10 @@ check("I-frmInvsProfit the private quoter is gone while the screen's own number 
       profit.count("File.WriteAllLines") == 0)
 
 income = open("SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs", encoding="utf-8").read()
-check("I-IncomeStatementForm the balance leaves as invariant money and the path rename stays",
+check("I-IncomeStatementForm the balance leaves as invariant money to the selected CSV path",
       income.count("SpreadsheetExport.Money(row.Balance)") == 1 and
-      income.count('.Replace(".xlsx", ".csv")') >= 1 and income.count("StreamWriter") == 0)
+      income.count('SpreadsheetExport.Begin(filePath, SpreadsheetExport.CsvDelimiter)') == 1 and
+      income.count('.Replace(".xlsx", ".csv")') == 0 and income.count("StreamWriter") == 0)
 
 summaryq = open("SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs", encoding="utf-8").read()
 check("I-frmSummaryQ the save dialog, the opener and the saved-path message stay",

@@ -171,6 +171,7 @@
                                   Unchecked="chkAll_CheckedChanged"/>
                         <ComboBox x:Name="cmbUsers"
                                   Style="{StaticResource ModernComboBox}"
+                                  SelectionChanged="cmbUsers_SelectionChanged"
                                   IsEnabled="False"/>
                     </StackPanel>
                 </Border>

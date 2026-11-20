@@ -236,10 +236,12 @@ namespace SmartAuditERP.Form_WPF
                     double reSalesVal = GetSumVal(itemDbId, 2, 2, branchFilter, extraFilter, dateFrom, dateTo);
                     double posVal     = GetSumVal(itemDbId, 3, 1, branchFilter, extraFilter, dateFrom, dateTo);
                     double rePosVal   = GetSumVal(itemDbId, 3, 2, branchFilter, extraFilter, dateFrom, dateTo);
-                    double transToVal = GetSumVal(itemDbId, 7, 1, branchFilter, extraFilter, dateFrom, dateTo, isProcOnSub: true);
-                    double transFrVal = GetSumVal(itemDbId, 7, 2, branchFilter, extraFilter, dateFrom, dateTo, isProcOnSub: true);
-                    double safeAdjVal = GetSumVal(itemDbId, 8, 1, branchFilter, extraFilter, dateFrom, dateTo, isProcOnInv: true);
-                    double safeAdjRet = GetSumVal(itemDbId, 8, 2, branchFilter, extraFilter, dateFrom, dateTo, isProcOnInv: true);
+                    // R-135 (P7-056): transfer direction is on the invoice;
+                    // adjustment direction is on each adjustment detail line.
+                    double transToVal = GetSumVal(itemDbId, 8, 1, branchFilter, extraFilter, dateFrom, dateTo, isProcOnInv: true);
+                    double transFrVal = GetSumVal(itemDbId, 8, 2, branchFilter, extraFilter, dateFrom, dateTo, isProcOnInv: true);
+                    double safeAdjVal = GetSumVal(itemDbId, 7, 1, branchFilter, extraFilter, dateFrom, dateTo, isProcOnSub: true);
+                    double safeAdjRet = GetSumVal(itemDbId, 7, 2, branchFilter, extraFilter, dateFrom, dateTo, isProcOnSub: true);
                     double entryInv   = GetSumVal(itemDbId, 4, -1, branchFilter, extraFilter, dateFrom, dateTo);
                     double outInv     = GetSumVal(itemDbId, 5, -1, branchFilter, extraFilter, dateFrom, dateTo);
 
