@@ -1,0 +1,60 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "entry": "6eedc0640e3432c14ca0875b7f1c7806ea1e3f64",
+  "authority": [
+    "PHASE-07-REMAINING-07B26.md",
+    "evidence/split-register-07B26.csv",
+    "evidence/residual-disposition-07B26.csv"
+  ],
+  "selected_upstream_split": "SP7B26-01",
+  "selected_capability": "invoice search fixed source process versus selected filter, caller eligibility retention across dates/reset, requested purchase type versus unconditional20 and selected consumer reader",
+  "input": "supplied successful synthetic rows with distinct GlobalIDs, integer process/type/status/branch, explicit handler actions and ordinal-day predicate windows; no WPF scheduling, SQL/DataView/parser or external DTO defaults assumed",
+  "source": "locally whole698C#/561XAML search plus selected transfer search/receive and purchase caller/consumer/XAML and reader3219-3290 identity mapping",
+  "output": "predicate-subset source/view rows and selected GlobalID/consumer source type-status, not actual SQL/DataView/WPF/commit/stock/save or business status/calendar/permission acceptance",
+  "exit": "every reviewed capability evidence/limits/owner/redacted input/impact/next step/two not-executed plans;adjudication and all14 residual/3split ancestries/input prefixes/routes preserved with current documentary checks",
+  "exclusions": [
+    "not all callers/fields/DTOs/477bodies/455FE or agreed capability census",
+    "period/postpone/return/074-family/dirty/failure leads not additional findings or acceptance",
+    "GlobalID retained, not061 local-number loss;not073 unwired dates,120 empty options,045 printed metadata,131 wrong table or009 contract loader",
+    "no SQL/DataView/.NET/WPF/provider/SDK/parser/calendar/events/ACL/stock/save/financial/production execution or saved losses",
+    "independent repairs not merged or presumed started/synchronized;no protected artifact/date/stdout rewrite"
+  ],
+  "bookkeeping": {
+    "selected_paths": 7,
+    "prior_union": 425,
+    "overlap": 6,
+    "new": 1,
+    "union": 426,
+    "complement": 401,
+    "complement_kinds": {
+      "source": 336,
+      "generated-artifact": 61,
+      "project-or-resource": 4
+    }
+  },
+  "new_paths": [
+    "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml"
+  ],
+  "bounded_read_slice_count": 11,
+  "whole_local_search_files": 2,
+  "whole_local_search_lines": {
+    "code_behind": 698,
+    "xaml": 561
+  },
+  "historical_metadata_screen_count": 326,
+  "historical_comparison_depth": "all326-title-certainty-summaries-plus-path-filtered-metadata-and-selected-nearest-doc-bodies-source-chains-not-all-historical-bodies",
+  "historical_body_review_claim": false,
+  "selected_nearest_historical_doc_sections": [
+    "PHASE-07B1.md:P7-045",
+    "PHASE-07B2.md:P7-061",
+    "PHASE-07B3.md:P7-073/P7-074",
+    "PHASE-07B14.md:P7-120",
+    "PHASE-07B19.md:P7-131/P7-132",
+    "PHASE-04.md:P4-019",
+    "PHASE-06.md:P6-009"
+  ],
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "counts_are_completion_percent_or_sessions": false,
+  "historical_summary_review_limit": "All326 title/severity/certainty summaries and selected-path evidence metadata were inspected by finalization; only explicitly named nearest historical doc sections/source chains were body-reviewed. No claim of all326 bodies or review completed before the entry freeze."
+}

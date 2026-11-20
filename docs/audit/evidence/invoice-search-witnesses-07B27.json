@@ -1,0 +1,907 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "source_head": "10ba215152f722c8808aea0bb672c1d1d4d9d711",
+  "entry_checkout": "6eedc0640e3432c14ca0875b7f1c7806ea1e3f64",
+  "application_code_imported_or_executed": false,
+  "dotnet_wpf_sql_or_DataView_executed": false,
+  "application_remediation_performed": false,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "scanner_or_printer_tests_executed": 0,
+  "B_R4k_bounded_not_whole7B_closure": true,
+  "unresolved_external_contracts_and_explicit_splits_retained": true,
+  "selected_paths_strict_utf8_decode": true,
+  "all_callers_or_external_DTOs_body_reviewed": false,
+  "actual_WPF_event_order_or_count_claimed": false,
+  "financial_or_status_policy_invented": false,
+  "external_DTO_constructor_defaults_assumed": false,
+  "database_commit_or_saved_loss_claimed": false,
+  "prior045_061_073_074_120_132_not_recounted_or_extended": true,
+  "retained_additive_B10_arithmetic_erratum": {
+    "local_cost": 10,
+    "reference_cost": 120,
+    "equality1_control": 10,
+    "protected_G138_not_rewritten": true
+  },
+  "illustration_count": 20,
+  "lexical_check_count": 20,
+  "illustrations": [
+    {
+      "id": "ALG7B27-01",
+      "finding_ids": "P7-155",
+      "title": "Changing selected process2 to1 cannot recover source rows",
+      "result": [],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:73-86;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:140-143;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:336-345;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:427-481;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:510-519;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:229-235;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1642-1657;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml:1469-1473",
+      "limit": "Explicit successful supplied query and handler call, not WPF event order or a real empty database."
+    },
+    {
+      "id": "ALG7B27-02",
+      "finding_ids": "P7-155",
+      "title": "All selection still contains only server process2",
+      "result": [
+        {
+          "global_id": "T_SEND",
+          "kind": 8,
+          "proc": 2,
+          "status": 1,
+          "day": 2,
+          "branch": 1,
+          "deleted": false,
+          "local_id": 7,
+          "pay": 1
+        }
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:73-86;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:140-143;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:336-345;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:427-481;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:510-519;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:229-235;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1642-1657;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml:1469-1473",
+      "limit": "The All option cannot broaden the already restricted snapshot; no UI/SQL run."
+    },
+    {
+      "id": "ALG7B27-03",
+      "finding_ids": "P7-155",
+      "title": "Selecting the original process2 is a positive control",
+      "result": [
+        {
+          "global_id": "T_SEND",
+          "kind": 8,
+          "proc": 2,
+          "status": 1,
+          "day": 2,
+          "branch": 1,
+          "deleted": false,
+          "local_id": 7,
+          "pay": 1
+        }
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:73-86;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:140-143;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:336-345;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:427-481;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:510-519;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:229-235;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1642-1657;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml:1469-1473",
+      "limit": "Agreement for the original criterion does not validate switching criteria."
+    },
+    {
+      "id": "ALG7B27-04",
+      "finding_ids": "P7-155",
+      "title": "Fresh server process1 has the records absent from old snapshot",
+      "result": [
+        {
+          "global_id": "T_OK",
+          "kind": 8,
+          "proc": 1,
+          "status": 1,
+          "day": 2,
+          "branch": 1,
+          "deleted": false,
+          "local_id": 7,
+          "pay": 1
+        },
+        {
+          "global_id": "T_NOT_ELIGIBLE",
+          "kind": 8,
+          "proc": 1,
+          "status": 0,
+          "day": 2,
+          "branch": 1,
+          "deleted": false,
+          "local_id": 7,
+          "pay": 1
+        },
+        {
+          "global_id": "T_OTHER_DAY",
+          "kind": 8,
+          "proc": 1,
+          "status": 1,
+          "day": 7,
+          "branch": 1,
+          "deleted": false,
+          "local_id": 7,
+          "pay": 1
+        }
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:73-86;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:140-143;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:336-345;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:427-481;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:510-519;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:229-235;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1642-1657;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml:1469-1473",
+      "limit": "Counterfactual predicate control, not an application fix or executed reload."
+    },
+    {
+      "id": "ALG7B27-05",
+      "finding_ids": "P7-156",
+      "title": "Initial caller eligibility excludes status0",
+      "result": [
+        {
+          "global_id": "T_OK",
+          "kind": 8,
+          "proc": 1,
+          "status": 1,
+          "day": 2,
+          "branch": 1,
+          "deleted": false,
+          "local_id": 7,
+          "pay": 1
+        },
+        {
+          "global_id": "T_OTHER_DAY",
+          "kind": 8,
+          "proc": 1,
+          "status": 1,
+          "day": 7,
+          "branch": 1,
+          "deleted": false,
+          "local_id": 7,
+          "pay": 1
+        }
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1659-1685;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml:492-497;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:189-211;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:236-254;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:336-345;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:402-453",
+      "limit": "Status meanings remain external; the caller explicitly requires the literal value1."
+    },
+    {
+      "id": "ALG7B27-06",
+      "finding_ids": "P7-156",
+      "title": "from-date replaces rather than combines caller predicate",
+      "result": {
+        "cond": "dates",
+        "rows": [
+          {
+            "global_id": "T_OK",
+            "kind": 8,
+            "proc": 1,
+            "status": 1,
+            "day": 2,
+            "branch": 1,
+            "deleted": false,
+            "local_id": 7,
+            "pay": 1
+          },
+          {
+            "global_id": "T_NOT_ELIGIBLE",
+            "kind": 8,
+            "proc": 1,
+            "status": 0,
+            "day": 2,
+            "branch": 1,
+            "deleted": false,
+            "local_id": 7,
+            "pay": 1
+          }
+        ]
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1659-1685;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml:492-497;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:189-211;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:236-254;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:336-345;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:402-453",
+      "limit": "Same156 root for both date handlers; ordinal-day fixture, not DateTime/culture/provider semantics."
+    },
+    {
+      "id": "ALG7B27-07",
+      "finding_ids": "P7-156",
+      "title": "to-date replaces rather than combines caller predicate",
+      "result": {
+        "cond": "dates",
+        "rows": [
+          {
+            "global_id": "T_OK",
+            "kind": 8,
+            "proc": 1,
+            "status": 1,
+            "day": 2,
+            "branch": 1,
+            "deleted": false,
+            "local_id": 7,
+            "pay": 1
+          },
+          {
+            "global_id": "T_NOT_ELIGIBLE",
+            "kind": 8,
+            "proc": 1,
+            "status": 0,
+            "day": 2,
+            "branch": 1,
+            "deleted": false,
+            "local_id": 7,
+            "pay": 1
+          }
+        ]
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1659-1685;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml:492-497;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:189-211;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:236-254;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:336-345;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:402-453",
+      "limit": "Same156 root for both date handlers; ordinal-day fixture, not DateTime/culture/provider semantics."
+    },
+    {
+      "id": "ALG7B27-08",
+      "finding_ids": "P7-156",
+      "title": "Clear removes the caller condition and reloads",
+      "result": {
+        "cond": "empty",
+        "rows": [
+          {
+            "global_id": "T_OK",
+            "kind": 8,
+            "proc": 1,
+            "status": 1,
+            "day": 2,
+            "branch": 1,
+            "deleted": false,
+            "local_id": 7,
+            "pay": 1
+          },
+          {
+            "global_id": "T_NOT_ELIGIBLE",
+            "kind": 8,
+            "proc": 1,
+            "status": 0,
+            "day": 2,
+            "branch": 1,
+            "deleted": false,
+            "local_id": 7,
+            "pay": 1
+          },
+          {
+            "global_id": "T_OTHER_DAY",
+            "kind": 8,
+            "proc": 1,
+            "status": 1,
+            "day": 7,
+            "branch": 1,
+            "deleted": false,
+            "local_id": 7,
+            "pay": 1
+          }
+        ]
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1659-1685;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml:492-497;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:189-211;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:236-254;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:336-345;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:402-453",
+      "limit": "Reset of optional fields is not authorization to remove mandatory eligibility."
+    },
+    {
+      "id": "ALG7B27-09",
+      "finding_ids": "P7-156",
+      "title": "Branch and deletion remain guarded after Cond replacement",
+      "result": [
+        {
+          "global_id": "T_OK",
+          "kind": 8,
+          "proc": 1,
+          "status": 1,
+          "day": 2,
+          "branch": 1,
+          "deleted": false,
+          "local_id": 7,
+          "pay": 1
+        },
+        {
+          "global_id": "T_NOT_ELIGIBLE",
+          "kind": 8,
+          "proc": 1,
+          "status": 0,
+          "day": 2,
+          "branch": 1,
+          "deleted": false,
+          "local_id": 7,
+          "pay": 1
+        }
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1659-1685;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml:492-497;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:189-211;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:236-254;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:336-345;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:402-453",
+      "limit": "Positive local guards, not a deployed ACL, schema or concurrency acceptance claim."
+    },
+    {
+      "id": "ALG7B27-10",
+      "finding_ids": "P7-156",
+      "title": "The new date condition actually filters a distinct day",
+      "result": [
+        {
+          "global_id": "T_OK",
+          "kind": 8,
+          "proc": 1,
+          "status": 1,
+          "day": 2,
+          "branch": 1,
+          "deleted": false,
+          "local_id": 7,
+          "pay": 1
+        },
+        {
+          "global_id": "T_NOT_ELIGIBLE",
+          "kind": 8,
+          "proc": 1,
+          "status": 0,
+          "day": 2,
+          "branch": 1,
+          "deleted": false,
+          "local_id": 7,
+          "pay": 1
+        }
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1659-1685;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml:492-497;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:189-211;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:236-254;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:336-345;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:402-453",
+      "limit": "Only a bounded predicate contrast, not an end-of-day/timezone/.NET parser oracle."
+    },
+    {
+      "id": "ALG7B27-11",
+      "finding_ids": "P7-157",
+      "title": "A purchase type1 request also admits type20",
+      "result": [
+        {
+          "global_id": "P_REQUESTED",
+          "kind": 1,
+          "proc": 1,
+          "status": 1,
+          "day": 2,
+          "branch": 1,
+          "deleted": false,
+          "local_id": 7,
+          "pay": 1
+        },
+        {
+          "global_id": "A_TYPE20",
+          "kind": 20,
+          "proc": 1,
+          "status": 1,
+          "day": 2,
+          "branch": 1,
+          "deleted": false,
+          "local_id": 7,
+          "pay": 1
+        }
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:348-408;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:570-596;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:674-690;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:65-84;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1329-1333;SmartAuditERP/Class/InvoiceOper.cs:3219-3290",
+      "limit": "Supplied distinct GlobalIDs and successful source rows; no deployed access or saved mutation observed."
+    },
+    {
+      "id": "ALG7B27-12",
+      "finding_ids": "P7-157",
+      "title": "Selection retains GlobalID but does not carry an allowed type",
+      "result": {
+        "ISDone": true,
+        "InvGlobalID": "A_TYPE20",
+        "ProcType": 1,
+        "PayType": 1
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:348-408;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:570-596;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:674-690;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:65-84;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1329-1333;SmartAuditERP/Class/InvoiceOper.cs:3219-3290",
+      "limit": "Not061 local-number identity loss; no requirement inferred for every DTO or all callers."
+    },
+    {
+      "id": "ALG7B27-13",
+      "finding_ids": "P7-157",
+      "title": "Purchase consumer GID+branch lookup maps the type20 source",
+      "result": {
+        "supplied_where_fields": [
+          "branch",
+          "InvGlobalID"
+        ],
+        "matches": [
+          {
+            "global_id": "A_TYPE20",
+            "kind": 20,
+            "proc": 1,
+            "status": 1,
+            "day": 2,
+            "branch": 1,
+            "deleted": false,
+            "local_id": 7,
+            "pay": 1
+          }
+        ],
+        "reader_mapped_type": 20,
+        "source_application_or_SQL_executed": false,
+        "no_deployed_schema_uniqueness_or_save_success_claim": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:348-408;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:570-596;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:674-690;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:65-84;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1329-1333;SmartAuditERP/Class/InvoiceOper.cs:3219-3290",
+      "limit": "Only the selected reader/type boundary, not a completed Navigate render, invoice save or loss."
+    },
+    {
+      "id": "ALG7B27-14",
+      "finding_ids": "P7-157",
+      "title": "Requested type1 record remains a positive control",
+      "result": {
+        "supplied_where_fields": [
+          "branch",
+          "InvGlobalID"
+        ],
+        "matches": [
+          {
+            "global_id": "P_REQUESTED",
+            "kind": 1,
+            "proc": 1,
+            "status": 1,
+            "day": 2,
+            "branch": 1,
+            "deleted": false,
+            "local_id": 7,
+            "pay": 1
+          }
+        ],
+        "reader_mapped_type": 1,
+        "source_application_or_SQL_executed": false,
+        "no_deployed_schema_uniqueness_or_save_success_claim": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:348-408;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:570-596;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:674-690;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:65-84;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1329-1333;SmartAuditERP/Class/InvoiceOper.cs:3219-3290",
+      "limit": "Ordinary success does not justify unconditional type20 for purchase/transfer."
+    },
+    {
+      "id": "ALG7B27-15",
+      "finding_ids": "P7-157",
+      "title": "Special type23 branch is exact and does not append20",
+      "result": [
+        {
+          "global_id": "C_TYPE23",
+          "kind": 23,
+          "proc": 1,
+          "status": 1,
+          "day": 2,
+          "branch": 1,
+          "deleted": false,
+          "local_id": 7,
+          "pay": 1
+        }
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:348-408;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:570-596;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:674-690;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:65-84;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1329-1333;SmartAuditERP/Class/InvoiceOper.cs:3219-3290",
+      "limit": "The separate InvContratct table is a text contrast, not its schema acceptance."
+    },
+    {
+      "id": "ALG7B27-16",
+      "finding_ids": "P7-157",
+      "title": "Default not-done result is not consumed",
+      "result": {
+        "supplied_where_fields": [
+          "branch",
+          "InvGlobalID"
+        ],
+        "matches": [],
+        "reader_mapped_type": null,
+        "source_application_or_SQL_executed": false,
+        "no_deployed_schema_uniqueness_or_save_success_claim": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:348-408;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:570-596;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:674-690;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:65-84;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1329-1333;SmartAuditERP/Class/InvoiceOper.cs:3219-3290",
+      "limit": "No all-modal-path certification, actual Close/Hide behavior not executed."
+    },
+    {
+      "id": "ALG7B27-17",
+      "finding_ids": "P7-157",
+      "title": "Consumer branch mismatch is a positive nonmatch control",
+      "result": {
+        "supplied_where_fields": [
+          "branch",
+          "InvGlobalID"
+        ],
+        "matches": [],
+        "reader_mapped_type": null,
+        "source_application_or_SQL_executed": false,
+        "no_deployed_schema_uniqueness_or_save_success_claim": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:348-408;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:570-596;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:674-690;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:65-84;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1329-1333;SmartAuditERP/Class/InvoiceOper.cs:3219-3290",
+      "limit": "Does not prove deployed authorization or type/eligibility revalidation."
+    },
+    {
+      "id": "ALG7B27-18",
+      "finding_ids": "P7-157",
+      "title": "Equal local numbers do not confuse the retained GlobalID lookup",
+      "result": {
+        "supplied_where_fields": [
+          "branch",
+          "InvGlobalID"
+        ],
+        "matches": [
+          {
+            "global_id": "P_REQUESTED",
+            "kind": 1,
+            "proc": 1,
+            "status": 1,
+            "day": 2,
+            "branch": 1,
+            "deleted": false,
+            "local_id": 7,
+            "pay": 1
+          }
+        ],
+        "reader_mapped_type": 1,
+        "source_application_or_SQL_executed": false,
+        "no_deployed_schema_uniqueness_or_save_success_claim": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:348-408;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:570-596;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:674-690;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:65-84;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1329-1333;SmartAuditERP/Class/InvoiceOper.cs:3219-3290",
+      "limit": "A narrowing control distinguishing this cause from061; uniqueness is supplied, not measured."
+    },
+    {
+      "id": "ALG7B27-19",
+      "finding_ids": "P7-156",
+      "title": "Receive caller consumes selected GID without restoring status predicate",
+      "result": {
+        "supplied_where_fields": [
+          "branch",
+          "InvGlobalID"
+        ],
+        "matches": [
+          {
+            "global_id": "T_NOT_ELIGIBLE",
+            "kind": 8,
+            "proc": 1,
+            "status": 0,
+            "day": 2,
+            "branch": 1,
+            "deleted": false,
+            "local_id": 7,
+            "pay": 1
+          }
+        ],
+        "reader_mapped_type": 8,
+        "source_application_or_SQL_executed": false,
+        "no_deployed_schema_uniqueness_or_save_success_claim": true
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1659-1685;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml:492-497;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:189-211;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:236-254;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:336-345;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:402-453",
+      "limit": "No assertion of actual stock receipt or final save; literal caller constraint alone is established."
+    },
+    {
+      "id": "ALG7B27-20",
+      "finding_ids": "P7-157",
+      "title": "Request20 matches its record once despite OR20",
+      "result": [
+        {
+          "global_id": "A_TYPE20",
+          "kind": 20,
+          "proc": 1,
+          "status": 1,
+          "day": 2,
+          "branch": 1,
+          "deleted": false,
+          "local_id": 7,
+          "pay": 1
+        }
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:348-408;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:570-596;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:674-690;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:65-84;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1329-1333;SmartAuditERP/Class/InvoiceOper.cs:3219-3290",
+      "limit": "Logical OR is not UNION duplication; type20 may be intentional in specifically authorized caller contracts."
+    }
+  ],
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B27-01",
+      "finding_ids": "H7B27-03",
+      "title": "Local search XAML wires Loaded and key/selection handlers",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:1-14;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:398-425",
+      "limit": "Literal wiring only, not event sequence, focus, rendering or7C lifecycle review."
+    },
+    {
+      "id": "ST7B27-02",
+      "finding_ids": "P7-155",
+      "title": "SQL appends fixed public ProcType",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:73-86;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:140-143;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:336-345;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:427-481;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:510-519;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:229-235;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1642-1657;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml:1469-1473",
+      "limit": "Query text and supplied integers only, not SQL execution."
+    },
+    {
+      "id": "ST7B27-03",
+      "finding_ids": "P7-155",
+      "title": "Process change only applies an in-memory filter",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:73-86;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:140-143;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:336-345;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:427-481;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:510-519;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:229-235;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1642-1657;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml:1469-1473",
+      "limit": "A selected field is not the fixed public field; does not depend on invented scheduler behavior."
+    },
+    {
+      "id": "ST7B27-04",
+      "finding_ids": "P7-155",
+      "title": "Transfer options include All and two different processes",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:73-86;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:140-143;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:336-345;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:427-481;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:510-519;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:229-235;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1642-1657;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml:1469-1473",
+      "limit": "Options exist locally, unlike unpopulated operation list120; support of every enum is not assumed."
+    },
+    {
+      "id": "ST7B27-05",
+      "finding_ids": "P7-155",
+      "title": "Selected procIndex filters only the loaded table",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:73-86;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:140-143;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:336-345;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:427-481;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:510-519;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:229-235;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1642-1657;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml:1469-1473",
+      "limit": "No DataView expression/parser execution; fixture models the integer predicate only."
+    },
+    {
+      "id": "ST7B27-06",
+      "finding_ids": "P7-155",
+      "title": "Transfer search caller starts process2 without disabling selector",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:73-86;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:140-143;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:336-345;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:427-481;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:510-519;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:229-235;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1642-1657;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml:1469-1473",
+      "limit": "Selected local caller, not all callers or an assertion about external permissions/settings."
+    },
+    {
+      "id": "ST7B27-07",
+      "finding_ids": "P7-156",
+      "title": "Receive caller supplies mandatory status1 before modal",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1659-1685;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml:492-497;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:189-211;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:236-254;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:336-345;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:402-453",
+      "limit": "No meaning of numeric status or deployed ACL invented."
+    },
+    {
+      "id": "ST7B27-08",
+      "finding_ids": "P7-156",
+      "title": "From-date assigns date Cond and clears/reloads table",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1659-1685;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml:492-497;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:189-211;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:236-254;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:336-345;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:402-453",
+      "limit": "Both handlers are manifestations of156, not two findings or actual WPF event counts."
+    },
+    {
+      "id": "ST7B27-09",
+      "finding_ids": "P7-156",
+      "title": "To-date assigns date Cond and clears/reloads table",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1659-1685;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml:492-497;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:189-211;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:236-254;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:336-345;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:402-453",
+      "limit": "Both handlers are manifestations of156, not two findings or actual WPF event counts."
+    },
+    {
+      "id": "ST7B27-10",
+      "finding_ids": "P7-156",
+      "title": "Clear empties Cond before explicit reload",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1659-1685;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml:492-497;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:189-211;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:236-254;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:336-345;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:402-453",
+      "limit": "Explicit handler sequence; external caller status predicate is not retained in another local field."
+    },
+    {
+      "id": "ST7B27-11",
+      "finding_ids": "P7-156",
+      "title": "Builder copies Cond and does not restore InvoiceStatus",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1659-1685;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml:492-497;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:189-211;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:236-254;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:336-345;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:402-453",
+      "limit": "Selected query text, not a global statement about save/database constraints."
+    },
+    {
+      "id": "ST7B27-12",
+      "finding_ids": "P7-157",
+      "title": "Non23 SQL unconditionally adds type20 while23 is exact",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:348-408;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:570-596;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:674-690;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:65-84;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1329-1333;SmartAuditERP/Class/InvoiceOper.cs:3219-3290",
+      "limit": "Widening adjudicated only against selected purchase/transfer caller contracts, not all POS/Android unions."
+    },
+    {
+      "id": "ST7B27-13",
+      "finding_ids": "P7-157",
+      "title": "Local row projection omits source type branch and eligibility status",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:348-408;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:570-596;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:674-690;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:65-84;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1329-1333;SmartAuditERP/Class/InvoiceOper.cs:3219-3290",
+      "limit": "PaymentStatus is not InvoiceStatus; external DTO defaults are irrelevant to this local class."
+    },
+    {
+      "id": "ST7B27-14",
+      "finding_ids": "P7-156;P7-157",
+      "title": "Ordinary selection returns GID proc pay without eligibility test",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:94-109;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:286-303",
+      "limit": "Return-button special check and modal lifetime are separate contracts, not a claim every route is safe."
+    },
+    {
+      "id": "ST7B27-15",
+      "finding_ids": "P7-157",
+      "title": "Purchase starts type1 and search consumes only GID+branch",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:348-408;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:570-596;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:674-690;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:65-84;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1329-1333;SmartAuditERP/Class/InvoiceOper.cs:3219-3290",
+      "limit": "Positive caller scope; no financial save or permission bypass execution."
+    },
+    {
+      "id": "ST7B27-16",
+      "finding_ids": "P7-157",
+      "title": "Purchase Navigate passes SQL to reader while first navigation explicitly restricts type",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:348-408;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:570-596;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:674-690;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:65-84;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1329-1333;SmartAuditERP/Class/InvoiceOper.cs:3219-3290",
+      "limit": "Reader handoff boundary, not proof of the whole loaded form or a subsequent write."
+    },
+    {
+      "id": "ST7B27-17",
+      "finding_ids": "P7-156",
+      "title": "Receive return path does not re-add mandatory status",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1659-1685;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml:492-497;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:189-211;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:236-254;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:336-345;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:402-453",
+      "limit": "Does not certify atomic receipt, stock or save; those barriers remain open."
+    },
+    {
+      "id": "ST7B27-18",
+      "finding_ids": "P7-157",
+      "title": "Reader executes supplied SQL and maps actual source type and status",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:348-408;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:570-596;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:674-690;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:65-84;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1329-1333;SmartAuditERP/Class/InvoiceOper.cs:3219-3290",
+      "limit": "Text observation only: no query, SDK, SQL reader or invoice constructor executed."
+    },
+    {
+      "id": "ST7B27-19",
+      "finding_ids": "H7B27-03",
+      "title": "Optional period controls and reset are wired in XAML",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:238-270;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:345-353;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:223-229",
+      "limit": "All-period toggle, postponed filtering and event reentrancy remain explicit leads, not extra roots."
+    },
+    {
+      "id": "ST7B27-20",
+      "finding_ids": "H7B27-04",
+      "title": "Branch deletion and exact23 remain positive local contrasts",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:336-408",
+      "limit": "Branch exception14 and table23 need caller/schema policy, not automatic findings or ACL acceptance."
+    }
+  ],
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "start": 1,
+      "end": 698,
+      "encoding": "strict-utf-8",
+      "source_sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "selected_text_utf8_sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml",
+      "start": 1,
+      "end": 561,
+      "encoding": "strict-utf-8",
+      "source_sha256": "ee3ccdf5945caacbe667945b01b67103649a095fe160967c24e465624a353b31",
+      "selected_text_utf8_sha256": "ee3ccdf5945caacbe667945b01b67103649a095fe160967c24e465624a353b31",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "start": 402,
+      "end": 453,
+      "encoding": "strict-utf-8",
+      "source_sha256": "87c814a3194cad2f8b896665a9a542373fa63485318bb373f08ab13e6bdbf234",
+      "selected_text_utf8_sha256": "3c376b094c5f928a57aec68f61862e3cb3f226243046ae743d3e4120b5ab7223",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "start": 1642,
+      "end": 1686,
+      "encoding": "strict-utf-8",
+      "source_sha256": "87c814a3194cad2f8b896665a9a542373fa63485318bb373f08ab13e6bdbf234",
+      "selected_text_utf8_sha256": "f8d40bff337546051624b6a8e05b6460b9ca173270e3fe2d38d4335c5fe5ffd7",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml",
+      "start": 485,
+      "end": 505,
+      "encoding": "strict-utf-8",
+      "source_sha256": "8f3fe15b35bf2919f12d790fa4ec060b0dafc20e68d1921e1d33ac8265e164da",
+      "selected_text_utf8_sha256": "8773c80beb06a478a5d74c0af180b6d6b9fd1493694a62a1b1bb016e188beb6e",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml",
+      "start": 1465,
+      "end": 1475,
+      "encoding": "strict-utf-8",
+      "source_sha256": "8f3fe15b35bf2919f12d790fa4ec060b0dafc20e68d1921e1d33ac8265e164da",
+      "selected_text_utf8_sha256": "ce84072ffda77bb9686103febb580f7da6ced8b01df642f40db89131265fd291",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 65,
+      "end": 84,
+      "encoding": "strict-utf-8",
+      "source_sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "selected_text_utf8_sha256": "f301601d12a013730ab1c1da43f6a5439d03c30bb3482aa1b0c01b69662ae923",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 481,
+      "end": 548,
+      "encoding": "strict-utf-8",
+      "source_sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "selected_text_utf8_sha256": "eece60748d2bd437ebc543005986b81ba969b7a81b45c2d7a08b8f36d6571d3a",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 2641,
+      "end": 2662,
+      "encoding": "strict-utf-8",
+      "source_sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "selected_text_utf8_sha256": "9421ad1d749088e01b3a138d0de7111791d82b74d989b97eb604c2b2fd746c63",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml",
+      "start": 1325,
+      "end": 1335,
+      "encoding": "strict-utf-8",
+      "source_sha256": "0c519c74b0fa74213ffb19f9de07ee54b52ece09b00597c6a1fe48e369e15c11",
+      "selected_text_utf8_sha256": "773b65efa1e22c0e0f0d2a625128973a48b345a840a055e15414e5ff5756e0d2",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 3219,
+      "end": 3290,
+      "encoding": "strict-utf-8",
+      "source_sha256": "0bab36016f53ecd18360833d1fba980290702a52a98871fb397be9e813810d91",
+      "selected_text_utf8_sha256": "9cbec78442cf9e1e5027c1157b6f4ff222b8a3b0bd1144809dfeb1525d13e3bd",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    }
+  ],
+  "selected_source_paths": 7,
+  "whole_local_search_files_selected": 2,
+  "source_read_slice_count": 11,
+  "unadjudicated_source_leads_not_additional_findings": [
+    "all-period-toggle/state and postponed-query/client-filter asymmetry",
+    "DataView literal apostrophe same074-family without extension",
+    "return-button versus ordinary-selection policy",
+    "remaining caller allow-sets, Dirty/Cancel/failure and external WPF settings"
+  ],
+  "limit": "Locally whole698C#/561XAML search plus11 selected reads7paths is not all callers/DTOs/477bodies/census/455FE.155 fixed serverProc snapshot versus selected clientProc;156 caller status1 erased by date/reset;157 unconditional20 broadens purchase/transfer allowed types, GlobalID retained and consumer type mapped. Supplied rows and explicit actions only, no SQL/DataView/WPF/.NET/provider/SDK/event/calendar/culture/ACL/stock/save/financial/production acceptance, remediations or saved losses. No extra period/quote/return-button roots; prior045/061/073/074/120/132 and all old metadata preserved.7B/7 partial,R4l/B28 proposed,7C unstarted,8 unauthorized;independent repairs not presumed started/synchronized.",
+  "errors": []
+}
