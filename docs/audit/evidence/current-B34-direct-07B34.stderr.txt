@@ -1,0 +1,8 @@
+............................................../home/user/SmartAuditERP/docs/audit/tools/test_messaging_request_audit_validator.py:352: ResourceWarning: unclosed file <_io.TextIOWrapper name='/home/user/SmartAuditERP/docs/audit/findings.csv' mode='r' encoding='UTF-8'>
+  rows=list(csv.DictReader((A/'findings.csv').open(newline='')));self.assertEqual(len(rows),335);self.assertEqual(rows[-1]['id'],'P7-163');self.assertNotIn('P7-164',{r['id'] for r in rows})
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+......
+----------------------------------------------------------------------
+Ran 52 tests in 1.312s
+
+OK

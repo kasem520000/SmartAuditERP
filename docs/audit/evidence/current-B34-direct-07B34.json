@@ -1,0 +1,31 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "raw_environment_clock_started_utc": "2026-11-20T21:09:08.398566+00:00",
+  "raw_environment_clock_ended_utc": "2026-11-20T21:09:10.076048+00:00",
+  "elapsed_seconds": 1.677,
+  "command": [
+    "/usr/bin/python3",
+    "-B",
+    "docs/audit/tools/test_messaging_request_audit_validator.py"
+  ],
+  "process_exit_code": 0,
+  "stdout": {
+    "path": "evidence/current-B34-direct-07B34.stdout.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "evidence/current-B34-direct-07B34.stderr.txt",
+    "bytes": 638,
+    "sha256": "9ae4b52b1e7632190ae47f70d136530b0b26346eaf1a0ed25656da60fc1df934"
+  },
+  "tests_reported": 52,
+  "expected_tests": 52,
+  "all_input_artifacts_unchanged": true,
+  "input_artifact_count": 1061,
+  "standalone52_not_integrated1190_or_official_capture": true,
+  "historical_archive_already_captured_and_single_helper_pin_proven": true,
+  "no_skips": true,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0
+}

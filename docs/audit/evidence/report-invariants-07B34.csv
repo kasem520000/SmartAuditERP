@@ -1,0 +1,17 @@
+id,feature_ids,required_invariant,finding_ids,evidence,acceptance_ids,runtime_status
+INV7B34-01,FE7B34-01,يملك كل أمر مشاركة محاولة مستقلة قابلة للرصد ولا تتداخل آثارها على جلسة واحدة.,P6-033,SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3124-3141;SmartAuditERP/Form_WPF/frmInvSale.xaml:1187-1191,P7B34T-01;P7B34T-02,not-executed
+INV7B34-02,FE7B34-02,تثبت لقطة مستند ومستلم ومرفق خاصة بالطلب مع شروط رجوع موثقة قبل إتاحتها للإرسال.,P6-033,SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3132-3187,P7B34T-03;P7B34T-04,not-executed
+INV7B34-03,FE7B34-03,تتحقق أهلية الجلسة من هوية حساب وسياق مفوضين،لا قابلية قراءة WindowHandles وحدها.,P6-031,SmartAuditERP/Class/Session.cs:9-21;SmartAuditERP/Class/WhatsAppSender.cs:230-245,P7B34T-05;P7B34T-06,not-executed
+INV7B34-04,FE7B34-04,تظل محادثة الاستمرار مرتبطة بهدف الطلب أو يرفض الاستمرار قبل أي أثر إذا تبدل الهدف.,P6-031;P6-033,SmartAuditERP/Class/WhatsAppSender.cs:107-144,P7B34T-07;P7B34T-08,not-executed
+INV7B34-05,FE7B34-05,تثبت ملكية عنصر caption عند الالتقاط،ويعالج stale/تبدل السياق دون متابعة نجاح أو إعادة عمياء.,P6-033,SmartAuditERP/Class/WhatsAppSender.cs:145-155;SmartAuditERP/Class/WhatsAppSender.cs:219-228,P7B34T-09;P7B34T-10,not-executed
+INV7B34-06,FE7B34-06,يتحقق طلب الإرفاق من request/session/target قبل اختيار زر عام أو طلب أثر مرئي.,P6-033,SmartAuditERP/Class/WhatsAppSender.cs:156-189,P7B34T-11;P7B34T-12,not-executed
+INV7B34-07,FE7B34-07,يملك كل طلب مرفقاً immutable بهوية وبصمة،لا مساراً مشتركاً يعاد توليده قبل الاستهلاك.,P6-033,SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3166-3187,P7B34T-13;P7B34T-14,not-executed
+INV7B34-08,FE7B34-08,يربط handoff المرفق بهوية محتوى مثبتة عند الاستهلاك وبهدف طلبه دون استنتاجها من وجود المسار.,P6-033,SmartAuditERP/Class/WhatsAppSender.cs:181-189,P7B34T-15;P7B34T-16,not-executed
+INV7B34-09,FE7B34-09,تفرق نتيجة المحاولة بين طلب إجراء محلي وقبول المزود والتسليم،مع correlation قابل للتتبع.,P6-033,SmartAuditERP/Class/WhatsAppSender.cs:190-228,P7B34T-17;P7B34T-18,not-executed
+INV7B34-10,FE7B34-10,تحفظ النتيجة الجزئية ما طلب قبل الفشل ولا تحول false إلى ضمان rollback لمزود خارجي.,P6-033,SmartAuditERP/Class/WhatsAppSender.cs:145-228,P7B34T-19;P7B34T-20,not-executed
+INV7B34-11,FE7B34-11,يعرض caller نتيجة typed ومحاولة قابلة للإلغاء/الانتظار ولا يسقط bool/الجزئية عند حدود void.,P6-033,SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3124-3128;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3185-3199,P7B34T-21;P7B34T-22,not-executed
+INV7B34-12,FE7B34-12,تسلم التهيئة نتيجة صريحة بهوية حساب مفوض وصلاحية محددة أو failure/unknown قبل استعمال المرسل.,P6-031;P6-033,SmartAuditERP/Class/Session.cs:9-30;SmartAuditERP/Class/WhatsAppSender.cs:66-105,P7B34T-23;P7B34T-24,not-executed
+INV7B34-13,FE7B34-13,يحسم المنتج أهلية المشاركة والرقم typed وفق عقد منقح مستقل دون استنتاج الحفظ أو البلد من count/location.,P6-032;P6-033,SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3128-3165;SmartAuditERP/Class/WhatsAppSender.cs:107-118,P7B34T-25;P7B34T-26,not-executed
+INV7B34-14,FE7B34-14,تميز عقود البريد بين إعادة توليد مرفق واختيار stale implicit،مع سياسة ملف/نتيجة منفصلة عن واتساب.,P6-034,SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2986-3033;SmartAuditERP/Class/Print.cs:1193-1229,P7B34T-27;P7B34T-28,not-executed
+INV7B34-15,FE7B34-15,يحفظ السجل السابق بكل بايت وحقل،ولا تحول إعادة شرح آلية مذكورة إلى رقم نتيجة جديد.,H7B34-06,none-documentary-metadata,P7B34T-29;P7B34T-30,not-executed
+INV7B34-16,FE7B34-16,تبقى كل بقية في7B حتى اختيار مسبب بمالك ومدخل وخروج،ولا تستنتج صلاحية مرحلة8 أو بدء الإصلاح.,H7B34-06,none-documentary-metadata,P7B34T-31;P7B34T-32,not-executed

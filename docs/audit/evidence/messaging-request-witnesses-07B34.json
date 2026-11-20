@@ -1,0 +1,2441 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "entry_checkout": "dea2244267d74dd540af59c6e63b0f4362ab8c1c",
+  "new_root_ids": [],
+  "extended_existing_root_ids": [],
+  "existing_roots_deepened_without_registry_change": [
+    "P6-031",
+    "P6-033"
+  ],
+  "selected_source_paths": 5,
+  "selected_contract_slices": 20,
+  "context_slices_not_certified": 8,
+  "whole_local_files_selected": 0,
+  "illustration_count": 20,
+  "lexical_check_count": 20,
+  "application_code_imported_or_executed": false,
+  "dotnet_wpf_sql_or_SDK_executed": false,
+  "browser_driver_provider_PDF_or_messages_executed": false,
+  "provider_acceptance_or_delivery_or_file_bytes_upload_proved": false,
+  "saved_invoice_dirty_DTO_contract_proved": false,
+  "application_remediation_performed": false,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "all_callers_or_historical_bodies_certified": false,
+  "schedule_targets_readiness_and_version_tokens_are_supplied": true,
+  "stored_elements_not_silently_retargeted": true,
+  "path_handoff_not_content_upload_or_delivery_proof": true,
+  "prior_roots_already_describe_this_mechanism": true,
+  "retained_additive_B10_arithmetic_erratum": {
+    "local_cost": 10,
+    "reference_cost": 120,
+    "equality1_control": 10,
+    "protected_G138_not_rewritten": true
+  },
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 3124,
+      "end": 3126,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 3128,
+      "end": 3141,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 3142,
+      "end": 3155,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 3156,
+      "end": 3165,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 3166,
+      "end": 3177,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 3179,
+      "end": 3187,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 3188,
+      "end": 3199,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml",
+      "start": 1187,
+      "end": 1191,
+      "sha256": "289a5a6bce98948818d3847a9cdf50870a35ca8269416a1ac3dd293db13e4e6d",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/Session.cs",
+      "start": 9,
+      "end": 21,
+      "sha256": "3ea1c7fac6a47f48d8a1022eaa1c49546e3b586dfb459a3be208ca9b68d09bf7",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/Session.cs",
+      "start": 22,
+      "end": 30,
+      "sha256": "3ea1c7fac6a47f48d8a1022eaa1c49546e3b586dfb459a3be208ca9b68d09bf7",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/WhatsAppSender.cs",
+      "start": 16,
+      "end": 21,
+      "sha256": "50d9d312220a8ab28a0272dcde51b2e69367493e87c668d7a189318d9938ee2f",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/WhatsAppSender.cs",
+      "start": 107,
+      "end": 118,
+      "sha256": "50d9d312220a8ab28a0272dcde51b2e69367493e87c668d7a189318d9938ee2f",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/WhatsAppSender.cs",
+      "start": 119,
+      "end": 144,
+      "sha256": "50d9d312220a8ab28a0272dcde51b2e69367493e87c668d7a189318d9938ee2f",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/WhatsAppSender.cs",
+      "start": 145,
+      "end": 155,
+      "sha256": "50d9d312220a8ab28a0272dcde51b2e69367493e87c668d7a189318d9938ee2f",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/WhatsAppSender.cs",
+      "start": 156,
+      "end": 180,
+      "sha256": "50d9d312220a8ab28a0272dcde51b2e69367493e87c668d7a189318d9938ee2f",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/WhatsAppSender.cs",
+      "start": 181,
+      "end": 189,
+      "sha256": "50d9d312220a8ab28a0272dcde51b2e69367493e87c668d7a189318d9938ee2f",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/WhatsAppSender.cs",
+      "start": 190,
+      "end": 217,
+      "sha256": "50d9d312220a8ab28a0272dcde51b2e69367493e87c668d7a189318d9938ee2f",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/WhatsAppSender.cs",
+      "start": 218,
+      "end": 228,
+      "sha256": "50d9d312220a8ab28a0272dcde51b2e69367493e87c668d7a189318d9938ee2f",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/WhatsAppSender.cs",
+      "start": 230,
+      "end": 245,
+      "sha256": "50d9d312220a8ab28a0272dcde51b2e69367493e87c668d7a189318d9938ee2f",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/WhatsAppSender.cs",
+      "start": 66,
+      "end": 105,
+      "sha256": "50d9d312220a8ab28a0272dcde51b2e69367493e87c668d7a189318d9938ee2f",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    }
+  ],
+  "exploratory_source_reads_not_capability_certification": [
+    {
+      "path": "SmartAuditERP/Class/WhatsAppSender.cs",
+      "start": 22,
+      "end": 63,
+      "sha256": "50d9d312220a8ab28a0272dcde51b2e69367493e87c668d7a189318d9938ee2f",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/WhatsAppSender.cs",
+      "start": 247,
+      "end": 261,
+      "sha256": "50d9d312220a8ab28a0272dcde51b2e69367493e87c668d7a189318d9938ee2f",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/WhatsAppSender.cs",
+      "start": 263,
+      "end": 266,
+      "sha256": "50d9d312220a8ab28a0272dcde51b2e69367493e87c668d7a189318d9938ee2f",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 2986,
+      "end": 3006,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 3007,
+      "end": 3033,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 2581,
+      "end": 2595,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 3201,
+      "end": 3208,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/Print.cs",
+      "start": 1193,
+      "end": 1229,
+      "sha256": "8f90315f6f8e1c09620515fea620a2538ed3262d205172f2f469c674ce30cb10",
+      "whole_local_file_selected": false,
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    }
+  ],
+  "illustrations": [
+    {
+      "id": "ALG7B34-01",
+      "title": "A resumes after B navigation on the SAME supplied valid sender",
+      "supplied_trace": {
+        "requests": {
+          "A": {
+            "target": "target-A",
+            "file_key": "file-A",
+            "version": "version-A",
+            "sender": "sender-S",
+            "caption": "caption-A",
+            "allowed": true,
+            "stage": "returned",
+            "result": true,
+            "caption_element_target": "target-B",
+            "attachment_context": "target-B",
+            "last_upload_context": "target-B"
+          },
+          "B": {
+            "target": "target-B",
+            "file_key": "file-B",
+            "version": "version-B",
+            "sender": "sender-S",
+            "caption": "caption-B",
+            "allowed": true,
+            "stage": "returned",
+            "result": true,
+            "caption_element_target": "target-B",
+            "attachment_context": "target-B",
+            "last_upload_context": "target-B"
+          }
+        },
+        "symbolic_current_targets": {
+          "sender-S": "target-B"
+        },
+        "symbolic_file_versions": {
+          "file-A": "version-A",
+          "file-B": "version-B"
+        },
+        "operations": [
+          {
+            "request": "A",
+            "kind": "symbolic-export-returned",
+            "requested_target": "target-A",
+            "selector_or_element_context": null,
+            "file_key": "file-A",
+            "version": "version-A"
+          },
+          {
+            "request": "A",
+            "kind": "navigate-request-before-await",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "B",
+            "kind": "symbolic-export-returned",
+            "requested_target": "target-B",
+            "selector_or_element_context": null,
+            "file_key": "file-B",
+            "version": "version-B"
+          },
+          {
+            "request": "B",
+            "kind": "navigate-request-before-await",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "A",
+            "kind": "generic-chat-selector-observed",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "A",
+            "kind": "caption-typed-before-await",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B",
+            "caption": "caption-A"
+          },
+          {
+            "request": "A",
+            "kind": "caption-enter-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "A",
+            "kind": "generic-attach-button-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "A",
+            "kind": "file-path-handed-to-input-not-upload-proof",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B",
+            "file_key": "file-A",
+            "latest_symbolic_version": "version-A",
+            "requested_version": "version-A",
+            "browser_read_bytes_proved": false
+          },
+          {
+            "request": "A",
+            "kind": "generic-send-control-click-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B",
+            "previous_file_input_context": "target-B",
+            "delivery_proved": false
+          },
+          {
+            "request": "A",
+            "kind": "local-true-after-click-and-delay-not-delivered",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "B",
+            "kind": "generic-chat-selector-observed",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "B",
+            "kind": "caption-typed-before-await",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B",
+            "caption": "caption-B"
+          },
+          {
+            "request": "B",
+            "kind": "caption-enter-request",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "B",
+            "kind": "generic-attach-button-request",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "B",
+            "kind": "file-path-handed-to-input-not-upload-proof",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B",
+            "file_key": "file-B",
+            "latest_symbolic_version": "version-B",
+            "requested_version": "version-B",
+            "browser_read_bytes_proved": false
+          },
+          {
+            "request": "B",
+            "kind": "generic-send-control-click-request",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B",
+            "previous_file_input_context": "target-B",
+            "delivery_proved": false
+          },
+          {
+            "request": "B",
+            "kind": "local-true-after-click-and-delay-not-delivered",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          }
+        ],
+        "delivery_proved": false,
+        "file_bytes_read_or_uploaded_proved": false,
+        "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P6-031;P6-033",
+      "evidence": "SmartAuditERP/Class/WhatsAppSender.cs:107-155;SmartAuditERP/Class/Session.cs:9-21",
+      "source_application_executed": false,
+      "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+    },
+    {
+      "id": "ALG7B34-02",
+      "title": "Sequential complete requests:negative control",
+      "supplied_trace": {
+        "requests": {
+          "A": {
+            "target": "target-A",
+            "file_key": "file-A",
+            "version": "version-A",
+            "sender": "sender-S",
+            "caption": "caption-A",
+            "allowed": true,
+            "stage": "returned",
+            "result": true,
+            "caption_element_target": "target-A",
+            "attachment_context": "target-A",
+            "last_upload_context": "target-A"
+          },
+          "B": {
+            "target": "target-B",
+            "file_key": "file-B",
+            "version": "version-B",
+            "sender": "sender-S",
+            "caption": "caption-B",
+            "allowed": true,
+            "stage": "returned",
+            "result": true,
+            "caption_element_target": "target-B",
+            "attachment_context": "target-B",
+            "last_upload_context": "target-B"
+          }
+        },
+        "symbolic_current_targets": {
+          "sender-S": "target-B"
+        },
+        "symbolic_file_versions": {
+          "file-A": "version-A",
+          "file-B": "version-B"
+        },
+        "operations": [
+          {
+            "request": "A",
+            "kind": "symbolic-export-returned",
+            "requested_target": "target-A",
+            "selector_or_element_context": null,
+            "file_key": "file-A",
+            "version": "version-A"
+          },
+          {
+            "request": "A",
+            "kind": "navigate-request-before-await",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "A",
+            "kind": "generic-chat-selector-observed",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "A",
+            "kind": "caption-typed-before-await",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A",
+            "caption": "caption-A"
+          },
+          {
+            "request": "A",
+            "kind": "caption-enter-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "A",
+            "kind": "generic-attach-button-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "A",
+            "kind": "file-path-handed-to-input-not-upload-proof",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A",
+            "file_key": "file-A",
+            "latest_symbolic_version": "version-A",
+            "requested_version": "version-A",
+            "browser_read_bytes_proved": false
+          },
+          {
+            "request": "A",
+            "kind": "generic-send-control-click-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A",
+            "previous_file_input_context": "target-A",
+            "delivery_proved": false
+          },
+          {
+            "request": "A",
+            "kind": "local-true-after-click-and-delay-not-delivered",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "B",
+            "kind": "symbolic-export-returned",
+            "requested_target": "target-B",
+            "selector_or_element_context": null,
+            "file_key": "file-B",
+            "version": "version-B"
+          },
+          {
+            "request": "B",
+            "kind": "navigate-request-before-await",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "B",
+            "kind": "generic-chat-selector-observed",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "B",
+            "kind": "caption-typed-before-await",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B",
+            "caption": "caption-B"
+          },
+          {
+            "request": "B",
+            "kind": "caption-enter-request",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "B",
+            "kind": "generic-attach-button-request",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "B",
+            "kind": "file-path-handed-to-input-not-upload-proof",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B",
+            "file_key": "file-B",
+            "latest_symbolic_version": "version-B",
+            "requested_version": "version-B",
+            "browser_read_bytes_proved": false
+          },
+          {
+            "request": "B",
+            "kind": "generic-send-control-click-request",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B",
+            "previous_file_input_context": "target-B",
+            "delivery_proved": false
+          },
+          {
+            "request": "B",
+            "kind": "local-true-after-click-and-delay-not-delivered",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          }
+        ],
+        "delivery_proved": false,
+        "file_bytes_read_or_uploaded_proved": false,
+        "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P6-033",
+      "evidence": "SmartAuditERP/Class/WhatsAppSender.cs:107-217",
+      "source_application_executed": false,
+      "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+    },
+    {
+      "id": "ALG7B34-03",
+      "title": "Distinct sender/driver tokens:conditional isolation control,not deployed repair",
+      "supplied_trace": {
+        "requests": {
+          "A": {
+            "target": "target-A",
+            "file_key": "file-A",
+            "version": "version-A",
+            "sender": "sender-S",
+            "caption": "caption-A",
+            "allowed": true,
+            "stage": "returned",
+            "result": true,
+            "caption_element_target": "target-A",
+            "attachment_context": "target-A",
+            "last_upload_context": "target-A"
+          },
+          "B": {
+            "target": "target-B",
+            "file_key": "file-B",
+            "version": "version-B",
+            "sender": "sender-T",
+            "caption": "caption-B",
+            "allowed": true,
+            "stage": "returned",
+            "result": true,
+            "caption_element_target": "target-B",
+            "attachment_context": "target-B",
+            "last_upload_context": "target-B"
+          }
+        },
+        "symbolic_current_targets": {
+          "sender-S": "target-A",
+          "sender-T": "target-B"
+        },
+        "symbolic_file_versions": {
+          "file-A": "version-A",
+          "file-B": "version-B"
+        },
+        "operations": [
+          {
+            "request": "A",
+            "kind": "symbolic-export-returned",
+            "requested_target": "target-A",
+            "selector_or_element_context": null,
+            "file_key": "file-A",
+            "version": "version-A"
+          },
+          {
+            "request": "A",
+            "kind": "navigate-request-before-await",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "B",
+            "kind": "symbolic-export-returned",
+            "requested_target": "target-B",
+            "selector_or_element_context": null,
+            "file_key": "file-B",
+            "version": "version-B"
+          },
+          {
+            "request": "B",
+            "kind": "navigate-request-before-await",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "A",
+            "kind": "generic-chat-selector-observed",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "A",
+            "kind": "caption-typed-before-await",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A",
+            "caption": "caption-A"
+          },
+          {
+            "request": "A",
+            "kind": "caption-enter-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "A",
+            "kind": "generic-attach-button-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "A",
+            "kind": "file-path-handed-to-input-not-upload-proof",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A",
+            "file_key": "file-A",
+            "latest_symbolic_version": "version-A",
+            "requested_version": "version-A",
+            "browser_read_bytes_proved": false
+          },
+          {
+            "request": "A",
+            "kind": "generic-send-control-click-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A",
+            "previous_file_input_context": "target-A",
+            "delivery_proved": false
+          },
+          {
+            "request": "A",
+            "kind": "local-true-after-click-and-delay-not-delivered",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "B",
+            "kind": "generic-chat-selector-observed",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "B",
+            "kind": "caption-typed-before-await",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B",
+            "caption": "caption-B"
+          },
+          {
+            "request": "B",
+            "kind": "caption-enter-request",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "B",
+            "kind": "generic-attach-button-request",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "B",
+            "kind": "file-path-handed-to-input-not-upload-proof",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B",
+            "file_key": "file-B",
+            "latest_symbolic_version": "version-B",
+            "requested_version": "version-B",
+            "browser_read_bytes_proved": false
+          },
+          {
+            "request": "B",
+            "kind": "generic-send-control-click-request",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B",
+            "previous_file_input_context": "target-B",
+            "delivery_proved": false
+          },
+          {
+            "request": "B",
+            "kind": "local-true-after-click-and-delay-not-delivered",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          }
+        ],
+        "delivery_proved": false,
+        "file_bytes_read_or_uploaded_proved": false,
+        "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P6-031;P6-033",
+      "evidence": "SmartAuditERP/Class/WhatsAppSender.cs:16-21;SmartAuditERP/Class/Session.cs:9-21",
+      "source_application_executed": false,
+      "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+    },
+    {
+      "id": "ALG7B34-04",
+      "title": "Same recipient removes this cross-target difference,not duplicate-attempt risk",
+      "supplied_trace": {
+        "requests": {
+          "A": {
+            "target": "target-A",
+            "file_key": "file-A",
+            "version": "version-A",
+            "sender": "sender-S",
+            "caption": "caption-A",
+            "allowed": true,
+            "stage": "returned",
+            "result": true,
+            "caption_element_target": "target-A",
+            "attachment_context": "target-A",
+            "last_upload_context": "target-A"
+          },
+          "B": {
+            "target": "target-A",
+            "file_key": "file-B",
+            "version": "version-B",
+            "sender": "sender-S",
+            "caption": "caption-B",
+            "allowed": true,
+            "stage": "returned",
+            "result": true,
+            "caption_element_target": "target-A",
+            "attachment_context": "target-A",
+            "last_upload_context": "target-A"
+          }
+        },
+        "symbolic_current_targets": {
+          "sender-S": "target-A"
+        },
+        "symbolic_file_versions": {
+          "file-A": "version-A",
+          "file-B": "version-B"
+        },
+        "operations": [
+          {
+            "request": "A",
+            "kind": "symbolic-export-returned",
+            "requested_target": "target-A",
+            "selector_or_element_context": null,
+            "file_key": "file-A",
+            "version": "version-A"
+          },
+          {
+            "request": "A",
+            "kind": "navigate-request-before-await",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "B",
+            "kind": "symbolic-export-returned",
+            "requested_target": "target-A",
+            "selector_or_element_context": null,
+            "file_key": "file-B",
+            "version": "version-B"
+          },
+          {
+            "request": "B",
+            "kind": "navigate-request-before-await",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "A",
+            "kind": "generic-chat-selector-observed",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "A",
+            "kind": "caption-typed-before-await",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A",
+            "caption": "caption-A"
+          },
+          {
+            "request": "A",
+            "kind": "caption-enter-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "A",
+            "kind": "generic-attach-button-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "A",
+            "kind": "file-path-handed-to-input-not-upload-proof",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A",
+            "file_key": "file-A",
+            "latest_symbolic_version": "version-A",
+            "requested_version": "version-A",
+            "browser_read_bytes_proved": false
+          },
+          {
+            "request": "A",
+            "kind": "generic-send-control-click-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A",
+            "previous_file_input_context": "target-A",
+            "delivery_proved": false
+          },
+          {
+            "request": "A",
+            "kind": "local-true-after-click-and-delay-not-delivered",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "B",
+            "kind": "generic-chat-selector-observed",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "B",
+            "kind": "caption-typed-before-await",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A",
+            "caption": "caption-B"
+          },
+          {
+            "request": "B",
+            "kind": "caption-enter-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "B",
+            "kind": "generic-attach-button-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "B",
+            "kind": "file-path-handed-to-input-not-upload-proof",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A",
+            "file_key": "file-B",
+            "latest_symbolic_version": "version-B",
+            "requested_version": "version-B",
+            "browser_read_bytes_proved": false
+          },
+          {
+            "request": "B",
+            "kind": "generic-send-control-click-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A",
+            "previous_file_input_context": "target-A",
+            "delivery_proved": false
+          },
+          {
+            "request": "B",
+            "kind": "local-true-after-click-and-delay-not-delivered",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          }
+        ],
+        "delivery_proved": false,
+        "file_bytes_read_or_uploaded_proved": false,
+        "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P6-033",
+      "evidence": "SmartAuditERP/Class/WhatsAppSender.cs:117-155",
+      "source_application_executed": false,
+      "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+    },
+    {
+      "id": "ALG7B34-05",
+      "title": "Blank caption skips text only;file-input context is still shared",
+      "supplied_trace": {
+        "requests": {
+          "A": {
+            "target": "target-A",
+            "file_key": "file-A",
+            "version": "version-A",
+            "sender": "sender-S",
+            "caption": "",
+            "allowed": true,
+            "stage": "returned",
+            "result": true,
+            "caption_element_target": null,
+            "attachment_context": "target-B",
+            "last_upload_context": "target-B"
+          },
+          "B": {
+            "target": "target-B",
+            "file_key": "file-B",
+            "version": "version-B",
+            "sender": "sender-S",
+            "caption": "",
+            "allowed": true,
+            "stage": "returned",
+            "result": true,
+            "caption_element_target": null,
+            "attachment_context": "target-B",
+            "last_upload_context": "target-B"
+          }
+        },
+        "symbolic_current_targets": {
+          "sender-S": "target-B"
+        },
+        "symbolic_file_versions": {
+          "file-A": "version-A",
+          "file-B": "version-B"
+        },
+        "operations": [
+          {
+            "request": "A",
+            "kind": "symbolic-export-returned",
+            "requested_target": "target-A",
+            "selector_or_element_context": null,
+            "file_key": "file-A",
+            "version": "version-A"
+          },
+          {
+            "request": "A",
+            "kind": "navigate-request-before-await",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "B",
+            "kind": "symbolic-export-returned",
+            "requested_target": "target-B",
+            "selector_or_element_context": null,
+            "file_key": "file-B",
+            "version": "version-B"
+          },
+          {
+            "request": "B",
+            "kind": "navigate-request-before-await",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "A",
+            "kind": "generic-chat-selector-observed",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "A",
+            "kind": "generic-attach-button-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "A",
+            "kind": "file-path-handed-to-input-not-upload-proof",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B",
+            "file_key": "file-A",
+            "latest_symbolic_version": "version-A",
+            "requested_version": "version-A",
+            "browser_read_bytes_proved": false
+          },
+          {
+            "request": "A",
+            "kind": "generic-send-control-click-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B",
+            "previous_file_input_context": "target-B",
+            "delivery_proved": false
+          },
+          {
+            "request": "A",
+            "kind": "local-true-after-click-and-delay-not-delivered",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "B",
+            "kind": "generic-chat-selector-observed",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "B",
+            "kind": "generic-attach-button-request",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "B",
+            "kind": "file-path-handed-to-input-not-upload-proof",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B",
+            "file_key": "file-B",
+            "latest_symbolic_version": "version-B",
+            "requested_version": "version-B",
+            "browser_read_bytes_proved": false
+          },
+          {
+            "request": "B",
+            "kind": "generic-send-control-click-request",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B",
+            "previous_file_input_context": "target-B",
+            "delivery_proved": false
+          },
+          {
+            "request": "B",
+            "kind": "local-true-after-click-and-delay-not-delivered",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          }
+        ],
+        "delivery_proved": false,
+        "file_bytes_read_or_uploaded_proved": false,
+        "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P6-033",
+      "evidence": "SmartAuditERP/Class/WhatsAppSender.cs:145-189",
+      "source_application_executed": false,
+      "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+    },
+    {
+      "id": "ALG7B34-06",
+      "title": "Same invoice-number path:latest token B at A path handoff,not byte upload proof",
+      "supplied_trace": {
+        "requests": {
+          "A": {
+            "target": "target-A",
+            "file_key": "file-X",
+            "version": "version-A",
+            "sender": "sender-S",
+            "caption": "caption-A",
+            "allowed": true,
+            "stage": "returned",
+            "result": true,
+            "caption_element_target": "target-B",
+            "attachment_context": "target-B",
+            "last_upload_context": "target-B"
+          },
+          "B": {
+            "target": "target-B",
+            "file_key": "file-X",
+            "version": "version-B",
+            "sender": "sender-S",
+            "caption": "caption-B",
+            "allowed": true,
+            "stage": "returned",
+            "result": true,
+            "caption_element_target": "target-B",
+            "attachment_context": "target-B",
+            "last_upload_context": "target-B"
+          }
+        },
+        "symbolic_current_targets": {
+          "sender-S": "target-B"
+        },
+        "symbolic_file_versions": {
+          "file-X": "version-B"
+        },
+        "operations": [
+          {
+            "request": "A",
+            "kind": "symbolic-export-returned",
+            "requested_target": "target-A",
+            "selector_or_element_context": null,
+            "file_key": "file-X",
+            "version": "version-A"
+          },
+          {
+            "request": "A",
+            "kind": "navigate-request-before-await",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "B",
+            "kind": "symbolic-export-returned",
+            "requested_target": "target-B",
+            "selector_or_element_context": null,
+            "file_key": "file-X",
+            "version": "version-B"
+          },
+          {
+            "request": "B",
+            "kind": "navigate-request-before-await",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "A",
+            "kind": "generic-chat-selector-observed",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "A",
+            "kind": "caption-typed-before-await",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B",
+            "caption": "caption-A"
+          },
+          {
+            "request": "A",
+            "kind": "caption-enter-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "A",
+            "kind": "generic-attach-button-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "A",
+            "kind": "file-path-handed-to-input-not-upload-proof",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B",
+            "file_key": "file-X",
+            "latest_symbolic_version": "version-B",
+            "requested_version": "version-A",
+            "browser_read_bytes_proved": false
+          },
+          {
+            "request": "A",
+            "kind": "generic-send-control-click-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B",
+            "previous_file_input_context": "target-B",
+            "delivery_proved": false
+          },
+          {
+            "request": "A",
+            "kind": "local-true-after-click-and-delay-not-delivered",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "B",
+            "kind": "generic-chat-selector-observed",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "B",
+            "kind": "caption-typed-before-await",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B",
+            "caption": "caption-B"
+          },
+          {
+            "request": "B",
+            "kind": "caption-enter-request",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "B",
+            "kind": "generic-attach-button-request",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "B",
+            "kind": "file-path-handed-to-input-not-upload-proof",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B",
+            "file_key": "file-X",
+            "latest_symbolic_version": "version-B",
+            "requested_version": "version-B",
+            "browser_read_bytes_proved": false
+          },
+          {
+            "request": "B",
+            "kind": "generic-send-control-click-request",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B",
+            "previous_file_input_context": "target-B",
+            "delivery_proved": false
+          },
+          {
+            "request": "B",
+            "kind": "local-true-after-click-and-delay-not-delivered",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          }
+        ],
+        "delivery_proved": false,
+        "file_bytes_read_or_uploaded_proved": false,
+        "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P6-033",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3166-3177;SmartAuditERP/Class/WhatsAppSender.cs:181-189",
+      "source_application_executed": false,
+      "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+    },
+    {
+      "id": "ALG7B34-07",
+      "title": "Distinct file tokens do not fix shared chat context",
+      "supplied_trace": {
+        "requests": {
+          "A": {
+            "target": "target-A",
+            "file_key": "file-A",
+            "version": "version-A",
+            "sender": "sender-S",
+            "caption": "caption-A",
+            "allowed": true,
+            "stage": "returned",
+            "result": true,
+            "caption_element_target": "target-B",
+            "attachment_context": "target-B",
+            "last_upload_context": "target-B"
+          },
+          "B": {
+            "target": "target-B",
+            "file_key": "file-B",
+            "version": "version-B",
+            "sender": "sender-S",
+            "caption": "caption-B",
+            "allowed": true,
+            "stage": "returned",
+            "result": true,
+            "caption_element_target": "target-B",
+            "attachment_context": "target-B",
+            "last_upload_context": "target-B"
+          }
+        },
+        "symbolic_current_targets": {
+          "sender-S": "target-B"
+        },
+        "symbolic_file_versions": {
+          "file-A": "version-A",
+          "file-B": "version-B"
+        },
+        "operations": [
+          {
+            "request": "A",
+            "kind": "symbolic-export-returned",
+            "requested_target": "target-A",
+            "selector_or_element_context": null,
+            "file_key": "file-A",
+            "version": "version-A"
+          },
+          {
+            "request": "A",
+            "kind": "navigate-request-before-await",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "B",
+            "kind": "symbolic-export-returned",
+            "requested_target": "target-B",
+            "selector_or_element_context": null,
+            "file_key": "file-B",
+            "version": "version-B"
+          },
+          {
+            "request": "B",
+            "kind": "navigate-request-before-await",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "A",
+            "kind": "generic-chat-selector-observed",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "A",
+            "kind": "caption-typed-before-await",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B",
+            "caption": "caption-A"
+          },
+          {
+            "request": "A",
+            "kind": "caption-enter-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "A",
+            "kind": "generic-attach-button-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "A",
+            "kind": "file-path-handed-to-input-not-upload-proof",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B",
+            "file_key": "file-A",
+            "latest_symbolic_version": "version-A",
+            "requested_version": "version-A",
+            "browser_read_bytes_proved": false
+          },
+          {
+            "request": "A",
+            "kind": "generic-send-control-click-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B",
+            "previous_file_input_context": "target-B",
+            "delivery_proved": false
+          },
+          {
+            "request": "A",
+            "kind": "local-true-after-click-and-delay-not-delivered",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "B",
+            "kind": "generic-chat-selector-observed",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "B",
+            "kind": "caption-typed-before-await",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B",
+            "caption": "caption-B"
+          },
+          {
+            "request": "B",
+            "kind": "caption-enter-request",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "B",
+            "kind": "generic-attach-button-request",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "B",
+            "kind": "file-path-handed-to-input-not-upload-proof",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B",
+            "file_key": "file-B",
+            "latest_symbolic_version": "version-B",
+            "requested_version": "version-B",
+            "browser_read_bytes_proved": false
+          },
+          {
+            "request": "B",
+            "kind": "generic-send-control-click-request",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B",
+            "previous_file_input_context": "target-B",
+            "delivery_proved": false
+          },
+          {
+            "request": "B",
+            "kind": "local-true-after-click-and-delay-not-delivered",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          }
+        ],
+        "delivery_proved": false,
+        "file_bytes_read_or_uploaded_proved": false,
+        "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P6-033",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3166-3187;SmartAuditERP/Class/WhatsAppSender.cs:181-189",
+      "source_application_executed": false,
+      "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+    },
+    {
+      "id": "ALG7B34-08",
+      "title": "Zero rows blocks before mapping/export/session",
+      "supplied_trace": {
+        "requests": {
+          "A": {
+            "target": "target-A",
+            "file_key": "file-A",
+            "version": "v-A",
+            "sender": "sender-S",
+            "caption": "caption",
+            "allowed": false,
+            "stage": "blocked-before-sender",
+            "result": null,
+            "caption_element_target": null,
+            "attachment_context": null,
+            "last_upload_context": null
+          }
+        },
+        "symbolic_current_targets": {},
+        "symbolic_file_versions": {},
+        "operations": [
+          {
+            "request": "A",
+            "kind": "caller-blocked",
+            "requested_target": "target-A",
+            "selector_or_element_context": null
+          }
+        ],
+        "delivery_proved": false,
+        "file_bytes_read_or_uploaded_proved": false,
+        "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P6-033",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3128-3141",
+      "source_application_executed": false,
+      "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+    },
+    {
+      "id": "ALG7B34-09",
+      "title": "Customer lookup false:source returns no sender request",
+      "supplied_trace": {
+        "requests": {
+          "A": {
+            "target": "target-A",
+            "file_key": "file-A",
+            "version": "v-A",
+            "sender": "sender-S",
+            "caption": "caption",
+            "allowed": false,
+            "stage": "blocked-before-sender",
+            "result": null,
+            "caption_element_target": null,
+            "attachment_context": null,
+            "last_upload_context": null
+          }
+        },
+        "symbolic_current_targets": {},
+        "symbolic_file_versions": {},
+        "operations": [
+          {
+            "request": "A",
+            "kind": "caller-blocked",
+            "requested_target": "target-A",
+            "selector_or_element_context": null
+          }
+        ],
+        "delivery_proved": false,
+        "file_bytes_read_or_uploaded_proved": false,
+        "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P6-033",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3150-3192",
+      "source_application_executed": false,
+      "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+    },
+    {
+      "id": "ALG7B34-10",
+      "title": "Empty mobile returns before PDF path/export",
+      "supplied_trace": {
+        "requests": {
+          "A": {
+            "target": "target-A",
+            "file_key": "file-A",
+            "version": "v-A",
+            "sender": "sender-S",
+            "caption": "caption",
+            "allowed": false,
+            "stage": "blocked-before-sender",
+            "result": null,
+            "caption_element_target": null,
+            "attachment_context": null,
+            "last_upload_context": null
+          }
+        },
+        "symbolic_current_targets": {},
+        "symbolic_file_versions": {},
+        "operations": [
+          {
+            "request": "A",
+            "kind": "caller-blocked",
+            "requested_target": "target-A",
+            "selector_or_element_context": null
+          }
+        ],
+        "delivery_proved": false,
+        "file_bytes_read_or_uploaded_proved": false,
+        "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P6-032;P6-033",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3155-3175",
+      "source_application_executed": false,
+      "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+    },
+    {
+      "id": "ALG7B34-11",
+      "title": "Mapping nonreturn supplied,not an SDK exception induced",
+      "supplied_trace": {
+        "requests": {
+          "A": {
+            "target": "target-A",
+            "file_key": "file-A",
+            "version": "v-A",
+            "sender": "sender-S",
+            "caption": "caption",
+            "allowed": false,
+            "stage": "blocked-before-sender",
+            "result": null,
+            "caption_element_target": null,
+            "attachment_context": null,
+            "last_upload_context": null
+          }
+        },
+        "symbolic_current_targets": {},
+        "symbolic_file_versions": {},
+        "operations": [
+          {
+            "request": "A",
+            "kind": "caller-blocked",
+            "requested_target": "target-A",
+            "selector_or_element_context": null
+          }
+        ],
+        "delivery_proved": false,
+        "file_bytes_read_or_uploaded_proved": false,
+        "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P6-033",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3141-3146",
+      "source_application_executed": false,
+      "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+    },
+    {
+      "id": "ALG7B34-12",
+      "title": "Export nonreturn supplied:sender not reached",
+      "supplied_trace": {
+        "requests": {
+          "A": {
+            "target": "target-A",
+            "file_key": "file-A",
+            "version": "v-A",
+            "sender": "sender-S",
+            "caption": "caption",
+            "allowed": false,
+            "stage": "blocked-before-sender",
+            "result": null,
+            "caption_element_target": null,
+            "attachment_context": null,
+            "last_upload_context": null
+          }
+        },
+        "symbolic_current_targets": {},
+        "symbolic_file_versions": {},
+        "operations": [
+          {
+            "request": "A",
+            "kind": "caller-blocked",
+            "requested_target": "target-A",
+            "selector_or_element_context": null
+          }
+        ],
+        "delivery_proved": false,
+        "file_bytes_read_or_uploaded_proved": false,
+        "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P6-033",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3172-3187",
+      "source_application_executed": false,
+      "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+    },
+    {
+      "id": "ALG7B34-13",
+      "title": "Chat timeout/absence false before caption",
+      "supplied_trace": {
+        "requests": {
+          "A": {
+            "target": "target-A",
+            "file_key": "file-A",
+            "version": "v-A",
+            "sender": "sender-S",
+            "caption": "caption",
+            "allowed": true,
+            "stage": "returned",
+            "result": false,
+            "caption_element_target": null,
+            "attachment_context": null,
+            "last_upload_context": null
+          }
+        },
+        "symbolic_current_targets": {
+          "sender-S": "target-A"
+        },
+        "symbolic_file_versions": {
+          "file-A": "v-A"
+        },
+        "operations": [
+          {
+            "request": "A",
+            "kind": "symbolic-export-returned",
+            "requested_target": "target-A",
+            "selector_or_element_context": null,
+            "file_key": "file-A",
+            "version": "v-A"
+          },
+          {
+            "request": "A",
+            "kind": "navigate-request-before-await",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "A",
+            "kind": "local-false-or-nonreturn-boundary",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A",
+            "reason": "supplied-chat-not-ready-or-element-invalid"
+          }
+        ],
+        "delivery_proved": false,
+        "file_bytes_read_or_uploaded_proved": false,
+        "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P6-033",
+      "evidence": "SmartAuditERP/Class/WhatsAppSender.cs:119-144",
+      "source_application_executed": false,
+      "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+    },
+    {
+      "id": "ALG7B34-14",
+      "title": "Missing attachment button after caption request:existing partial outcome",
+      "supplied_trace": {
+        "requests": {
+          "A": {
+            "target": "target-A",
+            "file_key": "file-A",
+            "version": "v-A",
+            "sender": "sender-S",
+            "caption": "caption",
+            "allowed": true,
+            "stage": "returned",
+            "result": false,
+            "caption_element_target": "target-A",
+            "attachment_context": null,
+            "last_upload_context": null
+          }
+        },
+        "symbolic_current_targets": {
+          "sender-S": "target-A"
+        },
+        "symbolic_file_versions": {
+          "file-A": "v-A"
+        },
+        "operations": [
+          {
+            "request": "A",
+            "kind": "symbolic-export-returned",
+            "requested_target": "target-A",
+            "selector_or_element_context": null,
+            "file_key": "file-A",
+            "version": "v-A"
+          },
+          {
+            "request": "A",
+            "kind": "navigate-request-before-await",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "A",
+            "kind": "generic-chat-selector-observed",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "A",
+            "kind": "caption-typed-before-await",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A",
+            "caption": "caption"
+          },
+          {
+            "request": "A",
+            "kind": "caption-enter-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "A",
+            "kind": "local-false-or-nonreturn-boundary",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A",
+            "reason": "supplied-attach-not-ready-or-element-invalid"
+          }
+        ],
+        "delivery_proved": false,
+        "file_bytes_read_or_uploaded_proved": false,
+        "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P6-033",
+      "evidence": "SmartAuditERP/Class/WhatsAppSender.cs:145-180",
+      "source_application_executed": false,
+      "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+    },
+    {
+      "id": "ALG7B34-15",
+      "title": "Missing file can follow caption submission request",
+      "supplied_trace": {
+        "requests": {
+          "A": {
+            "target": "target-A",
+            "file_key": "file-A",
+            "version": "v-A",
+            "sender": "sender-S",
+            "caption": "caption",
+            "allowed": true,
+            "stage": "returned",
+            "result": false,
+            "caption_element_target": "target-A",
+            "attachment_context": "target-A",
+            "last_upload_context": null
+          }
+        },
+        "symbolic_current_targets": {
+          "sender-S": "target-A"
+        },
+        "symbolic_file_versions": {},
+        "operations": [
+          {
+            "request": "A",
+            "kind": "symbolic-export-returned",
+            "requested_target": "target-A",
+            "selector_or_element_context": null,
+            "file_key": "file-A",
+            "version": "v-A"
+          },
+          {
+            "request": "A",
+            "kind": "navigate-request-before-await",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "A",
+            "kind": "generic-chat-selector-observed",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "A",
+            "kind": "caption-typed-before-await",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A",
+            "caption": "caption"
+          },
+          {
+            "request": "A",
+            "kind": "caption-enter-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "A",
+            "kind": "generic-attach-button-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "A",
+            "kind": "local-false-or-nonreturn-boundary",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A",
+            "reason": "supplied-file-absent"
+          }
+        ],
+        "delivery_proved": false,
+        "file_bytes_read_or_uploaded_proved": false,
+        "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P6-033",
+      "evidence": "SmartAuditERP/Class/WhatsAppSender.cs:145-189",
+      "source_application_executed": false,
+      "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+    },
+    {
+      "id": "ALG7B34-16",
+      "title": "File-input handoff with no send button is not Delivered",
+      "supplied_trace": {
+        "requests": {
+          "A": {
+            "target": "target-A",
+            "file_key": "file-A",
+            "version": "v-A",
+            "sender": "sender-S",
+            "caption": "caption",
+            "allowed": true,
+            "stage": "returned",
+            "result": false,
+            "caption_element_target": "target-A",
+            "attachment_context": "target-A",
+            "last_upload_context": "target-A"
+          }
+        },
+        "symbolic_current_targets": {
+          "sender-S": "target-A"
+        },
+        "symbolic_file_versions": {
+          "file-A": "v-A"
+        },
+        "operations": [
+          {
+            "request": "A",
+            "kind": "symbolic-export-returned",
+            "requested_target": "target-A",
+            "selector_or_element_context": null,
+            "file_key": "file-A",
+            "version": "v-A"
+          },
+          {
+            "request": "A",
+            "kind": "navigate-request-before-await",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "A",
+            "kind": "generic-chat-selector-observed",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "A",
+            "kind": "caption-typed-before-await",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A",
+            "caption": "caption"
+          },
+          {
+            "request": "A",
+            "kind": "caption-enter-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "A",
+            "kind": "generic-attach-button-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "A",
+            "kind": "file-path-handed-to-input-not-upload-proof",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A",
+            "file_key": "file-A",
+            "latest_symbolic_version": "v-A",
+            "requested_version": "v-A",
+            "browser_read_bytes_proved": false
+          },
+          {
+            "request": "A",
+            "kind": "local-false-or-nonreturn-boundary",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A",
+            "reason": "supplied-send-not-ready-or-element-invalid"
+          }
+        ],
+        "delivery_proved": false,
+        "file_bytes_read_or_uploaded_proved": false,
+        "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P6-033",
+      "evidence": "SmartAuditERP/Class/WhatsAppSender.cs:181-217",
+      "source_application_executed": false,
+      "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+    },
+    {
+      "id": "ALG7B34-17",
+      "title": "Stored caption element can fail;no guaranteed retarget after capture",
+      "supplied_trace": {
+        "requests": {
+          "A": {
+            "target": "target-A",
+            "file_key": "file-A",
+            "version": "v-A",
+            "sender": "sender-S",
+            "caption": "caption",
+            "allowed": true,
+            "stage": "returned",
+            "result": false,
+            "caption_element_target": "target-A",
+            "attachment_context": null,
+            "last_upload_context": null
+          }
+        },
+        "symbolic_current_targets": {
+          "sender-S": "target-A"
+        },
+        "symbolic_file_versions": {
+          "file-A": "v-A"
+        },
+        "operations": [
+          {
+            "request": "A",
+            "kind": "symbolic-export-returned",
+            "requested_target": "target-A",
+            "selector_or_element_context": null,
+            "file_key": "file-A",
+            "version": "v-A"
+          },
+          {
+            "request": "A",
+            "kind": "navigate-request-before-await",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "A",
+            "kind": "generic-chat-selector-observed",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "A",
+            "kind": "caption-typed-before-await",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A",
+            "caption": "caption"
+          },
+          {
+            "request": "A",
+            "kind": "local-false-or-nonreturn-boundary",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A",
+            "reason": "supplied-caption-enter-not-ready-or-element-invalid"
+          }
+        ],
+        "delivery_proved": false,
+        "file_bytes_read_or_uploaded_proved": false,
+        "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P6-033",
+      "evidence": "SmartAuditERP/Class/WhatsAppSender.cs:145-155;SmartAuditERP/Class/WhatsAppSender.cs:219-228",
+      "source_application_executed": false,
+      "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+    },
+    {
+      "id": "ALG7B34-18",
+      "title": "Handles readable chooses reuse,not account or recipient proof",
+      "supplied_trace": {
+        "route": "reuse-same-sender"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P6-031",
+      "evidence": "SmartAuditERP/Class/Session.cs:9-21;SmartAuditERP/Class/WhatsAppSender.cs:230-245",
+      "source_application_executed": false,
+      "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+    },
+    {
+      "id": "ALG7B34-19",
+      "title": "Missing/invalid sender requests initialization,not authenticated success",
+      "supplied_trace": {
+        "missing": "new-sender-initialization-awaited-not-authenticated",
+        "invalid": "new-sender-initialization-awaited-not-authenticated"
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P6-031;P6-033",
+      "evidence": "SmartAuditERP/Class/Session.cs:9-30;SmartAuditERP/Class/WhatsAppSender.cs:66-105",
+      "source_application_executed": false,
+      "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+    },
+    {
+      "id": "ALG7B34-20",
+      "title": "Local true is click+delay only;caller does not assign bool",
+      "supplied_trace": {
+        "requests": {
+          "A": {
+            "target": "target-A",
+            "file_key": "file-A",
+            "version": "version-A",
+            "sender": "sender-S",
+            "caption": "caption-A",
+            "allowed": true,
+            "stage": "returned",
+            "result": true,
+            "caption_element_target": "target-B",
+            "attachment_context": "target-B",
+            "last_upload_context": "target-B"
+          },
+          "B": {
+            "target": "target-B",
+            "file_key": "file-B",
+            "version": "version-B",
+            "sender": "sender-S",
+            "caption": "caption-B",
+            "allowed": true,
+            "stage": "returned",
+            "result": true,
+            "caption_element_target": "target-B",
+            "attachment_context": "target-B",
+            "last_upload_context": "target-B"
+          }
+        },
+        "symbolic_current_targets": {
+          "sender-S": "target-B"
+        },
+        "symbolic_file_versions": {
+          "file-A": "version-A",
+          "file-B": "version-B"
+        },
+        "operations": [
+          {
+            "request": "A",
+            "kind": "symbolic-export-returned",
+            "requested_target": "target-A",
+            "selector_or_element_context": null,
+            "file_key": "file-A",
+            "version": "version-A"
+          },
+          {
+            "request": "A",
+            "kind": "navigate-request-before-await",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-A"
+          },
+          {
+            "request": "B",
+            "kind": "symbolic-export-returned",
+            "requested_target": "target-B",
+            "selector_or_element_context": null,
+            "file_key": "file-B",
+            "version": "version-B"
+          },
+          {
+            "request": "B",
+            "kind": "navigate-request-before-await",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "A",
+            "kind": "generic-chat-selector-observed",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "A",
+            "kind": "caption-typed-before-await",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B",
+            "caption": "caption-A"
+          },
+          {
+            "request": "A",
+            "kind": "caption-enter-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "A",
+            "kind": "generic-attach-button-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "A",
+            "kind": "file-path-handed-to-input-not-upload-proof",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B",
+            "file_key": "file-A",
+            "latest_symbolic_version": "version-A",
+            "requested_version": "version-A",
+            "browser_read_bytes_proved": false
+          },
+          {
+            "request": "A",
+            "kind": "generic-send-control-click-request",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B",
+            "previous_file_input_context": "target-B",
+            "delivery_proved": false
+          },
+          {
+            "request": "A",
+            "kind": "local-true-after-click-and-delay-not-delivered",
+            "requested_target": "target-A",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "B",
+            "kind": "generic-chat-selector-observed",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "B",
+            "kind": "caption-typed-before-await",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B",
+            "caption": "caption-B"
+          },
+          {
+            "request": "B",
+            "kind": "caption-enter-request",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "B",
+            "kind": "generic-attach-button-request",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          },
+          {
+            "request": "B",
+            "kind": "file-path-handed-to-input-not-upload-proof",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B",
+            "file_key": "file-B",
+            "latest_symbolic_version": "version-B",
+            "requested_version": "version-B",
+            "browser_read_bytes_proved": false
+          },
+          {
+            "request": "B",
+            "kind": "generic-send-control-click-request",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B",
+            "previous_file_input_context": "target-B",
+            "delivery_proved": false
+          },
+          {
+            "request": "B",
+            "kind": "local-true-after-click-and-delay-not-delivered",
+            "requested_target": "target-B",
+            "selector_or_element_context": "target-B"
+          }
+        ],
+        "delivery_proved": false,
+        "file_bytes_read_or_uploaded_proved": false,
+        "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+      },
+      "illustration_assertions_passed": true,
+      "finding_ids": "P6-033",
+      "evidence": "SmartAuditERP/Class/WhatsAppSender.cs:210-228;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3185-3187",
+      "source_application_executed": false,
+      "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+    }
+  ],
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B34-01",
+      "title": "XAML names the WhatsApp click entry",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml:1187-1191",
+      "finding_ids": "P6-033",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation of exactly this selected slice;not compilation,SDK behaviour,DOM readiness,whole-callgraph protection or runtime acceptance."
+    },
+    {
+      "id": "ST7B34-02",
+      "title": "Outer async-void delegates to inner async-void",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3124-3128",
+      "finding_ids": "P6-033",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation of exactly this selected slice;not compilation,SDK behaviour,DOM readiness,whole-callgraph protection or runtime acceptance."
+    },
+    {
+      "id": "ST7B34-03",
+      "title": "Item-count guard precedes mapping;not a saved-state predicate proof",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3128-3141",
+      "finding_ids": "P6-033",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation of exactly this selected slice;not compilation,SDK behaviour,DOM readiness,whole-callgraph protection or runtime acceptance."
+    },
+    {
+      "id": "ST7B34-04",
+      "title": "Customer/mobile lookup and explicit Read guard present",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3150-3165",
+      "finding_ids": "P6-032;P6-033",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation of exactly this selected slice;not compilation,SDK behaviour,DOM readiness,whole-callgraph protection or runtime acceptance."
+    },
+    {
+      "id": "ST7B34-05",
+      "title": "Invoice-number-only path and regenerate before awaits",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3166-3177",
+      "finding_ids": "P6-033",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation of exactly this selected slice;not compilation,SDK behaviour,DOM readiness,whole-callgraph protection or runtime acceptance."
+    },
+    {
+      "id": "ST7B34-06",
+      "title": "Locals captured before two awaits;bool not assigned in selected caller",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3179-3187",
+      "finding_ids": "P6-033",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation of exactly this selected slice;not compilation,SDK behaviour,DOM readiness,whole-callgraph protection or runtime acceptance."
+    },
+    {
+      "id": "ST7B34-07",
+      "title": "Static sender reused by handles-only check",
+      "evidence": "SmartAuditERP/Class/Session.cs:9-21",
+      "finding_ids": "P6-031;P6-033",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation of exactly this selected slice;not compilation,SDK behaviour,DOM readiness,whole-callgraph protection or runtime acceptance."
+    },
+    {
+      "id": "ST7B34-08",
+      "title": "Initialization catch reports then returns without typed authentication outcome",
+      "evidence": "SmartAuditERP/Class/Session.cs:14-30",
+      "finding_ids": "P6-031;P6-033",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation of exactly this selected slice;not compilation,SDK behaviour,DOM readiness,whole-callgraph protection or runtime acceptance."
+    },
+    {
+      "id": "ST7B34-09",
+      "title": "Sender stores driver and wait fields,not request-local arguments",
+      "evidence": "SmartAuditERP/Class/WhatsAppSender.cs:16-21",
+      "finding_ids": "P6-031;P6-033",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation of exactly this selected slice;not compilation,SDK behaviour,DOM readiness,whole-callgraph protection or runtime acceptance."
+    },
+    {
+      "id": "ST7B34-10",
+      "title": "Navigate precedes first asynchronous delay",
+      "evidence": "SmartAuditERP/Class/WhatsAppSender.cs:107-118",
+      "finding_ids": "P6-033",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation of exactly this selected slice;not compilation,SDK behaviour,DOM readiness,whole-callgraph protection or runtime acceptance."
+    },
+    {
+      "id": "ST7B34-11",
+      "title": "Chat readiness selector does not include recipient text",
+      "evidence": "SmartAuditERP/Class/WhatsAppSender.cs:119-144",
+      "finding_ids": "P6-033",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation of exactly this selected slice;not compilation,SDK behaviour,DOM readiness,whole-callgraph protection or runtime acceptance."
+    },
+    {
+      "id": "ST7B34-12",
+      "title": "Caption element is captured before delayed Enter",
+      "evidence": "SmartAuditERP/Class/WhatsAppSender.cs:145-155",
+      "finding_ids": "P6-033",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation of exactly this selected slice;not compilation,SDK behaviour,DOM readiness,whole-callgraph protection or runtime acceptance."
+    },
+    {
+      "id": "ST7B34-13",
+      "title": "Attachment lookup uses current driver generic button",
+      "evidence": "SmartAuditERP/Class/WhatsAppSender.cs:156-180",
+      "finding_ids": "P6-033",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation of exactly this selected slice;not compilation,SDK behaviour,DOM readiness,whole-callgraph protection or runtime acceptance."
+    },
+    {
+      "id": "ST7B34-14",
+      "title": "File existence check follows button delay,not immutable content proof",
+      "evidence": "SmartAuditERP/Class/WhatsAppSender.cs:181-189",
+      "finding_ids": "P6-033",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation of exactly this selected slice;not compilation,SDK behaviour,DOM readiness,whole-callgraph protection or runtime acceptance."
+    },
+    {
+      "id": "ST7B34-15",
+      "title": "File-input selector is generic after delay",
+      "evidence": "SmartAuditERP/Class/WhatsAppSender.cs:181-189",
+      "finding_ids": "P6-033",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation of exactly this selected slice;not compilation,SDK behaviour,DOM readiness,whole-callgraph protection or runtime acceptance."
+    },
+    {
+      "id": "ST7B34-16",
+      "title": "Send selector is generic with later true after click+delay",
+      "evidence": "SmartAuditERP/Class/WhatsAppSender.cs:190-217",
+      "finding_ids": "P6-033",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation of exactly this selected slice;not compilation,SDK behaviour,DOM readiness,whole-callgraph protection or runtime acceptance."
+    },
+    {
+      "id": "ST7B34-17",
+      "title": "Outer catch returns false;no blanket silence claim",
+      "evidence": "SmartAuditERP/Class/WhatsAppSender.cs:219-228",
+      "finding_ids": "P6-033",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation of exactly this selected slice;not compilation,SDK behaviour,DOM readiness,whole-callgraph protection or runtime acceptance."
+    },
+    {
+      "id": "ST7B34-18",
+      "title": "IsSessionValid reads handles,not logged-in account",
+      "evidence": "SmartAuditERP/Class/WhatsAppSender.cs:230-245",
+      "finding_ids": "P6-031",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation of exactly this selected slice;not compilation,SDK behaviour,DOM readiness,whole-callgraph protection or runtime acceptance."
+    },
+    {
+      "id": "ST7B34-19",
+      "title": "Selected sender body contains no local single-flight primitive",
+      "evidence": "SmartAuditERP/Class/WhatsAppSender.cs:107-228",
+      "finding_ids": "P6-033",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation of exactly this selected slice;not compilation,SDK behaviour,DOM readiness,whole-callgraph protection or runtime acceptance."
+    },
+    {
+      "id": "ST7B34-20",
+      "title": "Email comparison regenerates PDF before attaching and synchronous Send",
+      "evidence": "SmartAuditERP/Class/Print.cs:1193-1229",
+      "finding_ids": "P6-034",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation of exactly this selected slice;not compilation,SDK behaviour,DOM readiness,whole-callgraph protection or runtime acceptance."
+    }
+  ],
+  "errors": [],
+  "limit": "Supplied symbolic schedule/targets/DOM readiness/element validity and return flags only;not C# Tasks/WPF/Selenium/browser or PDF/network execution. Path/version tokens do not prove bytes uploaded,provider acceptance,delivery,save,financial loss or a repaired system."
+}

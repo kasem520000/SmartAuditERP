@@ -1,0 +1,20 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "observed_during": "evidence/current-B34-direct-07B34.json",
+  "retained_raw_stderr": "evidence/current-B34-direct-07B34.stderr.txt",
+  "retained_stderr_bytes": 638,
+  "retained_stderr_sha256": "9ae4b52b1e7632190ae47f70d136530b0b26346eaf1a0ed25656da60fc1df934",
+  "tests_reported": 52,
+  "process_exit_code": 0,
+  "warning_kind": "ResourceWarning: unclosed file",
+  "source": "tools/test_messaging_request_audit_validator.py:352",
+  "cause": "New documentary test47 materializes csv.DictReader from a bare Path.open without an explicit context manager;not an ERP/WPF/browser resource observation.",
+  "actual_warning_not_suppressed": true,
+  "not_claimed_warning_free": true,
+  "tool_sources_not_changed_after39_capture_except_declared_single_helper_pin": true,
+  "reason_current_bytes_retained": "The actual39 source vector and inverse-pin proof are already consumed evidence. This warning is preserved and explicitly disclosed rather than silently editing captured127 sources, suppressing warnings, skipping tests or retrofitting hashes.",
+  "future_tooling_followup_not_application_remediation": "In a future explicitly versioned audit-tool delivery, use a local with-open context manager and rerun affected documentary checks against its own declared source vector;do not overwrite this capture.",
+  "application_or_provider_resource_leak_proved": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0
+}

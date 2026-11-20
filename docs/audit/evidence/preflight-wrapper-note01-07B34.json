@@ -1,0 +1,31 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "raw_environment_clock_observed_utc": "2026-11-20T21:17:04.720563+00:00",
+  "retained_first_receipt": "evidence/preflight01-receipt-07B34.json",
+  "retained_first_receipt_sha256": "3859c76463bbf721a812e79dd3bda3ff113415cd9f6ac445a109f01146159b3b",
+  "retained_first_stdout": "evidence/checks-07B34-preflight01.json",
+  "retained_first_stdout_sha256": "fc924e870ee7f334675635e010627fb9662de2e70c8517ded50ed5b9b3222cbc",
+  "first_actual_CLI_process_exit_code": 0,
+  "first_actual_CLI_cases": 1190,
+  "first_actual_CLI_suites": 35,
+  "first_actual_CLI_validation_errors": [],
+  "first_actual_CLI_outer_stderr_bytes": 0,
+  "first_wrapper_exit_code": 1,
+  "first_wrapper_failed_check_index_one_based": 8,
+  "first_wrapper_all_acceptance_checks_passed": false,
+  "cause": "The NEW scratch capture wrapper incorrectly hard-coded113 for the CURRENT reported subset.113 is B33 reported subset;four B34 tool entries expand the CURRENT subset to117. The independent complete execution inventory is127. All117 already matched current sources and all127 matched the actual glob.",
+  "independent_expected_current_subset_source": "Exact key union of protected evidence/checks-07B33.json validation.current_audit_checker_source_sha256_not_original_application and four new B34 tool paths;not inferred from the failing value alone.",
+  "protected_B33_reported_subset_count": 113,
+  "four_new_tool_paths": [
+    "tools/check_messaging_request_witnesses.py",
+    "tools/run_historical_output_route_tests_07B34.py",
+    "tools/test_messaging_request_audit_validator.py",
+    "tools/validate_messaging_request_part.py"
+  ],
+  "independently_derived_current_reported_subset_count": 117,
+  "actual_full_execution_tool_count": 127,
+  "correction_scope": "NEW wrapper02 only. No application/checker/test/dispatcher/archived stream/source vector edits,skips,rebaseline,warnings suppression or retrospective receipt/hash changes.01 stays failed at wrapper level despite its passing CLI.02 is a new independently captured CLI process,not copied stdout.",
+  "new_attempt_not_yet_executed": true,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0
+}

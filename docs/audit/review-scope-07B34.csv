@@ -1,0 +1,6 @@
+path,ranges,review_state,focus
+SmartAuditERP/Form_WPF/frmInvSale.xaml.cs,2581-2595;2986-3033;3124-3199;3201-3208,bounded-request-await-and-context-not-whole-file-or-runtime,ملكية طلب واتساب وسياق المحادثة والمرفق عبر await؛التهيئة والنتيجة وضوابط البريد والطباعة سياق محدود،لا حصر caller أو قبول جهاز.
+SmartAuditERP/Form_WPF/frmInvSale.xaml,1187-1191,bounded-request-await-and-context-not-whole-file-or-runtime,ملكية طلب واتساب وسياق المحادثة والمرفق عبر await؛التهيئة والنتيجة وضوابط البريد والطباعة سياق محدود،لا حصر caller أو قبول جهاز.
+SmartAuditERP/Class/Session.cs,9-30,bounded-request-await-and-context-not-whole-file-or-runtime,ملكية طلب واتساب وسياق المحادثة والمرفق عبر await؛التهيئة والنتيجة وضوابط البريد والطباعة سياق محدود،لا حصر caller أو قبول جهاز.
+SmartAuditERP/Class/WhatsAppSender.cs,16-63;66-105;107-228;230-245;247-261;263-266,bounded-request-await-and-context-not-whole-file-or-runtime,ملكية طلب واتساب وسياق المحادثة والمرفق عبر await؛التهيئة والنتيجة وضوابط البريد والطباعة سياق محدود،لا حصر caller أو قبول جهاز.
+SmartAuditERP/Class/Print.cs,1193-1229,bounded-request-await-and-context-not-whole-file-or-runtime,ملكية طلب واتساب وسياق المحادثة والمرفق عبر await؛التهيئة والنتيجة وضوابط البريد والطباعة سياق محدود،لا حصر caller أو قبول جهاز.

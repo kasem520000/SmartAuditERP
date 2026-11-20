@@ -1,0 +1,27 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "raw_environment_clock_observed_utc": "2026-11-20T21:14:17.966795+00:00",
+  "check": "new-document-static-citation-and-link-preflight-not-integrated-CLI",
+  "errors": [],
+  "existing_local_links_checked": 930,
+  "only_allowed_pending_stdout_references": [
+    "PHASE-07B34.md",
+    "PHASE-07B34.md",
+    "WHATSAPP-REQUEST-CONTRACTS-07B34.md",
+    "VALIDATION-07B34.md",
+    "VALIDATION-07B34.md",
+    "PHASE-07-REMAINING-07B34.md",
+    "DATE-IDENTITY-NOTE-07B34.md",
+    "README.md",
+    "README.md",
+    "PLAN.md",
+    "PLAN.md",
+    "IMPROVEMENTS.md",
+    "IMPROVEMENTS.md"
+  ],
+  "protected1018_exact": true,
+  "tools127_source_vector_and_single_pin_exact": true,
+  "all335_entire_raw336_unchanged": true,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0
+}
