@@ -2527,6 +2527,16 @@ namespace SmartAuditERP.Form_WPF
                         Invoic.Paid = 0;
                         Invoic.Remainder = 0;
 
+                        // Repair R-043 (audit finding P4-002): holding a basket flipped only the head's
+                        // ProcType and zeroed payment amounts; its lines kept their sale impact (stock
+                        // OUT) and were persisted unchanged, so merely parking an order still moved
+                        // inventory even though the posting path already avoids held documents. Mirror
+                        // frmInvSale's quotation flow (ProcType 4), which sets every line's impact to 0:
+                        // no movement while held. Deeper state-machine work (atomic transitions that
+                        // rederive all impacts before any save) stays recorded as barrier BLK-P4-019-area.
+                        foreach (var item in Invoic.InvoiceItems)
+                            item.InvertoryImpact = 0;
+
                         SaveAndPrint();
 
                         HoldList[i] = Invoic.InvoiceNo;
@@ -2631,7 +2641,14 @@ namespace SmartAuditERP.Form_WPF
                 InvoiceOper.InsertFromInv(ref Invoic, sourceType);
                 Invoic.ProcType = ProcType;
                 Invoic.InvNote = "";
-                Invoic.InvertoryImpact = 2;
+                // Repair R-042 (audit finding P4-001): this path hardcoded impact 2 (stock OUT)
+                // even when the POS return button loaded a previous sale for reversal (ProcType 2),
+                // so the returned lines left stock again instead of re-entering it - a two-unit
+                // swing per unit against the financial branch that already behaves as a return.
+                // The house convention is explicit in frmInvSale.InsertLinkedReturn(2, 1): a linked
+                // return carries impact 1 (IN); only a genuine sale keeps impact 2. Line propagation
+                // just below now carries the correct direction with no other change.
+                Invoic.InvertoryImpact = (ProcType == 2) ? 1 : 2;
                 Invoic.PayATM = 0;
                 Invoic.Paycash = 0;
                 Invoic.Paid = 0;
