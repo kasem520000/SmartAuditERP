@@ -2675,8 +2675,21 @@ namespace SmartAuditERP.Form_WPF
                 !string.Equals(frm.InvGlobalID, "-1",
                     StringComparison.OrdinalIgnoreCase))
             {
+                // Repair R-077 (audit finding P7-157): the search query admits inv_type 20 beside
+                // the requested type, and this lookup filtered on GlobalID + branch only, so a
+                // document outside the purchase set could reach this editor (the reader takes
+                // InvoiceType from the row it is handed). Reject it in the open, and re-assert the
+                // requested type the way this form's own navigation commands already do.
+                if (frm.SelectedInvType > 0 && frm.SelectedInvType != this.InvType)
+                {
+                    DXMessageBox.Show("المستند المحدد ليس من نوع المستندات التي تفتحها هذه الشاشة",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
                 this.Navigate(
                     $"select * from Inv where branch={MainClass.BranchNo} " +
+                    $"and inv_type={this.InvType} " +
                     $"and InvGlobalID=N'{frm.InvGlobalID}'");
             }
         }

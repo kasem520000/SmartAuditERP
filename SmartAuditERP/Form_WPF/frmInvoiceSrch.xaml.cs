@@ -29,6 +29,9 @@ namespace SmartAuditERP.Form_WPF
         public int    InvType;
         public bool   ISDone;
         public int    Inv_typeCridet;
+        // Repair R-077 (audit finding P7-157): the inv_type of the row the caller accepted;
+        // -1 while nothing was accepted.
+        public int    SelectedInvType;
 
         #endregion
 
@@ -63,6 +66,7 @@ namespace SmartAuditERP.Form_WPF
             InvGlobalID  = "-1";
             InvType      = 6;
             ISDone       = false;
+            SelectedInvType = -1;
             _masterTable = new DataTable();
             _rowIndex    = -1;
             _displayRows = new ObservableCollection<InvoiceSrchRow>();
@@ -117,6 +121,7 @@ namespace SmartAuditERP.Form_WPF
                         InvGlobalID = row.InvGlobalID;
                         ProcType    = row.ProcType;
                         PayType     = row.PayType;
+                        SelectedInvType = row.SourceInvType;
                         Close();
                     }
                     catch { }
@@ -320,6 +325,7 @@ namespace SmartAuditERP.Form_WPF
                 InvGlobalID = row.InvGlobalID;
                 ProcType    = row.ProcType;
                 PayType     = row.PayType;
+                SelectedInvType = row.SourceInvType;
                 Hide();
             }
             catch (Exception ex)
@@ -344,6 +350,7 @@ namespace SmartAuditERP.Form_WPF
             InvGlobalID = row.InvGlobalID;
             ProcType    = row.ProcType;
             PayType     = row.PayType;
+            SelectedInvType = row.SourceInvType;
             ISDone      = true;
             Hide();
         }
@@ -400,6 +407,7 @@ namespace SmartAuditERP.Form_WPF
                 _loadQuery = $@"
                     SELECT inv.InvGlobalID,
                            inv.proc_type,
+                           inv.inv_type      AS SourceInvType,
                            inv.id             AS id,
                            inv.Reff_No        AS ReffNo,
                            inv.tot_net        AS Net,
@@ -430,6 +438,7 @@ namespace SmartAuditERP.Form_WPF
                 _loadQuery = $@"
                     SELECT inv.InvGlobalID,
                            inv.proc_type,
+                           inv.inv_type      AS SourceInvType,
                            inv.id             AS id,
                            inv.Reff_No        AS ReffNo,
                            inv.tot_net        AS Net,
@@ -624,6 +633,7 @@ namespace SmartAuditERP.Form_WPF
                 {
                     InvGlobalID      = rv["InvGlobalID"]?.ToString()      ?? "",
                     ProcType         = SafeInt(rv["proc_type"]),
+                    SourceInvType    = SafeInt(rv["SourceInvType"]),
                     Id               = SafeInt(rv["id"]),
                     ReffNo           = rv["ReffNo"]?.ToString()           ?? "",
                     Net              = SafeDouble(rv["Net"]),
@@ -725,6 +735,9 @@ namespace SmartAuditERP.Form_WPF
     {
         public string   InvGlobalID        { get; set; }
         public int      ProcType           { get; set; }
+        // Repair R-077 (audit finding P7-157): the source document type, so a consumer can tell
+        // whether the picked row is inside the set it asked for.
+        public int      SourceInvType      { get; set; }
         public int      Id                 { get; set; }
         public string   ReffNo             { get; set; }
         public double   Net                { get; set; }
