@@ -2123,10 +2123,11 @@ namespace SmartAuditERP.Form_WPF
                 return;
             }
 
-            print.defPrinter = "Microsoft Print to PDF";
+            // Repair R-103 (audit finding P7-163): the PDF destination belongs
+            // to this request; do not replace the printer used by later requests.
             print.Printing(type, print.BindToData(inv),
                 print.RptUrl, print.RptName,
-                print.defPrinter, print.kitchenprinter, print.PrintNo);
+                "Microsoft Print to PDF", print.kitchenprinter, print.PrintNo);
         }
 
         #endregion
