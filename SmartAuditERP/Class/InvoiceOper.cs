@@ -2931,8 +2931,21 @@ namespace SmartAuditERP
 					}
 				}
 			}
-			entryOper.SyncEntry(Eny, IsNew);
-			return result;
+			// Repair R-054 (audit finding P5-029): observe the journal sync instead of fire-and-forget, and
+			// return what actually happened. Every caller used to receive the untouched default(false)
+			// even right after the invoice had been marked Sync=1; entry-sync failures are journaled via
+			// ProjectData rather than thrown, so they can no longer mask or corrupt the invoice outcome.
+			bool invoiceSynced = list.Count > 0;
+			try
+			{
+				await entryOper.SyncEntry(Eny, IsNew);
+			}
+			catch (Exception projectError2)
+			{
+				ProjectData.SetProjectError(projectError2);
+				ProjectData.ClearProjectError();
+			}
+			return invoiceSynced;
 		}
 
 		public static int OrderNo(int InvType, int ProcType)

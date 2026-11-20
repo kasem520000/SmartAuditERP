@@ -802,9 +802,17 @@ namespace SmartAuditERP
                     JsonConvert.SerializeObject(payload),
                     Encoding.UTF8, "application/json");
 
-                await httpClient.PostAsync(
+                // Repair R-054 (audit finding P5-029): only a successful HTTP status counts as delivery;
+                // previously ANY non-throwing response read as success regardless of the status code.
+                var httpResponse = await httpClient.PostAsync(
                     $"{APIUrl}/api/Customers/set-last-customers",
                     content);
+                if (!httpResponse.IsSuccessStatusCode)
+                {
+                    System.Diagnostics.Debug.WriteLine(
+                        $"SendLastCodeToApiAsync rejected by server: {(int)httpResponse.StatusCode}");
+                    return false;
+                }
 
                 return true;
             }
