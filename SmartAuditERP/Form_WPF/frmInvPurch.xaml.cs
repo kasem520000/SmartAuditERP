@@ -2583,13 +2583,25 @@ namespace SmartAuditERP.Form_WPF
             var frm = new frmImportInvoice();
             frm.ShowDialog();
 
-            if (frm.isDone &&
+            // Repair R-086 (audit finding P7-160): the acceptance test guarded Navigate only, so a
+            // normal return from the dialog without accepting still ran the whole conversion tail -
+            // it cleared the note, asked the numbering helper for a new invoice number, marked the
+            // header new and rebound the editor. A cancelled import now leaves the current invoice
+            // exactly as it stood.
+            bool accepted = frm.isDone &&
                 !string.Equals(frm.InvGID, "-1",
-                    StringComparison.OrdinalIgnoreCase))
-            {
-                this.Navigate(
-                    $"select * from Inv where InvGlobalID=N'{frm.InvGID}'");
-            }
+                    StringComparison.OrdinalIgnoreCase);
+            if (!accepted) return;
+
+            // Repair R-086 (audit finding P7-159, evidence appended in 7B30): the accepted import
+            // reached Navigate - and therefore CLR, which replaces the editor's invoice reference -
+            // without the standing leave-decision, exactly like the accepted search R-081 routed
+            // through the guard. Same guard, same place, same meaning: true means the user chose to
+            // stay with the draft, so nothing is converted either.
+            if (this.CheckBeforeClear()) return;
+
+            this.Navigate(
+                $"select * from Inv where InvGlobalID=N'{frm.InvGID}'");
 
             this.Invoic.InvoiceType = (InvoiceType)this.InvType;
             this.Invoic.ProcType    = this.ProcType;
