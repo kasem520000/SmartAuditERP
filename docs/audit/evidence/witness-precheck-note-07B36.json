@@ -1,0 +1,14 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "environment_clock_observed_utc": "2026-11-20T22:23:46.835408+00:00",
+  "date_semantics": "The session-supplied current reference is2026-11-16 UTC;the uncalibrated sandbox reports raw2026-11-20 timestamps. These disagree and neither raw clock observations nor passing frozen assertions establish civil-date calibration. Preserve both verbatim and do not relabel consumed evidence or declare2026-11-20 authoritative from the raw clock alone.",
+  "kind": "pre-author-in-memory-build-failure-not-unit-suite-or-ERP",
+  "process_exit_code": 1,
+  "error": "LookupError: unknown encoding: utf8-sig",
+  "helper_sha256_before_correction": "ad54aba2d31c4e9fd3f6deaa57e9daafd2cba2f30573b04b433518df39cb1a53",
+  "location": "build first source read;before final witness output or formal table generation",
+  "intended_correction": "Use canonical Python codec utf-8-sig;no source/assertion-boundary change",
+  "application_source_or_protected_artifacts_changed": false,
+  "validator_or_historical_tests_relaxed": false,
+  "official_witness_file_written": false
+}
