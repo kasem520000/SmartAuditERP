@@ -193,6 +193,11 @@ check('salary, PM, import and report guards remain partial',
                            ('P7-147', 'R-223'), ('P7-065', 'R-224'), ('P7-082', 'R-225'),
                            ('P7-088', 'R-226'), ('P7-117', 'R-137; R-227')]))
 
+check('scale, tax, requirement and fingerprint results remain partial',
+      all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P7-137', 'R-228'), ('P7-136', 'R-229'), ('P7-125', 'R-230'),
+                           ('P7-021', 'R-231'), ('P7-009', 'R-232')]))
+
 owner = (ROOT / 'docs/repairs/OWNER_DECISIONS.md').read_text(encoding='utf-8')
 sections = {
     'deferred_blocked': owner.split('## أولاً:', 1)[1].split('## ثانياً:', 1)[0],
