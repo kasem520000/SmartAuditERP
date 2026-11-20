@@ -843,19 +843,15 @@ namespace SmartAuditERP.Form_WPF
                     dt2 = new DataTable();
                     adp2.Fill(dt2);
 
-                    double netQty = 0, netCost = 0, totalQtyForCost = 0;
-                    double lastUnitCost = 0;
-
+                    double netQty = 0, netCost = 0;
                     for (int j = 0; j < dt2.Rows.Count; j++)
                     {
                         double.TryParse(dt2.Rows[j]["val"].ToString(), out double rowQty);
                         netQty += rowQty;
-                        totalQtyForCost += rowQty;
                         DateTime rowDate = Convert.ToDateTime(dt2.Rows[j]["date"]);
-                        lastUnitCost = CalcUnitCost(dt2.Rows[j][0], rowDate);
+                        double unitCost = CalcUnitCost(dt2.Rows[j][0], rowDate);
+                        netCost += Math.Round(rowQty * unitCost, 4);
                     }
-
-                    netCost = Math.Round(totalQtyForCost * lastUnitCost, 4);
 
                     double netProfit = netTotal - netCost;
                     double profitRatio = netCost != 0

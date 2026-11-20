@@ -406,6 +406,15 @@ namespace SmartAuditERP.Form_WPF
                         double totalDiscount =
                             Convert.ToDouble(invRow["minus"]) + _invDiscount;
                         double profit = invTotal - _invAvrgCost;
+                        // Match the same unrounded value used for the displayed row
+                        // and colour, rather than the unrelated stored InvProfit.
+                        if ((rbNegativeProfit.IsChecked == true && profit >= 0) ||
+                            (rbPositiveProfit.IsChecked == true && profit <= 0) ||
+                            (rbZeroProfit.IsChecked == true && profit != 0))
+                        {
+                            Dispatcher.Invoke(() => ProgressBar1.Value++);
+                            continue;
+                        }
                         string profitRatio = "0";
 
                         if (_invAvrgCost > 0)
@@ -766,14 +775,6 @@ namespace SmartAuditERP.Form_WPF
                 else if (cmbType.SelectedIndex == 0)
                     clause += "inv.pay_type>0 AND ";
             }
-
-            // الأرباح
-            if (rbNegativeProfit.IsChecked == true)
-                clause += "inv.Invprofit<0 AND ";
-            else if (rbPositiveProfit.IsChecked == true)
-                clause += "inv.Invprofit>0 AND ";
-            else if (rbZeroProfit.IsChecked == true)
-                clause += "inv.Invprofit=0 AND ";
 
             // التاريخ
             if (ckTotalPeriod.IsChecked != true)

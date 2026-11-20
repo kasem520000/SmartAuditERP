@@ -25,7 +25,7 @@ profitx = read('Form_WPF/frmRptItemsProfit.xaml'); ET.fromstring(profitx)
 check('cost total labelled consistently in grid and CSV', 'Header="إجمالي التكلفة"' in profitx and '"إجمالي التكلفة", "صافي البيع"' in profit and 'DgvAvgCost     = salesTotalCost' in profit)
 
 tax = read('Form_WPF/frmTaxRptPeriod.xaml.cs')
-def totals_contract(s): return 'netSaleVal + salesOutTaxVal + receiptTotal + rentNet' in s and 'netPurchVal + purchOutTaxVal + expTotal' in s and 'taxNetSaleVal + receiptVAT + rentVAT' in s and 'taxNetPurchVal + expVAT' in s
+def totals_contract(s): return 'netSaleVal + salesOutTaxVal + receiptTotal + rentBase' in s and 'netPurchVal + purchOutTaxVal + expTotal' in s and 'taxNetSaleVal + receiptVAT + rentVAT' in s and 'taxNetPurchVal + expVAT' in s
 check('non-taxed base included once in each base total', totals_contract(tax))
 check('omission mutant rejected', not totals_contract(tax.replace(' + salesOutTaxVal','',1)))
 for taxed, exempt, other, expected in [(100,20,5,125),(100,-30,0,70),(0,20,0,20)]: check('tax base model '+str((taxed,exempt)), taxed+exempt+other==expected)

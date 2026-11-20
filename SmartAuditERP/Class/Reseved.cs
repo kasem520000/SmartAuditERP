@@ -130,6 +130,13 @@ namespace SmartAuditERP
 
 		public bool SaveReceipt1(resvd rs, Entry Entr, bool IsNew)
 		{
+			// Fail closed before any salary write when entry binding did not succeed.
+			// This is a safety stop, not an atomic payroll posting implementation.
+			if (Entr == null || Entr.Accounts == null || Entr.Accounts.Count == 0)
+			{
+				MessageBox.Show("تعذر إنشاء قيد الاستحقاق. لم يبدأ حفظ صف الراتب الحالي.", "", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+				return false;
+			}
 			new SqlCommand();
 			new SqlDataAdapter();
 			DataTable dataTable;

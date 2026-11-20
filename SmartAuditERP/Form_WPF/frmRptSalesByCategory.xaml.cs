@@ -224,7 +224,7 @@ namespace SmartAuditERP.Form_WPF
                     "SUM(InvoiceDiscount1 - InvoiceDiscount2) AS InvDiscount, " +
                     "ItemId, CategoryId " +
                     "FROM (" +
-                    "SELECT SUM(ROUND((ItemPriceWithoutVAT * minus / " +
+                    "SELECT SUM(ROUND((val1 * ItemPriceWithoutVAT * minus / " +
                     "NULLIF(InvSum,0)),2)) AS InvoiceDiscount1, " +
                     "0 AS InvoiceDiscount2, SUM(val) AS stockin, " +
                     "0 AS stockout, " +
@@ -238,7 +238,7 @@ namespace SmartAuditERP.Form_WPF
                     $"AND inv.IS_Deleted=0 {condWhere}{condItems} " +
                     "GROUP BY Items.id, Items.name, Items.code, Items.group_id " +
                     "UNION ALL " +
-                    "SELECT 0, SUM(ROUND((ItemPriceWithoutVAT * minus / " +
+                    "SELECT 0, SUM(ROUND((val1 * ItemPriceWithoutVAT * minus / " +
                     "NULLIF(InvSum,0)),2)), 0, SUM(val), 0, " +
                     "SUM((val1 * ItemPriceWithoutVAT) - inv_sub.discount), " +
                     "Items.id, Items.group_id, Items.code, Items.name " +

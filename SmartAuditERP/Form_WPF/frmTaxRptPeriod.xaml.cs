@@ -572,9 +572,13 @@ namespace SmartAuditERP.Form_WPF
                     }
                 }
 
+                // The rental writer records tot_net inclusive of its stored tax.
+                // Keep the tax as a separate row; returns were already netted above.
+                double rentBase = rentNet - rentVAT;
+
                 // ── Sales totals ────────────────────────────────────────────
                 // R-148 (P7-044): the displayed non-taxed row belongs in the base total too.
-                double netSales = Math.Round(netSaleVal + salesOutTaxVal + receiptTotal + rentNet, 2);
+                double netSales = Math.Round(netSaleVal + salesOutTaxVal + receiptTotal + rentBase, 2);
                 double netSalesTax = Math.Round(taxNetSaleVal + receiptVAT + rentVAT, 2);
 
                 // ── Purchase invoices ───────────────────────────────────────
@@ -676,7 +680,7 @@ namespace SmartAuditERP.Form_WPF
                 SetCellText(txtSalesNoTax, salesNoTaxVal.ToString());
                 SetCellText(txtReceipts, receiptTotal.ToString());
                 SetCellText(txtReceiptsVAT, receiptVAT.ToString());
-                SetCellText(txtIncomes, rentNet.ToString());
+                SetCellText(txtIncomes, rentBase.ToString());
                 SetCellText(txtIncomesVAT, rentVAT.ToString());
                 SetCellText(txtNetSales, netSales.ToString());
                 SetCellText(txtNetSaleTax, netSalesTax.ToString());

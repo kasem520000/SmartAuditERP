@@ -475,7 +475,12 @@ namespace SmartAuditERP.Form_WPF
                         Sync          = false.ToString()
                     };
 
-                    reseved.SaveReceipt1(resvd, reseved.BindreservedToEntry(resvd, selectedRows), IsNew);
+                    if (!reseved.SaveReceipt1(resvd, reseved.BindreservedToEntry(resvd, selectedRows), IsNew))
+                    {
+                        DXMessageBox.Show("لم يكتمل الحفظ. قد تكون بعض البيانات قد حُفظت؛ راجع المستند والقيد قبل إعادة المحاولة.",
+                            "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
                 }
 
                 var savedMsg = new frmSavedMsg();

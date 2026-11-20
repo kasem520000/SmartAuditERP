@@ -923,7 +923,7 @@ namespace SmartAuditERP.Form_WPF
             try
             {
                 var invoiceOper = new InvoiceOper();
-                var inv = BindToInvoice();
+                var inv = BindToInvoice(persistSerials: true);
                 var entry = ((ProcType == 1 || ProcType == 2))
                     ? invoiceOper.BindToEntry(inv)
                     : null;
@@ -1006,7 +1006,7 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
-        private Invoice BindToInvoice()
+        private Invoice BindToInvoice(bool persistSerials = false)
         {
             double paycash = 0;
             double payATM = 0;
@@ -1199,7 +1199,7 @@ namespace SmartAuditERP.Form_WPF
                 // Serial numbers
                 try
                 {
-                    if (dtSerialNo.Rows.Count > 0)
+                    if (persistSerials && dtSerialNo.Rows.Count > 0)
                     {
                         if (conn.State != ConnectionState.Open)
                             conn.Open();
