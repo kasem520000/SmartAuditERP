@@ -2611,14 +2611,29 @@ namespace SmartAuditERP.Form_WPF
                 if (!(dgvItems.SelectedItem is InvoiceItemRowModel row))
                     return;
 
+                // Repair R-112 (P7-130): the party-specific command must not
+                // fall back to all parties; use the same kind as the parent lookup.
+                int clientId = GetSelectedClientId();
+                if (row.ItemId <= 0 || clientId <= 0 || (InvType != 4 && InvType != 5) ||
+                    !(cmbClient.SelectedItem is DataRowView selectedParty) ||
+                    !string.Equals((cmbClient.Text ?? "").Trim(),
+                        Convert.ToString(selectedParty["name"]).Trim(), StringComparison.Ordinal))
+                {
+                    MessageBox.Show("يرجى اختيار مادة وطرف صالحين لنوع المستند.",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                int clientType = InvType == 5 ? 1 : 2;
                 frmRptItemsActivityDetailed reportWindow = new frmRptItemsActivityDetailed();
                 MainClass.ApplyPermissionToForm(reportWindow);
                 MainClass.DoApplyUserSett(reportWindow);
                 reportWindow.Show();
-                reportWindow.LastProcess(row.ItemId, row.StoreId, -1, 1);
+                reportWindow.LastProcess(row.ItemId, row.StoreId, clientId, clientType);
             }
-            catch
+            catch (Exception ex)
             {
+                MessageBox.Show("تعذر عرض حركة الطرف: " + ex.Message,
+                    "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

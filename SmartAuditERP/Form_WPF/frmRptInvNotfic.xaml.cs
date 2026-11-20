@@ -438,20 +438,13 @@ namespace SmartAuditERP.Form_WPF
                             // المرجع
                             try { inv.RefDate = Convert.ToDateTime(row["Reff_date"]); } catch { }
 
-                            // الضريبة
-                            double taxTotal  = Math.Round(Convert.ToDouble(row["tax"]), 2);
-                            double extraVAT  = Math.Round(Convert.ToDouble(row["ExtraVAT"]), 2);
-                            inv.ExtraVAT     = extraVAT;
-                            inv.TotalTax     = taxTotal;
-                            inv.VAT          = (taxTotal - extraVAT > 0)
-                                ? Math.Round(taxTotal - extraVAT, 2)
-                                : taxTotal;
-
-                            if (inv.VAT <= 0)
-                            {
-                                inv.VAT      = taxTotal;
-                                inv.TotalTax = Math.Round(inv.VAT + extraVAT, 2);
-                            }
+                            // Repair R-110 (audit finding P7-086): the local writer
+                            // stores ordinary and additional tax in separate fields.
+                            double ordinaryVAT = Math.Round(Convert.ToDouble(row["tax"]), 2);
+                            double extraVAT    = Math.Round(Convert.ToDouble(row["ExtraVAT"]), 2);
+                            inv.VAT            = ordinaryVAT;
+                            inv.ExtraVAT       = extraVAT;
+                            inv.TotalTax       = Math.Round(ordinaryVAT + extraVAT, 2);
 
                             // المدفوعات
                             inv.Paycash  = Convert.ToDouble(row["cash"]);

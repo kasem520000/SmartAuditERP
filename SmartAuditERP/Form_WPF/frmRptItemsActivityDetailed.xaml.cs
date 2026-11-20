@@ -170,6 +170,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void loadclients(short clientType)
         {
+            // If the lookup fails, do not retain a selection from another type.
+            cmbClients.ItemsSource = null;
+            cmbClients.SelectedIndex = -1;
             var adapter = new SqlDataAdapter(
                 $"SELECT id, name FROM Customers " +
                 $"WHERE (type={clientType} OR type=3) ORDER BY id",
@@ -177,14 +180,12 @@ namespace SmartAuditERP.Form_WPF
             var dt = new DataTable();
             adapter.Fill(dt);
 
-            if (dt.Rows.Count > 0)
-            {
-                cmbClients.DisplayMemberPath = "name";
-                cmbClients.SelectedValuePath  = "id";
-                cmbClients.ItemsSource        = dt.DefaultView;
-                cmbClients.SelectedIndex      = -1;
-                cmbClients.IsEnabled          = true;
-            }
+            // Replace even an empty lookup; an old list must not satisfy a new type.
+            cmbClients.DisplayMemberPath = "name";
+            cmbClients.SelectedValuePath  = "id";
+            cmbClients.ItemsSource        = dt.DefaultView;
+            cmbClients.SelectedIndex      = -1;
+            cmbClients.IsEnabled          = true;
         }
 
         private string GetsafeName(int safeId)
@@ -209,25 +210,57 @@ namespace SmartAuditERP.Form_WPF
         public void LastProcess(int itemId, int storeId,
                                  int clientId, int clientType)
         {
-            if (itemId > 0) SelectedId = itemId;
-
-            if (clientId > 0)
+            // Repair R-111 (P7-122/P7-129): never broaden a specific request
+            // because a lookup is not ready, is empty, or lacks the requested ID.
+            ActivityList.Clear();
+            txtTotStock.Text = string.Empty;
+            try
             {
-                if (clientType == 1)
-                    chkClients.IsChecked = true;
-                else
-                    chkSuplier.IsChecked = true;
+                if ((storeId > 0 || clientId > 0) && !IsLoaded)
+                    throw new InvalidOperationException("لم تكتمل تهيئة قوائم التقرير.");
 
-                cmbClients.SelectedValue = clientId;
+                if (itemId > 0) SelectedId = itemId;
+
+                if (clientId > 0)
+                {
+                    if (clientType != 1 && clientType != 2)
+                        throw new InvalidOperationException("نوع الطرف غير صالح.");
+                    if (clientType == 1)
+                        chkClients.IsChecked = true;
+                    else
+                        chkSuplier.IsChecked = true;
+
+                    // Also refresh when the requested radio was already selected.
+                    loadclients((short)clientType);
+                    cmbClients.SelectedValue = clientId;
+                    if (cmbClients.SelectedIndex < 0 ||
+                        !int.TryParse(Convert.ToString(cmbClients.SelectedValue), out int selectedClient) ||
+                        selectedClient != clientId || chkAllClients.IsChecked == true)
+                        throw new InvalidOperationException("الطرف المطلوب غير موجود في القائمة المحددة.");
+                }
+
+                if (storeId > 0)
+                {
+                    chkAll.IsChecked = false;
+                    cmbSafes.SelectedValue = storeId;
+                    if (cmbSafes.SelectedIndex < 0 ||
+                        !int.TryParse(Convert.ToString(cmbSafes.SelectedValue), out int selectedStore) ||
+                        selectedStore != storeId || chkAll.IsChecked == true)
+                        throw new InvalidOperationException("المستودع المطلوب غير موجود في القائمة.");
+                }
+
+                if (itemId > 0 || clientId > 0)
+                {
+                    cbLastProcess.IsChecked = true;
+                    ShowResult();
+                }
             }
-
-            if (storeId > 0)
-                cmbSafes.SelectedValue = storeId;
-
-            if (itemId > 0 || clientId > 0)
+            catch (Exception ex)
             {
-                cbLastProcess.IsChecked = true;
-                ShowResult();
+                ActivityList.Clear();
+                txtTotStock.Text = string.Empty;
+                DXMessageBox.Show("تعذر عرض الحركة المحددة: " + ex.Message,
+                    "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
@@ -242,6 +275,18 @@ namespace SmartAuditERP.Form_WPF
             try
             {
                 ActivityList.Clear();
+                txtTotStock.Text = string.Empty;
+
+                // A disabled "all" option requires an actual numeric selection.
+                int storeFilter = 0, clientFilter = 0;
+                if (chkAll.IsChecked != true &&
+                    (cmbSafes.SelectedIndex < 0 ||
+                     !int.TryParse(Convert.ToString(cmbSafes.SelectedValue), out storeFilter)))
+                    throw new InvalidOperationException("يرجى اختيار المستودع.");
+                if (chkAllClients.IsChecked != true &&
+                    (cmbClients.SelectedIndex < 0 ||
+                     !int.TryParse(Convert.ToString(cmbClients.SelectedValue), out clientFilter)))
+                    throw new InvalidOperationException("يرجى اختيار العميل أو المورد.");
 
                 double incomeTotal  = 0.0;
                 double outcomeTotal = 0.0;
@@ -251,9 +296,8 @@ namespace SmartAuditERP.Form_WPF
                 string condTop   = "";
 
                 // المستودع
-                if (chkAll.IsChecked != true &&
-                    cmbSafes.SelectedValue != null)
-                    condItems += $" and Inv_sub.store={cmbSafes.SelectedValue}";
+                if (chkAll.IsChecked != true)
+                    condItems += $" and Inv_sub.store={storeFilter}";
 
                 // الصنف
                 if (SelectedId != -1)
@@ -279,10 +323,8 @@ namespace SmartAuditERP.Form_WPF
                 }
 
                 // العميل
-                if (chkAllClients.IsChecked != true &&
-                    cmbClients.SelectedIndex > -1 &&
-                    cmbClients.SelectedValue != null)
-                    condItems += $" and Inv.cust_id={cmbClients.SelectedValue}";
+                if (chkAllClients.IsChecked != true)
+                    condItems += $" and Inv.cust_id={clientFilter}";
 
                 // الفرع
                 string condBranch = "";

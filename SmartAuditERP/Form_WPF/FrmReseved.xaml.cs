@@ -29,6 +29,8 @@ namespace SmartAuditERP.Form_WPF
         private int    _code          = -1;
         private int    _empNo         = -1;
         private bool   _loaded        = false;
+        // Failed period refreshes must not be saved or printed as a valid result.
+        private bool   _periodLoadFailed = false;
         private string _entryGlobalID = "-1";
         private string _globalID      = "-1";
         private int    _receiptType   = 8;
@@ -77,6 +79,9 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
+                // Do not reload intermediate month/year selections during reset.
+                _loaded = false;
+                _periodLoadFailed = false;
                 txtDate.DateTime = DateTime.Now;
                 _salarySource.Clear();
                 LoadNextNo();
@@ -135,6 +140,9 @@ namespace SmartAuditERP.Form_WPF
 
         public void LoadEmpData(string condition)
         {
+            // Repair R-109 (audit finding P7-124): invalidate before loading,
+            // and never leave partial or previous-period rows after a failure.
+            _periodLoadFailed = true;
             try
             {
                 _salarySource.Clear();
@@ -147,7 +155,12 @@ namespace SmartAuditERP.Form_WPF
                 int year  = GetSelectedYearInt();
                 int month = GetSelectedMonthInt();
 
-                if (year <= 0 || month <= 0) return;
+                if (year < 1 || year > 9998 || month < 1 || month > 12)
+                {
+                    DXMessageBox.Show("يرجى اختيار شهر وسنة صالحين.",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
 
                 var startDate = new DateTime(year, month, 1);
                 var endDate   = new DateTime(year, month, 1).AddMonths(1).AddDays(-1);
@@ -212,9 +225,11 @@ namespace SmartAuditERP.Form_WPF
                         });
                     }
                 }
+                _periodLoadFailed = false;
             }
             catch (Exception ex)
             {
+                _salarySource.Clear();
                 DXMessageBox.Show("خطأ في تحميل البيانات: " + ex.Message);
             }
             finally { CloseConn(conn); }
@@ -227,33 +242,51 @@ namespace SmartAuditERP.Form_WPF
         private void cmbMonth_SelectionChanged(object sender,
             System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            try
-            {
-                if (!_loaded) return;
-                string note = $"إستحقاق راتب شهر {GetSelectedMonth()} لسنة {GetSelectedYear()}";
-                foreach (var row in _salarySource) row.Notes = note;
-
-                int year  = GetSelectedYearInt();
-                int month = GetSelectedMonthInt();
-                if (year > 0 && month > 0)
-                    txtDate.DateTime = new DateTime(year, month, DateTime.Now.Day);
-
-                LoadEmpData(cond);
-            }
-            catch { }
+            RefreshSelectedPeriod(true);
         }
 
         private void cmbYear_SelectionChanged(object sender,
             System.Windows.Controls.SelectionChangedEventArgs e)
         {
+            RefreshSelectedPeriod(false);
+        }
+
+        private void RefreshSelectedPeriod(bool updateDate)
+        {
+            if (!_loaded) return;
+            _periodLoadFailed = true;
+            _salarySource.Clear();
             try
             {
-                if (!_loaded) return;
-                string note = $"إستحقاق راتب شهر {GetSelectedMonth()} لسنة {GetSelectedYear()}";
-                foreach (var row in _salarySource) row.Notes = note;
+                // A saved document must not acquire newly computed rows under its identity.
+                if (!string.IsNullOrWhiteSpace(txtEntryGlobalId.Text) ||
+                    !string.IsNullOrWhiteSpace(TxtGlobalID.Text))
+                {
+                    DXMessageBox.Show("لا يمكن تغيير فترة مستند محفوظ. اختر جديداً أولاً.",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                int year = GetSelectedYearInt(), month = GetSelectedMonthInt();
+                if (year < 1 || year > 9998 || month < 1 || month > 12)
+                {
+                    DXMessageBox.Show("يرجى اختيار شهر وسنة صالحين.",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                if (updateDate)
+                {
+                    int day = Math.Min(DateTime.Now.Day, DateTime.DaysInMonth(year, month));
+                    txtDate.DateTime = new DateTime(year, month, day);
+                }
                 LoadEmpData(cond);
             }
-            catch { }
+            catch (Exception ex)
+            {
+                _salarySource.Clear();
+                DXMessageBox.Show("خطأ في تحديث الفترة: " + ex.Message,
+                    "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         #endregion
@@ -349,6 +382,12 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
+                if (_periodLoadFailed)
+                {
+                    DXMessageBox.Show("تعذر تحميل الفترة. أعد العرض بنجاح قبل الحفظ.",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
                 if (cmbMonth.SelectedIndex < 0)
                 {
                     DXMessageBox.Show("يرجى اختيار الشهر",
@@ -557,6 +596,12 @@ namespace SmartAuditERP.Form_WPF
 
         private void RptPrint(int printType)
         {
+            if (_periodLoadFailed)
+            {
+                DXMessageBox.Show("تعذر تحميل الفترة. لا يمكن طباعة نتيجة غير صالحة.",
+                    "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
             if (string.IsNullOrEmpty(TxtGlobalID.Text))
             {
                 DXMessageBox.Show("لا يمكنك الطباعة قبل الحفظ",
