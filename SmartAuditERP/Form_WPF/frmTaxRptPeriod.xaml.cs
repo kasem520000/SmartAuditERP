@@ -69,6 +69,9 @@ namespace SmartAuditERP.Form_WPF
         private string defPrinter;
         private string RptName;
         private string RptUrl;
+        // Repair R-078 (audit finding P7-046): true only after every source of the report was
+        // computed and published in one pass, so print/preview can refuse a partial result.
+        private bool _reportPublished;
 
         // WPF bindable date values (used by DateEdit bindings)
         public DateTime DateFromValue { get; set; }
@@ -443,6 +446,11 @@ namespace SmartAuditERP.Form_WPF
                 // Expense accumulators
                 double expTotal = 0, expVAT = 0;
 
+                // Repair R-078 (audit finding P7-046): receipts and rent stay in memory too; the
+                // cells are written once at the end instead of after each source.
+                double receiptTotal = 0, receiptVAT = 0;
+                double rentNet = 0, rentVAT = 0;
+
                 string branchInv = GetBranchConditionInv();
                 string branchBranch = GetBranchConditionBranchID();
                 string branchEntry = GetBranchConditionEntry();
@@ -489,12 +497,12 @@ namespace SmartAuditERP.Form_WPF
                     }
                 }
 
-                SetCellText(txtNetSale, Math.Round(saleBase - saleRetBase, 2).ToString());
-                SetCellText(txtTaxNetSale, Math.Round(saleTax - saleRetTax, 2).ToString());
-                SetCellText(txtExtraVAT, Math.Round(saleExtra - saleRetExtra
-                                                      + saleNoTaxTax - saleRetNoTaxTax, 2).ToString());
-                SetCellText(txtSalesOutTax, Math.Round(saleNoTaxBase - saleRetNoTaxBase, 2).ToString());
-                SetCellText(txtSalesNoTax, Math.Round(saleNoTaxTax - saleRetNoTaxTax, 2).ToString());
+                double netSaleVal = Math.Round(saleBase - saleRetBase, 2);
+                double taxNetSaleVal = Math.Round(saleTax - saleRetTax, 2);
+                double extraVATVal = Math.Round(saleExtra - saleRetExtra
+                                                + saleNoTaxTax - saleRetNoTaxTax, 2);
+                double salesOutTaxVal = Math.Round(saleNoTaxBase - saleRetNoTaxBase, 2);
+                double salesNoTaxVal = Math.Round(saleNoTaxTax - saleRetNoTaxTax, 2);
 
                 // ── Receipts (type 10) ──────────────────────────────────────
                 string sqlReceipts =
@@ -509,10 +517,9 @@ namespace SmartAuditERP.Form_WPF
                     var dt = new DataTable();
                     adapter.Fill(dt);
 
-                    double total = dt.Rows.Count > 0 ? SafeDouble(dt.Rows[0]["total"]) : 0;
+                    receiptTotal = dt.Rows.Count > 0 ? SafeDouble(dt.Rows[0]["total"]) : 0;
                     double netVal = dt.Rows.Count > 0 ? SafeDouble(dt.Rows[0]["NetVal"]) : 0;
-                    SetCellText(txtReceipts, total.ToString());
-                    SetCellText(txtReceiptsVAT, (netVal - total).ToString());
+                    receiptVAT = netVal - receiptTotal;
                 }
 
                 // ── Rent invoices ───────────────────────────────────────────
@@ -529,8 +536,8 @@ namespace SmartAuditERP.Form_WPF
                     adapter.SelectCommand.Parameters.AddWithValue("@date2", date2);
                     var dt = new DataTable();
                     adapter.Fill(dt);
-                    SetCellText(txtIncomes, dt.Rows.Count > 0 ? SafeDouble(dt.Rows[0]["tot_net"]).ToString() : "0");
-                    SetCellText(txtIncomesVAT, dt.Rows.Count > 0 ? SafeDouble(dt.Rows[0]["TaxVal"]).ToString() : "0");
+                    rentNet = dt.Rows.Count > 0 ? SafeDouble(dt.Rows[0]["tot_net"]) : 0;
+                    rentVAT = dt.Rows.Count > 0 ? SafeDouble(dt.Rows[0]["TaxVal"]) : 0;
                 }
 
                 string sqlRentRet =
@@ -546,20 +553,14 @@ namespace SmartAuditERP.Form_WPF
                     adapter.Fill(dt);
                     if (dt.Rows.Count > 0)
                     {
-                        double curIncomes = SafeDouble(txtIncomes.Text.Trim());
-                        double curIncomesVAT = SafeDouble(txtIncomesVAT.Text.Trim());
-                        SetCellText(txtIncomes, (curIncomes - SafeDouble(dt.Rows[0]["tot_net"])).ToString());
-                        SetCellText(txtIncomesVAT, (curIncomesVAT - SafeDouble(dt.Rows[0]["TaxVal"])).ToString());
+                        rentNet -= SafeDouble(dt.Rows[0]["tot_net"]);
+                        rentVAT -= SafeDouble(dt.Rows[0]["TaxVal"]);
                     }
                 }
 
                 // ── Sales totals ────────────────────────────────────────────
-                double netSales = Math.Round(
-                    SafeDouble(txtNetSale.Text) + SafeDouble(txtReceipts.Text) + SafeDouble(txtIncomes.Text), 2);
-                double netSalesTax = Math.Round(
-                    SafeDouble(txtTaxNetSale.Text) + SafeDouble(txtReceiptsVAT.Text) + SafeDouble(txtIncomesVAT.Text), 2);
-                SetCellText(txtNetSales, netSales.ToString());
-                SetCellText(txtNetSaleTax, netSalesTax.ToString());
+                double netSales = Math.Round(netSaleVal + receiptTotal + rentNet, 2);
+                double netSalesTax = Math.Round(taxNetSaleVal + receiptVAT + rentVAT, 2);
 
                 // ── Purchase invoices ───────────────────────────────────────
                 string sqlPurch =
@@ -598,10 +599,10 @@ namespace SmartAuditERP.Form_WPF
                     }
                 }
 
-                SetCellText(txtNetPurch, Math.Round(purchBase - purchRetBase, 2).ToString());
-                SetCellText(txtTaxNetPurch, Math.Round(purchTax - purchRetTax, 2).ToString());
-                SetCellText(txtPurchOutTax, Math.Round(purchNoTaxBase - purchRetNoTaxBase, 2).ToString());
-                SetCellText(txtNoTaxPurch, Math.Round(purchNoTaxTax - purchRetNoTaxTax, 2).ToString());
+                double netPurchVal = Math.Round(purchBase - purchRetBase, 2);
+                double taxNetPurchVal = Math.Round(purchTax - purchRetTax, 2);
+                double purchOutTaxVal = Math.Round(purchNoTaxBase - purchRetNoTaxBase, 2);
+                double noTaxPurchVal = Math.Round(purchNoTaxTax - purchRetNoTaxTax, 2);
 
                 // ── Expense receipts (type 9) ───────────────────────────────
                 string sqlExpReceipts =
@@ -643,20 +644,35 @@ namespace SmartAuditERP.Form_WPF
                     }
                 }
 
-                SetCellText(txtExpenseNet, expTotal.ToString(Common.DigitsNo));
-                SetCellText(txtExpenseVAT, expVAT.ToString(Common.DigitsNo));
 
                 // ── Purchase totals ─────────────────────────────────────────
-                double netPurches = Math.Round(
-                    SafeDouble(txtNetPurch.Text) + expTotal, 2);
-                double netPurchesTax = Math.Round(
-                    SafeDouble(txtTaxNetPurch.Text) + expVAT, 2);
-                SetCellText(txtNetPurches, netPurches.ToString());
-                SetCellText(txtNetPurchTax, netPurchesTax.ToString());
+                double netPurches = Math.Round(netPurchVal + expTotal, 2);
+                double netPurchesTax = Math.Round(taxNetPurchVal + expVAT, 2);
 
                 // ── Net VAT ─────────────────────────────────────────────────
-                double netVAT = SafeDouble(txtNetSaleTax.Text) - SafeDouble(txtNetPurchTax.Text);
+                double netVAT = netSalesTax - netPurchesTax;
                 string netVATText = netVAT.ToString(Common.DigitsNo);
+
+                // ── Publication: one pass, only now that every source succeeded ──
+                SetCellText(txtNetSale, netSaleVal.ToString());
+                SetCellText(txtTaxNetSale, taxNetSaleVal.ToString());
+                SetCellText(txtExtraVAT, extraVATVal.ToString());
+                SetCellText(txtSalesOutTax, salesOutTaxVal.ToString());
+                SetCellText(txtSalesNoTax, salesNoTaxVal.ToString());
+                SetCellText(txtReceipts, receiptTotal.ToString());
+                SetCellText(txtReceiptsVAT, receiptVAT.ToString());
+                SetCellText(txtIncomes, rentNet.ToString());
+                SetCellText(txtIncomesVAT, rentVAT.ToString());
+                SetCellText(txtNetSales, netSales.ToString());
+                SetCellText(txtNetSaleTax, netSalesTax.ToString());
+                SetCellText(txtNetPurch, netPurchVal.ToString());
+                SetCellText(txtTaxNetPurch, taxNetPurchVal.ToString());
+                SetCellText(txtPurchOutTax, purchOutTaxVal.ToString());
+                SetCellText(txtNoTaxPurch, noTaxPurchVal.ToString());
+                SetCellText(txtExpenseNet, expTotal.ToString(Common.DigitsNo));
+                SetCellText(txtExpenseVAT, expVAT.ToString(Common.DigitsNo));
+                SetCellText(txtNetPurches, netPurches.ToString());
+                SetCellText(txtNetPurchTax, netPurchesTax.ToString());
 
                 if (netVAT > 0.0)
                 {
@@ -668,10 +684,18 @@ namespace SmartAuditERP.Form_WPF
                     txtNetTax.Text = netVATText + "   (غير مستحق)    ";
                     txtNetTax.Foreground = Brushes.Green;
                 }
+
+                // Repair R-078 (audit finding P7-046): complete and consistent, so printable now.
+                _reportPublished = true;
             }
             catch (Exception ex)
             {
-                DXMessageBox.Show("خطأ\n" + ex.Message);
+                // Repair R-078 (audit finding P7-046): a late source failure used to leave whatever
+                // had been published so far - new sales beside an old VAT net - on screen, and
+                // BindToData reads those cells, so the mix was printable as if it were consistent.
+                _reportPublished = false;
+                ClearReportCells();
+                DXMessageBox.Show("خطأ في احتساب التقرير، لم يُنشر أي جزء منه\n" + ex.Message);
             }
         }
 
@@ -685,6 +709,34 @@ namespace SmartAuditERP.Form_WPF
         private static void SetCellText(System.Windows.Controls.TextBlock tb, string value)
         {
             if (tb != null) tb.Text = value;
+        }
+
+        /// <summary>
+        /// Repair R-078 (audit finding P7-046): blanks every cell ShowDetails22 publishes, so a
+        /// failed run cannot leave an earlier run's numbers on screen, and therefore in print.
+        /// </summary>
+        private void ClearReportCells()
+        {
+            SetCellText(txtNetSale, string.Empty);
+            SetCellText(txtTaxNetSale, string.Empty);
+            SetCellText(txtExtraVAT, string.Empty);
+            SetCellText(txtSalesOutTax, string.Empty);
+            SetCellText(txtSalesNoTax, string.Empty);
+            SetCellText(txtReceipts, string.Empty);
+            SetCellText(txtReceiptsVAT, string.Empty);
+            SetCellText(txtIncomes, string.Empty);
+            SetCellText(txtIncomesVAT, string.Empty);
+            SetCellText(txtNetSales, string.Empty);
+            SetCellText(txtNetSaleTax, string.Empty);
+            SetCellText(txtNetPurch, string.Empty);
+            SetCellText(txtTaxNetPurch, string.Empty);
+            SetCellText(txtPurchOutTax, string.Empty);
+            SetCellText(txtNoTaxPurch, string.Empty);
+            SetCellText(txtExpenseNet, string.Empty);
+            SetCellText(txtExpenseVAT, string.Empty);
+            SetCellText(txtNetPurches, string.Empty);
+            SetCellText(txtNetPurchTax, string.Empty);
+            txtNetTax.Text = string.Empty;
         }
 
         /// <summary>Reads text from a display TextBlock safely.</summary>
@@ -761,6 +813,16 @@ namespace SmartAuditERP.Form_WPF
 
         private void PrintDevexpress(int printMode)
         {
+            // Repair R-078 (audit finding P7-046): BindToData reads the live cells, so printing
+            // before a complete successful Show - or after a failed one - would publish stale or
+            // partial numbers under the criteria now on screen.
+            if (!_reportPublished)
+            {
+                DXMessageBox.Show("لا يمكن طباعة التقرير أو معاينته قبل عرض نتائج مكتملة ناجحة",
+                    "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             RptUrl = MainClass.ReportsPath;
             RptName = "TaxRptPeriod.repx";
             defPrinter = MainClass.ReportsPrinter;
