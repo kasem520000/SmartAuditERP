@@ -42,6 +42,7 @@ check('checks existing stages under lock before inserting', ordered(parent, ['PM
 check('all insert commands use shared transaction', 'VALUES(@StageId,@ProjID,@StageOrder,0,0)", conn, tx)' in parent)
 check('parent traversal detects cycles and terminates', 'var visited = new HashSet<int>();' in parent and 'while (current > 0)' in parent and '!visited.Add(current)' in parent and 'LoadParentStages(parent)' not in parent)
 check('initializer refuses excessive duplicate or null stages', 'template.Rows.Count > 6' in parent and '!ids.Add(' in parent and '!orders.Add(' in parent and 'row["StageOrder"] == DBNull.Value' in parent)
+check('missing or deleted stages cannot disappear silently from template', 'LEFT JOIN PM_Stages' in parent and 'row["StageExists"] == DBNull.Value' in parent and 'row["StageDeleted"] == DBNull.Value' in parent and 'Convert.ToBoolean(row["StageDeleted"])' in parent)
 check('one refresh with initialization disabled', ordered(parent, ['tx.Commit();', 'LoadProjectStageCore(code, false);']) and 'else if (allowInitialize)' in cycle)
 check('errors are exposed instead of silent success', 'catch (Exception ex) { DXMessageBox.Show("تعذر تحميل مراحل المشروع:' in parent)
 def initialize(before, template, fail=None):

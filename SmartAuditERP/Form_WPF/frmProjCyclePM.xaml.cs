@@ -230,9 +230,10 @@ namespace SmartAuditERP.Form_WPF
                             if (!visited.Add(current))
                                 throw new InvalidOperationException("توجد حلقة في تسلسل مجموعات المشروع.");
                             using (var cmd = new SqlCommand(
-                                "SELECT PM_GroupStages.StageID, PM_GroupStages.StageOrder " +
-                                "FROM PM_GroupStages JOIN PM_Stages ON PM_Stages.id=PM_GroupStages.StageID " +
-                                "WHERE PM_Stages.IS_Deleted=0 AND PM_GroupStages.IS_Deleted=0 " +
+                                "SELECT PM_GroupStages.StageID, PM_GroupStages.StageOrder, " +
+                                "PM_Stages.id AS StageExists, PM_Stages.IS_Deleted AS StageDeleted " +
+                                "FROM PM_GroupStages LEFT JOIN PM_Stages ON PM_Stages.id=PM_GroupStages.StageID " +
+                                "WHERE PM_GroupStages.IS_Deleted=0 " +
                                 "AND PM_GroupStages.ProjGropID=@GroupId ORDER BY PM_GroupStages.StageOrder", conn, tx))
                             {
                                 cmd.Parameters.Add("@GroupId", SqlDbType.Int).Value = current;
@@ -257,6 +258,8 @@ namespace SmartAuditERP.Form_WPF
                         foreach (DataRow row in template.Rows)
                         {
                             if (row["StageID"] == DBNull.Value || row["StageOrder"] == DBNull.Value ||
+                                row["StageExists"] == DBNull.Value || row["StageDeleted"] == DBNull.Value ||
+                                Convert.ToBoolean(row["StageDeleted"]) ||
                                 !ids.Add(Convert.ToInt32(row["StageID"])) ||
                                 !orders.Add(Convert.ToInt32(row["StageOrder"])))
                                 throw new InvalidOperationException("المراحل أو ترتيبها مكرر أو غير صالح.");
