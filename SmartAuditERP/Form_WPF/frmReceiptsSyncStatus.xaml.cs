@@ -431,6 +431,8 @@ namespace SmartAuditERP.Form_WPF
                 var receiptCRUD = new ReceiptCRUD(Sync.APIUrl);
                 var list        = new List<Receipt>();
 
+                var brokerSentIds   = new List<string>();   // R-057: ما سلّم فعلاً عبر الوسيط
+
                 foreach (var row in selectedRows)
                 {
                     var receipt = receiptOper.BindReceiptByID(row.DgvGlobalID);
@@ -450,30 +452,58 @@ namespace SmartAuditERP.Form_WPF
                         SendData.SendDataa("Receipts",      "0", SendData.GetReceipts(cond));
                         SendData.SendDataa("entry",         "0", SendData.GetEntryData(cond2));
                         SendData.SendDataa("entryDetails",  "0", SendData.GetEntrySubData(cond3));
+
+                        brokerSentIds.Add(globalId);
                     }
                 }
 
-                // تحديث حالة المزامنة في قاعدة البيانات
+                // إرسال عبر API أولاً إن توفرت قناته (R-057/P5-027): الختم يتبع النتيجة لا يسبقها
+                bool apiAccepted = false;
+                if (Sync.ValidAPIUrl)
+                {
+                    try
+                    {
+                        await receiptCRUD.PostReceipts(list);
+                        apiAccepted = true;      // قبول نقل بلا استثناء؛ عقد accepted/applied الأوسع لدى INV5-23
+                    }
+                    catch (Exception apiEx)
+                    {
+                        DXMessageBox.Show("خطأ في المزامنة عبر API: " + apiEx.Message,
+                            "", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
+
+                // تحديث حالة المزامنة في قاعدة البيانات — لمن سلم فعلاً فقط
+                var stampedIds = new List<string>();
                 EnsureOpen(_conn);
                 foreach (var receipt in list)
                 {
+                    if (!(brokerSentIds.Contains(receipt.GlobalID) || apiAccepted))
+                        continue;
                     using (var cmd = new SqlCommand(
                         $"UPDATE receipts SET Sync=1 WHERE GlobalID=N'{receipt.GlobalID}'",
                         _conn))
                         cmd.ExecuteNonQuery();
+                    stampedIds.Add(receipt.GlobalID);
                 }
                 CloseConn(_conn);
 
-                // إرسال عبر API
-                if (Sync.ValidAPIUrl)
-                    await receiptCRUD.PostReceipts(list);
+                if (stampedIds.Count > 0)
+                {
+                    DXMessageBox.Show("تمت العملية بنجاح",
+                        "", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    DXMessageBox.Show("لم يُسلم أي سند عبر القنوات المتاحة؛ بقيت الحالات دون تغيير.",
+                        "", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
 
-                DXMessageBox.Show("تمت العملية بنجاح",
-                    "", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                // تحديث عرض الجدول
+                // تحديث عرض الجدول — للصفوف المختومة فعلاً فقط
                 foreach (var row in selectedRows)
                 {
+                    if (!stampedIds.Contains(row.DgvGlobalID))
+                        continue;
                     row.DgvSyncStatus     = true;
                     row.DgvSyncStatusText = "✅ متزامن";
                 }

@@ -982,6 +982,7 @@ namespace SmartAuditERP.Form_WPF
                     }
 
                     // الإرسال عبر Broker
+                    bool brokerSent = false;   // R-057: دليل تسليم محلي لهذا الصف
                     if (canUseBroker)
                     {
                         if (ConnectBroker.CheckConnectionAndBroker())
@@ -994,11 +995,18 @@ namespace SmartAuditERP.Form_WPF
 
                             SendData.SendDataa("entryDetails", entryGlobalId,
                                 SendData.GetEntrySubData(entrySubCond));
+
+                            brokerSent = true;
                         }
                     }
 
-                    // تحديث حالة المزامنة محلياً
-                    UpdateEntrySyncStatus(entryGlobalId, true);
+                    // تحديث حالة المزامنة محلياً — بعد دليل التسليم لا قبله (R-057/P5-027):
+                    // صفوف مسار API تنال ختمها من نجاح الإرسال لاحقاً، وما لم يسلم على أي قناة يبقى Pending
+                    // فيظهر صادقاً في تقارير المتابعة بدل اختفائه خلف علامة كاذبة.
+                    if (brokerSent)
+                    {
+                        UpdateEntrySyncStatus(entryGlobalId, true);
+                    }
 
                     ProgressBar1.Value = rowIndex + 1;
                 }
