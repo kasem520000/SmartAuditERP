@@ -88,9 +88,8 @@ namespace SmartAuditERP.Form_WPF
             Timer1.Interval = TimeSpan.FromSeconds(1);
             Timer1.Tick += Timer1_Tick;
 
-            Loaded += Window_Loaded;
-            Closing += Window_Closing;
-            KeyDown += Window_KeyDown;
+            // Repair R-098 (audit finding P7-162): XAML owns these three
+            // window-event registrations; do not subscribe to them again here.
         }
 
         #endregion
