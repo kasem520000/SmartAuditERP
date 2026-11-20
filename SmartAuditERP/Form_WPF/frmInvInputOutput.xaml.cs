@@ -1691,14 +1691,53 @@ namespace SmartAuditERP.Form_WPF
 
                 var saveDialog = new Microsoft.Win32.SaveFileDialog
                 {
+                    // Repair R-094 (audit finding P7-050, a grounded expansion beyond the finding's
+                    // evidence list): this dialog announced *.xlsx while the writer produced
+                    // comma-joined text, so the bytes never matched the container the user picked.
+                    // The announced option is kept - it is the only one this screen offers, and
+                    // dropping or adding a user-visible format is an owner decision - and it is now
+                    // real: a workbook written with the library the project already references and
+                    // other screens already use. The filter itself is untouched.
                     Filter = "Excel Files (*.xlsx)|*.xlsx"
                 };
                 if (saveDialog.ShowDialog() != true) return;
 
                 string filePath = saveDialog.FileName;
 
-                // تصدير بسيط من DataGrid
-                ExportDataGridToExcel(GridControl1, filePath);
+                // A name typed by hand can still ask for another container. The delimited ones this
+                // screen can produce are produced properly, and anything else is refused before a
+                // byte is written, so no file is left behind announcing a format it does not have.
+                bool asWorkbook = filePath.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase);
+                bool asCsv = filePath.EndsWith(".csv", StringComparison.OrdinalIgnoreCase);
+                bool asText = filePath.EndsWith(".txt", StringComparison.OrdinalIgnoreCase);
+                if (!asWorkbook && !asCsv && !asText)
+                {
+                    DXMessageBox.Show(
+                        "صيغة غير مدعومة للتصدير: اختر Excel (*.xlsx) أو CSV (*.csv) "
+                        + "أو نصاً بفاصل جدولة (*.txt).");
+                    return;
+                }
+
+                DataTable table = BuildItemsTableForExport();
+
+                if (asWorkbook)
+                {
+                    using (var workbook = new ClosedXML.Excel.XLWorkbook())
+                    {
+                        var worksheet = workbook.Worksheets.Add(table, "أصناف الحركة");
+                        worksheet.RightToLeft = true;
+                        worksheet.Columns().AdjustToContents();
+                        workbook.SaveAs(filePath);
+                    }
+                }
+                else
+                {
+                    SpreadsheetExport.WriteDataTable(
+                        filePath,
+                        table,
+                        asCsv ? SpreadsheetExport.CsvDelimiter
+                              : SpreadsheetExport.TsvDelimiter);
+                }
 
                 System.Diagnostics.Process.Start(
                     new System.Diagnostics.ProcessStartInfo(filePath)
@@ -1713,38 +1752,51 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
-        private void ExportDataGridToExcel(DataGrid grid, string filePath)
+        /// <summary>
+        /// Repair R-094 (audit finding P7-050): one projection feeds every container. The writer this
+        /// replaces took its header from the grid's visible columns and its rows from a fixed twelve
+        /// fields, so hiding a column changed the header width without changing the row width, and it
+        /// joined cells with a bare comma, so a comma inside an item name added a column. The header
+        /// is now the projection's own captions - the wording this product already uses for these
+        /// fields in this screen's grid - and the cells go through the shared writer's announced
+        /// schema (quoting, doubled quotes, CRLF, UTF-8). Money and quantities leave machine-readable
+        /// in the invariant culture; they stay text rather than numbers because the item type lives in
+        /// a referenced assembly with no source here, so no numeric cell type is claimed.
+        /// </summary>
+        private DataTable BuildItemsTableForExport()
         {
-            // تصدير بسيط بصيغة CSV يمكن فتحها في Excel
-            using var writer = new StreamWriter(filePath, false,
-                System.Text.Encoding.UTF8);
+            var table = new DataTable("Items");
+            table.Columns.Add("#", typeof(string));
+            table.Columns.Add("رمز الصنف", typeof(string));
+            table.Columns.Add("الصنف", typeof(string));
+            table.Columns.Add("الوصف", typeof(string));
+            table.Columns.Add("الوحدة", typeof(string));
+            table.Columns.Add("الكمية", typeof(string));
+            table.Columns.Add("السعر", typeof(string));
+            table.Columns.Add("المجموع", typeof(string));
+            table.Columns.Add("الخصم", typeof(string));
+            table.Columns.Add("الضريبة", typeof(string));
+            table.Columns.Add("الصافي", typeof(string));
+            table.Columns.Add("المستودع", typeof(string));
 
-            // ترويسات
-            var headers = grid.Columns
-                .Where(c => c.Visibility == Visibility.Visible)
-                .Select(c => c.Header?.ToString() ?? "");
-            writer.WriteLine(string.Join(",", headers));
-
-            // بيانات
-            foreach (InvoiceItem item in grid.Items)
+            foreach (InvoiceItem item in GridControl1.Items)
             {
-                var values = new List<string>
-                {
-                    item.ItemRowIndex.ToString(),
-                    item.ItemCode,
-                    item.ItemName,
-                    item.Description,
-                    item.UnitName,
-                    item.ItemQuantity.ToString(),
-                    item.ItemPrice.ToString(),
-                    item.ItemSumPrice.ToString(),
-                    item.ItemDiscount.ToString(),
-                    item.ItemVat.ToString(),
-                    item.ItemNetPrice.ToString(),
-                    item.InvertoryName
-                };
-                writer.WriteLine(string.Join(",", values));
+                table.Rows.Add(
+                    SpreadsheetExport.Text(item.ItemRowIndex),
+                    SpreadsheetExport.Text(item.ItemCode),
+                    SpreadsheetExport.Text(item.ItemName),
+                    SpreadsheetExport.Text(item.Description),
+                    SpreadsheetExport.Text(item.UnitName),
+                    SpreadsheetExport.Money(item.ItemQuantity),
+                    SpreadsheetExport.Money(item.ItemPrice),
+                    SpreadsheetExport.Money(item.ItemSumPrice),
+                    SpreadsheetExport.Money(item.ItemDiscount),
+                    SpreadsheetExport.Money(item.ItemVat),
+                    SpreadsheetExport.Money(item.ItemNetPrice),
+                    SpreadsheetExport.Text(item.InvertoryName));
             }
+
+            return table;
         }
 
         private bool isInvExist()
