@@ -1,0 +1,23 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "raw_environment_clock_started_utc": "2026-11-20T20:54:50.152106+00:00",
+  "raw_environment_clock_ended_utc": "2026-11-20T20:54:50.469517+00:00",
+  "retained_failed_check": "evidence/scope-preflight-attempt01-07B34.json",
+  "retained_stdout_sha256": "6e439bad0e0c33910fa3f6bcb75ddebb3f11b508c84a26053e14ebd80794fcea",
+  "retained_stdout_bytes": 4171,
+  "process_exit_code": 1,
+  "outer_stderr_bytes": 0,
+  "error_count": 31,
+  "check_is_not_integrated_CLI_or_unit_suite": true,
+  "earlier_console_only_observation_of_same31_errors_not_raw_stream_archive": true,
+  "original_scope_utf8": "path,ranges,review_state,focus\r\nSmartAuditERP/Form_WPF/frmInvSale.xaml.cs,2581-2595;2986-3033;3124-3126;3128-3177;3179-3199;3201-3208,bounded-request-await-and-context-not-whole-file-or-runtime,ملكية طلب واتساب وسياق المحادثة والمرفق عبر await؛التهيئة والنتيجة وضوابط البريد والطباعة سياق محدود،لا حصر caller أو قبول جهاز.\r\nSmartAuditERP/Form_WPF/frmInvSale.xaml,1187-1191,bounded-request-await-and-context-not-whole-file-or-runtime,ملكية طلب واتساب وسياق المحادثة والمرفق عبر await؛التهيئة والنتيجة وضوابط البريد والطباعة سياق محدود،لا حصر caller أو قبول جهاز.\r\nSmartAuditERP/Class/Session.cs,9-30,bounded-request-await-and-context-not-whole-file-or-runtime,ملكية طلب واتساب وسياق المحادثة والمرفق عبر await؛التهيئة والنتيجة وضوابط البريد والطباعة سياق محدود،لا حصر caller أو قبول جهاز.\r\nSmartAuditERP/Class/WhatsAppSender.cs,16-63;66-105;107-228;230-245;247-261;263-266,bounded-request-await-and-context-not-whole-file-or-runtime,ملكية طلب واتساب وسياق المحادثة والمرفق عبر await؛التهيئة والنتيجة وضوابط البريد والطباعة سياق محدود،لا حصر caller أو قبول جهاز.\r\nSmartAuditERP/Class/Print.cs,1193-1229,bounded-request-await-and-context-not-whole-file-or-runtime,ملكية طلب واتساب وسياق المحادثة والمرفق عبر await؛التهيئة والنتيجة وضوابط البريد والطباعة سياق محدود،لا حصر caller أو قبول جهاز.\r\n",
+  "original_scope_sha256": "75f62dc371be92ecf909e794df88de3517444104996ae48fa0e718656422bb81",
+  "corrected_scope_sha256": "19f859d4df8215877596d9aef224f073f4092da792e93b2195471c3d797a269a",
+  "correction": "Merge only already-read blank lines3127/3178 between sale contract slices into scope3124-3199 so spanning citations fit ONE declared interval;no validator relaxation or source expansion.",
+  "application_source_changed": false,
+  "protected_files_changed": false,
+  "validator_or_test_code_changed": false,
+  "witness_changed": false,
+  "no_test_skip_or_rebaseline": true,
+  "errors": []
+}

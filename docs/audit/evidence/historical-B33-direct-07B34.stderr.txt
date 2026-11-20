@@ -1,0 +1,6 @@
+Historical B33: ALL52 UNMODIFIED;OWN335/raw336CRLF/indexes/presetB33;module-local A/Path for123 source assertion identities/dispatcher TEXT;NOT current B34 parser/127 execution tools,NOT old code or ERP.
+....................................................
+----------------------------------------------------------------------
+Ran 52 tests in 1.242s
+
+OK
