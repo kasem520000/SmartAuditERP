@@ -968,14 +968,45 @@ namespace SmartAuditERP.Form_WPF
             {
                 var dlg = new Microsoft.Win32.SaveFileDialog
                 {
-                    Filter = "Excel Files (*.xlsx)|*.xlsx|CSV Files (*.csv)|*.csv",
-                    FileName = $"فواتير_مشتريات_{DateTime.Now:yyyyMMdd}.xlsx"
+                    // Repair R-088 (audit finding P7-050): this dialog offered *.xlsx and *.csv while
+                    // every choice wrote the same tab-separated text, so the announced extension never
+                    // matched the bytes on disk - an *.xlsx file holding text, and a *.csv file holding
+                    // tabs where a comma is expected. Each option offered now has a writer of its own:
+                    // comma CSV for *.csv and tab-separated text for *.txt. A real *.xlsx workbook is no
+                    // longer announced, because producing one needs a spreadsheet writer this screen does
+                    // not have; offering it again is an owner decision, not a guess.
+                    Filter = "CSV Files (*.csv)|*.csv|Text - tab separated (*.txt)|*.txt",
+                    DefaultExt = ".csv",
+                    FileName = $"فواتير_مشتريات_{DateTime.Now:yyyyMMdd}.csv"
                 };
 
                 if (dlg.ShowDialog() != true) return;
 
+                // Repair R-088 (audit finding P7-050): a name typed by hand can still ask for a
+                // container this screen cannot produce. Refusing before writing is the honest answer,
+                // so no file is left behind announcing a format its bytes do not have.
+                bool asCsv = dlg.FileName.EndsWith(".csv", StringComparison.OrdinalIgnoreCase);
+                bool asText = dlg.FileName.EndsWith(".txt", StringComparison.OrdinalIgnoreCase);
+                if (!asCsv && !asText)
+                {
+                    MessageBox.Show(
+                        "صيغة غير مدعومة للتصدير: اختر CSV (*.csv) أو نصاً بفاصل جدولة (*.txt).",
+                        "", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+
                 var dt = BuildDataTableForReport();
-                ExportDataTableToTsv(dt, dlg.FileName);
+
+                // Repair R-088 (audit finding P7-050): the delimiter follows the chosen extension, so
+                // the file matches what the dialog announced. Repair R-082 (audit finding P7-048) still
+                // stands behind it: the shared writer announces one schema (comma or tab, doubled
+                // quotes, CRLF, UTF-8) and quotes whatever could break a record, and the cells keep
+                // the display formatting they were built with, because the same table feeds the
+                // printed report.
+                SpreadsheetExport.WriteDataTable(
+                    dlg.FileName,
+                    dt,
+                    asCsv ? SpreadsheetExport.CsvDelimiter : SpreadsheetExport.TsvDelimiter);
 
                 System.Diagnostics.Process.Start(
                     new System.Diagnostics.ProcessStartInfo(dlg.FileName)
@@ -986,21 +1017,6 @@ namespace SmartAuditERP.Form_WPF
                 MessageBox.Show("خطأ في التصدير: " + ex.Message, "",
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        }
-
-        /// <summary>
-        /// تصدير DataTable إلى TSV (يفتح بـ Excel)
-        /// </summary>
-        private static void ExportDataTableToTsv(
-            DataTable dt, string filePath)
-        {
-            // Repair R-082 (audit finding P7-048): this writer appended every cell's text as it
-            // stood, so a tab or a newline inside a note, an item name or a client name silently
-            // added columns and rows to the exported file. The shared writer announces the tab
-            // schema (tab, doubled quotes, CRLF, UTF-8) and quotes whatever could break a record;
-            // the cells keep the display formatting they were built with, because the same table
-            // feeds the printed report.
-            SpreadsheetExport.WriteDataTable(filePath, dt, SpreadsheetExport.TsvDelimiter);
         }
 
         #endregion
