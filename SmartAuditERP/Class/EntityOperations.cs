@@ -1800,7 +1800,13 @@ public class EntityOperations
                 sqlCommand.Parameters.Add("@salary_basic", SqlDbType.Float).Value = employee.Salary;
                 sqlCommand.Parameters.Add("@house", SqlDbType.Float).Value = employee.Housing;
                 sqlCommand.Parameters.Add("@travel", SqlDbType.Float).Value = employee.Travel;
-                sqlCommand.Parameters.Add("@food", SqlDbType.Float).Value = 0;
+                // Repair R-073 (audit finding P7-028): the food allowance typed on the employee
+// screen was bound into the model as Living and then dropped here - the column was
+// written as a hard 0 on every insert and update, so each save zeroed it. Persist
+// the value the caller supplied. The medical and salary_add columns are still
+// written as 0 and notes as empty because the external Employee DTO in
+// AuditorAPI.Models exposes no provable member for them (see BLK-P7-028).
+                sqlCommand.Parameters.Add("@food", SqlDbType.Float).Value = employee.Living;
                 sqlCommand.Parameters.Add("@medical", SqlDbType.Float).Value = 0;
                 sqlCommand.Parameters.Add("@salary_add", SqlDbType.Float).Value = 0;
                 sqlCommand.Parameters.Add("@salary_other", SqlDbType.Float).Value = employee.salary_other;
