@@ -216,22 +216,16 @@ namespace SmartAuditERP
 					pos_seller.branchCode = EtaSetting.BranchCode;
 					send_respons_model send_respons_model;
 					send_respons_model = await SendRecipt.send_recipt(pos_document, buyer, pos_seller, list, calc_uuid: true);
-					if (Operators.CompareString(send_respons_model.status, "200", TextCompare: false) == 0)
+					if (send_respons_model != null && Operators.CompareString(send_respons_model.status, "200", TextCompare: false) == 0)
 					{
 						new InvoiceOper().UpdateInvoiceStatus(invoice.InvGlobalID, send_respons_model.uuid);
+						// Repair R-063 (audit finding P6-017): provider acceptance (status 200, UUID stored) is the ONLY
+						// honest true. Any other status leaves ZatcaSent untouched and reports failure, so follow-up
+						// screens neither stamp an unsent receipt nor stop retrying. Status semantics beyond the
+						// documented 200 remain tracked under INV6-08/INV6-09.
+						return true;
 					}
-					bool result = default(bool);
-					try
-					{
-						result = true;
-						return result;
-					}
-					catch (Exception projectError3)
-					{
-						ProjectData.SetProjectError(projectError3);
-						ProjectData.ClearProjectError();
-						return result;
-					}
+					return false;
 				}
 				if (Operators.CompareString(MainClass.Language, "ar", TextCompare: false) == 0)
 				{
