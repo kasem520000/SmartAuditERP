@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -682,8 +682,12 @@ namespace SmartAuditERP.Form_WPF
                 else
                 {
                     cmd = new SqlCommand(
+                        // Repair R-037 (audit finding P3-025): mirror of the credit-note repair -
+                        // bind the chosen date onto the header's Date column so an edited note does
+                        // not keep its head in the old period while its rebuilt entry uses the new
+                        // one. Insert already wrote Date; only the edit contract was divergent.
                         $"UPDATE CreditDeptNotes SET " +
-                        $"Inv_No=@Inv_No,Discount=@Discount,Net=@Net," +
+                        $"Inv_No=@Inv_No,Discount=@Discount,Net=@Net,Date=@Date," +
                         $"Edit_Date=@Edit_Date,emp_id=@emp_id,notes=@notes," +
                         $"cust_id=@cust_id,Inv_Val=@Inv_Val " +
                         $"WHERE Doc_Type=2 AND Doc_No={_currentCode}",

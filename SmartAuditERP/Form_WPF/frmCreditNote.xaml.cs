@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -557,8 +557,13 @@ namespace SmartAuditERP.Form_WPF
                 else
                 {
                     cmd = new SqlCommand(
+                        // Repair R-037 (audit finding P3-025): the edit statement bound @Date but
+                        // never assigned it to the Date column, while the regenerated journal entry
+                        // was built from the newly chosen date - so an edited note kept its header
+                        // in the old period with its ledger effect in the new one. Persist the date
+                        // on the header as well (insert already does), keeping head and entry aligned.
                         "UPDATE CreditDeptNotes SET " +
-                        "Inv_No=@Inv_No, Discount=@Discount, Net=@Net, " +
+                        "Inv_No=@Inv_No, Discount=@Discount, Net=@Net, Date=@Date, " +
                         "Edit_Date=@Edit_Date, emp_id=@emp_id, notes=@notes, " +
                         "cust_id=@cust_id, Inv_Val=@Inv_Val " +
                         $"WHERE Doc_Type=1 AND Doc_No={Code}",
