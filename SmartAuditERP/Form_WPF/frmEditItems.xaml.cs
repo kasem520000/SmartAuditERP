@@ -220,6 +220,32 @@ namespace SmartAuditERP.Form_WPF
                     !string.IsNullOrEmpty(cmbGroups.Text))
                     item.CategoryID = cmbGroups.EditValue?.ToString();
 
+                // With no unit change, the existing main unit is also the
+                // price source used by invoice editors. Do not overwrite other
+                // units or create a unit when the legacy item has none.
+                if (cmbUnit.SelectedIndex == -1 &&
+                    (!string.IsNullOrWhiteSpace(txtSalePrice.Text) ||
+                     !string.IsNullOrWhiteSpace(txtPurchPrice.Text)))
+                {
+                    ProductUnit mainUnit = null;
+                    foreach (var unit in item.ProductUnits)
+                    {
+                        if (unit.UnitId != item.MainUnit) continue;
+                        if (mainUnit != null)
+                        {
+                            DXMessageBox.Show("الوحدة الرئيسية مكررة للصنف " + item.Code + "؛ لم يتم حفظ التعديل.",
+                                "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return;
+                        }
+                        mainUnit = unit;
+                    }
+                    if (mainUnit != null)
+                    {
+                        if (!string.IsNullOrWhiteSpace(txtSalePrice.Text)) mainUnit.SalePrice = item.SalePrice;
+                        if (!string.IsNullOrWhiteSpace(txtPurchPrice.Text)) mainUnit.PurchasePrice = item.PurchPrice;
+                    }
+                }
+
                 // الوحدة
                 if (cmbUnit.SelectedIndex != -1)
                 {

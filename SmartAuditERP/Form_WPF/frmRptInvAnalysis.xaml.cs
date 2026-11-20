@@ -700,7 +700,8 @@ namespace SmartAuditERP.Form_WPF
 
                     // الإجمالي
                     adp2 = new SqlDataAdapter(
-                        "select sum(inv_sub.val) as val, sum(val1*exchange_price) as sum " +
+                        "select sum(inv_sub.val) as val, sum(val1*exchange_price) as sum, " +
+                        "sum(ISNULL(inv_sub.discount,0)) as LineDiscount " +
                         " from inv,inv_sub,Items,ItemsCategory where " + filter +
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
@@ -712,7 +713,8 @@ namespace SmartAuditERP.Form_WPF
                     if (dt2.Rows.Count > 0)
                     {
                         double.TryParse(dt2.Rows[0]["sum"].ToString(), out netTotal);
-                        netDiscount = 0;
+                        double.TryParse(dt2.Rows[0]["LineDiscount"].ToString(), out netDiscount);
+                        netTotal -= netDiscount;
                     }
 
                     // تفاصيل للتكلفة
@@ -831,7 +833,8 @@ namespace SmartAuditERP.Form_WPF
 
                     // الإجمالي
                     adp2 = new SqlDataAdapter(
-                        "select sum(inv_sub.val) as val, sum(val1*exchange_price) as sum " +
+                        "select sum(inv_sub.val) as val, sum(val1*exchange_price) as sum, " +
+                        "sum(ISNULL(inv_sub.discount,0)) as LineDiscount " +
                         " from inv,inv_sub,Items,ItemsCategory where " + filter +
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
@@ -843,7 +846,11 @@ namespace SmartAuditERP.Form_WPF
 
                     double netTotal = 0, netDiscount = 0;
                     if (dt2.Rows.Count > 0)
+                    {
                         double.TryParse(dt2.Rows[0]["sum"].ToString(), out netTotal);
+                        double.TryParse(dt2.Rows[0]["LineDiscount"].ToString(), out netDiscount);
+                        netTotal -= netDiscount;
+                    }
 
                     // تفاصيل للتكلفة
                     adp2 = new SqlDataAdapter(

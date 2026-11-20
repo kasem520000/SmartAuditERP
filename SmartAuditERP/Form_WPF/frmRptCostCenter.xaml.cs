@@ -270,23 +270,38 @@ namespace SmartAuditERP.Form_WPF
                 string branchCond = GetBranchCondition();
                 string accCond    = GetAccountCondition();
 
-                // الحصول على قائمة مراكز التكلفة الفرعية
-                var costCenterList = new List<int>();
+                // Expand all descendants (and the selected center itself) in
+                // a bounded in-memory traversal. GetParent still verifies each
+                // result against the live, unique ancestor chain before display.
+                if (!int.TryParse(Convert.ToString(cmbCostCenter.SelectedValue), out int selectedCenter))
+                    throw new InvalidOperationException("مركز التكلفة المحدد غير صالح.");
+                var children = new Dictionary<int, List<int>>();
                 using (var da = new SqlDataAdapter(
-                    $"SELECT code FROM cost_center WHERE ParentCode={cmbCostCenter.SelectedValue}",
-                    _conn))
+                    "SELECT code, ParentCode FROM cost_center WHERE Is_Deleted=0", _conn))
                 {
-                    var dt3 = new DataTable();
-                    da.Fill(dt3);
-                    if (dt3.Rows.Count > 0)
+                    var centers = new DataTable();
+                    da.Fill(centers);
+                    foreach (DataRow center in centers.Rows)
                     {
-                        foreach (DataRow row in dt3.Rows)
-                            costCenterList.Add(Convert.ToInt32(row["code"]));
+                        if (!int.TryParse(Convert.ToString(center["code"]), out int child) ||
+                            !int.TryParse(Convert.ToString(center["ParentCode"]), out int parent))
+                            continue;
+                        if (!children.TryGetValue(parent, out List<int> siblings))
+                            children[parent] = siblings = new List<int>();
+                        siblings.Add(child);
                     }
-                    else
-                    {
-                        costCenterList.Add(Convert.ToInt32(cmbCostCenter.SelectedValue));
-                    }
+                }
+                var costCenterList = new List<int>();
+                var visitedCenters = new HashSet<int>();
+                var queue = new Queue<int>();
+                queue.Enqueue(selectedCenter);
+                while (queue.Count > 0)
+                {
+                    int current = queue.Dequeue();
+                    if (!visitedCenters.Add(current)) continue;
+                    costCenterList.Add(current);
+                    if (children.TryGetValue(current, out List<int> descendants))
+                        foreach (int child in descendants) queue.Enqueue(child);
                 }
 
                 // بناء جدول مؤقت
@@ -505,6 +520,30 @@ namespace SmartAuditERP.Form_WPF
                     tempTable.Rows.Add(_parentCode, row["CCcode"], row["name"],
                         deptInit, creditInit, row["dept"], row["credit"], row["AccName"]);
                     ProgressBar1.Value++;
+                }
+
+                // Movement-driven rows miss accounts with only opening entries.
+                // Add each unmatched (center, account) opening once.
+                foreach (DataRow initRow in dt5.Rows)
+                {
+                    bool hasMovement = false;
+                    foreach (DataRow movementRow in dt4.Rows)
+                    {
+                        if (initRow["CCcode"].ToString() == movementRow["CCcode"].ToString() &&
+                            initRow["AccCode"].ToString() == movementRow["AccCode"].ToString())
+                        {
+                            hasMovement = true;
+                            break;
+                        }
+                    }
+                    if (hasMovement) continue;
+                    _parentCode = -1;
+                    GetParent(Convert.ToInt32(initRow["CCcode"]));
+                    if (_parentCode == -1) continue;
+                    double.TryParse(initRow["dept"].ToString(), out double deptInit);
+                    double.TryParse(initRow["credit"].ToString(), out double creditInit);
+                    tempTable.Rows.Add(_parentCode, initRow["CCcode"], initRow["name"],
+                        deptInit, creditInit, 0, 0, initRow["AccName"]);
                 }
 
                 ProgressBar1.Maximum = tempTable.Rows.Count > 0 ? tempTable.Rows.Count : 1;

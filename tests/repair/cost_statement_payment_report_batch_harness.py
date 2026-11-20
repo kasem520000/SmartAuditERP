@@ -48,7 +48,7 @@ db.executemany('insert into opening values(?,?,?)',[(1,10,100),(1,20,200),(1,30,
 db.executemany('insert into movement values(?,?,?)',[(1,10,7),(1,20,9),(2,10,8)])
 rows=db.execute('select m.cc,m.acc,coalesce(o.amount,0) from movement m left join opening o on o.cc=m.cc and o.acc=m.acc order by m.cc,m.acc').fetchall()
 check('model: two accounts in same center retain their own opening',rows==[(1,10,100),(1,20,200),(2,10,400)])
-check('model: opening-only account is not in legacy movement driven result',all(r[1]!=30 for r in rows))
+check('model: left join alone omits opening-only account, requiring the extra pass',all(r[1]!=30 for r in rows))
 
 res=ET.parse(R/'SmartAuditERP/Properties/Resources.resx').getroot()
 values={d.get('name'):d.findtext('value') or '' for d in res.findall('data')}

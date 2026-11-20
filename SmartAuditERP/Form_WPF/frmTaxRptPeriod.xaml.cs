@@ -414,10 +414,12 @@ namespace SmartAuditERP.Form_WPF
                 }
 
                 double discountNet = itemsDiscount;
-                if (priceIncVat && itemsDiscount > 0.0 && vatPercent > 0.0)
+                // The NOTAX subset has no VAT to remove, even when other
+                // invoice lines use tax-inclusive prices and a nonzero rate.
+                if (filterVatMode == "TAXED" && priceIncVat && itemsDiscount > 0.0 && vatPercent > 0.0)
                     discountNet = itemsDiscount / (1.0 + vatPercent / 100.0);
 
-                if (priceIncVat && vatPercent > 0.0)
+                if (filterVatMode == "TAXED" && priceIncVat && vatPercent > 0.0)
                     totalBase /= 1.0 + vatPercent / 100.0;
 
                 double baseNet = totalBase - discountNet;

@@ -688,9 +688,20 @@ namespace SmartAuditERP
 					invoiceData.PrintNote = this.PrintNote;
 					invoiceData.ItemAdditionalTaxPerc = Conversions.ToString(invoiceItem.ItemAdditionalTaxPerc);
 					invoiceData.ItemAdditionalTax = Conversions.ToString(invoiceItem.ItemAdditionalTax);
-					foreach (InvoiceItemDetail invoiceItemDetail in invoiceItem.InvoiceItemDetails)
+					// The persisted detail reader is keyed by invoice and item, not
+					// by line. Only combine serials when this item has one line;
+					// duplicate-line attribution still needs a real line identity.
+					if (Inv.InvoiceItems.Count(x => x.ItemId == invoiceItem.ItemId) == 1)
 					{
-						invoiceData.ItemSerialNo = invoiceItemDetail.ItemSerialNo;
+						invoiceData.ItemSerialNo = string.Join(Environment.NewLine,
+							invoiceItem.InvoiceItemDetails
+								.Where(detail => !string.IsNullOrWhiteSpace(detail.ItemSerialNo))
+								.Select(detail => detail.ItemSerialNo));
+					}
+					else
+					{
+						foreach (InvoiceItemDetail invoiceItemDetail in invoiceItem.InvoiceItemDetails)
+							invoiceData.ItemSerialNo = invoiceItemDetail.ItemSerialNo;
 					}
 					invoiceData.CloudID = Inv.CloudID;
 					invoiceData.CashCustomerMobile = Inv.CashCustomerMobile;
