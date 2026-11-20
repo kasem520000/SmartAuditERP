@@ -55,6 +55,10 @@ check('P7-049 is blocked while 028 and 157 remain partial', by_id['P7-049']['rep
       and all(by_id[x]['repair_status'] == 'partial_open' for x in ('P7-028', 'P7-157')))
 check('sale event repair is recorded in scope', by_id['P7-162']['repair_status'] == 'closed_in_scope'
       and 'R-098' in by_id['P7-162']['repair_ids'])
+check('warehouse name repair is in scope; access and branch findings remain open',
+      by_id['P7-087']['repair_status'] == 'closed_in_scope' and by_id['P7-087']['repair_ids'] == 'R-101'
+      and by_id['P2-011']['repair_status'] == 'deferred_blocked'
+      and by_id['P7-088']['repair_status'] == 'pending_review')
 check('plan-only repairs are included and P5-027 remains partial',
       by_id['P5-010']['repair_ids'] == 'R-058' and by_id['P5-027']['repair_ids'] == 'R-057'
       and by_id['P5-027']['repair_status'] == 'partial_open')
