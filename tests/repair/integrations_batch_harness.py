@@ -213,7 +213,7 @@ check("D2 repaired unwraps + and 00 to E.164 digits",
 nationals = ["0501234567", "501234567", "966501234567", "  0559876543 "]
 check("D3 plain national inputs behave byte-identically to the legacy rule",
       all(whatsapp_number("fixed", n) == whatsapp_number("legacy", n) for n in nationals))
-norm = WAPP.split("SendInvoiceAsync")[1][:1200]
+norm = WAPP.split("SendInvoiceAsync")[1][:2400]     # widened after R-069's pre-flight guard
 check("D4 static: recognition precedes the preserved national normalization",
       norm.index('text.StartsWith("+")') < norm.index('text.StartsWith("00")') <
       norm.index('!text.StartsWith("966")') and '"966" + text.TrimStart(\'0\')' in norm)
