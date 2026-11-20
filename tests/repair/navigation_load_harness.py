@@ -453,9 +453,14 @@ check("C12 the two other callers stay inside InsertFromInv, another finding's te
       "Repair R-092" not in OPER_C and "Repair R-093" not in OPER_C,
       "in_class=%s" % (in_class,))
 
+# Other guarded commands may be added; inspect the original two repair sites,
+# not a whole-file count that treats an additional guard as a regression.
 check("C10 the earlier navigation repairs are still in place in both named editors",
-      PUR.count("if (this.CheckBeforeClear()) return;") == 2 and
-      SAL.count("if (CheckBeforeClear()) return;") == 2 and
+      all(ordered(text[text.index("Repair " + repair):text.index("Navigate(", text.index(guard, text.index("Repair " + repair))) + len("Navigate(")],
+                  "Repair " + repair, guard, "Navigate(")
+          for text, guard in ((PUR, "if (this.CheckBeforeClear()) return;"),
+                              (SAL, "if (CheckBeforeClear()) return;"))
+          for repair in ("R-081", "R-086 (audit finding P7-159")) and
       PUR.count("bool accepted = frm.isDone") == 1 and SAL.count("bool accepted = frm.isDone") == 1)
 
 # ═══════════════ Part D: what was deliberately not built ═══════════════

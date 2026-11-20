@@ -2201,7 +2201,10 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnInsertLinkedInv_Click(object sender, RoutedEventArgs e)
         {
-            this.btnNew_Click(sender, e);
+            // R-161: propagate the existing stay decision to the caller instead
+            // of continuing after a void New handler refused to clear.
+            if (this.CheckBeforeClear()) return;
+            this.CLR();
 
             if (this.InvType == 1 && this.ProcType == 2)
             {

@@ -2749,6 +2749,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void InsertLinkedReturn(int procType, int invertoryImpact)
         {
+            // R-161: respect the existing unsaved-draft decision before reset or
+            // switching the connection for a linked return.
+            if (CheckBeforeClear()) return;
             if (MainClass.ReturnYearPreviews)
             {
                 MainClass.originalConnStr = MainClass.connstr;
