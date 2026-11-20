@@ -1,0 +1,51 @@
+{
+  "kind": "independent-B34-OWN-CLI-before-B35-actual40-archive-not-current-B35-default",
+  "command": [
+    "/usr/bin/python3",
+    "-B",
+    "docs/audit/tools/validate_audit.py",
+    "--phase7-part",
+    "B34"
+  ],
+  "audit_reference_date_utc": "2026-11-16",
+  "raw_environment_clock_start_utc": "2026-11-20T21:48:49.582572+00:00",
+  "raw_environment_clock_end_utc": "2026-11-20T21:49:45.549666+00:00",
+  "elapsed_seconds": 55.967,
+  "process_exit_code": 0,
+  "stdout_bytes": 338579,
+  "stdout_sha256": "2d8f9f79d43a91036102b71a08ecc4c19d238e5e5c31b695205708d9a32a9bfd",
+  "outer_stderr_bytes": 0,
+  "outer_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "findings": 335,
+  "originals_matching": 827,
+  "cases": 1190,
+  "suites": 35,
+  "validation_errors": [],
+  "registry_used": "evidence/findings-through-07B34.csv",
+  "actual_execution_tools": 131,
+  "historical_B34_child": {
+    "tests_reported": 52,
+    "expected_tests": 52,
+    "process_exit_code": 0,
+    "result": "passed",
+    "erp_code_imported_or_executed": false,
+    "historical_parser_cutoff": "B34-not-current-B35-default",
+    "all_original_cases_executed_unmodified": true,
+    "dedicated_child_launcher": "tools/run_historical_messaging_request_tests_07B35.py",
+    "actual_subprocess_argv": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/user/SmartAuditERP/docs/audit/tools/run_historical_messaging_request_tests_07B35.py",
+      "--through-part",
+      "B34"
+    ],
+    "no_test_skips_or_global_subprocess_or_path_patch": true,
+    "suite_own_registry_path_is_context_local_not_global": true,
+    "test_module_Path_and_A_are_historical_assertion_inputs_only": true,
+    "historical_source_assertion_input_count": 127,
+    "auxiliary_dispatcher_text_sha256": "89aefc974e1feda2afa5c954aaf0f0da37f2b5736eb764ce78328ed2d49e8795",
+    "historical_source_assertions_not_current_execution_tool_inventory": true
+  },
+  "erp_runtime_tests_executed": 0,
+  "application_remediation_performed": false
+}

@@ -1,0 +1,14 @@
+{
+  "kind": "pre-author-in-memory-witness-build-attempt-not-CLI-or-unit-suite",
+  "process_exit_code": 1,
+  "stdout_bytes": 0,
+  "source_at_attempt_sha256": "5f2aa3d9672bac1904407b86ee819f52fdaaa12e9d02a9a71babadf15a47e01a",
+  "error_type": "ValueError",
+  "error_message": "substring not found",
+  "failing_lexical_observation": "ST7B35-04 candidate slice2748..2768 incorrectly assumed CLR was inside it;actual CLR at2746",
+  "retained_tool_result": "Bash returned exit1 and traceback in build(),line230,at text(...).index(CLR();). No witness output file had been written.",
+  "correction_planned": "Use already-read full current-year transition2746..2768 for lexical order;fix one symbolic expected reference to reset sentinel;validate all supplied types before short-circuit boolean evaluation.",
+  "application_source_or_protected_artifacts_changed": false,
+  "validator_or_historical_tests_relaxed": false,
+  "erp_runtime_tests_executed": 0
+}
