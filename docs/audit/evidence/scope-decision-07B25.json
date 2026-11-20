@@ -1,0 +1,53 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "entry": "45a2a504db4f82927a286ce425f21a82bcee7a84",
+  "authority": [
+    "PHASE-07-REMAINING-07B24.md",
+    "evidence/split-register-07B24.csv",
+    "evidence/residual-disposition-07B24.csv"
+  ],
+  "selected_upstream_split": "SP7B24-01",
+  "selected_capability": "property2..4 dialog result ownership at normal nontrue return and packing2 feedback on sequential Calc invocations; explicit editor/overload reachability controls",
+  "input": "supplied first-detail property/FillRatio, fresh modal state and normal nontrue/true return; exact integer/rational states and sequential calls, not a WPF event trace",
+  "source": "318-line dialog code-behind/313-line XAML locally complete plus bounded detail source, helper projection, loader append and conditional editors",
+  "output": "in-memory item/detail quantities, FillValue/measurements and appended references; net text after supplied sequential calls; not saved/printed/stock/financial outputs",
+  "exit": "each selected capability evidence/limit/owner/redacted input/impact/next step/two unexecuted plans; root/residual/split adjudication; protected inputs and actual documentary checks",
+  "exclusions": [
+    "no all-callers/477body/callgraph/capability census/455FE rereview",
+    "no unconditional existing-row editor reachability: sale Description collapsed and InputOutput column helper empty",
+    "InvoiceDGV helper not actual Invoicecontract dialog support; collection runtime/serial029 not newly adjudicated",
+    "no whole editor/writer/save/output/stock/financial/ACL/production certification",
+    "no packing unit/ceil/price/rounding/SDK policy invented; rational integer witnesses not .NET parser/formatter oracle",
+    "no WPF/modal/event scheduling/render/SQL/Excel/provider/SDK/device execution or7C start",
+    "independent repairs not merged or presumed started/synchronized; no protected date/capture rewrite"
+  ],
+  "bookkeeping": {
+    "selected_paths": 10,
+    "prior_union": 419,
+    "overlap": 8,
+    "new": 2,
+    "union": 421,
+    "complement": 406,
+    "complement_kinds": {
+      "source": 341,
+      "generated-artifact": 61,
+      "project-or-resource": 4
+    }
+  },
+  "new_paths": [
+    "SmartAuditERP/Form_WPF/frmItemProperties.xaml",
+    "SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs"
+  ],
+  "bounded_read_slice_count": 23,
+  "whole_local_dialog_files": 2,
+  "whole_local_dialog_lines": {
+    "code_behind": 318,
+    "xaml": 313
+  },
+  "historical_metadata_screen_count": 322,
+  "historical_comparison_depth": "all322-title-certainty-summaries-plus-path-filtered-metadata-and-selected-nearest-bodies-source-chains-not-all-historical-bodies",
+  "historical_body_review_claim": false,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "counts_are_completion_percent_or_sessions": false
+}

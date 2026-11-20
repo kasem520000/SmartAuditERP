@@ -1,0 +1,828 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "source_head": "10ba215152f722c8808aea0bb672c1d1d4d9d711",
+  "entry_checkout": "45a2a504db4f82927a286ce425f21a82bcee7a84",
+  "application_code_imported_or_executed": false,
+  "dotnet_wpf_sql_or_excel_executed": false,
+  "application_remediation_performed": false,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "scanner_or_printer_tests_executed": 0,
+  "B_R4i_bounded_not_whole7B_closure": true,
+  "unresolved_external_contracts_and_explicit_splits_retained": true,
+  "selected_paths_strict_utf8_decode": true,
+  "all_callers_or_external_DTOs_body_reviewed": false,
+  "actual_WPF_event_order_or_count_claimed": false,
+  "financial_or_packing_policy_invented": false,
+  "Invoicecontract_and_InvoiceDGV_overloads_kept_distinct": true,
+  "prior_serial029_and_import144_picker148_not_recounted_or_extended": true,
+  "retained_additive_B10_arithmetic_erratum": {
+    "local_cost": 10,
+    "reference_cost": 120,
+    "equality1_control": 10,
+    "protected_G138_not_rewritten": true
+  },
+  "illustration_count": 16,
+  "lexical_check_count": 16,
+  "illustrations": [
+    {
+      "id": "ALG7B25-01",
+      "finding_ids": "P7-151",
+      "title": "False normal return projects fresh scalar zero",
+      "result": {
+        "item": {
+          "ref": "line-A",
+          "property": 3,
+          "qty": "0",
+          "detail_qty": "0",
+          "fill_value": "0",
+          "height": "2",
+          "width": "10",
+          "description": "height:2;width:10;qty:3"
+        },
+        "projection_performed": true,
+        "unmodelled_other_branch": false,
+        "caller_ignores_supplied_dialog_outcome": true,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:14-26;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:302-308;SmartAuditERP/Class/ItemOper.cs:587-655;SmartAuditERP/Form_WPF/frmItemProperties.xaml:263-279",
+      "limit": "Supplied false normal return, not observed ShowDialog/Close; in-memory assignments only, no saved loss."
+    },
+    {
+      "id": "ALG7B25-02",
+      "finding_ids": "P7-151",
+      "title": "Null normal return is also ungated",
+      "result": {
+        "item": {
+          "ref": "line-A",
+          "property": 2,
+          "qty": "0",
+          "detail_qty": "0",
+          "fill_value": "2",
+          "height": "2",
+          "width": "3",
+          "description": "height:2;width:10;qty:3"
+        },
+        "projection_performed": true,
+        "unmodelled_other_branch": false,
+        "caller_ignores_supplied_dialog_outcome": true,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:14-26;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:302-308;SmartAuditERP/Class/ItemOper.cs:587-655;SmartAuditERP/Form_WPF/frmItemProperties.xaml:263-279",
+      "limit": "A supplied nontrue outcome is not an assertion of which WPF close gesture returns null or false."
+    },
+    {
+      "id": "ALG7B25-03",
+      "finding_ids": "P7-151",
+      "title": "Confirmed insert positive control copies the scalar",
+      "result": {
+        "item": {
+          "ref": "line-A",
+          "property": 3,
+          "qty": "60",
+          "detail_qty": "60",
+          "fill_value": "0",
+          "height": "2",
+          "width": "10",
+          "description": "height:2;width:10;qty:3"
+        },
+        "projection_performed": true,
+        "unmodelled_other_branch": false,
+        "caller_ignores_supplied_dialog_outcome": true,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:14-26;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:302-308;SmartAuditERP/Class/ItemOper.cs:587-655;SmartAuditERP/Form_WPF/frmItemProperties.xaml:263-279",
+      "limit": "Local positive control; no dimensions/unit/financial policy or operational acceptance."
+    },
+    {
+      "id": "ALG7B25-04",
+      "finding_ids": "P7-151",
+      "title": "No-detail early-return control",
+      "result": {
+        "item": {
+          "ref": "line-A",
+          "property": 3,
+          "qty": "6",
+          "detail_qty": "6",
+          "fill_value": "3",
+          "height": "2",
+          "width": "3",
+          "description": "original"
+        },
+        "projection_performed": false,
+        "unmodelled_other_branch": false,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Class/ItemOper.cs:587-601;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:123-193;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:104-109",
+      "limit": "No-detail helper exit only; external DTO collection/null contract not executed."
+    },
+    {
+      "id": "ALG7B25-05",
+      "finding_ids": "P4-029",
+      "title": "Serial branch explicitly not modelled as a no-op",
+      "result": {
+        "item": {
+          "ref": "line-A",
+          "property": 5,
+          "qty": "6",
+          "detail_qty": "6",
+          "fill_value": "3",
+          "height": "2",
+          "width": "3",
+          "description": "original"
+        },
+        "projection_performed": false,
+        "unmodelled_other_branch": true,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Class/ItemOper.cs:587-601;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:123-193;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:104-109",
+      "limit": "Serial cancellation already029; unchanged inert input is NOT acceptance or source claim about serial mutation."
+    },
+    {
+      "id": "ALG7B25-06",
+      "finding_ids": "P7-151",
+      "title": "Visible net text is not the public NetQnty field",
+      "result": {
+        "textbox": "60",
+        "scalar": "0"
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:14-26;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:302-308;SmartAuditERP/Class/ItemOper.cs:587-655;SmartAuditERP/Form_WPF/frmItemProperties.xaml:263-279",
+      "limit": "Text changes and Calc do not set public scalar; only supplied Insert would. No UI render observed."
+    },
+    {
+      "id": "ALG7B25-07",
+      "finding_ids": "P7-151",
+      "title": "Successful loader normal return can append the projected zero",
+      "result": {
+        "refs": [
+          "line-X",
+          "line-A"
+        ],
+        "appended_qty": "0",
+        "successful_lookup_and_normal_loader_return_supplied": true,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:14-26;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:302-308;SmartAuditERP/Class/ItemOper.cs:587-655;SmartAuditERP/Form_WPF/frmItemProperties.xaml:263-279;SmartAuditERP/Class/ItemOper.cs:549-574;SmartAuditERP/Class/ItemOper.cs:1181-1188;SmartAuditERP/Form_WPF/frmItems.xaml.cs:911-931;SmartAuditERP/Form_WPF/frmItems.xaml.cs:985-991;SmartAuditERP/Form_WPF/frmItems.xaml:497-511",
+      "limit": "Only source order after successful lookup/normal LoadItemInf return is modelled; no SQL/catch/stock/save acceptance or certainty of final surviving row."
+    },
+    {
+      "id": "ALG7B25-08",
+      "finding_ids": "P7-151",
+      "title": "Packing confirmation copies FillValue rather than geometric fields",
+      "result": {
+        "item": {
+          "ref": "line-A",
+          "property": 2,
+          "qty": "20",
+          "detail_qty": "20",
+          "fill_value": "2",
+          "height": "2",
+          "width": "3",
+          "description": "height:2;width:10;qty:3"
+        },
+        "projection_performed": true,
+        "unmodelled_other_branch": false,
+        "caller_ignores_supplied_dialog_outcome": true,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:14-26;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:302-308;SmartAuditERP/Class/ItemOper.cs:587-655;SmartAuditERP/Form_WPF/frmItemProperties.xaml:263-279",
+      "limit": "Local projection structure, not a validated packing/rounding formula."
+    },
+    {
+      "id": "ALG7B25-09",
+      "finding_ids": "P7-152",
+      "title": "Sequential packing calls feed60 into180 without new business input",
+      "result": {
+        "first": {
+          "state": {
+            "property": 2,
+            "height": "2",
+            "width": "10",
+            "qty": "3",
+            "net_text": "60"
+          },
+          "suppressed_nested_call": false,
+          "application_executed": false
+        },
+        "second": {
+          "state": {
+            "property": 2,
+            "height": "6",
+            "width": "10",
+            "qty": "3",
+            "net_text": "180"
+          },
+          "suppressed_nested_call": false,
+          "application_executed": false
+        }
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:123-193;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:214-251;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:280-297;SmartAuditERP/Form_WPF/frmItemProperties.xaml:239-245;SmartAuditERP/Form_WPF/frmItemProperties.xaml:263-270",
+      "limit": "Exact integer supplied state and two sequential calls; NOT automatic WPF event order/count or a saved/financial amount."
+    },
+    {
+      "id": "ALG7B25-10",
+      "finding_ids": "P7-152",
+      "title": "Quantity-one idempotence control",
+      "result": {
+        "first": {
+          "state": {
+            "property": 2,
+            "height": "2",
+            "width": "10",
+            "qty": "1",
+            "net_text": "20"
+          },
+          "suppressed_nested_call": false,
+          "application_executed": false
+        },
+        "second": {
+          "state": {
+            "property": 2,
+            "height": "2",
+            "width": "10",
+            "qty": "1",
+            "net_text": "20"
+          },
+          "suppressed_nested_call": false,
+          "application_executed": false
+        }
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:123-193;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:214-251;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:280-297;SmartAuditERP/Form_WPF/frmItemProperties.xaml:239-245;SmartAuditERP/Form_WPF/frmItemProperties.xaml:263-270",
+      "limit": "Control limits feedback; does not validate all packing semantics."
+    },
+    {
+      "id": "ALG7B25-11",
+      "finding_ids": "P7-152",
+      "title": "Zero width has explicit zero guard",
+      "result": {
+        "state": {
+          "property": 2,
+          "height": "0",
+          "width": "0",
+          "qty": "3",
+          "net_text": "0"
+        },
+        "suppressed_nested_call": false,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:123-193;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:214-251;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:280-297;SmartAuditERP/Form_WPF/frmItemProperties.xaml:239-245;SmartAuditERP/Form_WPF/frmItemProperties.xaml:263-270",
+      "limit": "Supplied guard only; source allows broader parse domain not emulated."
+    },
+    {
+      "id": "ALG7B25-12",
+      "finding_ids": "P7-152",
+      "title": "Zero quantity has explicit zero guard",
+      "result": {
+        "state": {
+          "property": 2,
+          "height": "0",
+          "width": "10",
+          "qty": "0",
+          "net_text": "0"
+        },
+        "suppressed_nested_call": false,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:123-193;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:214-251;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:280-297;SmartAuditERP/Form_WPF/frmItemProperties.xaml:239-245;SmartAuditERP/Form_WPF/frmItemProperties.xaml:263-270",
+      "limit": "No divide-by-zero failure inferred for this guard."
+    },
+    {
+      "id": "ALG7B25-13",
+      "finding_ids": "P7-152",
+      "title": "Area formula recomputes from unchanged dimensions",
+      "result": {
+        "first": {
+          "state": {
+            "property": 3,
+            "height": "2",
+            "width": "10",
+            "qty": "3",
+            "net_text": "60"
+          },
+          "suppressed_nested_call": false,
+          "application_executed": false
+        },
+        "second": {
+          "state": {
+            "property": 3,
+            "height": "2",
+            "width": "10",
+            "qty": "3",
+            "net_text": "60"
+          },
+          "suppressed_nested_call": false,
+          "application_executed": false
+        }
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:123-193;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:214-251;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:280-297;SmartAuditERP/Form_WPF/frmItemProperties.xaml:239-245;SmartAuditERP/Form_WPF/frmItemProperties.xaml:263-270",
+      "limit": "Source property3 contrast, not agreement with a business dimensional contract."
+    },
+    {
+      "id": "ALG7B25-14",
+      "finding_ids": "P7-152",
+      "title": "Linear-perimeter formula is a sequential-call control",
+      "result": {
+        "first": {
+          "state": {
+            "property": 4,
+            "height": "2",
+            "width": "10",
+            "qty": "3",
+            "net_text": "72"
+          },
+          "suppressed_nested_call": false,
+          "application_executed": false
+        },
+        "second": {
+          "state": {
+            "property": 4,
+            "height": "2",
+            "width": "10",
+            "qty": "3",
+            "net_text": "72"
+          },
+          "suppressed_nested_call": false,
+          "application_executed": false
+        }
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:123-193;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:214-251;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:280-297;SmartAuditERP/Form_WPF/frmItemProperties.xaml:239-245;SmartAuditERP/Form_WPF/frmItemProperties.xaml:263-270",
+      "limit": "Formula labelled meter in source; no claim that perimeter is the correct domain policy."
+    },
+    {
+      "id": "ALG7B25-15",
+      "finding_ids": "P7-152",
+      "title": "Internal-update guard suppresses nested invocation only",
+      "result": {
+        "state": {
+          "property": 2,
+          "height": "2",
+          "width": "10",
+          "qty": "3",
+          "net_text": "20"
+        },
+        "suppressed_nested_call": true,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:123-193;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:214-251;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:280-297;SmartAuditERP/Form_WPF/frmItemProperties.xaml:239-245;SmartAuditERP/Form_WPF/frmItemProperties.xaml:263-270;SmartAuditERP/Class/ItemOper.cs:587-601;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:123-193;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:104-109",
+      "limit": "The bool is supplied; synchronous event reentrancy and dispatcher scheduling never executed."
+    },
+    {
+      "id": "ALG7B25-16",
+      "finding_ids": "P7-152",
+      "title": "Fractional previous height selects the existing ceiling branch",
+      "result": {
+        "state": {
+          "property": 2,
+          "height": "3",
+          "width": "10",
+          "qty": "2",
+          "net_text": "60"
+        },
+        "suppressed_nested_call": false,
+        "application_executed": false
+      },
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:123-193;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:214-251;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:280-297;SmartAuditERP/Form_WPF/frmItemProperties.xaml:239-245;SmartAuditERP/Form_WPF/frmItemProperties.xaml:263-270",
+      "limit": "Exact terminating rational control of the conditional, not .NET Math.Ceiling/formatting or a newly invented rounding policy; same152, not third finding."
+    }
+  ],
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B25-01",
+      "finding_ids": "P7-151",
+      "title": "Fresh scalar zero is assigned only in constructor and Insert",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:14-26;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:302-308;SmartAuditERP/Class/ItemOper.cs:587-655;SmartAuditERP/Form_WPF/frmItemProperties.xaml:263-279",
+      "limit": "Whole local code-behind read, not all external reflection/subclass/global behavior."
+    },
+    {
+      "id": "ST7B25-02",
+      "finding_ids": "P7-152",
+      "title": "Loaded/selection paths invoke mode and calculation",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:33-79;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:310-314;SmartAuditERP/Form_WPF/frmItemProperties.xaml:1-16",
+      "limit": "Literal calls/wiring only; initial-event count/order not simulated."
+    },
+    {
+      "id": "ST7B25-03",
+      "finding_ids": "P7-152",
+      "title": "Packing makes net textbox editable despite XAML read-only default",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:72-79;SmartAuditERP/Form_WPF/frmItemProperties.xaml:263-270",
+      "limit": "Selected code changes the property; no rendering or user edit observed."
+    },
+    {
+      "id": "ST7B25-04",
+      "finding_ids": "P7-152",
+      "title": "Quantity change, lost focus and Enter each call Calc",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:123-193;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:214-251;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:280-297;SmartAuditERP/Form_WPF/frmItemProperties.xaml:239-245;SmartAuditERP/Form_WPF/frmItemProperties.xaml:263-270",
+      "limit": "Multiple declared event sites, not a claim every gesture triggers all or a specific number/order."
+    },
+    {
+      "id": "ST7B25-05",
+      "finding_ids": "P7-152",
+      "title": "Net lost-focus and Enter call Calc while its TextChanged is empty",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:123-193;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:214-251;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:280-297;SmartAuditERP/Form_WPF/frmItemProperties.xaml:239-245;SmartAuditERP/Form_WPF/frmItemProperties.xaml:263-270",
+      "limit": "Sequential-invocation possibility only; callbacks not executed."
+    },
+    {
+      "id": "ST7B25-06",
+      "finding_ids": "P7-152",
+      "title": "Internal-update bool resets in finally, not a persistent idempotence key",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:123-193;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:214-251;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:280-297;SmartAuditERP/Form_WPF/frmItemProperties.xaml:239-245;SmartAuditERP/Form_WPF/frmItemProperties.xaml:263-270",
+      "limit": "Source bool guard, no measured race/reentrancy assertion."
+    },
+    {
+      "id": "ST7B25-07",
+      "finding_ids": "P7-152",
+      "title": "Packing reads output text, divides, multiplies quantity and writes it back",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:123-193;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:214-251;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:280-297;SmartAuditERP/Form_WPF/frmItemProperties.xaml:239-245;SmartAuditERP/Form_WPF/frmItemProperties.xaml:263-270",
+      "limit": "Integer fixture avoids culture/float/rounding; existing ceiling policy remains unresolved."
+    },
+    {
+      "id": "ST7B25-08",
+      "finding_ids": "P7-152",
+      "title": "Area and linear branches overwrite net from dimensions",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:123-193;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:214-251;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:280-297;SmartAuditERP/Form_WPF/frmItemProperties.xaml:239-245;SmartAuditERP/Form_WPF/frmItemProperties.xaml:263-270",
+      "limit": "Contrasting equations, not correctness acceptance for property labels or units."
+    },
+    {
+      "id": "ST7B25-09",
+      "finding_ids": "P7-151",
+      "title": "Only Insert captures the public scalar before true and Close",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:14-26;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:302-308;SmartAuditERP/Class/ItemOper.cs:587-655;SmartAuditERP/Form_WPF/frmItemProperties.xaml:263-279;SmartAuditERP/Form_WPF/frmItemProperties.xaml:274-279",
+      "limit": "Handler order only, no modal result/Close call executed."
+    },
+    {
+      "id": "ST7B25-10",
+      "finding_ids": "P7-151",
+      "title": "Main helper ignores ShowDialog return before description and quantity",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:14-26;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:302-308;SmartAuditERP/Class/ItemOper.cs:587-655;SmartAuditERP/Form_WPF/frmItemProperties.xaml:263-279",
+      "limit": "Absence scoped to this projection; normal dialog return supplied, not all close behavior."
+    },
+    {
+      "id": "ST7B25-11",
+      "finding_ids": "P7-151",
+      "title": "Item and first detail both receive the public scalar",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:14-26;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:302-308;SmartAuditERP/Class/ItemOper.cs:587-655;SmartAuditERP/Form_WPF/frmItemProperties.xaml:263-279",
+      "limit": "Local assignments, not external DTO setter/subscriber or persistence acceptance."
+    },
+    {
+      "id": "ST7B25-12",
+      "finding_ids": "P7-151",
+      "title": "No details/null-first/unsupported property guard the chosen branch",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Class/ItemOper.cs:587-601;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:123-193;SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs:104-109",
+      "limit": "Other properties outside chosen branch are NOT asserted to be no-op; serial029 remains."
+    },
+    {
+      "id": "ST7B25-13",
+      "finding_ids": "P7-151;P7-152",
+      "title": "Detail property and FillRatio come from source; product UI stores code2 packing",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Class/ItemOper.cs:549-574;SmartAuditERP/Class/ItemOper.cs:1181-1188;SmartAuditERP/Form_WPF/frmItems.xaml.cs:911-931;SmartAuditERP/Form_WPF/frmItems.xaml.cs:985-991;SmartAuditERP/Form_WPF/frmItems.xaml:497-511",
+      "limit": "SQL/schema/value uniqueness and deployed UI not executed or certified; width positive is a supplied fixture."
+    },
+    {
+      "id": "ST7B25-14",
+      "finding_ids": "P7-151",
+      "title": "Main loader appends after LoadItemInf without a dialog outcome",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Class/ItemOper.cs:549-574;SmartAuditERP/Class/ItemOper.cs:1181-1188;SmartAuditERP/Form_WPF/frmItems.xaml.cs:911-931;SmartAuditERP/Form_WPF/frmItems.xaml.cs:985-991;SmartAuditERP/Form_WPF/frmItems.xaml:497-511",
+      "limit": "Source order only; no assertion about all subsequent stock checks, totals, removals or saving."
+    },
+    {
+      "id": "ST7B25-15",
+      "finding_ids": "P7-151",
+      "title": "InvoiceDGV helper homologue is distinct from no-dialog Invoicecontract loader",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Class/ItemOpercontract.cs:1171-1192;SmartAuditERP/Class/ItemOpercontract.cs:1195-1329;SmartAuditERP/Class/ItemOpercontract.cs:1367-1417",
+      "limit": "Same151 cause not new/extended; class name does NOT establish that actual contract entry reaches this InvoiceDGV overload."
+    },
+    {
+      "id": "ST7B25-16",
+      "finding_ids": "H7B25-03",
+      "title": "Direct editor reachability is explicitly limited, not assumed",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1068-1093;SmartAuditERP/Form_WPF/frmInvSale.xaml:650-663;SmartAuditERP/Form_WPF/frmInvSale.xaml:882-888;SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs:1146-1195;SmartAuditERP/Form_WPF/frmInvInputOutput.xaml:722-739",
+      "limit": "Sale Description hidden by default; layout visibility/SortMemberPath require contract. Input/output helper returns empty, so Description branch not asserted reachable by supplied column. No new missing-feature finding."
+    }
+  ],
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemProperties.xaml.cs",
+      "start": 1,
+      "end": 318,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": true,
+      "source_sha256": "504ef33ad54a2de28caf6ea6995300efc2d505ed74477ed693ad74f3d9d685bd",
+      "selected_text_utf8_sha256": "504ef33ad54a2de28caf6ea6995300efc2d505ed74477ed693ad74f3d9d685bd",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemProperties.xaml",
+      "start": 1,
+      "end": 313,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": true,
+      "source_sha256": "90086fed492c8821b26cdaaa090bdecc60c406306177fbc62eef2cc14bdb2e55",
+      "selected_text_utf8_sha256": "90086fed492c8821b26cdaaa090bdecc60c406306177fbc62eef2cc14bdb2e55",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": true
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "start": 491,
+      "end": 655,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "1f3c56a8304a38163dc3d18b432e15152c42787966a9ed9966e3297cfafba17a",
+      "selected_text_utf8_sha256": "a3f75a0048adf9b5cb1f94987d624b9c3228892a701ce31859f1b085f3bebe59",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "start": 1047,
+      "end": 1056,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "1f3c56a8304a38163dc3d18b432e15152c42787966a9ed9966e3297cfafba17a",
+      "selected_text_utf8_sha256": "2c90c6e0477565d75f5b30c909f41a514f4c4f7ba028e04636835e5156209c19",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "start": 1075,
+      "end": 1091,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "1f3c56a8304a38163dc3d18b432e15152c42787966a9ed9966e3297cfafba17a",
+      "selected_text_utf8_sha256": "a54c8da381635eb524a416acaa9a93c07a1a2d48a2e1d7f9b5c1be976b61d5fc",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "start": 1134,
+      "end": 1188,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "1f3c56a8304a38163dc3d18b432e15152c42787966a9ed9966e3297cfafba17a",
+      "selected_text_utf8_sha256": "80a6b6354f50c4bbfc48b704df4954f4da989d8cb0d39d955116764475d48c50",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "start": 1367,
+      "end": 1410,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "1f3c56a8304a38163dc3d18b432e15152c42787966a9ed9966e3297cfafba17a",
+      "selected_text_utf8_sha256": "ab766308800f4b0df34f23095fe9737c249ac1f22e16df566f3adbd7a2c86958",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOpercontract.cs",
+      "start": 977,
+      "end": 1005,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "9fac399cb2cbb35f1d26732bfa0ecfe54f68782be7e11ae084fa97bc794f8329",
+      "selected_text_utf8_sha256": "0377885f0a229447e1bf1c4b925b0ac45c02a349004ef1411b77fc4433a34b1e",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOpercontract.cs",
+      "start": 1058,
+      "end": 1083,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "9fac399cb2cbb35f1d26732bfa0ecfe54f68782be7e11ae084fa97bc794f8329",
+      "selected_text_utf8_sha256": "b46442979649c4b408837a7aa696d38aa71147d9f88e878f9e29fd80971c982d",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOpercontract.cs",
+      "start": 1171,
+      "end": 1192,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "9fac399cb2cbb35f1d26732bfa0ecfe54f68782be7e11ae084fa97bc794f8329",
+      "selected_text_utf8_sha256": "61bf6eafab8918f6056f80522b7a8606945949993c7a982b695df5b707289ea0",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOpercontract.cs",
+      "start": 1195,
+      "end": 1329,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "9fac399cb2cbb35f1d26732bfa0ecfe54f68782be7e11ae084fa97bc794f8329",
+      "selected_text_utf8_sha256": "a401bb90bb8b9d322a158e2974fb0e1c3798cab6c67dba0d680b9c21b3e12001",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Class/ItemOpercontract.cs",
+      "start": 1367,
+      "end": 1417,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "9fac399cb2cbb35f1d26732bfa0ecfe54f68782be7e11ae084fa97bc794f8329",
+      "selected_text_utf8_sha256": "16bb06d413f1d8b4e85d2ab237b01f2eb0741808287bf0790c76044a023b1db0",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 667,
+      "end": 705,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "selected_text_utf8_sha256": "49f3c169acf797ce55bf0216ce9b849909f34c4b140371ffad2277bf9633e34c",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 1068,
+      "end": 1093,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "selected_text_utf8_sha256": "96b7b33cb845cf45c2acb8e75525d6fcd1ac3b5e881c6010c48021b5675c3a1d",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 1413,
+      "end": 1445,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "selected_text_utf8_sha256": "59f36ba174b6fc9748c44ed70347438a2e968a43cc91ff0eef9cb61f177088a5",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 3689,
+      "end": 3745,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "selected_text_utf8_sha256": "066a6c3dc9d6e06f572d9ba0223e91c7733783755bdd6585726543d1b8e46e28",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml",
+      "start": 650,
+      "end": 663,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "289a5a6bce98948818d3847a9cdf50870a35ca8269416a1ac3dd293db13e4e6d",
+      "selected_text_utf8_sha256": "3527f4d53b4a17060b17bdcf5c681def0824a3fdd40389744c4aa1dc9544b49b",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml",
+      "start": 882,
+      "end": 888,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "289a5a6bce98948818d3847a9cdf50870a35ca8269416a1ac3dd293db13e4e6d",
+      "selected_text_utf8_sha256": "cc9adb7522c310cafd608e4530393bf6f3485d94d5d85dece2cc5f2a51f8e613",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+      "start": 1146,
+      "end": 1195,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "62ba7873884ca17f6ec63ebbe1af679b0f7bea0e7bb494c83791e457a040e0d6",
+      "selected_text_utf8_sha256": "1860ca03d0df8345f6f09dccd77b70d0368cfcc6db55ebbfb0afc54e15a8be0a",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml",
+      "start": 722,
+      "end": 739,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "1d7fd16d6eaf6250df7665cc9be5c0ff0fc1e3f94b56fe19c1520e7cf8916bad",
+      "selected_text_utf8_sha256": "9dc526a0350be5d5284d74cf93c2e38903e25eb9c31485168a3225db2c75bf90",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItems.xaml.cs",
+      "start": 905,
+      "end": 934,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "996048322730bc9d7346598871fce660f5f38d6741e11cdf72843c2e566e21d4",
+      "selected_text_utf8_sha256": "f73c44eaa9a29446efd1ced58a35be1e9bcd4c7e06d74b1e1140205add7783d7",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItems.xaml.cs",
+      "start": 985,
+      "end": 991,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "996048322730bc9d7346598871fce660f5f38d6741e11cdf72843c2e566e21d4",
+      "selected_text_utf8_sha256": "a02acc8de051d8705b2fb78021e8fea778f4211354c37bdae9b3f68bd3b9e9e1",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItems.xaml",
+      "start": 487,
+      "end": 512,
+      "encoding": "strict-utf-8",
+      "utf8_BOM_present": false,
+      "source_sha256": "61e518b51bbe2a715e0b6da4b93e3020b50785e2ddeaabf8c4a0be31c1ec703a",
+      "selected_text_utf8_sha256": "890955ede7ea78f9274f302b54beaf80513ad5a5046bcd327cfb084134f67715",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true,
+      "whole_local_file_selected": false
+    }
+  ],
+  "selected_source_paths": 10,
+  "whole_local_dialog_files_selected": 2,
+  "source_read_slice_count": 23,
+  "limit": "318-line dialog code-behind and313-line XAML locally complete, other paths bounded;23 reads/10paths not all callers/callgraph/capability census/455FE.151 ungated normal-return projection from fresh scalar0,152 output-input feedback on two sequential exact integer calls60->180. No actual modal close, WPF schedule/count, .NET parser/formatter/rounding, SQL/SDK DTO behavior, finance/stock/save/output/operational acceptance. InvoiceDGV homologue not contract support claim; hidden sale Description and empty input/output column helper constrain direct editor routes. Two roots only, zero extensions, retained potential014/132/145 and020/021/barriers.7B/7 partial,R4j/B26 proposed,7C unstarted,8 unauthorized here; independent repairs not merged or presumed started/synchronized.",
+  "errors": []
+}
