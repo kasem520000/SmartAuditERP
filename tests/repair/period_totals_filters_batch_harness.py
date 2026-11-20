@@ -61,6 +61,10 @@ for control in ('txtTotSalary','TxtHous','TxtTravel','txtSalaryAdd','txtSalarySu
  tag=salary[salary.index('x:Name="'+control+'"'):];tag=tag[:tag.index('/>')]
  check(control+' is wired to net recalculation', 'TextChanged=' in tag)
 check('salary model uses additions and deductions', 100+20+5+2-10 == 117)
+salary_cs=src('frmSalaryPay.xaml.cs')
+check('salary save binds formatted numeric fields as floats', salary_cs.count('AddSalaryAmounts(') == 3 and all(f'@salary{n}' in salary_cs for n in ('Basic','Add','Sub','Net','Houses','Travel')))
+check('salary rejects missing base and nonfinite amounts before save', 'string.IsNullOrWhiteSpace(txtTotSalary.Text)' in salary_cs and 'double.IsFinite(value)' in salary_cs)
+check('formatted amounts no longer injected into salary SQL', all(x not in salary_cs for x in ('tot_salary={txtTotSalary.Text}', 'salary_net={txtNet.Text}', "Houses=N'{TxtHous.Text}'")))
 activity=src('frmRptItemsActivityDetailed.xaml.cs')
 check('activity catalogue corresponds to thirteen indexed filters', '"Purchase credit note" }' in activity and all(f'{i}  =>' in activity or f'{i} =>' in activity for i in range(13)))
 check('activity filter requires a selection when not all', 'chkAllProcType.IsChecked != true && cmbProcType.SelectedIndex < 0' in activity)

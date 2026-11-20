@@ -352,6 +352,25 @@ namespace SmartAuditERP.Form_WPF
             catch { /* تجاهل */ }
         }
 
+        // Salary displays may contain culture-specific grouping separators. Do
+        // not paste those strings into SQL: parse once and send typed values.
+        private static bool TrySalaryAmount(string text, out double value)
+        {
+            if (string.IsNullOrWhiteSpace(text)) { value = 0; return true; }
+            return double.TryParse(text, out value) && double.IsFinite(value);
+        }
+
+        private static void AddSalaryAmounts(SqlCommand cmd, double basic, double add,
+            double sub, double net, double houses, double travel)
+        {
+            cmd.Parameters.Add("@salaryBasic", SqlDbType.Float).Value = basic;
+            cmd.Parameters.Add("@salaryAdd", SqlDbType.Float).Value = add;
+            cmd.Parameters.Add("@salarySub", SqlDbType.Float).Value = sub;
+            cmd.Parameters.Add("@salaryNet", SqlDbType.Float).Value = net;
+            cmd.Parameters.Add("@salaryHouses", SqlDbType.Float).Value = houses;
+            cmd.Parameters.Add("@salaryTravel", SqlDbType.Float).Value = travel;
+        }
+
         #endregion
 
         #region Navigate / ReadData
@@ -447,6 +466,19 @@ namespace SmartAuditERP.Form_WPF
                     cmbDepositTo.Focus(); return;
                 }
 
+                if (string.IsNullOrWhiteSpace(txtTotSalary.Text) ||
+                    !TrySalaryAmount(txtTotSalary.Text, out double salaryBasic) ||
+                    !TrySalaryAmount(txtSalaryAdd.Text, out double salaryAdd) ||
+                    !TrySalaryAmount(txtSalarySub.Text, out double salarySub) ||
+                    !TrySalaryAmount(txtNet.Text, out double salaryNet) ||
+                    !TrySalaryAmount(TxtHous.Text, out double salaryHouses) ||
+                    !TrySalaryAmount(TxtTravel.Text, out double salaryTravel))
+                {
+                    DXMessageBox.Show("تحقق من مبالغ الراتب قبل الحفظ.", "تنبيه",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
                 if (conn.State != ConnectionState.Open) conn.Open();
 
                 // جلب معرف الموظف المسؤول
@@ -472,17 +504,15 @@ namespace SmartAuditERP.Form_WPF
                         $"month={cmbMonth.Text}, year={cmbYear.Text}, " +
                         $"branch={cmbBranch.SelectedValue}, " +
                         $"emp={cmbEmp.SelectedValue}, " +
-                        $"tot_salary={txtTotSalary.Text}, " +
-                        $"salary_add={txtSalaryAdd.Text}, " +
-                        $"salary_sub={txtSalarySub.Text}, " +
-                        $"salary_net={txtNet.Text}, " +
+                        "tot_salary=@salaryBasic, salary_add=@salaryAdd, " +
+                        "salary_sub=@salarySub, salary_net=@salaryNet, " +
                         $"emp_resp={respEmpId}, " +
                         $"notes=N'{txtNotes.Text}', " +
-                        $"Houses=N'{TxtHous.Text}', " +
-                        $"Travel=N'{TxtTravel.Text}' " +
+                        "Houses=@salaryHouses, Travel=@salaryTravel " +
                         $"WHERE id={Code}", conn);
                     cmd.Parameters.Add("@date", SqlDbType.DateTime).Value =
                         txtDate.DateTime.ToShortDateString();
+                    AddSalaryAmounts(cmd, salaryBasic, salaryAdd, salarySub, salaryNet, salaryHouses, salaryTravel);
                     cmd.ExecuteNonQuery();
                     DXMessageBox.Show("تم تحديث السند بنجاح.", "تم",
                                     MessageBoxButton.OK, MessageBoxImage.Information);
@@ -534,13 +564,13 @@ namespace SmartAuditERP.Form_WPF
                     $"VALUES({txtNo.Text}, @date, {cmbMonth.Text}, " +
                     $"{cmbYear.Text}, {cmbBranch.SelectedValue}, " +
                     $"{cmbEmp.SelectedValue}, " +
-                    $"{txtTotSalary.Text}, {txtSalaryAdd.Text}, " +
-                    $"{txtSalarySub.Text}, {txtNet.Text}, " +
+                    "@salaryBasic, @salaryAdd, @salarySub, @salaryNet, " +
                     $"{respEmpId}, N'{txtNotes.Text}', 0, " +
-                    $"N'{TxtHous.Text}', N'{TxtTravel.Text}', " +
+                    "@salaryHouses, @salaryTravel, " +
                     $"@EntryGlobalID, @ResGlobalID)", conn);
                 insertCmd.Parameters.Add("@date", SqlDbType.DateTime).Value =
                     txtDate.DateTime.ToShortDateString();
+                AddSalaryAmounts(insertCmd, salaryBasic, salaryAdd, salarySub, salaryNet, salaryHouses, salaryTravel);
                 insertCmd.Parameters.Add("@EntryGlobalID", SqlDbType.NVarChar).Value =
                     EntryGlobalID_Field;
                 insertCmd.Parameters.Add("@ResGlobalID", SqlDbType.NVarChar).Value =
