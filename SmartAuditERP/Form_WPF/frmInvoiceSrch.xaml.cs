@@ -177,12 +177,16 @@ namespace SmartAuditERP.Form_WPF
 
         private void txtMaxPrice_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(txtMaxPrice.Text))
-            {
-                if (string.IsNullOrWhiteSpace(txtMinPrice.Text))
-                    txtMinPrice.Text = "0";
-                ApplyFilter();
-            }
+            if (!string.IsNullOrWhiteSpace(txtMaxPrice.Text) &&
+                string.IsNullOrWhiteSpace(txtMinPrice.Text))
+                txtMinPrice.Text = "0";
+
+            // Repair R-074 (audit finding P7-158): the re-filter used to live inside the
+            // "a ceiling is present" branch, so clearing the field left the grid on the previous
+            // restricted snapshot until some other control happened to filter again. The predicate
+            // builder already omits the ceiling when the text does not parse, so filtering on every
+            // edit - the empty and whitespace cases included - widens the view back immediately.
+            ApplyFilter();
         }
 
         private void txtFromDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
