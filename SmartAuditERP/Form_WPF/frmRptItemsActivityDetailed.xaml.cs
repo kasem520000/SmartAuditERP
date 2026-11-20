@@ -916,27 +916,37 @@ namespace SmartAuditERP.Form_WPF
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                     $"حركة_صنف_{DateTime.Now:yyyyMMdd_HHmm}.csv");
 
-                using var writer = new System.IO.StreamWriter(
-                    outputPath, false, System.Text.Encoding.UTF8);
-
-                writer.WriteLine(
-                    "م,نوع الفاتورة,المستودع,رمز الصنف,الصنف," +
-                    "رقم الفاتورة,رقم المرجع,التاريخ,الحساب,الوحدة," +
-                    "الكمية في الفاتورة,السعر في الفاتورة,الإجمالي في الفاتورة," +
-                    "الكمية الداخلة,الكمية الخارجة,الرصيد,السعر,الإجمالي");
+                // Repair R-085 (audit finding P7-048): bare cells with N2 money, so an item or an
+                // account name holding a comma added a column and a quantity holding a thousands
+                // separator split into two. The shared writer quotes by rule.
+                var export = SpreadsheetExport.Begin(outputPath, SpreadsheetExport.CsvDelimiter);
+                export.Header("م", "نوع الفاتورة", "المستودع", "رمز الصنف", "الصنف", "رقم الفاتورة",
+                              "رقم المرجع", "التاريخ", "الحساب", "الوحدة", "الكمية في الفاتورة", "السعر في الفاتورة",
+                              "الإجمالي في الفاتورة", "الكمية الداخلة", "الكمية الخارجة", "الرصيد", "السعر", "الإجمالي");
 
                 foreach (var item in ActivityList)
                 {
-                    writer.WriteLine(
-                        $"{item.DgvNo},{item.DgvInvType},{item.DgvStore}," +
-                        $"{item.DgvItemCode},{item.DgvItemName}," +
-                        $"{item.DgvInvNo},{item.DgvRefNo},{item.DgvDate}," +
-                        $"{item.DgvClient},{item.DgvUnit}," +
-                        $"{item.DgvQtyInv:N2},{item.DgvPriceInv:N2}," +
-                        $"{item.DgvTotInv:N2},{item.DgvIncomeQty:N2}," +
-                        $"{item.DgvOutcomeQty:N2},{item.DgvBlc:N2}," +
-                        $"{item.DgvPrice:N2},{item.DgvTot:N2}");
+                    export.Row(SpreadsheetExport.Text(item.DgvNo),
+                               SpreadsheetExport.Text(item.DgvInvType),
+                               SpreadsheetExport.Text(item.DgvStore),
+                               SpreadsheetExport.Text(item.DgvItemCode),
+                               SpreadsheetExport.Text(item.DgvItemName),
+                               SpreadsheetExport.Text(item.DgvInvNo),
+                               SpreadsheetExport.Text(item.DgvRefNo),
+                               SpreadsheetExport.Text(item.DgvDate),
+                               SpreadsheetExport.Text(item.DgvClient),
+                               SpreadsheetExport.Text(item.DgvUnit),
+                               SpreadsheetExport.Money(item.DgvQtyInv),
+                               SpreadsheetExport.Money(item.DgvPriceInv),
+                               SpreadsheetExport.Money(item.DgvTotInv),
+                               SpreadsheetExport.Money(item.DgvIncomeQty),
+                               SpreadsheetExport.Money(item.DgvOutcomeQty),
+                               SpreadsheetExport.Money(item.DgvBlc),
+                               SpreadsheetExport.Money(item.DgvPrice),
+                               SpreadsheetExport.Money(item.DgvTot));
                 }
+
+                export.Save();
 
                 Process.Start(new ProcessStartInfo(outputPath)
                 { UseShellExecute = true });

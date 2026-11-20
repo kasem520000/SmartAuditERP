@@ -1025,44 +1025,42 @@ namespace SmartAuditERP.Form_WPF
 
         private void ExportToCsv(string filePath)
         {
-            var lines = new List<string>
-            {
-                string.Join(",",
-                    Csv("م"), Csv("نوع الفاتورة"), Csv("رقم الفاتورة"),
-                    Csv("رقم المرجع"), Csv("التاريخ"), Csv("نوع الدفع"),
-                    Csv("العميل"), Csv("المستخدم"), Csv("المجموع"),
-                    Csv("الخصم"), Csv("الإجمالي"), Csv("التكلفة"),
-                    Csv("الربح"), Csv("نسبة الربح"), Csv("المستودع"),
-                    Csv("الفرع"))
-            };
+            // Repair R-085 (audit finding P7-048): the screen carried its own quoting helper, so
+            // the file left with every cell quoted and the record end left to the platform. The
+            // shared writer announces one schema - quote only what could break a record, CRLF,
+            // UTF-8 with preamble - and the screen keeps its own number formatting because the
+            // same values feed the grid and the print view.
+            var export = SpreadsheetExport.Begin(filePath, SpreadsheetExport.CsvDelimiter);
+            export.Header("م", "نوع الفاتورة", "رقم الفاتورة", "رقم المرجع", "التاريخ", "نوع الدفع",
+                          "العميل", "المستخدم", "المجموع", "الخصم", "الإجمالي", "التكلفة",
+                          "الربح", "نسبة الربح", "المستودع", "الفرع");
 
             if (_currentDataTable != null)
             {
                 foreach (DataRow row in _currentDataTable.Rows)
                 {
-                    lines.Add(string.Join(",",
-                        Csv(row["DgvNo"].ToString()),
-                        Csv(row["DgvInvType"].ToString()),
-                        Csv(row["DgvInvNo"].ToString()),
-                        Csv(row["DgvRefNo"].ToString()),
-                        Csv(row["DgvDate"] is DateTime d
-                            ? d.ToShortDateString()
-                            : string.Empty),
-                        Csv(row["DgvPayType"].ToString()),
-                        Csv(row["DgvClient"].ToString()),
-                        Csv(row["DgvUser"].ToString()),
-                        Csv(Format(row["DgvTotal"])),
-                        Csv(Format(row["DgvDiscount"])),
-                        Csv(Format(row["DgvSum"])),
-                        Csv(Format(row["DgvCost"])),
-                        Csv(Format(row["DgvProfit"])),
-                        Csv(row["DgvProfitRatio"].ToString()),
-                        Csv(row["DgvStore"].ToString()),
-                        Csv(row["DgvBranch"].ToString())));
+                    export.Row(SpreadsheetExport.Text(row["DgvNo"]),
+                               SpreadsheetExport.Text(row["DgvInvType"]),
+                               SpreadsheetExport.Text(row["DgvInvNo"]),
+                               SpreadsheetExport.Text(row["DgvRefNo"]),
+                               SpreadsheetExport.Text(row["DgvDate"] is DateTime d
+                                   ? d.ToShortDateString()
+                                   : string.Empty),
+                               SpreadsheetExport.Text(row["DgvPayType"]),
+                               SpreadsheetExport.Text(row["DgvClient"]),
+                               SpreadsheetExport.Text(row["DgvUser"]),
+                               SpreadsheetExport.Text(Format(row["DgvTotal"])),
+                               SpreadsheetExport.Text(Format(row["DgvDiscount"])),
+                               SpreadsheetExport.Text(Format(row["DgvSum"])),
+                               SpreadsheetExport.Text(Format(row["DgvCost"])),
+                               SpreadsheetExport.Text(Format(row["DgvProfit"])),
+                               SpreadsheetExport.Text(row["DgvProfitRatio"]),
+                               SpreadsheetExport.Text(row["DgvStore"]),
+                               SpreadsheetExport.Text(row["DgvBranch"]));
                 }
             }
 
-            File.WriteAllLines(filePath, lines, new UTF8Encoding(true));
+            export.Save();
         }
 
         private static string Format(object val)
@@ -1071,12 +1069,6 @@ namespace SmartAuditERP.Form_WPF
             if (double.TryParse(val.ToString(), out double d))
                 return d.ToString("0.##", CultureInfo.InvariantCulture);
             return val.ToString();
-        }
-
-        private static string Csv(string value)
-        {
-            if (value == null) return "\"\"";
-            return $"\"{value.Replace("\"", "\"\"")}\"";
         }
 
         #endregion

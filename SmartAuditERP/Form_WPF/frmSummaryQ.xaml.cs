@@ -397,17 +397,29 @@ namespace SmartAuditERP.Form_WPF
                 if (saveDialog.ShowDialog() == true)
                 {
                     string filePath = saveDialog.FileName;
-                    using (var writer = new System.IO.StreamWriter(filePath,
-                           false, System.Text.Encoding.UTF8))
+                    // Repair R-085 (audit finding P7-048): bare cells with N2 money, so a note
+                    // or a client name holding a comma added a column and an amount holding a
+                    // thousands separator split into two. The shared writer quotes by rule.
+                    var export = SpreadsheetExport.Begin(filePath, SpreadsheetExport.CsvDelimiter);
+                    export.Header("م", "قيمة السند", "تاريخ السند", "رقم السند", "نوع السند", "العميل",
+                                  "طريقة الدفع", "المندوب", "البيان", "الفرع", "المستخدم");
+
+                    foreach (var item in _receiptItems)
                     {
-                        writer.WriteLine("م,قيمة السند,تاريخ السند,رقم السند,نوع السند,العميل,طريقة الدفع,المندوب,البيان,الفرع,المستخدم");
-                        foreach (var item in _receiptItems)
-                            writer.WriteLine($"{item.AutoIncrementID},{item.Recieptvalue:N2}," +
-                                             $"{item.RecieptDate},{item.Recieptno}," +
-                                             $"{item.ReciptType},{item.ClientTxt}," +
-                                             $"{item.PayType},{item.SalesmanTxt}," +
-                                             $"{item.Recieptnote},{item.BranchTxt},{item.UserTxt}");
+                        export.Row(SpreadsheetExport.Text(item.AutoIncrementID),
+                                   SpreadsheetExport.Money(item.Recieptvalue),
+                                   SpreadsheetExport.Text(item.RecieptDate),
+                                   SpreadsheetExport.Text(item.Recieptno),
+                                   SpreadsheetExport.Text(item.ReciptType),
+                                   SpreadsheetExport.Text(item.ClientTxt),
+                                   SpreadsheetExport.Text(item.PayType),
+                                   SpreadsheetExport.Text(item.SalesmanTxt),
+                                   SpreadsheetExport.Text(item.Recieptnote),
+                                   SpreadsheetExport.Text(item.BranchTxt),
+                                   SpreadsheetExport.Text(item.UserTxt));
                     }
+
+                    export.Save();
 
                     Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
                     DXMessageBox.Show("تم حفظ الملف بنجاح في:\n" + filePath, "تم",

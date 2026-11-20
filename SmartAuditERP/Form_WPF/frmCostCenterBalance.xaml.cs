@@ -1098,64 +1098,35 @@ namespace SmartAuditERP.Form_WPF
                 mainGrid.ColumnDefinitions[0].Width = new GridLength(width);
         }
 
-        private static string EscapeCsv(string value)
-        {
-            if (value == null)
-                return "";
-
-            if (value.Contains("\""))
-                value = value.Replace("\"", "\"\"");
-
-            if (value.Contains(",") || value.Contains("\n") || value.Contains("\r"))
-                value = $"\"{value}\"";
-
-            return value;
-        }
-
         private void ExportCurrentGridToCsv(string filePath)
         {
-            var builder = new StringBuilder();
-
-            string[] headers =
-            {
-        "م",
-        "مدين",
-        "دائن",
-        "الرصيد",
-        "الحالة",
-        "الرقم العام",
-        "رقم السند",
-        "الفرع",
-        "النوع",
-        "التاريخ",
-        "البيان"
-    };
-
-            builder.AppendLine(string.Join(",", headers.Select(EscapeCsv)));
+            // Repair R-085 (audit finding P7-048): the screen carried its own EscapeCsv and
+            // joined the grid's cell text as the machine culture rendered it, so a number
+            // holding a thousands separator left as culture text. The shared writer announces
+            // one schema - quote by rule, CRLF, invariant cells - and Text() subsumes the
+            // null check the old code repeated on every column.
+            var export = SpreadsheetExport.Begin(filePath, SpreadsheetExport.CsvDelimiter);
+            export.Header("م", "مدين", "دائن", "الرصيد", "الحالة", "الرقم العام",
+                          "رقم السند", "الفرع", "النوع", "التاريخ", "البيان");
 
             int rowCount = GetGridRowCount();
 
             for (int rowIndex = 0; rowIndex < rowCount; rowIndex++)
             {
-                string[] values =
-                {
-            GridControl1.GetCellValue(rowIndex, "DgvRank")?.ToString() ?? "",
-            GridControl1.GetCellValue(rowIndex, "DgvDept")?.ToString() ?? "",
-            GridControl1.GetCellValue(rowIndex, "DgvCredit")?.ToString() ?? "",
-            GridControl1.GetCellValue(rowIndex, "DgvBalance")?.ToString() ?? "",
-            GridControl1.GetCellValue(rowIndex, "DgvBalanceStatus")?.ToString() ?? "",
-            GridControl1.GetCellValue(rowIndex, "DgvGenralNo")?.ToString() ?? "",
-            GridControl1.GetCellValue(rowIndex, "DgvEntryNo")?.ToString() ?? "",
-            GridControl1.GetCellValue(rowIndex, "DgvBranch")?.ToString() ?? "",
-            GridControl1.GetCellValue(rowIndex, "DgvEntryType")?.ToString() ?? "",
-            GridControl1.GetCellValue(rowIndex, "DgvDate")?.ToString() ?? "",
-            GridControl1.GetCellValue(rowIndex, "DgvNote")?.ToString() ?? ""
-        };
-
-                builder.AppendLine(string.Join(",", values.Select(EscapeCsv)));
+                export.Row(SpreadsheetExport.Text(GridControl1.GetCellValue(rowIndex, "DgvRank")),
+                           SpreadsheetExport.Text(GridControl1.GetCellValue(rowIndex, "DgvDept")),
+                           SpreadsheetExport.Text(GridControl1.GetCellValue(rowIndex, "DgvCredit")),
+                           SpreadsheetExport.Text(GridControl1.GetCellValue(rowIndex, "DgvBalance")),
+                           SpreadsheetExport.Text(GridControl1.GetCellValue(rowIndex, "DgvBalanceStatus")),
+                           SpreadsheetExport.Text(GridControl1.GetCellValue(rowIndex, "DgvGenralNo")),
+                           SpreadsheetExport.Text(GridControl1.GetCellValue(rowIndex, "DgvEntryNo")),
+                           SpreadsheetExport.Text(GridControl1.GetCellValue(rowIndex, "DgvBranch")),
+                           SpreadsheetExport.Text(GridControl1.GetCellValue(rowIndex, "DgvEntryType")),
+                           SpreadsheetExport.Text(GridControl1.GetCellValue(rowIndex, "DgvDate")),
+                           SpreadsheetExport.Text(GridControl1.GetCellValue(rowIndex, "DgvNote")));
             }
 
-            File.WriteAllText(filePath, builder.ToString(), Encoding.UTF8);
+            export.Save();
         }
 
         #endregion

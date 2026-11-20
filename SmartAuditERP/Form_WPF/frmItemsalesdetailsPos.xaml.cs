@@ -699,32 +699,36 @@ namespace SmartAuditERP.Form_WPF
 
         private void ExportToCsv(string fileName)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("م,المستودع,نوع العملية,المورد,التاريخ,الرقم,المادة,الوحدة,الكمية,السعر,المجموع,الخصم,قبل الضريبة,الضريبة,الإجمالي,المستخدم");
+            // Repair R-085 (audit finding P7-048): every cell was wrapped in quotes by hand
+            // and the N2 amounts kept their thousands separator, so a material name holding a
+            // quote broke the record and an amount split into two fields. The shared writer
+            // quotes only what could break a record and money leaves as an invariant number.
+            var export = SpreadsheetExport.Begin(fileName, SpreadsheetExport.CsvDelimiter);
+            export.Header("م", "المستودع", "نوع العملية", "المورد", "التاريخ", "الرقم",
+                          "المادة", "الوحدة", "الكمية", "السعر", "المجموع", "الخصم",
+                          "قبل الضريبة", "الضريبة", "الإجمالي", "المستخدم");
 
             foreach (SalesDetailRow item in _dataRows)
             {
-                sb.AppendLine(
-                    $"\"{item.DgvNo}\"," +
-                    $"\"{item.DgvStore}\"," +
-                    $"\"{item.DgvInvType}\"," +
-                    $"\"{item.DgvClient}\"," +
-                    $"\"{item.DgvDate}\"," +
-                    $"\"{item.DgvInvNo}\"," +
-                    $"\"{item.DgvItem}\"," +
-                    $"\"{item.DgvUnit}\"," +
-                    $"\"{item.DgvQty:N2}\"," +
-                    $"\"{item.DgvPrice:N2}\"," +
-                    $"\"{item.DgvItemSum:N2}\"," +
-                    $"\"{item.DgvItemDiscount:N2}\"," +
-                    $"\"{item.DgvTotalBeforeTax:N2}\"," +
-                    $"\"{item.DgvVAT:N2}\"," +
-                    $"\"{item.DgvTotal:N2}\"," +
-                    $"\"{item.DgvUser}\""
-                );
+                export.Row(SpreadsheetExport.Text(item.DgvNo),
+                           SpreadsheetExport.Text(item.DgvStore),
+                           SpreadsheetExport.Text(item.DgvInvType),
+                           SpreadsheetExport.Text(item.DgvClient),
+                           SpreadsheetExport.Text(item.DgvDate),
+                           SpreadsheetExport.Text(item.DgvInvNo),
+                           SpreadsheetExport.Text(item.DgvItem),
+                           SpreadsheetExport.Text(item.DgvUnit),
+                           SpreadsheetExport.Money(item.DgvQty),
+                           SpreadsheetExport.Money(item.DgvPrice),
+                           SpreadsheetExport.Money(item.DgvItemSum),
+                           SpreadsheetExport.Money(item.DgvItemDiscount),
+                           SpreadsheetExport.Money(item.DgvTotalBeforeTax),
+                           SpreadsheetExport.Money(item.DgvVAT),
+                           SpreadsheetExport.Money(item.DgvTotal),
+                           SpreadsheetExport.Text(item.DgvUser));
             }
 
-            File.WriteAllText(fileName, sb.ToString(), Encoding.UTF8);
+            export.Save();
         }
 
         private void ExportToExcelHtml(string fileName)

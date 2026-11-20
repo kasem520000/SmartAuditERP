@@ -748,20 +748,24 @@ namespace SmartAuditERP.Form_WPF
         private void ExportToExcel(string filePath)
         {
             // تصدير CSV بدلًا من XLSX (يفتح في Excel)
-            using (StreamWriter sw = new StreamWriter(filePath.Replace(".xlsx", ".csv"),
-                false, System.Text.Encoding.UTF8))
+            // Repair R-085 (audit finding P7-048): the balance left bare in the machine culture,
+            // so an amount holding a thousands separator split into two columns while the other
+            // four cells were quoted by hand. The shared writer quotes by rule and money leaves
+            // as an invariant number.
+            var export = SpreadsheetExport.Begin(filePath.Replace(".xlsx", ".csv"),
+                                                 SpreadsheetExport.CsvDelimiter);
+            export.Header("المجموعة", "رقم الحساب", "اسم الحساب", "الرصيد", "ملاحظات");
+
+            foreach (var row in _incomeRows)
             {
-                sw.WriteLine("المجموعة,رقم الحساب,اسم الحساب,الرصيد,ملاحظات");
-                foreach (var row in _incomeRows)
-                {
-                    sw.WriteLine(
-                        $"\"{row.Category}\"," +
-                        $"\"{row.AccountCode}\"," +
-                        $"\"{row.AccountName}\"," +
-                        $"{row.Balance}," +
-                        $"\"{row.Notes}\"");
-                }
+                export.Row(SpreadsheetExport.Text(row.Category),
+                           SpreadsheetExport.Text(row.AccountCode),
+                           SpreadsheetExport.Text(row.AccountName),
+                           SpreadsheetExport.Money(row.Balance),
+                           SpreadsheetExport.Text(row.Notes));
             }
+
+            export.Save();
         }
 
         private void PrintDevexpress(int printType)

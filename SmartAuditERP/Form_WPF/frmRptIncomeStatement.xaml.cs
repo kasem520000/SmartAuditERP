@@ -475,13 +475,23 @@ namespace SmartAuditERP.Form_WPF
             {
                 if (_dataSource.Count == 0) return;
 
-                var sb = new StringBuilder();
-                sb.AppendLine("الحساب,اسم الحساب,رصيد مدين,رصيد دائن");
-                foreach (var row in _dataSource)
-                    sb.AppendLine($"{row.Code},{row.Name},{row.DeptBalance:N2},{row.CreditBalance:N2}");
-
+                // Repair R-085 (audit finding P7-048): the cells were joined bare, so an account
+                // name holding a comma added a column and an N2 balance holding a thousands
+                // separator split into two. The shared writer quotes by rule and money leaves
+                // as an invariant number.
                 string fileName = "IncomeStatement.csv";
-                File.WriteAllText(fileName, sb.ToString(), Encoding.UTF8);
+                var export = SpreadsheetExport.Begin(fileName, SpreadsheetExport.CsvDelimiter);
+                export.Header("الحساب", "اسم الحساب", "رصيد مدين", "رصيد دائن");
+
+                foreach (var row in _dataSource)
+                {
+                    export.Row(SpreadsheetExport.Text(row.Code),
+                               SpreadsheetExport.Text(row.Name),
+                               SpreadsheetExport.Money(row.DeptBalance),
+                               SpreadsheetExport.Money(row.CreditBalance));
+                }
+
+                export.Save();
 
                 System.Diagnostics.Process.Start(
                     new System.Diagnostics.ProcessStartInfo(fileName)
