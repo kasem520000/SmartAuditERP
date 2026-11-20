@@ -994,28 +994,13 @@ namespace SmartAuditERP.Form_WPF
         private static void ExportDataTableToTsv(
             DataTable dt, string filePath)
         {
-            var sb = new StringBuilder();
-
-            // رأس الأعمدة
-            for (int c = 0; c < dt.Columns.Count; c++)
-            {
-                sb.Append(dt.Columns[c].ColumnName);
-                if (c < dt.Columns.Count - 1) sb.Append('\t');
-            }
-            sb.AppendLine();
-
-            // البيانات
-            foreach (DataRow row in dt.Rows)
-            {
-                for (int c = 0; c < dt.Columns.Count; c++)
-                {
-                    sb.Append(row[c]?.ToString() ?? "");
-                    if (c < dt.Columns.Count - 1) sb.Append('\t');
-                }
-                sb.AppendLine();
-            }
-
-            File.WriteAllText(filePath, sb.ToString(), Encoding.UTF8);
+            // Repair R-082 (audit finding P7-048): this writer appended every cell's text as it
+            // stood, so a tab or a newline inside a note, an item name or a client name silently
+            // added columns and rows to the exported file. The shared writer announces the tab
+            // schema (tab, doubled quotes, CRLF, UTF-8) and quotes whatever could break a record;
+            // the cells keep the display formatting they were built with, because the same table
+            // feeds the printed report.
+            SpreadsheetExport.WriteDataTable(filePath, dt, SpreadsheetExport.TsvDelimiter);
         }
 
         #endregion

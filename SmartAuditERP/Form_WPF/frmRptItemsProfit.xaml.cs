@@ -558,25 +558,34 @@ namespace SmartAuditERP.Form_WPF
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                     $"ItemsProfit_{DateTime.Now:yyyyMMdd_HHmmss}.csv");
 
-                using (var sw = new System.IO.StreamWriter(filePath,
-                    false, System.Text.Encoding.UTF8))
+                // Repair R-082 (audit finding P7-048): this export wrapped every cell in quotes
+                // but never doubled a quote inside it, so an item name or a code holding one broke
+                // the record and shifted every following column. The shared writer announces one
+                // schema - comma, doubled quotes, CRLF, UTF-8 - and money leaves as an invariant
+                // number instead of a display format carrying a thousands separator.
+                var header = new List<string>
                 {
-                    sw.WriteLine("\"م\",\"رمز المادة\",\"المادة\",\"الكمية\"," +
-                                 "\"متوسط التكلفة\",\"صافي البيع\",\"الربح\",\"نسبة الربح\"");
+                    "م", "رمز المادة", "المادة", "الكمية",
+                    "متوسط التكلفة", "صافي البيع", "الربح", "نسبة الربح"
+                };
 
-                    foreach (var r in _gridData)
+                var rows = new List<List<string>>();
+                foreach (var r in _gridData)
+                {
+                    rows.Add(new List<string>
                     {
-                        sw.WriteLine(
-                            $"\"{r.DgvNo}\"," +
-                            $"\"{r.DgvItemCode}\"," +
-                            $"\"{r.DgvItem}\"," +
-                            $"\"{r.DgvQty:N2}\"," +
-                            $"\"{r.DgvAvgCost:N2}\"," +
-                            $"\"{r.DgvNetSale:N2}\"," +
-                            $"\"{r.DgvProfit:N2}\"," +
-                            $"\"{r.DgvProfitRatio}\"");
-                    }
+                        r.DgvNo.ToString(),
+                        r.DgvItemCode,
+                        r.DgvItem,
+                        SpreadsheetExport.Money(r.DgvQty),
+                        SpreadsheetExport.Money(r.DgvAvgCost),
+                        SpreadsheetExport.Money(r.DgvNetSale),
+                        SpreadsheetExport.Money(r.DgvProfit),
+                        r.DgvProfitRatio
+                    });
                 }
+
+                SpreadsheetExport.Write(filePath, SpreadsheetExport.CsvDelimiter, header, rows);
 
                 Process.Start(new ProcessStartInfo(filePath)
                     { UseShellExecute = true });

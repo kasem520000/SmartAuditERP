@@ -449,38 +449,51 @@ namespace SmartAuditERP.Form_WPF
 
                 string filePath = dlg.FileName;
 
-                using (var sw = new System.IO.StreamWriter(filePath,
-                    false, System.Text.Encoding.UTF8))
+                // Repair R-082 (audit finding P7-048): quoted cells without doubled inner quotes,
+                // so an item name or a document id holding a quote broke the record; and money was
+                // written in a local display format. One announced schema now covers both tabs.
+                if (TabControl1.SelectedIndex == 0)
                 {
-                    if (TabControl1.SelectedIndex == 0)
+                    var header = new List<string> { "رقم الصنف", "الصنف", "الكمية", "الإجمالي" };
+
+                    var rows = new List<List<string>>();
+                    foreach (var r in _itemsData)
+                        rows.Add(new List<string>
+                        {
+                            r.ItemId.ToString(),
+                            r.ItemName,
+                            SpreadsheetExport.Money(r.Quantity),
+                            SpreadsheetExport.Money(r.Total)
+                        });
+
+                    SpreadsheetExport.Write(filePath, SpreadsheetExport.CsvDelimiter, header, rows);
+                }
+                else
+                {
+                    var header = new List<string>
                     {
-                        sw.WriteLine("\"رقم الصنف\",\"الصنف\",\"الكمية\",\"الإجمالي\"");
-                        foreach (var r in _itemsData)
-                            sw.WriteLine(
-                                $"\"{r.ItemId}\"," +
-                                $"\"{r.ItemName}\"," +
-                                $"\"{r.Quantity:N2}\"," +
-                                $"\"{r.Total:N2}\"");
-                    }
-                    else
-                    {
-                        sw.WriteLine("\"رقم الحركة\",\"رقم الفاتورة\",\"النوع\"," +
-                                     "\"التاريخ\",\"الوقت\",\"نقدي\",\"شبكة\"," +
-                                     "\"الإجمالي\",\"الضريبة\",\"الخصم\",\"الصافي\"");
-                        foreach (var r in _invoiceData)
-                            sw.WriteLine(
-                                $"\"{r.InvGlobalID}\"," +
-                                $"\"{r.id}\"," +
-                                $"\"{r.ProcTypeName}\"," +
-                                $"\"{r.InvDate}\"," +
-                                $"\"{r.InvTime}\"," +
-                                $"\"{r.Cash:N2}\"," +
-                                $"\"{r.Visa:N2}\"," +
-                                $"\"{r.InvTotal:N2}\"," +
-                                $"\"{r.Tax:N2}\"," +
-                                $"\"{r.Minus:N2}\"," +
-                                $"\"{r.TotNet:N2}\"");
-                    }
+                        "رقم الحركة", "رقم الفاتورة", "النوع", "التاريخ", "الوقت",
+                        "نقدي", "شبكة", "الإجمالي", "الضريبة", "الخصم", "الصافي"
+                    };
+
+                    var rows = new List<List<string>>();
+                    foreach (var r in _invoiceData)
+                        rows.Add(new List<string>
+                        {
+                            r.InvGlobalID,
+                            r.id,
+                            r.ProcTypeName,
+                            r.InvDate,
+                            r.InvTime,
+                            SpreadsheetExport.Money(r.Cash),
+                            SpreadsheetExport.Money(r.Visa),
+                            SpreadsheetExport.Money(r.InvTotal),
+                            SpreadsheetExport.Money(r.Tax),
+                            SpreadsheetExport.Money(r.Minus),
+                            SpreadsheetExport.Money(r.TotNet)
+                        });
+
+                    SpreadsheetExport.Write(filePath, SpreadsheetExport.CsvDelimiter, header, rows);
                 }
 
                 DXMessageBox.Show($"تم حفظ الملف:\n{filePath}",

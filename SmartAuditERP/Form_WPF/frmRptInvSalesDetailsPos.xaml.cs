@@ -655,40 +655,49 @@ namespace SmartAuditERP.Form_WPF
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                     $"مبيعات_POS_{DateTime.Now:yyyyMMdd_HHmm}.csv");
 
-                using var writer = new System.IO.StreamWriter(
-                    outputPath, false, System.Text.Encoding.UTF8);
+                // Repair R-082 (audit finding P7-048): every field was written bare, so a client or
+                // store name holding a comma added a column, and an amount formatted with a
+                // thousands separator split into two fields - the column count depended on the
+                // data. The shared writer announces one schema and quotes whatever could break a
+                // record; money leaves as an invariant number a reader parses back exactly.
+                var header = new List<string>
+                {
+                    "#", "نوع الفاتورة", "رقم الفاتورة", "التاريخ", "الوقت",
+                    "نوع الدفع", "العميل", "نقدي", "شبكة",
+                    "المجموع", "الخصم", "الإجمالي", "الضريبة",
+                    "ضريبة إضافية", "إجمالي الضريبة", "الصافي",
+                    "المستودع", "الفرع", "المندوب", "المستخدم"
+                };
 
-                writer.WriteLine(
-                    "#,نوع الفاتورة,رقم الفاتورة,التاريخ,الوقت," +
-                    "نوع الدفع,العميل,نقدي,شبكة," +
-                    "المجموع,الخصم,الإجمالي,الضريبة," +
-                    "ضريبة إضافية,إجمالي الضريبة,الصافي," +
-                    "المستودع,الفرع,المندوب,المستخدم");
-
+                var rows = new List<List<string>>();
                 foreach (var item in InvoicesList)
                 {
-                    writer.WriteLine(
-                        $"{item.AutoIncrementID}," +
-                        $"{item.InvoiceTypeTxt}," +
-                        $"{item.InvoiceNo}," +
-                        $"{item.InvDate:dd/MM/yyyy}," +
-                        $"{item.InvoiceTime}," +
-                        $"{item.PaymentTxt}," +
-                        $"{item.ClientTxt}," +
-                        $"{item.Paycash:N2}," +
-                        $"{item.PayATM:N2}," +
-                        $"{item.SumPrice:N2}," +
-                        $"{item.TotDiscount:N2}," +
-                        $"{item.Total:N2}," +
-                        $"{item.VAT:N2}," +
-                        $"{item.ExtraVAT:N2}," +
-                        $"{item.TotalTax:N2}," +
-                        $"{item.Net:N2}," +
-                        $"{item.InvertoryTxt}," +
-                        $"{item.BranchTxt}," +
-                        $"{item.SalesmanTxt}," +
-                        $"{item.UserTxt}");
+                    rows.Add(new List<string>
+                    {
+                        $"{item.AutoIncrementID}",
+                        $"{item.InvoiceTypeTxt}",
+                        $"{item.InvoiceNo}",
+                        $"{item.InvDate:dd/MM/yyyy}",
+                        $"{item.InvoiceTime}",
+                        $"{item.PaymentTxt}",
+                        $"{item.ClientTxt}",
+                        SpreadsheetExport.Money(item.Paycash),
+                        SpreadsheetExport.Money(item.PayATM),
+                        SpreadsheetExport.Money(item.SumPrice),
+                        SpreadsheetExport.Money(item.TotDiscount),
+                        SpreadsheetExport.Money(item.Total),
+                        SpreadsheetExport.Money(item.VAT),
+                        SpreadsheetExport.Money(item.ExtraVAT),
+                        SpreadsheetExport.Money(item.TotalTax),
+                        SpreadsheetExport.Money(item.Net),
+                        $"{item.InvertoryTxt}",
+                        $"{item.BranchTxt}",
+                        $"{item.SalesmanTxt}",
+                        $"{item.UserTxt}"
+                    });
                 }
+
+                SpreadsheetExport.Write(outputPath, SpreadsheetExport.CsvDelimiter, header, rows);
 
                 Process.Start(new ProcessStartInfo(outputPath)
                 { UseShellExecute = true });
