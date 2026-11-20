@@ -44,6 +44,8 @@ namespace SmartAuditERP.Form_WPF
         private int _printNo = 1;
         private string _defPrinter = "";
         private bool _isPrinted = false;
+        private bool _loadedProduction;
+        private bool _saveOutcomeUnknown;
         private string _printNote = "";
         private string _rptName = "";
         private string _rptUrl = "";
@@ -553,6 +555,7 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
+                if (_isLoaded || _loadedProduction) return;
                 if (string.IsNullOrWhiteSpace(txtQty.Text))
                 {
                     txtQty.Text = "1";
@@ -683,6 +686,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void DeleteItemRow_Click(object sender, RoutedEventArgs e)
         {
+            if (_loadedProduction) return;
             try
             {
                 if (sender is Button btn && btn.Tag is ProductionItemRow row)
@@ -877,6 +881,8 @@ namespace SmartAuditERP.Form_WPF
             CLR();
 
             _isLoaded = true;
+            _loadedProduction = true;
+            SetProductionScaleEditable(false);
 
             // ═══ تحميل بيانات الفاتورة ═══
             try { _procCode = Convert.ToInt32(dr["proc_id"]); } catch { }
@@ -1065,9 +1071,13 @@ namespace SmartAuditERP.Form_WPF
         private void btnSavePrint_Click(object sender, RoutedEventArgs e)
         {
             _isPrinted = true;
-            Save();
-            PrintDevexpress(1);
-            CLR();
+            if (!Save())
+            {
+                _isPrinted = false;
+                return;
+            }
+            if (PrintDevexpress(1)) CLR();
+            else _isPrinted = false;
         }
 
         private void btnPrint_Click(object sender, RoutedEventArgs e)
@@ -1078,6 +1088,12 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
+            if (_saveOutcomeUnknown)
+            {
+                DXMessageBox.Show("تعذر تأكيد نتيجة الحفظ؛ راجع قاعدة البيانات قبل الحذف.",
+                    "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
             try
             {
                 if (_code == -1)
@@ -1131,6 +1147,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void AddNewItem()
         {
+            if (_loadedProduction) return;
             try
             {
                 var srch = new frmItemsSrch();
@@ -1270,8 +1287,18 @@ namespace SmartAuditERP.Form_WPF
 
         #region Save
 
-        private void Save()
+        private bool Save()
         {
+            // Historical component quantities and conversions are not a reliable
+            // rescaling basis. Do not overwrite a loaded production order.
+            if (_loadedProduction || _saveOutcomeUnknown)
+            {
+                DXMessageBox.Show(_saveOutcomeUnknown
+                    ? "تعذر تأكيد نتيجة الحفظ. راجع قاعدة البيانات قبل إعادة المحاولة."
+                    : "تعديل أمر إنتاج محفوظ معطل حتى يتوفر أساس موثوق لكميات المكونات والوحدات.",
+                    "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
             // ═══ التحقق من توفر الكميات ═══
             foreach (var row in _itemsSource)
             {
@@ -1281,11 +1308,14 @@ namespace SmartAuditERP.Form_WPF
                     DXMessageBox.Show(
                         "لا يمكن إستكمال العملية لعدم توفر كمية كافية من المكونات للإنتاج",
                         "", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
+                    return false;
                 }
             }
 
             SqlTransaction transaction = null;
+            bool committed = false;
+            bool commitAttempted = false;
+            int originalCode = _code, originalProcCode = _procCode;
             try
             {
                 EnsureOpen(_conn);
@@ -1306,7 +1336,7 @@ namespace SmartAuditERP.Form_WPF
                                 : "Sorry, you reached the maximum entries for the trial version.";
                             DXMessageBox.Show(trialMsg, "",
                                 MessageBoxButton.OK, MessageBoxImage.Information);
-                            return;
+                            return false;
                         }
                     }
                 }
@@ -1497,7 +1527,12 @@ namespace SmartAuditERP.Form_WPF
                     compCmd.ExecuteNonQuery();
                 }
 
+                commitAttempted = true;
                 transaction.Commit();
+                committed = true;
+                _invGlobalID = invGlobalID;
+                _loadedProduction = true;
+                SetProductionScaleEditable(false);
 
                 // ═══ رسالة النجاح ═══
                 var savedMsg = new frmSavedMsg();
@@ -1524,27 +1559,55 @@ namespace SmartAuditERP.Form_WPF
             }
             catch (Exception ex)
             {
-                transaction?.Rollback();
-                string msg = MainClass.Language == "ar"
-                    ? $"خطأ أثناء الحفظ\nتفاصيل الخطأ: {ex.Message}"
-                    : $"error in saving\nError details: {ex.Message}";
+                if (commitAttempted && !committed) _saveOutcomeUnknown = true;
+                string msg = committed
+                    ? "تم الحفظ، لكن حدث خطأ بعد الاعتماد: " + ex.Message
+                    : _saveOutcomeUnknown
+                        ? "تعذر تأكيد نتيجة الحفظ؛ راجع قاعدة البيانات قبل إعادة المحاولة: " + ex.Message
+                        : "خطأ أثناء الحفظ: " + ex.Message;
                 DXMessageBox.Show(msg, "", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
+                if (transaction != null && !committed)
+                {
+                    try { transaction.Rollback(); }
+                    catch
+                    {
+                        _saveOutcomeUnknown = true;
+                        DXMessageBox.Show("تعذر تأكيد التراجع؛ راجع قاعدة البيانات قبل إعادة المحاولة.",
+                            "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
+                if (!committed && !_saveOutcomeUnknown)
+                {
+                    _code = originalCode;
+                    _procCode = originalProcCode;
+                }
                 CloseConn(_conn);
                 CloseConn(_conn1);
             }
+            return committed;
         }
 
         #endregion
 
         #region CLR (Clear Form)
 
+        private void SetProductionScaleEditable(bool editable)
+        {
+            txtQty.IsReadOnly = !editable;
+            cmbUnits.IsEnabled = editable;
+            cmbItems.IsEnabled = editable;
+            dgvItems.IsReadOnly = !editable;
+        }
+
         private void CLR()
         {
             try
             {
+                _loadedProduction = false;
+                SetProductionScaleEditable(true);
                 txtNote.Text = "";
                 txtSumVal.Text = "0";
                 txtQty.Text = "1";
@@ -1680,7 +1743,7 @@ namespace SmartAuditERP.Form_WPF
             return ds;
         }
 
-        private void PrintDevexpress(int printType)
+        private bool PrintDevexpress(int printType)
         {
             _rptName = "rptProductionOrder.repx";
 
@@ -1688,14 +1751,14 @@ namespace SmartAuditERP.Form_WPF
             {
                 DXMessageBox.Show("لا توجد مكونات بالجدول",
                     "", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                return false;
             }
 
             if (string.IsNullOrEmpty(_rptUrl))
             {
                 DXMessageBox.Show("يجب تحديد مسار التقرير من الإعدادات",
                     "", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                return false;
             }
 
             string fullPath = Path.Combine(_rptUrl, _rptName);
@@ -1704,14 +1767,14 @@ namespace SmartAuditERP.Form_WPF
             {
                 DXMessageBox.Show("المسار الحالي للتقارير غير موجود أو تم تعديله",
                     "خطأ", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                return false;
             }
 
             if (string.IsNullOrEmpty(_rptName))
             {
                 DXMessageBox.Show("يجب إدخال اسم التقرير من الإعدادات",
                     "", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                return false;
             }
 
             try
@@ -1743,13 +1806,18 @@ namespace SmartAuditERP.Form_WPF
                 {
                     DXMessageBox.Show("يجب تحديد الطابعة من الإعدادات",
                         "", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
+                    return false;
                 }
 
                 report.PrinterName = _defPrinter;
 
                 if (printType == 1)
                 {
+                    if (_printNo <= 0)
+                    {
+                        DXMessageBox.Show("عدد نسخ الطباعة غير صالح.", "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return false;
+                    }
                     for (int i = 0; i < _printNo; i++)
                         report.Print();
                 }
@@ -1757,11 +1825,13 @@ namespace SmartAuditERP.Form_WPF
                 {
                     report.ShowPreviewDialog();
                 }
+                return true;
             }
             catch (Exception ex)
             {
                 DXMessageBox.Show("خطأ في الطباعة: " + ex.Message,
                     "", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
         }
 

@@ -811,8 +811,16 @@ namespace SmartAuditERP.Form_WPF
         #endregion
 
         #region Accreditate Method Region
+        private bool ProjectAccreditationAvailable()
+        {
+            MessageBox.Show("تعميد المشروع معطل مؤقتاً حتى تتوفر معاملة آمنة تربط انتقال الحالة بالقيد المحاسبي.",
+                "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return false;
+        }
+
         private void AccreditateProject()
         {
+            if (!ProjectAccreditationAvailable()) return;
             if (cmbContractor.SelectedIndex == -1)
             {
                 MessageBox.Show("يجب ربط المشروع بمقاول ⚠️", "تنبيه",
