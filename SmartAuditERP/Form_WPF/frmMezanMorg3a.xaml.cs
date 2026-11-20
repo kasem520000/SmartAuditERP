@@ -488,8 +488,14 @@ namespace SmartAuditERP.Form_WPF
                             root.TrCreditBlc = root.TrCreditorMovement - root.TrDebtorMovement;
                         }
 
-                        root.TrDeptFinal = root.TrDeptIntial + root.TrDeptBlc;
-                        root.TrCreditFinal = root.TrCreditIntial + root.TrCreditBlc;
+                        // Repair R-041 (audit finding P3-019): leaf rows fold their previous-period
+                        // balance into the closing figure (their final = initial + movement-balance
+                        // + prior), yet a parent group added ONLY initial + movement here - silently
+                        // dropping the accumulated priors it had gathered in TrDeptPervious /
+                        // TrCreditPervious from its children. Include them on the same sides, before
+                        // the existing netting below, exactly mirroring the leaf arithmetic.
+                        root.TrDeptFinal = root.TrDeptIntial + root.TrDeptPervious + root.TrDeptBlc;
+                        root.TrCreditFinal = root.TrCreditIntial + root.TrCreditPervious + root.TrCreditBlc;
 
                         if (root.TrDeptFinal >= root.TrCreditFinal)
                         {
@@ -525,8 +531,21 @@ namespace SmartAuditERP.Form_WPF
         {
             decimal sumDebt = 0, sumCredit = 0, sumFinalDebt = 0, sumFinalCredit = 0;
 
+            // Repair R-041 (audit finding P3-019): a parent row's columns already carry every
+            // descendant rolled up into them, so when the level filter also displays the child
+            // rows, adding those children to the footer totals counted their values twice (and
+            // broke the debit==credit trial property). Sum only the topmost displayed rows -
+            // i.e. skip any displayed row whose parent is ALSO displayed. (The print/export loops
+            // intentionally render every displayed row and are untouched.)
+            var displayedCodes = new HashSet<int>();
+            foreach (AccountNode r in _displayRows)
+                displayedCodes.Add(r.TrAccount);
+
             foreach (AccountNode row in _displayRows)
             {
+                if (row.TrParentAcc != 0 && displayedCodes.Contains(row.TrParentAcc))
+                    continue;
+
                 sumDebt += row.TrDebtorMovement;
                 sumCredit += row.TrCreditorMovement;
                 sumFinalDebt += row.TrDeptFinal;
