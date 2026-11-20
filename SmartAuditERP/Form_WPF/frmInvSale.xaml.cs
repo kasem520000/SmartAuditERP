@@ -3339,12 +3339,60 @@ namespace SmartAuditERP.Form_WPF
 
                 var dlg = new SaveFileDialog
                 {
+                    // Repair R-096 (audit finding P7-050, a grounded expansion beyond the finding's
+                    // evidence list): this dialog announced *.xlsx while the writer produced
+                    // comma-joined text under a "Basic CSV export as fallback" comment, so the bytes
+                    // never matched the container the user picked. The announced option is kept - it
+                    // is the only one this screen offers, and dropping or adding a user-visible format
+                    // is an owner decision - and it is now real: a workbook written with the library
+                    // the project already references and other screens already use. The filter itself
+                    // is untouched.
                     Filter = "Excel Files(*.xlsx)|*.xlsx"
                 };
                 if (dlg.ShowDialog() == true)
                 {
                     string filePath = dlg.FileName;
-                    ExportDataGridToExcel(filePath);
+
+                    // A name typed by hand can still ask for another container. The delimited ones
+                    // this screen can produce are produced properly, and anything else is refused
+                    // before a byte is written, so no file is left behind announcing a format it does
+                    // not have.
+                    bool asWorkbook = filePath.EndsWith(".xlsx",
+                        StringComparison.OrdinalIgnoreCase);
+                    bool asCsv = filePath.EndsWith(".csv",
+                        StringComparison.OrdinalIgnoreCase);
+                    bool asText = filePath.EndsWith(".txt",
+                        StringComparison.OrdinalIgnoreCase);
+                    if (!asWorkbook && !asCsv && !asText)
+                    {
+                        MessageBox.Show(
+                            "صيغة غير مدعومة للتصدير: اختر Excel (*.xlsx) أو CSV (*.csv) "
+                            + "أو نصاً بفاصل جدولة (*.txt).",
+                            "", MessageBoxButton.OK, MessageBoxImage.Information);
+                        return;
+                    }
+
+                    DataTable table = BuildItemsTableForExport();
+
+                    if (asWorkbook)
+                    {
+                        using (var workbook = new ClosedXML.Excel.XLWorkbook())
+                        {
+                            var worksheet = workbook.Worksheets.Add(table, "أصناف الفاتورة");
+                            worksheet.RightToLeft = true;
+                            worksheet.Columns().AdjustToContents();
+                            workbook.SaveAs(filePath);
+                        }
+                    }
+                    else
+                    {
+                        SpreadsheetExport.WriteDataTable(
+                            filePath,
+                            table,
+                            asCsv ? SpreadsheetExport.CsvDelimiter
+                                  : SpreadsheetExport.TsvDelimiter);
+                    }
+
                     System.Diagnostics.Process.Start(
                         new System.Diagnostics.ProcessStartInfo(filePath)
                         { UseShellExecute = true });
@@ -3790,35 +3838,51 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
-        private void ExportDataGridToExcel(string filePath)
+        /// <summary>
+        /// Repair R-096 (audit finding P7-050): one projection feeds every container. The writer this
+        /// replaces took its header from the grid's visible columns and its rows from a fixed ten
+        /// fields, and joined both with a bare comma, so a comma inside an item name added a column
+        /// and hiding a grid column changed the header width alone. The header is now the
+        /// projection's own captions and the cells go through the shared writer's announced schema
+        /// (quoting, doubled quotes, CRLF, UTF-8). Two captions are stated here because they are not
+        /// taken from this screen's grid: the item-code column has no caption of its own in this
+        /// screen, so it carries the wording the sibling invoice grid uses for the same field, and the
+        /// item-name column drops the non-BMP symbol this screen's grid decorates its caption with -
+        /// the screen already strips such symbols elsewhere before they reach a file. Money and
+        /// quantities leave machine-readable in the invariant culture; they stay text rather than
+        /// numbers because the item type lives in a referenced assembly with no source here, so no
+        /// numeric cell type is claimed.
+        /// </summary>
+        private DataTable BuildItemsTableForExport()
         {
-            // Basic CSV export as fallback
-            var sb = new System.Text.StringBuilder();
-            // Headers
-            var headers = GridControl1.Columns
-                .Where(c => c.Visibility == Visibility.Visible)
-                .Select(c => c.Header?.ToString() ?? "");
-            sb.AppendLine(string.Join(",", headers));
-            // Rows
+            var table = new DataTable("Items");
+            table.Columns.Add("#", typeof(string));
+            table.Columns.Add("رمز الصنف", typeof(string));
+            table.Columns.Add("الصنف", typeof(string));
+            table.Columns.Add("الوحدة", typeof(string));
+            table.Columns.Add("الكمية", typeof(string));
+            table.Columns.Add("السعر", typeof(string));
+            table.Columns.Add("المجموع", typeof(string));
+            table.Columns.Add("الخصم", typeof(string));
+            table.Columns.Add("الضريبة", typeof(string));
+            table.Columns.Add("الصافي", typeof(string));
+
             foreach (var item in Invoic.InvoiceItems)
             {
-                var row = new List<string>
-                {
-                    item.ItemRowIndex.ToString(),
-                    item.ItemCode ?? "",
-                    item.ItemName ?? "",
-                    item.UnitName ?? "",
-                    item.ItemQuantity.ToString(),
-                    item.ItemPrice.ToString(),
-                    item.ItemSumPrice.ToString(),
-                    item.ItemDiscount.ToString(),
-                    item.ItemVat.ToString(),
-                    item.ItemNetPrice.ToString()
-                };
-                sb.AppendLine(string.Join(",", row));
+                table.Rows.Add(
+                    SpreadsheetExport.Text(item.ItemRowIndex),
+                    SpreadsheetExport.Text(item.ItemCode),
+                    SpreadsheetExport.Text(item.ItemName),
+                    SpreadsheetExport.Text(item.UnitName),
+                    SpreadsheetExport.Money(item.ItemQuantity),
+                    SpreadsheetExport.Money(item.ItemPrice),
+                    SpreadsheetExport.Money(item.ItemSumPrice),
+                    SpreadsheetExport.Money(item.ItemDiscount),
+                    SpreadsheetExport.Money(item.ItemVat),
+                    SpreadsheetExport.Money(item.ItemNetPrice));
             }
-            File.WriteAllText(filePath, sb.ToString(),
-                System.Text.Encoding.UTF8);
+
+            return table;
         }
 
         private string RemoveNonBmpCharacters(string input)
