@@ -40,6 +40,9 @@ namespace SmartAuditERP.Form_WPF
         private DataTable                            _masterTable;
         private int                                  _rowIndex;
         private ObservableCollection<InvoiceSrchRow> _displayRows;
+        // Repair R-075 (audit finding P7-155): the proc_type criterion the master snapshot was
+        // actually loaded with, so a process change can tell 'already loaded' from 'must reload'.
+        private int                                  _snapshotProc;
 
         #endregion
 
@@ -61,6 +64,7 @@ namespace SmartAuditERP.Form_WPF
             _rowIndex    = -1;
             _displayRows = new ObservableCollection<InvoiceSrchRow>();
             Cond         = string.Empty;
+            _snapshotProc = -1;
 
             dgvItems.ItemsSource = _displayRows;
         }
@@ -77,6 +81,11 @@ namespace SmartAuditERP.Form_WPF
 
             LoadUsers();
             LoadProcessTypes();
+
+            // Repair R-075 (audit finding P7-155): the snapshot is about to be loaded with this
+            // ProcType, and assigning SelectedIndex below raises SelectionChanged; recording it
+            // first keeps that programmatic selection from triggering a redundant reload.
+            _snapshotProc = ProcType;
 
             if (cmbProcType.Items.Count > ProcType)
                 cmbProcType.SelectedIndex = ProcType;
@@ -137,7 +146,24 @@ namespace SmartAuditERP.Form_WPF
 
         private void cmbProcType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ApplyFilter();
+            // Repair R-075 (audit finding P7-155): BuildLoadQuery bakes `inv.proc_type = {ProcType}`
+            // into the master snapshot, so changing this combo used to re-filter only the rows the
+            // ORIGINAL process type had already admitted: choosing another process showed an empty
+            // grid and the item labelled 'All' showed one process. The source criterion now follows
+            // the selection - index 0 means no process restriction, any other index reloads with
+            // that proc_type - and BuildFilterExpression stays as a matching control on the reload.
+            int wanted = cmbProcType.SelectedIndex;
+            if (wanted < 0) return;
+
+            if (wanted == _snapshotProc)
+            {
+                ApplyFilter();
+                return;
+            }
+
+            ProcType = wanted;
+            _masterTable.Clear();
+            LoadInvoices();
         }
 
         private void txtInvNo_TextChanged(object sender, TextChangedEventArgs e)
@@ -316,6 +342,7 @@ namespace SmartAuditERP.Form_WPF
             try
             {
                 BuildLoadQuery();
+                _snapshotProc = ProcType;   // Repair R-075 (P7-155): criterion now in the snapshot
 
                 var adapter = new SqlDataAdapter(_loadQuery, _conn);
 
@@ -344,7 +371,10 @@ namespace SmartAuditERP.Form_WPF
             if (InvType != 14)
                 condClause += $" and inv.branch = {MainClass.BranchNo}";
 
-            condClause += $" and inv.proc_type = {ProcType}";
+            // Repair R-075 (audit finding P7-155): ProcType 0 is the "All" selection, which must
+            // widen the source instead of silently keeping the criterion of the opening caller.
+            if (ProcType > 0)
+                condClause += $" and inv.proc_type = {ProcType}";
 
             if (btnPostPone.IsChecked == true)
                 condClause += " and inv.Pay_type = -1";
