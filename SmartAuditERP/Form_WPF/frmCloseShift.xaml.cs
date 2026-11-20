@@ -1707,25 +1707,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void ExportToExcel()
         {
-            try
-            {
-                if (GridControl1.Items.Count == 0)
-                    return;
-
-                Microsoft.Win32.SaveFileDialog saveDialog =
-                    new Microsoft.Win32.SaveFileDialog
-                    {
-                        Filter = "Excel Files|*.xlsx",
-                        FileName = $"إغلاقات_اليومية_{DateTime.Now:yyyyMMdd}"
-                    };
-
-                if (saveDialog.ShowDialog() == true)
-                    ShowSuccess("تم تصدير الملف بنجاح ✅");
-            }
-            catch (Exception ex)
-            {
-                ShowError("خطأ أثناء التصدير", ex);
-            }
+            ShowWarning("التصدير غير متاح في هذه الشاشة حالياً؛ لم يُنشأ أي ملف.");
         }
 
         #endregion

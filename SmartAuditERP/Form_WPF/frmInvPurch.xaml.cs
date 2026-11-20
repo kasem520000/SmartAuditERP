@@ -2412,34 +2412,8 @@ namespace SmartAuditERP.Form_WPF
 
         private void stripExport_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                if (!this.IsInvExist())
-                {
-                    MessageBox.Show("يجب حفظ الفاتورة قبل التصدير");
-                    return;
-                }
-                if (MessageBox.Show(
-                        "هل انت متأكد من تصدير البيانات ؟", "",
-                        MessageBoxButton.YesNo,
-                        MessageBoxImage.Question) == MessageBoxResult.No)
-                    return;
-
-                var dlg = new Microsoft.Win32.SaveFileDialog
-                {
-                    Filter = "Excel Files (*.xlsx)|*.xlsx"
-                };
-                if (dlg.ShowDialog() == true)
-                {
-                    // تصدير عبر مكتبة Excel (مثال)
-                    MessageBox.Show("تم حفظ الملف في " + dlg.FileName);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("خطأ:\n" + ex.Message, "",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            MessageBox.Show("التصدير غير متاح في هذه الشاشة حالياً؛ لم يُنشأ أي ملف.",
+                "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         private bool IsInvExist()

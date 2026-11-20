@@ -382,11 +382,11 @@ check("C4 point of sale: the items collection and the grid source are still atta
               "BindingControls();") and
       pos_nav.count("CLR();") == 1 and "Invoic = new InvoiceDGV();" not in pos_nav)
 
-trf_nav = nav_slice(TRF, "public void Navigate(string sqlStr)", "catch (Exception ex)")
+trf_nav = nav_slice(TRF, "private bool TryNavigate(string sqlStr, string expectedGlobalId)", "catch (Exception ex)")
 check("C5 transfer: the loading path keeps its instance and its own reset condition",
       ordered(trf_nav, "bool willClear = _invoic != null && !_isLoading;",
               "InvoiceDGV target = (willClear || _invoic == null)", ": _invoic;",
-              "InvoiceOper.BindingInvoice(ref target, sqlStr);", "if (target == null) return;",
+              "InvoiceOper.BindingInvoice(ref target, sqlStr);", "if (target == null) return false;",
               "if (willClear)", "CLR();", "_invoic = target;") and
       trf_nav.count("CLR();") == 1 and "_invoic = new InvoiceDGV();" not in trf_nav and
       TRF.count("if (_invoic != null && !_isLoading)") == 4,

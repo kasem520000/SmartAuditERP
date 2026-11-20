@@ -630,53 +630,8 @@ namespace SmartAuditERP.Form_WPF
         #region Excel Export
         private void btnExportExcel_Click(object sender, RoutedEventArgs e)
         {
-            if (dgvMain.Items.Count == 0)
-            {
-                MessageBox.Show("لا توجد بيانات للتصدير", "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            try
-            {
-                string fileName = $"كشف_حساب_{cmbAccounts.Text}_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
-
-                SaveFileDialog saveDialog = new SaveFileDialog
-                {
-                    Filter = "Excel Files|*.xlsx",
-                    FileName = fileName
-                };
-
-                if (saveDialog.ShowDialog() == true)
-                {
-                    ExportDataGridToExcel(saveDialog.FileName);
-
-                    var result = MessageBox.Show("تم التصدير بنجاح. هل تريد فتح الملف؟", "نجاح",
-                        MessageBoxButton.YesNo, MessageBoxImage.Information);
-
-                    if (result == MessageBoxResult.Yes)
-                        Process.Start(saveDialog.FileName);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("خطأ في التصدير: " + ex.Message, "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void ExportDataGridToExcel(string filePath)
-        {
-            // استخدام مكتبة ClosedXML أو EPPlus (يجب إضافتها عبر NuGet)
-            // هنا مثال بسيط - يمكن تحسينه
-
-            DataTable dt = (dgvMain.ItemsSource as DataView)?.Table;
-            if (dt != null)
-            {
-                // كود التصدير باستخدام مكتبة خارجية
-                // مثال: ExcelHelper.Export(dt, filePath);
-
-                MessageBox.Show("يرجى تثبيت مكتبة ClosedXML أو EPPlus لإتمام عملية التصدير",
-                    "معلومات", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
+            MessageBox.Show("التصدير غير متاح في هذه الشاشة حالياً؛ لم يُنشأ أي ملف.",
+                "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
         #endregion
 

@@ -593,39 +593,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void BtnExport_Click(object sender, RoutedEventArgs e)
         {
-            if (_resultTable == null || _resultTable.Rows.Count == 0)
-            {
-                ShowWarning("لا توجد بيانات للتصدير");
-                return;
-            }
-
-            var saveDialog = new SaveFileDialog
-            {
-                Filter = "Excel Files (*.xlsx)|*.xlsx",
-                DefaultExt = ".xlsx",
-                FileName =
-                    $"{cmbEmps.Text}_مبيعات_ومشتريات_{DateTime.Now:yyyy-MM-dd}"
-            };
-
-            if (saveDialog.ShowDialog() == true)
-            {
-                try
-                {
-                    // تصدير DataTable كـ CSV أو استخدام ClosedXML
-                    DXMessageBox.Show(
-                        $"✅ تم حفظ الملف:\n{saveDialog.FileName}",
-                        "نجاح", MessageBoxButton.OK, MessageBoxImage.Information);
-
-                    Process.Start(new ProcessStartInfo(saveDialog.FileName)
-                    {
-                        UseShellExecute = true
-                    });
-                }
-                catch (Exception ex)
-                {
-                    ShowError($"خطأ في التصدير:\n{ex.Message}");
-                }
-            }
+            ShowWarning("التصدير غير متاح في هذه الشاشة حالياً؛ لم يُنشأ أي ملف.");
         }
 
         #endregion

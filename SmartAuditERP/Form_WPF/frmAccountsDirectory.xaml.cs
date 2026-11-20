@@ -749,50 +749,8 @@ namespace SmartAuditERP.Form_WPF
         #region Excel Export
         private void btnExportExcel_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                SaveFileDialog saveDialog = new SaveFileDialog
-                {
-                    Filter = "Excel Files|*.xlsx",
-                    FileName = $"دليل_الحسابات_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx"
-                };
-
-                if (saveDialog.ShowDialog() == true)
-                {
-                    ExportToExcel(saveDialog.FileName);
-
-                    var result = MessageBox.Show("تم التصدير بنجاح. هل تريد فتح الملف؟", "نجاح",
-                        MessageBoxButton.YesNo, MessageBoxImage.Information);
-
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        Process.Start(new ProcessStartInfo(saveDialog.FileName) { UseShellExecute = true });
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("خطأ في التصدير: " + ex.Message, "خطأ",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-        }
-
-        private void ExportToExcel(string filePath)
-        {
-            try
-            {
-                // استخدام GridView للتصدير (DevExpress طريقة بديلة)
-                DataTable dt = (dgvAccounts.ItemsSource as DataView)?.Table;
-                if (dt != null)
-                {
-                    // يمكن استخدام مكتبة ClosedXML هنا
-                    MessageBox.Show("تم التصدير بنجاح!", "نجاح", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("فشل التصدير: " + ex.Message);
-            }
+            MessageBox.Show("التصدير غير متاح في هذه الشاشة حالياً؛ لم يُنشأ أي ملف.",
+                "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
         #endregion
 

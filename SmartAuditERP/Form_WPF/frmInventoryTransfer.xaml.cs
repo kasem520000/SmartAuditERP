@@ -401,6 +401,14 @@ namespace SmartAuditERP.Form_WPF
 
         public void Navigate(string sqlStr)
         {
+            TryNavigate(sqlStr, null);
+        }
+
+        // Returns only whether this navigation reached the end without a visible
+        // failure and the requested identity was read. The legacy reader can
+        // still suppress row-level errors; this is not a completeness guarantee.
+        private bool TryNavigate(string sqlStr, string expectedGlobalId)
+        {
             try
             {
                 // Repair R-093 (audit finding P7-161): the same resolve-before-replace contract the
@@ -413,7 +421,10 @@ namespace SmartAuditERP.Form_WPF
                     ? new InvoiceDGV()
                     : _invoic;
                 InvoiceOper.BindingInvoice(ref target, sqlStr);
-                if (target == null) return;
+                if (target == null) return false;
+                if (expectedGlobalId != null &&
+                    !string.Equals(target.InvGlobalID, expectedGlobalId, StringComparison.Ordinal))
+                    return false;
 
                 if (willClear)
                     CLR();
@@ -438,7 +449,7 @@ namespace SmartAuditERP.Form_WPF
                     ad.Fill(dt);
                     if (dt.Rows.Count > 0)
                         cmbSafeTo.SelectedValue = dt.Rows[0]["safe"];
-                    return;
+                    return true;
                 }
 
                 var ad2 = new SqlDataAdapter(
@@ -450,10 +461,12 @@ namespace SmartAuditERP.Form_WPF
                 if (dt2.Rows.Count > 0)
                     cmbSafeFrom.SelectedValue = dt2.Rows[0]["safe"];
                 cmbSafeTo.SelectedValue = _invoic.Store;
+                return true;
             }
             catch (Exception ex)
             {
                 ShowError("خطأ في التنقل", ex);
+                return false;
             }
         }
 
@@ -544,7 +557,7 @@ namespace SmartAuditERP.Form_WPF
             }
             catch
             {
-                return false;
+                return true;
             }
         }
 
@@ -1653,8 +1666,14 @@ namespace SmartAuditERP.Form_WPF
                 MainClass.ApplyPermissionToForm(frm);
                 MainClass.DoApplyUserSett(frm);
                 frm.ShowDialog();
-                if (frm.ISDone && frm.InvGlobalID != "-1")
-                    Navigate($"SELECT * FROM Inv WHERE branch={MainClass.BranchNo} AND InvGlobalID=N'{frm.InvGlobalID}'");
+                if (!frm.ISDone || string.IsNullOrWhiteSpace(frm.InvGlobalID) || frm.InvGlobalID == "-1") return;
+                if (_isLoading || CheckBeforeClear()) return;
+                string gid = frm.InvGlobalID.Replace("'", "''");
+                if (!TryNavigate($"SELECT * FROM Inv WHERE branch={MainClass.BranchNo} AND InvGlobalID=N'{gid}'", frm.InvGlobalID))
+                {
+                    ShowMsg("تعذر تحميل الفاتورة المختارة؛ لم يُنفذ التحويل. يرجى مراجعة الشاشة قبل المتابعة.");
+                    return;
+                }
             }
             catch (Exception ex)
             {
@@ -1675,8 +1694,14 @@ namespace SmartAuditERP.Form_WPF
                 frm.Cond += " AND InvoiceStatus = 1";
                 frm.ShowDialog();
 
-                if (frm.ISDone && frm.InvGlobalID != "-1")
-                    Navigate($"SELECT * FROM Inv WHERE branch={MainClass.BranchNo} AND InvGlobalID=N'{frm.InvGlobalID}'");
+                if (!frm.ISDone || string.IsNullOrWhiteSpace(frm.InvGlobalID) || frm.InvGlobalID == "-1") return;
+                if (_isLoading || CheckBeforeClear()) return;
+                string gid = frm.InvGlobalID.Replace("'", "''");
+                if (!TryNavigate($"SELECT * FROM Inv WHERE branch={MainClass.BranchNo} AND InvGlobalID=N'{gid}'", frm.InvGlobalID))
+                {
+                    ShowMsg("تعذر تحميل الفاتورة المختارة؛ لم يُنفذ التحويل. يرجى مراجعة الشاشة قبل المتابعة.");
+                    return;
+                }
 
                 _invoic.ProcType = 1;
                 ProcType = 1;
@@ -1702,8 +1727,14 @@ namespace SmartAuditERP.Form_WPF
                 frm.InvType = 14;
                 frm.ShowDialog();
 
-                if (frm.ISDone && frm.InvGlobalID != "-1")
-                    Navigate($"SELECT * FROM Inv WHERE InvGlobalID=N'{frm.InvGlobalID}'");
+                if (!frm.ISDone || string.IsNullOrWhiteSpace(frm.InvGlobalID) || frm.InvGlobalID == "-1") return;
+                if (_isLoading || CheckBeforeClear()) return;
+                string gid = frm.InvGlobalID.Replace("'", "''");
+                if (!TryNavigate($"SELECT * FROM Inv WHERE InvGlobalID=N'{gid}'", frm.InvGlobalID))
+                {
+                    ShowMsg("تعذر تحميل الفاتورة المختارة؛ لم يُنفذ التحويل. يرجى مراجعة الشاشة قبل المتابعة.");
+                    return;
+                }
 
                 _invoic.InvoiceType = InvoiceType.SafesTransferTo;
                 _invoic.ProcType = 2;
@@ -1728,8 +1759,14 @@ namespace SmartAuditERP.Form_WPF
                 frm.InvType = 1;
                 frm.ShowDialog();
 
-                if (frm.ISDone && frm.InvGlobalID != "-1")
-                    Navigate($"SELECT * FROM Inv WHERE InvGlobalID=N'{frm.InvGlobalID}'");
+                if (!frm.ISDone || string.IsNullOrWhiteSpace(frm.InvGlobalID) || frm.InvGlobalID == "-1") return;
+                if (_isLoading || CheckBeforeClear()) return;
+                string gid = frm.InvGlobalID.Replace("'", "''");
+                if (!TryNavigate($"SELECT * FROM Inv WHERE InvGlobalID=N'{gid}'", frm.InvGlobalID))
+                {
+                    ShowMsg("تعذر تحميل الفاتورة المختارة؛ لم يُنفذ التحويل. يرجى مراجعة الشاشة قبل المتابعة.");
+                    return;
+                }
 
                 _invoic.InvoiceType = InvoiceType.SafesTransferTo;
                 _invoic.ProcType = 2;

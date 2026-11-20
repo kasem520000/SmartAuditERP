@@ -152,6 +152,14 @@ namespace SmartAuditERP.Form_WPF
                 return false;
             }
 
+            if (txtDateFrom.SelectedDate.Value.Date > txtDateTo.SelectedDate.Value.Date ||
+                txtDateTo.SelectedDate.Value.Date == DateTime.MaxValue.Date)
+            {
+                MessageBox.Show("الفترة الزمنية غير صالحة", "تنبيه",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
             return true;
         }
 
@@ -174,8 +182,8 @@ namespace SmartAuditERP.Form_WPF
                 actsQuery += " ORDER BY id";
 
                 // الحصول على التواريخ
-                DateTime dateFrom = Dispatcher.Invoke(() => txtDateFrom.SelectedDate.Value);
-                DateTime dateTo = Dispatcher.Invoke(() => txtDateTo.SelectedDate.Value.AddHours(24));
+                DateTime dateFrom = Dispatcher.Invoke(() => txtDateFrom.SelectedDate.Value.Date);
+                DateTime dateTo = Dispatcher.Invoke(() => txtDateTo.SelectedDate.Value.Date.AddDays(1));
 
                 // تحميل جهات العمل
                 DataTable actsTable = new DataTable();
@@ -193,6 +201,7 @@ namespace SmartAuditERP.Form_WPF
 
                 double totalPurchases = 0;
                 double totalSales = 0;
+                var stagedRows = new System.Collections.Generic.List<ActTotalItem>();
 
                 // معالجة كل جهة عمل
                 for (int i = 0; i < actsTable.Rows.Count; i++)
@@ -207,23 +216,21 @@ namespace SmartAuditERP.Form_WPF
                     totalPurchases += purchaseTotal;
                     totalSales += saleTotal;
 
-                    // إضافة الصف للجدول
-                    Dispatcher.Invoke(() =>
+                    stagedRows.Add(new ActTotalItem
                     {
-                        _reportData.Add(new ActTotalItem
-                        {
-                            RowNumber = i + 1,
-                            PurchaseName = actName,
-                            PurchaseTotal = purchaseTotal,
-                            SaleName = actName,
-                            SaleTotal = saleTotal
-                        });
+                        RowNumber = i + 1,
+                        PurchaseName = actName,
+                        PurchaseTotal = purchaseTotal,
+                        SaleName = actName,
+                        SaleTotal = saleTotal
                     });
                 }
 
                 // تحديث الإجماليات
                 Dispatcher.Invoke(() =>
                 {
+                    _reportData.Clear();
+                    foreach (ActTotalItem row in stagedRows) _reportData.Add(row);
                     txtSumPurch.Content = totalPurchases.ToString("N2");
                     txtSumSale.Content = totalSales.ToString("N2");
                 });
@@ -233,6 +240,9 @@ namespace SmartAuditERP.Form_WPF
                 Logger.Error($"CalculateReport Error: {ex.Message}");
                 Dispatcher.Invoke(() =>
                 {
+                    _reportData.Clear();
+                    txtSumPurch.Content = "0.00";
+                    txtSumSale.Content = "0.00";
                     MessageBox.Show($"خطأ في الحساب: {ex.Message}", "خطأ",
                         MessageBoxButton.OK, MessageBoxImage.Error);
                 });
@@ -247,8 +257,11 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
-                // نوع العملية (1=مشتريات، 2=مبيعات)
-                int procType = isPurchase ? 1 : 2;
+                // Header kind and header operation are distinct from the
+                // inventory direction stored on each line.
+                int normalDirection = isPurchase ? 1 : 2;
+                int returnDirection = isPurchase ? 2 : 1;
+                string invoiceTypes = isPurchase ? "inv.inv_type = 1" : "inv.inv_type IN (2,3)";
 
                 // حساب صافي المبلغ (مشتريات - مرتجعات)
                 double total = 0;
@@ -263,7 +276,8 @@ namespace SmartAuditERP.Form_WPF
                     WHERE {branchCondition}
                           Customers.act = @actId 
                           AND inv.date >= @dateFrom 
-                          AND inv.date <= @dateTo 
+                          AND inv.date < @dateTo
+                          AND {invoiceTypes}
                           AND inv.proc_type = @procType
                           AND inv_sub.proc_type = @subProcType
                           AND inv.IS_Deleted = 0";
@@ -274,8 +288,8 @@ namespace SmartAuditERP.Form_WPF
                     cmd.Parameters.AddWithValue("@actId", actId);
                     cmd.Parameters.AddWithValue("@dateFrom", dateFrom);
                     cmd.Parameters.AddWithValue("@dateTo", dateTo);
-                    cmd.Parameters.AddWithValue("@procType", procType);
-                    cmd.Parameters.AddWithValue("@subProcType", 1);
+                    cmd.Parameters.Add("@procType", SqlDbType.Int).Value = 1;
+                    cmd.Parameters.Add("@subProcType", SqlDbType.Int).Value = normalDirection;
 
                     if (_connection.State != ConnectionState.Open)
                         _connection.Open();
@@ -293,8 +307,8 @@ namespace SmartAuditERP.Form_WPF
                     cmd.Parameters.AddWithValue("@actId", actId);
                     cmd.Parameters.AddWithValue("@dateFrom", dateFrom);
                     cmd.Parameters.AddWithValue("@dateTo", dateTo);
-                    cmd.Parameters.AddWithValue("@procType", procType);
-                    cmd.Parameters.AddWithValue("@subProcType", 2);
+                    cmd.Parameters.Add("@procType", SqlDbType.Int).Value = 2;
+                    cmd.Parameters.Add("@subProcType", SqlDbType.Int).Value = returnDirection;
 
                     object result = cmd.ExecuteScalar();
                     if (result != null && result != DBNull.Value)
@@ -303,16 +317,18 @@ namespace SmartAuditERP.Form_WPF
                     }
                 }
 
-                if (_connection.State == ConnectionState.Open)
-                    _connection.Close();
-
                 // الصافي = الإجمالي - المرتجعات
                 return Math.Round(total - returns, 4);
             }
             catch (Exception ex)
             {
                 Logger.Error($"CalculateActTotal Error: {ex.Message}");
-                return 0;
+                throw;
+            }
+            finally
+            {
+                if (_connection.State == ConnectionState.Open)
+                    _connection.Close();
             }
         }
 

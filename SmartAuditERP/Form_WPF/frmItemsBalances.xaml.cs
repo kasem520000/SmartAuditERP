@@ -93,28 +93,30 @@ namespace SmartAuditERP.Form_WPF
                 // دمج الصفوف بنفس الصنف
                 MergeRows(balanceTable);
 
-                // تعبئة الجدول النهائي
+                // Resolve the whole result before publishing any rows. Missing
+                // names or invalid amounts must not silently become a partial balance.
+                var stagedRows = new System.Collections.Generic.List<BalanceRow>();
                 foreach (DataRow row in balanceTable.Rows)
                 {
-                    try
+                    int itemId = Convert.ToInt32(row[0]);
+                    double balance = Convert.ToDouble(row[1]);
+                    if (double.IsNaN(balance) || double.IsInfinity(balance))
+                        throw new InvalidOperationException("قيمة رصيد غير صالحة");
+                    string name = GetCurrencyName(itemId);
+                    stagedRows.Add(new BalanceRow
                     {
-                        int currencyId = Convert.ToInt32(row[0]);
-                        double balance = Convert.ToDouble(row[1]);
-                        string name = GetCurrencyName(currencyId);
-
-                        _balanceRows.Add(new BalanceRow
-                        {
-                            Column1 = name,
-                            Column2 = balance.ToString("N2")
-                        });
-                    }
-                    catch { }
+                        Column1 = name,
+                        Column2 = balance.ToString("N2")
+                    });
                 }
+                foreach (BalanceRow row in stagedRows)
+                    _balanceRows.Add(row);
 
                 dgvItems.ItemsSource = _balanceRows;
             }
             catch (Exception ex)
             {
+                _balanceRows.Clear();
                 DXMessageBox.Show("خطأ في حساب الأرصدة" + Environment.NewLine + ex.Message,
                     "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -123,39 +125,31 @@ namespace SmartAuditERP.Form_WPF
         private void FillBalanceData(DataTable table, string branchFilter,
             string safeFilter, string sql, int type)
         {
-            try
-            {
-                SqlDataAdapter adapter = new SqlDataAdapter(sql, conn);
-                DataTable result = new DataTable();
-                adapter.Fill(result);
-
-                foreach (DataRow row in result.Rows)
-                {
-                    double val = 0;
-                    double.TryParse(row[1]?.ToString(), out val);
-                    table.Rows.Add(row[0], val, type);
-                }
-            }
-            catch { }
+            FillSourceData(table, sql, type);
         }
 
         private void FillTransferData(DataTable table, string branchFilter,
             string sql, int type)
         {
-            try
+            FillSourceData(table, sql, type);
+        }
+
+        private void FillSourceData(DataTable table, string sql, int type)
+        {
+            using (SqlDataAdapter adapter = new SqlDataAdapter(sql, conn))
             {
-                SqlDataAdapter adapter = new SqlDataAdapter(sql, conn);
                 DataTable result = new DataTable();
                 adapter.Fill(result);
-
                 foreach (DataRow row in result.Rows)
                 {
-                    double val = 0;
-                    double.TryParse(row[1]?.ToString(), out val);
+                    if (row[0] == DBNull.Value || row[1] == DBNull.Value)
+                        throw new InvalidOperationException("مصدر الرصيد يحتوي صنفاً أو قيمة غير محددة");
+                    double val = Convert.ToDouble(row[1]);
+                    if (double.IsNaN(val) || double.IsInfinity(val))
+                        throw new InvalidOperationException("مصدر الرصيد يحتوي قيمة غير صالحة");
                     table.Rows.Add(row[0], val, type);
                 }
             }
-            catch { }
         }
 
         private void MergeRows(DataTable table)
@@ -197,17 +191,19 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
-        private string GetCurrencyName(int currencyId)
+        private string GetCurrencyName(int itemId)
         {
-            try
+            using (SqlDataAdapter adapter = new SqlDataAdapter(
+                "select name from Items where id=@itemId", conn))
             {
-                SqlDataAdapter adapter = new SqlDataAdapter(
-                    "select name from Items where id=" + currencyId, conn);
+                adapter.SelectCommand.Parameters.Add("@itemId", SqlDbType.Int).Value = itemId;
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
-                return dt.Rows.Count > 0 ? dt.Rows[0][0].ToString() : "";
+                if (dt.Rows.Count != 1 || dt.Rows[0][0] == DBNull.Value ||
+                    string.IsNullOrWhiteSpace(dt.Rows[0][0].ToString()))
+                    throw new InvalidOperationException("تعذر تحديد اسم الصنف للرصيد");
+                return dt.Rows[0][0].ToString();
             }
-            catch { return ""; }
         }
 
         #endregion
