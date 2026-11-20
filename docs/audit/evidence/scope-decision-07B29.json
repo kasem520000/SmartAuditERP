@@ -1,0 +1,51 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "entry": "dda1eafab4188b00a7d6c3e435e7391bd0e09cda",
+  "authority": [
+    "PHASE-07-REMAINING-07B28.md",
+    "evidence/split-register-07B28.csv",
+    "evidence/residual-disposition-07B28.csv"
+  ],
+  "selected_upstream_split": "SP7B28-01",
+  "selected_capability": "accepted invoice search versus existing dirty-editor abandon guard",
+  "selected_source_to_output": "explicit supplied dirty state→own search wiring/fresh chooser→accepted result→sales/purchase consumers→Navigate/CLR reference replacement→selected reader header/null boundary",
+  "exclusions": "other Navigate callers/fields/writers/outputs;full reader/DTO/constructors;all dirty propagation/placeholder and WPF event order;period/postponed/quoting/return/eligibility;all financial/ACL/stock/save/runtime/C-axis acceptance",
+  "static_exit": "159guard omission sourced and deduplicated;freshnot-done/sentinel/guardNo/Yes/clean and suppliedreader-success/null controls;all selected capabilities have owner/input/impact/next/limit/invariant/two not-executedplans;829/all330/G232/827/freezes/ancestries preserved",
+  "bookkeeping": {
+    "selected_paths": 7,
+    "prior_union": 426,
+    "overlap": 7,
+    "new": 0,
+    "union": 426,
+    "complement": 401,
+    "complement_kinds": {
+      "generated-artifact": 61,
+      "source": 336,
+      "project-or-resource": 4
+    }
+  },
+  "new_paths": [],
+  "historical_metadata_screen_count": 330,
+  "path_matched_metadata_rows": 80,
+  "historical_body_review_claim": false,
+  "historical_comparison_depth": "all330-title-metadata-screen-plus80-path-matched-rows-and-selected-nearest-body-source-chains-not-all-historical-bodies",
+  "selected_nearest_bodies": [
+    "P7-148",
+    "P4-015",
+    "P7-091",
+    "P7-151",
+    "P2-001",
+    "P4-031",
+    "P7-158 and additive046 B28 report"
+  ],
+  "bounded_read_slice_count": 22,
+  "whole_local_files": 0,
+  "one_new_root": [
+    "P7-159"
+  ],
+  "existing_root_extensions": [],
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "counts_are_completion_percent_or_sessions": false,
+  "next_part": "R4n/7B30 proposed or reasoned split fromSP01–03;no duration/session/whole-system-completion claim"
+}

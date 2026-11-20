@@ -1,0 +1,62 @@
+{
+  "observed_clock_utc": "2026-11-20T16:55:05.797098+00:00",
+  "classification": "audit-tool-current-CLI-integration-check-failed-not-ERP-finding",
+  "requested_mode": "default B29",
+  "actual_stdout_mode": "7A-partial",
+  "actual_stdout_findings": 200,
+  "stdout_validation_errors": [],
+  "stdout_bytes": 62198,
+  "stdout_sha256": "cc0e09585a512ef64a7cbbd3cbad10bc7ad5d46400122d59048161d2ae052ba6",
+  "stdout_saved_as": "evidence/checker-preflight-attempt-01-07B29.json",
+  "original_audit_cli_process_exit_code_not_retained": null,
+  "wrapper_exit_code": 1,
+  "wrapper_error": "KeyError: 'audit_only_checker_self_tests_executed_not_erp_tests' after collecting actual stdout; do not infer a passing B29 check from errors[].",
+  "stderr_bytes": 0,
+  "standalone48_pre_correction_pass_not_integration_acceptance": true,
+  "root_cause": "Nineteen explicit membership gates in mutable dispatcher ended at B28 while parser accepted/defaulted to B29. Reached only frozen7A before returning JSON; no current B29 validation performed.",
+  "bounded_correction": "Append B29 only to these19 sets; preserve every older gate member, API15 and versioned parser. Extend NEW test39 to assert exact19 membership matrices and negative mutants. No protected old tests changed.",
+  "changed_dispatcher_lines": [
+    1145,
+    1149,
+    1153,
+    1157,
+    1161,
+    1165,
+    1169,
+    1173,
+    1177,
+    1181,
+    1185,
+    1189,
+    1193,
+    1197,
+    1201,
+    1205,
+    1209,
+    1213,
+    1217
+  ],
+  "pre_correction_checker_sources": "evidence/checker-preflight-sources-07B29.json",
+  "post_correction_checker_sha256": {
+    "validate_audit.py": "75484324013e469c4c6ea32aafa82a0f8440fbb04909b047215edf05e61557bd",
+    "validate_dirty_navigation_part.py": "eb2ff1fd0d4f782a00a74279ce432840b4059e07798b8c345f673cdb6ea86c87",
+    "test_dirty_navigation_audit_validator.py": "2b586ed7b10ab4d3552612179f071fe09eb157935aeae8b71d74e8fec7870a97"
+  },
+  "retained_historical34_archive": {
+    "path": "evidence/historical-mode-verification-07B29.json",
+    "sha256": "e577dd891b34dad2820f482d47c0db486754238d8b84eb8ac1327369651c4a6e",
+    "note": "All34 historical modes genuinely passed, but capture-time checker preceded the current-routing correction. Preserved, not current final-tool proof."
+  },
+  "retained_capture_pin_proof": {
+    "path": "evidence/capture-time-identity-07B29.json",
+    "sha256": "d23ce5868d77c3817f3673d65e006607df77f07ee683479a54a8f7c84df025c3",
+    "note": "Valid for its then-current107-tool set/one pin only; not asserted against subsequently corrected tools."
+  },
+  "fresh_release_historical34_capture_required": true,
+  "fresh_release_archive_path": "evidence/historical-mode-verification-07B29-release.json",
+  "historical_artifacts_829_unchanged": true,
+  "originals_827_unchanged": true,
+  "application_remediation_performed": false,
+  "findings_added_for_audit_tool_bug": 0,
+  "errors": []
+}

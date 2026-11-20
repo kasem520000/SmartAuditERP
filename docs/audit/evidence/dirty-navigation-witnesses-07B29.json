@@ -1,0 +1,818 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "entry_checkout": "dda1eafab4188b00a7d6c3e435e7391bd0e09cda",
+  "source_head": "10ba215152f722c8808aea0bb672c1d1d4d9d711",
+  "method": "Strict source hashes/lexical observations and finite supplied dirty-state/reference-boundary illustrations; never C#/WPF/.NET/SQL execution",
+  "application_code_imported_or_executed": false,
+  "dotnet_wpf_sql_or_SDK_executed": false,
+  "application_remediation_performed": false,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "all_callers_or_external_DTOs_body_reviewed": false,
+  "actual_WPF_event_order_or_count_claimed": false,
+  "dirty_flag_propagation_or_constructor_defaults_assumed": false,
+  "provider_failure_observed": false,
+  "database_commit_or_saved_loss_claimed": false,
+  "external_references_or_GC_modeled": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "scanner_or_printer_tests_executed": 0,
+  "B_R4m_bounded_not_whole7B_closure": true,
+  "unresolved_external_contracts_and_explicit_splits_retained": true,
+  "selected_paths_strict_utf8_decode": true,
+  "prior015_046_061_091_132_148_151_155_158_not_recounted": true,
+  "new_root_ids": [
+    "P7-159"
+  ],
+  "extended_existing_root_ids": [],
+  "illustration_count": 16,
+  "lexical_check_count": 16,
+  "selected_source_paths": 7,
+  "whole_local_files_selected": 0,
+  "source_read_slice_count": 22,
+  "retained_additive_B10_arithmetic_erratum": {
+    "local_cost": 10,
+    "reference_cost": 120,
+    "equality1_control": 10,
+    "protected_G138_not_rewritten": true
+  },
+  "unadjudicated_source_leads_not_additional_findings": [
+    "other Navigate callers/fields/writers/output and full reader/DTO",
+    "IsUpdated/placeholder classification and WPF event ordering",
+    "period/postponed/quoting/return/eligibility/failure policies",
+    "Product/BulkPatch/LineRef/OwnedSeed/PropertiesResult/basket/RepeatOutcome and external contracts"
+  ],
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "start": 49,
+      "end": 66,
+      "whole_local_file_selected": false,
+      "sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "start": 89,
+      "end": 131,
+      "whole_local_file_selected": false,
+      "sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "start": 260,
+      "end": 284,
+      "whole_local_file_selected": false,
+      "sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml",
+      "start": 1,
+      "end": 16,
+      "whole_local_file_selected": false,
+      "sha256": "ee3ccdf5945caacbe667945b01b67103649a095fe160967c24e465624a353b31",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml",
+      "start": 391,
+      "end": 414,
+      "whole_local_file_selected": false,
+      "sha256": "ee3ccdf5945caacbe667945b01b67103649a095fe160967c24e465624a353b31",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 36,
+      "end": 88,
+      "whole_local_file_selected": false,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 350,
+      "end": 418,
+      "whole_local_file_selected": false,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 481,
+      "end": 548,
+      "whole_local_file_selected": false,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 1531,
+      "end": 1593,
+      "whole_local_file_selected": false,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 2641,
+      "end": 2662,
+      "whole_local_file_selected": false,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 2738,
+      "end": 2751,
+      "whole_local_file_selected": false,
+      "sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml",
+      "start": 1,
+      "end": 17,
+      "whole_local_file_selected": false,
+      "sha256": "0c519c74b0fa74213ffb19f9de07ee54b52ece09b00597c6a1fe48e369e15c11",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml",
+      "start": 1322,
+      "end": 1353,
+      "whole_local_file_selected": false,
+      "sha256": "0c519c74b0fa74213ffb19f9de07ee54b52ece09b00597c6a1fe48e369e15c11",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 66,
+      "end": 95,
+      "whole_local_file_selected": false,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 236,
+      "end": 250,
+      "whole_local_file_selected": false,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 1546,
+      "end": 1679,
+      "whole_local_file_selected": false,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 2563,
+      "end": 2575,
+      "whole_local_file_selected": false,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 2597,
+      "end": 2657,
+      "whole_local_file_selected": false,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml",
+      "start": 1,
+      "end": 17,
+      "whole_local_file_selected": false,
+      "sha256": "289a5a6bce98948818d3847a9cdf50870a35ca8269416a1ac3dd293db13e4e6d",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml",
+      "start": 1220,
+      "end": 1234,
+      "whole_local_file_selected": false,
+      "sha256": "289a5a6bce98948818d3847a9cdf50870a35ca8269416a1ac3dd293db13e4e6d",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 3219,
+      "end": 3246,
+      "whole_local_file_selected": false,
+      "sha256": "0bab36016f53ecd18360833d1fba980290702a52a98871fb397be9e813810d91",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 3497,
+      "end": 3508,
+      "whole_local_file_selected": false,
+      "sha256": "0bab36016f53ecd18360833d1fba980290702a52a98871fb397be9e813810d91",
+      "encoding": "strict-utf-8",
+      "whole_bytes_read_for_hash_and_line_index_not_whole_body_review": true
+    }
+  ],
+  "illustrations": [
+    {
+      "id": "ALG7B29-01",
+      "title": "Purchase accepted search bypasses dirty guard",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1593;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1322-1353",
+      "actual": [
+        true,
+        false,
+        false,
+        true,
+        false
+      ],
+      "expected": [
+        true,
+        false,
+        false,
+        true,
+        false
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Supplied dirty flags/UI-count and normal selected CLR completion; only editor-reference/control-flow boundary, not WPF events, DTO defaults, actual provider behavior or saved loss."
+    },
+    {
+      "id": "ALG7B29-02",
+      "title": "Sale accepted search is the same guard-omission root",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1607-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2657;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234",
+      "actual": [
+        true,
+        false,
+        false,
+        true,
+        false
+      ],
+      "expected": [
+        true,
+        false,
+        false,
+        true,
+        false
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Same159, not a second finding160. Supplied dirty flags/UI-count and normal selected CLR completion; only editor-reference/control-flow boundary, not WPF events, DTO defaults, actual provider behavior or saved loss."
+    },
+    {
+      "id": "ALG7B29-03",
+      "title": "New purchase with supplied one-row guard count also reaches reset",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1593;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1322-1353",
+      "actual": [
+        true,
+        false,
+        false,
+        true,
+        false
+      ],
+      "expected": [
+        true,
+        false,
+        false,
+        true,
+        false
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Supplied dirty flags/UI-count and normal selected CLR completion; only editor-reference/control-flow boundary, not WPF events, DTO defaults, actual provider behavior or saved loss."
+    },
+    {
+      "id": "ALG7B29-04",
+      "title": "New sale uses explicitly supplied greater-than-one UI count",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1607-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2657;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234",
+      "actual": [
+        true,
+        false,
+        false,
+        true,
+        false
+      ],
+      "expected": [
+        true,
+        false,
+        false,
+        true,
+        false
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "No placeholder-row or IsUpdated propagation assumption. Supplied dirty flags/UI-count and normal selected CLR completion; only editor-reference/control-flow boundary, not WPF events, DTO defaults, actual provider behavior or saved loss."
+    },
+    {
+      "id": "ALG7B29-05",
+      "title": "Fresh not-done chooser does not directly call Navigate",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:49-66;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:89-131;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:260-284;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:391-414;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1593;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1322-1353;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1607-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2657;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234",
+      "actual": [
+        [
+          true,
+          false,
+          false,
+          false,
+          true
+        ],
+        [
+          true,
+          false,
+          false,
+          false,
+          true
+        ]
+      ],
+      "expected": [
+        [
+          true,
+          false,
+          false,
+          false,
+          true
+        ],
+        [
+          true,
+          false,
+          false,
+          false,
+          true
+        ]
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Fresh result/no prior acceptance is explicit. This is not a global no-side-effect or WPF Close/Hide guarantee."
+    },
+    {
+      "id": "ALG7B29-06",
+      "title": "Done with minus-one sentinel is rejected by both callers",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1593;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1322-1353;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1607-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2657;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234",
+      "actual": [
+        [
+          true,
+          false,
+          false,
+          false,
+          true
+        ],
+        [
+          true,
+          false,
+          false,
+          false,
+          true
+        ]
+      ],
+      "expected": [
+        [
+          true,
+          false,
+          false,
+          false,
+          true
+        ],
+        [
+          true,
+          false,
+          false,
+          false,
+          true
+        ]
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Supplied dirty flags/UI-count and normal selected CLR completion; only editor-reference/control-flow boundary, not WPF events, DTO defaults, actual provider behavior or saved loss."
+    },
+    {
+      "id": "ALG7B29-07",
+      "title": "Guarded purchase first with No retains current editor",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1593;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1322-1353",
+      "actual": [
+        true,
+        true,
+        true,
+        false,
+        true
+      ],
+      "expected": [
+        true,
+        true,
+        true,
+        false,
+        true
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Existing positive guard control, not a newly implemented remedy. Supplied dirty flags/UI-count and normal selected CLR completion; only editor-reference/control-flow boundary, not WPF events, DTO defaults, actual provider behavior or saved loss."
+    },
+    {
+      "id": "ALG7B29-08",
+      "title": "Guarded sale last with No retains current editor",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1607-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2657;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234",
+      "actual": [
+        true,
+        true,
+        true,
+        false,
+        true
+      ],
+      "expected": [
+        true,
+        true,
+        true,
+        false,
+        true
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Supplied dirty flags/UI-count and normal selected CLR completion; only editor-reference/control-flow boundary, not WPF events, DTO defaults, actual provider behavior or saved loss."
+    },
+    {
+      "id": "ALG7B29-09",
+      "title": "Guarded purchase next with explicit Yes can reset",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1593;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1322-1353",
+      "actual": [
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "expected": [
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Approval concerns abandoning the editor, not eligibility/ACL/stock/save acceptance. Supplied dirty flags/UI-count and normal selected CLR completion; only editor-reference/control-flow boundary, not WPF events, DTO defaults, actual provider behavior or saved loss."
+    },
+    {
+      "id": "ALG7B29-10",
+      "title": "Guarded sale previous with explicit Yes can reset",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1607-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2657;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234",
+      "actual": [
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "expected": [
+        true,
+        true,
+        true,
+        true,
+        false
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Supplied dirty flags/UI-count and normal selected CLR completion; only editor-reference/control-flow boundary, not WPF events, DTO defaults, actual provider behavior or saved loss."
+    },
+    {
+      "id": "ALG7B29-11",
+      "title": "Clean state does not require an unsaved-edit prompt",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1593;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1322-1353;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1607-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2657;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234",
+      "actual": [
+        [
+          false,
+          true,
+          false,
+          true,
+          false
+        ],
+        [
+          false,
+          true,
+          false,
+          true,
+          false
+        ]
+      ],
+      "expected": [
+        [
+          false,
+          true,
+          false,
+          true,
+          false
+        ],
+        [
+          false,
+          true,
+          false,
+          true,
+          false
+        ]
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Does not assert all navigation must always prompt. No dirty-classification completeness certified."
+    },
+    {
+      "id": "ALG7B29-12",
+      "title": "Supplied successful header assignment occurs after old-ref replacement",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1593;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1322-1353;SmartAuditERP/Class/InvoiceOper.cs:3219-3246;SmartAuditERP/Class/InvoiceOper.cs:3497-3508;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1643-1660",
+      "actual": [
+        "fixture-RESET-1",
+        "fixture-DOC-B",
+        false
+      ],
+      "expected": [
+        "fixture-RESET-1",
+        "fixture-DOC-B",
+        false
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Header assignment only, NOT complete BindingInvoice hydration/render/save; replacement object is filled, not assumed to be a new target object. Supplied dirty flags/UI-count and normal selected CLR completion; only editor-reference/control-flow boundary, not WPF events, DTO defaults, actual provider behavior or saved loss."
+    },
+    {
+      "id": "ALG7B29-13",
+      "title": "Supplied no-row reader reaches followup reset, not old-state restore",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:3219-3246;SmartAuditERP/Class/InvoiceOper.cs:3497-3508;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1643-1660;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-548;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1593;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1322-1353",
+      "actual": [
+        true,
+        true,
+        false
+      ],
+      "expected": [
+        true,
+        true,
+        false
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Finite null-return boundary from source; no no-row SQL result observed. No extra failure finding or046 extension."
+    },
+    {
+      "id": "ALG7B29-14",
+      "title": "Supplied outer failure also reaches null/fresh-reset boundary",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:3219-3246;SmartAuditERP/Class/InvoiceOper.cs:3497-3508;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1643-1660;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1607-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2657;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234",
+      "actual": [
+        true,
+        true,
+        false
+      ],
+      "expected": [
+        true,
+        true,
+        false
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Stipulated failure, not induced SQL/provider or a failure-atomicity acceptance test. Root159 already exists on success."
+    },
+    {
+      "id": "ALG7B29-15",
+      "title": "Guarded New with No declines reset in both editors",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1571-1593;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1662-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2563-2575",
+      "actual": [
+        [
+          true,
+          true,
+          true,
+          false,
+          true
+        ],
+        [
+          true,
+          true,
+          true,
+          false,
+          true
+        ]
+      ],
+      "expected": [
+        [
+          true,
+          true,
+          true,
+          false,
+          true
+        ],
+        [
+          true,
+          true,
+          true,
+          false,
+          true
+        ]
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Supplied dirty flags/UI-count and normal selected CLR completion; only editor-reference/control-flow boundary, not WPF events, DTO defaults, actual provider behavior or saved loss."
+    },
+    {
+      "id": "ALG7B29-16",
+      "title": "A fresh cancel then accepted retry does not supply abandon approval",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:49-66;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:89-131;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:260-284;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:391-414;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1607-1679;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2657;SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234",
+      "actual": [
+        false,
+        false,
+        true
+      ],
+      "expected": [
+        false,
+        false,
+        true
+      ],
+      "illustration_assertions_passed": true,
+      "source_application_executed": false,
+      "limit": "Two explicit result invocations, not a WPF reopen/default-retention schedule. Cancel is not reclassified as a failed acceptance."
+    }
+  ],
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B29-01",
+      "title": "purchase accepted-search caller has done/GID but no CheckBeforeClear",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2641-2662",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation only. Supplied dirty flags/UI-count and normal selected CLR completion; only editor-reference/control-flow boundary, not WPF events, DTO defaults, actual provider behavior or saved loss."
+    },
+    {
+      "id": "ST7B29-02",
+      "title": "sale accepted-search caller has done/GID but no CheckBeforeClear",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2641-2657",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation only. Supplied dirty flags/UI-count and normal selected CLR completion; only editor-reference/control-flow boundary, not WPF events, DTO defaults, actual provider behavior or saved loss."
+    },
+    {
+      "id": "ST7B29-03",
+      "title": "Purchase own XAML wires the selected search button",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml:1322-1353",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation only. Supplied dirty flags/UI-count and normal selected CLR completion; only editor-reference/control-flow boundary, not WPF events, DTO defaults, actual provider behavior or saved loss."
+    },
+    {
+      "id": "ST7B29-04",
+      "title": "Sale own XAML wires search among navigation buttons",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml:1220-1234",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation only. Supplied dirty flags/UI-count and normal selected CLR completion; only editor-reference/control-flow boundary, not WPF events, DTO defaults, actual provider behavior or saved loss."
+    },
+    {
+      "id": "ST7B29-05",
+      "title": "Navigate clears before reader without a dirty guard",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation only. Supplied dirty flags/UI-count and normal selected CLR completion; only editor-reference/control-flow boundary, not WPF events, DTO defaults, actual provider behavior or saved loss."
+    },
+    {
+      "id": "ST7B29-06",
+      "title": "Navigate clears before reader without a dirty guard",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1643-1660",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation only. Supplied dirty flags/UI-count and normal selected CLR completion; only editor-reference/control-flow boundary, not WPF events, DTO defaults, actual provider behavior or saved loss."
+    },
+    {
+      "id": "ST7B29-07",
+      "title": "Purchase CLR replaces editor and explicitly clears independent view",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1531-1569",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation only. Supplied dirty flags/UI-count and normal selected CLR completion; only editor-reference/control-flow boundary, not WPF events, DTO defaults, actual provider behavior or saved loss."
+    },
+    {
+      "id": "ST7B29-08",
+      "title": "Sale CLR detaches binding and replaces editor",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1607-1641",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation only. Supplied dirty flags/UI-count and normal selected CLR completion; only editor-reference/control-flow boundary, not WPF events, DTO defaults, actual provider behavior or saved loss."
+    },
+    {
+      "id": "ST7B29-09",
+      "title": "Purchase existing guard uses positive collection count or updated flag",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1571-1587",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation only. Supplied dirty flags/UI-count and normal selected CLR completion; only editor-reference/control-flow boundary, not WPF events, DTO defaults, actual provider behavior or saved loss."
+    },
+    {
+      "id": "ST7B29-10",
+      "title": "Sale existing guard uses UI count greater than one or updated flag",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1662-1679",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation only. Supplied dirty flags/UI-count and normal selected CLR completion; only editor-reference/control-flow boundary, not WPF events, DTO defaults, actual provider behavior or saved loss."
+    },
+    {
+      "id": "ST7B29-11",
+      "title": "Four neighboring purchase navigation commands invoke the guard",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:504-548",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation only. Supplied dirty flags/UI-count and normal selected CLR completion; only editor-reference/control-flow boundary, not WPF events, DTO defaults, actual provider behavior or saved loss."
+    },
+    {
+      "id": "ST7B29-12",
+      "title": "Four neighboring sale navigation commands invoke the guard",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2597-2639",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation only. Supplied dirty flags/UI-count and normal selected CLR completion; only editor-reference/control-flow boundary, not WPF events, DTO defaults, actual provider behavior or saved loss."
+    },
+    {
+      "id": "ST7B29-13",
+      "title": "Local chooser constructor explicitly initializes fresh not-done/sentinel",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:49-66",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation only. Supplied dirty flags/UI-count and normal selected CLR completion; only editor-reference/control-flow boundary, not WPF events, DTO defaults, actual provider behavior or saved loss."
+    },
+    {
+      "id": "ST7B29-14",
+      "title": "Ordinary selection handlers assign done and identity; own events wired",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:49-66;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:89-131;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:260-284;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:391-414",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation only. Supplied dirty flags/UI-count and normal selected CLR completion; only editor-reference/control-flow boundary, not WPF events, DTO defaults, actual provider behavior or saved loss."
+    },
+    {
+      "id": "ST7B29-15",
+      "title": "Fresh close/cancel does not itself set acceptance; parent guards are Closing handlers",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:49-66;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:89-131;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:260-284;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:1-16;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:391-414;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2738-2751;SmartAuditERP/Form_WPF/frmInvPurch.xaml:1-17;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:66-95;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:236-250;SmartAuditERP/Form_WPF/frmInvSale.xaml:1-17",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation only. No claim about WPF child/parent event order or complete dialog/global side effects; Close button also touches ReturnYearPreviews/connection-string globals."
+    },
+    {
+      "id": "ST7B29-16",
+      "title": "Reader assigns header GID on HasRows and null on no-row/outer failure",
+      "finding_ids": "P7-159",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:3219-3246;SmartAuditERP/Class/InvoiceOper.cs:3497-3508;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:481-502;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1643-1660",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "Lexical observation only. Only selected head/tail, not complete reader/DTO/body acceptance; provider outcomes stipulated."
+    }
+  ],
+  "errors": []
+}
