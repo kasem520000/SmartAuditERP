@@ -1,0 +1,8 @@
+path,review_state,ranges,focus
+SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs,whole-local-invoice-search-or-selected-caller-reader-static-slices-not-runtime-certified,1-698,كامل search المحلي698C#/561XAML لاكلالمتصلينأوعقودWPF/SQL/DataView.
+SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml,whole-local-invoice-search-or-selected-caller-reader-static-slices-not-runtime-certified,1-561,كامل search المحلي698C#/561XAML لاكلالمتصلينأوعقودWPF/SQL/DataView.
+SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs,whole-local-invoice-search-or-selected-caller-reader-static-slices-not-runtime-certified,402-453;1642-1686,شرائحcaller/consumer/reader identity/eligibility وXAMLمحددة؛لاكلالمحررأوحفظهأوSDK.
+SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml,whole-local-invoice-search-or-selected-caller-reader-static-slices-not-runtime-certified,485-505;1465-1475,شرائحcaller/consumer/reader identity/eligibility وXAMLمحددة؛لاكلالمحررأوحفظهأوSDK.
+SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs,whole-local-invoice-search-or-selected-caller-reader-static-slices-not-runtime-certified,65-84;481-548;2641-2662,شرائحcaller/consumer/reader identity/eligibility وXAMLمحددة؛لاكلالمحررأوحفظهأوSDK.
+SmartAuditERP/Form_WPF/frmInvPurch.xaml,whole-local-invoice-search-or-selected-caller-reader-static-slices-not-runtime-certified,1325-1335,شرائحcaller/consumer/reader identity/eligibility وXAMLمحددة؛لاكلالمحررأوحفظهأوSDK.
+SmartAuditERP/Class/InvoiceOper.cs,whole-local-invoice-search-or-selected-caller-reader-static-slices-not-runtime-certified,3219-3290,شرائحcaller/consumer/reader identity/eligibility وXAMLمحددة؛لاكلالمحررأوحفظهأوSDK.
