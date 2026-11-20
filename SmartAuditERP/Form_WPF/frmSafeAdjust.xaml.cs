@@ -672,9 +672,7 @@ namespace SmartAuditERP.Form_WPF
                 }
             }
 
-            if (conn.State != ConnectionState.Open) conn.Open();
-            var tx = conn.BeginTransaction();
-
+            SqlTransaction tx = null;
             try
             {
                 string confirmMsg = "هل أنت متأكد من حفظ التسوية كمسودة؟";
@@ -682,6 +680,12 @@ namespace SmartAuditERP.Form_WPF
                     MessageBoxButton.YesNo, MessageBoxImage.Question)
                     == MessageBoxResult.No)
                     return;
+
+                // Repair R-048 (audit finding P4-018): the transaction now opens only AFTER the prompt
+                // is accepted - declining used to leak a live transaction on conn while the finally
+                // below closed a different connection. Every exit resolves tx deterministically.
+                if (conn.State != ConnectionState.Open) conn.Open();
+                tx = conn.BeginTransaction();
 
                 if (Code == -1)
                 {
@@ -767,13 +771,14 @@ namespace SmartAuditERP.Form_WPF
             }
             catch (Exception ex)
             {
-                tx.Rollback();
+                try { tx?.Rollback(); } catch { }
                 DXMessageBox.Show(
                     $"خطأ في حفظ التسوية:\n{ex.Message}", "خطأ",
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
+                if (conn.State != ConnectionState.Closed) conn.Close();
                 if (conn1.State != ConnectionState.Closed) conn1.Close();
                 CLR();
             }
@@ -1428,14 +1433,18 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
-            if (conn.State != ConnectionState.Open) conn.Open();
-            var tx = conn.BeginTransaction();
+            SqlTransaction tx = null;
             try
             {
                 if (DXMessageBox.Show("هل أنت متأكد من حذف التسوية؟", "تأكيد",
                     MessageBoxButton.YesNo, MessageBoxImage.Question)
                     == MessageBoxResult.No || Code == -1)
                     return;
+
+                // R-048 (P4-018): decline/no-selection must cost nothing - the transaction opens only
+                // for a confirmed operation, and every exit commits, rolls back and closes.
+                if (conn.State != ConnectionState.Open) conn.Open();
+                tx = conn.BeginTransaction();
 
                 new SqlCommand(
                     $"UPDATE SafesAdjust SET Is_Deleted=1 WHERE id={Code}",
@@ -1468,22 +1477,30 @@ namespace SmartAuditERP.Form_WPF
             }
             catch (Exception ex)
             {
-                tx.Rollback();
+                try { tx?.Rollback(); } catch { }
                 DXMessageBox.Show($"خطأ:\n{ex.Message}", "خطأ",
                                 MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+finally
+            {
+                if (conn.State != ConnectionState.Closed) conn.Close();
             }
         }
 
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
-            if (conn.State != ConnectionState.Open) conn.Open();
-            var tx = conn.BeginTransaction();
+            SqlTransaction tx = null;
             try
             {
                 if (DXMessageBox.Show("هل أنت متأكد من إلغاء اعتماد التسوية؟",
                     "تأكيد", MessageBoxButton.YesNo, MessageBoxImage.Question)
                     == MessageBoxResult.No || Code == -1)
                     return;
+
+                // R-048 (P4-018): decline/no-selection must cost nothing - the transaction opens only
+                // for a confirmed operation, and every exit commits, rolls back and closes.
+                if (conn.State != ConnectionState.Open) conn.Open();
+                tx = conn.BeginTransaction();
 
                 new SqlCommand(
                     $"UPDATE SafesAdjust SET Is_Approved=0 WHERE id={Code}",
@@ -1510,9 +1527,13 @@ namespace SmartAuditERP.Form_WPF
             }
             catch (Exception ex)
             {
-                tx.Rollback();
+                try { tx?.Rollback(); } catch { }
                 DXMessageBox.Show($"خطأ:\n{ex.Message}", "خطأ",
                                 MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+finally
+            {
+                if (conn.State != ConnectionState.Closed) conn.Close();
             }
         }
 
