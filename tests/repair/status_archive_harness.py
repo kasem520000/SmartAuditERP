@@ -91,7 +91,7 @@ check('serial VAT POS duplicate batch classifications retain partial scope',
           for fid, rid in [('P7-128', 'R-127'), ('P7-075', 'R-129')])
       and all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
           for fid, rid in [('P7-135', 'R-126'), ('P7-143', 'R-128')])
-      and rules['audit_delivery'] == 'B34')
+      and rules['audit_delivery'] == 'B35')
 check('rental production print purchase and HTML batch has bounded statuses',
       all(by_id[fid]['repair_status'] == 'closed_in_scope' and by_id[fid]['repair_ids'] == rid
           for fid, rid in [('P7-074', 'R-130'), ('P7-119', 'R-132'), ('P7-098', 'R-134')])
@@ -126,4 +126,5 @@ with tempfile.TemporaryDirectory() as temp:
             raise AssertionError('modified audit snapshot was accepted')
     finally:
         builder.AUDIT = original
+check('B35 linked return scope remains open', all(by_id[fid]['repair_status'] == 'partial_open' for fid in ('P7-159', 'P7-160')) and 'R-161' in by_id['P7-159']['repair_ids'] and by_id['P4-013']['repair_status'] == 'deferred_blocked')
 print('RESULT: PASS — archive consistency checks; classifications are not WPF or SQL acceptance.')
