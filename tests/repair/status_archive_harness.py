@@ -97,7 +97,8 @@ check('rental production print purchase and HTML batch has bounded statuses',
       all(by_id[fid]['repair_status'] == 'closed_in_scope' and by_id[fid]['repair_ids'] == rid
           for fid, rid in [('P7-074', 'R-130'), ('P7-119', 'R-132'), ('P7-098', 'R-134')])
       and all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
-          for fid, rid in [('P7-134', 'R-131'), ('P7-150', 'R-133')])
+          for fid, rid in [('P7-134', 'R-131')])
+      and by_id['P7-150']['repair_status'] == 'partial_open' and by_id['P7-150']['repair_ids'] == 'R-133; R-204'
       and by_id['P7-149']['repair_status'] != 'closed_in_scope')
 check('activity, export, approved stock and logs batch statuses',
       all(by_id[fid]['repair_status'] == 'closed_in_scope' and by_id[fid]['repair_ids'] == rid
@@ -166,6 +167,10 @@ check('project file, picker and contract findings remain partial',
       and by_id['P7-016']['repair_ids'] == 'R-192; R-197'
       and rules['audit_commit'].startswith('a83cb66')
       and all(by_id[fid]['repair_status'] == 'partial_open' for fid in ('P7-157', 'P7-159', 'P7-160')))
+
+check('purchase and packing batch remains partial',
+      all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P7-149', 'R-203'), ('P7-150', 'R-133; R-204'), ('P7-152', 'R-205')]))
 
 owner = (ROOT / 'docs/repairs/OWNER_DECISIONS.md').read_text(encoding='utf-8')
 sections = {
