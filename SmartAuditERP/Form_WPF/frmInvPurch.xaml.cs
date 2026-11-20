@@ -2697,6 +2697,14 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
+                // Repair R-081 (audit finding P7-159): accepting a searched document went straight
+                // to Navigate, which clears and rebinds the editor, while every adjacent navigation
+                // command (first/previous/next/last/new) asks first through CheckBeforeClear. An
+                // unsaved draft was therefore replaced without the standing leave-decision. Route
+                // the acceptance through the same guard, in the same place and with the same
+                // meaning: true means the user chose to stay with the draft.
+                if (this.CheckBeforeClear()) return;
+
                 this.Navigate(
                     $"select * from Inv where branch={MainClass.BranchNo} " +
                     $"and inv_type={this.InvType} " +

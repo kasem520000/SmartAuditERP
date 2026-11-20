@@ -2651,9 +2651,18 @@ namespace SmartAuditERP.Form_WPF
             frm.ShowDialog();
             if (frm.ISDone &&
                 !string.Equals(frm.InvGlobalID, "-1"))
+            {
+                // Repair R-081 (audit finding P7-159): the accepted search reached Navigate - which
+                // detaches the grid and installs a new invoice reference - without the guard the
+                // adjacent navigation commands (first/last/next/previous/new) all apply, so an
+                // unsaved draft was replaced with no leave-decision. Same guard, same place, same
+                // meaning: true means the user chose to stay with the draft.
+                if (CheckBeforeClear()) return;
+
                 Navigate("select * from Inv where branch=" +
                     MainClass.BranchNo +
                     " and InvGlobalID=N'" + frm.InvGlobalID + "'");
+            }
         }
 
         private void btnRepaid_Click(object sender, RoutedEventArgs e)
