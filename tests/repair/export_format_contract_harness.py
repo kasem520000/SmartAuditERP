@@ -119,6 +119,33 @@ def parse(text, delim):
     return records
 
 
+def ordered(text, *landmarks):
+    """True when every landmark occurs exactly once and in this order. A landmark a mutation
+    removed must fail a named check, not raise and hide which witness would have caught it."""
+    positions = []
+    for mark in landmarks:
+        if text.count(mark) != 1:
+            return False
+        positions.append(text.index(mark))
+    return positions == sorted(positions)
+
+
+def records_of(art, delim):
+    """Records of an artifact; a refused export wrote nothing, so it has no records at all."""
+    return parse(art["text"], delim) if art.get("text") else []
+
+
+def rec(records, i, j=None):
+    """Safe accessor: a mutation that lost a record or a cell must fail a named check, not raise
+    and hide every witness after it."""
+    if i >= len(records):
+        return None
+    if j is None:
+        return records[i]
+    row = records[i]
+    return row[j] if j < len(row) else None
+
+
 def ext_of(name):
     return os.path.splitext(name)[1].lower()
 
@@ -278,16 +305,17 @@ check("A4 a container the screen cannot produce is refused before anything is wr
           for n in ("report.xls", "report.pdf", "report.xlsx.bak")))
 csv_art = purchase_fixed("report.csv", PUR_TABLE)
 txt_art = purchase_fixed("report.txt", PUR_TABLE)
+csv_records = records_of(csv_art, COMMA)
 check("A5 the three containers carry one and the same projection",
-      parse(csv_art["text"], COMMA) == parse(txt_art["text"], TAB) ==
+      csv_records == records_of(txt_art, TAB) ==
       [[str(c) for c in h] for h in [PUR_HEADER]] + [[str(c) for c in r] for r in PUR_ROWS],
-      "comma=%r" % (parse(csv_art["text"], COMMA)[1][:4],))
+      "comma=%r" % (rec(csv_records, 1) or [],))
 check("A5b a client name holding a comma and a quote survives the comma container as one cell",
-      parse(csv_art["text"], COMMA)[1][8] == 'شركة "البحر" للتجارة، الحديدة' and
-      len(parse(csv_art["text"], COMMA)[1]) == 25)
+      rec(csv_records, 1, 8) == 'شركة "البحر" للتجارة، الحديدة' and
+      len(rec(csv_records, 1) or []) == 25)
 check("A5c a note holding a tab survives the comma container without adding a column",
-      parse(csv_art["text"], COMMA)[2][8] == "عميل\tبسطر جديد" and
-      len(parse(csv_art["text"], COMMA)[2]) == 25)
+      rec(csv_records, 2, 8) == "عميل\tبسطر جديد" and
+      len(rec(csv_records, 2) or []) == 25)
 
 check("A6 the legacy treasury export announced *.xlsx as a second option and wrote commas",
       khzna_legacy("حركة_صندوق.xlsx")["kind"] == COMMA_TEXT != EXPECTS[".xlsx"])
@@ -302,14 +330,15 @@ check("A7 the repaired treasury export announces one format, writes it, and name
 check("A8 the legacy tax export wrote an XML document under an announced *.xlsx",
       tax_legacy("TaxInvoices_Export.xlsx")["kind"] == XML_DOC != EXPECTS[".xlsx"])
 tax_csv = tax_fixed("TaxInvoices_Export.csv")
+tax_records = records_of(tax_csv, COMMA)
 check("A9 the repaired tax export writes a workbook for *.xlsx and commas for *.csv",
       tax_fixed("TaxInvoices_Export.xlsx")["kind"] == EXPECTS[".xlsx"] and
       tax_csv["kind"] == EXPECTS[".csv"])
 check("A9b the CSV keeps the nine announced columns and every cell the XML document carried",
-      parse(tax_csv["text"], COMMA)[0] == TAX_HEADER and
-      parse(tax_csv["text"], COMMA)[1] == TAX_ROWS[0] and
-      parse(tax_csv["text"], COMMA)[2][3] == 'عميل "ثانٍ"' and
-      all(len(r) == 9 for r in parse(tax_csv["text"], COMMA)))
+      rec(tax_records, 0) == TAX_HEADER and
+      rec(tax_records, 1) == TAX_ROWS[0] and
+      rec(tax_records, 2, 3) == 'عميل "ثانٍ"' and
+      all(len(r) == 9 for r in tax_records))
 
 check("A10 all three HTML-table screens wrote an HTML document under an announced *.csv",
       all(html_screen_legacy("report.csv", h, r, t)["kind"] == HTML_DOC != EXPECTS[".csv"]
@@ -323,30 +352,30 @@ check("A11 repaired, *.csv is a comma file and *.xls keeps the HTML table its la
                           (MEZ_HEADER, MEZ_ROWS, MEZ_TOTALS),
                           (TRIAL_HEADER, [], None))))
 nkd_csv = html_screen_fixed("report.csv", NKD_HEADER, NKD_ROWS, NKD_TOTALS)
-nkd_records = parse(nkd_csv["text"], COMMA)
+nkd_records = records_of(nkd_csv, COMMA)
 check("A12 the cash CSV keeps the HTML column order (sales quantity before sales total)",
-      nkd_records[0] == NKD_HEADER and nkd_records[1] == NKD_ROWS[0] and
-      nkd_records[1][4] == "4" and nkd_records[1][5] == "480.00")
+      rec(nkd_records, 0) == NKD_HEADER and rec(nkd_records, 1) == NKD_ROWS[0] and
+      rec(nkd_records, 1, 4) == "4" and rec(nkd_records, 1, 5) == "480.00")
 check("A12b its totals record keeps six cells instead of collapsing into a shorter line",
-      len(nkd_records[3]) == 6 and nkd_records[3] == NKD_TOTALS and
-      nkd_records[3][1] == "" and nkd_records[3][2] == "")
+      len(rec(nkd_records, 3) or []) == 6 and rec(nkd_records, 3) == NKD_TOTALS and
+      rec(nkd_records, 3, 1) == "" and rec(nkd_records, 3, 2) == "")
 mez_csv = html_screen_fixed("report.csv", MEZ_HEADER, MEZ_ROWS, MEZ_TOTALS)
-mez_records = parse(mez_csv["text"], COMMA)
+mez_records = records_of(mez_csv, COMMA)
 check("A13 the profit-and-loss CSV keeps four columns and a four-cell totals record",
-      mez_records[0] == MEZ_HEADER and all(len(r) == 4 for r in mez_records) and
-      mez_records[3] == MEZ_TOTALS)
+      rec(mez_records, 0) == MEZ_HEADER and all(len(r) == 4 for r in mez_records) and
+      rec(mez_records, 3) == MEZ_TOTALS)
 TRIAL_MONEY = TRIAL_DECIMALS * 3 + TRIAL_DECIMALS[:1]        # ten amounts, like the screen
 assert len(TRIAL_MONEY) == 10 and len(TRIAL_HEADER) == 12
 trial_csv = html_screen_fixed("report.csv", TRIAL_HEADER,
                               [["1101", "الصندوق"] + [money(d) for d in TRIAL_MONEY]], None)
-trial_records = parse(trial_csv["text"], COMMA)
+trial_records = records_of(trial_csv, COMMA)
 check("A14 the trial-balance CSV leaves money machine-readable while the HTML keeps its display",
-      trial_records[0] == TRIAL_HEADER and len(trial_records[1]) == 12 and
-      trial_records[1][2] == "1234.50" and trial_records[1][3] == "0.00" and
+      rec(trial_records, 0) == TRIAL_HEADER and len(rec(trial_records, 1) or []) == 12 and
+      rec(trial_records, 1, 2) == "1234.50" and rec(trial_records, 1, 3) == "0.00" and
       display_n2("1234.5") == "1,234.50" and
-      "<td>1,234.50</td>" in html_screen_fixed("report.xls", TRIAL_HEADER,
-                                               [["1101", "الصندوق", display_n2("1234.5")]],
-                                               None)["text"])
+      "<td>1,234.50</td>" in (html_screen_fixed("report.xls", TRIAL_HEADER,
+                                                [["1101", "الصندوق", display_n2("1234.5")]],
+                                                None)["text"] or ""))
 POS_LEGACY_LABEL = "Excel File (*.xls)|*.xls|CSV File (*.csv)|*.csv"
 POS_FIXED_LABEL = "Excel File - HTML table (*.xls)|*.xls|CSV File (*.csv)|*.csv"
 
@@ -384,16 +413,20 @@ check("B1 the purchase dialog announces exactly the three containers it can writ
       pur_handler.count(".xlsx\"") >= 1 and
       pur_handler.count("Excel Files (*.xlsx)|*.xlsx|CSV Files (*.csv)|*.csv\",\n") == 0)
 check("B2 the purchase branch reads the chosen extension before any writer runs",
-      pur_handler.index('bool asCsv = dlg.FileName.EndsWith(".csv"') <
-      pur_handler.index("var dt = BuildDataTableForReport();") <
-      pur_handler.index("if (asWorkbook)") <
-      pur_handler.index("SpreadsheetExport.WriteDataTable(") and
+      ordered(pur_handler, 'bool asCsv = dlg.FileName.EndsWith(".csv"',
+              "var dt = BuildDataTableForReport();", "if (asWorkbook)",
+              "SpreadsheetExport.WriteDataTable(") and
       pur_handler.count("asCsv ? SpreadsheetExport.CsvDelimiter : SpreadsheetExport.TsvDelimiter")
       == 1)
 check("B3 the refusal happens before the table is even built, so no file is left behind",
-      pur_handler.index("if (!asCsv && !asText && !asWorkbook)") <
-      pur_handler.index("var dt = BuildDataTableForReport();") and
+      ordered(pur_handler, "if (!asCsv && !asText && !asWorkbook)",
+              "var dt = BuildDataTableForReport();") and
       pur_handler.count("صيغة غير مدعومة للتصدير") == 1)
+check("B3b the workbook branch is the one that runs for *.xlsx, not the delimited writer",
+      pur_handler.count("if (asWorkbook)") == 1 and
+      ordered(pur_handler, "if (asWorkbook)", "workbook.SaveAs(dlg.FileName);",
+              "SpreadsheetExport.WriteDataTable(") and
+      pur_handler.count("ClosedXML.Excel.XLWorkbook") == 1)
 check("B4 the private tab writer R-082 had delegated to is gone and the shared one is called once",
       PUR.count("ExportDataTableToTsv") == 0 and
       PUR.count("SpreadsheetExport.WriteDataTable(") == 1 and
@@ -457,8 +490,8 @@ for name, text, columns, html_writer, end_landmark in SCREENS:
 
 check("B13 the cash CSV writer keeps the sales pair in the HTML order and a six-cell total",
       NKD.count("SpreadsheetExport.Text(row.Column6),") == 1 and
-      NKD.index("SpreadsheetExport.Text(row.Column6),") <
-      NKD.index("SpreadsheetExport.Text(row.Column5));") and
+      ordered(NKD, "SpreadsheetExport.Text(row.Column6),",
+              "SpreadsheetExport.Text(row.Column5));") and
       NKD.count('export.Row("إجمالي المشتريات", "", "",') == 1 and
       NKD.count('export.Header("رقم الصنف", "الصنف",') == 1)
 check("B14 the profit-and-loss CSV writer keeps four columns and a four-cell total",
