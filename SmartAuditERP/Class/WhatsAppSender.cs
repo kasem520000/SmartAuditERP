@@ -110,7 +110,19 @@ namespace SmartAuditERP
 			{
 				string text;
 				text = customerPhone.Trim();
-				if (!text.StartsWith("966"))
+				// Repair R-064 (audit finding P6-032): explicit international forms must not be mangled by a blind
+				// national prefix (+966... became 966+966..., 00967... became 96600967...). Recognize them first;
+				// plain digit strings keep the legacy Saudi normalization. E.164 validation, country rules and a
+				// recipient preview remain tracked under INV6-26.
+				if (text.StartsWith("+"))
+				{
+					text = text.Substring(1).TrimStart('0');
+				}
+				else if (text.StartsWith("00"))
+				{
+					text = text.Substring(2).TrimStart('0');
+				}
+				else if (!text.StartsWith("966"))
 				{
 					text = "966" + text.TrimStart('0');
 				}
