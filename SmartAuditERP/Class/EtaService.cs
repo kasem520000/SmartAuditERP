@@ -174,7 +174,10 @@ namespace SmartAuditERP
 				if (invoice.ProcType == 2)
 				{
 					invoiceBody.documentType = "C";
-					invoiceBody.salesOrderReference = Conversions.ToString(Operators.CompareString("", invoice.ReffNo, TextCompare: false) == 0);
+					// Repair R-061 (audit finding P6-014): the credit note used to ship the STRING OF A COMPARISON
+					// ("True"/"False") instead of the reference itself. Carry ReffNo through verbatim; typed origin
+					// UUID references stay tracked under INV6-16.
+					invoiceBody.salesOrderReference = (invoice.ReffNo ?? "") ?? "";
 				}
 				invoiceBody.documentTypeVersion = (text ?? "") ?? "";
 				invoiceBody.dateTimeIssued = (Conversions.ToDate(invoice.InvDate.ToShortDateString()).ToString("yyyy-MM-ddTHH:mm:ssZ") ?? "") ?? "";
@@ -260,12 +263,27 @@ namespace SmartAuditERP
 					sendEinvoice.DocumentVerson = EtaSetting.DocumentTypeVersion;
 					sendEinvoice.FalconSignerURL = "";
 					sendEinvoice.sendinvoice(invoiceBody);
-					EtaResultData.GridControl1.DataSource = sendEinvoice.returnds;
-					EtaResultData.GridControl1.DataSource = sendEinvoice.returnds.Tables[0];
-					EtaResultData.ShowDialog();
-					if (sendEinvoice.returnds != null)
+					// Repair R-062 (audit finding P6-016): the raw grid used to bind Tables[0] BEFORE any shape check,
+					// and the outcome stayed stuck at its default(false) even after a UUID was persisted. Guard the
+					// dialog on shape, and report truth: true means an accepted document whose UUID we stored.
+					// Accepted-for-processing is transport acceptance, not final validation (INV6-08/INV6-10 residual).
+					if (sendEinvoice.returnds != null && sendEinvoice.returnds.Tables.Count > 0)
 					{
-						new InvoiceOper().UpdateInvoiceStatus(invoice.InvGlobalID, sendEinvoice.returnds.Tables["acceptedDocuments"].Rows[0]["uuid"].ToString().Trim());
+						EtaResultData.GridControl1.DataSource = sendEinvoice.returnds.Tables[0];
+						EtaResultData.ShowDialog();
+					}
+					if (sendEinvoice.returnds != null && sendEinvoice.returnds.Tables.Contains("acceptedDocuments"))
+					{
+						System.Data.DataTable acceptedDocs = sendEinvoice.returnds.Tables["acceptedDocuments"];
+						if (acceptedDocs.Rows.Count > 0)
+						{
+							object uuidValue = acceptedDocs.Rows[0]["uuid"];
+							if (uuidValue != null && uuidValue != DBNull.Value && !string.IsNullOrWhiteSpace(uuidValue.ToString()))
+							{
+								new InvoiceOper().UpdateInvoiceStatus(invoice.InvGlobalID, uuidValue.ToString().Trim());
+								result = true;
+							}
+						}
 					}
 					try
 					{
