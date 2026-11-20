@@ -8,6 +8,8 @@ import subprocess
 import sys
 import tempfile
 
+# Loading the generator for checks must not leave untracked bytecode in the repo.
+sys.dont_write_bytecode = True
 ROOT = Path(__file__).resolve().parents[2]
 script = ROOT / 'docs/repairs/tools/build_status_archive.py'
 spec = importlib.util.spec_from_file_location('repair_status_archive_builder', script)
