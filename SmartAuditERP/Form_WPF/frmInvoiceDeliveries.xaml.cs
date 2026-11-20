@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -730,7 +730,10 @@ namespace SmartAuditERP.Form_WPF
                         });
                     }
 
-                    new ItemOper().SaveInvoiceItemDeliveries(deliveryList, true);
+                    // R-045 (P4-024): announce total delivery and refresh only on a real commit;
+                    // a rolled-back save must leave the UI exactly where it was.
+                    if (!new ItemOper().SaveInvoiceItemDeliveries(deliveryList, true))
+                        return;
 
                     DXMessageBox.Show(
                         "تم التسليم الكلي بنجاح ✅",

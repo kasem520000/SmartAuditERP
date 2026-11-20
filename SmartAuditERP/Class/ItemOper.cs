@@ -1498,12 +1498,18 @@ namespace SmartAuditERP
                     invo.Total += item.ItemTotalPrice;
                     invo.SumCost +=
                         item.ItemCost * item.ItemPrimaryQnty;
-                    invo.InvProfit += invo.Total - invo.SumCost;
+                    // Repair R-044 (audit finding P4-005): profit used to accumulate PREFIX margins
+                    // on every iteration (margins 10,20 yielded 10+30=40, reversed 20+30=50, truth
+                    // 30) - an order-dependent figure that never matched the head the writer stores.
+                    // It is now derived ONCE, after the loop, from the final totals (just below).
                     invo.ItemsDiscount += item.ItemDiscount;
                     invo.TotalQty +=
                         new decimal(item.ItemPrimaryQnty);
                     invo.TotalWithholdingTax += item.WithholdingTax;
                 }
+
+                // R-044 (P4-005): single order-independent profit derivation.
+                invo.InvProfit = invo.Total - invo.SumCost;
 
                 invo.IsUpdated = true;
                 invo.TotDiscount = invo.ItemsDiscount;
@@ -2155,7 +2161,11 @@ namespace SmartAuditERP
             }
         }
 
-        public void SaveInvoiceItemDeliveries(
+        // Repair R-045 (audit finding P4-024): this writer used to return void - rolling back and
+        // showing an error internally, then letting callers announce success, set ISDone and close
+        // regardless of whether anything committed. It now reports the real outcome so callers can
+        // gate confirmation on an actual commit.
+        public bool SaveInvoiceItemDeliveries(
             List<ItemBatchDelivery> itemBatchDeliveries,
             bool isDeliveriedAll)
         {
@@ -2222,6 +2232,7 @@ namespace SmartAuditERP
 
                 MessageBox.Show("تم تسليم الكميات بنجاح",
                     "نجاح", MessageBoxButton.OK, MessageBoxImage.Information);
+                return true;
             }
             catch (Exception ex)
             {
@@ -2237,6 +2248,7 @@ namespace SmartAuditERP
 
                 MessageBox.Show(errMsg, "خطأ",
                     MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
             finally
             {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -285,7 +285,12 @@ namespace SmartAuditERP.Form_WPF
                     deliveryList.Add(delivery);
                 }
 
-                new ItemOper().SaveInvoiceItemDeliveries(deliveryList, isDeliveredAll);
+                // Repair R-045 (audit finding P4-024): the writer used to swallow failures while
+                // this window unconditionally set ISDone, announced success and closed - so an
+                // operator could release goods against a save that never committed. Nothing is
+                // confirmed or closed now unless the transaction really committed.
+                if (!new ItemOper().SaveInvoiceItemDeliveries(deliveryList, isDeliveredAll))
+                    return;
 
                 ISDone = true;
 

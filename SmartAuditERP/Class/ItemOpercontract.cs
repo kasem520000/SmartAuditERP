@@ -627,12 +627,16 @@ namespace SmartAuditERP
                     Invo.VAT += vatAmount;
                     Invo.Total += NewItem.ItemTotalPrice;
                     Invo.SumCost += NewItem.ItemCost * NewItem.ItemPrimaryQnty;
-                    Invo.InvProfit += Invo.Total - Invo.SumCost;
+                    // Repair R-044 (audit finding P4-005): mirror of the CalcRows repair - profit is
+                    // derived ONCE after the loop from final totals, not accumulated per iteration.
                     Invo.ItemsDiscount += NewItem.ItemDiscount;
                     Invo.TotalQty = new decimal(Convert.ToDouble(Invo.TotalQty) + NewItem.ItemPrimaryQnty);
                     Invo.TotalWithholdingTax += NewItem.WithholdingTax;
                     Invo.Additions += NewItem.Additionsitem;
                 }
+
+                // R-044 (P4-005): single order-independent profit derivation.
+                Invo.InvProfit = Invo.Total - Invo.SumCost;
 
                 Invo.IsUpdated = true;
                 Invo.TotDiscount = Invo.ItemsDiscount;
@@ -758,12 +762,16 @@ namespace SmartAuditERP
                     Invo.VAT += vatAmount;
                     Invo.Total += NewItem.ItemTotalPrice;
                     Invo.SumCost += NewItem.ItemCost * NewItem.ItemPrimaryQnty;
-                    Invo.InvProfit += Invo.Total - Invo.SumCost;
+                    // R-044 (P4-005): per-iteration prefix accumulation removed here as well.
                     Invo.ItemsDiscount += NewItem.ItemDiscount;
                     Invo.TotalQty = new decimal(Convert.ToDouble(Invo.TotalQty) + NewItem.ItemPrimaryQnty);
                     Invo.TotalWithholdingTax += NewItem.WithholdingTax;
                     Invo.Additions += NewItem.Additionsitem;
                 }
+
+                // R-044 (P4-005): single order-independent profit derivation, computed before any
+                // header-discount recalculation exactly where the final line totals settle.
+                Invo.InvProfit = Invo.Total - Invo.SumCost;
 
                 if (Invo.InvDiscount > 0.0)
                     CalcTotalcontract(ref Invo);
@@ -2225,7 +2233,9 @@ namespace SmartAuditERP
 
         #region Other Methods
 
-        public void SaveInvoiceItemDeliveries(List<ItemBatchDelivery> ItemBatchDeliveries, bool IsDeliveriedAll)
+        // Repair R-045 (audit finding P4-024): mirror of the ItemOper writer - report the real
+        // commit outcome instead of returning void through swallowed failures.
+        public bool SaveInvoiceItemDeliveries(List<ItemBatchDelivery> ItemBatchDeliveries, bool IsDeliveriedAll)
         {
             using SqlConnection conn = MainClass.ConnObj();
             if (conn.State != ConnectionState.Open)
@@ -2271,6 +2281,7 @@ namespace SmartAuditERP
 
                 transaction.Commit();
                 MessageBox.Show("تم تسليم الكميات بنجاح ");
+                return true;
             }
             catch (Exception ex)
             {
@@ -2278,6 +2289,7 @@ namespace SmartAuditERP
                 MessageBox.Show(
                     GetErrorMessage("خطأ أثناء تسليم الكميات", "error in saving", ex.Message),
                     "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
         }
 
