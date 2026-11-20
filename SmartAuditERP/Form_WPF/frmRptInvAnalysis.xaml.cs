@@ -1585,12 +1585,13 @@ namespace SmartAuditERP.Form_WPF
                 object custVal = GetSelectedValue(cmbCust);
                 object salesVal = GetSelectedValue(cmbSales);
                 object groupVal = GetSelectedValue(cmbGroups);
-                object stockSelVal = GetSelectedValue(cmbStock);
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     string filter = "";
-                    if (!allSafe) filter += $"[stock]={stockSelVal} and ";
+                    // Repair R-104 (audit finding P7-081): [stock] is the
+                    // selected treasury, not the selected warehouse.
+                    if (!allSafe) filter += $"[stock]={safeVal} and ";
                     filter += $"[safe]={dt.Rows[i]["id"]} and ";
                     if (!allCust) filter += $"cust_id={custVal} and ";
                     if (!allSales) filter += $"salesman={salesVal} and ";

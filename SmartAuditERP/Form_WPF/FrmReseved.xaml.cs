@@ -302,8 +302,17 @@ namespace SmartAuditERP.Form_WPF
 
         private void BtnAll_Click(object sender, RoutedEventArgs e)
         {
+            // Repair R-108 (audit finding P7-123): load the selected period
+            // without resetting the form or erasing an existing document identity.
+            // Do not replace a loaded document's rows while retaining its identity.
+            if (!string.IsNullOrWhiteSpace(txtEntryGlobalId.Text) ||
+                !string.IsNullOrWhiteSpace(TxtGlobalID.Text))
+            {
+                DXMessageBox.Show("لا يمكن إعادة تحميل الموظفين لمستند محفوظ. اختر جديداً أولاً.",
+                    "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
             _loaded = true;
-            CLR();
             LoadEmpData(cond);
         }
 

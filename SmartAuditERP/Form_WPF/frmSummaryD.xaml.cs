@@ -170,11 +170,13 @@ namespace SmartAuditERP.Form_WPF
                 if (ckTotalPeriod.IsChecked != true)
                     dateCondition = "ReceiptDate>=@date1 AND ReceiptDate<=@date2 AND ";
 
+                // Repair R-105 (audit finding P7-106): normalize each component
+                // before addition, matching the report's existing displayed values.
                 string sql = $@"SELECT ReceiptNo,
                                        CAST(ReceiptDate AS DATE) AS OperDate,
                                        Payment,
                                        VAT,
-                                       (Payment + VAT) AS DgvNet,
+                                       (ISNULL(Payment, 0) + ISNULL(VAT, 0)) AS DgvNet,
                                        Receipts.notes AS ReceiptNote,
                                        CASE
                                            WHEN receiptType=7 THEN N'سند قبض'

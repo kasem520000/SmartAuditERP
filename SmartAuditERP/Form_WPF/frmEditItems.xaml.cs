@@ -180,9 +180,11 @@ namespace SmartAuditERP.Form_WPF
             if (string.IsNullOrWhiteSpace(txtFillVal.Text))
                 txtFillVal.Text = "0";
 
+            // Repair R-106 (audit finding P7-153): retain the validated value,
+            // rather than confusing it with the property code for packing.
+            double fillVal = 0.0;
             if (itemProperty == 2 &&
-                !double.TryParse(txtFillVal.Text, out double fillVal) ||
-                (itemProperty == 2 && Convert.ToDouble(txtFillVal.Text) == 0))
+                (!double.TryParse(txtFillVal.Text, out fillVal) || fillVal == 0))
             {
                 DXMessageBox.Show(
                     MainClass.Language != "ar"
@@ -254,7 +256,7 @@ namespace SmartAuditERP.Form_WPF
                     item.Property = (ProductProperty)itemProperty;
 
                     if (itemProperty == 2)
-                        item.PackingValue = 2.0;
+                        item.PackingValue = fillVal;
 
                     if (itemProperty == 1)
                         item.Wscale = wscale;

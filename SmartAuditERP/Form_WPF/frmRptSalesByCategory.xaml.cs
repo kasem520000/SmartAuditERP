@@ -150,17 +150,33 @@ namespace SmartAuditERP.Form_WPF
             try
             {
                 CategoryList.Clear();
+                lblTotQty.Text = lblTotTotal.Text = lblTotVat.Text = lblTotNet.Text = string.Empty;
+
+                // Repair R-107 (audit finding P7-068): index zero is a real item.
+                // A specific scope with no valid identity must not become "all".
+                int categoryId = 0, userId = 0, branchId = 0, salesmanId = 0;
+                if ((CheckBoxgroup.IsChecked != true &&
+                     (cmbCategry.SelectedIndex < 0 || !int.TryParse(Convert.ToString(cmbCategry.SelectedValue), out categoryId))) ||
+                    (Che_user.IsChecked != true &&
+                     (cmbUser.SelectedIndex < 0 || !int.TryParse(Convert.ToString(cmbUser.SelectedValue), out userId))) ||
+                    (chk_branch.IsChecked != true &&
+                     (cmbBranch.SelectedIndex < 0 || !int.TryParse(Convert.ToString(cmbBranch.SelectedValue), out branchId))) ||
+                    (chkSalesman.IsChecked != true &&
+                     (cmbSalesman.SelectedIndex < 0 || !int.TryParse(Convert.ToString(cmbSalesman.SelectedValue), out salesmanId))))
+                {
+                    DXMessageBox.Show("يرجى اختيار المجموعة والمستخدم والفرع والمندوب عند إلغاء خيار الكل.",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
 
                 string condCat   = "";
                 string condItems = "";
 
                 // المجموعة
-                if (CheckBoxgroup.IsChecked != true &&
-                    cmbCategry.SelectedIndex > 0 &&
-                    cmbCategry.SelectedValue != null)
+                if (CheckBoxgroup.IsChecked != true)
                 {
-                    condCat   = $" AND CategoryId={cmbCategry.SelectedValue}";
-                    condItems = $" AND Items.group_id={cmbCategry.SelectedValue}";
+                    condCat   = $" AND CategoryId={categoryId}";
+                    condItems = $" AND Items.group_id={categoryId}";
                 }
 
                 // نوع الفاتورة
@@ -171,25 +187,20 @@ namespace SmartAuditERP.Form_WPF
                 string condWhere = invTypeCond;
 
                 // المستخدم
-                if (Che_user.IsChecked != true &&
-                    cmbUser.SelectedIndex > 0 &&
-                    cmbUser.SelectedValue != null)
-                    condWhere += $" AND Safe_Emps={cmbUser.SelectedValue}";
+                if (Che_user.IsChecked != true)
+                    condWhere += $" AND Safe_Emps={userId}";
 
                 // الفترة
                 if (Che_time.IsChecked != true)
                     condWhere += " AND date BETWEEN @date1 AND @date2";
 
                 // الفرع
-                if (chk_branch.IsChecked != true &&
-                    cmbBranch.SelectedIndex > 0 &&
-                    cmbBranch.SelectedValue != null)
-                    condWhere += $" AND inv.branch={cmbBranch.SelectedValue}";
+                if (chk_branch.IsChecked != true)
+                    condWhere += $" AND inv.branch={branchId}";
 
                 // المندوب
-                if (chkSalesman.IsChecked != true &&
-                    cmbSalesman.SelectedValue != null)
-                    condWhere += $" AND inv.salesman={cmbSalesman.SelectedValue}";
+                if (chkSalesman.IsChecked != true)
+                    condWhere += $" AND inv.salesman={salesmanId}";
 
                 condWhere += " AND inv_sub.ProductId=0";
 
@@ -309,6 +320,9 @@ namespace SmartAuditERP.Form_WPF
             }
             catch (Exception ex)
             {
+                // Do not leave a partial result visible after a failed query.
+                CategoryList.Clear();
+                lblTotQty.Text = lblTotTotal.Text = lblTotVat.Text = lblTotNet.Text = string.Empty;
                 DXMessageBox.Show($"خطأ في تحميل البيانات:\n{ex.Message}",
                                 "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
             }
