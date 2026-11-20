@@ -20,6 +20,7 @@ schema. Mirrors acceptance P7BT-39 and P7BT-40, which cannot be executed here.
 Run: python3 tests/repair/delimited_export_harness.py
 Exit 0 on PASS.
 """
+import re
 import sys
 
 FAILS = []
@@ -262,6 +263,183 @@ check("E7 no wired screen still interpolates a display money format into a delim
       PROFIT.count("SpreadsheetExport.Money(") == 4 and POS.count("SpreadsheetExport.Money(") == 9)
 check("E8 the report table that feeds the printed sheet keeps its own display formatting",
       PUR.count("ToString(fmt)") == 13 and PUR.count('string fmt = Common.DigitsNo ?? "N2";') == 2)
+
+print()
+print("Part F: R-083 - the builder the ten further exports now use")
+
+
+class ExportFile:
+    """Model of SpreadsheetExport.ExportFile: Header/Row take one record's cells each."""
+
+    def __init__(self, path, delimiter):
+        self.path, self.delimiter = path, delimiter
+        self.header, self.rows, self.has_header = [], [], False
+
+    def header_record(self, *cells):
+        self.has_header = True
+        self.header = list(cells)
+        return self
+
+    def row(self, *cells):
+        self.rows.append(list(cells))
+        return self
+
+    def save(self):
+        return write_delimited(self.header if self.has_header else None, self.rows, self.delimiter)
+
+
+def cell_text(value):
+    """Model of SpreadsheetExport.Text(object)."""
+    if value is None:
+        return ""
+    if isinstance(value, str):
+        return value
+    if isinstance(value, bool):
+        return "1" if value else "0"
+    if isinstance(value, float):
+        return repr(value)
+    return str(value)
+
+
+def cell_money(value):
+    """Model of SpreadsheetExport.Money(object)."""
+    if value is None:
+        return ""
+    if isinstance(value, str):
+        return value
+    if isinstance(value, (int, float)):
+        return money(float(value))
+    return cell_text(value)
+
+
+check("F1 money cells are invariant two-decimal text whatever numeric type arrives",
+      cell_money(1000.25) == "1000.25" and cell_money(1234567) == "1234567.00" and
+      cell_money(-40) == "-40.00" and cell_money(None) == "" and
+      cell_money("1,000.25") == "1,000.25")
+check("F2 text cells pass strings through byte for byte and never localize a separator",
+      cell_text('صنف "خاص", كبير') == 'صنف "خاص", كبير' and cell_text(None) == "" and
+      cell_text(12) == "12")
+book = ExportFile("خ.csv", COMMA)
+book.header_record("م", "البيان", "المبلغ")
+book.row("1", 'بيان، بفاصلة و"اقتباس"', cell_money(1000.25))
+book.row("2", "سطر\nجديد", cell_money(None))
+sheet = book.save()
+check("F3 a composed file keeps one record per row and the cell count of its header",
+      parse_delimited(sheet, COMMA) == [["م", "البيان", "المبلغ"],
+                                        ["1", 'بيان، بفاصلة و"اقتباس"', "1000.25"],
+                                        ["2", "سطر\nجديد", ""]] and
+      all(len(r) == 3 for r in parse_delimited(sheet, COMMA)))
+check("F4 the same data through a bare legacy writer would not hold that shape",
+      any(len(r) != 3 for r in
+          parse_delimited(legacy_bare_csv(["م", "البيان", "المبلغ"],
+                                          [["1", 'بيان، بفاصلة و"اقتباس"', "1000.25"],
+                                           ["2", "سطر\nجديد", ""]],
+                                          lambda v: "{:,.2f}".format(v) if isinstance(v, float) else v),
+                          COMMA)[1:]))
+
+print()
+print("Part G: R-083 static witnesses - the ten further exports")
+
+SITES = {
+    "frmRptBalances": ["الحساب", "اسم الحساب", "رصيد افتتاحي مدين", "رصيد افتتاحي دائن",
+                       "حركة مدين", "حركة دائن", "رصيد مدين", "رصيد دائن",
+                       "رصيد ختامي مدين", "رصيد ختامي دائن"],
+    "frmRptInventory": ["رقم الفاتورة", "التاريخ", "العميل/المورد", "المستخدم", "الفرع",
+                        "المجموع", "الخصم", "الإجمالي", "الضريبة", "الصافي"],
+    "frmRptCategorySaleByDay": ["#", "الرمز", "المجموعة", "اليوم", "التاريخ", "الإجمالي"],
+    "frmRptKhzna": ["م", "العملية", "الرقم", "التاريخ", "وارد", "صادر", "الرصيد", "البيان"],
+    "frmSummaryD": ["#", "الرقم", "التاريخ", "قيمة السند", "الضريبة", "الصافي",
+                    "الفرع", "البيان", "النوع"],
+    "frmrptUsersRecords": ["م", "التاريخ", "الجهاز", "العملية", "المستخدم"],
+    "frmRptItemsExpiration": ["م", "رمز الصنف", "الصنف", "المستودع", "الكمية", "تاريخ الإنتهاء",
+                              "باقي سنوات", "باقي أشهر", "باقي أيام"],
+    "frmRptDailySales": ["الرقم", "التاريخ", "اليوم", "الإجمالي قبل الضريبة", "الضريبة", "الإجمالي"],
+    "frmRptSerialNoSummary": ["م", "الصنف", "رمز الصنف", "التسلسل", "العدد"],
+}
+
+
+def call_arguments(text, start):
+    """Top-level arguments of the call whose '(' is the first one at/after start."""
+    i = text.index("(", start)
+    depth, j, in_string = 0, i, False
+    while j < len(text):
+        ch = text[j]
+        if in_string:
+            if ch == "\\":
+                j += 2
+                continue
+            if ch == '"':
+                in_string = False
+        else:
+            if ch == '"':
+                in_string = True
+            elif ch in "([":
+                depth += 1
+            elif ch in ")]":
+                depth -= 1
+                if depth == 0:
+                    break
+        j += 1
+    body, depth, in_string, parts, cur = text[i + 1:j], 0, False, [], ""
+    k = 0
+    while k < len(body):
+        ch = body[k]
+        if in_string:
+            cur += ch
+            if ch == "\\":
+                cur += body[k + 1]
+                k += 2
+                continue
+            if ch == '"':
+                in_string = False
+        else:
+            if ch == '"':
+                in_string = True
+                cur += ch
+            elif ch in "([":
+                depth += 1
+                cur += ch
+            elif ch in ")]":
+                depth -= 1
+                cur += ch
+            elif ch == "," and depth == 0:
+                parts.append(cur)
+                cur = ""
+            else:
+                cur += ch
+        k += 1
+    parts.append(cur)
+    return [re.sub(r"//.*", "", part).strip() for part in parts if part.strip()]
+
+
+for name, expected_header in SITES.items():
+    src = open("SmartAuditERP/Form_WPF/%s.xaml.cs" % name, encoding="utf-8").read()
+    header_at = [m.start() for m in re.finditer(r"export\.Header", src)]
+    row_at = [m.start() for m in re.finditer(r"export\.Row", src)]
+    header_cells = [a.strip().strip('"') for a in call_arguments(src, header_at[0])] if header_at else []
+    row_sizes = sorted({len(call_arguments(src, at)) for at in row_at})
+    check("G-%s one header, every record the same width, no hand-rolled writer left" % name,
+          len(header_at) == 1 and header_cells == expected_header and row_at and
+          row_sizes == [len(expected_header)] and
+          src.count("sb.AppendLine") == 0 and src.count("writer.WriteLine") == 0 and
+          src.count("sw.WriteLine") == 0 and
+          src.count("Repair R-083 (audit finding P7-048)") >= 1,
+          "header=%s rows=%s" % (header_cells, row_sizes))
+
+activity = open("SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs", encoding="utf-8").read()
+check("G-frmRptItemsActivity the table export delegates to the writer and drops the hand quoting",
+      activity.count("SpreadsheetExport.WriteDataTable(filePath, dt, SpreadsheetExport.CsvDelimiter);") == 1 and
+      activity.count("sw.WriteLine") == 0 and activity.count("ColumnName") == 0 and
+      activity.count("Repair R-083 (audit finding P7-048)") == 1)
+check("G-writer the builder and the type-agnostic helpers are part of the announced schema",
+      EXPORT.count("public static ExportFile Begin(string path, char delimiter)") == 1 and
+      EXPORT.count("public sealed class ExportFile") == 1 and
+      EXPORT.count("public ExportFile Header(params string[] cells)") == 1 and
+      EXPORT.count("public ExportFile Row(params string[] cells)") == 1 and
+      EXPORT.count("public static string Money(object value)") == 1 and
+      EXPORT.count("public static string Text(object value)") == 1 and
+      EXPORT.count("case IFormattable formattable:") == 1 and
+      EXPORT.count("formattable.ToString(null, CultureInfo.InvariantCulture)") == 1)
 
 print()
 if FAILS:
