@@ -1,0 +1,61 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "entry": "3589d23a26438300d631790487eafe3aaddef7fb",
+  "authority": [
+    "PHASE-07-REMAINING-07B29.md",
+    "evidence/split-register-07B29.csv",
+    "evidence/residual-disposition-07B29.csv"
+  ],
+  "selected_upstream_split": "SP7B29-01",
+  "selected_capability": "full-invoice import outcome/copy-intent/dirty/cancel and assignment boundary",
+  "selected_source_to_output": "own tools menu→fresh child419C#/449XAML→normal supplied outcome→Navigate-only acceptance gate→existing-editor conversion/note/number/items/flags→pre-binding publication attempt;accepted route compares159",
+  "exclusions": "other import/search/linked callers,all writers/fields/outputs,SDK/setter/collection defaults and clone contracts,actual chrome/Close bool?/event ordering,real provider/number reservation/hydration/financial/ACL/stock/save/production/runtime/C acceptance",
+  "static_exit": "one160 nonaccepted-conversion root and one additive159 accepted-import extension sourced/adjudicated;note-before-number/failure/flag and binding limits;sentinel/notdone/accepted/exception/value-idempotent/guardNo controls;every capability owner/input/impact/next/limit/invariant/two unexecuted plans;867/G236/827/freezes/RS14/SP3 ancestry preserved",
+  "bookkeeping": {
+    "selected_paths": 7,
+    "prior_union": 426,
+    "overlap": 6,
+    "new": 1,
+    "union": 427,
+    "complement": 400,
+    "complement_kinds": {
+      "source": 335,
+      "generated-artifact": 61,
+      "project-or-resource": 4
+    }
+  },
+  "new_paths": [
+    "SmartAuditERP/Form_WPF/frmImportInvoice.xaml"
+  ],
+  "historical_metadata_screen_count": 331,
+  "path_matched_metadata_rows": 78,
+  "historical_body_review_claim": false,
+  "historical_comparison_depth": "all331-title-metadata-screen-plus78-path-matched-rows-and-selected-nearest-bodies-source-chains-not-all-historical-bodies",
+  "selected_nearest_bodies": [
+    "P7-159",
+    "P7-148",
+    "P4-015",
+    "P7-091",
+    "P7-151",
+    "P4-021",
+    "P3-005"
+  ],
+  "bounded_read_slice_count": 14,
+  "whole_local_files": 2,
+  "whole_local_paths": [
+    "SmartAuditERP/Form_WPF/frmImportInvoice.xaml.cs",
+    "SmartAuditERP/Form_WPF/frmImportInvoice.xaml"
+  ],
+  "previous_child_Csharp_depth": "review-scope-04.csv:120-212;371-389 only, not whole419",
+  "one_new_root": [
+    "P7-160"
+  ],
+  "existing_root_extensions": [
+    "P7-159"
+  ],
+  "registry_preservation_exception": "Only P7-159.evidence gains exact manifest tail;all331 old core fields and evidence prefixes preserved,other330 dictionaries exact. Original331/raw332CRLF frozen intact. Current raw333CRLF preserves first330 raw rows/header prefix exactly.",
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "counts_are_completion_percent_or_sessions": false,
+  "next_part": "R4o/7B31 proposed or reasoned split fromSP01–03;no duration/session/whole-system-completion promise"
+}
