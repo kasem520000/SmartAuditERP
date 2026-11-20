@@ -1,0 +1,26 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "raw_environment_clock_start_utc": "2026-11-20T22:35:29.145126+00:00",
+  "raw_environment_clock_end_utc": "2026-11-20T22:35:30.815013+00:00",
+  "date_semantics": "The session-supplied current reference is2026-11-16 UTC;the uncalibrated sandbox reports raw2026-11-20 timestamps. These disagree and neither raw clock observations nor passing frozen assertions establish civil-date calibration. Preserve both verbatim and do not relabel consumed evidence or declare2026-11-20 authoritative from the raw clock alone.",
+  "elapsed_seconds": 1.67,
+  "command": [
+    "/usr/bin/python3",
+    "-B",
+    "docs/audit/tools/run_historical_linked_return_tests_07B36.py",
+    "--through-part",
+    "B35"
+  ],
+  "process_exit_code": 0,
+  "stdout_bytes": 0,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_bytes": 354,
+  "stderr_sha256": "fe1614537f14ce9a03f3bd3845b3f548e0781006c75567aba1eada2b7bbef5b5",
+  "new_default_B36_or_new52_not_executed_here": true,
+  "historical_assertion_inputs": 131,
+  "actual_execution_tools": 135,
+  "tests_reported": 52,
+  "all_original_cases_executed_unmodified": true,
+  "all_tools_and1122_protected_artifacts_unchanged": true,
+  "wrapper_checks_passed": true
+}

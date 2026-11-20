@@ -1,0 +1,21 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "environment_clock_observed_start_utc": "2026-11-20T22:28:44.141427+00:00",
+  "environment_clock_observed_end_utc": "2026-11-20T22:28:44.206286+00:00",
+  "date_semantics": "The session-supplied current reference is2026-11-16 UTC;the uncalibrated sandbox reports raw2026-11-20 timestamps. These disagree and neither raw clock observations nor passing frozen assertions establish civil-date calibration. Preserve both verbatim and do not relabel consumed evidence or declare2026-11-20 authoritative from the raw clock alone.",
+  "command": [
+    "/usr/bin/python3",
+    "-B",
+    "docs/audit/tools/check_invoice_picker_witnesses.py"
+  ],
+  "process_exit_code": 0,
+  "stdout_bytes": 35672,
+  "stdout_sha256": "b9edc2b6b063d5dbbc3539a7a5f61383fbb377ebf2b6d2ac0c789f0aa394bbb8",
+  "stderr_bytes": 0,
+  "stdout_written_directly_by_actual_process": true,
+  "inert_illustrations": 20,
+  "lexical_checks": 20,
+  "operational_plans_not_executed": 32,
+  "prior_encoding_precheck_failure_retained": "evidence/witness-precheck-note-07B36.json",
+  "application_code_or_ERP_or_SQL_or_SDK_executed": false
+}

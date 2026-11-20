@@ -1,0 +1,4 @@
+path,ranges,review_state,focus
+SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs,1-698,whole-local-body-reread-already-B27-B28-not-new-completion,إعادة قراءة698سطرC# محلي سبق اكتمالها فيB27/B28؛الجديد عقد الطلب والنتيجة مع المساعد المشترك،لا اكتمال ملف أوقدرة جديد أوSDK أوWPF.
+SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml,1-14;172-187;229-238;391-420;524-546,bounded-picker-XAML-wiring-context-not-whole-file,مقاطعwiring للتحميل ولوحة المفاتيح والإغلاق والقائمة وصفGrid وزرReturn فقط؛ليسXAMLكاملاًهذهالمرة أوإثباتrendering/Loaded/modal.
+SmartAuditERP/Class/InvoiceOper.cs,3941-4013,bounded-shared-picker-caller-not-whole-file,إنشاء البحث وإعداداته وShowDialog وحارسdone/-1 وحدنداءBindingInvoice والطفل؛لاكلcaller أوSQL/SDK/hydration أوحفظ.

@@ -1,0 +1,52 @@
+{
+  "entry": "9769e29b8ce34f720fd660a475800f5c3bf9b7fa",
+  "selected_upstream_split": "SP7B35-01",
+  "selected_capability": "First invoice picker request/result boundary for the shared current-year linked helper:constructor/caller inputs,request snapshot,local row publication by Enter/double-click,fresh cancellation and caller sentinel gate. Whole local C#698 reread already completed in B27/B28;selected XAML/shared helper slices only. Return-button/previous-year/other callers are controls or explicit residuals,not certified operations.",
+  "entry_point": "InsertFromInv يفتحبحثاًجديداًفيالحدالحالي،ثمبوابةنتيجةمحليةللطلبالمورّدProc1.",
+  "source_contract": "whole local picker C#698 reread already B27/B28;local constructor,three scalar payload fields,Enter/SelectedItem and caller gate only;20 contract and6context slices.",
+  "output_boundary": "عندنداءBindingInvoiceبعدعودةموداليةموردة؛لاتحميلفعليأوقبولبنودأوتحويلأوحفظأوstock.",
+  "owner_role": "مالك أوامر WPF ونشر نتيجة البحث",
+  "required_redacted_input": "عقد موحد Enter/double-click/Close/Escape ونتيجة Accepted/Cancelled/Failed مع supplied modal-return؛زرReturn مستقل يحتاج support matrix ولايعتمد هنا.",
+  "impact_if_unavailable": "Close/Hide طلبان محليان لاtrace إطار؛اختلاف SelectedIndex/SelectedItem ليسdesync مرصوداً،والزرالمنفصللايكافئهما تلقائياً.",
+  "next_step": "تعريف نقطة نشر نتيجة واحدة لكلأمر وربطهابـrequest-id؛توثيق سياسة modal-return دونإطلاقجلسةWPF أوتشغيلالزرالمنفصل.",
+  "static_exit_criterion": "لا يستهلك caller مجرد ISDone كـSaveResult أوLoadComplete؛كلroute لهpayload وحدعودةواستبعادموثق.",
+  "exclusions": [
+    "زرReturn وفحصه الخاص والسنةالسابقةوchrome وإعادةفتحالحوار وكلcallerآخر وSDK/DB/الأهليةالنهائيةوالحفظخارجالحكم؛السياقليستوسعةشهادة.",
+    "ليس كلحوارجديدأوكلمتصلأوكلحقلأوكلأثرClose/Hide/Loaded؛لاC3عام.",
+    "ReturnButton lookup وسياسةرصيدالمرتجعوprevious-year controls لاتعتمدالمسارالمنفصل.",
+    "غيابمصدرConnObj/SDK/DTO أوسياسة20 ليسغيابحماية؛لاquery/provider/devices/businessdata."
+  ],
+  "bookkeeping": {
+    "selected_paths": 3,
+    "prior_union": 428,
+    "overlap": 3,
+    "new": 0,
+    "union": 428,
+    "complement": 399,
+    "complement_kinds": {
+      "source": 334,
+      "generated-artifact": 61,
+      "project-or-resource": 4
+    }
+  },
+  "historical_metadata_screen_count": 335,
+  "parent_path_matched_metadata_rows": 69,
+  "selected_prior_report_sections": 11,
+  "additional_selected_extension_contract_sections": 2,
+  "all_historical_bodies_reviewed": false,
+  "selected_contract_slices": 20,
+  "exploratory_context_slices": 6,
+  "whole_local_source_bodies_reread": 1,
+  "newly_completed_local_files": 0,
+  "prior_whole_body_review_parts": [
+    "B27",
+    "B28"
+  ],
+  "new_root_ids": [],
+  "existing_root_extensions": [],
+  "registry_entire_raw_bytes_unchanged": true,
+  "counts_are_completion_percent_or_sessions": false,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "repair_start_sync_known": false
+}

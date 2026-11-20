@@ -1,0 +1,929 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "entry_checkout": "9769e29b8ce34f720fd660a475800f5c3bf9b7fa",
+  "new_root_ids": [],
+  "extended_existing_root_ids": [],
+  "existing_roots_deepened_without_registry_change": [
+    "P7-157",
+    "P7-160"
+  ],
+  "application_code_imported_or_executed": false,
+  "dotnet_wpf_sql_or_SDK_executed": false,
+  "dialog_modal_return_or_Loaded_order_observed": false,
+  "real_query_or_conversion_failures_executed": false,
+  "source_enum_or_external_InvoiceDGV_contract_proved": false,
+  "all_callers_or_historical_bodies_certified": false,
+  "local_InvoiceSrchRow_auto_properties_known": true,
+  "selection_connection_modal_and_failure_values_supplied": true,
+  "return_button_and_previous_year_controls_not_certified": true,
+  "repair_start_or_sync_known": false,
+  "phase7C_started": false,
+  "phase8_authorized_or_started": false,
+  "application_remediation_performed": false,
+  "erp_runtime_tests_executed": 0,
+  "sql_or_external_service_tests_executed": 0,
+  "illustration_count": 20,
+  "lexical_check_count": 20,
+  "selected_source_paths": 3,
+  "contract_slices": 20,
+  "context_slices": 6,
+  "whole_local_source_bodies_reread": 1,
+  "newly_completed_local_files": 0,
+  "prior_whole_body_review_parts": [
+    "B27",
+    "B28"
+  ],
+  "illustrations": [
+    {
+      "id": "ALG7B36-01",
+      "title": "fresh local defaults,not InvoiceDGV defaults",
+      "value": {
+        "done": false,
+        "gid": "-1",
+        "proc": 1,
+        "pay": 1,
+        "inv_type": 6,
+        "events": [],
+        "lookup_called": false,
+        "modal_result_not_inferred": true,
+        "source_application_executed": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:49-66",
+      "source_application_executed": false,
+      "limit": "قيم وصفوف وحدود رجوع وفشل موردة؛لا WPF/SQL/SDK أو إعادة تأريخ أو اعتماد لكل المتصلين."
+    },
+    {
+      "id": "ALG7B36-02",
+      "title": "constructor then caller inputs",
+      "value": {
+        "proc": 1,
+        "inv_type": 1,
+        "branch": 1,
+        "credit_hint": 0,
+        "constructor_connection_token": "conn-A",
+        "later_global_connection_token": "conn-A",
+        "events": [
+          "InitializeComponent-called",
+          "ConnObj-called-before-caller-inputs",
+          "local-defaults-set",
+          "caller-permission-settings-calls-unresolved",
+          "caller-ProcType-assigned",
+          "caller-InvType-branch-assigned",
+          "ShowDialog-requested"
+        ],
+        "immutable_request_object_in_source": false,
+        "enum_numeric_mapping_proved": false,
+        "connection_content_or_liveness_or_ownership_proved": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:3941-3951;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:49-66",
+      "source_application_executed": false,
+      "limit": "قيم وصفوف وحدود رجوع وفشل موردة؛لا WPF/SQL/SDK أو إعادة تأريخ أو اعتماد لكل المتصلين."
+    },
+    {
+      "id": "ALG7B36-03",
+      "title": "connection token captured before supplied later global value",
+      "value": {
+        "proc": 1,
+        "inv_type": 1,
+        "branch": 1,
+        "credit_hint": 0,
+        "constructor_connection_token": "conn-A",
+        "later_global_connection_token": "conn-B",
+        "events": [
+          "InitializeComponent-called",
+          "ConnObj-called-before-caller-inputs",
+          "local-defaults-set",
+          "caller-permission-settings-calls-unresolved",
+          "caller-ProcType-assigned",
+          "caller-InvType-branch-assigned",
+          "ShowDialog-requested"
+        ],
+        "immutable_request_object_in_source": false,
+        "enum_numeric_mapping_proved": false,
+        "connection_content_or_liveness_or_ownership_proved": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "H7B36-02",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:49-66",
+      "source_application_executed": false,
+      "limit": "قيم وصفوف وحدود رجوع وفشل موردة؛لا WPF/SQL/SDK أو إعادة تأريخ أو اعتماد لكل المتصلين."
+    },
+    {
+      "id": "ALG7B36-04",
+      "title": "same allowed-set root157,not a new caller finding",
+      "value": [
+        {
+          "gid": "doc-A",
+          "kind": 1,
+          "proc": 1,
+          "branch": 1,
+          "deleted": false
+        },
+        {
+          "gid": "doc-B",
+          "kind": 20,
+          "proc": 1,
+          "branch": 1,
+          "deleted": false
+        }
+      ],
+      "assertions_passed": true,
+      "finding_ids": "P7-157",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:378-408",
+      "source_application_executed": false,
+      "limit": "قيم وصفوف وحدود رجوع وفشل موردة؛لا WPF/SQL/SDK أو إعادة تأريخ أو اعتماد لكل المتصلين."
+    },
+    {
+      "id": "ALG7B36-05",
+      "title": "contract branch23 exact-kind control only",
+      "value": [
+        {
+          "gid": "doc-A",
+          "kind": 23,
+          "proc": 1,
+          "branch": 1,
+          "deleted": false
+        }
+      ],
+      "assertions_passed": true,
+      "finding_ids": "P7-157",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:348-408",
+      "source_application_executed": false,
+      "limit": "قيم وصفوف وحدود رجوع وفشل موردة؛لا WPF/SQL/SDK أو إعادة تأريخ أو اعتماد لكل المتصلين."
+    },
+    {
+      "id": "ALG7B36-06",
+      "title": "OR20 not UNION duplicate",
+      "value": [
+        {
+          "gid": "doc-A",
+          "kind": 20,
+          "proc": 1,
+          "branch": 1,
+          "deleted": false
+        }
+      ],
+      "assertions_passed": true,
+      "finding_ids": "P7-157",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:378-408",
+      "source_application_executed": false,
+      "limit": "قيم وصفوف وحدود رجوع وفشل موردة؛لا WPF/SQL/SDK أو إعادة تأريخ أو اعتماد لكل المتصلين."
+    },
+    {
+      "id": "ALG7B36-07",
+      "title": "changing local proc cannot add excluded source rows",
+      "value": [],
+      "assertions_passed": true,
+      "finding_ids": "P7-155",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:336-345;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:510-519",
+      "source_application_executed": false,
+      "limit": "قيم وصفوف وحدود رجوع وفشل موردة؛لا WPF/SQL/SDK أو إعادة تأريخ أو اعتماد لكل المتصلين."
+    },
+    {
+      "id": "ALG7B36-08",
+      "title": "Enter publishes indexed local payload then Close request",
+      "value": {
+        "done": true,
+        "gid": "doc-B",
+        "proc": 1,
+        "pay": 1,
+        "inv_type": 6,
+        "events": [
+          "ISDone-written-before-three-payload-fields",
+          "gid-proc-pay-copied-from-supplied-local-row",
+          "Close-requested"
+        ],
+        "lookup_called": false,
+        "modal_result_not_inferred": true,
+        "source_application_executed": false,
+        "previous_year_flag_after": false,
+        "global_connection_restore_requested": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:88-116",
+      "source_application_executed": false,
+      "limit": "قيم وصفوف وحدود رجوع وفشل موردة؛لا WPF/SQL/SDK أو إعادة تأريخ أو اعتماد لكل المتصلين."
+    },
+    {
+      "id": "ALG7B36-09",
+      "title": "invalid index requests selection,no acceptance in this call",
+      "value": {
+        "done": false,
+        "gid": "-1",
+        "proc": 1,
+        "pay": 1,
+        "inv_type": 6,
+        "events": [
+          "SelectedIndex-zero-and-scroll-requested-not-observed-SelectionChanged"
+        ],
+        "lookup_called": false,
+        "modal_result_not_inferred": true,
+        "source_application_executed": false,
+        "previous_year_flag_after": false,
+        "global_connection_restore_requested": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:88-116",
+      "source_application_executed": false,
+      "limit": "قيم وصفوف وحدود رجوع وفشل موردة؛لا WPF/SQL/SDK أو إعادة تأريخ أو اعتماد لكل المتصلين."
+    },
+    {
+      "id": "ALG7B36-10",
+      "title": "empty Enter leaves fresh result",
+      "value": {
+        "done": false,
+        "gid": "-1",
+        "proc": 1,
+        "pay": 1,
+        "inv_type": 6,
+        "events": [],
+        "lookup_called": false,
+        "modal_result_not_inferred": true,
+        "source_application_executed": false,
+        "previous_year_flag_after": false,
+        "global_connection_restore_requested": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:88-116",
+      "source_application_executed": false,
+      "limit": "قيم وصفوف وحدود رجوع وفشل موردة؛لا WPF/SQL/SDK أو إعادة تأريخ أو اعتماد لكل المتصلين."
+    },
+    {
+      "id": "ALG7B36-11",
+      "title": "double-click uses supplied SelectedItem,not index assertion",
+      "value": {
+        "done": true,
+        "gid": "doc-B",
+        "proc": 1,
+        "pay": 1,
+        "inv_type": 6,
+        "events": [
+          "ISDone-written-before-three-payload-fields",
+          "gid-proc-pay-copied-from-supplied-local-row",
+          "Hide-requested"
+        ],
+        "lookup_called": false,
+        "modal_result_not_inferred": true,
+        "source_application_executed": false,
+        "previous_year_flag_after": false,
+        "global_connection_restore_requested": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:261-284",
+      "source_application_executed": false,
+      "limit": "قيم وصفوف وحدود رجوع وفشل موردة؛لا WPF/SQL/SDK أو إعادة تأريخ أو اعتماد لكل المتصلين."
+    },
+    {
+      "id": "ALG7B36-12",
+      "title": "null selected-item control",
+      "value": {
+        "done": false,
+        "gid": "-1",
+        "proc": 1,
+        "pay": 1,
+        "inv_type": 6,
+        "events": [],
+        "lookup_called": false,
+        "modal_result_not_inferred": true,
+        "source_application_executed": false,
+        "previous_year_flag_after": false,
+        "global_connection_restore_requested": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:266-284",
+      "source_application_executed": false,
+      "limit": "قيم وصفوف وحدود رجوع وفشل موردة؛لا WPF/SQL/SDK أو إعادة تأريخ أو اعتماد لكل المتصلين."
+    },
+    {
+      "id": "ALG7B36-13",
+      "title": "fresh Escape local result not accepted",
+      "value": {
+        "done": false,
+        "gid": "-1",
+        "proc": 1,
+        "pay": 1,
+        "inv_type": 6,
+        "events": [
+          "Close-requested-without-local-acceptance"
+        ],
+        "lookup_called": false,
+        "modal_result_not_inferred": true,
+        "source_application_executed": false,
+        "previous_year_flag_after": false,
+        "global_connection_restore_requested": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:88-116",
+      "source_application_executed": false,
+      "limit": "قيم وصفوف وحدود رجوع وفشل موردة؛لا WPF/SQL/SDK أو إعادة تأريخ أو اعتماد لكل المتصلين."
+    },
+    {
+      "id": "ALG7B36-14",
+      "title": "current-year Close button,no global restore branch",
+      "value": {
+        "done": false,
+        "gid": "-1",
+        "proc": 1,
+        "pay": 1,
+        "inv_type": 6,
+        "events": [
+          "Close-requested-without-local-acceptance"
+        ],
+        "lookup_called": false,
+        "modal_result_not_inferred": true,
+        "source_application_executed": false,
+        "previous_year_flag_after": false,
+        "global_connection_restore_requested": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:123-132",
+      "source_application_executed": false,
+      "limit": "قيم وصفوف وحدود رجوع وفشل موردة؛لا WPF/SQL/SDK أو إعادة تأريخ أو اعتماد لكل المتصلين."
+    },
+    {
+      "id": "ALG7B36-15",
+      "title": "only sentinel exclusion does not reject empty string",
+      "value": {
+        "dialog_return_supplied": true,
+        "first_result_gate": true,
+        "binding_requested": true,
+        "typed_load_success_proved": false,
+        "query_predicates_at_this_boundary": [
+          "IS_Deleted=0",
+          "InvGlobalID=chosen"
+        ],
+        "requested_type_proc_branch_rechecked_here": false,
+        "application_source_executed": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:3976-3982",
+      "source_application_executed": false,
+      "limit": "قيم وصفوف وحدود رجوع وفشل موردة؛لا WPF/SQL/SDK أو إعادة تأريخ أو اعتماد لكل المتصلين."
+    },
+    {
+      "id": "ALG7B36-16",
+      "title": "Close request alone does not supply modal return",
+      "value": {
+        "dialog_return_supplied": false,
+        "first_result_gate": false,
+        "binding_requested": false,
+        "typed_load_success_proved": false,
+        "query_predicates_at_this_boundary": [
+          "IS_Deleted=0",
+          "InvGlobalID=chosen"
+        ],
+        "requested_type_proc_branch_rechecked_here": false,
+        "application_source_executed": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "P7-160",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:3976-3982;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:88-116",
+      "source_application_executed": false,
+      "limit": "قيم وصفوف وحدود رجوع وفشل موردة؛لا WPF/SQL/SDK أو إعادة تأريخ أو اعتماد لكل المتصلين."
+    },
+    {
+      "id": "ALG7B36-17",
+      "title": "before-clear failure supplied,old display control already046B28",
+      "value": {
+        "display": [
+          {
+            "gid": "doc-A",
+            "proc": 1,
+            "pay": 1
+          }
+        ],
+        "stage_supplied": "before-clear",
+        "typed_health_returned": false,
+        "actual_DataView_or_conversion_or_provider_executed": false,
+        "complete_hydration_or_UI_snapshot_proved": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "P7-046",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:492-508;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:567-596",
+      "source_application_executed": false,
+      "limit": "قيم وصفوف وحدود رجوع وفشل موردة؛لا WPF/SQL/SDK أو إعادة تأريخ أو اعتماد لكل المتصلين."
+    },
+    {
+      "id": "ALG7B36-18",
+      "title": "supplied conversion boundary exposes prefix,not actual provider experiment",
+      "value": {
+        "display": [
+          {
+            "gid": "doc-A",
+            "proc": 1,
+            "pay": 1
+          }
+        ],
+        "stage_supplied": "during-row",
+        "typed_health_returned": false,
+        "actual_DataView_or_conversion_or_provider_executed": false,
+        "complete_hydration_or_UI_snapshot_proved": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "H7B36-02",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:567-596",
+      "source_application_executed": false,
+      "limit": "قيم وصفوف وحدود رجوع وفشل موردة؛لا WPF/SQL/SDK أو إعادة تأريخ أو اعتماد لكل المتصلين."
+    },
+    {
+      "id": "ALG7B36-19",
+      "title": "separate button lookup context,not certified linked gesture",
+      "value": {
+        "done": true,
+        "gid": "doc-A",
+        "proc": 1,
+        "pay": 1,
+        "inv_type": 6,
+        "events": [
+          "lookup-false-including-catch-false-not-typed-Failed",
+          "gid-proc-pay-copied-from-supplied-local-row",
+          "ISDone-written-after-payload",
+          "Hide-requested"
+        ],
+        "lookup_called": true,
+        "modal_result_not_inferred": true,
+        "source_application_executed": false,
+        "previous_year_flag_after": false,
+        "global_connection_restore_requested": false,
+        "control_only_not_selected_linked_command": true,
+        "lookup_outcome_supplied": "failed"
+      },
+      "assertions_passed": true,
+      "finding_ids": "H7B36-03",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:286-303;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:603-619",
+      "source_application_executed": false,
+      "limit": "قيم وصفوف وحدود رجوع وفشل موردة؛لا WPF/SQL/SDK أو إعادة تأريخ أو اعتماد لكل المتصلين."
+    },
+    {
+      "id": "ALG7B36-20",
+      "title": "known local row payload is not external document contract",
+      "value": {
+        "local_payload_fields": [
+          "gid",
+          "proc",
+          "pay"
+        ],
+        "source_type_branch_InvoiceStatus_in_payload": false,
+        "InvoiceDGV_contract_proved": false
+      },
+      "assertions_passed": true,
+      "finding_ids": "P7-157",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:674-698;SmartAuditERP/Class/InvoiceOper.cs:3976-3985",
+      "source_application_executed": false,
+      "limit": "قيم وصفوف وحدود رجوع وفشل موردة؛لا WPF/SQL/SDK أو إعادة تأريخ أو اعتماد لكل المتصلين."
+    }
+  ],
+  "static_lexical_contract_checks": [
+    {
+      "id": "ST7B36-01",
+      "title": "constructor connection before defaults",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:49-66",
+      "finding_ids": "H7B36-02",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصي لحد معلن،لا trace إطار أو تنفيذ SQL/DTO أو كفاية كل الحراس."
+    },
+    {
+      "id": "ST7B36-02",
+      "title": "fresh sentinel and false local",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:49-66",
+      "finding_ids": "P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصي لحد معلن،لا trace إطار أو تنفيذ SQL/DTO أو كفاية كل الحراس."
+    },
+    {
+      "id": "ST7B36-03",
+      "title": "caller settings before request fields",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:3941-3951",
+      "finding_ids": "P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصي لحد معلن،لا trace إطار أو تنفيذ SQL/DTO أو كفاية كل الحراس."
+    },
+    {
+      "id": "ST7B36-04",
+      "title": "Loaded ordered calls,not observed event count",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:73-86",
+      "finding_ids": "P7-155",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصي لحد معلن،لا trace إطار أو تنفيذ SQL/DTO أو كفاية كل الحراس."
+    },
+    {
+      "id": "ST7B36-05",
+      "title": "Enter indexed row and done before gid",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:88-108",
+      "finding_ids": "P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصي لحد معلن،لا trace إطار أو تنفيذ SQL/DTO أو كفاية كل الحراس."
+    },
+    {
+      "id": "ST7B36-06",
+      "title": "invalid-index branch selection request only",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:107-116",
+      "finding_ids": "P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصي لحد معلن،لا trace إطار أو تنفيذ SQL/DTO أو كفاية كل الحراس."
+    },
+    {
+      "id": "ST7B36-07",
+      "title": "row index follows selected index locally",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:261-265",
+      "finding_ids": "P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصي لحد معلن،لا trace إطار أو تنفيذ SQL/DTO أو كفاية كل الحراس."
+    },
+    {
+      "id": "ST7B36-08",
+      "title": "double-click row null control then Hide",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:266-284",
+      "finding_ids": "P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصي لحد معلن،لا trace إطار أو تنفيذ SQL/DTO أو كفاية كل الحراس."
+    },
+    {
+      "id": "ST7B36-09",
+      "title": "Escape directly requests Close",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:109-116",
+      "finding_ids": "P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصي لحد معلن،لا trace إطار أو تنفيذ SQL/DTO أو كفاية كل الحراس."
+    },
+    {
+      "id": "ST7B36-10",
+      "title": "Close button only has explicit global restoration branch",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:123-132",
+      "finding_ids": "H7B36-04",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصي لحد معلن،لا trace إطار أو تنفيذ SQL/DTO أو كفاية كل الحراس."
+    },
+    {
+      "id": "ST7B36-11",
+      "title": "Fill precedes ApplyFilter",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:310-334",
+      "finding_ids": "P7-046",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصي لحد معلن،لا trace إطار أو تنفيذ SQL/DTO أو كفاية كل الحراس."
+    },
+    {
+      "id": "ST7B36-12",
+      "title": "unconditional original-proc predicate",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:336-345",
+      "finding_ids": "P7-155",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصي لحد معلن،لا trace إطار أو تنفيذ SQL/DTO أو كفاية كل الحراس."
+    },
+    {
+      "id": "ST7B36-13",
+      "title": "noncontract query permits20 OR requested",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:378-408",
+      "finding_ids": "P7-157",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصي لحد معلن،لا trace إطار أو تنفيذ SQL/DTO أو كفاية كل الحراس."
+    },
+    {
+      "id": "ST7B36-14",
+      "title": "local selected-index filter not source request write",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:510-519",
+      "finding_ids": "P7-155",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصي لحد معلن،لا trace إطار أو تنفيذ SQL/DTO أو كفاية كل الحراس."
+    },
+    {
+      "id": "ST7B36-15",
+      "title": "display clear before row conversions",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:567-596",
+      "finding_ids": "H7B36-02",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصي لحد معلن،لا trace إطار أو تنفيذ SQL/DTO أو كفاية كل الحراس."
+    },
+    {
+      "id": "ST7B36-16",
+      "title": "local model explicitly auto-properties",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:674-698",
+      "finding_ids": "P7-157",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصي لحد معلن،لا trace إطار أو تنفيذ SQL/DTO أو كفاية كل الحراس."
+    },
+    {
+      "id": "ST7B36-17",
+      "title": "XAML uses full-row single selection and double event",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:397-414",
+      "finding_ids": "P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصي لحد معلن،لا trace إطار أو تنفيذ SQL/DTO أو كفاية كل الحراس."
+    },
+    {
+      "id": "ST7B36-18",
+      "title": "source caller gate then gid-only bind boundary",
+      "evidence": "SmartAuditERP/Class/InvoiceOper.cs:3976-3985",
+      "finding_ids": "P7-157;P7-160",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصي لحد معلن،لا trace إطار أو تنفيذ SQL/DTO أو كفاية كل الحراس."
+    },
+    {
+      "id": "ST7B36-19",
+      "title": "return button is distinct Tag-and-lookup route",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:286-303",
+      "finding_ids": "H7B36-03",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصي لحد معلن،لا trace إطار أو تنفيذ SQL/DTO أو كفاية كل الحراس."
+    },
+    {
+      "id": "ST7B36-20",
+      "title": "return column ProcType2 only in local method",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:621-636",
+      "finding_ids": "H7B36-03",
+      "documented_text_observation_matches": true,
+      "source_application_executed": false,
+      "limit": "فحص نصي لحد معلن،لا trace إطار أو تنفيذ SQL/DTO أو كفاية كل الحراس."
+    }
+  ],
+  "bounded_source_reads_not_semantic_coverage": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "start": 22,
+      "end": 32,
+      "total_lines": 698,
+      "sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "read_mode": "selected-contract-slice",
+      "prior_whole_body_parts": []
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "start": 49,
+      "end": 66,
+      "total_lines": 698,
+      "sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "read_mode": "selected-contract-slice",
+      "prior_whole_body_parts": []
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "start": 73,
+      "end": 86,
+      "total_lines": 698,
+      "sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "read_mode": "selected-contract-slice",
+      "prior_whole_body_parts": []
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "start": 88,
+      "end": 116,
+      "total_lines": 698,
+      "sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "read_mode": "selected-contract-slice",
+      "prior_whole_body_parts": []
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "start": 123,
+      "end": 132,
+      "total_lines": 698,
+      "sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "read_mode": "selected-contract-slice",
+      "prior_whole_body_parts": []
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "start": 261,
+      "end": 284,
+      "total_lines": 698,
+      "sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "read_mode": "selected-contract-slice",
+      "prior_whole_body_parts": []
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "start": 310,
+      "end": 334,
+      "total_lines": 698,
+      "sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "read_mode": "selected-contract-slice",
+      "prior_whole_body_parts": []
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "start": 336,
+      "end": 345,
+      "total_lines": 698,
+      "sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "read_mode": "selected-contract-slice",
+      "prior_whole_body_parts": []
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "start": 378,
+      "end": 408,
+      "total_lines": 698,
+      "sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "read_mode": "selected-contract-slice",
+      "prior_whole_body_parts": []
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "start": 492,
+      "end": 519,
+      "total_lines": 698,
+      "sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "read_mode": "selected-contract-slice",
+      "prior_whole_body_parts": []
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "start": 567,
+      "end": 596,
+      "total_lines": 698,
+      "sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "read_mode": "selected-contract-slice",
+      "prior_whole_body_parts": []
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "start": 674,
+      "end": 698,
+      "total_lines": 698,
+      "sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "read_mode": "selected-contract-slice",
+      "prior_whole_body_parts": []
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 3941,
+      "end": 3951,
+      "total_lines": 5520,
+      "sha256": "0bab36016f53ecd18360833d1fba980290702a52a98871fb397be9e813810d91",
+      "read_mode": "selected-contract-slice",
+      "prior_whole_body_parts": []
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 3976,
+      "end": 3985,
+      "total_lines": 5520,
+      "sha256": "0bab36016f53ecd18360833d1fba980290702a52a98871fb397be9e813810d91",
+      "read_mode": "selected-contract-slice",
+      "prior_whole_body_parts": []
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 4002,
+      "end": 4013,
+      "total_lines": 5520,
+      "sha256": "0bab36016f53ecd18360833d1fba980290702a52a98871fb397be9e813810d91",
+      "read_mode": "selected-contract-slice",
+      "prior_whole_body_parts": []
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml",
+      "start": 1,
+      "end": 14,
+      "total_lines": 561,
+      "sha256": "ee3ccdf5945caacbe667945b01b67103649a095fe160967c24e465624a353b31",
+      "read_mode": "selected-contract-slice",
+      "prior_whole_body_parts": []
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml",
+      "start": 172,
+      "end": 187,
+      "total_lines": 561,
+      "sha256": "ee3ccdf5945caacbe667945b01b67103649a095fe160967c24e465624a353b31",
+      "read_mode": "selected-contract-slice",
+      "prior_whole_body_parts": []
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml",
+      "start": 229,
+      "end": 238,
+      "total_lines": 561,
+      "sha256": "ee3ccdf5945caacbe667945b01b67103649a095fe160967c24e465624a353b31",
+      "read_mode": "selected-contract-slice",
+      "prior_whole_body_parts": []
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml",
+      "start": 391,
+      "end": 420,
+      "total_lines": 561,
+      "sha256": "ee3ccdf5945caacbe667945b01b67103649a095fe160967c24e465624a353b31",
+      "read_mode": "selected-contract-slice",
+      "prior_whole_body_parts": []
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml",
+      "start": 524,
+      "end": 546,
+      "total_lines": 561,
+      "sha256": "ee3ccdf5945caacbe667945b01b67103649a095fe160967c24e465624a353b31",
+      "read_mode": "selected-contract-slice",
+      "prior_whole_body_parts": []
+    }
+  ],
+  "context_reads_not_command_certification": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "start": 138,
+      "end": 254,
+      "total_lines": 698,
+      "sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "read_mode": "context-not-certified-command",
+      "prior_whole_body_parts": []
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "start": 286,
+      "end": 303,
+      "total_lines": 698,
+      "sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "read_mode": "context-not-certified-command",
+      "prior_whole_body_parts": []
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "start": 348,
+      "end": 377,
+      "total_lines": 698,
+      "sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "read_mode": "context-not-certified-command",
+      "prior_whole_body_parts": []
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "start": 603,
+      "end": 619,
+      "total_lines": 698,
+      "sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "read_mode": "context-not-certified-command",
+      "prior_whole_body_parts": []
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "start": 621,
+      "end": 636,
+      "total_lines": 698,
+      "sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "read_mode": "context-not-certified-command",
+      "prior_whole_body_parts": []
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 3952,
+      "end": 3975,
+      "total_lines": 5520,
+      "sha256": "0bab36016f53ecd18360833d1fba980290702a52a98871fb397be9e813810d91",
+      "read_mode": "context-not-certified-command",
+      "prior_whole_body_parts": []
+    }
+  ],
+  "whole_local_rereads_not_new_completions": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "start": 1,
+      "end": 698,
+      "total_lines": 698,
+      "sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "read_mode": "whole-local-body-reread-already-B27-B28-not-new-completion",
+      "prior_whole_body_parts": [
+        "B27",
+        "B28"
+      ]
+    }
+  ],
+  "retained_additive_B10_arithmetic_erratum": {
+    "local_cost": 10,
+    "reference_cost": 120,
+    "equality1_control": 10,
+    "protected_G138_not_rewritten": true
+  },
+  "errors": []
+}
