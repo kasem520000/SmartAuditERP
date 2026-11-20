@@ -74,6 +74,12 @@ check('period, tax, and scoped activity batch remains conservative',
       and all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
           for fid, rid in [('P7-124', 'R-109'), ('P7-129', 'R-111')])
       and by_id['P7-123']['repair_status'] == 'partial_open')
+check('follow-up batch and previously fixed export are recorded with scope',
+      all(by_id[fid]['repair_status'] == 'closed_in_scope' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P7-042', 'R-113'), ('P7-105', 'R-114'), ('P7-099', 'R-119'), ('P7-108', 'R-083')])
+      and all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P7-096', 'R-115'), ('P7-091', 'R-116'), ('P7-003', 'R-117'), ('P7-008', 'R-118')])
+      and by_id['P7-009']['repair_status'] != 'closed_in_scope')
 check('plan-only repairs are included and P5-027 remains partial',
       by_id['P5-010']['repair_ids'] == 'R-058' and by_id['P5-027']['repair_ids'] == 'R-057'
       and by_id['P5-027']['repair_status'] == 'partial_open')
