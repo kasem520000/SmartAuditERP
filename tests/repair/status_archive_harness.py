@@ -139,11 +139,18 @@ check('inventory payroll barcode and navigation batch stays bounded',
           for fid, rid in [('P7-005', 'R-170'), ('P7-092', 'R-172'), ('P7-138', 'R-173'),
                            ('P7-064', 'R-174'), ('P7-057', 'R-175'), ('P7-045', 'R-176'), ('P7-113', 'R-177')]))
 
-check('financial guard and reports remain partial, payroll load remains under review',
+check('financial guard and reports remain partial after payroll load follow-up',
       all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
           for fid, rid in [('P7-001', 'R-178'), ('P7-029', 'R-179'), ('P7-051', 'R-180'),
                            ('P7-070', 'R-181'), ('P7-078', 'R-182'), ('P7-100', 'R-183')])
-      and by_id['P7-002']['repair_status'] == 'pending_review')
+      and by_id['P7-002']['repair_status'] == 'partial_open' and by_id['P7-002']['repair_ids'] == 'R-184')
+
+check('payroll navigation and sales report findings remain partial',
+      all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P7-002', 'R-184'), ('P7-041', 'R-185'), ('P7-066', 'R-186'),
+                           ('P7-067', 'R-187'), ('P7-080', 'R-188'), ('P7-095', 'R-189')])
+      and by_id['P7-001']['repair_status'] == 'partial_open'
+      and by_id['P7-082']['repair_status'] == 'pending_review')
 
 owner = (ROOT / 'docs/repairs/OWNER_DECISIONS.md').read_text(encoding='utf-8')
 sections = {
