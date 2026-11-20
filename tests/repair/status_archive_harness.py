@@ -86,6 +86,12 @@ check('editor and period batch has bounded and partial classifications',
       and all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
           for fid, rid in [('P7-023', 'R-121'), ('P7-151', 'R-123')])
       and all(by_id[fid]['repair_status'] != 'closed_in_scope' for fid in ('P7-022', 'P7-024', 'P7-152')))
+check('serial VAT POS duplicate batch classifications retain partial scope',
+      all(by_id[fid]['repair_status'] == 'closed_in_scope' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P7-128', 'R-127'), ('P7-075', 'R-129')])
+      and all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P7-135', 'R-126'), ('P7-143', 'R-128')])
+      and rules['audit_delivery'] == 'B34')
 check('plan-only repairs are included and P5-027 remains partial',
       by_id['P5-010']['repair_ids'] == 'R-058' and by_id['P5-027']['repair_ids'] == 'R-057'
       and by_id['P5-027']['repair_status'] == 'partial_open')
