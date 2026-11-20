@@ -132,4 +132,9 @@ check('period and totals batch keeps bounded classifications',
       all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
           for fid, rid in [('P7-111', 'R-163'), ('P7-112', 'R-164'), ('P7-127', 'R-165'),
                            ('P7-073', 'R-166'), ('P7-094', 'R-167'), ('P7-006', 'R-168'), ('P7-120', 'R-169')]))
+check('inventory payroll barcode and navigation batch stays bounded',
+      by_id['P7-076']['repair_status'] == 'closed_in_scope' and by_id['P7-076']['repair_ids'] == 'R-171' and
+      all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P7-005', 'R-170'), ('P7-092', 'R-172'), ('P7-138', 'R-173'),
+                           ('P7-064', 'R-174'), ('P7-057', 'R-175'), ('P7-045', 'R-176'), ('P7-113', 'R-177')]))
 print('RESULT: PASS — archive consistency checks; classifications are not WPF or SQL acceptance.')
