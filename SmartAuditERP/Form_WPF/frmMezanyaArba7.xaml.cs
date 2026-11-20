@@ -88,6 +88,7 @@ namespace SmartAuditERP.Form_WPF
         private void ckAllBranches_CheckedChanged(object sender, RoutedEventArgs e)
         {
             if (cmbBranches == null) return;
+            if (IsLoaded) InvalidateBranchResult();
             if (ckAllBranches.IsChecked == true)
             {
                 cmbBranches.IsEnabled     = false;
@@ -97,6 +98,19 @@ namespace SmartAuditERP.Form_WPF
             {
                 cmbBranches.IsEnabled = true;
             }
+        }
+
+        private void cmbBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (IsLoaded) InvalidateBranchResult();
+        }
+
+        private void InvalidateBranchResult()
+        {
+            _rows.Clear();
+            _hasApprovedStock = false;
+            _Stock = 0;
+            txtDeptDiff.Text = txtCreditDiff.Text = txtIsBalanced.Text = "";
         }
 
         #endregion
@@ -195,9 +209,15 @@ namespace SmartAuditERP.Form_WPF
                 DateTime dateTimeFrom = BuildDateTime(txtFromDate.SelectedDate ?? DateTime.Today, txtStartTime.Text, new TimeSpan(0, 0, 0));
                 DateTime dateTimeTo   = BuildDateTime(txtToDate.SelectedDate ?? DateTime.Today, txtEndTime.Text, new TimeSpan(23, 59, 0));
 
-                int? selectedBranch = null;
-                if (ckAllBranches.IsChecked != true && cmbBranches.SelectedIndex != -1)
-                    selectedBranch = Convert.ToInt32(cmbBranches.SelectedValue);
+                if (ckAllBranches.IsChecked == true || cmbBranches.SelectedIndex < 0 ||
+                    cmbBranches.SelectedValue == null ||
+                    !int.TryParse(cmbBranches.SelectedValue.ToString(), out int branchId) || branchId <= 0)
+                {
+                    DXMessageBox.Show("عرض كل الفروع غير متاح حتى توحيد نطاق الأستاذ والمخزون؛ اختر فرعاً واحداً.",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                int? selectedBranch = branchId;
 
                 string whereClause = "WHERE Entry.IS_Deleted=0 AND Entry.state=1 AND Entry.GlobalId=Entry_sub.EntryGlobalId AND Entry_sub.acc_no=Accounts_Index.Code AND Accounts_Index.FinalAcc=1 ";
 

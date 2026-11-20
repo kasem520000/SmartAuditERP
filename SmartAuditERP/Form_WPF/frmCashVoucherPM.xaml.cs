@@ -405,8 +405,16 @@ namespace SmartAuditERP.Form_WPF
 
         #region ── Save ───────────────────────────────────────
 
+        private bool ProjectJournalSaveAvailable()
+        {
+            MessageBox.Show("حفظ وحذف السند معطلان مؤقتاً حتى تصحيح هوية القيد وتفاصيله واختبار المعاملة المحاسبية.",
+                "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return false;
+        }
+
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            if (!ProjectJournalSaveAvailable()) return;
             SqlTransaction transaction = null;
 
             try
@@ -660,6 +668,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
+            if (!ProjectJournalSaveAvailable()) return;
             try
             {
                 if (_currentCode == -1)

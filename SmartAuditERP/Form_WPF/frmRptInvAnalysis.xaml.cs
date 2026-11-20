@@ -36,6 +36,9 @@ namespace SmartAuditERP.Form_WPF
 
         // مصدر بيانات الجدول
         private ObservableCollection<InvAnalysisRow> _itemsSource;
+        private bool _analysisRunning;
+        private int _analysisVersion;
+        private int _activeAnalysisVersion;
 
         #endregion
 
@@ -235,32 +238,40 @@ namespace SmartAuditERP.Form_WPF
 
         private void chkAllGroups_CheckedChanged(object sender, RoutedEventArgs e)
         {
-            cmbGroups.IsEnabled = !(chkAllGroups.IsChecked == true);
+            if (IsLoaded) InvalidateAnalysisResult();
+            if (cmbGroups != null) cmbGroups.IsEnabled = chkAllGroups.IsChecked != true;
+        }
+
+        private void cmbGroups_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (IsLoaded) InvalidateAnalysisResult();
+        }
+
+        private void InvalidateAnalysisResult()
+        {
+            _analysisVersion++;
+            _itemsSource?.Clear();
+            txtSum1.Text = txtSum2.Text = txtSum3.Text = txtSum4.Text = txtSum5.Text = "";
         }
 
         #endregion
 
         #region RadioButton Events
 
-        private void rdStock_Checked(object sender, RoutedEventArgs e) { }
-        private void rdCust_Checked(object sender, RoutedEventArgs e) { }
-        private void rdItem_Checked(object sender, RoutedEventArgs e) { }
-        private void rdSalesman_Checked(object sender, RoutedEventArgs e) { }
-        private void rdEmp_Checked(object sender, RoutedEventArgs e) { }
-        private void rdDay_Checked(object sender, RoutedEventArgs e) { }
-        private void rdMonth_Checked(object sender, RoutedEventArgs e) { }
-        private void rdGroup_Checked(object sender, RoutedEventArgs e) { }
+        private void rdStock_Checked(object sender, RoutedEventArgs e) { if (IsLoaded) InvalidateAnalysisResult(); }
+        private void rdCust_Checked(object sender, RoutedEventArgs e) { if (IsLoaded) InvalidateAnalysisResult(); }
+        private void rdItem_Checked(object sender, RoutedEventArgs e) { if (IsLoaded) InvalidateAnalysisResult(); }
+        private void rdSalesman_Checked(object sender, RoutedEventArgs e) { if (IsLoaded) InvalidateAnalysisResult(); }
+        private void rdEmp_Checked(object sender, RoutedEventArgs e) { if (IsLoaded) InvalidateAnalysisResult(); }
+        private void rdDay_Checked(object sender, RoutedEventArgs e) { if (IsLoaded) InvalidateAnalysisResult(); }
+        private void rdMonth_Checked(object sender, RoutedEventArgs e) { if (IsLoaded) InvalidateAnalysisResult(); }
+        private void rdGroup_Checked(object sender, RoutedEventArgs e) { if (IsLoaded) InvalidateAnalysisResult(); }
 
         #endregion
 
         #region btnShow - عرض النتائج
 
-        private void btnShow_Click(object sender, RoutedEventArgs e)
-        {
-            new Thread(ShowResult) { IsBackground = true }.Start();
-        }
-
-        private void ShowResult()
+        private bool ValidateAnalysisSelection()
         {
             // التحقق من الاختيارات
             if (!(chkAllStock.IsChecked == true) && cmbStock.SelectedValue == null)
@@ -270,7 +281,7 @@ namespace SmartAuditERP.Form_WPF
                     DXMessageBox.Show("اختر مخزن", "", MessageBoxButton.OK, MessageBoxImage.Information);
                     cmbStock.Focus();
                 });
-                return;
+                return false;
             }
             if (!(chkAllSafe.IsChecked == true) && cmbSafe.SelectedValue == null)
             {
@@ -279,7 +290,7 @@ namespace SmartAuditERP.Form_WPF
                     DXMessageBox.Show("اختر خزنة", "", MessageBoxButton.OK, MessageBoxImage.Information);
                     cmbSafe.Focus();
                 });
-                return;
+                return false;
             }
             if (!(chkAllCust.IsChecked == true) && cmbCust.SelectedValue == null)
             {
@@ -288,7 +299,7 @@ namespace SmartAuditERP.Form_WPF
                     DXMessageBox.Show("اختر عميل", "", MessageBoxButton.OK, MessageBoxImage.Information);
                     cmbCust.Focus();
                 });
-                return;
+                return false;
             }
             if (!(chkAllEmp.IsChecked == true) && cmbEmp.SelectedValue == null)
             {
@@ -297,7 +308,7 @@ namespace SmartAuditERP.Form_WPF
                     DXMessageBox.Show("اختر مستخدم", "", MessageBoxButton.OK, MessageBoxImage.Information);
                     cmbEmp.Focus();
                 });
-                return;
+                return false;
             }
             if (!(chkAllGroups.IsChecked == true) && cmbGroups.SelectedValue == null)
             {
@@ -306,7 +317,7 @@ namespace SmartAuditERP.Form_WPF
                     DXMessageBox.Show("اختر مجموعة", "", MessageBoxButton.OK, MessageBoxImage.Information);
                     cmbGroups.Focus();
                 });
-                return;
+                return false;
             }
             if (!(chkAllSales.IsChecked == true) && cmbSales.SelectedValue == null)
             {
@@ -315,9 +326,71 @@ namespace SmartAuditERP.Form_WPF
                     DXMessageBox.Show("اختر مندوب مبيعات", "", MessageBoxButton.OK, MessageBoxImage.Information);
                     cmbSales.Focus();
                 });
+                return false;
+            }
+
+            return true;
+        }
+
+        private void btnShow_Click(object sender, RoutedEventArgs e)
+        {
+            if (_analysisRunning) return;
+            InvalidateAnalysisResult();
+            if (!ValidateAnalysisSelection()) return;
+
+            // These aggregates use a whole invoice header against selected line costs.
+            if (chkAllGroups.IsChecked != true &&
+                !(rdItem.IsChecked == true || rdGroup.IsChecked == true))
+            {
+                DXMessageBox.Show("تحليل هذه الأبعاد حسب مجموعة محددة معطل حتى توزيع صافي رأس الفاتورة على بنودها.",
+                    "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
+            _analysisRunning = true;
+            _activeAnalysisVersion = _analysisVersion;
+            var controls = new Control[] { chkAllGroups, cmbGroups, rdStock, rdCust, rdItem,
+                rdSalesman, rdEmp, rdDay, rdMonth, rdGroup };
+            var enabled = new bool[controls.Length];
+            for (int i = 0; i < controls.Length; i++)
+            {
+                enabled[i] = controls[i].IsEnabled;
+                controls[i].IsEnabled = false;
+            }
+            try
+            {
+                new Thread(() =>
+                {
+                    try { ShowResult(); }
+                    catch (Exception ex)
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            InvalidateAnalysisResult();
+                            DXMessageBox.Show("خطأ في التحليل: " + ex.Message, "خطأ",
+                                MessageBoxButton.OK, MessageBoxImage.Error);
+                        });
+                    }
+                    finally
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            for (int i = 0; i < controls.Length; i++) controls[i].IsEnabled = enabled[i];
+                            _analysisRunning = false;
+                        });
+                    }
+                }) { IsBackground = true }.Start();
+            }
+            catch
+            {
+                for (int i = 0; i < controls.Length; i++) controls[i].IsEnabled = enabled[i];
+                _analysisRunning = false;
+                throw;
+            }
+        }
+
+        private void ShowResult()
+        {
             Dispatcher.Invoke(() => _itemsSource.Clear());
 
             bool isStock = false, isCust = false, isItem = false;
@@ -382,6 +455,7 @@ namespace SmartAuditERP.Form_WPF
 
             Dispatcher.Invoke(() =>
             {
+                if (_activeAnalysisVersion != _analysisVersion) return;
                 foreach (var row in _itemsSource)
                 {
                     if (double.TryParse(row.Column9, out double qty)) sumQty += qty;
@@ -619,13 +693,17 @@ namespace SmartAuditERP.Form_WPF
 
         private void AddRowToGrid(InvAnalysisRow row)
         {
-            Dispatcher.Invoke(() => _itemsSource.Add(row));
+            Dispatcher.Invoke(() =>
+            {
+                if (_activeAnalysisVersion == _analysisVersion) _itemsSource.Add(row);
+            });
         }
 
         private void UpdatePercentageColumns(double totalNet, double totalProfit)
         {
             Dispatcher.Invoke(() =>
             {
+                if (_activeAnalysisVersion != _analysisVersion) return;
                 foreach (var row in _itemsSource)
                 {
                     if (double.TryParse(row.Column5, out double netVal) && totalNet != 0)
@@ -937,6 +1015,13 @@ namespace SmartAuditERP.Form_WPF
                 bool allStock = GetCheckState(chkAllStock);
                 bool allSales = GetCheckState(chkAllSales);
                 bool allGroups = GetCheckState(chkAllGroups);
+                if (!allGroups)
+                {
+                    Dispatcher.Invoke(() => DXMessageBox.Show(
+                        "تحليل هذه الأبعاد حسب مجموعة محددة غير متاح حتى توزيع صافي الفاتورة.",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning));
+                    return;
+                }
 
                 object safeVal = GetSelectedValue(cmbSafe);
                 object stockVal = GetSelectedValue(cmbStock);
@@ -1066,6 +1151,13 @@ namespace SmartAuditERP.Form_WPF
                 bool allStock = GetCheckState(chkAllStock);
                 bool allCust = GetCheckState(chkAllCust);
                 bool allGroups = GetCheckState(chkAllGroups);
+                if (!allGroups)
+                {
+                    Dispatcher.Invoke(() => DXMessageBox.Show(
+                        "تحليل هذه الأبعاد حسب مجموعة محددة غير متاح حتى توزيع صافي الفاتورة.",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning));
+                    return;
+                }
 
                 object safeVal = GetSelectedValue(cmbSafe);
                 object stockVal = GetSelectedValue(cmbStock);
@@ -1196,6 +1288,13 @@ namespace SmartAuditERP.Form_WPF
                 bool allCust = GetCheckState(chkAllCust);
                 bool allSales = GetCheckState(chkAllSales);
                 bool allGroups = GetCheckState(chkAllGroups);
+                if (!allGroups)
+                {
+                    Dispatcher.Invoke(() => DXMessageBox.Show(
+                        "تحليل هذه الأبعاد حسب مجموعة محددة غير متاح حتى توزيع صافي الفاتورة.",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning));
+                    return;
+                }
 
                 object safeVal = GetSelectedValue(cmbSafe);
                 object stockVal = GetSelectedValue(cmbStock);
@@ -1338,6 +1437,13 @@ namespace SmartAuditERP.Form_WPF
                 bool allCust = GetCheckState(chkAllCust);
                 bool allSales = GetCheckState(chkAllSales);
                 bool allGroups = GetCheckState(chkAllGroups);
+                if (!allGroups)
+                {
+                    Dispatcher.Invoke(() => DXMessageBox.Show(
+                        "تحليل هذه الأبعاد حسب مجموعة محددة غير متاح حتى توزيع صافي الفاتورة.",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning));
+                    return;
+                }
 
                 object safeVal = GetSelectedValue(cmbSafe);
                 object stockVal = GetSelectedValue(cmbStock);
@@ -1480,6 +1586,13 @@ namespace SmartAuditERP.Form_WPF
                 bool allCust = GetCheckState(chkAllCust);
                 bool allSales = GetCheckState(chkAllSales);
                 bool allGroups = GetCheckState(chkAllGroups);
+                if (!allGroups)
+                {
+                    Dispatcher.Invoke(() => DXMessageBox.Show(
+                        "تحليل هذه الأبعاد حسب مجموعة محددة غير متاح حتى توزيع صافي الفاتورة.",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning));
+                    return;
+                }
 
                 object safeVal = GetSelectedValue(cmbSafe);
                 object stockVal = GetSelectedValue(cmbStock);
@@ -1613,6 +1726,13 @@ namespace SmartAuditERP.Form_WPF
                 bool allCust = GetCheckState(chkAllCust);
                 bool allSales = GetCheckState(chkAllSales);
                 bool allGroups = GetCheckState(chkAllGroups);
+                if (!allGroups)
+                {
+                    Dispatcher.Invoke(() => DXMessageBox.Show(
+                        "تحليل هذه الأبعاد حسب مجموعة محددة غير متاح حتى توزيع صافي الفاتورة.",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning));
+                    return;
+                }
 
                 object safeVal = GetSelectedValue(cmbSafe);
                 object custVal = GetSelectedValue(cmbCust);
@@ -1770,6 +1890,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void PrintDevexpress(int type)
         {
+            if (_analysisRunning) return;
             if (_itemsSource.Count == 0)
             {
                 DXMessageBox.Show("لا توجد عمليات بالجدول", "", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -1954,6 +2075,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnExport_Click(object sender, RoutedEventArgs e)
         {
+            if (_analysisRunning) return;
             try
             {
                 if (_itemsSource.Count == 0)

@@ -218,6 +218,7 @@
                                   Style="{StaticResource ModernComboBox}"
                                   DisplayMemberPath="name"
                                   SelectedValuePath="id"
+                                  SelectionChanged="cmbBranches_SelectionChanged"
                                   IsEnabled="False"/>
                     </StackPanel>
 

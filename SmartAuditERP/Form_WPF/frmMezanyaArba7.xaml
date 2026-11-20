@@ -220,7 +220,7 @@
                                     <TextBlock x:Name="lblBranch" Text="🏢 الفرع" Style="{StaticResource FieldLabel}"/>
                                     <CheckBox x:Name="ckAllBranches" Grid.Column="1" Content="الكل" IsChecked="True" Style="{StaticResource ModernCheckBox}" Checked="ckAllBranches_CheckedChanged" Unchecked="ckAllBranches_CheckedChanged"/>
                                 </Grid>
-                                <ComboBox x:Name="cmbBranches" Style="{StaticResource ModernComboBox}" DisplayMemberPath="name" SelectedValuePath="id" IsEnabled="False"/>
+                                <ComboBox x:Name="cmbBranches" Style="{StaticResource ModernComboBox}" DisplayMemberPath="name" SelectedValuePath="id" SelectionChanged="cmbBranches_SelectionChanged" IsEnabled="False"/>
                             </StackPanel>
                         </Border>
 

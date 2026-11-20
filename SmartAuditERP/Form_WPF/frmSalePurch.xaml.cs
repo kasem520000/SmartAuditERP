@@ -2349,8 +2349,16 @@ namespace SmartAuditERP.Form_WPF
             if (form.ISDone) LoadDGvSetting();
         }
 
+        private bool CanImportInvoiceRows()
+        {
+            MessageBox.Show("\u0627\u0633\u062a\u064a\u0631\u0627\u062f \u0627\u0644\u0628\u0646\u0648\u062f \u0645\u0639\u0637\u0644 \u0645\u0624\u0642\u062a\u0627\u064b \u062d\u062a\u0649 \u064a\u062a\u0648\u0641\u0631 \u062a\u062d\u062f\u064a\u062f \u0645\u0648\u062b\u0648\u0642 \u0644\u0644\u0633\u0637\u0631 \u0648\u0627\u0644\u0648\u062d\u062f\u0629 \u0648\u0646\u062a\u064a\u062c\u0629 \u062f\u0645\u062c \u0627\u0644\u0645\u0643\u0631\u0631.",
+                "\u062a\u0646\u0628\u064a\u0647", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return false;
+        }
+
         private void stripImport_Click(object sender, RoutedEventArgs e)
         {
+            if (!CanImportInvoiceRows()) return;
             try
             {
                 if (DXMessageBox.Show("Â· √‰  „ √ﬂœ „‰ «” Ì—«œ «·»Ì«‰« ø", "",

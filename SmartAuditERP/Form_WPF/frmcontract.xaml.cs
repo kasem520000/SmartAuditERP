@@ -2496,8 +2496,16 @@ namespace SmartAuditERP.Form_WPF
 
         #region ── Context Menu Events ──
 
+        private bool CanImportInvoiceRows()
+        {
+            MessageBox.Show("استيراد البنود معطل مؤقتاً حتى يتوفر تحديد موثوق للسطر والوحدة ونتيجة دمج المكرر.",
+                "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return false;
+        }
+
         private void stripImport_Click(object sender, RoutedEventArgs e)
         {
+            if (!CanImportInvoiceRows()) return;
             if (MessageBox.Show("هل أنت متأكد من استيراد البيانات؟",
                 "", MessageBoxButton.YesNo,
                 MessageBoxImage.Question) == MessageBoxResult.No)

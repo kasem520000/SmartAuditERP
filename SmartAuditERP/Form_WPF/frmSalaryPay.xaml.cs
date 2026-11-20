@@ -456,8 +456,16 @@ namespace SmartAuditERP.Form_WPF
         private void btnClose_Click(object sender, RoutedEventArgs e)
             => Close();
 
+        private bool SalaryMutationAvailable()
+        {
+            DXMessageBox.Show("حفظ وحذف صرف الراتب معطلان حتى توثيق ربط السند والقيد وإجراء العملية بصورة ذرية.",
+                "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return false;
+        }
+
         private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            if (!SalaryMutationAvailable()) return;
             try
             {
                 if (cmbBranch.SelectedIndex == -1)
@@ -610,6 +618,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
+            if (!SalaryMutationAvailable()) return;
             try
             {
                 if (Code == -1)

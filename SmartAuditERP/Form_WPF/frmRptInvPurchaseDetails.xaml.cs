@@ -33,6 +33,7 @@ namespace SmartAuditERP.Form_WPF
         private string RptUrl = "";
         private bool IsVAT = true;
         private bool isProcessRunning = false;
+        private int _branchFilterVersion;
         private double defVAT = 0.0;
         private bool PricIncVAT = false;
         private int DgvFontSize = 1;
@@ -344,14 +345,12 @@ namespace SmartAuditERP.Form_WPF
         /// يجمع كل قيم UI على UI Thread بأمان
         /// ثم يُمرِّرها للـ Background Thread
         /// </summary>
-        private QueryParams CollectQueryParams()
+        private QueryParams CollectQueryParams(int branchId)
         {
             string whereClause = $"inv.Inv_type={Invtype} and ";
 
-            // فلتر الفرع
-            if (cmbBranches.SelectedIndex > -1)
-                whereClause +=
-                    $"inv.branch={cmbBranches.SelectedValue} and ";
+            // Only an explicitly validated single branch is supported here.
+            whereClause += $"inv.branch={branchId} and ";
 
             // فلتر العميل
             if (ckAllClients.IsChecked != true &&
@@ -442,14 +441,35 @@ namespace SmartAuditERP.Form_WPF
                 return;
             }
 
-            // ✅ جمع قيم UI على UI Thread
-            QueryParams queryParams = null;
-            Dispatcher.Invoke(() =>
+            InvalidateBranchResults();
+            if (chkAllBranches.IsChecked == true || cmbBranches.SelectedIndex < 0 ||
+                cmbBranches.SelectedValue == null ||
+                !int.TryParse(cmbBranches.SelectedValue.ToString(), out int branchId) || branchId <= 0)
             {
-                queryParams = CollectQueryParams();
-            });
+                MessageBox.Show("اختر فرعاً واحداً؛ عرض كل الفروع معطل حتى توثيق الصلاحيات ونطاق التقرير.",
+                    "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            // The existing sentinel is not a complete authorization contract. When it
+            // indicates restriction, fail closed if the session branch is absent or differs.
+            if (!string.Equals(Accounting.BranchCondition, " ", StringComparison.Ordinal) &&
+                (MainClass.BranchNo <= 0 || branchId != MainClass.BranchNo))
+            {
+                MessageBox.Show("تعذر التحقق من صلاحية الفرع المحدد.", "تنبيه",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
+            QueryParams queryParams;
+            try { queryParams = CollectQueryParams(branchId); }
+            catch (Exception ex)
+            {
+                MessageBox.Show("خطأ في المرشحات: " + ex.Message, "خطأ",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             if (queryParams == null) return;
+            int requestBranchVersion = _branchFilterVersion;
 
             // ✅ تعطيل الزر أثناء التنفيذ
             btnView.IsEnabled = false;
@@ -469,6 +489,7 @@ namespace SmartAuditERP.Form_WPF
 
                     Dispatcher.Invoke(() =>
                     {
+                        if (requestBranchVersion != _branchFilterVersion) return;
                         _invoiceRows.Clear();
                         foreach (var item in result)
                             _invoiceRows.Add(item);
@@ -1227,9 +1248,23 @@ namespace SmartAuditERP.Form_WPF
             txtEndTime.IsEnabled = enabled;
         }
 
+        private void InvalidateBranchResults()
+        {
+            _branchFilterVersion++;
+            _invoiceRows.Clear();
+            InvoicesList?.Clear();
+            CalculateSummary();
+        }
+
+        private void cmbBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (IsLoaded) InvalidateBranchResults();
+        }
+
         private void chkAllBranches_Changed(object sender, RoutedEventArgs e)
         {
             if (!IsLoaded) return;
+            InvalidateBranchResults();
             cmbBranches.IsEnabled = chkAllBranches.IsChecked != true;
         }
 

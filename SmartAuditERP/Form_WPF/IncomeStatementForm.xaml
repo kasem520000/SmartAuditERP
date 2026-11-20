@@ -484,7 +484,8 @@
                                       IsEnabled="False"
                                       Margin="0,0,0,10"
                                       DisplayMemberPath="name"
-                                      SelectedValuePath="id"/>
+                                      SelectedValuePath="id"
+                                      SelectionChanged="cmbBranches_SelectionChanged"/>
 
                             <Separator Margin="0,8"/>
 

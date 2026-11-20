@@ -522,8 +522,16 @@ namespace SmartAuditERP.Form_WPF
 
         #region Save
 
+        private bool ProjectJournalSaveAvailable()
+        {
+            MessageBox.Show("حفظ المستند معطل مؤقتاً حتى تصحيح هوية القيد وتفاصيله واختبار المعاملة المحاسبية.",
+                "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return false;
+        }
+
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            if (!ProjectJournalSaveAvailable()) return;
             // Existing contracts lack a reliable reconciliation of contract,
             // detail, project and journal identities. Refuse destructive edits.
             if (_currentCode != -1)

@@ -321,6 +321,7 @@
                             <ComboBox x:Name="cmbBranches"
                                       Grid.Column="1"
                                       Style="{StaticResource ModernComboBox}"
+                                      SelectionChanged="cmbBranches_SelectionChanged"
                                       IsEnabled="False"/>
                         </Grid>
 

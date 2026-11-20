@@ -416,7 +416,8 @@
                                           Style="{StaticResource ModernComboBox}"
                                           IsEnabled="False"
                                           DisplayMemberPath="name"
-                                          SelectedValuePath="id"/>
+                                          SelectedValuePath="id"
+                                          SelectionChanged="cmbGroups_SelectionChanged"/>
                                 <CheckBox x:Name="chkAllGroups"
                                           Grid.Column="2"
                                           Content="الكل"

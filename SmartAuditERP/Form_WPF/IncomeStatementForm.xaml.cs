@@ -145,7 +145,20 @@ namespace SmartAuditERP.Form_WPF
         private void chkAllBranches_CheckedChanged(object sender, RoutedEventArgs e)
         {
             if (!IsLoaded) return;
+            InvalidateBranchResult();
             cmbBranches.IsEnabled = chkAllBranches.IsChecked != true;
+        }
+
+        private void cmbBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (IsLoaded) InvalidateBranchResult();
+        }
+
+        private void InvalidateBranchResult()
+        {
+            _incomeRows.Clear();
+            ClearFinancials();
+            UpdateSummaryLabels();
         }
 
         private void TimeTextBox_GotFocus(object sender, RoutedEventArgs e)
@@ -184,11 +197,13 @@ namespace SmartAuditERP.Form_WPF
                 DateTime fromDt = fromDate.Add(startTime);
                 DateTime toDt = toDate.Add(endTime);
 
-                int branchId = -1;
-                if (chkAllBranches.IsChecked != true && cmbBranches.SelectedIndex != -1)
+                if (chkAllBranches.IsChecked == true || cmbBranches.SelectedIndex < 0 ||
+                    cmbBranches.SelectedValue == null ||
+                    !int.TryParse(cmbBranches.SelectedValue.ToString(), out int branchId) || branchId <= 0)
                 {
-                    if (cmbBranches.SelectedValue != null && int.TryParse(cmbBranches.SelectedValue.ToString(), out int bid))
-                        branchId = bid;
+                    DXMessageBox.Show("عرض كل الفروع غير متاح حتى توحيد نطاق الأستاذ والمخزون؛ اختر فرعاً واحداً.",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
                 }
 
                 ProgressBar1.Value = 20;

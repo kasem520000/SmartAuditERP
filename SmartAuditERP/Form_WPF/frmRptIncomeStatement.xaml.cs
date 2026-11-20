@@ -129,9 +129,22 @@ namespace SmartAuditERP.Form_WPF
         private void chkAllBranches_Changed(object sender, RoutedEventArgs e)
         {
             if (!IsLoaded) return;
+            InvalidateBranchResult();
             cmbBranches.IsEnabled = (chkAllBranches.IsChecked != true);
             if (chkAllBranches.IsChecked == true)
                 cmbBranches.SelectedIndex = -1;
+        }
+
+        private void cmbBranches_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (IsLoaded) InvalidateBranchResult();
+        }
+
+        private void InvalidateBranchResult()
+        {
+            _dataSource.Clear();
+            txtProfit1.Text = txtProfit2.Text = txtStockVal.Text = txtStockVal1.Text = "";
+            txtFirstVal.Text = txtFirstVal1.Text = txtCreditDiff.Text = txtDeptDiff.Text = txtIsBalanced.Text = "";
         }
 
         private void ckTotalPeriod_Changed(object sender, RoutedEventArgs e)
@@ -209,6 +222,17 @@ namespace SmartAuditERP.Form_WPF
                 txtDeptDiff.Text    = "";
                 txtIsBalanced.Text  = "";
 
+                txtFirstVal.Text = txtFirstVal1.Text = "";
+                if (chkAllBranches.IsChecked == true || cmbBranches.SelectedIndex < 0 ||
+                    cmbBranches.SelectedValue == null ||
+                    !int.TryParse(cmbBranches.SelectedValue.ToString(), out int selectedBranch) ||
+                    selectedBranch <= 0 || selectedBranch != branch)
+                {
+                    DXMessageBox.Show("عرض كل الفروع غير متاح حتى توحيد نطاق الأستاذ والمخزون؛ اختر فرعاً واحداً.",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
                 double totalDept   = 0;
                 double totalCredit = 0;
 
@@ -217,8 +241,7 @@ namespace SmartAuditERP.Form_WPF
                     dateCond = " AND Entry.date BETWEEN @date1 AND @date2 ";
 
                 string branchCond = "";
-                if (chkAllBranches.IsChecked != true && cmbBranches.SelectedIndex != -1)
-                    branchCond = $" AND Entry_sub.branch={cmbBranches.SelectedValue} ";
+                branchCond = $" AND Entry_sub.branch={selectedBranch} ";
 
                 string baseQuery =
                     $"SELECT Entry_sub.acc_no AS AccountCode, Accounts_Index.AName AS AccountName, " +
