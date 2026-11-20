@@ -56,7 +56,7 @@ check('unknown commit and failed rollback block retry', 'if (commitAttempted && 
 check('new action does not clear unknown outcome','_saveOutcomeUnknown = false;' not in part(req,'private void CLR()', '#region Load Data'))
 
 tax=read('Form_WPF/frmTaxRptPeriod.xaml.cs');show=part(tax,'private void ShowDetails22()', '#endregion')
-check('tax report fails closed before query without session branch',ordered(show,'_reportPublished = false;', 'ClearReportCells();','chkAllBranches.IsChecked == true','branchId != MainClass.BranchNo','return;','string sqlSales'))
+check('tax report fails closed before query without session branch',ordered(show,'_reportPublished = false;', 'ClearReportCells();','chkAllBranches.IsChecked != false','branchId != MainClass.BranchNo','return;','string sqlSales'))
 check('receipt query uses same branch condition as expenses', 'FROM Receipts WHERE ReceiptType=10 AND {branchBranch}' in show and 'FROM Receipts WHERE ReceiptType=9 AND {branchBranch}' in show and 'branchID={MainClass.BranchNo}' not in show)
 check('tax branch checkbox and selection invalidate printable publication',tax.count('_reportPublished = false;')>=5 and ordered(tax,'private void chkAllBranches_CheckedChanged(', '_reportPublished = false;', 'ClearReportCells();', 'private void cmbBranches_SelectionChanged(', '_reportPublished = false;', 'ClearReportCells();'))
 

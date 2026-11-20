@@ -449,7 +449,7 @@ namespace SmartAuditERP.Form_WPF
             ClearReportCells();
             // Until cross-branch authorization is defined, all sources must use
             // the same explicit session branch rather than mixing branch scopes.
-            if (chkAllBranches.IsChecked == true || cmbBranches.SelectedIndex < 0 ||
+            if (chkAllBranches.IsChecked != false || cmbBranches.SelectedIndex < 0 ||
                 cmbBranches.SelectedValue == null ||
                 !int.TryParse(cmbBranches.SelectedValue.ToString(), out int branchId) ||
                 branchId <= 0 || MainClass.BranchNo <= 0 || branchId != MainClass.BranchNo)
