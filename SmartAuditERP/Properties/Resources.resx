@@ -4696,7 +4696,7 @@ BEGIN
         WHERE 
             es.acc_no IN (SELECT Code FROM AccountHierarchy WHERE Type = 2)
             AND e.is_Deleted = 0 -- Exclude deleted entries if needed
-            AND e.state = 1 -- Match the detailed statement's active entries
+            AND e.state = 1 -- Match active entries in the detailed statement
             AND e.date &lt; @StartDate
             AND (@Branch IS NULL OR e.branch = @Branch)
     ),
@@ -4730,7 +4730,7 @@ BEGIN
         WHERE 
             es.acc_no IN (SELECT Code FROM AccountHierarchy)
             AND e.is_Deleted = 0 -- Exclude deleted entries if needed
-            AND e.state = 1 -- Match the detailed statement's active entries
+            AND e.state = 1 -- Match active entries in the detailed statement
             AND (@StartDate IS NULL OR e.date &gt;= @StartDate)
             AND (@EndDate IS NULL OR e.date &lt;= @EndDate)
             AND (@Branch IS NULL OR e.branch = @Branch)
@@ -50360,7 +50360,7 @@ BEGIN
         WHERE 
             es.acc_no IN (SELECT Code FROM AccountHierarchy WHERE Type = 2)
             AND e.is_Deleted = 0 -- Exclude deleted entries if needed
-            AND e.state = 1 -- Match the detailed statement's active entries
+            AND e.state = 1 -- Match active entries in the detailed statement
             AND e.date &lt; @StartDate
             AND (@Branch IS NULL OR e.branch = @Branch)
     ),
@@ -50394,7 +50394,7 @@ BEGIN
         WHERE 
             es.acc_no IN (SELECT Code FROM AccountHierarchy)
             AND e.is_Deleted = 0 -- Exclude deleted entries if needed
-            AND e.state = 1 -- Match the detailed statement's active entries
+            AND e.state = 1 -- Match active entries in the detailed statement
             AND (@StartDate IS NULL OR e.date &gt;= @StartDate)
             AND (@EndDate IS NULL OR e.date &lt;= @EndDate)
             AND (@Branch IS NULL OR e.branch = @Branch)
