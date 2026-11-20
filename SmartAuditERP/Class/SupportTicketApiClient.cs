@@ -93,11 +93,13 @@ namespace SmartAuditERP
                     var apiResponse =
                         JsonConvert.DeserializeObject<ApiResponse>(responseBody);
 
+                    // Repair R-068 (audit finding P6-025): HTTP 2xx alone is transport, not business success;
+                    // trust the envelope's own flag when the body carries one.
                     return new TicketResponse
                     {
-                        Success = true,
-                        Message = apiResponse.Message,
-                        TicketNumber = apiResponse.TicketNumber
+                        Success = apiResponse != null && apiResponse.Success,
+                        Message = apiResponse?.Message ?? "تعذر قراءة رد الخادم",
+                        TicketNumber = apiResponse?.TicketNumber
                     };
                 }
 
@@ -175,22 +177,25 @@ namespace SmartAuditERP
             {
                 var response = await _httpClient
                     .GetAsync($"{_apiBaseUrl}/api/Tickets/GetTicketsBycustomer" +
-                              $"?cust={customerName}");
+                              $"?cust={Uri.EscapeDataString(customerName ?? "")}");
 
-                if (response.IsSuccessStatusCode)
+                // Repair R-068 (audit finding P6-025): a genuine empty list stays empty, but transport or
+                // business failures now surface to the caller's existing error handler instead of silently
+                // masquerading as "no tickets". Query values are URI-encoded.
+                if (!response.IsSuccessStatusCode)
                 {
-                    string body = await response.Content.ReadAsStringAsync();
-                    return JsonConvert.DeserializeObject<List<TicketDetails>>(body)
-                           ?? new List<TicketDetails>();
+                    throw new HttpRequestException(
+                        $"فشل جلب التذاكر ({(int)response.StatusCode})");
                 }
-
-                return new List<TicketDetails>();
+                string body = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<List<TicketDetails>>(body)
+                       ?? new List<TicketDetails>();
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(
                     $"خطأ في GetCustomerTicketsAsync: {ex.Message}");
-                return new List<TicketDetails>();
+                throw;
             }
         }
 
@@ -218,19 +223,28 @@ namespace SmartAuditERP
                 var response = await _httpClient
                     .PostAsync($"{_apiBaseUrl}/api/Tickets/AddReply", content);
 
-                await response.Content.ReadAsStringAsync();
+                string replyBody = await response.Content.ReadAsStringAsync();
 
-                return response.IsSuccessStatusCode
-                    ? new ApiResponseBase
-                    {
-                        Success = true,
-                        Message = "تم إضافة الرد بنجاح"
-                    }
-                    : new ApiResponseBase
+                if (!response.IsSuccessStatusCode)
+                {
+                    return new ApiResponseBase { Success = false, Message = "فشل إضافة الرد" };
+                }
+                // Repair R-068 (audit finding P6-025): respect a business failure carried by an HTTP-success body;
+                // a shape-less 2xx body keeps the legacy acceptance rather than inventing a stricter contract.
+                var parsedReply = string.IsNullOrWhiteSpace(replyBody)
+                    ? null
+                    : JsonConvert.DeserializeObject<ApiResponseBase>(replyBody);
+                if (parsedReply != null && !parsedReply.Success)
+                {
+                    return new ApiResponseBase
                     {
                         Success = false,
-                        Message = "فشل إضافة الرد"
+                        Message = string.IsNullOrWhiteSpace(parsedReply.Message)
+                            ? "رفض الخادم إضافة الرد"
+                            : parsedReply.Message
                     };
+                }
+                return new ApiResponseBase { Success = true, Message = "تم إضافة الرد بنجاح" };
             }
             catch (Exception ex)
             {
