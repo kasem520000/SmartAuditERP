@@ -28,6 +28,7 @@ or HTML file was produced or opened, and no screen was executed.
 """
 import io
 import os
+import re
 import sys
 
 FAILS = []
@@ -744,11 +745,15 @@ check("D12 the workbook branch is the project's own ClosedXML idiom, with no new
           text.count("GetTypeFromProgID") == 0 and text.count("GetTypeFromCLSID") == 0
           for text in (IOX, POSX, SALEX)) and
       all(form in PRECEDENT for form in API_FORMS))
-check("D13 the delimited branch goes through the shared writer and its announced schema",
+check("D13 the delimited branch goes through the shared writer and its announced schema, with no "
+      "hand-rolled writer left anywhere in the export path",
       all(text.count("SpreadsheetExport.WriteDataTable(") == 1 and
-          text.count("asCsv ? SpreadsheetExport.CsvDelimiter") == 1 and
-          text.count("new StreamWriter") == 0 and text.count("string.Join") == 0
-          for text in (io_build, pos_build, sale_build)) or True)
+          text.count("asCsv ? SpreadsheetExport.CsvDelimiter") == 1
+          for text in (IOX, POSX, SALEX)) and
+      all(slice_.count("new StreamWriter") == 0 and slice_.count("string.Join") == 0 and
+          slice_.count("File.WriteAllText") == 0 and slice_.count("sb.Append") == 0
+          for slice_ in (io_handler + io_build, pos_handler + pos_build,
+                         sale_handler + sale_build)))
 check("D14 header and row widths are the same in the source: one caption per exported field",
       all(b.count("table.Columns.Add(") == b.count("typeof(string));") == w and
           b.count("SpreadsheetExport.Text(item.") + b.count("SpreadsheetExport.Money(item.") == w
@@ -798,6 +803,35 @@ check("D19 each cell kind in the source is the one the model carries",
           text.count("SpreadsheetExport.Text(item.") == m
           for text, n, m in ((IOX, 6, 6), (POSX, 4, 3), (SALEX, 6, 4))),
       "the net-sales cells are the screen's own pre-formatted text and pass through unchanged")
+IO_FIELDS = [("Text", "ItemRowIndex"), ("Text", "ItemCode"), ("Text", "ItemName"),
+             ("Text", "Description"), ("Text", "UnitName"), ("Money", "ItemQuantity"),
+             ("Money", "ItemPrice"), ("Money", "ItemSumPrice"), ("Money", "ItemDiscount"),
+             ("Money", "ItemVat"), ("Money", "ItemNetPrice"), ("Text", "InvertoryName")]
+POS_FIELDS = [("Text", "ItemRowIndex"), ("Text", "ItemName"), ("Text", "UnitName"),
+              ("Money", "ItemQuantity"), ("Money", "ItemPrice"), ("Money", "ItemNetPrice"),
+              ("Money", "ItemVat")]
+SALE_FIELDS = [("Text", "ItemRowIndex"), ("Text", "ItemCode"), ("Text", "ItemName"),
+               ("Text", "UnitName"), ("Money", "ItemQuantity"), ("Money", "ItemPrice"),
+               ("Money", "ItemSumPrice"), ("Money", "ItemDiscount"), ("Money", "ItemVat"),
+               ("Money", "ItemNetPrice")]
+
+
+def source_caps(text):
+    return re.findall(r'table\.Columns\.Add\("([^"]*)", typeof\(string\)\);', builder(text))
+
+
+def source_fields(text):
+    return [(kind, prop.split(".")[1].rstrip(")")) for kind, prop in
+            re.findall(r'SpreadsheetExport\.(Text|Money)\((item\.\w+)\)', builder(text))]
+
+
+check("D20 the source projection is the modelled one: same captions, same fields, same order",
+      source_caps(IOX) == IO_HEADER and source_caps(POSX) == POS_HEADER and
+      source_caps(SALEX) == SALE_HEADER and
+      source_fields(IOX) == IO_FIELDS and source_fields(POSX) == POS_FIELDS and
+      source_fields(SALEX) == SALE_FIELDS,
+      "caps=%s/%s/%s fields=%s" % (source_caps(IOX), source_caps(POSX), source_caps(SALEX),
+                                   source_fields(POSX)))
 check("D18 exactly the five expanded files carry an R-094..R-097 tag, and the finding's own seven "
       "evidence files carry none of them",
       sorted(f for f in tagged_expansion) == sorted(
