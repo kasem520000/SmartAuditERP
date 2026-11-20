@@ -392,8 +392,16 @@ namespace SmartAuditERP.Form_WPF
             {
                 var dlg = new Microsoft.Win32.SaveFileDialog
                 {
-                    Filter   = "CSV Files (*.csv)|*.csv|Excel Files (*.xlsx)|*.xlsx",
-                    FileName = $"حركة_صندوق_{DateTime.Now:yyyyMMdd_HHmm}"
+                    // Repair R-089 (audit finding P7-050): the dialog offered *.xlsx as a second
+                    // option, but this screen has one writer and it produces comma-separated text, so
+                    // picking *.xlsx left a text file under a workbook extension. One announced format
+                    // now matches the one writer, and DefaultExt gives the nameless default an
+                    // extension instead of leaving it to the shell. Announcing a real workbook again
+                    // needs a spreadsheet writer this screen does not have: an owner decision, not a
+                    // guess.
+                    Filter     = "CSV Files (*.csv)|*.csv",
+                    DefaultExt = ".csv",
+                    FileName   = $"حركة_صندوق_{DateTime.Now:yyyyMMdd_HHmm}"
                 };
 
                 if (dlg.ShowDialog() != true) return;

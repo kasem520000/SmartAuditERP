@@ -893,14 +893,19 @@ namespace SmartAuditERP.Form_WPF
 
                 var saveDialog = new Microsoft.Win32.SaveFileDialog
                 {
-                    Filter      = "Excel Files|*.xlsx",
-                    DefaultExt  = "xlsx",
-                    FileName    = "TaxInvoices_Export"
+                    // Repair R-089 (audit finding P7-050): the dialog announced an Excel workbook and
+                    // the writer below produced a DataTable XML document under that name, so the file
+                    // was never the format it claimed to be. The screen keeps its single writer and
+                    // announces it instead: comma-separated text, which is what these nine columns
+                    // already are. Announcing a real workbook needs a spreadsheet writer this screen
+                    // does not have - an owner decision, not a guess.
+                    Filter      = "CSV Files (*.csv)|*.csv",
+                    DefaultExt  = ".csv",
+                    FileName    = "TaxInvoices_Export.csv"
                 };
 
                 if (saveDialog.ShowDialog() != true) return;
 
-                // تصدير البيانات إلى XML مؤقتاً (يمكن استبداله بـ EPPlus)
                 var table = new DataTable("TaxInvoices");
                 table.Columns.Add("نوع الفاتورة");
                 table.Columns.Add("رقم الفاتورة");
@@ -920,7 +925,12 @@ namespace SmartAuditERP.Form_WPF
                         row.DgvNetBeforVat, row.DgvVAT, row.DgvNet);
                 }
 
-                table.WriteXml(saveDialog.FileName);
+                // Repair R-089 (audit finding P7-050): the same nine columns and the same rows now go
+                // out as comma-separated text under the announced schema (comma, doubled quotes, CRLF,
+                // UTF-8) instead of an XML document under a workbook extension. Every cell keeps the
+                // grid's own text, so no value is reformatted or dropped.
+                SpreadsheetExport.WriteDataTable(
+                    saveDialog.FileName, table, SpreadsheetExport.CsvDelimiter);
                 Process.Start(new ProcessStartInfo(saveDialog.FileName)
                     { UseShellExecute = true });
             }
