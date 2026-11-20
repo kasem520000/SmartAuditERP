@@ -530,7 +530,7 @@ namespace SmartAuditERP.Form_WPF
         /// ✅ النسخة المحسّنة - تعمل على Background Thread
         /// - Timeout = 120 ثانية
         /// - اتصال منفصل آمن
-        /// - LEFT JOIN Stocks بدل GetStoreName (N+1)
+        /// - LEFT JOIN Safes بدل GetStoreName (N+1)
         /// - Cache لـ InvoiceObj
         /// </summary>
         private List<InvoiceTxt> BindingListOfInvoices1Async(
@@ -780,6 +780,8 @@ namespace SmartAuditERP.Form_WPF
 
         private string BuildOptimizedSql(QueryParams p)
         {
+            // Repair R-101 (audit finding P7-087): Inv.safe is a warehouse id
+            // in Safes, not a treasury id in Stocks. Keep missing names as a left join.
             return
                 "select Inv.*," +
                 "(SELECT ISNULL(sum(Inv_Sub.val1*Inv_Sub.exchange_price),0) " +
@@ -789,12 +791,12 @@ namespace SmartAuditERP.Form_WPF
                 "Customers.name   as CustName," +
                 "Users.username   as username," +
                 "Branches.name    as BranchName," +
-                "Stocks.name      as StoreName " +   // ✅ بدل GetStoreName
+                "warehouse.name   as StoreName " +   // نفس جدول GetStoreName
                 "from Inv " +
                 "left join Customers on inv.cust_id   = Customers.id " +
                 "left join Users     on inv.sales_emp = Users.emp " +
                 "left join Branches  on inv.branch    = Branches.id " +
-                "left join Stocks    on inv.safe       = Stocks.id " + // ✅ JOIN
+                "left join Safes warehouse on inv.safe = warehouse.id and inv.safe > 0 " +
                 "where " + p.WhereClause +
                 " Inv.IS_Deleted=0 order by date desc";
         }
