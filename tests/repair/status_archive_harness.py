@@ -62,6 +62,12 @@ check('warehouse name repair is in scope; access and branch findings remain open
 check('date layout and sale printer-state repairs are recorded in scope',
       by_id['P7-089']['repair_status'] == 'closed_in_scope' and by_id['P7-089']['repair_ids'] == 'R-102'
       and by_id['P7-163']['repair_status'] == 'closed_in_scope' and by_id['P7-163']['repair_ids'] == 'R-103')
+check('batch report and packing fixes classified conservatively',
+      all(by_id[fid]['repair_status'] == 'closed_in_scope' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P7-081', 'R-104'), ('P7-153', 'R-106'), ('P7-068', 'R-107')])
+      and all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P7-106', 'R-105'), ('P7-123', 'R-108')])
+      and all(by_id[fid]['repair_status'] != 'closed_in_scope' for fid in ('P7-124', 'P7-154')))
 check('plan-only repairs are included and P5-027 remains partial',
       by_id['P5-010']['repair_ids'] == 'R-058' and by_id['P5-027']['repair_ids'] == 'R-057'
       and by_id['P5-027']['repair_status'] == 'partial_open')
