@@ -2903,9 +2903,18 @@ namespace SmartAuditERP.Form_WPF
             var frm = new frmImportInvoice();
             frm.ShowDialog();
 
-            if (frm.isDone && frm.InvGID != "-1")
-                Navigate("select * from Inv where InvGlobalID=N'" +
-                         frm.InvGID + "'");
+            // Repair R-087 (audit finding P7-160, the same shape as the two editors the finding
+            // names): the acceptance test guarded Navigate only, so returning from the dialog without
+            // accepting still cleared the note, asked the numbering helper for a new invoice number,
+            // marked the header new and rebound the screen. A cancelled import now leaves the current
+            // invoice exactly as it stood. The standing leave-decision is deliberately NOT added here:
+            // this caller is outside the P7-159 evidence appended in 7B30, so whether it should prompt
+            // stays an owner question rather than a guess.
+            bool accepted = frm.isDone && frm.InvGID != "-1";
+            if (!accepted) return;
+
+            Navigate("select * from Inv where InvGlobalID=N'" +
+                     frm.InvGID + "'");
 
             Invoic.InvoiceType = (InvoiceType)InvType;
             Invoic.ProcType = ProcType;
