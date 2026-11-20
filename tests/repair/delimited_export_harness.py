@@ -10,8 +10,11 @@ thousands separator could add columns and rows, lose text, or move an amount
 into the wrong column.
 
 The repair introduces one writer with an announced schema
-(SmartsheetExport: delimiter, doubled quotes, CRLF, invariant money, UTF-8)
-and wires the four cited exports to it.
+(SpreadsheetExport: delimiter, doubled quotes, CRLF, invariant money, UTF-8, a
+record builder and type-agnostic cell helpers) and wires the cited exports to
+it: four in R-082, ten in R-083, ten in R-084 and the last seven in R-085, so
+every delimited writer the finding names is gone. Two evidence entries hold no
+writer at all and are recorded rather than patched.
 
 No .NET toolchain exists here, so the writer and the four legacy writers are
 modelled in Python and read back with a reader that follows the same announced
@@ -441,12 +444,236 @@ check("G-writer the builder and the type-agnostic helpers are part of the announ
       EXPORT.count("case IFormattable formattable:") == 1 and
       EXPORT.count("formattable.ToString(null, CultureInfo.InvariantCulture)") == 1)
 
+def method_slice(text, start, end):
+    """The source between two landmarks, so a witness can be scoped to one method."""
+    i = text.index(start)
+    j = text.index(end, i)
+    return text[i:j]
+
+
+def site_shape(src):
+    """Header cells and the distinct record widths of one wired export."""
+    header_at = [m.start() for m in re.finditer(r"export\.Header", src)]
+    row_at = [m.start() for m in re.finditer(r"export\.Row", src)]
+    header = [a.strip().strip('"') for a in call_arguments(src, header_at[0])] if header_at else []
+    widths = sorted({len(call_arguments(src, at)) for at in row_at})
+    return header, widths
+
+
+print()
+print("Part H: R-084 static witnesses - ten more exports on the announced writer")
+
+SITES_H = {
+    "frmRptCostCenter": (
+        ["الرمز", "مركز التكلفة", "رصيد افتتاحي مدين", "رصيد افتتاحي دائن", "حركة مدين",
+         "حركة دائن", "رصيد مدين", "رصيد دائن", "رصيد ختامي مدين", "رصيد ختامي دائن", "اسم الحساب",
+         "العملية", "رقم العملية", "التاريخ"],
+        [14]),
+    "frmRptSalesByCategory": (
+        ["اسم المجموعة", "رمز المجموعة", "اسم الصنف", "رمز الصنف", "الكمية", "الإجمالي", "الضريبة",
+         "الصافي", "الخصم"],
+        [9]),
+    "frmRptRentInvoices": (
+        ["الرقم", "المركب", "الفئة", "الصافي", "التاريخ", "العميل", "المستخدم", "الجوال",
+         "ضمن الخطة"],
+        [9]),
+    "frmRptSerialNo": (
+        ["م", "الصنف", "رمز الصنف", "التسلسل", "نوع الفاتورة", "رقم الفاتورة", "التاريخ", "الفرع"],
+        [8]),
+    "frmRptItemsProfitDetails": (
+        ["م", "المستودع", "نوع العملية", "التاريخ", "الرقم", "رمز المادة", "المادة", "الوحدة",
+         "الكمية", "متوسط التكلفة", "إجمالي التكلفة", "السعر", "المجموع", "الإجمالي", "الخصم",
+         "الربح", "نسبة الربح"],
+        [17]),
+    "frmRptInvNotfic": (
+        ["م", "نوع الإشعار", "رقم الإشعار", "رقم المرجع", "التاريخ", "الوقت", "العميل", "نقدي",
+         "شبكة", "المجموع", "الخصم", "الإجمالي", "الضريبة", "ضريبة إضافية", "إجمالي الضريبة",
+         "الصافي", "المستودع", "الفرع", "المندوب", "المستخدم"],
+        [16, 20]),
+    "frmRptInvSalesDetails": (
+        ["#", "نوع الفاتورة", "رقم الفاتورة", "التاريخ", "الوقت", "نوع الدفع", "المدفوع", "العميل",
+         "نقدي", "شبكة", "المجموع", "الخصم", "الإجمالي", "الضريبة", "ضريبة إضافية",
+         "إجمالي الضريبة", "الصافي", "المستودع", "الفرع", "المندوب", "المستخدم"],
+        [21]),
+    "frmRptInvSalesDetailsPosAndroid": (
+        ["#", "نوع الفاتورة", "رقم الفاتورة", "التاريخ", "الوقت", "نوع الدفع", "العميل", "نقدي",
+         "شبكة", "المجموع", "الخصم", "الإجمالي", "الضريبة", "ضريبة إضافية", "إجمالي الضريبة",
+         "الصافي", "المستودع", "الفرع", "المستخدم"],
+        [19]),
+    "frmRptItemsSalesDetails": (
+        ["م", "رمز الصنف", "الصنف", "الكمية", "صافي البيع", "الفئة"],
+        [6]),
+    "frmRptItemsSalesDetailsPOS": (
+        ["م", "رمز الصنف", "الصنف", "الكمية", "صافي البيع", "الفئة"],
+        [6]),
+}
+
+for name, (expected_header, widths) in SITES_H.items():
+    src = open("SmartAuditERP/Form_WPF/%s.xaml.cs" % name, encoding="utf-8").read()
+    header, row_widths = site_shape(src)
+    check("H-%s one header, records at the widths the screen announced, no local writer left" % name,
+          header == expected_header and row_widths == widths and
+          src.count("SpreadsheetExport.Begin(") == 1 and src.count("export.Save();") == 1 and
+          src.count("sb.AppendLine") == 0 and src.count("writer.WriteLine") == 0 and
+          src.count("sw.WriteLine") == 0 and src.count("File.WriteAllText") == 0 and
+          src.count("Repair R-084 (audit finding P7-048)") == 1,
+          "header=%s rows=%s" % (header, row_widths))
+
+    path = method_slice(src, "Repair R-084 (audit finding P7-048)", "export.Save();")
+    check("H-%s the export path builds no text of its own" % name,
+          all(token not in path for token in
+              ("StringBuilder", "StreamWriter", "AppendLine", "WriteLine",
+               "WriteAllText", "string.Join")),
+          "tokens=%s" % [t for t in ("StringBuilder", "StreamWriter", "AppendLine", "WriteLine",
+                                     "WriteAllText", "string.Join") if t in path])
+
+notfic = open("SmartAuditERP/Form_WPF/frmRptInvNotfic.xaml.cs", encoding="utf-8").read()
+totals_at = [m.start() for m in re.finditer(r"export\.Row", notfic)][1]
+check("H-frmRptInvNotfic the totals record keeps the sixteen cells it always had",
+      len(call_arguments(notfic, totals_at)) == 16 and
+      call_arguments(notfic, totals_at)[6].strip() == '"المجاميع"')
+
+print()
+print("Part I: R-085 static witnesses - the last seven exports and the private encoders they dropped")
+
+SITES_I = {"frmItemsalesdetailsPos": (
+        ["م", "المستودع", "نوع العملية", "المورد", "التاريخ", "الرقم", "المادة", "الوحدة",
+         "الكمية", "السعر", "المجموع", "الخصم", "قبل الضريبة", "الضريبة", "الإجمالي", "المستخدم"],
+        [16]),
+    "frmSummaryQ": (
+        ["م", "قيمة السند", "تاريخ السند", "رقم السند", "نوع السند", "العميل", "طريقة الدفع",
+         "المندوب", "البيان", "الفرع", "المستخدم"],
+        [11]),
+    "IncomeStatementForm": (
+        ["المجموعة", "رقم الحساب", "اسم الحساب", "الرصيد", "ملاحظات"],
+        [5]),
+    "frmRptIncomeStatement": (
+        ["الحساب", "اسم الحساب", "رصيد مدين", "رصيد دائن"],
+        [4]),
+    "frmRptItemsActivityDetailed": (
+        ["م", "نوع الفاتورة", "المستودع", "رمز الصنف", "الصنف", "رقم الفاتورة", "رقم المرجع",
+         "التاريخ", "الحساب", "الوحدة", "الكمية في الفاتورة", "السعر في الفاتورة",
+         "الإجمالي في الفاتورة", "الكمية الداخلة", "الكمية الخارجة", "الرصيد", "السعر", "الإجمالي"],
+        [18]),
+    "frmCostCenterBalance": (
+        ["م", "مدين", "دائن", "الرصيد", "الحالة", "الرقم العام", "رقم السند", "الفرع", "النوع",
+         "التاريخ", "البيان"],
+        [11]),
+    "frmInvsProfit": (
+        ["م", "نوع الفاتورة", "رقم الفاتورة", "رقم المرجع", "التاريخ", "نوع الدفع", "العميل",
+         "المستخدم", "المجموع", "الخصم", "الإجمالي", "التكلفة", "الربح", "نسبة الربح", "المستودع",
+         "الفرع"],
+        [16]),
+}
+
+for name, (expected_header, widths) in SITES_I.items():
+    src = open("SmartAuditERP/Form_WPF/%s.xaml.cs" % name, encoding="utf-8").read()
+    header, row_widths = site_shape(src)
+    check("I-%s one header, records at the widths the screen announced" % name,
+          header == expected_header and row_widths == widths and
+          src.count("SpreadsheetExport.Begin(") == 1 and src.count("export.Save();") == 1 and
+          src.count("Repair R-085 (audit finding P7-048)") == 1,
+          "header=%s rows=%s" % (header, row_widths))
+
+    path = method_slice(src, "Repair R-085 (audit finding P7-048)", "export.Save();")
+    check("I-%s the export path builds no text of its own" % name,
+          all(token not in path for token in
+              ("StringBuilder", "StreamWriter", "AppendLine", "WriteLine",
+               "WriteAllText", "WriteAllLines", "string.Join")),
+          "tokens=%s" % [t for t in ("StringBuilder", "StreamWriter", "AppendLine", "WriteLine",
+                                     "WriteAllText", "WriteAllLines", "string.Join") if t in path])
+
+pos = open("SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs", encoding="utf-8").read()
+csv_method = method_slice(pos, "private void ExportToCsv(string fileName)",
+                          "private void ExportToExcelHtml(string fileName)")
+check("I-frmItemsalesdetailsPos the delimited export is clean and the HTML export keeps its own writer",
+      csv_method.count("AppendLine") == 0 and csv_method.count("WriteAllText") == 0 and
+      pos.count("ExportToExcelHtml") == 2 and
+      method_slice(pos, "private void ExportToExcelHtml(string fileName)",
+                   "private string GetCurrencyName(int currencyId)").count("sb.AppendLine") > 20)
+
+ccb = open("SmartAuditERP/Form_WPF/frmCostCenterBalance.xaml.cs", encoding="utf-8").read()
+check("I-frmCostCenterBalance the private EscapeCsv is gone and every grid cell goes through Text()",
+      ccb.count("private static string EscapeCsv(") == 0 and ccb.count("Select(EscapeCsv)") == 0 and
+      ccb.count("SpreadsheetExport.Text(GridControl1.GetCellValue(rowIndex, ") == 11 and
+      ccb.count("File.WriteAllText(SettingsFile, json, Encoding.UTF8);") == 1)
+
+profit = open("SmartAuditERP/Form_WPF/frmInvsProfit.xaml.cs", encoding="utf-8").read()
+check("I-frmInvsProfit the private quoter is gone while the screen's own number formatting stays",
+      profit.count("private static string Csv(string value)") == 0 and
+      profit.count("private static string Format(object val)") == 1 and
+      profit.count("SpreadsheetExport.Text(Format(row[") == 5 and
+      profit.count("File.WriteAllLines") == 0)
+
+income = open("SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs", encoding="utf-8").read()
+check("I-IncomeStatementForm the balance leaves as invariant money and the path rename stays",
+      income.count("SpreadsheetExport.Money(row.Balance)") == 1 and
+      income.count('.Replace(".xlsx", ".csv")') >= 1 and income.count("StreamWriter") == 0)
+
+summaryq = open("SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs", encoding="utf-8").read()
+check("I-frmSummaryQ the save dialog, the opener and the saved-path message stay",
+      summaryq.count("saveDialog.ShowDialog() == true") == 1 and
+      summaryq.count("Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });") == 1 and
+      "تم حفظ الملف بنجاح في:" in summaryq and summaryq.count("writer.WriteLine") == 0)
+
+print()
+print("Part J: what the conversions change, and the two evidence entries that hold no writer")
+
+
+def legacy_always_quoted(header, rows):
+    """frmInvsProfit, frmRptRentInvoices and the two item-sales screens: every cell wrapped in
+    quotes and inner quotes doubled - valid, but a second private copy of the same schema."""
+    def line(cells):
+        return COMMA.join(QUOTE + str(c).replace(QUOTE, QUOTE + QUOTE) + QUOTE for c in cells)
+    return NL.join([line(header)] + [line(r) for r in rows]) + NL
+
+
+Q_HEADER = ["م", "العميل", "الصافي"]
+Q_ROWS = [["1", 'شركة "البحر" - فرع، الحديدة', "1234.50"], ["2", "عميل، ثاني", "0.75"]]
+private = legacy_always_quoted(Q_HEADER, Q_ROWS)
+announced = write_delimited(Q_HEADER, Q_ROWS, COMMA)
+check("J1 dropping a private encoder that always quotes changes no record",
+      parse_delimited(private, COMMA) == parse_delimited(announced, COMMA) == [Q_HEADER] + Q_ROWS,
+      "private=%s announced=%s" % (parse_delimited(private, COMMA), parse_delimited(announced, COMMA)))
+check("J1b the announced file quotes only the cells that need it, so a plain cell stays a number",
+      announced.split(NL)[0] == "م,العميل,الصافي" and announced.split(NL)[2].startswith("2,") and
+      announced.count(QUOTE) < private.count(QUOTE),
+      announced.split(NL)[0])
+
+CULTURE_AMOUNT = "{0:,.2f}".format(1234.5)
+INCOME_HEADER = ["المجموعة", "رقم الحساب", "اسم الحساب", "الرصيد", "ملاحظات"]
+legacy_income = NL.join([
+    COMMA.join(INCOME_HEADER),
+    COMMA.join(['"الإيرادات"', '"1101"', '"بيع"', CULTURE_AMOUNT, '"ملاحظة"'])]) + NL
+repaired_income = write_delimited(
+    INCOME_HEADER, [["الإيرادات", "1101", "بيع", money(1234.5), "ملاحظة"]], COMMA)
+legacy_records = parse_delimited(legacy_income, COMMA)
+repaired_records = parse_delimited(repaired_income, COMMA)
+check("J2 a bare culture amount gave the income statement six columns where it announced five",
+      len(legacy_records[0]) == 5 and len(legacy_records[1]) == 6 and
+      legacy_records[1][3] == "1" and legacy_records[1][4] == "234.50",
+      "legacy=%s" % (legacy_records,))
+check("J2b the same record now leaves as five columns holding one invariant amount",
+      len(repaired_records[1]) == 5 and repaired_records[1][3] == "1234.50" and
+      repaired_records[0] == INCOME_HEADER,
+      "repaired=%s" % (repaired_records,))
+
+HOME = open("SmartAuditERP/Home.xaml.cs", encoding="utf-8").read()
+QXAML = open("SmartAuditERP/Form_WPF/frmSummaryQ.xaml", encoding="utf-8").read()
+check("J3 the two evidence entries that hold no delimited writer are recorded, not patched",
+      HOME.count("StreamWriter") == 0 and HOME.count("AppendLine") == 0 and
+      HOME.count("WriteAllText") == 0 and HOME.count("WriteAllLines") == 0 and
+      HOME.count(".csv") == 0 and "Repair R-08" not in HOME and
+      QXAML.count("StreamWriter") == 0 and QXAML.count("AppendLine") == 0 and
+      QXAML.count("BtnExcportExcel") == 2 and "Repair R-08" not in QXAML)
+
 print()
 if FAILS:
     print("RESULT: FAIL (%d failing checks)" % len(FAILS))
     for f in FAILS:
         print(" -", f)
     sys.exit(1)
-print("RESULT: PASS - one announced schema keeps records, columns and amounts intact, and the")
-print("four cited exports round-trip Arabic text, quotes, tabs, newlines and N2 money.")
+print("RESULT: PASS - one announced schema keeps records, columns and amounts intact; the")
+print("thirty-one cited exports round-trip Arabic text, quotes, tabs, newlines and N2 money, and")
+print("no screen keeps a private delimited writer of its own.")
 sys.exit(0)
