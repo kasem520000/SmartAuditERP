@@ -2447,36 +2447,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnCloseDay_Click(object sender, RoutedEventArgs e)
         {
-            var pwd = new frmCheckPwd { operNo = 1 };
-            pwd.ShowDialog();
-            if (!pwd.Iscorrect) return;
-
-            using var adapter = new SqlDataAdapter(
-                "Select ActiveAuto from SettingEmail where Branch_Id="
-                + MainClass.BranchNo, this.conn);
-            var dt = new DataTable();
-            adapter.Fill(dt);
-
-            if (dt.Rows.Count > 0
-                && Convert.ToBoolean(dt.Rows[0]["ActiveAuto"])
-                && !MainClass.CheckForInternetConnection())
-            {
-                var res = DXMessageBox.Show(
-                    "الإنترنت غير متصل، للاستمرار في الإغلاق اضغط نعم.",
-                    "تحذير", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if (res == MessageBoxResult.No) return;
-            }
-            var Home = new Home();
-            var closeShift = new frmCloseShift();
-            closeShift.Activate();
-            if (closeShift.NoInvsFound(2))
-            {
-                DXMessageBox.Show("لا يوجد فواتير جديدة يمكن إغلاقها");
-                Home.IsCashierClosed = true;
-                return;
-            }
-            closeShift.closeShift(2);
-            if (Home.IsCashierClosed) this.Close();
+            frmCloseShift.ShowOrdinaryCloseUnavailable();
         }
 
         private void btnsrch_Click(object sender, RoutedEventArgs e)

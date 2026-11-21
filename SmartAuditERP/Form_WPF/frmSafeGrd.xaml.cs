@@ -233,164 +233,15 @@ namespace SmartAuditERP.Form_WPF
 
         public void CalcStock1()
         {
-            try
-            {
-                _inventoryItems.Clear();
-
-                if (!chkAll.IsChecked == true && cmbSafes.SelectedIndex == -1)
-                {
-                    DXMessageBox.Show("الرجاء اختيار المستودع", "",
-                                    MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-
-                // تجهيز DataTable الجرد
-                var resultTable = new DataTable();
-                resultTable.Columns.Add("DgvNo",           typeof(int));
-                resultTable.Columns.Add("DgvItemCode",     typeof(string));
-                resultTable.Columns.Add("DgvItemName",     typeof(string));
-                resultTable.Columns.Add("DgvBarcode",      typeof(string));
-                resultTable.Columns.Add("DgvQty",          typeof(double));
-                resultTable.Columns.Add("DgvAveCost",      typeof(double));
-                resultTable.Columns.Add("DgvTotalCost",    typeof(double));
-                resultTable.Columns.Add("DgvSalePrice",    typeof(double));
-                resultTable.Columns.Add("DgvTotalSalePrice", typeof(double));
-                resultTable.Columns.Add("DgvItemId",       typeof(int));
-
-                // تحديد المستودع والفرع
-                int safeId   = -1;
-                int branchId = 0;
-
-                if (cmbSafes.SelectedIndex > -1 && cmbSafes.SelectedValue != null)
-                    int.TryParse(cmbSafes.SelectedValue.ToString(), out safeId);
-
-                if (cmbBranches.SelectedIndex > -1 && cmbBranches.SelectedValue != null)
-                    int.TryParse(cmbBranches.SelectedValue.ToString(), out branchId);
-
-                // تحديد نص عمود سعر التكلفة
-                if (rbAvgCost.IsChecked == true)
-                    colAveCost.Header = "💲 متوسط التكلفة";
-                else if (rbPurchPrice.IsChecked == true)
-                    colAveCost.Header = "💲 سعر الشراء";
-                else if (rbLastPurchPrice.IsChecked == true)
-                    colAveCost.Header = "💲 آخر سعر شراء";
-
-                // الحصول على بيانات الجرد
-                DataTable stockData = GetStockData(safeId, branchId);
-
-                // بناء شرط الوحدة
-                string unitCondition = cmbUnits.SelectedIndex == -1
-                    ? " AND ItemUnits.unit = Items.unit"
-                    : $" AND ItemUnits.unit = {cmbUnits.SelectedValue}";
-
-                ProgressBar1.Value   = 0;
-                ProgressBar1.Maximum = stockData.Rows.Count > 0 ? stockData.Rows.Count : 1;
-
-                int rowIndex = 0;
-
-                foreach (DataRow stockRow in stockData.Rows)
-                {
-                    ProgressBar1.Value++;
-
-                    // تصفية المجموعة
-                    if (cmbGroup.SelectedIndex != -1
-                        && stockRow.Table.Columns.Contains("Category"))
-                    {
-                        if (!stockRow["Category"].ToString()
-                                .Equals(cmbGroup.SelectedValue?.ToString()))
-                            continue;
-                    }
-
-                    if (!int.TryParse(stockRow[0].ToString(), out int itemId))
-                        continue;
-
-                    // جلب بيانات الصنف
-                    EnsureOpen(conn);
-                    string itemSql = $@"SELECT Items.id, Items.code, Items.name,
-                                               ItemUnits.sale AS sale_price,
-                                               ItemUnits.barcode,
-                                               ItemUnits.purch AS purch_price,
-                                               ItemUnits.perc
-                                        FROM Items
-                                        INNER JOIN ItemUnits ON Items.id = ItemUnits.ItemId
-                                        WHERE Items.id = {itemId}
-                                          AND Items.is_deleted = 0
-                                          {unitCondition}";
-
-                    var itemAdapter = new SqlDataAdapter(itemSql, conn);
-                    var itemDt = new DataTable();
-                    itemAdapter.Fill(itemDt);
-                    EnsureClose(conn);
-
-                    if (itemDt.Rows.Count == 0)
-                        continue;
-
-                    double perc = 1.0;
-                    if (double.TryParse(itemDt.Rows[0]["perc"].ToString(), out double percVal))
-                        perc = percVal > 0 ? percVal : 1.0;
-
-                    double rawQty = 0.0;
-                    if (double.TryParse(stockRow[1].ToString(), out double rawQ))
-                        rawQty = rawQ;
-
-                    double qty = rawQty / perc;
-
-                    // تصفية الكمية
-                    if (rbPositiveQty.IsChecked == true && qty <= 0) continue;
-                    if (rbNegativeQnty.IsChecked == true && qty >= 0) continue;
-                    if (rbZeroQnty.IsChecked == true && qty != 0)     continue;
-
-                    // حساب التكلفة
-                    double costPrice = 0.0;
-                    if (rbAvgCost.IsChecked == true)
-                    {
-                        // ItemOper.AvgCost - استدعاء دالة المشروع
-                        // costPrice = ItemOper.AvgCost(itemId, MainClass.BranchNo, safeId) * perc;
-                        costPrice = GetAvgCost(itemId, branchId, safeId) * perc;
-                    }
-                    else if (rbPurchPrice.IsChecked == true)
-                    {
-                        double.TryParse(itemDt.Rows[0]["purch_price"].ToString(), out costPrice);
-                    }
-                    else if (rbLastPurchPrice.IsChecked == true)
-                    {
-                        costPrice = GetRecentPurchPrice(itemId);
-                    }
-
-                    if (qty < 0) costPrice = 0.0;
-
-                    double totalCost = qty * costPrice;
-                    double salePrice = 0.0;
-                    double.TryParse(itemDt.Rows[0]["sale_price"].ToString(), out salePrice);
-                    double totalSalePrice = salePrice * qty;
-
-                    rowIndex++;
-                    _inventoryItems.Add(new InventoryGridItem
-                    {
-                        DgvNo            = rowIndex,
-                        DgvItemCode      = itemDt.Rows[0]["code"].ToString(),
-                        DgvItemName      = itemDt.Rows[0]["name"].ToString(),
-                        DgvBarcode       = itemDt.Rows[0]["barcode"].ToString(),
-                        DgvQty           = qty,
-                        DgvAveCost       = costPrice,
-                        DgvTotalCost     = totalCost,
-                        DgvSalePrice     = salePrice,
-                        DgvTotalSalePrice = totalSalePrice,
-                        DgvItemId        = itemId
-                    });
-                }
-
-                SelectedId = -1;
-
-                // تحديث المجاميع
-                UpdateSummaries();
-                _Finished = true;
-            }
-            catch (Exception ex)
-            {
-                DXMessageBox.Show("خطأ أثناء حساب المخزون\nتفاصيل الخطأ: " + ex.Message,
-                                "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            // No SQL or zero-valued substitute until the source schema and valuation
+            // dimensions are reconciled. Do not hand an invalid total to the balance sheet.
+            ISDone = false;
+            _Finished = false;
+            _stockTotal = 0.0;
+            _inventoryItems.Clear();
+            UpdateSummaries();
+            DXMessageBox.Show("حساب وتقييم الجرد غير متاح حتى مراجعة مصادر المخزون والتكلفة.",
+                "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         private DataTable GetStockData(int safeId, int branchId)
@@ -524,10 +375,10 @@ namespace SmartAuditERP.Form_WPF
                 if (string.IsNullOrWhiteSpace(txtItemName.Text)) return;
 
                 EnsureOpen(conn);
-                string sql = $@"SELECT name, id, Code FROM Items
-                                WHERE IS_Deleted = 0
-                                  AND name = N'{txtItemName.Text}'";
+                string sql = @"SELECT name, id, Code FROM Items
+                                WHERE IS_Deleted = 0 AND name = @search";
                 var adapter = new SqlDataAdapter(sql, conn);
+                adapter.SelectCommand.Parameters.Add("@search", SqlDbType.NVarChar).Value = txtItemName.Text;
                 var dt = new DataTable();
                 adapter.Fill(dt);
                 EnsureClose(conn);
@@ -557,10 +408,10 @@ namespace SmartAuditERP.Form_WPF
                 if (string.IsNullOrWhiteSpace(txtItemCode.Text)) return;
 
                 EnsureOpen(conn);
-                string sql = $@"SELECT name, id, Code FROM Items
-                                WHERE IS_Deleted = 0
-                                  AND Code = N'{txtItemCode.Text}'";
+                string sql = @"SELECT name, id, Code FROM Items
+                                WHERE IS_Deleted = 0 AND Code = @search";
                 var adapter = new SqlDataAdapter(sql, conn);
+                adapter.SelectCommand.Parameters.Add("@search", SqlDbType.NVarChar).Value = txtItemCode.Text;
                 var dt = new DataTable();
                 adapter.Fill(dt);
                 EnsureClose(conn);
@@ -751,9 +602,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void BtnAprroved_Click(object sender, RoutedEventArgs e)
         {
-            ISDone      = true;
-            _stockTotal = _inventoryItems.Sum(x => x.DgvTotalCost);
-            this.Close();
+            ISDone = false;
+            DXMessageBox.Show("لا يمكن اعتماد الجرد لأن حسابه غير متاح.",
+                "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         private void BtnShowItem_Click(object sender, RoutedEventArgs e)

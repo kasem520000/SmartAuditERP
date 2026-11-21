@@ -234,8 +234,10 @@ check("E2 ReplaceFiles reports success/failure",
       "private bool ReplaceFiles()" in FRMUPD and "return false;" in FRMUPD)
 check("E3 manual path guards page advance on the result",
       "proceed = ReplaceFiles();" in FRMUPD and "if (!proceed) return;" in FRMUPD)
-check("E4 license-date side effect left untouched for P1-032 policy work",
-      "UpdateLicenseEndDate();" in FRMUPD)
+check("E4 update and connection do not silently extend license dates",
+      "UpdateLicenseEndDate();" not in FRMUPD and
+      "UPDATE License SET LicenseExpire" not in FRMUPD and
+      "UPDATE License SET LicenseExpire" not in SRVSET)
 
 print()
 if FAILS:

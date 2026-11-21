@@ -3380,47 +3380,7 @@ namespace SmartAuditERP
 
         private void stripCloseCasher_Click(object sender, RoutedEventArgs e)
         {
-            var frmPwd = new frmCheckPwd();
-            var frmPOS = new frmPOS();
-            frmPwd.operNo = 1;
-            frmPwd.ShowDialog();
-            if (!frmPwd.Iscorrect) return;
-
-            frmPOS.CheckHold();
-            for (int idx = 0; idx <= 4; idx++)
-            {
-                if (frmPOS.HoldList[idx] != 0)
-                {
-                    MessageBox.Show(" لا تستطيع إغلاق اليومية !! يوجد فواتير معلقة ");
-                    return;
-                }
-            }
-
-            var da = new SqlDataAdapter("select ActiveAuto from SettingEmail where Branch_Id=" + MainClass.BranchNo, this.conn);
-            var dt = new DataTable();
-            da.Fill(dt);
-
-            if (dt.Rows.Count > 0 && Convert.ToBoolean(dt.Rows[0]["ActiveAuto"]))
-            {
-                if (!MainClass.CheckForInternetConnection())
-                {
-                    if (MessageBox.Show("   الإنترنت غير متصل بالجهاز, للإستمرار في الإغلاق اضغط نعم .    ", "تحذير",
-                        MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
-                        return;
-                }
-            }
-
-            var frmClose = new frmCloseShift();
-            frmClose.Activate();
-            if (frmClose.NoInvsFound(1))
-            {
-                MessageBox.Show("لا يوجد فواتير جديدة يمكن إغلاقها  ");
-                this.IsCashierClosed = true;
-            }
-            else
-            {
-                frmClose.closeShift(1);
-            }
+            frmCloseShift.ShowOrdinaryCloseUnavailable();
         }
 
         private void stripSandQclient_Click(object sender, RoutedEventArgs e)
@@ -3751,33 +3711,7 @@ namespace SmartAuditERP
 
         private void stripMarineCloseCasher_Click(object sender, RoutedEventArgs e)
         {
-            var frmPwd = new frmCheckPwd();
-            frmPwd.operNo = 1;
-            frmPwd.ShowDialog();
-            if (!frmPwd.Iscorrect) return;
-
-            var da = new SqlDataAdapter("Select ActiveAuto from SettingEmail where Branch_Id=" + MainClass.BranchNo, this.conn);
-            var dt = new DataTable();
-            da.Fill(dt);
-            if (dt.Rows.Count > 0 && Convert.ToBoolean(dt.Rows[0]["ActiveAuto"]) && !MainClass.CheckForInternetConnection())
-            {
-                if (MessageBox.Show("   الإنترنت غير متصل بالجهاز, للإستمرار في الإغلاق اضغط نعم .    ", "تحذير",
-                    MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
-                    return;
-            }
-
-            var frmClose = new frmCloseShift();
-            frmClose.Activate();
-            if (frmClose.NoInvsFound(2))
-            {
-                MessageBox.Show("لا يوجد فواتير جديدة يمكن إغلاقها  ");
-                this.IsCashierClosed = true;
-            }
-            else
-            {
-                frmClose.closeShift(2);
-                if (this.IsCashierClosed) this.Close();
-            }
+            frmCloseShift.ShowOrdinaryCloseUnavailable();
         }
 
         private void stripClosesRpt_Click(object sender, RoutedEventArgs e)

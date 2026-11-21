@@ -1246,26 +1246,26 @@ namespace SmartAuditERP
 
         public static bool AllowEdit(string frmName)
         {
+            if (string.IsNullOrWhiteSpace(frmName) || MainClass.UserID <= 0)
+                return false;
             try
             {
                 using var connection = MainClass.ConnObj();
                 using var adapter = new SqlDataAdapter(
-                    "select ISNULL(IS_Edit,1) IS_Edit "
-                    + "from User_Permissions,Forms "
-                    + "where User_Permissions.Form_id=Forms.id "
-                    + "and Forms.FormName=N'" + frmName + "' "
-                    + "and user_id=" + MainClass.UserID,
-                    connection);
+                    "select User_Permissions.IS_Edit from User_Permissions " +
+                    "inner join Forms on User_Permissions.Form_id=Forms.id " +
+                    "where Forms.FormName=@formName and user_id=@userId", connection);
+                adapter.SelectCommand.Parameters.Add("@formName", SqlDbType.NVarChar).Value = frmName;
+                adapter.SelectCommand.Parameters.Add("@userId", SqlDbType.Int).Value = MainClass.UserID;
                 var dt = new DataTable();
                 adapter.Fill(dt);
-
-                return dt.Rows.Count > 0
-                    ? Convert.ToBoolean(dt.Rows[0]["IS_Edit"])
-                    : true;
+                // Missing, ambiguous or NULL grants are not permission.
+                return dt.Rows.Count == 1 && dt.Rows[0]["IS_Edit"] != DBNull.Value &&
+                       Convert.ToBoolean(dt.Rows[0]["IS_Edit"]);
             }
             catch
             {
-                return true;
+                return false;
             }
         }
 

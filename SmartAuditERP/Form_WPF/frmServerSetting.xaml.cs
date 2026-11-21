@@ -189,17 +189,7 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
-        private void UpdateLicenseEndDate()
-        {
-            try
-            {
-                if (conn.State != ConnectionState.Open) conn.Open();
-                new SqlCommand(
-                    "UPDATE License SET LicenseExpire = DATEADD(YEAR, 1, LicenseExpire);",
-                    conn).ExecuteNonQuery();
-            }
-            catch { /* تجاهل */ }
-        }
+
 
         #endregion
 
@@ -419,7 +409,6 @@ namespace SmartAuditERP.Form_WPF
 
                 _isLoaded = true;
                 loadDBs();
-                UpdateLicenseEndDate();
 
                 frmUserLogin.conn = conn;
                 frmUserLogin.loadDBs();

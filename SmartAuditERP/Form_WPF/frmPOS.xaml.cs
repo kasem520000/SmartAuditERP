@@ -2527,32 +2527,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnCloseDay_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                var pwd = new frmCheckPwd { operNo = 1 };
-                pwd.ShowDialog();
-                if (!pwd.Iscorrect) return;
-
-                CheckHold();
-                for (int i = 0; i <= 8; i++)
-                    if (HoldList[i] != 0)
-                    {
-                        DXMessageBox.Show("لا تستطيع إغلاق اليومية !! يوجد فواتير معلقة");
-                        return;
-                    }
-                var Home = new Home();
-                var shift = new frmCloseShift();
-                shift.Activate();
-                if (shift.NoInvsFound(1))
-                {
-                    DXMessageBox.Show("لا يوجد فواتير جديدة يمكن إغلاقها");
-                    Home.IsCashierClosed = true;
-                    return;
-                }
-                shift.closeShift(1);
-                if (Home.IsCashierClosed) Close();
-            }
-            catch { }
+            frmCloseShift.ShowOrdinaryCloseUnavailable();
         }
 
         private void btnMunalBarcode_Click(object sender, RoutedEventArgs e)

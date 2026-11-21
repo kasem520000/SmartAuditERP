@@ -2063,95 +2063,21 @@ namespace SmartAuditERP.Form_WPF
 
         #region ── Close Shift ────────────────────────────────
 
+        public static void ShowOrdinaryCloseUnavailable()
+        {
+            MessageBox.Show("الإغلاق غير متاح في هذا المسار؛ لم يتم إغلاق اليومية.",
+                "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+
         public bool NoInvsFound(int closeType)
         {
-            try
-            {
-                string branchFilter = MainClass.BranchNo != -1
-                    ? $"inv.branch = {MainClass.BranchNo} AND " +
-                      $"inv.sales_emp = {MainClass.EmpNo} AND "
-                    : string.Empty;
-
-                EnsureConnectionOpen(conn);
-
-                int maxCloseId = Convert.ToInt32(
-                    new SqlCommand(
-                        $"SELECT ISNULL(MAX(ClosedID), 0) FROM CasherClosed " +
-                        $"WHERE user_id = {MainClass.EmpNo}",
-                        conn).ExecuteScalar());
-
-                if (maxCloseId > 0)
-                {
-                    MainClass.lastCashercloseDate = Convert.ToDateTime(
-                        new SqlCommand(
-                            $"SELECT endTime FROM CasherClosed " +
-                            $"WHERE ClosedID = {maxCloseId}",
-                            conn).ExecuteScalar());
-                }
-                else
-                {
-                    string selectQuery = closeType == 1
-                        ? $"SELECT MIN(date) AS date1 FROM Inv " +
-                          $"WHERE {branchFilter} inv.inv_type = 3 AND " +
-                          "inv.pay_type <> -1 AND inv.pay_type <> 5 AND " +
-                          "Inv.IS_Deleted = 0"
-                        : $"SELECT MIN(date) AS date1 FROM RentInvoice " +
-                          $"WHERE IS_Deleted = 0 AND " +
-                          $"sales_emp = {MainClass.EmpNo}";
-
-                    SqlDataAdapter adapter =
-                        new SqlDataAdapter(selectQuery, conn);
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
-
-                    if (dataTable.Rows.Count > 0 &&
-                        dataTable.Rows[0]["date1"] != DBNull.Value)
-                        MainClass.lastCashercloseDate =
-                            Convert.ToDateTime(dataTable.Rows[0]["date1"]);
-                }
-
-                LoadCloseShiftSetting();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            // bool cannot represent an unavailable check; never report no invoices.
+            throw new InvalidOperationException("التحقق والإغلاق العادي غير متاحين حتى اكتمال مسار الإغلاق.");
         }
 
         public void closeShift(int closeType)
         {
-            LoadCloseShiftSetting();
-
-            datefrom = MainClass.lastCashercloseDate;
-            dateTo = DateTime.Now;
-            _username = MainClass.UserName;
-
-            if (_closeShiftSetting.BalanceRequired)
-            {
-                Frm_Calculator calculator = new Frm_Calculator();
-                calculator.txtMsg.Text = MainClass.Language == "ar"
-                    ? "إدخل المبلغ الموجود في الصندوق"
-                    : "Enter the amount of cash in the cash drawer";
-
-                calculator.ShowDialog();
-
-                if (calculator.is_close)
-                    return;
-
-                _casherValue = Convert.ToDouble(calculator.TextBox1.Text);
-            }
-
-            _userTreasuryAccount = Common.GetUserTreasuryAcc();
-
-            if (_userTreasuryAccount == -1)
-            {
-                MessageBox.Show(
-                    "الموظف غير مرتبط بصندوق",
-                    "⚠️ تنبيه",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-            }
+            ShowOrdinaryCloseUnavailable();
         }
 
         private void GetGlobalIdClose(ref string globalId, ref int closedId)

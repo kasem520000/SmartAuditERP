@@ -847,8 +847,59 @@ namespace SmartAuditERP
 
         #region SaveEntry
 
+        private static bool ValidateEntryBeforeSave(Entry entry, out string error)
+        {
+            error = null;
+            if (entry == null || string.IsNullOrWhiteSpace(entry.EntryGlobalID) || entry.Accounts == null)
+            {
+                error = "هوية القيد أو بنوده غير متوفرة.";
+                return false;
+            }
+
+            try
+            {
+                decimal debit = 0m, credit = 0m;
+                int count = 0;
+                foreach (Account account in entry.Accounts)
+                {
+                    count++;
+                    if (account == null || !int.TryParse(account.Code, out int code) || code <= 0 ||
+                        !int.TryParse(account.CCcode, out _) ||
+                        double.IsNaN(account.Debt) || double.IsInfinity(account.Debt) ||
+                        double.IsNaN(account.Credit) || double.IsInfinity(account.Credit) ||
+                        account.Debt < 0 || account.Credit < 0 ||
+                        (account.Debt > 0 && account.Credit > 0))
+                    {
+                        error = "يوجد بند بحساب أو مركز تكلفة أو مبلغ غير صالح.";
+                        return false;
+                    }
+                    debit += Convert.ToDecimal(account.Debt);
+                    credit += Convert.ToDecimal(account.Credit);
+                }
+                // Existing invoice binders emit zero VAT lines; permit those, but not an
+                // entirely zero/empty entry. This is not currency-specific validation.
+                if (count == 0 || debit <= 0m || credit <= 0m || debit != credit)
+                {
+                    error = "القيد فارغ أو غير متوازن؛ راجع مبالغ المدين والدائن.";
+                    return false;
+                }
+                return true;
+            }
+            catch (OverflowException)
+            {
+                error = "مبلغ القيد خارج النطاق القابل للتحقق.";
+                return false;
+            }
+        }
+
         public bool SaveEnty(Entry entry)
         {
+            if (!ValidateEntryBeforeSave(entry, out string validationError))
+            {
+                MessageBox.Show(validationError, "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
             using SqlConnection conn = MainClass.ConnObj();
 
             if (conn.State != ConnectionState.Open)

@@ -255,9 +255,8 @@ namespace SmartAuditERP.Form_WPF
         }
 
         // Repair R-018 (P1-026): now reports whether the replacement actually happened, so callers
-        // cannot walk to a completion page on top of a caught failure. Behaviour on the happy path
-        // is unchanged; the license-date side effect inside this routine is tracked separately as
-        // P1-032 policy work and intentionally untouched here.
+        // cannot walk to a completion page on top of a caught failure. License renewal
+        // must not be an incidental side effect of starting the updater.
         private bool ReplaceFiles()
         {
             try
@@ -265,7 +264,6 @@ namespace SmartAuditERP.Form_WPF
                 UtilitiesProj.Updates.unZipFile(FileDownload);
                 DXMessageBox.Show("سيتم إغلاق البرنامج لإتمام عملية التحديث", "تحديث",
                                 MessageBoxButton.OK, MessageBoxImage.Information);
-                UpdateLicenseEndDate();
                  Process.Start(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Updater.exe"));
                 return true;
             }
@@ -277,18 +275,7 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
-        private void UpdateLicenseEndDate()
-        {
-            try
-            {
-                if (conn.State != System.Data.ConnectionState.Open) conn.Open();
-                new SqlCommand(
-                    "UPDATE License SET LicenseExpire = DATEADD(YEAR, 1, LicenseExpire)",
-                    conn).ExecuteNonQuery();
-                conn.Close();
-            }
-            catch { }
-        }
+
 
         private void CreateFolderUpdate()
         {

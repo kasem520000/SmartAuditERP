@@ -153,7 +153,7 @@ namespace SmartAuditERP.Form_WPF
 
             ISShowItemsImages = true;
             ISShowCatogryImages = true;
-            allowEditInvoice = true;
+            allowEditInvoice = false;
 
             ISTRialEnd = false;
             HoldList = new int[8];
@@ -2704,81 +2704,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnCloseDay_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                var pwdFrm = new frmCheckPwd { operNo = 1 };
-                pwdFrm.ShowDialog();
-                if (!pwdFrm.Iscorrect) return;
-
-                CheckHold();
-
-                // فحص فواتير معلقة
-                for (int i = 0; i < 8; i++)
-                {
-                    if (HoldList[i] != 0)
-                    {
-                        var res = DXMessageBox.Show(
-                            "يوجد فواتير معلقة، للاستمرار في الإغلاق اضغط نعم",
-                            "تحذير",
-                            MessageBoxButton.YesNo, MessageBoxImage.Warning);
-
-                        if (res == MessageBoxResult.No) return;
-                        break;
-                    }
-                }
-
-                // فحص الإنترنت
-                var daEmail = new SqlDataAdapter(
-                    "Select ActiveAuto from SettingEmail where Branch_Id=" +
-                    MainClass.BranchNo, conn);
-                var dtEmail = new DataTable();
-                daEmail.Fill(dtEmail);
-
-                if (dtEmail.Rows.Count > 0 &&
-                    Convert.ToBoolean(dtEmail.Rows[0]["ActiveAuto"]) &&
-                    !MainClass.CheckForInternetConnection())
-                {
-                    var res = DXMessageBox.Show(
-                        "الإنترنت غير متصل بالجهاز، للاستمرار في الإغلاق اضغط نعم",
-                        "تحذير",
-                        MessageBoxButton.YesNo, MessageBoxImage.Warning);
-
-                    if (res == MessageBoxResult.No) return;
-                }
-
-                var closeFrm = new frmCloseShift();
-                closeFrm.Activate();
-                var Home = new Home();
-                if (closeFrm.NoInvsFound(1))
-                {
-                    DXMessageBox.Show("لا يوجد فواتير جديدة يمكن إغلاقها",
-                        "", MessageBoxButton.OK, MessageBoxImage.Information);
-                    Home.IsCashierClosed = true;
-                    return;
-                }
-
-                closeFrm.closeShift(1);
-
-                if (Home.IsCashierClosed)
-                    Close();
-
-                // إرسال بيانات الإغلاق للسحابة
-                if (Home._is_active &&
-                    ConnectBroker.CheckConnectionAndBroker())
-                {
-                    SendData.SendDataa("CasherClosed", "1",
-                        SendData.GetCasherClosed());
-                    SendData.SendDataa("CasherClosed_Sub", "1",
-                        SendData.GetCasherClosedSub());
-                    SendData.SendDataa("entry", "1",
-                        SendData.GetEntryData("where type=13"));
-                    SendData.SendDataa("entryDetails", "1",
-                        SendData.GetEntrySubData(
-                            "WHERE TRY_CAST(EntryGlobalID AS nvarchar) IN (" +
-                            "SELECT GlobalID FROM Entry WHERE type=13)"));
-                }
-            }
-            catch { }
+            frmCloseShift.ShowOrdinaryCloseUnavailable();
         }
 
         #endregion

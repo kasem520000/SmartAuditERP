@@ -78,7 +78,7 @@ namespace SmartAuditERP.Form_WPF
                 "Styles\\SaleInvoSaveLayoutToXML.xml");
             StyleFolder = Path.Combine(MainClass.ReportsPath, "Styles");
             EnableE_Invoice = true;
-            allowEditInvoice = true;
+            allowEditInvoice = false;
 
             // تهيئة الـ Proxy لـ cmbProcTypeSrch
             cmbProcTypeSrch = new ComboBoxProxy();
