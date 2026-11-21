@@ -1,9 +1,9 @@
 {
   "audit_commit": "f16f3da60c72f243f90f466badc1bade90bf4abd",
   "findings_sha256": "ce8c8b823a9a683d446d73dc4ffe564039f1542b649aeda79acd4c7a6600c42a",
-  "repair_snapshot_commit": "ac55983",
-  "tracker_sha256": "62e45a8dbf28545adfbbb553e66e8cc3e295aa18b528bada052e908b79b66df5",
-  "plan_sha256": "daa85ea38a7a866db7c0d9899988ec6624f5370e01f438e181aa85e3f60e5bac",
+  "repair_snapshot_commit": "45295e9",
+  "tracker_sha256": "8f1f84589d3ca2289c2351000b601decbef5523f77b04d9f94031b7e98bc6988",
+  "plan_sha256": "dee257c7d5943eb5bef4e71e23d0e8599013bc27bc5c6b05af755c604ce14742",
   "extra_repairs": {
     "P5-010": {
       "repairs": [
