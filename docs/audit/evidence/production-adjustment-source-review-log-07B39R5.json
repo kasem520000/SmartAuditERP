@@ -1,0 +1,586 @@
+{
+  "schema_version": 1,
+  "kind": "new-R5-actually-displayed-bounded-source-read-registrations",
+  "registration_reference_date_utc": "2026-11-16",
+  "individual_read_timestamps_invented": false,
+  "extraction_equals_reading": false,
+  "registration_order_is_chronological_tool_trace": false,
+  "reads": [
+    {
+      "id": "R5READ-001",
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "start": 20,
+      "end": 109,
+      "decoded_range_utf8_sha256": "c2db30324eda4395c8c9ad95e49b65b7cd7498e3349df0f2d180811d59184202",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-002",
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "start": 101,
+      "end": 139,
+      "decoded_range_utf8_sha256": "4517ab26c21c42a5dbee70875bb3385be41525b51beb7b5dcc012f0424773da2",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-003",
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "start": 250,
+      "end": 284,
+      "decoded_range_utf8_sha256": "1c2654ebbebbde122c286e9dcd5dc9fe5912f5ff5284c4fadf3e301d5e906439",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-004",
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "start": 273,
+      "end": 412,
+      "decoded_range_utf8_sha256": "0fec3f4f1d182a3bd9a508c641f657e25f70bc6cb74024b606e2eaf0e75dff39",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-005",
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "start": 465,
+      "end": 482,
+      "decoded_range_utf8_sha256": "c10ce081eb7e5abe60ae4245b17f94031beb3d5141bccd892abdf5be6fff6d90",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-006",
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "start": 475,
+      "end": 607,
+      "decoded_range_utf8_sha256": "14ff02e104166e3227a63e82e6f413ef7453d7a25ae03fb1a4bae4ad925e99e7",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-007",
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "start": 640,
+      "end": 685,
+      "decoded_range_utf8_sha256": "5abf8d16544d8dfc13e9dfe4f203fcbe190ad1c1636cf906bd4b00e7bfb25bad",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-008",
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "start": 830,
+      "end": 850,
+      "decoded_range_utf8_sha256": "5b105d4ad432647fb8d4d0128c67829bc89fe9f046269672e218bc2c431135c3",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-009",
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "start": 845,
+      "end": 1021,
+      "decoded_range_utf8_sha256": "f528ce7ef57a1316b45531a8aa44e82382c89b2051da18ed331f961b683bf108",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-010",
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "start": 1021,
+      "end": 1050,
+      "decoded_range_utf8_sha256": "0e849e16f1e48470d58a03bf85d0ab9e0905ca7c13ffa896fd6a62d3c0d70846",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-011",
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "start": 1220,
+      "end": 1312,
+      "decoded_range_utf8_sha256": "05ce9f42e3cb3ec522c4196b9bc06a5f7398810b79d11a50f9c044c4fd75f18d",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-012",
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "start": 1300,
+      "end": 1501,
+      "decoded_range_utf8_sha256": "b889d6b46b7517e8e5d00884f8a87dd20d181c8b7928d84872268525e13f60a7",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-013",
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "start": 1494,
+      "end": 1536,
+      "decoded_range_utf8_sha256": "3793c9a0ee950feabb526a1eb3b1d987588e2218e59dbccfe7275eb447a18154",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-014",
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "start": 1535,
+      "end": 1594,
+      "decoded_range_utf8_sha256": "b59e57383ffc846f78ad3cb8163db456b8c727c2cbbe585352991912ddbcaf85",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-015",
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "start": 1764,
+      "end": 1780,
+      "decoded_range_utf8_sha256": "acafbb3a5baa1f5cdedcbf0c7a0c255ef631e223f9f03701b08d68f13fcc0bc6",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-016",
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "start": 1780,
+      "end": 1822,
+      "decoded_range_utf8_sha256": "220d90ea5d57a7d2a59c117ad97542fa74f7c346cd01feed16b516c9abd918d2",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-017",
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "start": 1810,
+      "end": 1905,
+      "decoded_range_utf8_sha256": "4ba75c9f04fbecd51866a55d3d350e660b1ee3f6b3bf6493783fd5be269ce3dd",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-018",
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "start": 1900,
+      "end": 2074,
+      "decoded_range_utf8_sha256": "8614d2872066ec9cffdd0d6fd8dd662bfdf7dcfbaeb8942402af0f6e10a092cf",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-019",
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs",
+      "start": 25,
+      "end": 137,
+      "decoded_range_utf8_sha256": "3d9cf36c9197ef52f434099b1f3ddf844c25b4c355af557f69c3b4685741cf16",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-020",
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs",
+      "start": 119,
+      "end": 166,
+      "decoded_range_utf8_sha256": "153f85e912e255f66fe147cfad19c295ce071c777bc9ac91179ad14d0b5056a2",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-021",
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs",
+      "start": 152,
+      "end": 210,
+      "decoded_range_utf8_sha256": "de2026929c0b4784a3026d8fd8b4598c9c0699692d165c099c1c58d86d158ff6",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-022",
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs",
+      "start": 205,
+      "end": 299,
+      "decoded_range_utf8_sha256": "e79d97c37b51efe3fc7e1524de3ae7d9e3a047f3ff801bf79812d4e6c861da75",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-023",
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs",
+      "start": 446,
+      "end": 497,
+      "decoded_range_utf8_sha256": "5f82751db9dece5307343be694c95449aabd225d05af960dbe6a7482a7e964c6",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-024",
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs",
+      "start": 500,
+      "end": 525,
+      "decoded_range_utf8_sha256": "27c7c5642edf51dbc11cbfd18fbdad50c2c5ddcf07e10aaa08f4bbe29797161d",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-025",
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs",
+      "start": 650,
+      "end": 724,
+      "decoded_range_utf8_sha256": "a4398efe6eeb5300e587a2814b94f7675bb6737ea03de7c3149b5987dac703e3",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-026",
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs",
+      "start": 724,
+      "end": 788,
+      "decoded_range_utf8_sha256": "23b18648e2d33a04bbb1bf6386b0b1f2eb9531e549d2b1e6ce3bc8715c2e0440",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-027",
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs",
+      "start": 782,
+      "end": 906,
+      "decoded_range_utf8_sha256": "9403c3022605d5528e5453f5ebedf3edf3afab3b30ec68512b33d0a6678a73f1",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-028",
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs",
+      "start": 907,
+      "end": 953,
+      "decoded_range_utf8_sha256": "d6221efca3f48acfa676126c699a2531f86a52c251f21754543a068c79665708",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-029",
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs",
+      "start": 950,
+      "end": 1056,
+      "decoded_range_utf8_sha256": "e905aec4291f33adacf545c254e09e86cbf5aef57d2cc4b43a1ffc670b5561c0",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-030",
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs",
+      "start": 1049,
+      "end": 1088,
+      "decoded_range_utf8_sha256": "506cc6347d6029f797d83dce057ae3d2e420893cb92e21bae11ee945d6cf7d1a",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-031",
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs",
+      "start": 1090,
+      "end": 1188,
+      "decoded_range_utf8_sha256": "e015bc1d930556cbe5a9b3fda2847aa23b20ef4d6f274efe40928e397a3b1ccf",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-032",
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs",
+      "start": 1577,
+      "end": 1655,
+      "decoded_range_utf8_sha256": "6e669fd7d2d97957e3fed460b803e04a08439742f9a27ccd95d6a7a65f8cab62",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-033",
+      "path": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs",
+      "start": 330,
+      "end": 474,
+      "decoded_range_utf8_sha256": "fc2ef514922cd5eae9014dda53d3357d07192676e38025a04dd19fc7aa1b1909",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-034",
+      "path": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs",
+      "start": 485,
+      "end": 554,
+      "decoded_range_utf8_sha256": "7d0562b2e806a0dcf994960ec8bd5df81d7d09a90098b58ac729985ff8f4df62",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-035",
+      "path": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs",
+      "start": 608,
+      "end": 638,
+      "decoded_range_utf8_sha256": "4b643535bb24c748228d74cd7bec4a006f89d82f77c9db2aa8ed76ba0d903305",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-036",
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "start": 235,
+      "end": 455,
+      "decoded_range_utf8_sha256": "a440fc3456b3ddf132b03cdfada47fcd2f0dc7164bcc8e1daa5375b4882e0cdf",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-037",
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "start": 1000,
+      "end": 1037,
+      "decoded_range_utf8_sha256": "f1912726c68ea3f89a5ccf958f90657418c06ad343cf16f8c6f035c40bc7b79d",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-038",
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "start": 1029,
+      "end": 1196,
+      "decoded_range_utf8_sha256": "7afe95705438bf485349422990beac139f939073b2f286ea4f2cc1f57b1935ef",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-039",
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 2775,
+      "end": 2877,
+      "decoded_range_utf8_sha256": "f723bc260fe7a78b37acf94b12188b015e984afad4f801e712cd8206832bbbfd",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-040",
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 2855,
+      "end": 2994,
+      "decoded_range_utf8_sha256": "ec31ef2a928e505df9d23fbb27b360a683c3b3cd8a84520a239c98e47dc410c8",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-041",
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 3660,
+      "end": 3821,
+      "decoded_range_utf8_sha256": "b4295d189f2ec7562744eeb46f9d2ac1576def59388f1629cd24379050921b58",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-042",
+      "path": "SmartAuditERP/Class/MainClass.cs",
+      "start": 20,
+      "end": 102,
+      "decoded_range_utf8_sha256": "6b31fc03dc2cb2dbe064d3f9097d7bc7046c74d64a694f939f78e7d5af16d283",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-043",
+      "path": "SmartAuditERP/Class/Inventory.cs",
+      "start": 120,
+      "end": 239,
+      "decoded_range_utf8_sha256": "69295159541600a65d43a86d615362d0825308366281624df8847bf30050943a",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-044",
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "start": 83,
+      "end": 103,
+      "decoded_range_utf8_sha256": "b856f1e74960d9e7bb180a703625cbce3d848ccf35c7af42281dd293bfb3eaf6",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-045",
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "start": 130,
+      "end": 306,
+      "decoded_range_utf8_sha256": "5a8f05038967e6e780e67881b97acb478731b8a5569a047f47743bfa328b63b3",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-046",
+      "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+      "start": 279,
+      "end": 314,
+      "decoded_range_utf8_sha256": "9020ab875c7b775427713849d9a05b0d0a400c7676d433d944b10fba66ff50c4",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-047",
+      "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+      "start": 665,
+      "end": 767,
+      "decoded_range_utf8_sha256": "b7dd198ef429fe290da3b4e61d872afae425d0e6dc2f822bcdfa9e19905c0c69",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-048",
+      "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+      "start": 911,
+      "end": 962,
+      "decoded_range_utf8_sha256": "c4fd6f3d35018bcec500ff82b7ce03a568a6853b403631a6e3e123f23a65d381",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-049",
+      "path": "SmartAuditERP/Class_WPF/AdjustItemRow.cs",
+      "start": 1,
+      "end": 116,
+      "decoded_range_utf8_sha256": "09bd2ca48f7d6e0ef353717dc4b61adfc2f70674bb82019b66351a73e005bb02",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-050",
+      "path": "SmartAuditERP/Class_WPF/ItemActivityRow_ActivityDetailed.cs",
+      "start": 1,
+      "end": 40,
+      "decoded_range_utf8_sha256": "1bac2df8fb20e36df34ec063d59d8dbbf8f2a3185d467c2d962f776ae5c30eaa",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-051",
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml",
+      "start": 1,
+      "end": 25,
+      "decoded_range_utf8_sha256": "41049acd1a96bb73b6c2fe602a4f62ba9456d6a05010c169aa7f6e22b5b26cc3",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-052",
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml",
+      "start": 320,
+      "end": 380,
+      "decoded_range_utf8_sha256": "a1c518c753ba3b641c51d854bf7745cc48d028fbf5ca6490b04eb64f00db4df0",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-053",
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml",
+      "start": 424,
+      "end": 446,
+      "decoded_range_utf8_sha256": "fbfdc7e214d67e7b09d653f2011fb362f75369641f4c93f90d3b9ad1ba87702d",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-054",
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml",
+      "start": 438,
+      "end": 549,
+      "decoded_range_utf8_sha256": "795886b51662ace1b961d546cbc0308fe00883fde7ab8bbec776bb216f0867e6",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-055",
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml",
+      "start": 1,
+      "end": 27,
+      "decoded_range_utf8_sha256": "bde832581241e9baaa477294a7981ed691c8d2d664981db2ccd9dee711827d4c",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-056",
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml",
+      "start": 350,
+      "end": 370,
+      "decoded_range_utf8_sha256": "2c16cda2e1cef1c6178dcd549cf614ac59f0375f7d6ab29db653d9c225779028",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-057",
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml",
+      "start": 498,
+      "end": 526,
+      "decoded_range_utf8_sha256": "e59f1ee933cc8c32e2ea22c5ba618a808da18d8bb9c9952e8f2c074a5261cc97",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-058",
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml",
+      "start": 511,
+      "end": 617,
+      "decoded_range_utf8_sha256": "9c1d0bcb6258686605b7d37bd3b1be32e4ffd6428b54399efb894adadd7a4fc8",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-059",
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml",
+      "start": 843,
+      "end": 872,
+      "decoded_range_utf8_sha256": "6a808c2cc7dfc6552c32743c3423b1406f28a218efec6ba918abbce6b3546815",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-060",
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml",
+      "start": 860,
+      "end": 874,
+      "decoded_range_utf8_sha256": "f079528a11f00aba6d91455fe76a45b34069f99b00a72fff97981503ce5b6173",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-061",
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 945,
+      "end": 1068,
+      "decoded_range_utf8_sha256": "ddc4bb9f969159f4fcb5a87a0dc31ccc91a159a9013b56539848ddc1b0544966",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-062",
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 1684,
+      "end": 1731,
+      "decoded_range_utf8_sha256": "7bd22fb46d2238039b3bd0c0286ae794912fc4588a2b03ca6925990928f932a3",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-063",
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 47734,
+      "end": 47812,
+      "decoded_range_utf8_sha256": "a2e9b644a75fd49cf0d04cbb8d9df24d4a4cb0333a188ddfa1674dea4d08f4f8",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-064",
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 47823,
+      "end": 47847,
+      "decoded_range_utf8_sha256": "27743f01329a0712217cdf4ff51066077f46f66cab418b9e417c1011e8482f81",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-065",
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 3538,
+      "end": 3633,
+      "decoded_range_utf8_sha256": "5c912449268964a5b170566580d7ad0a69ff879a0b3d21f7a0d566f9ad938874",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-066",
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 3730,
+      "end": 3845,
+      "decoded_range_utf8_sha256": "4c0bc98aac04d025b64c873f143f225fefb49f8ff5b407179cbed77eb77d643c",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-067",
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 4207,
+      "end": 4272,
+      "decoded_range_utf8_sha256": "9b8349412124c53718804f0f38b7c6732ed1cbe97b91ba87303ff05c95cdaa42",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-068",
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 47985,
+      "end": 48034,
+      "decoded_range_utf8_sha256": "5b5aee8a19efcc9a4d37da2e09a852d826eae0cabb7eac9ba64de1b48dc0058e",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-069",
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 48213,
+      "end": 48275,
+      "decoded_range_utf8_sha256": "f9efbe09ca76af9dbe3de1df541e6b3304ec712c9b805ff6421b9d1b68bb4a59",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-070",
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 49302,
+      "end": 49335,
+      "decoded_range_utf8_sha256": "c9118c9f204cb19fecc18dfb9fe3b9f6e8a98cb718940455983a5e6905f2a7ad",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    },
+    {
+      "id": "R5READ-071",
+      "path": "SmartAuditERP/Class/StoredQueries.cs",
+      "start": 1,
+      "end": 33,
+      "decoded_range_utf8_sha256": "1db4bc423ddee86dff5f29f66dd5ca798fd91bc719b0de19feaa585ba5365e75",
+      "basis": "Actually displayed with read_file during this continuation; a bounded read, not full-file, runtime, independent-review or timestamp attestation."
+    }
+  ],
+  "explicit_exclusions": [
+    "No full-file read claimed for the 144533-line Resources.resx; selected CREATE, identity/stock patches and stock/cost procedure fragments are individually named.",
+    "The connection-writer worklist is syntax discovery, not a registration that every containing body was read.",
+    "R4 read registrations and captured results remain R4; these ranges register newly displayed source, not missing R2/R3 reads.",
+    "Reading a method that delegates to a constructor, policy, provider, print, SDK or broker does not certify those dependencies or execute them."
+  ],
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false
+}

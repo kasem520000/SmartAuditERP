@@ -1,0 +1,313 @@
+{
+  "schema_version": 1,
+  "kind": "new-R5-whole-production-adjustment-reader-reset-review-with-explicit-local-remainders",
+  "assessment_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "R2_R3_files_recovered": false,
+  "prior196_tests_recertified": false,
+  "reader_outcomes": [
+    {
+      "id": "P-EMPTY",
+      "source_basis": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:873-881;1542-1588",
+      "source_disposition": "No header -> CLR then return, unlike adjustment. CLR writes controls/identity/list and requests a new number, with one blanket catch.",
+      "limit": "A caught earlier reset failure need not finish all reset statements. No accepted draft-discard policy or observed erasure is asserted.",
+      "observed_in_ERP": false
+    },
+    {
+      "id": "P-HEADER-CAUGHT",
+      "source_basis": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:882-918",
+      "source_disposition": "Individual header conversions/setters can be swallowed and the following read continues, before explicit dr.Close.",
+      "limit": "Not a typed partial outcome; neither DTO defaults nor every setter/event success is assumed.",
+      "observed_in_ERP": false
+    },
+    {
+      "id": "P-DETAIL-EMPTY",
+      "source_basis": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:921-953;958-1018",
+      "source_disposition": "Produced-row and component queries are independent catches. No produced/detail rows can still lead to CalcTot and normal flag=false.",
+      "limit": "Not a complete document or valid business empty result merely because the method returns.",
+      "observed_in_ERP": false
+    },
+    {
+      "id": "P-ROW-PARTIAL",
+      "source_basis": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:965-1015;1803-1870",
+      "source_disposition": "Per-component catch can continue after an earlier component was added. Name/code/unit/store helpers can return blank; CalcStock/Cost can fall back to zero.",
+      "limit": "Conditional source paths only, no dropped real component, stock/cost result or amount acceptance; earlier mutation is not locally rolled back.",
+      "observed_in_ERP": false
+    },
+    {
+      "id": "P-TAIL",
+      "source_basis": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:1017-1019;584-605;854-871",
+      "source_disposition": "Normal tail calls CalcTot then _isLoaded=false. Navigate has command/reader using and finally CloseConn.",
+      "limit": "Void, flags, using/finally and normally returning catch/totals are not Found/Empty/Failed/Partial or provider/disposal success certificates.",
+      "observed_in_ERP": false
+    },
+    {
+      "id": "S-EMPTY",
+      "source_basis": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs:1105-1111",
+      "source_disposition": "No header -> immediate return inside try before CLR; previously held fields/list are not explicitly cleared on this arm.",
+      "limit": "Does not prove UI state remains unchanged under events or that the selected request succeeded.",
+      "observed_in_ERP": false
+    },
+    {
+      "id": "S-HEADER-FAIL",
+      "source_basis": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs:1112-1135;1178-1183",
+      "source_disposition": "CLR and Isload=true precede header assignments. Any exception entering the one outer catch before the normal false assignment has no finally restoration.",
+      "limit": "Inv-table request 131 is one specific source cause; no provider failure is observed and catch/MessageBox return behavior is not invented.",
+      "observed_in_ERP": false
+    },
+    {
+      "id": "S-ROW-FAIL",
+      "source_basis": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs:1137-1177",
+      "source_disposition": "After explicit dr.Close, one loop-level exception reaches the method catch; earlier added rows can remain, and the totals/flag tail can be skipped.",
+      "limit": "There is no per-row continuation or local rollback in this reader; no actual malformed row or arithmetic mismatch is supplied.",
+      "observed_in_ERP": false
+    },
+    {
+      "id": "S-TAIL",
+      "source_basis": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs:1148-1177;468-494",
+      "source_disposition": "Initializer setters run, then saved InQty/OutQty/Total explicitly override derived model values before property-change subscription. Normal tail sets Isload=false, CalSums and count.",
+      "limit": "Do not diagnose a load-time total bug just from RealStock/Price setters; no business invariant allowing both in/out quantities or provider/binding success is presumed.",
+      "observed_in_ERP": false
+    },
+    {
+      "id": "PRE-READER-FAIL",
+      "source_basis": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:854-871;SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs:1096-1103",
+      "source_disposition": "Opening/ExecuteReader or preceding UI work can fail before ReadData. Production has catch/finally; SafeAdjust has no own Navigate catch/using/finally and its close is a later statement.",
+      "limit": "ReadData catch does not cover exceptions before its invocation. No open connection, leak, disposal outcome or framework failure is observed.",
+      "observed_in_ERP": false
+    }
+  ],
+  "local_obligation_decisions": [
+    {
+      "id": "R5L-READER-RESET",
+      "bounded_source_question_reviewed": true,
+      "source_basis": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:854-1019;1542-1588;SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs:502-522;1096-1183",
+      "decision": "Both complete reader/reset bodies, their number/totals helpers and selected publication/error paths read; supersedes the R4 partial-prefix limitation for these exact bodies only.",
+      "whole_capability_complete": false,
+      "readable_local_externalized": false,
+      "remaining_local": [
+        "Other D17 readers/openers and dirty/allowed-set paths outside this selected request set; source-specific startup delegates are not all certified by calling them."
+      ]
+    },
+    {
+      "id": "R5L-FIVE-REPORT-REQUESTS",
+      "bounded_source_question_reviewed": true,
+      "source_basis": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs:340-420;489-539;612-634;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:240-413;1011-1192;SmartAuditERP/Class/InvoiceOper.cs:3668-3819",
+      "decision": "Five actual R4 requests linked individually to full alternative readers and supplied header/detail tables; six own navigation calls separately added.",
+      "whole_capability_complete": false,
+      "readable_local_externalized": false,
+      "remaining_local": [
+        "Other report owners / ShowEntrySource / LastProcess, alias/reflection targets and caller allowed-set rules are not an eleven-call census certificate."
+      ]
+    },
+    {
+      "id": "R5L-LOCAL-DDL",
+      "bounded_source_question_reviewed": true,
+      "source_basis": "SmartAuditERP/Properties/Resources.resx:954-1060;1692-1726;47748-47771;47828-47841;47988-48025;48221-48255;49309-49322",
+      "decision": "Four CREATE contracts, named identity/stock/item patches and stock/cost SP fragments actually read with resource owners CrystalLiteDB/AlterDb. No locally available table definition is externalized.",
+      "whole_capability_complete": false,
+      "readable_local_externalized": false,
+      "remaining_local": [
+        "Other schema/migration/trigger/FK identities relevant to the whole D17/D08 scope remain a named broader local obligation; these fragments do not establish deployment order."
+      ]
+    },
+    {
+      "id": "R5L-EVENT-MODEL",
+      "bounded_source_question_reviewed": true,
+      "source_basis": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:473-605;654-682;1907-2071;SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs:458-494;1595-1650;SmartAuditERP/Class_WPF/AdjustItemRow.cs:1-116",
+      "decision": "Local row classes and selected own XAML/selection/qty/price subscriptions read. Loaded writes, different event guards and the explicit stored quantity overrides are distinguished from external DTO behavior.",
+      "whole_capability_complete": false,
+      "readable_local_externalized": false,
+      "remaining_local": [
+        "Unselected initialization/permission/print/lookup dependency bodies and other navigation lifecycle paths stay local; WPF/SDK scheduling is not executed."
+      ]
+    },
+    {
+      "id": "R5L-IDENTITY-YEAR",
+      "bounded_source_question_reviewed": true,
+      "source_basis": "SmartAuditERP/Class/MainClass.cs:25-49;SmartAuditERP/Class/InvoiceOper.cs:2789-2808;2872-2902;SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:279-310;665-765;911-961",
+      "decision": "Selected key producers, constructor connection capture, login database/MARS rewrites and supplied schema/backfill linked. Absence of a year argument is not evidence of real cross-year collision.",
+      "whole_capability_complete": false,
+      "readable_local_externalized": false,
+      "remaining_local": [
+        "Read the outstanding containing bodies individually in identity-year-local-worklist-rev02-07B39R5.json, including linked-return and account/prior-database paths, then reconcile other opener sources before any deployment manifest handoff."
+      ]
+    }
+  ],
+  "formal_R4_external_register_replaced": false,
+  "new_external_boundary_rows_issued": 0,
+  "existing_external_boundaries": [
+    {
+      "id": "EXT-R4-MODEL",
+      "provided": false,
+      "certified": false,
+      "accepted_as_a_completed_static_handoff_in_R5": false
+    },
+    {
+      "id": "EXT-R4-DEPLOYED-IDENTITY",
+      "provided": false,
+      "certified": false,
+      "accepted_as_a_completed_static_handoff_in_R5": false
+    },
+    {
+      "id": "EXT-R4-LOAD-POLICY",
+      "provided": false,
+      "certified": false,
+      "accepted_as_a_completed_static_handoff_in_R5": false
+    }
+  ],
+  "external_limit": "Local ProductionItemRow, AdjustItemRow, models, XAML, queries and selected resource DDL are available and reviewed here, not hidden under EXT-R4-MODEL. External DTO/provider/deployment/policy inputs remain unprovided. No missing49 boundary reconstruction or combined denominator.",
+  "capabilities": {
+    "CAP7B38-D08": {
+      "canonical_capability_row": {
+        "id": "CAP7B38-D08",
+        "capability": "المخزون والحركة والصلاحية",
+        "entry_point": "آباء R1 الأربعة وLastProcess وفتح مستند/صنف",
+        "source_contract": "Inv/Inv_Sub/UDF/Opening ودفعة/مستودع/فرع/تاريخ",
+        "output_boundary": "InventoryData وReport/CSV وطفل مستند",
+        "related_part_numbers": "2;14;16;19",
+        "related_finding_ids": "P7-054;P7-055;P7-056;P7-057;P7-058;P7-059;P7-060;P7-061;P7-121;P7-129;P7-130",
+        "current_handoff_ids": "H7B38-01;H7B38-02;H7B38-03;H7B38-04",
+        "assessment_status": "historical-and-selected-current-source-assessment-boundaries-open",
+        "assessment_basis": "historical-FE-lineage-plus-explicit-current-source-scope-not-all-source-rereview",
+        "excluded_from_claim": "اكتمال body تاريخياً لا يغلق الأسرة؛ potential014/108/132 تبقى.",
+        "owner_role": "مالك المنتج والتقرير بالتنسيق مع مالك السياسة والمصدر",
+        "required_redacted_input": "راجع H7B38 ذات الصلة: قاموس/عقد/manifest منقح فقط؛ لا أسرار أو بيانات أعمال.",
+        "absence_impact": "يبقى هذا الحد غير محسوم؛ الإحالة لا تعني الموافقة أو غياب القدرة أو إغلاق الأسرة.",
+        "next_action": "لكل بقية R1: وحدة/حبيبة/كلفة/as-of/expiry ومعيار وهوية ومخرج ودليل أو استبعاد مسند/إحالة صريحة.",
+        "static_exit_criterion": "لكل بقية R1: وحدة/حبيبة/كلفة/as-of/expiry ومعيار وهوية ومخرج ودليل أو استبعاد مسند/إحالة صريحة.",
+        "local_semantic_obligations_complete": "false",
+        "whole_capability_certified": "false",
+        "runtime_status": "not-executed"
+      },
+      "whole_capability_certified": false,
+      "local_semantic_obligations_complete": false,
+      "readable_local_externalized": false,
+      "source_backed_progress": "Whole ProductionOrder/SafeAdjust readers/CLR and selected helpers/models/events, five report requests, six own calls, supplied DDL/key producers and bounded database/MARS source mapping.",
+      "remaining_readable_local": [
+        "Other D08 inventory/activity/expiry/as-of/unit/cost/output clauses and all four R1 parent remainders are not completed by two readers."
+      ],
+      "independent_exit_decision": "withheld-for-specific-readable-local-and-missing-evidence-not-because-open-findings-automatically-forbid-static-exit"
+    },
+    "CAP7B38-D17": {
+      "canonical_capability_row": {
+        "id": "CAP7B38-D17",
+        "capability": "هوية المستند والتنقل وفتح الأطفال",
+        "entry_point": "document opener/ShowEntrySource/LastProcess وTableRow→child",
+        "source_contract": "GlobalID/type/branch/year/source مقابل رقم محلي/اسم عرض",
+        "output_boundary": "NavigationRequest/LoadOutcome وحد نشر حالة الأب",
+        "related_part_numbers": "11;14;16;17;19;27;28;31",
+        "related_finding_ids": "P7-061;P7-115;P7-130;P7-155;P7-156;P7-157;P7-158;P7-161",
+        "current_handoff_ids": "H7B38-03;H7B38-04;H7B38-05",
+        "assessment_status": "historical-and-selected-current-source-assessment-boundaries-open",
+        "assessment_basis": "historical-FE-lineage-plus-explicit-current-source-scope-not-all-source-rereview",
+        "excluded_from_claim": "لا حمل branch/year/ACL من مجرد تمرير id.",
+        "owner_role": "مالك المنتج والتقرير بالتنسيق مع مالك السياسة والمصدر",
+        "required_redacted_input": "راجع H7B38 ذات الصلة: قاموس/عقد/manifest منقح فقط؛ لا أسرار أو بيانات أعمال.",
+        "absence_impact": "يبقى هذا الحد غير محسوم؛ الإحالة لا تعني الموافقة أو غياب القدرة أو إغلاق الأسرة.",
+        "next_action": "كل route له DocumentRef/allowed-set وscope وFound/Empty/Failed/Partial لا void/اسم عرض؛ فرز paths غير المحسومة.",
+        "static_exit_criterion": "كل route له DocumentRef/allowed-set وscope وFound/Empty/Failed/Partial لا void/اسم عرض؛ فرز paths غير المحسومة.",
+        "local_semantic_obligations_complete": "false",
+        "whole_capability_certified": "false",
+        "runtime_status": "not-executed"
+      },
+      "whole_capability_certified": false,
+      "local_semantic_obligations_complete": false,
+      "readable_local_externalized": false,
+      "source_backed_progress": "Whole ProductionOrder/SafeAdjust readers/CLR and selected helpers/models/events, five report requests, six own calls, supplied DDL/key producers and bounded database/MARS source mapping.",
+      "remaining_readable_local": [
+        "Outstanding connection/year writer bodies listed individually in identity-year-local-worklist-rev02-07B39R5.json; other ShowEntrySource/LastProcess/allowed-set and caller sources beyond this eleven-call set."
+      ],
+      "independent_exit_decision": "withheld-for-specific-readable-local-and-missing-evidence-not-because-open-findings-automatically-forbid-static-exit"
+    }
+  },
+  "capability_exit_certificates_issued": 0,
+  "four_family_exit_certificates_issued": 0,
+  "authoring_diagnostic_disclosure": {
+    "initial_source_diagnostic": {
+      "path": "docs/audit/evidence/initial-authoring-source-diagnostic-07B39R5.json",
+      "bytes": 21296,
+      "sha256": "4acc817d5ac195e5e496f2dc2882c0996b3fc094e381bc6bf3168eb00c47a054"
+    },
+    "initial_checker_preserved_as_text": {
+      "path": "docs/audit/evidence/initial-authoring-checker-version-07B39R5.txt",
+      "bytes": 34287,
+      "sha256": "e1097604e51300a2d6a2ce79ac772269fc7b7e837f8a1460861c797516947995"
+    },
+    "initial_diagnostic_errors_were": [],
+    "initial_column_extractor_limitation": "The first optional-whitespace regex omitted compact [store][int] and [tot_purch][float] declarations despite errors=[]; corrected only in the new R5 checker before its final facts/tests. The first probe/checker bytes are retained. Neither probe is a unit-test run or proof that a human review is complete.",
+    "run01_independent_failure_and_successor": {
+      "path": "docs/audit/evidence/capture-correction-run01-to-run02-07B39R5.json",
+      "bytes": 6868,
+      "sha256": "0a12ccb9d58301bcf8069bfde2a31641b4eb9a0eef9b32801f2c022ba794a3cd"
+    },
+    "run01_failure_not_relabelled_as_pass": true
+  },
+  "pinned_inputs": [
+    {
+      "path": "docs/audit/evidence/production-adjustment-source-facts-rev02-07B39R5.json",
+      "bytes": 993234,
+      "sha256": "958c1c468ea0e81d8e10a3b048a693c25835f45b12b6fce2e7d6950aeda7e062"
+    },
+    {
+      "path": "docs/audit/evidence/production-adjustment-source-review-log-07B39R5.json",
+      "bytes": 29720,
+      "sha256": "e57c34f958d7f255765a6b4c6c1dc69dd1fa94355169bb5f690bb45597b33025"
+    },
+    {
+      "path": "docs/audit/evidence/production-adjustment-request-contracts-rev02-07B39R5.json",
+      "bytes": 22021,
+      "sha256": "42eea798ed1b9016bd08eeaefb4045797cb9ded5eb12253bb7515eb0b2cd889d"
+    },
+    {
+      "path": "docs/audit/evidence/production-adjustment-root-adjudication-rev02-07B39R5.json",
+      "bytes": 305527,
+      "sha256": "a8f1de4ff266be37316323b56bc6168c1b34c6855eab040db32e53e6ac3ec22a"
+    },
+    {
+      "path": "docs/audit/evidence/date-authority-clarification-07B39R5.json",
+      "bytes": 1354,
+      "sha256": "f685aa46648fd8c692a3f2afd848b9eff59e2cf227a084faf5ed9c2b26d5d9e8"
+    },
+    {
+      "path": "docs/audit/evidence/entry-identities-07B39R5.json",
+      "bytes": 230671,
+      "sha256": "0211bd44913e89906040a3fae72f88ff44d4028749cd64b944d56142c99b5440"
+    },
+    {
+      "path": "docs/audit/evidence/identity-year-local-worklist-rev02-07B39R5.json",
+      "bytes": 15696,
+      "sha256": "d905d5510520ab945f34dae07ef094cccbc9972bb40f5237114dc826118a4457"
+    },
+    {
+      "path": "docs/audit/evidence/capability-register-07B38.csv",
+      "bytes": 33915,
+      "sha256": "2e071fbad8546aeb26b2dd66854d17c58ad570e7b36525e823e9567b7466b3c5"
+    },
+    {
+      "path": "docs/audit/evidence/scope-approval-recovered-07B39R1.json",
+      "bytes": 1897,
+      "sha256": "60ee4271ed68064685853afa1309abff6ad5100be4e54e33042272000614d906"
+    },
+    {
+      "path": "docs/audit/evidence/document-receiver-external-boundaries-07B39R4.csv",
+      "bytes": 3624,
+      "sha256": "f5888528627585836e828209f84315cd0348f110d7075a9cab2ef1c441d1d08e"
+    },
+    {
+      "path": "docs/audit/evidence/document-receiver-dispositions-07B39R4.json",
+      "bytes": 20799,
+      "sha256": "d39dc657d72cc2192eab0dac57583dc797d85f138dd3534f42261dc856d27c37"
+    },
+    {
+      "path": "docs/audit/evidence/capture-correction-run01-to-run02-07B39R5.json",
+      "bytes": 6868,
+      "sha256": "0a12ccb9d58301bcf8069bfde2a31641b4eb9a0eef9b32801f2c022ba794a3cd"
+    }
+  ],
+  "supersedes_only": "Prospective R5 current facts/dispositions; not old run01 stdout/receipt, original R5 files, R4, or missing R2/R3."
+}

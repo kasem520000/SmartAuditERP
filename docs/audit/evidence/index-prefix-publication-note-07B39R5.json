@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "kind": "post-run02-index-prefix-publication-no-historical-suffix-rewrite",
+  "assessment_reference_date_utc": "2026-11-16",
+  "records": [
+    {
+      "path": "docs/audit/README.md",
+      "old_entry_identity": {
+        "bytes": 81739,
+        "sha256": "ff2dbaae2b75e82d0f6fe9c8c2540581d77ced22a21db43c2467ee3e39f88a47"
+      },
+      "prefix_utf8_bytes": 1725,
+      "prefix_sha256": "c9617f203417a677069bcacfc79ec1c546f5d8c2f2e3817cd3ce61810224be5c",
+      "new_identity": {
+        "bytes": 83464,
+        "sha256": "516c367d57868e2e4e00ef7559211913e1e8d833d4428f3a74cbb951463afa7d"
+      },
+      "entire_R4_entry_bytes_preserved_as_suffix": true
+    },
+    {
+      "path": "docs/audit/PLAN.md",
+      "old_entry_identity": {
+        "bytes": 135820,
+        "sha256": "4f57414036c2afb8516635ab40042a62653776edcbfd1ba9b8e9c2bf581eec5e"
+      },
+      "prefix_utf8_bytes": 1565,
+      "prefix_sha256": "d01102bcbda6ba147beb0cc837c8b5610d71450d651265264cb986346749a318",
+      "new_identity": {
+        "bytes": 137385,
+        "sha256": "c1d967d1103ca782074919a10b2d6e9e627b71adfe2a5efcb762159d5166ac16"
+      },
+      "entire_R4_entry_bytes_preserved_as_suffix": true
+    },
+    {
+      "path": "docs/audit/IMPROVEMENTS.md",
+      "old_entry_identity": {
+        "bytes": 267000,
+        "sha256": "190a326392bfd8d1e4316517ccd460e1320659d4b7d9b77ec326570714f8d2ba"
+      },
+      "prefix_utf8_bytes": 1366,
+      "prefix_sha256": "8e6656831d603afc119bae1f372828eef658debce1c0c1b59c4dca94d4fcd7c4",
+      "new_identity": {
+        "bytes": 268366,
+        "sha256": "72fce2b09e74d85c2b899ef93d1956a63c797bf918876fb85c5f0008ee05f792"
+      },
+      "entire_R4_entry_bytes_preserved_as_suffix": true
+    }
+  ],
+  "these_updates_were_run02_inputs": false,
+  "all_other_entry_inputs_expected_unchanged": true,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false
+}

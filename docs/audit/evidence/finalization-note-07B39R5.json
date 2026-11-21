@@ -1,0 +1,86 @@
+{
+  "schema_version": 1,
+  "kind": "post-run02-publication-finalization-not-a-suite-rerun-or-exit",
+  "assessment_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "late_publications": [
+    {
+      "path": "docs/audit/PHASE-07B39R5.md",
+      "bytes": 8280,
+      "sha256": "f507848f9d604f0712b982bb15767201e7b84a79597c42a26dbbd63362132c60"
+    },
+    {
+      "path": "docs/audit/VALIDATION-07B39R5.md",
+      "bytes": 7265,
+      "sha256": "54c46804ddd1da22f80094981b7790a02ba904d32b1abe07364527eea76a3f0b"
+    },
+    {
+      "path": "docs/audit/evidence/capability-reconciliation-07B39R5.json",
+      "bytes": 467478,
+      "sha256": "98445de0c449d735839341380afac450ca670838d32d88fdd2fb1f0cb68f3b78"
+    },
+    {
+      "path": "docs/audit/evidence/validation-status-supplement-07B39R5.json",
+      "bytes": 2019,
+      "sha256": "eabb79707d50703e0068679bd93e20895b98c02f7f07a7c9a383807598d7fc73"
+    },
+    {
+      "path": "docs/audit/evidence/index-prefix-publication-note-07B39R5.json",
+      "bytes": 1924,
+      "sha256": "cc8d9398edf6ad87dbec8ae89712c474c7fabb8cdf2ec61666d929b23e221384"
+    },
+    {
+      "path": "docs/audit/README.md",
+      "bytes": 83464,
+      "sha256": "516c367d57868e2e4e00ef7559211913e1e8d833d4428f3a74cbb951463afa7d"
+    },
+    {
+      "path": "docs/audit/PLAN.md",
+      "bytes": 137385,
+      "sha256": "c1d967d1103ca782074919a10b2d6e9e627b71adfe2a5efcb762159d5166ac16"
+    },
+    {
+      "path": "docs/audit/IMPROVEMENTS.md",
+      "bytes": 268366,
+      "sha256": "72fce2b09e74d85c2b899ef93d1956a63c797bf918876fb85c5f0008ee05f792"
+    }
+  ],
+  "these_full_current_versions_were_run02_inputs": false,
+  "the_three_prior_index_versions_were_inputs": true,
+  "allowed_changed_run02_input_paths": [
+    "docs/audit/README.md",
+    "docs/audit/PLAN.md",
+    "docs/audit/IMPROVEMENTS.md"
+  ],
+  "earlier_capture_inputs_not_rewritten_other_than_declared_prefix_publications": true,
+  "capture_receipts": [
+    {
+      "path": "docs/audit/evidence/validation-current-run01-receipt-07B39R5.json",
+      "bytes": 382041,
+      "sha256": "569653ce6a1aaf46ff8c19303e02cf3609fa3979671a3372f46305b6587688ae"
+    },
+    {
+      "path": "docs/audit/evidence/validation-current-run02-receipt-07B39R5.json",
+      "bytes": 387291,
+      "sha256": "adfa0cab8972df5fe1f95988c5d84a3f3e134f01ccb0638536fce6cabf53ede3"
+    }
+  ],
+  "current_SOURCE_rev02_unchanged_since_run02": {
+    "path": "docs/audit/SOURCE-REVIEW-07B39R5-rev02.md",
+    "bytes": 15599,
+    "sha256": "a064e93c1a8fb6d76e09f13706ca1b417371eb0e16940f577171a90e1fdf19dd"
+  },
+  "run01_original_SOURCE_and_facts_remain_at_original_paths": true,
+  "corrected_test_file_unchanged_from_run01_and_run02": {
+    "path": "docs/audit/tools/disposition07b/test_production_adjustment.py",
+    "bytes": 17360,
+    "sha256": "4087a684a84f393fded50bde5b844a4fba018ae56014f2abb7d15af447eb71d0"
+  },
+  "capability_exit_certificates_issued": 0,
+  "four_family_exit_certificates_issued": 0,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "next_check": "Independent stdlib hash/archive/case-record/reference check; it must not be called a suite rerun, independent human review or semantic exit."
+}

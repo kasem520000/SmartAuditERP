@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "kind": "post-publication-independent-stdlib-archive-hash-case-record-reference-check-not-suite-rerun-or-human-semantic-review",
+  "assessment_reference_date_utc": "2026-11-16",
+  "errors": [],
+  "base_HEAD_at_check": "5dfce80f3f64b689b946a2e936817d8738bea5c8",
+  "branch": "arena/94ae8414-smartauditerp",
+  "original_application_sources": 827,
+  "original_application_bytes": 29128444,
+  "original335_and_raw336CRLF_preserved": true,
+  "available339_dictionaries_exact": true,
+  "entry_audit_identities": 1364,
+  "entry_unchanged_other_than_three_suffix_preserving_index_prefixes": 1361,
+  "run01_consumed_inputs": 2205,
+  "run01_current_input_changes_disclosed": [
+    "docs/audit/IMPROVEMENTS.md",
+    "docs/audit/PLAN.md",
+    "docs/audit/README.md",
+    "docs/audit/tools/disposition07b/capture_production_adjustment.py",
+    "docs/audit/tools/disposition07b/verify_production_adjustment.py"
+  ],
+  "run02_consumed_inputs": 2233,
+  "run02_current_input_changes_disclosed": [
+    "docs/audit/IMPROVEMENTS.md",
+    "docs/audit/PLAN.md",
+    "docs/audit/README.md"
+  ],
+  "run02_other_consumed_inputs_unchanged": 2230,
+  "archive_member_counts_verified": {
+    "run01": 14,
+    "run02": 15
+  },
+  "actual_combined_case_ids_same_across_runs": 149,
+  "run01_combined_pass148_failure1": true,
+  "run02_combined_pass149": true,
+  "B38_actual_failure_preserved_in_both_runs": "AssertionError: 149 != 142",
+  "original_R5_test_sha256_unchanged": "4087a684a84f393fded50bde5b844a4fba018ae56014f2abb7d15af447eb71d0",
+  "canonical_capability_pairs_checked": 26,
+  "preserved_R4_records_checked": 26,
+  "preserved_B37_ancestry_rows": 37,
+  "current_publication_relative_links_checked": 56,
+  "pending_local_connection_bodies_not_claimed_read": 12,
+  "current_python_tools": 149,
+  "application_execution_count": 0,
+  "suite_rerun_in_this_check": false,
+  "calendar_or_independent_human_review_certified": false,
+  "capability_exit_certificates_issued": 0,
+  "four_family_exit_certificates_issued": 0,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "finalization_note_input": {
+    "path": "docs/audit/evidence/finalization-note-07B39R5.json",
+    "bytes": 3294,
+    "sha256": "6937cdff6f55b327b524480c1efcfb9a989b46de26fbe704cd79e7b33ff9b415"
+  }
+}

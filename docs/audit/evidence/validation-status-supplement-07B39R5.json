@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "kind": "post-capture-R5-validation-status-supplement-not-a-rewritten-receipt",
+  "assessment_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "run01_receipt": {
+    "path": "docs/audit/evidence/validation-current-run01-receipt-07B39R5.json",
+    "bytes": 382041,
+    "sha256": "569653ce6a1aaf46ff8c19303e02cf3609fa3979671a3372f46305b6587688ae"
+  },
+  "run02_receipt": {
+    "path": "docs/audit/evidence/validation-current-run02-receipt-07B39R5.json",
+    "bytes": 387291,
+    "sha256": "adfa0cab8972df5fe1f95988c5d84a3f3e134f01ccb0638536fce6cabf53ede3"
+  },
+  "run01_failure_preserved": true,
+  "run01_149_cases_not_all_passed": true,
+  "run02_combined_149_all_passed": true,
+  "new_R5_cases_inside_149_not_in_addition": 57,
+  "R1_R4_R5_preserved_suite_and_case_counts_are_not_missing196_recertification": true,
+  "run02_B38_42_pass_1_failure_of43": true,
+  "run02_B38_failure_verbatim": "AssertionError: 149 != 142",
+  "old_B38_test_skipped_or_rebaselined": false,
+  "all_suites_green": false,
+  "three_completion_gates_exit2_open": true,
+  "run01_inputs_unchanged_during_actual_capture": 2205,
+  "run02_inputs_unchanged_during_actual_capture": 2233,
+  "run01_new_audit_checker_and_capture_driver_versions_preserved_in_consumed_archive": true,
+  "run01_failing_R5_test_file_was_changed": false,
+  "late_publication_files_were_run02_inputs": false,
+  "pinned_inputs": [
+    {
+      "path": "docs/audit/evidence/capability-reconciliation-07B39R5.json",
+      "bytes": 467478,
+      "sha256": "98445de0c449d735839341380afac450ca670838d32d88fdd2fb1f0cb68f3b78"
+    },
+    {
+      "path": "docs/audit/evidence/capture-correction-run01-to-run02-07B39R5.json",
+      "bytes": 6868,
+      "sha256": "0a12ccb9d58301bcf8069bfde2a31641b4eb9a0eef9b32801f2c022ba794a3cd"
+    }
+  ],
+  "application_execution_count": 0,
+  "capability_exit_certificates_issued": 0,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false
+}

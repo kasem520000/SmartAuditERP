@@ -1,0 +1,374 @@
+{
+  "schema_version": 1,
+  "kind": "R5-local-connection-identity-year-discovery-worklist-not-body-review-certificates",
+  "assessment_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "R2_R3_files_recovered": false,
+  "prior196_tests_recertified": false,
+  "discovery_scope": "The eight literal-qualified MainClass connstr/originalConnStr/Database/DataBaseName writer owners returned by rg, parsed afresh. This is not type/alias/reflection analysis and not a full repository assignment census.",
+  "source_identity": {
+    "SmartAuditERP/Home.xaml.cs": {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "bytes": 167899,
+      "sha256": "ad747f8bed276c202c9756d6f91d34c6d2cadbc6a770c2723855219e752827d8"
+    },
+    "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs": {
+      "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+      "bytes": 42196,
+      "sha256": "43e48e8d8fb438f20146db8e12f1e9ca840102ac4f07aff39855fd5f3bf5ed30"
+    },
+    "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs": {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "bytes": 26284,
+      "sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596"
+    },
+    "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs": {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs",
+      "bytes": 15988,
+      "sha256": "c6586a20d39094991b159f739c7cee441c5cf388c10186ee8702cce519dfbfb1"
+    },
+    "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs": {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "bytes": 144406,
+      "sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31"
+    },
+    "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs": {
+      "path": "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs",
+      "bytes": 36379,
+      "sha256": "ccf5caed719b896e4255d7ef7dc7c835576d6ed4a0c6387dad6f5badcf02ebd6"
+    },
+    "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs": {
+      "path": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs",
+      "bytes": 36372,
+      "sha256": "5b920668a1a7377635d5bbe6abbc4b49e54ab86d5298396192eb47f1afb688b7"
+    },
+    "SmartAuditERP/Form_WPF/frmcontract.xaml.cs": {
+      "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+      "bytes": 96679,
+      "sha256": "0f59de510dbc2297232cc3989a6f03d43a4697fdd103d5ff092242df70c05bee"
+    }
+  },
+  "writes": [
+    {
+      "path": "SmartAuditERP/Home.xaml.cs",
+      "line": 655,
+      "left": "MainClass.Database",
+      "containing_member": "checkConn",
+      "context_start": 635,
+      "context_end": 690,
+      "whole_context_read_in_R5": false,
+      "static_disposition": "readable-local-body-review-still-required-not-external-contract"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+      "line": 218,
+      "left": "MainClass.DataBaseName",
+      "containing_member": "Login",
+      "context_start": 142,
+      "context_end": 277,
+      "whole_context_read_in_R5": false,
+      "static_disposition": "readable-local-body-review-still-required-not-external-contract"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+      "line": 290,
+      "left": "MainClass.connstr",
+      "containing_member": "BuildConnectionStrings",
+      "context_start": 279,
+      "context_end": 310,
+      "whole_context_read_in_R5": true,
+      "static_disposition": "bounded-login-connection-construction-read"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+      "line": 298,
+      "left": "MainClass.connstr",
+      "containing_member": "BuildConnectionStrings",
+      "context_start": 279,
+      "context_end": 310,
+      "whole_context_read_in_R5": true,
+      "static_disposition": "bounded-login-connection-construction-read"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+      "line": 308,
+      "left": "MainClass.connstr",
+      "containing_member": "BuildConnectionStrings",
+      "context_start": 279,
+      "context_end": 310,
+      "whole_context_read_in_R5": true,
+      "static_disposition": "bounded-login-connection-construction-read"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+      "line": 573,
+      "left": "MainClass.Database",
+      "containing_member": "LoadData",
+      "context_start": 541,
+      "context_end": 638,
+      "whole_context_read_in_R5": false,
+      "static_disposition": "readable-local-body-review-still-required-not-external-contract"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+      "line": 708,
+      "left": "MainClass.connstr",
+      "containing_member": "LoadBranches",
+      "context_start": 665,
+      "context_end": 765,
+      "whole_context_read_in_R5": true,
+      "static_disposition": "bounded-login-connection-construction-read"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+      "line": 713,
+      "left": "MainClass.connstr",
+      "containing_member": "LoadBranches",
+      "context_start": 665,
+      "context_end": 765,
+      "whole_context_read_in_R5": true,
+      "static_disposition": "bounded-login-connection-construction-read"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+      "line": 718,
+      "left": "MainClass.connstr",
+      "containing_member": "LoadBranches",
+      "context_start": 665,
+      "context_end": 765,
+      "whole_context_read_in_R5": true,
+      "static_disposition": "bounded-login-connection-construction-read"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+      "line": 946,
+      "left": "MainClass.Database",
+      "containing_member": "cmbDatabases_SelectionChangeCommitted",
+      "context_start": 911,
+      "context_end": 961,
+      "whole_context_read_in_R5": true,
+      "static_disposition": "bounded-login-connection-construction-read"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "line": 128,
+      "left": "MainClass.connstr",
+      "containing_member": "btnClose_Click",
+      "context_start": 123,
+      "context_end": 131,
+      "whole_context_read_in_R5": false,
+      "static_disposition": "readable-local-body-review-still-required-not-external-contract"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs",
+      "line": 102,
+      "left": "MainClass.connstr",
+      "containing_member": "btnadd_Click",
+      "context_start": 97,
+      "context_end": 103,
+      "whole_context_read_in_R5": false,
+      "static_disposition": "readable-local-body-review-still-required-not-external-contract"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs",
+      "line": 111,
+      "left": "MainClass.connstr",
+      "containing_member": "btnAddall_Click",
+      "context_start": 105,
+      "context_end": 116,
+      "whole_context_read_in_R5": false,
+      "static_disposition": "readable-local-body-review-still-required-not-external-contract"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "line": 2738,
+      "left": "MainClass.originalConnStr",
+      "containing_member": "InsertLinkedReturn",
+      "context_start": 2734,
+      "context_end": 2768,
+      "whole_context_read_in_R5": false,
+      "static_disposition": "readable-local-body-review-still-required-not-external-contract"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "line": 2739,
+      "left": "MainClass.connstr",
+      "containing_member": "InsertLinkedReturn",
+      "context_start": 2734,
+      "context_end": 2768,
+      "whole_context_read_in_R5": false,
+      "static_disposition": "readable-local-body-review-still-required-not-external-contract"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "line": 2774,
+      "left": "MainClass.originalConnStr",
+      "containing_member": "InsertLinkedFromQuotation",
+      "context_start": 2770,
+      "context_end": 2802,
+      "whole_context_read_in_R5": false,
+      "static_disposition": "readable-local-body-review-still-required-not-external-contract"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "line": 2775,
+      "left": "MainClass.connstr",
+      "containing_member": "InsertLinkedFromQuotation",
+      "context_start": 2770,
+      "context_end": 2802,
+      "whole_context_read_in_R5": false,
+      "static_disposition": "readable-local-body-review-still-required-not-external-contract"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "line": 2808,
+      "left": "MainClass.originalConnStr",
+      "containing_member": "InsertLinkedCreditNote",
+      "context_start": 2804,
+      "context_end": 2847,
+      "whole_context_read_in_R5": false,
+      "static_disposition": "readable-local-body-review-still-required-not-external-contract"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "line": 2809,
+      "left": "MainClass.connstr",
+      "containing_member": "InsertLinkedCreditNote",
+      "context_start": 2804,
+      "context_end": 2847,
+      "whole_context_read_in_R5": false,
+      "static_disposition": "readable-local-body-review-still-required-not-external-contract"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs",
+      "line": 845,
+      "left": "MainClass.originalConnStr",
+      "containing_member": "btnShow_Click",
+      "context_start": 841,
+      "context_end": 858,
+      "whole_context_read_in_R5": false,
+      "static_disposition": "readable-local-body-review-still-required-not-external-contract"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs",
+      "line": 846,
+      "left": "MainClass.connstr",
+      "containing_member": "btnShow_Click",
+      "context_start": 841,
+      "context_end": 858,
+      "whole_context_read_in_R5": false,
+      "static_disposition": "readable-local-body-review-still-required-not-external-contract"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs",
+      "line": 854,
+      "left": "MainClass.connstr",
+      "containing_member": "btnShow_Click",
+      "context_start": 841,
+      "context_end": 858,
+      "whole_context_read_in_R5": false,
+      "static_disposition": "readable-local-body-review-still-required-not-external-contract"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs",
+      "line": 676,
+      "left": "MainClass.originalConnStr",
+      "containing_member": "btnShow_Click",
+      "context_start": 671,
+      "context_end": 690,
+      "whole_context_read_in_R5": false,
+      "static_disposition": "readable-local-body-review-still-required-not-external-contract"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs",
+      "line": 677,
+      "left": "MainClass.connstr",
+      "containing_member": "btnShow_Click",
+      "context_start": 671,
+      "context_end": 690,
+      "whole_context_read_in_R5": false,
+      "static_disposition": "readable-local-body-review-still-required-not-external-contract"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs",
+      "line": 686,
+      "left": "MainClass.connstr",
+      "containing_member": "btnShow_Click",
+      "context_start": 671,
+      "context_end": 690,
+      "whole_context_read_in_R5": false,
+      "static_disposition": "readable-local-body-review-still-required-not-external-contract"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+      "line": 2078,
+      "left": "MainClass.originalConnStr",
+      "containing_member": "btnInsertLinkedInv_Click",
+      "context_start": 2072,
+      "context_end": 2123,
+      "whole_context_read_in_R5": false,
+      "static_disposition": "readable-local-body-review-still-required-not-external-contract"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+      "line": 2079,
+      "left": "MainClass.connstr",
+      "containing_member": "btnInsertLinkedInv_Click",
+      "context_start": 2072,
+      "context_end": 2123,
+      "whole_context_read_in_R5": false,
+      "static_disposition": "readable-local-body-review-still-required-not-external-contract"
+    }
+  ],
+  "identity_year_source_dispositions": [
+    {
+      "id": "R5ID-PRODUCTION-ROW",
+      "source_basis": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:854-1019;SmartAuditERP/Class/InvoiceOper.cs:2789-2808;2872-2902",
+      "source_disposition": "Loaded global/proc/local id comes from header row; detail filters use loaded global id. Suggested invoice number is MAX(id)+1 within current session branch/type/proc on a newly created connection. Global key producer uses MAX(proc_id)+1 and branch, optionally Sync.ClientCode; no explicit year in those producer expressions.",
+      "limit": "Not an atomic number reservation, uniqueness across databases/years, or proof that update identity regeneration succeeds. P4-021 stays potential."
+    },
+    {
+      "id": "R5ID-ADJUSTMENT",
+      "source_basis": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs:210-228;651-780;782-906;954-1062;1105-1183",
+      "source_disposition": "SafesAdjust PK id and detail Adjust_id are separate from Inv.InvGlobalID. Approval writers copy txtNo as Inv id, with different local global-key construction in the two approval paths; branch uses current MainClass.BranchNo in writers and optionally loaded branch in the UI.",
+      "limit": "No approval save/provider/DTO or missing-parameter success certified; shared ledger issues remain open. Do not replace a SafesAdjust header with an Inv row."
+    },
+    {
+      "id": "R5ID-CONNECTION-YEAR",
+      "source_basis": "SmartAuditERP/Class/MainClass.cs:25-49;SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:84-93;SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs:82-104;SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:279-310;665-765;911-961;SmartAuditERP/Properties/Resources.resx:954-1060;1692-1726;47748-47771",
+      "source_disposition": "Both forms store connections created from MainClass.connstr at construction. Selected report Navigate arguments do not carry a database/year selector. The selected four CREATE statements and global-key backfill have no explicit year component. Login has separate database/MARS construction and later global connection-string writes.",
+      "limit": "No claim that financial years share a database or collide; other literal-qualified database/connection writers listed here are readable local obligations. Deployment database-year mapping is only a later manifest comparison after that work."
+    }
+  ],
+  "pinned_inputs": [
+    {
+      "path": "docs/audit/evidence/production-adjustment-source-facts-07B39R5.json",
+      "bytes": 993297,
+      "sha256": "a0dd39bc2c7e9b727106154afdcf6561b067d0bb058441596f6815bba0a66379"
+    },
+    {
+      "path": "docs/audit/evidence/production-adjustment-source-review-log-07B39R5.json",
+      "bytes": 29720,
+      "sha256": "e57c34f958d7f255765a6b4c6c1dc69dd1fa94355169bb5f690bb45597b33025"
+    },
+    {
+      "path": "docs/audit/evidence/date-authority-clarification-07B39R5.json",
+      "bytes": 1354,
+      "sha256": "f685aa46648fd8c692a3f2afd848b9eff59e2cf227a084faf5ed9c2b26d5d9e8"
+    },
+    {
+      "path": "docs/audit/evidence/inventory.csv",
+      "bytes": 125902,
+      "sha256": "5bbe91d0be5fd2ff5f9862a6d8dc59643dda35ce6401b8ce7fe784bc2f27b3e0"
+    },
+    {
+      "path": "docs/audit/evidence/document-receiver-dispositions-07B39R4.json",
+      "bytes": 20799,
+      "sha256": "d39dc657d72cc2192eab0dac57583dc797d85f138dd3534f42261dc856d27c37"
+    }
+  ]
+}

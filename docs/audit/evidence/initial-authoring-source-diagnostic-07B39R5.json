@@ -1,0 +1,717 @@
+{
+  "schema_version": 1,
+  "kind": "initial-authoring-source-diagnostic-not-a-unit-test-capture",
+  "checker_at_probe": {
+    "path": "docs/audit/tools/disposition07b/verify_production_adjustment.py",
+    "bytes": 34287,
+    "sha256": "e1097604e51300a2d6a2ce79ac772269fc7b7e837f8a1460861c797516947995"
+  },
+  "source_identity": {
+    "SmartAuditERP/Class/Inventory.cs": {
+      "path": "SmartAuditERP/Class/Inventory.cs",
+      "bytes": 24390,
+      "sha256": "c31bd1e6f55399a0394156d5dde897fa9ea6f20593ed2ae93f5bd528424fe24b"
+    },
+    "SmartAuditERP/Class/InvoiceOper.cs": {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "bytes": 215994,
+      "sha256": "0bab36016f53ecd18360833d1fba980290702a52a98871fb397be9e813810d91"
+    },
+    "SmartAuditERP/Class/ItemOper.cs": {
+      "path": "SmartAuditERP/Class/ItemOper.cs",
+      "bytes": 122987,
+      "sha256": "1f3c56a8304a38163dc3d18b432e15152c42787966a9ed9966e3297cfafba17a"
+    },
+    "SmartAuditERP/Class/MainClass.cs": {
+      "path": "SmartAuditERP/Class/MainClass.cs",
+      "bytes": 36763,
+      "sha256": "09b8402990c3d0459fa34a22118ba6253a2ed5d89336dbc09e099c7b432641d0"
+    },
+    "SmartAuditERP/Class/StoredQueries.cs": {
+      "path": "SmartAuditERP/Class/StoredQueries.cs",
+      "bytes": 16338,
+      "sha256": "5a78f21b7175791fd18593a345ce6303de3c48337018b71505fbe2e98bc7655e"
+    },
+    "SmartAuditERP/Class_WPF/AdjustItemRow.cs": {
+      "path": "SmartAuditERP/Class_WPF/AdjustItemRow.cs",
+      "bytes": 3538,
+      "sha256": "09bd2ca48f7d6e0ef353717dc4b61adfc2f70674bb82019b66351a73e005bb02"
+    },
+    "SmartAuditERP/Class_WPF/ItemActivityRow_ActivityDetailed.cs": {
+      "path": "SmartAuditERP/Class_WPF/ItemActivityRow_ActivityDetailed.cs",
+      "bytes": 1945,
+      "sha256": "1bac2df8fb20e36df34ec063d59d8dbbf8f2a3185d467c2d962f776ae5c30eaa"
+    },
+    "SmartAuditERP/Form_WPF/frmProductionOrder.xaml": {
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml",
+      "bytes": 53859,
+      "sha256": "1a9354daa583368c1a70dc2f2cf416adba0284bfbb8ce36fe6a0f86d0a9c5a9c"
+    },
+    "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs": {
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "bytes": 77841,
+      "sha256": "0257059f67e696e4116013ee88694e9f400aafb0bf075bbf4f0556d8ea5d12f4"
+    },
+    "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs": {
+      "path": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs",
+      "bytes": 28131,
+      "sha256": "81c50d5be3ef5549df0cecc692ff284a451c7fb075b36bf42753a48d02e72ef4"
+    },
+    "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs": {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "bytes": 49024,
+      "sha256": "2f898f22a1e600c2f5df1c92f80f3b35e8fe5e8e044e8ba43637a30d4e48082f"
+    },
+    "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml": {
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml",
+      "bytes": 52451,
+      "sha256": "e36fe7ddd99bb1976102c9c52f1001e0670621677bce6c23fe350362b5038be9"
+    },
+    "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs": {
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs",
+      "bytes": 71586,
+      "sha256": "15e71abe6631c66ccce454b1a7231b9500a60a695195db119587341e6a0570ce"
+    },
+    "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs": {
+      "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+      "bytes": 42196,
+      "sha256": "43e48e8d8fb438f20146db8e12f1e9ca840102ac4f07aff39855fd5f3bf5ed30"
+    },
+    "SmartAuditERP/Properties/Resources.resx": {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "bytes": 10871348,
+      "sha256": "4ecc4117632298e5f7cfc5ee5de63bab015740af6d9b73611e1eb8653e942dd6"
+    }
+  },
+  "source_claim_diagnostic_errors": [],
+  "method_ranges": {
+    "SmartAuditERP/Class/Inventory.cs": {
+      "CalcItemStock": [
+        150,
+        187
+      ]
+    },
+    "SmartAuditERP/Class/InvoiceOper.cs": {
+      "InvoiceNo": [
+        2789,
+        2808
+      ],
+      "GetInvoiceGlobalID": [
+        2872,
+        2902
+      ],
+      "BindingListOfInvoices1": [
+        3668,
+        3819
+      ]
+    },
+    "SmartAuditERP/Class/ItemOper.cs": {
+      "Cost": [
+        154,
+        160
+      ],
+      "AvgCost": [
+        162,
+        184
+      ],
+      "RecentPurchPrice": [
+        186,
+        228
+      ],
+      "PurchPrice": [
+        230,
+        244
+      ],
+      "ToDouble": [
+        93,
+        97
+      ]
+    },
+    "SmartAuditERP/Class/MainClass.cs": {
+      "ConnObj": [
+        45,
+        49
+      ]
+    },
+    "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs": {
+      "ctor:frmProductionOrder": [
+        84,
+        93
+      ],
+      "Window_Loaded": [
+        99,
+        113
+      ],
+      "Navigate": [
+        854,
+        871
+      ],
+      "ReadData": [
+        873,
+        1019
+      ],
+      "CLR": [
+        1542,
+        1588
+      ],
+      "LoadInvNo": [
+        285,
+        297
+      ],
+      "LoadComponent": [
+        299,
+        391
+      ],
+      "LoadItemUnits": [
+        260,
+        283
+      ],
+      "CalcTot": [
+        584,
+        605
+      ],
+      "CalcStock": [
+        1770,
+        1777
+      ],
+      "GetCurrencyName": [
+        1803,
+        1816
+      ],
+      "GetItemCode": [
+        1818,
+        1831
+      ],
+      "GetUnitName": [
+        1833,
+        1847
+      ],
+      "GetStoreName": [
+        1849,
+        1870
+      ],
+      "cmbItems_SelectionChanged": [
+        473,
+        508
+      ],
+      "cmbUnits_SelectionChanged": [
+        510,
+        546
+      ],
+      "txtQty_TextChanged": [
+        552,
+        578
+      ],
+      "dgvItems_CellEditEnding": [
+        654,
+        682
+      ],
+      "EnsureOpen": [
+        1887,
+        1891
+      ],
+      "CloseConn": [
+        1893,
+        1897
+      ],
+      "Save": [
+        1271,
+        1536
+      ],
+      "dgvSrch_MouseLeftButtonUp": [
+        836,
+        848
+      ],
+      "btnFirst_Click": [
+        1025,
+        1029
+      ],
+      "btnPrevious_Click": [
+        1031,
+        1035
+      ],
+      "btnNext_Click": [
+        1037,
+        1041
+      ],
+      "btnLast_Click": [
+        1043,
+        1047
+      ]
+    },
+    "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs": {
+      "ShowInvoice": [
+        340,
+        420
+      ],
+      "BtnShowInv_Click": [
+        489,
+        539
+      ],
+      "OpenProductionOrder": [
+        612,
+        624
+      ],
+      "OpenSafeAdjust": [
+        626,
+        634
+      ]
+    },
+    "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs": {
+      "ShowResult": [
+        240,
+        413
+      ],
+      "btnOpenInvoice_Click": [
+        1011,
+        1032
+      ],
+      "OpenInvoiceByType": [
+        1034,
+        1164
+      ],
+      "OpenForm": [
+        1167,
+        1175
+      ],
+      "OpenWindow": [
+        1177,
+        1192
+      ]
+    },
+    "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs": {
+      "ctor:frmSafeAdjust": [
+        82,
+        104
+      ],
+      "Window_Loaded": [
+        112,
+        147
+      ],
+      "Navigate": [
+        1096,
+        1103
+      ],
+      "ReadData": [
+        1105,
+        1183
+      ],
+      "CLR": [
+        502,
+        522
+      ],
+      "LoadAdjustNo": [
+        210,
+        228
+      ],
+      "LoadSafes": [
+        155,
+        168
+      ],
+      "LoadGroups": [
+        170,
+        181
+      ],
+      "LoadBranches": [
+        183,
+        208
+      ],
+      "CalSums": [
+        468,
+        489
+      ],
+      "UpdateRowCount": [
+        491,
+        494
+      ],
+      "GetUnitName": [
+        230,
+        243
+      ],
+      "GetUnitId": [
+        245,
+        256
+      ],
+      "GetCurrencyName": [
+        258,
+        270
+      ],
+      "GetItemCode": [
+        272,
+        284
+      ],
+      "OnRowPropertyChanged": [
+        458,
+        466
+      ],
+      "dgvItems_CellEditEnding": [
+        1595,
+        1600
+      ],
+      "dgvSrch_MouseDoubleClick": [
+        1602,
+        1610
+      ],
+      "cmbSafes_SelectionChanged": [
+        1618,
+        1633
+      ],
+      "cmbGroup_SelectionChanged": [
+        1635,
+        1650
+      ],
+      "AdjustStock": [
+        651,
+        780
+      ],
+      "ExecuteAdjustment": [
+        782,
+        906
+      ],
+      "SaveAndPrint": [
+        908,
+        952
+      ],
+      "BindToInvoice": [
+        954,
+        1048
+      ],
+      "GetInvoiceIDs": [
+        1050,
+        1062
+      ]
+    },
+    "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs": {
+      "BuildConnectionStrings": [
+        279,
+        310
+      ],
+      "LoadBranches": [
+        665,
+        765
+      ],
+      "cmbDatabases_SelectionChangeCommitted": [
+        911,
+        961
+      ]
+    }
+  },
+  "resource_tables": {
+    "Inv": {
+      "fragment": "Inv-create",
+      "columns": [
+        "InvGlobalID",
+        "proc_id",
+        "proc_type",
+        "id",
+        "date",
+        "inv_type",
+        "OrderType",
+        "safe",
+        "stock",
+        "cust_id",
+        "sales_emp",
+        "InvTotal",
+        "AdditionsTot",
+        "Insurance",
+        "tot_net",
+        "EntryID",
+        "purch_rest_id",
+        "Reff_No",
+        "Reff_date",
+        "branch",
+        "IS_Buy",
+        "minus",
+        "paid",
+        "salesman",
+        "tax",
+        "ExtraVAT",
+        "pay_type",
+        "bank",
+        "cash",
+        "visa",
+        "notes",
+        "IS_Deleted",
+        "Sync",
+        "InvProfit",
+        "InvoiceStatus",
+        "AdditionalCost",
+        "PriceIncVAT",
+        "PaymentStatus",
+        "IssueDate",
+        "InvCombinedId",
+        "ItemsDiscount",
+        "InvCost",
+        "FreeVATSales",
+        "InvSum",
+        "VATPercent",
+        "CurrencyCode",
+        "CloudID",
+        "CashCustomerName",
+        "CashCustomerMobile",
+        "QRCode",
+        "InvoiceHash",
+        "UUID",
+        "ZatcaSent",
+        "TotalWithholdingTax",
+        "TableNo",
+        "Balance_previews"
+      ],
+      "primary_key_columns": [
+        "InvGlobalID"
+      ],
+      "is_deployed_schema_attestation": false
+    },
+    "Inv_Sub": {
+      "fragment": "Inv_Sub-create",
+      "columns": [
+        "InvGlobalID",
+        "id",
+        "proc_id",
+        "proc_type",
+        "ItemId",
+        "unit",
+        "UnitEquality",
+        "val",
+        "val1",
+        "exchange_price",
+        "expire_date",
+        "taxperc",
+        "taxval",
+        "discount",
+        "notes",
+        "Description",
+        "ProductId",
+        "AvrgCost",
+        "CurrentQnty",
+        "ItemAddedCost",
+        "ItemPriceWithoutVAT",
+        "WithholdingTax",
+        "WithholdingTaxPerc",
+        "ItemCostCenter",
+        "ItemAdditionalTax",
+        "ItemAdditionalTaxPerc"
+      ],
+      "primary_key_columns": [
+        "iD"
+      ],
+      "is_deployed_schema_attestation": false
+    },
+    "SafesAdjust": {
+      "fragment": "SafesAdjust-create",
+      "columns": [
+        "id",
+        "date",
+        "safe",
+        "EmpId",
+        "branch",
+        "Is_Approved",
+        "IS_Deleted"
+      ],
+      "primary_key_columns": [
+        "id"
+      ],
+      "is_deployed_schema_attestation": false
+    },
+    "SafesAdjust_Sub": {
+      "fragment": "SafesAdjust_Sub-create",
+      "columns": [
+        "Adjust_id",
+        "ItemId",
+        "unit",
+        "InQuant",
+        "OutQuant",
+        "CurrentStock",
+        "RealStock",
+        "Price",
+        "Note"
+      ],
+      "primary_key_columns": [],
+      "is_deployed_schema_attestation": false
+    }
+  },
+  "resource_owners": {
+    "Inv-create": "CrystalLiteDB",
+    "Inv_Sub-create": "CrystalLiteDB",
+    "SafesAdjust-create": "CrystalLiteDB",
+    "SafesAdjust_Sub-create": "CrystalLiteDB",
+    "Inv-global-backfill": "AlterDb",
+    "SafesAdjust-stock-and-item-patch": "AlterDb",
+    "Inv-legacy-header-rename": "AlterDb",
+    "CalcItemStock-create": "CrystalLiteDB",
+    "CalcItemStock-create-or-alter": "AlterDb",
+    "ItemAvrgCost-create": "CrystalLiteDB",
+    "ItemAvrgCost-create-or-alter": "AlterDb",
+    "CalcProductStocks-create": "CrystalLiteDB",
+    "CalcProductStocks-if-absent": "AlterDb"
+  },
+  "requests": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs",
+      "selector": "OpenProductionOrder",
+      "line": 620,
+      "function": "frm.Navigate",
+      "argument_expression": "(\n                $\"SELECT * FROM Inv WHERE IS_Deleted=0 AND inv_type=6 \" +\n                $\"AND proc_type={procType} AND InvGlobalID=N'{globalId}'\")",
+      "argument_expression_sha256": "b61f842369c7bf5d1d7900ae16e4ccaa30d3f05a3861f697baae9d7ffc32a413",
+      "source_method_sha256": "0f5946bd3c289309b90c20519fb4e462708c065654d46478c0e68cde848d22b1",
+      "syntactically_named_target": "frmProductionOrder",
+      "target_is_compiler_bound": false,
+      "requested_table_syntax": "Inv",
+      "key_syntax": "InvGlobalID",
+      "explicit_branch_predicate_present": false,
+      "explicit_year_or_database_selector_in_argument": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs",
+      "selector": "OpenSafeAdjust",
+      "line": 630,
+      "function": "frm.Navigate",
+      "argument_expression": "(\n                $\"SELECT * FROM Inv WHERE IS_Deleted=0 AND inv_type=7 \" +\n                $\"AND proc_type={procType} AND InvGlobalID=N'{globalId}'\")",
+      "argument_expression_sha256": "2a377d346f94cf75a66a00a1bafba4560c0e3cdd36d69c8305a2e3025dd9f860",
+      "source_method_sha256": "11e14624a7844d4b304feb54b6d060f0b14a30d453e1ac5aaee3e975defa463d",
+      "syntactically_named_target": "frmSafeAdjust",
+      "target_is_compiler_bound": false,
+      "requested_table_syntax": "Inv",
+      "key_syntax": "InvGlobalID",
+      "explicit_branch_predicate_present": false,
+      "explicit_year_or_database_selector_in_argument": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "selector": "OpenInvoiceByType",
+      "line": 1127,
+      "function": "f.Navigate",
+      "argument_expression": "($\"SELECT * FROM Inv WHERE IS_Deleted=0 \" +\n                                   $\"AND proc_type=1 AND inv_type=6 AND id={invNo}\")",
+      "argument_expression_sha256": "7a3f78637f176ace0cd55a13c877725804b4589626c88a7b903644b2c5935460",
+      "source_method_sha256": "4d02c7a740d83cecab25c26ccf27aa2f8fe72ce0aaf322aff576e47e139da71b",
+      "syntactically_named_target": "frmProductionOrder",
+      "target_is_compiler_bound": false,
+      "requested_table_syntax": "Inv",
+      "key_syntax": "local-id",
+      "explicit_branch_predicate_present": false,
+      "explicit_year_or_database_selector_in_argument": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "selector": "OpenInvoiceByType",
+      "line": 1135,
+      "function": "f.Navigate",
+      "argument_expression": "($\"SELECT * FROM Inv WHERE IS_Deleted=0 \" +\n                                   $\"AND proc_type=2 AND inv_type=6 AND id={invNo}\")",
+      "argument_expression_sha256": "520a8297e9fe3817d1c4f74c3a2df3da818a13e59e0055d6ef4326d0a1623dc5",
+      "source_method_sha256": "4d02c7a740d83cecab25c26ccf27aa2f8fe72ce0aaf322aff576e47e139da71b",
+      "syntactically_named_target": "frmProductionOrder",
+      "target_is_compiler_bound": false,
+      "requested_table_syntax": "Inv",
+      "key_syntax": "local-id",
+      "explicit_branch_predicate_present": false,
+      "explicit_year_or_database_selector_in_argument": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "selector": "OpenInvoiceByType",
+      "line": 1160,
+      "function": "f.Navigate",
+      "argument_expression": "($\"SELECT * FROM SafesAdjust WHERE id={invNo}\")",
+      "argument_expression_sha256": "3871d25bbc19b371efecbb93bddeef7a95ec862ad95e8c5b96a741cf6e31bd76",
+      "source_method_sha256": "4d02c7a740d83cecab25c26ccf27aa2f8fe72ce0aaf322aff576e47e139da71b",
+      "syntactically_named_target": "frmSafeAdjust",
+      "target_is_compiler_bound": false,
+      "requested_table_syntax": "SafesAdjust",
+      "key_syntax": "local-id",
+      "explicit_branch_predicate_present": false,
+      "explicit_year_or_database_selector_in_argument": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "selector": "dgvSrch_MouseLeftButtonUp",
+      "line": 843,
+      "function": "Navigate",
+      "argument_expression": "($\"SELECT * FROM Inv WHERE InvGlobalID=N'{_invGlobalID}'\")",
+      "argument_expression_sha256": "0049b5ea29f6e6008c824c4b176c3c37019c872d51e3941dd4f14ed5294e6724",
+      "source_method_sha256": "faa5af7ff8f98a613b61d328743e172ee1f9d1a5a58485cc00bf852c4887269b",
+      "syntactically_named_target": "frmProductionOrder",
+      "target_is_compiler_bound": false,
+      "requested_table_syntax": "Inv",
+      "key_syntax": "InvGlobalID",
+      "explicit_branch_predicate_present": false,
+      "explicit_year_or_database_selector_in_argument": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "selector": "btnFirst_Click",
+      "line": 1026,
+      "function": "Navigate",
+      "argument_expression": "(\n                $\"SELECT TOP 1 * FROM Inv \" +\n                $\"WHERE inv_type={InvType} AND proc_type={ProcType} \" +\n                $\"AND IS_Deleted=0 ORDER BY id ASC\")",
+      "argument_expression_sha256": "72cd15d32fe5b03af1d12a504ce277c074fc2db02f231eadff51a75493e809d6",
+      "source_method_sha256": "f4cd1ba9ddd601048344cba70de71c993a400f53417c6a938bb0f2aff64c89b1",
+      "syntactically_named_target": "frmProductionOrder",
+      "target_is_compiler_bound": false,
+      "requested_table_syntax": "Inv",
+      "key_syntax": "ordered-header",
+      "explicit_branch_predicate_present": false,
+      "explicit_year_or_database_selector_in_argument": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "selector": "btnPrevious_Click",
+      "line": 1032,
+      "function": "Navigate",
+      "argument_expression": "(\n                $\"SELECT TOP 1 * FROM Inv \" +\n                $\"WHERE inv_type={InvType} AND proc_type={ProcType} \" +\n                $\"AND IS_Deleted=0 AND id<{_code} ORDER BY id DESC\")",
+      "argument_expression_sha256": "c9019ce590c4d04dbf45d4f26e243c25b73bf7f142c7c40fa36e75739ef0c71b",
+      "source_method_sha256": "7c31980ede4f37d74bea7aa702145b24313a44e0f900a0a0004be4e6759c184f",
+      "syntactically_named_target": "frmProductionOrder",
+      "target_is_compiler_bound": false,
+      "requested_table_syntax": "Inv",
+      "key_syntax": "ordered-header",
+      "explicit_branch_predicate_present": false,
+      "explicit_year_or_database_selector_in_argument": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "selector": "btnNext_Click",
+      "line": 1038,
+      "function": "Navigate",
+      "argument_expression": "(\n                $\"SELECT TOP 1 * FROM Inv \" +\n                $\"WHERE inv_type={InvType} AND proc_type={ProcType} \" +\n                $\"AND IS_Deleted=0 AND id>{_code} ORDER BY id ASC\")",
+      "argument_expression_sha256": "031d5b1e49db7a232d2ab519a28f71176fd3b968bf176703cfb7a0563abc6a40",
+      "source_method_sha256": "ca61f9bb6d841f704c3c31cc422a469ca652969ef88721dcf4d8e91d799b241c",
+      "syntactically_named_target": "frmProductionOrder",
+      "target_is_compiler_bound": false,
+      "requested_table_syntax": "Inv",
+      "key_syntax": "ordered-header",
+      "explicit_branch_predicate_present": false,
+      "explicit_year_or_database_selector_in_argument": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "selector": "btnLast_Click",
+      "line": 1044,
+      "function": "Navigate",
+      "argument_expression": "(\n                $\"SELECT TOP 1 * FROM Inv \" +\n                $\"WHERE inv_type={InvType} AND proc_type={ProcType} \" +\n                $\"AND IS_Deleted=0 ORDER BY id DESC\")",
+      "argument_expression_sha256": "2001200933716ecdb2d21354f01813d71e5536c24a9e82bc47d69b9643bfd27d",
+      "source_method_sha256": "2e41c9e988c7dbf93ba80d718a016838d95351585e653061f035f8a318b4fb8e",
+      "syntactically_named_target": "frmProductionOrder",
+      "target_is_compiler_bound": false,
+      "requested_table_syntax": "Inv",
+      "key_syntax": "ordered-header",
+      "explicit_branch_predicate_present": false,
+      "explicit_year_or_database_selector_in_argument": false
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs",
+      "selector": "dgvSrch_MouseDoubleClick",
+      "line": 1607,
+      "function": "Navigate",
+      "argument_expression": "($\"SELECT * FROM SafesAdjust WHERE id={Code}\")",
+      "argument_expression_sha256": "ae6790879494bb33b7de0fb6ad0d7abaf4eef3891814a15270bc5d5c1e02dd81",
+      "source_method_sha256": "f305f211c486af03e452edb1fe763f457c5b9d80e7452d564e4ec9df7cefbced",
+      "syntactically_named_target": "frmSafeAdjust",
+      "target_is_compiler_bound": false,
+      "requested_table_syntax": "SafesAdjust",
+      "key_syntax": "local-id",
+      "explicit_branch_predicate_present": false,
+      "explicit_year_or_database_selector_in_argument": false
+    }
+  ],
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false
+}

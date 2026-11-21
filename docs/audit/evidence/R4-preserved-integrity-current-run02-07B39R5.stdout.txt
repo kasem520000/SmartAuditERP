@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "errors": [],
+  "contexts": 72,
+  "source_identities": 24,
+  "request_call_sites": 26,
+  "capability_exit_certificates_issued": 0,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "limit": "Integrity and bounded source-claim checks only. Not semantic completeness, runtime, SDK/SQL/ACL/financial acceptance, or all repository tests."
+}

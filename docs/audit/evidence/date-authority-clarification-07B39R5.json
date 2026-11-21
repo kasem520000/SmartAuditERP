@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "prospective-R5-authority-clarification-not-a-rewrite-of-captured-history",
+  "assessment_reference_date_utc": "2026-11-16",
+  "date_basis": "Current session assessment reference, distinct from observed environment timestamps. Assertions in a validator cannot authenticate a calendar.",
+  "conflicting_21_November_authority_claim": "Not adopted: the preserved entry and R4 receipt label 21 November only as a raw environment clock; it is not the current assessment reference.",
+  "raw_clocks_are_calendar_authority": false,
+  "historical_inputs_rewritten": false,
+  "entry_was_altered_for_this_clarification": false,
+  "pinned_inputs": [
+    {
+      "path": "docs/audit/evidence/entry-identities-07B39R5.json",
+      "bytes": 230671,
+      "sha256": "0211bd44913e89906040a3fae72f88ff44d4028749cd64b944d56142c99b5440"
+    },
+    {
+      "path": "docs/audit/evidence/validation-current-run01-receipt-07B39R4.json",
+      "bytes": 370524,
+      "sha256": "e4c1890180ee48547c7fd60347f4aafd3937758f01a555c3fdf92888fee18b4f"
+    },
+    {
+      "path": "docs/audit/evidence/document-receiver-source-review-log-07B39R4.json",
+      "bytes": 18462,
+      "sha256": "bd22dbc3b572a1fbb6cb2c604d36f1da53afe369ad3cb1a12802fdcef0b1097c"
+    }
+  ],
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false
+}

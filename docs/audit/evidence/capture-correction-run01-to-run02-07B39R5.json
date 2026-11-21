@@ -1,0 +1,177 @@
+{
+  "schema_version": 1,
+  "kind": "prospective-run01-to-rev02-source-extractor-correction-with-all-run01-versions-preserved",
+  "assessment_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "run01_receipt": {
+    "path": "docs/audit/evidence/validation-current-run01-receipt-07B39R5.json",
+    "bytes": 382041,
+    "sha256": "569653ce6a1aaf46ff8c19303e02cf3609fa3979671a3372f46305b6587688ae"
+  },
+  "run01_archived_consumed_versions": {
+    "path": "docs/audit/evidence/validation-consumed-inputs-run01-07B39R5.tar.gz",
+    "bytes": 255821,
+    "sha256": "3a660cf0444ff73747f3e7eb62f9678ac9ae21a8749f434da67573e780eee422",
+    "members": 14
+  },
+  "run01_combined_actual": {
+    "tests": 149,
+    "passed": 148,
+    "failures": 1,
+    "seconds": 35.673,
+    "exit_code": 1,
+    "failing_test": "test_compact_DDL_declarations_are_not_silently_omitted",
+    "failure": "Optional whitespace and case-insensitive backtracking split CONSTRAINT into a spurious column CONSTRA followed by type INT.",
+    "partition_from_actual_stderr": {
+      "test_recovery_exit": {
+        "cases": 42,
+        "ok": 42,
+        "FAIL": 0,
+        "ERROR": 0
+      },
+      "test_document_receiver": {
+        "cases": 50,
+        "ok": 50,
+        "FAIL": 0,
+        "ERROR": 0
+      },
+      "test_production_adjustment": {
+        "cases": 57,
+        "ok": 56,
+        "FAIL": 1,
+        "ERROR": 0
+      }
+    }
+  },
+  "run01_B38_actual": {
+    "tests": 43,
+    "passed": 42,
+    "failures": 1,
+    "seconds": 2.596,
+    "exit_code": 1,
+    "failure_verbatim": "AssertionError: 149 != 142"
+  },
+  "current_files_changed_from_2205_run01_inputs": [
+    "docs/audit/tools/disposition07b/capture_production_adjustment.py",
+    "docs/audit/tools/disposition07b/verify_production_adjustment.py"
+  ],
+  "changed_tools_old_archive_member_identities": {
+    "docs/audit/tools/disposition07b/capture_production_adjustment.py": {
+      "bytes": 9855,
+      "sha256": "1781ce68bf42bfc6fed0b9c157c023ff17ef081fb9b84cdb6b5646d9d60fe5f2"
+    },
+    "docs/audit/tools/disposition07b/verify_production_adjustment.py": {
+      "bytes": 34571,
+      "sha256": "6186ac875c7e8c53f116db36810e7073ac853b1224c652c8394189f5c91b90f0"
+    }
+  },
+  "changed_tools_current_identities": [
+    {
+      "path": "docs/audit/tools/disposition07b/capture_production_adjustment.py",
+      "bytes": 9922,
+      "sha256": "d8450ec83c8490cb1371b5d6f8d45514bbd1942a5916decff5e5ef29b5ee0180"
+    },
+    {
+      "path": "docs/audit/tools/disposition07b/verify_production_adjustment.py",
+      "bytes": 35227,
+      "sha256": "903e0128016e815cd04529e50329f6e20a94cb9e2d4d1f34cb0d718b4a990662"
+    }
+  ],
+  "new_test_file_unchanged_from_run01": {
+    "path": "docs/audit/tools/disposition07b/test_production_adjustment.py",
+    "bytes": 17360,
+    "sha256": "4087a684a84f393fded50bde5b844a4fba018ae56014f2abb7d15af447eb71d0"
+  },
+  "R1_R4_B38_tools_or_tests_edited": false,
+  "test_oracle_weakened": false,
+  "fix": "Require horizontal whitespace between an unquoted column identifier and a type, while allowing adjacent bracketed name/type declarations. Keep the independent exact-declaration test unchanged.",
+  "successor_documents": [
+    {
+      "path": "docs/audit/evidence/production-adjustment-source-facts-rev02-07B39R5.json",
+      "bytes": 993234,
+      "sha256": "958c1c468ea0e81d8e10a3b048a693c25835f45b12b6fce2e7d6950aeda7e062"
+    },
+    {
+      "path": "docs/audit/evidence/production-adjustment-request-contracts-rev02-07B39R5.json",
+      "bytes": 22021,
+      "sha256": "42eea798ed1b9016bd08eeaefb4045797cb9ded5eb12253bb7515eb0b2cd889d"
+    },
+    {
+      "path": "docs/audit/evidence/production-adjustment-root-adjudication-rev02-07B39R5.json",
+      "bytes": 305527,
+      "sha256": "a8f1de4ff266be37316323b56bc6168c1b34c6855eab040db32e53e6ac3ec22a"
+    },
+    {
+      "path": "docs/audit/evidence/identity-year-local-worklist-rev02-07B39R5.json",
+      "bytes": 15696,
+      "sha256": "d905d5510520ab945f34dae07ef094cccbc9972bb40f5237114dc826118a4457"
+    }
+  ],
+  "original_documents_preserved_at_original_paths": [
+    {
+      "path": "docs/audit/evidence/production-adjustment-source-facts-07B39R5.json",
+      "bytes": 993297,
+      "sha256": "a0dd39bc2c7e9b727106154afdcf6561b067d0bb058441596f6815bba0a66379"
+    },
+    {
+      "path": "docs/audit/evidence/production-adjustment-request-contracts-07B39R5.json",
+      "bytes": 22015,
+      "sha256": "75f199d2c97edc377d958936805e5cf6bd5a711dff6c343d241994f037649b53"
+    },
+    {
+      "path": "docs/audit/evidence/production-adjustment-root-adjudication-07B39R5.json",
+      "bytes": 305521,
+      "sha256": "deefedfdd128ae74479bfa0f619984e914eaacb9ed002136b360b2c7c80d5a98"
+    },
+    {
+      "path": "docs/audit/evidence/production-adjustment-dispositions-07B39R5.json",
+      "bytes": 18845,
+      "sha256": "89c3701f34b65dd905ab8a631bfe7e59ca01fc390b9c544f0e546e4270502470"
+    },
+    {
+      "path": "docs/audit/evidence/identity-year-local-worklist-07B39R5.json",
+      "bytes": 15690,
+      "sha256": "14a587935d0231433ac79dbbd05f8027f820359032e3caca90b777a97eda5246"
+    },
+    {
+      "path": "docs/audit/SOURCE-REVIEW-07B39R5.md",
+      "bytes": 17200,
+      "sha256": "313d867d626e2b4c2e856f83512562b63cf5e8775136ca661081eb11de55f746"
+    }
+  ],
+  "original_71_read_registrations_unchanged": {
+    "path": "docs/audit/evidence/production-adjustment-source-review-log-07B39R5.json",
+    "bytes": 29720,
+    "sha256": "e57c34f958d7f255765a6b4c6c1dc69dd1fa94355169bb5f690bb45597b33025"
+  },
+  "facts_semantic_body_and_request_changes": [],
+  "fact_column_delta_only": "Remove spurious CONSTRA from Inv / Inv_Sub / SafesAdjust column projections; all C# methods/classes, source identities, raw SQL fragments and request identities identical.",
+  "new_SOURCE_written_before_run02": {
+    "path": "docs/audit/SOURCE-REVIEW-07B39R5-rev02.md",
+    "bytes": 15599,
+    "sha256": "a064e93c1a8fb6d76e09f13706ca1b417371eb0e16940f577171a90e1fdf19dd"
+  },
+  "run02_success_presumed": false,
+  "pinned_inputs": [
+    {
+      "path": "docs/audit/evidence/R1-R4-R5-combined-tests-current-run01-07B39R5.stderr.txt",
+      "bytes": 25454,
+      "sha256": "e79fe0d998e1cd2998ec1a267b48ea734e38e9c0c737dd5ba81eeb1e77718ea8"
+    },
+    {
+      "path": "docs/audit/evidence/B38-preserved-tests-current-run01-07B39R5.stderr.txt",
+      "bytes": 6640,
+      "sha256": "030eafd5b2a1a8b9b03806b8b05d3a1e341a66c682028b93c00d8228d116b276"
+    },
+    {
+      "path": "docs/audit/evidence/date-authority-clarification-07B39R5.json",
+      "bytes": 1354,
+      "sha256": "f685aa46648fd8c692a3f2afd848b9eff59e2cf227a084faf5ed9c2b26d5d9e8"
+    }
+  ],
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "capability_exit_certificates_issued": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false
+}
