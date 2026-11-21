@@ -234,4 +234,8 @@ check('entry, inventory, shift, license and permission follow-ups stay partial',
           for fid, rid in [('P3-002', 'R-245'), ('P4-030', 'R-246'), ('P3-014', 'R-247'),
                            ('P1-032', 'R-248'), ('P1-012', 'R-249')]))
 
+check('receipt transaction, identity collision and account mapping remain partial',
+      all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P3-003', 'R-250'), ('P3-005', 'R-250'), ('P3-008', 'R-040; R-251')]))
+
 print('RESULT: PASS — archive consistency checks; classifications are not WPF or SQL acceptance.')
