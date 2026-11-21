@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "kind": "after-report-seal-direct-captures",
+  "raw_environment_clock_started_utc": "2026-11-21T16:29:18.944840+00:00",
+  "HEAD_before_delivery_commit": "f16f3da60c72f243f90f466badc1bade90bf4abd",
+  "branch": "arena/94ae8414-smartauditerp",
+  "delivery_manifest_sha256": "89c2ea37c99a87f4d8209bd0d9100744cd2c631a2b2fa560c2017ffbe48343ad",
+  "sealed_file_count": 39,
+  "sealed_reports_and_indexes_were_inputs_to_these_final_runs": true,
+  "runs": [
+    {
+      "name": "final-R1-integrity",
+      "argv": [
+        "/usr/bin/python",
+        "-B",
+        "docs/audit/tools/disposition07b/verify_recovery_exit.py",
+        "--rederive"
+      ],
+      "started_raw_environment_clock_utc": "2026-11-21T16:29:18.948662+00:00",
+      "ended_raw_environment_clock_utc": "2026-11-21T16:29:22.101189+00:00",
+      "exit_code": 0,
+      "documented_expected_exit_code": 0,
+      "stdout": {
+        "path": "docs/audit/evidence/final-checks-07B39R1.stdout.txt",
+        "bytes": 4794,
+        "sha256": "16f1c30f42104fbe7e04f27e36c898b2645cec944b28ea6c4ea2dba42bf49401"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/final-checks-07B39R1.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "final-R1-open-exit",
+      "argv": [
+        "/usr/bin/python",
+        "-B",
+        "docs/audit/tools/disposition07b/verify_recovery_exit.py",
+        "--require-complete",
+        "--rederive"
+      ],
+      "started_raw_environment_clock_utc": "2026-11-21T16:29:22.101453+00:00",
+      "ended_raw_environment_clock_utc": "2026-11-21T16:29:25.110217+00:00",
+      "exit_code": 2,
+      "documented_expected_exit_code": 2,
+      "stdout": {
+        "path": "docs/audit/evidence/final-closure-07B39R1.stdout.txt",
+        "bytes": 4794,
+        "sha256": "16f1c30f42104fbe7e04f27e36c898b2645cec944b28ea6c4ea2dba42bf49401"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/final-closure-07B39R1.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "final-R1-tests",
+      "argv": [
+        "/usr/bin/python",
+        "-B",
+        "-W",
+        "error::ResourceWarning",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "docs/audit/tools/disposition07b",
+        "-p",
+        "test_recovery_exit.py"
+      ],
+      "started_raw_environment_clock_utc": "2026-11-21T16:29:25.110428+00:00",
+      "ended_raw_environment_clock_utc": "2026-11-21T16:29:28.186957+00:00",
+      "exit_code": 0,
+      "documented_expected_exit_code": 0,
+      "stdout": {
+        "path": "docs/audit/evidence/final-tests-07B39R1.stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/final-tests-07B39R1.stderr.txt",
+        "bytes": 141,
+        "sha256": "9d96ae3330bfb1fa6268554ae51ec244135c53f238b2458e2f00064fa8fdf9bd"
+      }
+    },
+    {
+      "name": "final-B38-preserved-reparse",
+      "argv": [
+        "/usr/bin/python",
+        "-B",
+        "docs/audit/tools/census07b/validate_7b_completion.py",
+        "--reparse"
+      ],
+      "started_raw_environment_clock_utc": "2026-11-21T16:29:28.187142+00:00",
+      "ended_raw_environment_clock_utc": "2026-11-21T16:29:35.923287+00:00",
+      "exit_code": 0,
+      "documented_expected_exit_code": 0,
+      "stdout": {
+        "path": "docs/audit/evidence/final-B38-checks-07B39R1.stdout.txt",
+        "bytes": 2909,
+        "sha256": "65e01da05a072588aab50d423fe61232a2597ad0227f9bdcc4b779f0d8cf4fc7"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/final-B38-checks-07B39R1.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "final-B38-preserved-tests",
+      "argv": [
+        "/usr/bin/python",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "docs/audit/tools/census07b",
+        "-p",
+        "test_7b_completion.py"
+      ],
+      "started_raw_environment_clock_utc": "2026-11-21T16:29:35.923493+00:00",
+      "ended_raw_environment_clock_utc": "2026-11-21T16:29:38.312001+00:00",
+      "exit_code": 1,
+      "documented_expected_exit_code": 1,
+      "stdout": {
+        "path": "docs/audit/evidence/final-B38-tests-07B39R1.stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/final-B38-tests-07B39R1.stderr.txt",
+        "bytes": 768,
+        "sha256": "a4349b1967ba2ff55b859e858427a36a99a03b508c3927b3648c3fbc7da0eabd"
+      }
+    }
+  ],
+  "current_tests": {
+    "run": 42,
+    "successful": 42,
+    "failures": 0
+  },
+  "preserved_B38_tests": {
+    "run": 43,
+    "successful": 42,
+    "failures": 1,
+    "actual_current_recursive_tools": 144,
+    "frozen_expected_recursive_tools": 142,
+    "assertion_was_not_edited_skipped_or_overlaid": true
+  },
+  "all_test_suites_passed": false,
+  "whole_7B_static_assessment_complete": false,
+  "old_dispatcher_executed": false,
+  "application_execution_count": 0,
+  "application_remediation_performed": false,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "repair_start_and_synchronization": "unknown",
+  "raw_environment_clock_ended_utc": "2026-11-21T16:29:38.312157+00:00",
+  "sealed_inputs_unchanged_during_final_captures": true,
+  "all_documented_exit_codes_matched": true
+}

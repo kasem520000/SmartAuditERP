@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "kind": "fresh-recovery-baseline-not-missing-B39-capture",
+  "HEAD": "f16f3da60c72f243f90f466badc1bade90bf4abd",
+  "runs": [
+    {
+      "name": "recovered-B38-integrity-reparse",
+      "argv": [
+        "/usr/bin/python",
+        "-B",
+        "docs/audit/tools/census07b/validate_7b_completion.py",
+        "--reparse"
+      ],
+      "started_raw_clock_utc": "2026-11-21T16:16:45.845172+00:00",
+      "ended_raw_clock_utc": "2026-11-21T16:16:54.616899+00:00",
+      "exit_code": 0,
+      "documented_expected_exit": 0,
+      "stdout": {
+        "path": "docs/audit/evidence/recovered-integrity-07B39R1.stdout.txt",
+        "bytes": 2909,
+        "sha256": "488ad5f9957967cfd2e015a2d552125aba877a3f51744b73bb3a20f04a46a982"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/recovered-integrity-07B39R1.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "recovered-B38-open-closure",
+      "argv": [
+        "/usr/bin/python",
+        "-B",
+        "docs/audit/tools/census07b/validate_7b_completion.py",
+        "--require-complete"
+      ],
+      "started_raw_clock_utc": "2026-11-21T16:16:54.617167+00:00",
+      "ended_raw_clock_utc": "2026-11-21T16:16:55.695883+00:00",
+      "exit_code": 2,
+      "documented_expected_exit": 2,
+      "stdout": {
+        "path": "docs/audit/evidence/recovered-closure-07B39R1.stdout.txt",
+        "bytes": 2910,
+        "sha256": "ce925da4627058957fd2e1a4d7f26b1e550bcd654110303e6328e9c145f47c28"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/recovered-closure-07B39R1.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "recovered-B38-tests-before-new-tools",
+      "argv": [
+        "/usr/bin/python",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "docs/audit/tools/census07b",
+        "-p",
+        "test_7b_completion.py"
+      ],
+      "started_raw_clock_utc": "2026-11-21T16:16:55.696103+00:00",
+      "ended_raw_clock_utc": "2026-11-21T16:16:58.206020+00:00",
+      "exit_code": 0,
+      "documented_expected_exit": 0,
+      "stdout": {
+        "path": "docs/audit/evidence/recovered-tests-07B39R1.stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/recovered-tests-07B39R1.stderr.txt",
+        "bytes": 142,
+        "sha256": "82569a3d8dbbb92e3958d9650826d3e48d6af26ac4955e8d1788e3e1396383cf"
+      }
+    }
+  ],
+  "recursive_tool_count_at_capture": 142,
+  "B38_tests_untouched": true,
+  "capture_outputs_direct": true,
+  "all_local_7B_complete_claimed": false,
+  "old_dispatcher_executed": false,
+  "application_execution_count": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "raw_clock_not_date_authority": true
+}

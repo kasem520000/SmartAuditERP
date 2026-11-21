@@ -1,0 +1,509 @@
+{
+  "schema_version": 1,
+  "publication_raw_clock_utc": "2026-11-21T16:22:07.735023+00:00",
+  "not_original_review_action_timestamps": true,
+  "prior_B39_log05_available": false,
+  "prior_B39_log05_claims_authenticated": false,
+  "retroactive_backfill_of_prior_reads": false,
+  "reviewed_ranges": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "first_line": 1795,
+      "last_line": 1844,
+      "source_sha256": "87c814a3194cad2f8b896665a9a542373fa63485318bb373f08ab13e6bdbf234",
+      "normalized_excerpt_sha256": "aa72e875e13f73e623e8857393544b14a7c720d422563954670e3d2a921fd187",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "first_line": 1640,
+      "last_line": 1744,
+      "source_sha256": "87c814a3194cad2f8b896665a9a542373fa63485318bb373f08ab13e6bdbf234",
+      "normalized_excerpt_sha256": "29466fbd69905c904eb879971b20311bd3e205a2586b9f9825cf9873379900b6",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "first_line": 322,
+      "last_line": 351,
+      "source_sha256": "87c814a3194cad2f8b896665a9a542373fa63485318bb373f08ab13e6bdbf234",
+      "normalized_excerpt_sha256": "2764b940f8d857dedcab9ee76d5ba54c86f45ef16f57fed232bf8045e8a312e6",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+      "first_line": 1765,
+      "last_line": 1829,
+      "source_sha256": "62ba7873884ca17f6ec63ebbe1af679b0f7bea0e7bb494c83791e457a040e0d6",
+      "normalized_excerpt_sha256": "ec4374514141b7d96529adf3da17502635be795e545bf59e8b36531f68b6ebce",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+      "first_line": 1666,
+      "last_line": 1747,
+      "source_sha256": "62ba7873884ca17f6ec63ebbe1af679b0f7bea0e7bb494c83791e457a040e0d6",
+      "normalized_excerpt_sha256": "b86c5d1255bce53f9c09a196fe27b32dd63a157f0702c7a86937a5f41731d174",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+      "first_line": 2850,
+      "last_line": 2924,
+      "source_sha256": "713c3a9c9174f9efc99a85d3fd21770e2b04949878da674c3c201c458dfb0301",
+      "normalized_excerpt_sha256": "7fa4bf45d140a279c1ae899b8e09984f1ca969274f7744ed2e28474615602058",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+      "first_line": 2735,
+      "last_line": 2849,
+      "source_sha256": "713c3a9c9174f9efc99a85d3fd21770e2b04949878da674c3c201c458dfb0301",
+      "normalized_excerpt_sha256": "8fbd8cd16d6f13e16b8265a4dfc95a9fec2c03496372f8d9446bda12a6b7bfef",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+      "first_line": 3004,
+      "last_line": 3048,
+      "source_sha256": "713c3a9c9174f9efc99a85d3fd21770e2b04949878da674c3c201c458dfb0301",
+      "normalized_excerpt_sha256": "596b4b70bd9260fa16ed2add2cebde2fbcc5db87cc05e5277109aa10b0fda91d",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml",
+      "first_line": 1340,
+      "last_line": 1354,
+      "source_sha256": "ac6cb3a042ae8091111b10d7ef3e0e034e837adf18fa018a606177fb4dcd67b5",
+      "normalized_excerpt_sha256": "d47f5baa1fe12d076413ae988de99e4c502124b5dbe4af227e05bb2695f8e49c",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmcontract.xaml",
+      "first_line": 1058,
+      "last_line": 1087,
+      "source_sha256": "532fb7cc9f6d86042939f5441d30e9866a4f64a15d7fc14da413f2c89379a868",
+      "normalized_excerpt_sha256": "8cbd85e340c2b1a6d3443d09d59b673a7f21b430563da5c0c29e61e86516482a",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+      "first_line": 1984,
+      "last_line": 2025,
+      "source_sha256": "0f59de510dbc2297232cc3989a6f03d43a4697fdd103d5ff092242df70c05bee",
+      "normalized_excerpt_sha256": "ce4fc0eb95785e6c6e82acd32061d97f970931af65c7abcfff46efefabb058ed",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+      "first_line": 2310,
+      "last_line": 2437,
+      "source_sha256": "0f59de510dbc2297232cc3989a6f03d43a4697fdd103d5ff092242df70c05bee",
+      "normalized_excerpt_sha256": "c5685aa40659ccf77d053b7089eac8ce01db8ff8efe9808b10606ad53cc7e1ac",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+      "first_line": 165,
+      "last_line": 184,
+      "source_sha256": "0f59de510dbc2297232cc3989a6f03d43a4697fdd103d5ff092242df70c05bee",
+      "normalized_excerpt_sha256": "97034b2c4fa366896e004ee180e12ab0eb5d97b432a26607d79dfe371369c369",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs",
+      "first_line": 2018,
+      "last_line": 2060,
+      "source_sha256": "ccdb93fe95e7d67ce31808fd97cbf6453c1fcd0d549a329ab1889807c03e9a47",
+      "normalized_excerpt_sha256": "afb399a5fa05811a877096c5ceb14943628d10b6afcfb13c4a0dc44f8920670d",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs",
+      "first_line": 840,
+      "last_line": 903,
+      "source_sha256": "ccdb93fe95e7d67ce31808fd97cbf6453c1fcd0d549a329ab1889807c03e9a47",
+      "normalized_excerpt_sha256": "920e3b575592bc83e0872e724039d9a60961351574a95d9f49be0ba037665c5f",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml",
+      "first_line": 361,
+      "last_line": 378,
+      "source_sha256": "a7985ef37b4d6575a0a064de92fc02375beb90d3d1facbab3271f41191fbeeef",
+      "normalized_excerpt_sha256": "44bfca304c2454446fc6b6b15201a206d0d89ad710b03210e6e08998710fa7c2",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "first_line": 250,
+      "last_line": 321,
+      "source_sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "normalized_excerpt_sha256": "d103b52f988fd653b87038e7d27542352fa7c096625097c3721135299621d811",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "first_line": 540,
+      "last_line": 641,
+      "source_sha256": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+      "normalized_excerpt_sha256": "f2c5346ea058cf098c050f1142a939a253d893f0355b9e2f006e39593c8ed733",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "first_line": 760,
+      "last_line": 894,
+      "source_sha256": "0bab36016f53ecd18360833d1fba980290702a52a98871fb397be9e813810d91",
+      "normalized_excerpt_sha256": "803e8140bfbd02bc6ca909188af0856827e025a8f8484eceb63dab917409a3df",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "first_line": 2860,
+      "last_line": 2907,
+      "source_sha256": "0bab36016f53ecd18360833d1fba980290702a52a98871fb397be9e813810d91",
+      "normalized_excerpt_sha256": "3d64a2c3fb7a56bbf21068f82a0e564cda419a845a0cf768a42dcaac2bc5be8f",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "first_line": 540,
+      "last_line": 579,
+      "source_sha256": "0bab36016f53ecd18360833d1fba980290702a52a98871fb397be9e813810d91",
+      "normalized_excerpt_sha256": "db38ec72448dedcf1d862230d29a43667ba692b994907f09a90ecebdd669d26d",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "first_line": 942,
+      "last_line": 986,
+      "source_sha256": "4ecc4117632298e5f7cfc5ee5de63bab015740af6d9b73611e1eb8653e942dd6",
+      "normalized_excerpt_sha256": "b192a433bceceb4fa6a0e6d6905ec8b609557e95c982ecf4b338e6abbb1189a1",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "first_line": 47200,
+      "last_line": 47219,
+      "source_sha256": "4ecc4117632298e5f7cfc5ee5de63bab015740af6d9b73611e1eb8653e942dd6",
+      "normalized_excerpt_sha256": "c0e49edac92c96d63eeee3b8fba3b1b86c1641b67fa112ffc8061f39c6a911ce",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "first_line": 2360,
+      "last_line": 2414,
+      "source_sha256": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+      "normalized_excerpt_sha256": "77d7cb5b54b1d3819327283c677abe2d7824e82ee94e44162d4545a192d4de8e",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmCloseShift.xaml.cs",
+      "first_line": 1700,
+      "last_line": 1744,
+      "source_sha256": "2e8a2b58184979d742a276c97673c77a6d15db4bd39ca39778cb7d8d16601f79",
+      "normalized_excerpt_sha256": "bd0dff531177cb0f00869ea079ffc499b9c108531e17253a0c99ad15dae51581",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmEmpInvs.xaml.cs",
+      "first_line": 590,
+      "last_line": 637,
+      "source_sha256": "043d736751a09436c5fb31aac8a47a956ae624b61bcce9abe330920d2e45b2ca",
+      "normalized_excerpt_sha256": "0623d7cc173835fb27b733ab15065076369c0669ca3b9c467513f3837b6bdf62",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmEmpInvs.xaml.cs",
+      "first_line": 78,
+      "last_line": 104,
+      "source_sha256": "043d736751a09436c5fb31aac8a47a956ae624b61bcce9abe330920d2e45b2ca",
+      "normalized_excerpt_sha256": "60e9aa7a3998516e5104e0e732dfa9ccdc0e86f3d385fead448eff552dbe3713",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmAccountsDirectory.xaml.cs",
+      "first_line": 730,
+      "last_line": 792,
+      "source_sha256": "cb4c1814fa187145408848e9f254a9a8f3db38964825680cc808979d5bc8d0eb",
+      "normalized_excerpt_sha256": "04aa4b57fc8e5fcf7b8b07d74b9e1201b143b5f80909d09bd116599a1eeb31fe",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmEntriesSyncStatus.xaml.cs",
+      "first_line": 565,
+      "last_line": 609,
+      "source_sha256": "d8197163dd47efe1d0230e4fab4368f9383169ab36106b35c2239ff6f107d84a",
+      "normalized_excerpt_sha256": "fc4c4fc92101e3b9df7dbb8bcb9e5df29d0b91abfe88b689c6f816a66be9e594",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmEntriesSyncStatus.xaml.cs",
+      "first_line": 680,
+      "last_line": 756,
+      "source_sha256": "d8197163dd47efe1d0230e4fab4368f9383169ab36106b35c2239ff6f107d84a",
+      "normalized_excerpt_sha256": "de8b70bb7891738b20011d55f98a8ef63539d406a46890e617df55c6302b7838",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmReceiptsSyncStatus.xaml.cs",
+      "first_line": 530,
+      "last_line": 572,
+      "source_sha256": "c25d9ea775f68770a9bd7d684ed14c89ac8bcd1a549fb1a5bf5ac52ac54aa414",
+      "normalized_excerpt_sha256": "15c0180e28f544f4b074f115f4f74fe40ae648f414b6c9f2e8147a80d3d7d79b",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmReceiptsSyncStatus.xaml.cs",
+      "first_line": 568,
+      "last_line": 620,
+      "source_sha256": "c25d9ea775f68770a9bd7d684ed14c89ac8bcd1a549fb1a5bf5ac52ac54aa414",
+      "normalized_excerpt_sha256": "29badcf9bb2eb7a7c96557749d9e35e19edbce0d12fb38147a3925a08a719875",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSafeGrd.xaml.cs",
+      "first_line": 665,
+      "last_line": 698,
+      "source_sha256": "c5a78ef957de11b8c6adf7f966a3ae64cfebc6c0e4128473e9603c865c364d95",
+      "normalized_excerpt_sha256": "61fd95291988928daf8d7aaa6610250fb0709ef64d51c75494aa2dcdefc45ebc",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSafeGrd.xaml.cs",
+      "first_line": 880,
+      "last_line": 921,
+      "source_sha256": "c5a78ef957de11b8c6adf7f966a3ae64cfebc6c0e4128473e9603c865c364d95",
+      "normalized_excerpt_sha256": "24f7279560014d859de0ebefd66f7bb76452b0760e1a73d27dd4c504fff616a5",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandQ.xaml.cs",
+      "first_line": 1038,
+      "last_line": 1064,
+      "source_sha256": "a284b02fcb32780545469ae42c7fca27c9e11e8ee5079f5ec8b035bfdc73a681",
+      "normalized_excerpt_sha256": "698e5f6b2d0438aa53cac80a52c3be0fa5dd6d0f6daf8acdeb68098841a4cac8",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandQ.xaml.cs",
+      "first_line": 1330,
+      "last_line": 1379,
+      "source_sha256": "a284b02fcb32780545469ae42c7fca27c9e11e8ee5079f5ec8b035bfdc73a681",
+      "normalized_excerpt_sha256": "934f6ce16cf7a95d789ad6aadfd521c6aa34ce25ffacdfb5ca50833c1b9ca7fc",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSafesTransfer.xaml.cs",
+      "first_line": 1320,
+      "last_line": 1374,
+      "source_sha256": "f425304edd268d4ab70a3f8c5a27da88888831a6458cf29df91d7295b5cf4037",
+      "normalized_excerpt_sha256": "9e5acae5c9b63e7f14c09cd81e44f19e8b0a4220098434ba5d7631929f6d6734",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSafesTransfer.xaml.cs",
+      "first_line": 1364,
+      "last_line": 1386,
+      "source_sha256": "f425304edd268d4ab70a3f8c5a27da88888831a6458cf29df91d7295b5cf4037",
+      "normalized_excerpt_sha256": "14b365b164bc28fb4cbc826c324643c4c89a29c15ec07bc346c15199e9298257",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmStocksSync.xaml.cs",
+      "first_line": 338,
+      "last_line": 382,
+      "source_sha256": "aca1c2cbeadef22b08e2917ab151db6739baf15cfaf24ba93ea824d8964c1881",
+      "normalized_excerpt_sha256": "f124b62dbdd5c2253a42580f230b617d8885292a8ddcad657fd78200f83aa25c",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPrintBill.xaml.cs",
+      "first_line": 1,
+      "last_line": 146,
+      "source_sha256": "e21f285f5e14264c37644416c932f24077214e694a52fad6f49697f9df9ae12a",
+      "normalized_excerpt_sha256": "90372ee67c0e9a7c33795550314f129da4512875e01e9de388c1f762fef5d456",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPrintBill.xaml.cs",
+      "first_line": 146,
+      "last_line": 174,
+      "source_sha256": "e21f285f5e14264c37644416c932f24077214e694a52fad6f49697f9df9ae12a",
+      "normalized_excerpt_sha256": "572cbab5ea903d9ade73f9050445811e456cbf19b2bb3cb43bce89b43976d5e7",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPrintBill.xaml",
+      "first_line": 1043,
+      "last_line": 1066,
+      "source_sha256": "35d74085ae1953eb914d510a7f60d8cc4f7077cdb90ff59ad1668a15349add4b",
+      "normalized_excerpt_sha256": "a97c46fd96fe55ea277097068d6a06b401434b94521d62fd3dca99d98df8ad06",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceDeliveries.xaml.cs",
+      "first_line": 120,
+      "last_line": 174,
+      "source_sha256": "2df1803357665878af1d98d70d6cdda28212187707d038569fde2ec3cc629673",
+      "normalized_excerpt_sha256": "42033cd1fe39cd2268062f2dd18529b368c38c0ee285f54cb494d2fabfd538e1",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvoiceDeliveries.xaml.cs",
+      "first_line": 862,
+      "last_line": 941,
+      "source_sha256": "2df1803357665878af1d98d70d6cdda28212187707d038569fde2ec3cc629673",
+      "normalized_excerpt_sha256": "16edf3b8c9853676108face1fd479f3213913c7fc420f35a02b46d7d8a2717dd",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "first_line": 3290,
+      "last_line": 3332,
+      "source_sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "normalized_excerpt_sha256": "c0210e76c02731de0a3fc65db1d929cc4a5643792930b6a940c04e1db2ed9a32",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "first_line": 3730,
+      "last_line": 3786,
+      "source_sha256": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+      "normalized_excerpt_sha256": "09f7637379d633604c23bd96a644677cce9494d9ed9afc9b1be22f5e5fd71d43",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmCustAccountGet.xaml.cs",
+      "first_line": 755,
+      "last_line": 847,
+      "source_sha256": "ef81a7ed7e9a3097e5fb08c2e28690f14aa7715c4ff052857483812d2160edb9",
+      "normalized_excerpt_sha256": "815fa7ecb0b341e747f14cc698b03e5a0290a514bde5c529b57f42b771be1ed1",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmCustAccountGet.xaml.cs",
+      "first_line": 75,
+      "last_line": 99,
+      "source_sha256": "ef81a7ed7e9a3097e5fb08c2e28690f14aa7715c4ff052857483812d2160edb9",
+      "normalized_excerpt_sha256": "8092d30cac288e27d06a1d36534852d37d721a4c55037d7b045b42486ba56d7e",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/FrmNewEntry.xaml.cs",
+      "first_line": 1045,
+      "last_line": 1109,
+      "source_sha256": "2eb018809493ee4b8198775ca58570e5a944a7cae64f7b19103fbcfc3df9f0be",
+      "normalized_excerpt_sha256": "0439c74ebc876ccb022fb30dc0f146652ac9bf961df91bcccbda6b1409195f22",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmNetsales.xaml.cs",
+      "first_line": 307,
+      "last_line": 372,
+      "source_sha256": "7cac9e793dc5d830fec0bc52b9591b649563fe802b6ec3d81998b8fd8e7a0c1d",
+      "normalized_excerpt_sha256": "2016c82bdc103cccfd9059aca80e8f97d0918b85f499d0d7a8040bffc19e1c2e",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptSalary.xaml.cs",
+      "first_line": 52,
+      "last_line": 129,
+      "source_sha256": "a0d242ce762bba60d52364a2839a369bbe59f9556cf8d744c607ed5b5f8dee8b",
+      "normalized_excerpt_sha256": "036e330679e0135eda291ac017c382bbff47df1f968632cb950e2f288d9bc045",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptReseved.xaml.cs",
+      "first_line": 51,
+      "last_line": 157,
+      "source_sha256": "6f628b6f9affa4b49891597598f328186f8cf8194390d765844229073ae7bf32",
+      "normalized_excerpt_sha256": "2479718605e0f1b6039550771e695a0b0f728adef27b8d5b419c26d91ff7a3e6",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvsProfit.xaml.cs",
+      "first_line": 270,
+      "last_line": 423,
+      "source_sha256": "5504cbc40aa005ac694bd6da558144b6cad298a9e71ce8d2cad7a1a00ce8dbae",
+      "normalized_excerpt_sha256": "2b3c9cd8fdf4d7bcccc553a6760e86fade0af2aa9475724b02b9b3c943832478",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs",
+      "first_line": 220,
+      "last_line": 285,
+      "source_sha256": "dfed915c8e8c89dfe6af13bcfed07854fc9b7418c4b9c0cb39e3e69bfcfeb625",
+      "normalized_excerpt_sha256": "66c7b3114aab05dd301257b235b5c46005ddef154080e987011b13e75279499a",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    },
+    {
+      "path": "SmartAuditERP/Class/Print.cs",
+      "first_line": 690,
+      "last_line": 759,
+      "source_sha256": "8f90315f6f8e1c09620515fea620a2538ed3262d205172f2f469c674ce30cb10",
+      "normalized_excerpt_sha256": "940876355fb51c4aaacb2b0be1b85560adec4d0a258e5de9764b53b03fb1e071",
+      "whole_file_review_claimed": false,
+      "mode": "fresh-presented-source-range-manually-inspected-after-workspace-recovery"
+    }
+  ],
+  "unreviewed_by_this_log": "Every line/range not enumerated here, including whole method contexts extracted syntactically but not wholly presented. Historical reviewed work remains historical, not fresh review here.",
+  "failed_or_empty_path_reads_not_counted": true,
+  "source_fact_extraction_is_not_manual_review": true,
+  "application_execution_count": 0
+}

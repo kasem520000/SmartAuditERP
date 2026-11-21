@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "kind": "prospective-reference-and-clock-separation-not-retimestamping",
+  "session_calendar_reference_date_utc": "2026-11-16",
+  "user_designated_assessment_reference_date_utc": "2026-11-21",
+  "user_reference_source": "Explicit earlier user correction retained in session memory; an assessment reference label, not an independent measurement of current UTC.",
+  "raw_environment_clock_recorded_verbatim_utc": "2026-11-21T16:22:07.665033+00:00",
+  "historical_reference_in_recovered_B37_B38": "2026-11-16",
+  "unavailable_earlier_B39_date_artifacts": [
+    "date-reference-reconciliation05-07B39.json",
+    "DATE-IDENTITY-NOTE-07B39.md",
+    "validation-capture-receipt-07B39.json"
+  ],
+  "earlier_author_date_note_is_user_authority": false,
+  "historical_artifacts_retimestamped": false,
+  "clock_is_calendar_certification": false,
+  "correction_scope": "New recovered assessment uses the user-designated21Nov reference separately from the session calendar reference and raw environment clock. No old clock/source/capture identity changed or substituted. Missing prior date notes are not reconstructed."
+}
