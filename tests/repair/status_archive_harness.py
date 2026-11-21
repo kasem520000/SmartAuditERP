@@ -236,7 +236,11 @@ check('entry, inventory, shift, license and permission follow-ups stay partial',
 
 check('receipt transaction, identity collision and account mapping remain partial',
       all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
-          for fid, rid in [('P3-003', 'R-250; R-253; R-255; R-257; R-258'), ('P3-005', 'R-250; R-255; R-257'), ('P3-008', 'R-040; R-251; R-254; R-255; R-256')]))
+          for fid, rid in [('P3-003', 'R-250; R-253; R-255; R-257; R-258; R-260'), ('P3-005', 'R-250; R-255; R-257'), ('P3-008', 'R-040; R-251; R-254; R-255; R-256; R-261')]))
+
+check('blocked unlinked vouchers are not counted as complete',
+      by_id['P3-009']['repair_status'] == 'partial_open' and by_id['P3-009']['repair_ids'] == 'R-036; R-259' and
+      by_id['P3-010']['repair_status'] == 'partial_open' and by_id['P3-010']['repair_ids'] == 'R-259' and by_id['P3-010']['blocker_id'])
 
 check('broader receipt key finding remains partial', by_id['P3-011']['repair_status'] == 'partial_open' and by_id['P3-011']['repair_ids'] == 'R-036; R-258')
 
