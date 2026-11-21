@@ -352,6 +352,21 @@ namespace SmartAuditERP
         /// </summary>
         public static void ApplyPermissionToForm(System.Windows.Window window)
         {
+            if (window == null) return;
+            if (!window.IsLoaded)
+            {
+                // The visual tree may be empty before Show; do the permission pass
+                // once after the window's own Loaded handlers have been attached.
+                System.Windows.RoutedEventHandler loaded = null;
+                loaded = (sender, args) =>
+                {
+                    window.Loaded -= loaded;
+                    ApplyPermissionToForm(window);
+                };
+                window.Loaded += loaded;
+                return;
+            }
+            bool[] permissions = new bool[5];
             try
             {
                 string formName = window.GetType().Name;
@@ -379,37 +394,41 @@ namespace SmartAuditERP
                     StringComparison.OrdinalIgnoreCase))
                     formName = "frmcurrency";
 
-                // جلب الصلاحيات من قاعدة البيانات
-                using var localConn = ConnObj();
-                localConn.Open();
-
-                var adapter = new SqlDataAdapter(
-                    $"SELECT IS_New, IS_Save, IS_Delete, IS_Search, IS_Print, Forms.id " +
-                    $"FROM User_Permissions, Forms " +
-                    $"WHERE User_Permissions.Form_id=Forms.id " +
-                    $"AND Forms.FormName='{formName.Trim()}' " +
-                    $"AND user_id={UserID}", localConn);
-
-                var dt = new DataTable();
-                adapter.Fill(dt);
-
-                if (dt.Rows.Count == 0) return;
-
-                DataRow perm = dt.Rows[0];
-
-                bool canNew = Convert.ToBoolean(perm["IS_New"]);
-                bool canSave = Convert.ToBoolean(perm["IS_Save"]);
-                bool canDelete = Convert.ToBoolean(perm["IS_Delete"]);
-                bool canSearch = Convert.ToBoolean(perm["IS_Search"]);
-                bool canPrint = Convert.ToBoolean(perm["IS_Print"]);
-
-                // تطبيق الصلاحيات على أزرار WPF
-                ApplyWpfPermissions(window, canNew, canSave, canDelete, canSearch, canPrint);
+                permissions = ReadUiPermissions(formName);
             }
             catch (Exception ex)
             {
+                System.Diagnostics.Debug.WriteLine($"خطأ في قراءة الصلاحيات: {ex.Message}");
+            }
+            try
+            {
+                ApplyWpfPermissions(window, permissions[0], permissions[1], permissions[2], permissions[3], permissions[4]);
+            }
+            catch (Exception ex)
+            {
+                // UI enforcement alone cannot secure commands or a failed tree traversal.
                 System.Diagnostics.Debug.WriteLine($"خطأ في تطبيق الصلاحيات: {ex.Message}");
             }
+        }
+
+        private static bool[] ReadUiPermissions(string formName)
+        {
+            var denied = new bool[5];
+            if (UserID <= 0 || string.IsNullOrWhiteSpace(formName)) return denied;
+            using var localConn = ConnObj();
+            using var adapter = new SqlDataAdapter(
+                "SELECT IS_New, IS_Save, IS_Delete, IS_Search, IS_Print FROM User_Permissions " +
+                "JOIN Forms ON User_Permissions.Form_id=Forms.id " +
+                "WHERE Forms.FormName=@formName AND user_id=@userId", localConn);
+            adapter.SelectCommand.Parameters.Add("@formName", SqlDbType.NVarChar).Value = formName.Trim();
+            adapter.SelectCommand.Parameters.Add("@userId", SqlDbType.Int).Value = UserID;
+            var table = new DataTable();
+            adapter.Fill(table);
+            if (table.Rows.Count != 1) return denied;
+            string[] columns = { "IS_New", "IS_Save", "IS_Delete", "IS_Search", "IS_Print" };
+            for (int i = 0; i < columns.Length; i++)
+                denied[i] = table.Rows[0][columns[i]] != DBNull.Value && Convert.ToBoolean(table.Rows[0][columns[i]]);
+            return denied;
         }
 
         /// <summary>
@@ -461,9 +480,12 @@ namespace SmartAuditERP
         /// </summary>
         public static void ApplyPermissionToForm(System.Windows.Forms.Form frm)
         {
+            if (frm == null) return;
+            string formName = frm.Name ?? string.Empty;
+            bool[] permissions = new bool[5];
             try
             {
-                string formName = frm.Name;
+                formName = frm.Name ?? string.Empty;
 
                 if (frm.Tag != null)
                 {
@@ -487,28 +509,16 @@ namespace SmartAuditERP
                     StringComparison.OrdinalIgnoreCase))
                     formName = "frmcurrency";
 
-                using var localConn = ConnObj();
-                localConn.Open();
-
-                var adapter = new SqlDataAdapter(
-                    $"SELECT IS_New, IS_Save, IS_Delete, IS_Search, IS_Print, Forms.id " +
-                    $"FROM User_Permissions, Forms " +
-                    $"WHERE User_Permissions.Form_id=Forms.id " +
-                    $"AND Forms.FormName='{formName.Trim()}' " +
-                    $"AND user_id={UserID}", localConn);
-
-                var dt = new DataTable();
-                adapter.Fill(dt);
-
-                if (dt.Rows.Count == 0) return;
-
-                DataRow perm = dt.Rows[0];
-                bool canNew = Convert.ToBoolean(perm["IS_New"]);
-                bool canSave = Convert.ToBoolean(perm["IS_Save"]);
-                bool canDelete = Convert.ToBoolean(perm["IS_Delete"]);
-                bool canSearch = Convert.ToBoolean(perm["IS_Search"]);
-                bool canPrint = Convert.ToBoolean(perm["IS_Print"]);
-
+                permissions = ReadUiPermissions(formName);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"خطأ في قراءة الصلاحيات: {ex.Message}");
+            }
+            bool canNew = permissions[0], canSave = permissions[1], canDelete = permissions[2],
+                 canSearch = permissions[3], canPrint = permissions[4];
+            try
+            {
                 // البحث عن لوحة الأزرار
                 var pnlControls = frm.Controls
                     .Find("pnlOperBtns", searchAllChildren: true);
@@ -562,7 +572,7 @@ namespace SmartAuditERP
             string name = btn.Name;
             bool disable = false;
 
-            if (!canNew && name == "btnSave") disable = true;
+            if (!canNew && (name == "btnNew" || name == "btnSave")) disable = true;
             if (!canSave && (name == "btnSave" || name == "btnSavePrint"))
                 disable = true;
             if (!canDelete && name == "btnDelete") disable = true;
@@ -594,7 +604,7 @@ namespace SmartAuditERP
             string name = btn.Name;
             bool disable = false;
 
-            if (!canNew && name == "btnSave") disable = true;
+            if (!canNew && (name == "btnNew" || name == "btnSave")) disable = true;
             if (!canSave && (name == "btnSave" || name == "btnSavePrint"))
                 disable = true;
             if (!canDelete && name == "btnDelete") disable = true;

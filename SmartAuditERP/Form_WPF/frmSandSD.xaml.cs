@@ -968,24 +968,9 @@ namespace SmartAuditERP.Form_WPF
                 // ✅ إصلاح: WPF DataGrid يستخدم ObservableCollection
                 _searchItems.Clear();
 
-                string condition = $"Receipts.ReceiptType = {ReceiptType} AND ";
-
-                if (MainClass.BranchNo != -1)
-                    condition += $"Receipts.BranchID = {MainClass.BranchNo} AND ";
-
-                if (!string.IsNullOrWhiteSpace(txtSrchNo.Text))
-                    condition += $"Receipts.ReceiptNo = {txtSrchNo.Text} AND ";
-                else if (!string.IsNullOrWhiteSpace(txtSrchRef.Text))
-                    condition += $"Receipts.ReffNo = '{txtSrchRef.Text}' AND ";
-
-                if (chkall.IsChecked != true)
-                    condition += "ReceiptDate BETWEEN @StartDate AND @EndDate AND ";
-
-                // استخدام ReceiptOper.LoadReceipts مثل الأصل
-                var dt = ReceiptOper.LoadReceipts(
-                    condition,
-                    txtFromDate.DateTime,
-                    txtToDate.DateTime).Copy();
+                var dt = ReceiptOper.LoadReceipts(ReceiptType, MainClass.BranchNo,
+                    txtSrchNo.Text, txtSrchRef.Text, chkall.IsChecked == true,
+                    txtFromDate.DateTime, txtToDate.DateTime).Copy();
 
                 foreach (DataRow row in dt.Rows)
                 {
@@ -1003,6 +988,7 @@ namespace SmartAuditERP.Form_WPF
             }
             catch (Exception ex)
             {
+                _searchItems.Clear();
                 DXMessageBox.Show(
                     "خطأ في البحث\nتفاصيل الخطأ: " + ex.Message,
                     "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);

@@ -1423,15 +1423,20 @@ namespace SmartAuditERP
 
         public static string ReadEntryGlobalID(string docNo, int type, int branchNo)
         {
+            if (branchNo <= 0 || !int.TryParse(docNo, out int number) || number <= 0)
+                return string.Empty;
             using SqlConnection conn = MainClass.ConnObj();
-            if (conn.State != ConnectionState.Open)
-                conn.Open();
-
+            conn.Open();
             using SqlCommand cmd = new SqlCommand(
-                $"SELECT GlobalID FROM Entry " +
-                $"WHERE branch = {branchNo} AND type = {type} AND doc_no = {docNo}", conn);
-
-            return cmd.ExecuteScalar()?.ToString() ?? string.Empty;
+                "SELECT TOP (2) GlobalID FROM Entry WHERE branch=@branch AND type=@type AND doc_no=@number", conn);
+            cmd.Parameters.Add("@branch", SqlDbType.Int).Value = branchNo;
+            cmd.Parameters.Add("@type", SqlDbType.Int).Value = type;
+            cmd.Parameters.Add("@number", SqlDbType.Int).Value = number;
+            using SqlDataReader reader = cmd.ExecuteReader();
+            if (!reader.Read() || reader.IsDBNull(0)) return string.Empty;
+            string id = reader.GetString(0);
+            // Do not guess which entry belongs to a note if historical keys collide.
+            return reader.Read() ? string.Empty : id;
         }
 
         #endregion

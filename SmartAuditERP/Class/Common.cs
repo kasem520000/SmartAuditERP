@@ -1473,23 +1473,13 @@ namespace SmartAuditERP
 
                 if (!isSaveBtn) continue;
 
-                if (!frmPer.Addable && IsNew)
+                // A permission pass must never re-enable a control disabled by a
+                // different safety rule. Reopening the screen may be needed after
+                // transitioning from a denied state to an allowed one.
+                if (!(IsNew ? frmPer.Addable : frmPer.Editable))
                 {
                     button.IsEnabled = false;
                     button.Background = System.Windows.Media.Brushes.Gray;
-                }
-                else if (frmPer.Addable && IsNew)
-                {
-                    button.IsEnabled = true;
-                }
-                else if (!frmPer.Editable && !IsNew)
-                {
-                    button.IsEnabled = false;
-                    button.Background = System.Windows.Media.Brushes.Gray;
-                }
-                else if (frmPer.Editable && !IsNew)
-                {
-                    button.IsEnabled = true;
                 }
             }
         }

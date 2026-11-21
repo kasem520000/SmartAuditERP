@@ -257,6 +257,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void GetCustBalance()
         {
+            // Never display a previous account's balance after a failed lookup.
+            txtBalance.Text = string.Empty;
+            txtBalanceType.Text = string.Empty;
             try
             {
                 if (cmbClients.SelectedValue == null) return;
@@ -264,11 +267,14 @@ namespace SmartAuditERP.Form_WPF
                 int accNo = -1;
                 var adapter = new SqlDataAdapter(
                     $"SELECT Code FROM Accounts_Index " +
-                    $"WHERE Type=2 AND AName=N'{cmbClients.Text}'", conn);
+                    $"WHERE Type=2 AND AName=@accountName", conn);
+                adapter.SelectCommand.Parameters.Add("@accountName", SqlDbType.NVarChar).Value = cmbClients.Text;
                 var dt = new DataTable();
                 adapter.Fill(dt);
-                if (dt.Rows.Count > 0)
-                    accNo = Convert.ToInt32(dt.Rows[0][0]);
+                if (dt.Rows.Count != 1 || dt.Rows[0][0] == DBNull.Value)
+                    throw new InvalidOperationException("تعذر تحديد حساب وحيد لعرض الرصيد.");
+                accNo = Convert.ToInt32(dt.Rows[0][0]);
+                if (accNo <= 0) throw new InvalidOperationException("حساب الرصيد غير صالح.");
 
                 string condBranch = "";
                 if (MainClass.BranchNo != -1)
@@ -310,7 +316,12 @@ namespace SmartAuditERP.Form_WPF
                     txtBalanceType.Text = "دائن";
                 }
             }
-            catch { /* تجاهل */ }
+            catch (Exception ex)
+            {
+                txtBalance.Text = string.Empty;
+                txtBalanceType.Text = string.Empty;
+                System.Diagnostics.Debug.WriteLine("تعذر عرض الرصيد: " + ex.Message);
+            }
         }
 
         #endregion
@@ -462,39 +473,34 @@ namespace SmartAuditERP.Form_WPF
         private void Search()
         {
             SearchList.Clear();
-
-            string cond = $" Receipts.ReceiptType={ReceiptType} and ";
-
-            if (MainClass.BranchNo != -1)
-                cond += $"Receipts.branchID={MainClass.BranchNo} and ";
-
-            if (!string.IsNullOrWhiteSpace(txtSrchNo.Text))
-                cond += $" Receipts.ReceiptNo={txtSrchNo.Text} and ";
-            else if (!string.IsNullOrWhiteSpace(txtSrchRef.Text))
-                cond += $" Receipts.ReffNo={txtSrchRef.Text} and ";
-
-            if (chkall.IsChecked != true)
-                cond += " ReceiptDate between @StartDate and @EndDate and ";
-
-            var dt = ReceiptOper.LoadReceipts(
-                cond,
-                txtFromDate.DateTime,
-                txtToDate.DateTime).Copy();
-
-            foreach (DataRow row in dt.Rows)
+            try
             {
-                SearchList.Add(new ReceiptAndroidRow
-                {
-                    GlobalId    = row["GlobalID"]?.ToString() ?? "",
-                    ReceiptNo   = Convert.ToInt32(row["ReceiptNo"]),
-                    ReceiptDate = Convert.ToDateTime(row["ReceiptDate"])
-                                         .ToShortDateString(),
-                    Payment     = Convert.ToDouble(row["Payment"]),
-                    ClientName  = row["name"]?.ToString() ?? "",
-                });
-            }
 
-            dgvSrch.UnselectAll();
+                var dt = ReceiptOper.LoadReceipts(ReceiptType, MainClass.BranchNo,
+                    txtSrchNo.Text, txtSrchRef.Text, chkall.IsChecked == true,
+                    txtFromDate.DateTime, txtToDate.DateTime).Copy();
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    SearchList.Add(new ReceiptAndroidRow
+                    {
+                        GlobalId    = row["GlobalID"]?.ToString() ?? "",
+                        ReceiptNo   = Convert.ToInt32(row["ReceiptNo"]),
+                        ReceiptDate = Convert.ToDateTime(row["ReceiptDate"])
+                                             .ToShortDateString(),
+                        Payment     = Convert.ToDouble(row["Payment"]),
+                        ClientName  = row["name"]?.ToString() ?? "",
+                    });
+                }
+
+                dgvSrch.UnselectAll();
+            }
+            catch (Exception ex)
+            {
+                SearchList.Clear();
+                DXMessageBox.Show("تعذر البحث عن السندات: " + ex.Message,
+                    "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         #endregion

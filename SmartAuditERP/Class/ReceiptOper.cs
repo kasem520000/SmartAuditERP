@@ -454,42 +454,99 @@ namespace SmartAuditERP
 			return result;
 		}
 
+		private static readonly object NoteDeleteGate = new object();
+		private static bool noteDeleteNeedsReview;
+
 		public bool DeleteCreditNote(int Doc_No, int Doc_Type, string EntryGID)
 		{
-			new SqlCommand();
-			SqlConnection sqlConnection;
-			sqlConnection = MainClass.ConnObj();
-			if (sqlConnection.State != ConnectionState.Open)
+			lock (NoteDeleteGate)
 			{
-				sqlConnection.Open();
+				if (noteDeleteNeedsReview)
+				{
+					MessageBox.Show("نتيجة حذف إشعار سابقة غير مؤكدة؛ راجعها قبل إعادة المحاولة.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					return false;
+				}
+				return DeleteCreditNoteLocked(Doc_No, Doc_Type, EntryGID);
 			}
-			SqlTransaction sqlTransaction;
-			sqlTransaction = sqlConnection.BeginTransaction();
-			bool result = default(bool);
+		}
+
+		private bool DeleteCreditNoteLocked(int number, int noteType, string entryId)
+		{
+			int branch = MainClass.BranchNo;
+			if (number <= 0 || branch <= 0 || (noteType != 1 && noteType != 2) ||
+				string.IsNullOrWhiteSpace(entryId) || entryId == "-1") return false;
+			int entryType = noteType == 1 ? 16 : 17;
+			SqlTransaction transaction = null;
+			bool commitStarted = false;
+			SqlConnection connection = null;
 			try
 			{
-				new SqlCommand("update CreditDeptNotes set IS_Deleted=1 where Doc_Type=" + Conversions.ToString(Doc_Type) + " and  Doc_No=" + Conversions.ToString(Doc_No), sqlConnection, sqlTransaction).ExecuteNonQuery();
-				new SqlCommand("update Entry set state=2 ,IS_Deleted=1 where branch=" + Conversions.ToString(MainClass.BranchNo) + " and GlobalID=N'" + EntryGID + "'", sqlConnection, sqlTransaction).ExecuteNonQuery();
-				sqlTransaction.Commit();
-				result = true;
-				return result;
+				connection = MainClass.ConnObj();
+				connection.Open();
+				transaction = connection.BeginTransaction();
+				int noteId;
+				using (SqlCommand find = new SqlCommand(
+					"SELECT TOP (2) Id, BranchId, IS_Deleted FROM CreditDeptNotes WITH (UPDLOCK,HOLDLOCK) WHERE Doc_No=@number AND Doc_Type=@type", connection, transaction))
+				{
+					find.Parameters.Add("@number", SqlDbType.Int).Value = number;
+					find.Parameters.Add("@type", SqlDbType.Int).Value = noteType;
+					using SqlDataReader reader = find.ExecuteReader();
+					if (!reader.Read() || reader.IsDBNull(1) || Convert.ToInt32(reader["BranchId"]) != branch ||
+						reader.IsDBNull(2) || Convert.ToBoolean(reader["IS_Deleted"]))
+						throw new InvalidOperationException("الإشعار مفقود أو محذوف أو فرعه غير واضح.");
+					noteId = Convert.ToInt32(reader["Id"]);
+					if (reader.Read()) throw new InvalidOperationException("رقم الإشعار مكرر؛ يلزم المصالحة.");
+				}
+				using (SqlCommand find = new SqlCommand(
+					"SELECT TOP (2) GlobalID, IS_Deleted, state FROM Entry WITH (UPDLOCK,HOLDLOCK) WHERE branch=@branch AND type=@type AND doc_no=@number", connection, transaction))
+				{
+					find.Parameters.Add("@branch", SqlDbType.Int).Value = branch;
+					find.Parameters.Add("@type", SqlDbType.Int).Value = entryType;
+					find.Parameters.Add("@number", SqlDbType.Int).Value = number;
+					using SqlDataReader reader = find.ExecuteReader();
+					if (!reader.Read() || reader.IsDBNull(0) || !string.Equals(reader.GetString(0), entryId, StringComparison.Ordinal) ||
+						reader.IsDBNull(1) || Convert.ToBoolean(reader["IS_Deleted"]) || reader.IsDBNull(2) || Convert.ToInt32(reader["state"]) != 1)
+						throw new InvalidOperationException("القيد المرتبط مفقود أو غير مطابق أو غير نشط.");
+					if (reader.Read()) throw new InvalidOperationException("القيد المرتبط غير فريد؛ يلزم المصالحة.");
+				}
+				using (SqlCommand update = new SqlCommand("UPDATE CreditDeptNotes SET IS_Deleted=1 WHERE Id=@id AND BranchId=@branch AND IS_Deleted=0", connection, transaction))
+				{
+					update.Parameters.Add("@id", SqlDbType.Int).Value = noteId;
+					update.Parameters.Add("@branch", SqlDbType.Int).Value = branch;
+					if (update.ExecuteNonQuery() != 1) throw new InvalidOperationException("لم يُحدَّث إشعار وحيد.");
+				}
+				using (SqlCommand update = new SqlCommand("UPDATE Entry SET state=2, IS_Deleted=1 WHERE GlobalID=@id AND branch=@branch AND type=@type AND doc_no=@number AND IS_Deleted=0 AND state=1", connection, transaction))
+				{
+					update.Parameters.Add("@id", SqlDbType.VarChar).Value = entryId;
+					update.Parameters.Add("@branch", SqlDbType.Int).Value = branch;
+					update.Parameters.Add("@type", SqlDbType.Int).Value = entryType;
+					update.Parameters.Add("@number", SqlDbType.Int).Value = number;
+					if (update.ExecuteNonQuery() != 1) throw new InvalidOperationException("لم يُحدَّث قيد وحيد.");
+				}
+				commitStarted = true;
+				transaction.Commit();
+				return true;
 			}
-			catch (Exception projectError)
+			catch (Exception ex)
 			{
-				ProjectData.SetProjectError(projectError);
-				sqlTransaction.Rollback();
-				ProjectData.ClearProjectError();
+				bool rollbackConfirmed = transaction == null;
+				if (transaction != null && !commitStarted)
+				{
+					try { transaction.Rollback(); rollbackConfirmed = true; } catch { rollbackConfirmed = false; }
+				}
+				if (commitStarted || !rollbackConfirmed) noteDeleteNeedsReview = true;
+				string prefix = noteDeleteNeedsReview ? "نتيجة الحذف غير مؤكدة، راجع الإشعار والقيد قبل إعادة المحاولة." : "تعذر حذف الإشعار والقيد.";
+				MessageBox.Show(prefix + Environment.NewLine + "النوع: " + noteType + "، الرقم: " + number + "، الفرع: " + branch + "، القيد: " + entryId + Environment.NewLine + ex.Message,
+					"تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return false;
 			}
 			finally
 			{
-				if (sqlConnection.State != ConnectionState.Closed)
-				{
-					sqlConnection.Close();
-				}
-				sqlTransaction.Dispose();
+				try { transaction?.Dispose(); } catch { noteDeleteNeedsReview = true; }
+				try { connection?.Dispose(); } catch { noteDeleteNeedsReview = true; }
 			}
-			return result;
 		}
+
 
 		public static int ReceiptNo(int ReceiptType)
 		{
@@ -534,26 +591,46 @@ namespace SmartAuditERP
 			return result;
 		}
 
-		public static DataTable LoadReceipts(string cond, DateTime StartDate, DateTime EndDate)
+		// Structured search contract: callers cannot pass SQL fragments.
+		public static DataTable LoadReceipts(int receiptType, int branchId, string receiptNumber,
+			string reference, bool allDates, DateTime startDate, DateTime endDate)
 		{
-			try
+			int? number = null;
+			if (!string.IsNullOrWhiteSpace(receiptNumber))
 			{
-				SqlDataAdapter sqlDataAdapter;
-				sqlDataAdapter = new SqlDataAdapter(selectConnection: MainClass.ConnObj(), selectCommandText: "select Receipts.GlobalID, Receipts.ReceiptNo,Receipts.ReceiptDate,Receipts.Payment,Employees.name, Receipts.ClientID from Receipts,Employees  where Receipts.ISDeleted=0 and " + cond + "  Receipts.EmpId=Employees.id order by ReceiptNo ");
-				sqlDataAdapter.SelectCommand.Parameters.Add("@StartDate", SqlDbType.DateTime).Value = StartDate.Date + new TimeSpan(0, 0, 0);
-				sqlDataAdapter.SelectCommand.Parameters.Add("@EndDate", SqlDbType.DateTime).Value = EndDate.Date + new TimeSpan(23, 59, 59);
-				DataTable dataTable;
-				dataTable = new DataTable();
-				sqlDataAdapter.Fill(dataTable);
-				return dataTable;
+				if (!int.TryParse(receiptNumber.Trim(), out int parsed) || parsed <= 0)
+					throw new ArgumentException("رقم السند غير صالح.");
+				number = parsed;
 			}
-			catch (Exception ex)
+			if (!allDates && (startDate.Date < new DateTime(1753, 1, 1) ||
+				endDate.Date < startDate.Date || endDate.Date == DateTime.MaxValue.Date))
+				throw new ArgumentException("فترة البحث غير صالحة.");
+
+			string sql = "SELECT Receipts.GlobalID, Receipts.ReceiptNo, Receipts.ReceiptDate, " +
+				"Receipts.Payment, Employees.name, Receipts.ClientID FROM Receipts " +
+				"INNER JOIN Employees ON Receipts.EmpId=Employees.id " +
+				"WHERE Receipts.ISDeleted=0 AND Receipts.ReceiptType=@type ";
+			if (branchId != -1) sql += "AND Receipts.BranchID=@branch ";
+			if (number.HasValue) sql += "AND Receipts.ReceiptNo=@number ";
+			else if (!string.IsNullOrWhiteSpace(reference)) sql += "AND Receipts.ReffNo=@reference ";
+			if (!allDates) sql += "AND Receipts.ReceiptDate>=@start AND Receipts.ReceiptDate<@endExclusive ";
+			sql += "ORDER BY Receipts.ReceiptNo";
+
+			using SqlConnection connection = MainClass.ConnObj();
+			using SqlCommand command = new SqlCommand(sql, connection);
+			command.Parameters.Add("@type", SqlDbType.Int).Value = receiptType;
+			if (branchId != -1) command.Parameters.Add("@branch", SqlDbType.Int).Value = branchId;
+			if (number.HasValue) command.Parameters.Add("@number", SqlDbType.Int).Value = number.Value;
+			else if (!string.IsNullOrWhiteSpace(reference)) command.Parameters.Add("@reference", SqlDbType.NVarChar).Value = reference;
+			if (!allDates)
 			{
-				ProjectData.SetProjectError(ex);
-				Console.WriteLine(ex.Message);
-				ProjectData.ClearProjectError();
+				command.Parameters.Add("@start", SqlDbType.DateTime).Value = startDate.Date;
+				command.Parameters.Add("@endExclusive", SqlDbType.DateTime).Value = endDate.Date.AddDays(1);
 			}
-			return new DataTable();
+			using SqlDataAdapter adapter = new SqlDataAdapter(command);
+			var result = new DataTable();
+			adapter.Fill(result);
+			return result; // Propagate failure: empty is not an error result.
 		}
 
 		public async Task SyncReceipt(Receipt receipt, Entry Eny, bool IsNew)

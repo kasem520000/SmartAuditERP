@@ -572,26 +572,10 @@ namespace SmartAuditERP.Form_WPF
             {
                 _searchItems.Clear();
 
-                string condition = $"Receipts.ReceiptType = {ReceiptType} AND ";
-
-                if (MainClass.BranchNo != -1)
-                    condition += $"Receipts.BranchID = {MainClass.BranchNo} AND ";
-
-                if (!string.IsNullOrWhiteSpace(txtSrchNo.Text))
-                    condition += $"Receipts.ReceiptNo = {txtSrchNo.Text} AND ";
-                else if (!string.IsNullOrWhiteSpace(txtSrchRef.Text))
-                    condition += $"Receipts.ReffNo = '{txtSrchRef.Text}' AND ";
-
-                if (chkall.IsChecked != true)
-                    condition += "ReceiptDate BETWEEN @StartDate AND @EndDate AND ";
-
-                // ✅ استخدام ReceiptOper.LoadReceipts مثل الأصل
-                DateTime fromDate = txtFromDate.DateTime != default(DateTime)
-                    ? txtFromDate.DateTime : DateTime.Today;
-                DateTime toDate = txtToDate.DateTime != default(DateTime)
-                    ? txtToDate.DateTime : DateTime.Today;
-
-                var dt = ReceiptOper.LoadReceipts(condition, fromDate, toDate).Copy();
+                var dt = ReceiptOper.LoadReceipts(ReceiptType, MainClass.BranchNo,
+                    txtSrchNo.Text, txtSrchRef.Text, chkall.IsChecked == true,
+                    txtFromDate.DateTime != default(DateTime) ? txtFromDate.DateTime : DateTime.Today,
+                    txtToDate.DateTime != default(DateTime) ? txtToDate.DateTime : DateTime.Today).Copy();
 
                 foreach (DataRow row in dt.Rows)
                 {
@@ -609,6 +593,7 @@ namespace SmartAuditERP.Form_WPF
             }
             catch (Exception ex)
             {
+                _searchItems.Clear();
                 DXMessageBox.Show("خطأ في البحث\nتفاصيل الخطأ: " + ex.Message,
                     "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
             }

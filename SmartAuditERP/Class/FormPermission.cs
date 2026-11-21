@@ -35,11 +35,11 @@ namespace SmartAuditERP
 
         public FormPermission()
         {
-            Editable = true;
-            Addable = true;
-            Delete = true;
-            Search = true;
-            Print = true;
+            Editable = false;
+            Addable = false;
+            Delete = false;
+            Search = false;
+            Print = false;
         }
 
         #endregion
@@ -85,72 +85,49 @@ namespace SmartAuditERP
 
         private void ApplyFrmPermissionInternal(FrameworkElement rootElement)
         {
+            // Properties are command-facing inputs as well as UI state; derive them
+            // from the row, not from whether a matching visual button happened to exist.
+            Addable = Editable = Delete = Search = Print = false;
             try
             {
                 string formName = ResolveFormName(rootElement);
-                if (string.IsNullOrWhiteSpace(formName))
-                    return;
-
-                DataTable permissionTable = LoadPermissionData(formName);
-                if (permissionTable.Rows.Count <= 0)
-                    return;
-
-                DataRow permissionRow = permissionTable.Rows[0];
-
-                bool canNew = GetBool(permissionRow, "IS_New");
-                bool canSave = GetBool(permissionRow, "IS_Save");
-                bool canDelete = GetBool(permissionRow, "IS_Delete");
-                bool canSearch = GetBool(permissionRow, "IS_Search");
-                bool canPrint = GetBool(permissionRow, "IS_Print");
-
-                IEnumerable<ButtonBase> targetButtons = GetTargetButtons(rootElement);
-
-                foreach (ButtonBase button in targetButtons)
+                if (MainClass.UserID > 0 && !string.IsNullOrWhiteSpace(formName))
                 {
-                    if (button == null || string.IsNullOrWhiteSpace(button.Name))
-                        continue;
-
-                    string buttonName = button.Name.Trim();
-
-                    // ’·«ÕÌ… «·≈÷«›… / «·ÃœÌœ
-                    if (!canNew && IsAddPermissionButton(buttonName))
+                    DataTable permissionTable = LoadPermissionData(formName);
+                    if (permissionTable.Rows.Count == 1)
                     {
-                        DisableButton(button);
-                        Addable = false;
-                    }
-
-                    // ’·«ÕÌ… «·Õ›Ÿ / «· ⁄œÌ·
-                    if (!canSave && IsSavePermissionButton(buttonName))
-                    {
-                        DisableButton(button);
-                        Editable = false;
-                    }
-
-                    // ’·«ÕÌ… «·Õ–›
-                    if (!canDelete && IsDeletePermissionButton(buttonName))
-                    {
-                        DisableButton(button);
-                        Delete = false;
-                    }
-
-                    // ’·«ÕÌ… «·ÿ»«⁄… / «·„⁄«Ì‰…
-                    if (!canPrint && IsPrintPermissionButton(buttonName))
-                    {
-                        DisableButton(button);
-                        Print = false;
-                    }
-
-                    // ’·«ÕÌ… «·»ÕÀ / «· ‰ﬁ·
-                    if (!canSearch && IsSearchPermissionButton(buttonName))
-                    {
-                        DisableButton(button);
-                        Search = false;
+                        DataRow row = permissionTable.Rows[0];
+                        Addable = GetBool(row, "IS_New");
+                        Editable = GetBool(row, "IS_Save");
+                        Delete = GetBool(row, "IS_Delete");
+                        Search = GetBool(row, "IS_Search");
+                        Print = GetBool(row, "IS_Print");
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                // ‰ Ã‰» —„Ì Exception Õ Ï ·« ‰ﬂ”—  Õ„Ì· «·Ê«ÃÂ…
+                Addable = Editable = Delete = Search = Print = false;
+                System.Diagnostics.Debug.WriteLine($"Permission query failed: {ex.Message}");
+            }
+
+            try
+            {
+                foreach (ButtonBase button in GetTargetButtons(rootElement))
+                {
+                    if (button == null || string.IsNullOrWhiteSpace(button.Name)) continue;
+                    string buttonName = button.Name.Trim();
+                    if ((!Addable && IsAddPermissionButton(buttonName)) ||
+                        (!Editable && IsSavePermissionButton(buttonName)) ||
+                        (!Delete && IsDeletePermissionButton(buttonName)) ||
+                        (!Print && IsPrintPermissionButton(buttonName)) ||
+                        (!Search && IsSearchPermissionButton(buttonName)))
+                        DisableButton(button);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Permission UI application failed: {ex.Message}");
             }
         }
 
