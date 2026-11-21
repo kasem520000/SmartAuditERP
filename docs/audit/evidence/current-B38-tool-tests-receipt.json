@@ -1,0 +1,24 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "raw_environment_clock_start_utc": "2026-11-21T00:16:39.079594+00:00",
+  "raw_environment_clock_end_utc": "2026-11-21T00:16:42.214485+00:00",
+  "elapsed_seconds": 3.135,
+  "command": [
+    "/usr/bin/python",
+    "-B",
+    "docs/audit/tools/census07b/test_7b_completion.py"
+  ],
+  "exit_code": 0,
+  "stdout_bytes": 0,
+  "stderr_bytes": 142,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "415ea325c478ad3281a2920ae80ecdfc7eb66a68015c28c06a01f9a62300859b",
+  "all_existing_input_artifacts_unchanged": true,
+  "input_artifact_count": 1246,
+  "new_tool_sources": {
+    "build_7b_census.py": "c9aad76050aee0feaec45f82b062e1cb8a97fc7d1bd445cf615d8ba8409638a9",
+    "test_7b_completion.py": "56a6fffdbd2375c0d8a98067c2ce3d54b5ddd5c53441221a88774c340ab00bc6",
+    "validate_7b_completion.py": "3622ef297cf334bb3896e04ff66c19c9ba0ced725e20a876a831b0c3d848500e"
+  },
+  "not_ERP_or_operational_acceptance": true
+}

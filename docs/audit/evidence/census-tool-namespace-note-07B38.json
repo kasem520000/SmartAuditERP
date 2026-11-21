@@ -1,0 +1,11 @@
+{
+  "reason": "New standalone census tools use an explicit nested namespace so the protected B37 dispatcher and its declared top-level139-tool inventory retain their original scope without any shim, test edit, rebaseline, skip, or dispatcher change. All new tools are separately and recursively counted by the new validator.",
+  "first_discovery_builder_path": "tools/build_7b_census.py",
+  "first_discovery_builder_sha256": "1bcd545d6290d23aaac34336d7e23b4bddd4de7f85088ff6ab7aaf6e699d16ff",
+  "final_builder_path": "tools/census07b/build_7b_census.py",
+  "final_builder_sha256": "c9aad76050aee0feaec45f82b062e1cb8a97fc7d1bd445cf615d8ba8409638a9",
+  "changes": "Only root-relative path depth and documented command/dependency paths changed. The snapshot is not rewritten. A new read-only full rebuild comparison is required before delivery.",
+  "snapshot": "evidence/capability-census-07B38.json",
+  "snapshot_sha256": "dda01645d1cf64d7acdf7c53deb9ac9ec1990cab0e915142af56be0d0b0c4da9",
+  "legacy_top_level_tools": 139
+}

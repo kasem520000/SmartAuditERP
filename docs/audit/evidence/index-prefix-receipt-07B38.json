@@ -1,0 +1,25 @@
+{
+  "operation": "additive-current-status-prefix-only",
+  "indexes": {
+    "README.md": {
+      "before_sha256": "761f03cb6da2ca1733955eac3a907a5c204e79c936169cb10d75cb82b8847c2c",
+      "after_sha256": "01b44257869755e77a0ada87dedefa23017cd07ddb5d2f9fa969163e0d795dc2",
+      "additive_prefix_bytes": 2278,
+      "old_document_retained_as_exact_suffix": true
+    },
+    "PLAN.md": {
+      "before_sha256": "cdc29dbc575b4b1e04a9f83cf2bd708cd08f987c17b3a7da5b491eec60accc10",
+      "after_sha256": "43ece26495289a04c34cd44870b9c18bcf422da271714aac165b122c6d92e41f",
+      "additive_prefix_bytes": 2288,
+      "old_document_retained_as_exact_suffix": true
+    },
+    "IMPROVEMENTS.md": {
+      "before_sha256": "bbf63d39c7534ccbae4bab18e722769ccd344f445cb111f5efad7c861e159a85",
+      "after_sha256": "b645b6c58ec38e86c9184d1a1447d834263939b87c8750f193a83df6aaba0e9d",
+      "additive_prefix_bytes": 2293,
+      "old_document_retained_as_exact_suffix": true
+    }
+  },
+  "findings_and_G01_through268_unchanged": true,
+  "legacy_dispatcher_unchanged": true
+}

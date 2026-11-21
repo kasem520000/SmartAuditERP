@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "audit_reference_date_utc": "2026-11-16",
+  "goal": "Complete all authorized static-audit work of7B, not a bounded slice presented as whole completion.",
+  "scope_register": "evidence/capability-register-07B38.csv",
+  "scope_approval": null,
+  "scope_approval_status": "not-requested-as-blanket-consent-not-received",
+  "all_local_semantic_obligations_complete": false,
+  "all_required_candidates_dispositioned": false,
+  "all_open_observations_adjudicated": false,
+  "external_handoff_acceptance": null,
+  "whole_family_approval": null,
+  "whole_7B_complete": false,
+  "phase_7C_started": false,
+  "phase_8_authorized": false,
+  "application_remediation_performed": false,
+  "repair_start_and_synchronization": "unknown",
+  "unresolved_observations": [
+    {
+      "id": "OBS7B38-01",
+      "capability_id": "CAP7B38-D21",
+      "evidence": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2036-2047;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:53-60;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:570-596",
+      "observation": "Caller parses string GlobalID as double and uses it as proc_id predicate. Source-level key/conversion difference, not a provider/runtime failure observation or new registered root.",
+      "next_action": "Reconcile producer/writer/schema key contract and existing061/157 roots before deciding distinct cause; do not mint a finding per button."
+    },
+    {
+      "id": "OBS7B38-02",
+      "capability_id": "CAP7B38-D21",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:286-303;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:603-619;SmartAuditERP/Class/InvoiceOper.cs:798-810;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml:528-543",
+      "observation": "Return-specific precheck compares Reff_No to an unquoted GlobalID expression and catch returns false; other selection paths differ. Not proof of duplicate return or SQL exploit.",
+      "next_action": "Reconcile Reff_No/key semantics and intended return eligibility/support with P4-012 and local helper; keep fact of catch-false distinct from conditional runtime behavior."
+    }
+  ],
+  "blocker_types": [
+    "unapproved-capability-denominator",
+    "local-semantic-caller-and-output-dispositions-open",
+    "unadjudicated-source-key-observations",
+    "unaccepted-external-contract-and-policy-handoffs"
+  ],
+  "not_a_barrier_to_describing_local_source": "Missing external input does not excuse leaving readable source unreviewed. Open local obligations are explicitly not handed off externally.",
+  "boundary": "No ERP/build/C#/VB/.NET/WPF/SQL/provider/devices/SDK/REPX/ToDataTable/business-data/printing/messaging/repair/performance/financial-acceptance execution."
+}
