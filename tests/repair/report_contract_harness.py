@@ -36,6 +36,7 @@ def check(name, cond, detail=""):
 CREDIT = open("SmartAuditERP/Form_WPF/frmCreditNote.xaml.cs", encoding="utf-8").read()
 DEBIT = open("SmartAuditERP/Form_WPF/frmDebtNote.xaml.cs", encoding="utf-8").read()
 STMT = open("SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs", encoding="utf-8").read()
+NOTE_WRITER = open("SmartAuditERP/Class/ReceiptOper.cs", encoding="utf-8").read()
 
 print("Part A: R-037 / P3-025 - header date follows the edited entry date")
 
@@ -66,16 +67,16 @@ for label, typ in (("credit note", 1), ("debt note", 2)):
           h == "2026-10-04" and e == "2026-11-19" and not old_ok)
     check("A2 %s: repaired edit keeps header and entry in one period" % label, new_ok)
 
-check("A3 credit-note UPDATE now assigns the bound date parameter",
-      "UPDATE CreditDeptNotes SET " in CREDIT and ", Net=@Net, Date=@Date, " in CREDIT)
-check("A4 debt-note UPDATE now assigns the bound date parameter",
-      "UPDATE CreditDeptNotes SET " in DEBIT and "Net=@Net,Date=@Date," in DEBIT)
-check("A5 both edits keep their type-scoped WHERE clauses intact",
-      "WHERE Doc_Type=1 AND Doc_No={Code}" in CREDIT and
-      "WHERE Doc_Type=2 AND Doc_No={_currentCode}" in DEBIT)
-check("A6 inserts were already complete and remain untouched",
-      CREDIT.count('"Doc_No, Doc_Type, Inv_No, Discount, Net, Date, "') == 1 and
-      "(Doc_No,Doc_Type,Inv_No,Discount,Net,Date," in DEBIT)
+check("A3 shared note UPDATE assigns its date parameter",
+      "UPDATE CreditDeptNotes SET Inv_No=@invoice,Discount=@discount,Net=@net,Date=@date" in NOTE_WRITER)
+check("A4 both editors send their chosen date and journal to the shared writer",
+      "Date = txtDate.SelectedDate.Value" in CREDIT and "Date = txtDate.DateTime" in DEBIT and
+      all("SaveCreditDebtNote(draft)" in x and "Journal = entry" in x for x in (CREDIT, DEBIT)))
+check("A5 update requires the selected identity, branch, number and type",
+      "WHERE Id=@id AND BranchId=@branch AND Doc_No=@number AND Doc_Type=@type AND IS_Deleted=0" in NOTE_WRITER)
+check("A6 insert stores the chosen date and explicit branch",
+      "IS_Deleted,Edit_Date,emp_id,notes,cust_id,Inv_Val,BranchId) VALUES" in NOTE_WRITER and
+      "@number,@type,@invoice,@discount,@net,@date,0,@editDate,@user,@notes,@customer,@invVal,@branch" in NOTE_WRITER)
 
 print("Part B: R-038 / P3-022 - the two statement projections are honoured")
 

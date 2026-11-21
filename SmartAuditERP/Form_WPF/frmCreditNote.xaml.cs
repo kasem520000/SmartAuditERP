@@ -511,93 +511,39 @@ namespace SmartAuditERP.Form_WPF
 
         private void Save()
         {
-            SqlTransaction sqlTransaction = null;
+            bool committed = false;
             try
             {
-                if (cmbSupplies.SelectedIndex == -1)
-                {
-                    ShowMsg("يجب اختيار المورد", "", MessageBoxImage.Warning);
-                    return;
-                }
+                if (cmbSupplies.SelectedValue == null || !int.TryParse(cmbSupplies.SelectedValue.ToString(), out int customer) || customer <= 0)
+                    throw new InvalidOperationException("يجب اختيار مورد صالح.");
+                if (!txtDate.SelectedDate.HasValue || txtDate.SelectedDate.Value < new DateTime(1753, 1, 1))
+                    throw new InvalidOperationException("تاريخ الإشعار غير صالح.");
+                if (!double.TryParse(txtDiscountVal.Text, out double discount) || !double.IsFinite(discount) || discount <= 0 ||
+                    !double.TryParse(txtNet.Text, out double net) || !double.IsFinite(net) ||
+                    !double.TryParse(txtInvVal.Text, out double invoiceValue) || !double.IsFinite(invoiceValue))
+                    throw new InvalidOperationException("مبالغ الإشعار غير صالحة.");
+                if (!double.TryParse(txtPreviousDiscVal.Text, out double previous) || !double.IsFinite(previous) ||
+                    previous < 0 || invoiceValue < 0 || discount > invoiceValue - previous)
+                    throw new InvalidOperationException("الخصم يتجاوز المتبقي أو أن الرصيد السابق غير صالح.");
+                double expectedNet = invoiceValue - previous - discount;
+                if (!double.IsFinite(expectedNet) || !double.TryParse(expectedNet.ToString(InvObj.DigitsNo), out double displayNet) || net != displayNet)
+                    throw new InvalidOperationException("صافي الإشعار غير محدث؛ أعد حساب القيم قبل الحفظ.");
+                double tax = CalVAT(discount);
+                if (!double.IsFinite(tax) || tax < 0 || tax > discount)
+                    throw new InvalidOperationException("ضريبة الإشعار غير صالحة.");
+                int invoiceNo = -1;
+                if (rdMainNote.IsChecked != true && (!int.TryParse(txtInvNo.Text, out invoiceNo) || invoiceNo <= 0))
+                    throw new InvalidOperationException("رقم الفاتورة غير صالح.");
 
-                if (rdInvNote.IsChecked == true &&
-                    string.IsNullOrWhiteSpace(txtInvNo.Text))
-                {
-                    ShowMsg("أدخل رقم الفاتورة", "", MessageBoxImage.Warning);
-                    txtInvNo.Focus();
-                    return;
-                }
-
-                var confirm = MessageBox.Show(
-                    "هل أنت متأكد من حفظ السند؟",
-                    "تأكيد",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Question,
-                    MessageBoxResult.No,
-                    MessageBoxOptions.RightAlign |
-                    MessageBoxOptions.RtlReading);
-
+                var confirm = MessageBox.Show("هل أنت متأكد من حفظ السند؟", "تأكيد",
+                    MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No,
+                    MessageBoxOptions.RightAlign | MessageBoxOptions.RtlReading);
                 if (confirm != MessageBoxResult.Yes) return;
-
-                if (conn.State != ConnectionState.Open) conn.Open();
-                sqlTransaction = conn.BeginTransaction();
-
-                SqlCommand cmd;
-                if (Code == -1)
-                {
-                    LoadNxtNo();
-                    cmd = new SqlCommand(
-                        "INSERT INTO CreditDeptNotes(" +
-                        "Doc_No, Doc_Type, Inv_No, Discount, Net, Date, " +
-                        "IS_Deleted, Edit_Date, emp_id, notes, cust_id, Inv_Val) " +
-                        $"VALUES({txtNo.Text}, 1, @Inv_No, @Discount, @Net, " +
-                        "@Date, 0, @Edit_Date, @emp_id, @notes, @cust_id, @Inv_Val)",
-                        conn, sqlTransaction);
-                }
-                else
-                {
-                    cmd = new SqlCommand(
-                        // Repair R-037 (audit finding P3-025): the edit statement bound @Date but
-                        // never assigned it to the Date column, while the regenerated journal entry
-                        // was built from the newly chosen date - so an edited note kept its header
-                        // in the old period with its ledger effect in the new one. Persist the date
-                        // on the header as well (insert already does), keeping head and entry aligned.
-                        "UPDATE CreditDeptNotes SET " +
-                        "Inv_No=@Inv_No, Discount=@Discount, Net=@Net, Date=@Date, " +
-                        "Edit_Date=@Edit_Date, emp_id=@emp_id, notes=@notes, " +
-                        "cust_id=@cust_id, Inv_Val=@Inv_Val " +
-                        $"WHERE Doc_Type=1 AND Doc_No={Code}",
-                        conn, sqlTransaction);
-                }
-
-                cmd.Parameters.Add("@Inv_No", SqlDbType.Int).Value =
-                    (rdMainNote.IsChecked == true)
-                    ? -1
-                    : (object)SafeParseDouble(txtInvNo.Text);
-
-                cmd.Parameters.Add("@Discount", SqlDbType.Float).Value =
-                    SafeParseDouble(txtDiscountVal.Text);
-                cmd.Parameters.Add("@Net", SqlDbType.Float).Value =
-                    SafeParseDouble(txtNet.Text);
-                cmd.Parameters.Add("@Date", SqlDbType.DateTime).Value =
-                    txtDate.SelectedDate ?? DateTime.Now;
-                cmd.Parameters.Add("@Edit_Date", SqlDbType.DateTime).Value =
-                    DateTime.Now.ToShortDateString();
-                cmd.Parameters.Add("@emp_id", SqlDbType.Int).Value =
-                    MainClass.UserID;
-                cmd.Parameters.Add("@notes", SqlDbType.NVarChar).Value =
-                    txtNotes.Text;
-                cmd.Parameters.Add("@cust_id", SqlDbType.Int).Value =
-                    cmbSupplies.SelectedValue;
-                cmd.Parameters.Add("@Inv_Val", SqlDbType.Float).Value =
-                    SafeParseDouble(txtInvVal.Text);
-                cmd.Parameters.Add("@BranchId", SqlDbType.NVarChar).Value =
-                    MainClass.BranchNo;
-
-                cmd.ExecuteNonQuery();
-
-                if (Code == -1)
-                    EntryOper.GetEntryGlobalID(ref EntryGlobalId, ref Bond_id);
+                bool isNew = Code == -1;
+                if (isNew) LoadNxtNo();
+                if (!int.TryParse(txtNo.Text, out int number) || number <= 0 || (!isNew && number != Code))
+                    throw new InvalidOperationException("رقم الإشعار غير صالح أو لا يطابق السجل المحمل.");
+                if (isNew) EntryOper.GetEntryGlobalID(ref EntryGlobalId, ref Bond_id);
 
                 // تحضير القيد المحاسبي
                 var entry = new Entry();
@@ -617,7 +563,7 @@ namespace SmartAuditERP.Form_WPF
                 entry.BranchType = Sync.BranchType;
                 entry.DistBranch = Sync.DistBranch;
 
-                double discVal = SafeParseDouble(txtDiscountVal.Text);
+                double discVal = discount;
 
                 if (discVal > 0.0)
                 {
@@ -665,21 +611,18 @@ namespace SmartAuditERP.Form_WPF
 
                 entry.Accounts = accounts;
 
-                if (!new EntryOper().SaveEnty(entry))
+                var draft = new ReceiptOper.NoteDraft
                 {
-                    sqlTransaction.Rollback();
-                    ShowMsg("خطأ أثناء الحفظ", "خطأ", MessageBoxImage.Error);
-                    return;
-                }
-
-                sqlTransaction.Commit();
-
-                if (Code == -1)
-                    Code = Convert.ToInt32(SafeParseDouble(txtNo.Text));
-
+                    Number = number, Type = 1, Branch = MainClass.BranchNo,
+                    InvoiceNo = invoiceNo, Discount = discount, Net = net, InvoiceValue = invoiceValue,
+                    Date = txtDate.SelectedDate.Value, UserId = MainClass.UserID, CustomerId = customer,
+                    Notes = txtNotes.Text, IsNew = isNew, Journal = entry
+                };
+                if (!new ReceiptOper().SaveCreditDebtNote(draft)) return;
+                committed = true;
+                Code = number; // transition before the success dialog can throw
                 var msgForm = new frmSavedMsg();
                 msgForm.ShowDialog();
-
                 switch (msgForm.Pressed)
                 {
                     case 1: CLR(); break;
@@ -688,14 +631,9 @@ namespace SmartAuditERP.Form_WPF
             }
             catch (Exception ex)
             {
-                sqlTransaction?.Rollback();
-                ShowMsg($"خطأ أثناء الحفظ\nتفاصيل الخطأ: {ex.Message}",
-                        "خطأ", MessageBoxImage.Error);
+                ShowMsg((committed ? "تم الحفظ، لكن تعذر تحديث الواجهة؛ راجع الإشعار قبل المحاولة." : "خطأ قبل حفظ الإشعار.") +
+                    "\nتفاصيل الخطأ: " + ex.Message, "خطأ", MessageBoxImage.Error);
                 Logger.Error($"frmCreditNote {ex.Message} {MainClass.UserName}");
-            }
-            finally
-            {
-                if (conn.State != ConnectionState.Closed) conn.Close();
             }
         }
 

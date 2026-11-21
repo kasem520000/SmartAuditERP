@@ -1346,19 +1346,21 @@ namespace SmartAuditERP
                 conn.Open();
 
             using SqlCommand maxCmd = new SqlCommand(
-                $"SELECT ISNULL(MAX(id), 0) FROM Entry WHERE branch = {MainClass.BranchNo}", conn);
+                "SELECT ISNULL(MAX(id), 0) FROM Entry WHERE branch = @branch", conn);
+            maxCmd.Parameters.Add("@branch", SqlDbType.Int).Value = MainClass.BranchNo;
             entryNo = Convert.ToInt32(maxCmd.ExecuteScalar());
 
             do
             {
-                entryNo++;
+                entryNo = checked(entryNo + 1);
 
                 entryGlobalId = Sync.ActiveSync
                     ? $"{Sync.ClientCode}-{MainClass.BranchNo}-{entryNo}"
                     : $"{MainClass.BranchNo}-{entryNo}";
 
                 using SqlCommand checkCmd = new SqlCommand(
-                    $"SELECT COUNT(*) FROM Entry WHERE GlobalID = '{entryGlobalId}'", conn);
+                    "SELECT COUNT(*) FROM Entry WHERE GlobalID = @globalId", conn);
+                checkCmd.Parameters.Add("@globalId", SqlDbType.VarChar).Value = entryGlobalId;
                 int count = Convert.ToInt32(checkCmd.ExecuteScalar());
                 if (count == 0) break;
             }

@@ -454,6 +454,165 @@ namespace SmartAuditERP
 			return result;
 		}
 
+		// The two editors build their journal before entering this shared SQL unit of work.
+		public sealed class NoteDraft
+		{
+			public int Number, Type, Branch, InvoiceNo, UserId, CustomerId;
+			public double Discount, Net, InvoiceValue;
+			public DateTime Date;
+			public string Notes;
+			public bool IsNew;
+			public Entry Journal;
+		}
+
+		public bool SaveCreditDebtNote(NoteDraft draft)
+		{
+			lock (NoteDeleteGate)
+			{
+				if (noteDeleteNeedsReview)
+				{
+					MessageBox.Show("نتيجة حفظ أو حذف إشعار سابقة غير مؤكدة؛ راجعها قبل المحاولة.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					return false;
+				}
+				return SaveCreditDebtNoteLocked(draft);
+			}
+		}
+
+		private bool SaveCreditDebtNoteLocked(NoteDraft d)
+		{
+			if (d == null || d.Journal == null || d.Number <= 0 || d.Branch <= 0 ||
+				d.Branch != MainClass.BranchNo || (d.Type != 1 && d.Type != 2) || d.CustomerId <= 0 || d.Date < new DateTime(1753, 1, 1) ||
+				(d.InvoiceNo != -1 && d.InvoiceNo <= 0) || !double.IsFinite(d.Discount) || d.Discount <= 0 ||
+				!double.IsFinite(d.Net) || !double.IsFinite(d.InvoiceValue) ||
+				string.IsNullOrWhiteSpace(d.Journal.EntryGlobalID) || d.Journal.EntryGlobalID == "-1" ||
+				d.Journal.Branch != d.Branch || d.Journal.State != 1 || d.Journal.ISDeleted != false ||
+				(d.IsNew && d.Journal.EntryNo <= 0) || (int)d.Journal.Type != (d.Type == 1 ? 16 : 17) ||
+				!int.TryParse(d.Journal.ReffNo, out int reference) || reference != d.Number || d.Journal.EntryDate != d.Date)
+			{
+				MessageBox.Show("بيانات الإشعار أو القيد غير صالحة أو غير متطابقة؛ لم يتم الحفظ.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return false;
+			}
+			SqlConnection connection = null;
+			SqlTransaction transaction = null;
+			bool commitStarted = false;
+			try
+			{
+				connection = MainClass.ConnObj();
+				connection.Open();
+				transaction = connection.BeginTransaction();
+				int noteId = -1;
+				using (SqlCommand find = new SqlCommand(
+					"SELECT TOP (2) Id, BranchId, IS_Deleted FROM CreditDeptNotes WITH (UPDLOCK,HOLDLOCK) WHERE Doc_No=@number AND Doc_Type=@type", connection, transaction))
+				{
+					find.Parameters.Add("@number", SqlDbType.Int).Value = d.Number;
+					find.Parameters.Add("@type", SqlDbType.Int).Value = d.Type;
+					using SqlDataReader reader = find.ExecuteReader();
+					bool exists = reader.Read();
+					if (d.IsNew && exists) throw new InvalidOperationException("رقم الإشعار مستخدم؛ أعد اختيار رقم جديد.");
+					if (!d.IsNew)
+					{
+						if (!exists || reader.IsDBNull(1) || Convert.ToInt32(reader["BranchId"]) != d.Branch ||
+							reader.IsDBNull(2) || Convert.ToBoolean(reader["IS_Deleted"]))
+							throw new InvalidOperationException("الإشعار أو فرعه أو حالة حذفه غير مطابقة.");
+						noteId = Convert.ToInt32(reader["Id"]);
+						if (reader.Read()) throw new InvalidOperationException("رقم الإشعار مكرر؛ يلزم المصالحة.");
+					}
+				}
+				using (SqlCommand find = new SqlCommand(
+					"SELECT TOP (2) GlobalID, IS_Deleted, state, id FROM Entry WITH (UPDLOCK,HOLDLOCK) WHERE branch=@branch AND type=@type AND doc_no=@number", connection, transaction))
+				{
+					find.Parameters.Add("@branch", SqlDbType.Int).Value = d.Branch;
+					find.Parameters.Add("@type", SqlDbType.Int).Value = (int)d.Journal.Type;
+					find.Parameters.Add("@number", SqlDbType.Int).Value = d.Number;
+					using SqlDataReader reader = find.ExecuteReader();
+					bool exists = reader.Read();
+					if (d.IsNew && exists) throw new InvalidOperationException("يوجد قيد بهذا الرقم والنوع والفرع؛ يلزم المصالحة.");
+					if (!d.IsNew)
+					{
+						if (!exists || reader.IsDBNull(0) || !string.Equals(reader.GetString(0), d.Journal.EntryGlobalID, StringComparison.Ordinal) ||
+							reader.IsDBNull(1) || Convert.ToBoolean(reader["IS_Deleted"]) || reader.IsDBNull(2) || Convert.ToInt32(reader["state"]) != 1)
+							throw new InvalidOperationException("القيد المرتبط مفقود أو غير مطابق أو غير نشط.");
+						if (reader.IsDBNull(3)) throw new InvalidOperationException("رقم القيد المرتبط غير معروف.");
+						int existingEntryNo = Convert.ToInt32(reader["id"]);
+						if (reader.Read()) throw new InvalidOperationException("القيد المرتبط غير فريد؛ يلزم المصالحة.");
+						d.Journal.EntryNo = existingEntryNo;
+						if (d.Journal.Accounts != null)
+							foreach (Account account in d.Journal.Accounts)
+								if (account != null) account.EntryNo = existingEntryNo;
+					}
+				}
+				if (d.Journal.Accounts == null) throw new InvalidOperationException("بنود القيد غير متوفرة.");
+				Account firstAccount = null;
+				foreach (Account account in d.Journal.Accounts) { firstAccount = account; break; }
+				if (firstAccount == null || !int.TryParse(firstAccount.Code, out int partyCode) || partyCode <= 0 ||
+					(d.Type == 1 && (firstAccount.Debt != d.Discount || firstAccount.Credit != 0)) ||
+					(d.Type == 2 && (firstAccount.Credit != d.Discount || firstAccount.Debt != 0)))
+					throw new InvalidOperationException("بند الطرف في القيد لا يطابق الإشعار.");
+				using (SqlCommand party = new SqlCommand(
+					"SELECT AccountCode FROM Customers WITH (UPDLOCK,HOLDLOCK) WHERE id=@id AND IS_Deleted=0 AND type IN (@partyType,3)", connection, transaction))
+				{
+					party.Parameters.Add("@id", SqlDbType.Int).Value = d.CustomerId;
+					party.Parameters.Add("@partyType", SqlDbType.Int).Value = d.Type == 1 ? 2 : 1;
+					object stored = party.ExecuteScalar();
+					if (stored == null || stored == DBNull.Value || Convert.ToInt32(stored) != partyCode)
+						throw new InvalidOperationException("حساب الطرف غير موجود أو تغير قبل الحفظ.");
+				}
+				decimal debit = 0m, credit = 0m;
+				foreach (Account account in d.Journal.Accounts)
+				{
+					if (account == null || !double.IsFinite(account.Debt) || !double.IsFinite(account.Credit))
+						throw new InvalidOperationException("مبلغ القيد غير صالح.");
+					debit += Convert.ToDecimal(account.Debt);
+					credit += Convert.ToDecimal(account.Credit);
+				}
+				decimal noteAmount = Convert.ToDecimal(d.Discount);
+				if (debit != noteAmount || credit != noteAmount)
+					throw new InvalidOperationException("مبلغ القيد لا يطابق خصم الإشعار.");
+				string sql = d.IsNew
+					? "INSERT INTO CreditDeptNotes (Doc_No,Doc_Type,Inv_No,Discount,Net,Date,IS_Deleted,Edit_Date,emp_id,notes,cust_id,Inv_Val,BranchId) VALUES (@number,@type,@invoice,@discount,@net,@date,0,@editDate,@user,@notes,@customer,@invVal,@branch)"
+					: "UPDATE CreditDeptNotes SET Inv_No=@invoice,Discount=@discount,Net=@net,Date=@date,Edit_Date=@editDate,emp_id=@user,notes=@notes,cust_id=@customer,Inv_Val=@invVal WHERE Id=@id AND BranchId=@branch AND Doc_No=@number AND Doc_Type=@type AND IS_Deleted=0";
+				using (SqlCommand cmd = new SqlCommand(sql, connection, transaction))
+				{
+					cmd.Parameters.Add("@number", SqlDbType.Int).Value = d.Number;
+					cmd.Parameters.Add("@type", SqlDbType.Int).Value = d.Type;
+					cmd.Parameters.Add("@invoice", SqlDbType.Int).Value = d.InvoiceNo;
+					cmd.Parameters.Add("@discount", SqlDbType.Float).Value = d.Discount;
+					cmd.Parameters.Add("@net", SqlDbType.Float).Value = d.Net;
+					cmd.Parameters.Add("@date", SqlDbType.DateTime).Value = d.Date;
+					cmd.Parameters.Add("@editDate", SqlDbType.DateTime).Value = DateTime.Now;
+					cmd.Parameters.Add("@user", SqlDbType.Int).Value = d.UserId;
+					cmd.Parameters.Add("@notes", SqlDbType.NVarChar).Value = d.Notes ?? string.Empty;
+					cmd.Parameters.Add("@customer", SqlDbType.Int).Value = d.CustomerId;
+					cmd.Parameters.Add("@invVal", SqlDbType.Float).Value = d.InvoiceValue;
+					cmd.Parameters.Add("@branch", SqlDbType.Int).Value = d.Branch;
+					if (!d.IsNew) cmd.Parameters.Add("@id", SqlDbType.Int).Value = noteId;
+					if (cmd.ExecuteNonQuery() != 1) throw new InvalidOperationException("لم يُكتب إشعار وحيد.");
+				}
+				new EntryOper().WriteEntryInTransaction(d.Journal, connection, transaction, d.IsNew);
+				commitStarted = true;
+				transaction.Commit();
+				return true;
+			}
+			catch (Exception ex)
+			{
+				bool rollbackConfirmed = transaction == null;
+				if (transaction != null && !commitStarted)
+				{
+					try { transaction.Rollback(); rollbackConfirmed = true; } catch { rollbackConfirmed = false; }
+				}
+				if (commitStarted || !rollbackConfirmed) noteDeleteNeedsReview = true;
+				string prefix = noteDeleteNeedsReview ? "نتيجة حفظ الإشعار غير مؤكدة؛ راجع قاعدة البيانات قبل إعادة المحاولة." : "تعذر حفظ الإشعار والقيد.";
+				MessageBox.Show(prefix + Environment.NewLine + "النوع: " + d.Type + "، الرقم: " + d.Number + "، الفرع: " + d.Branch + "، القيد: " + d.Journal.EntryGlobalID + Environment.NewLine + ex.Message,
+					"تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return false;
+			}
+			finally
+			{
+				try { transaction?.Dispose(); } catch { noteDeleteNeedsReview = true; }
+				try { connection?.Dispose(); } catch { noteDeleteNeedsReview = true; }
+			}
+		}
+
 		private static readonly object NoteDeleteGate = new object();
 		private static bool noteDeleteNeedsReview;
 
@@ -463,7 +622,7 @@ namespace SmartAuditERP
 			{
 				if (noteDeleteNeedsReview)
 				{
-					MessageBox.Show("نتيجة حذف إشعار سابقة غير مؤكدة؛ راجعها قبل إعادة المحاولة.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					MessageBox.Show("نتيجة حفظ أو حذف إشعار سابقة غير مؤكدة؛ راجعها قبل إعادة المحاولة.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 					return false;
 				}
 				return DeleteCreditNoteLocked(Doc_No, Doc_Type, EntryGID);
