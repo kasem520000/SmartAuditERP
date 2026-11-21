@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "kind": "additive-postcommit-git-whitespace-provenance-note-not-test-or-evidence-byte-repair",
+  "first_delivery_commit": "611b1979251c65dc2ea7315e4869122c9e7e4185",
+  "first_delivery_parent": "6e36c00e5991862eee9e38d997dc5681cb26963d",
+  "first_delivery_audit_only_paths": 44,
+  "initial_staged_check_reported_CRLF_warnings": true,
+  "first_commit_proceeded_despite_initial_staged_check": "The initial shell chain had a separate later commit line, so the check failure did not prevent that commit. This note does not relabel the initial check as clean.",
+  "actual_committed_patch_check_before_attribute": {
+    "command": [
+      "git",
+      "diff",
+      "HEAD^",
+      "HEAD",
+      "--check"
+    ],
+    "exit_code": 2,
+    "stdout": {
+      "path": "docs/audit/evidence/git-committed-diffcheck-before-CRLF-attribute-07B39R4.stdout.txt",
+      "bytes": 4004,
+      "sha256": "0a4241a6e23d18b3b1748eb7e1cebbcffe13a76636a5deec03578bf2825dc022"
+    },
+    "stderr": {
+      "path": "docs/audit/evidence/git-committed-diffcheck-before-CRLF-attribute-07B39R4.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "warning_lines": 4,
+    "cause": "All four standard CRLF CSV records were reported as trailing whitespace, not trailing spaces or application changes."
+  },
+  "resolution": "Exact-path whitespace attribute recognizes cr-at-eol while retaining blank-at-eol,blank-at-eof,space-before-tab. No text/eol normalization, no evidence rewrite, no legacy-test or count change.",
+  "attribute": {
+    "path": "docs/audit/.gitattributes",
+    "bytes": 363,
+    "sha256": "a921468750a8fe29276bc1e59e6696455744425559c7cb018926191745bc3e39"
+  },
+  "actual_committed_patch_check_after_attribute": {
+    "command": [
+      "git",
+      "diff",
+      "HEAD^",
+      "HEAD",
+      "--check"
+    ],
+    "exit_code": 0,
+    "stdout": {
+      "path": "docs/audit/evidence/git-committed-diffcheck-after-CRLF-attribute-07B39R4.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "stderr": {
+      "path": "docs/audit/evidence/git-committed-diffcheck-after-CRLF-attribute-07B39R4.stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "captured_CSV_current_identity": {
+    "path": "docs/audit/evidence/document-receiver-external-boundaries-07B39R4.csv",
+    "bytes": 3624,
+    "sha256": "f5888528627585836e828209f84315cd0348f110d7075a9cab2ef1c441d1d08e"
+  },
+  "captured_CSV_bytes_unchanged": true,
+  "original92_test_input_versions_unchanged_except_documented3index_prefixes": true,
+  "tests_rerun_by_this_git_check": false,
+  "prior92_or196_retroactively_relabelled": false,
+  "B38_count_failure_still_recorded": "146 != 142",
+  "all_preserved_and_new_suites_passed": false,
+  "application_execution_count": 0,
+  "capability_exit_certificates_issued": 0,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false
+}

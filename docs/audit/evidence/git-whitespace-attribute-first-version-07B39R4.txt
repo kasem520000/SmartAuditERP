@@ -1,0 +1,4 @@
+# This CSV was captured with standard CRLF record endings. Preserve its bytes.
+# Recognize CR as part of EOL without disabling the ordinary whitespace checks.
+# No text/eol normalization and no rule for any application or legacy test file.
+evidence/document-receiver-external-boundaries-07B39R4.csv whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

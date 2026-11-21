@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "kind": "final-additive-git-EOL-check-with-verbatim-evidence-preserved",
+  "supersedes_active_attribute_reference_in": "git-publication-note-07B39R4.json",
+  "first_attribute_version": "git-whitespace-attribute-first-version-07B39R4.txt",
+  "active_attribute": {
+    "path": "docs/audit/.gitattributes",
+    "bytes": 499,
+    "sha256": "afb3f7c200eda7a94c340e7c3639420fff61843e3bc5d0ac9c16cc931820550f"
+  },
+  "actual_check_records": [
+    {
+      "command": [
+        "git",
+        "diff",
+        "--cached",
+        "--check"
+      ],
+      "exit_code": 0,
+      "basis": "Actual command succeeded immediately before authoring this note."
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "HEAD^",
+        "HEAD",
+        "--check"
+      ],
+      "exit_code": 0,
+      "stdout_bytes": 0,
+      "stderr_bytes": 0
+    }
+  ],
+  "rules_are_exact_path_only": true,
+  "ordinary_blank_at_eol_blank_at_eof_space_before_tab_checks_retained": true,
+  "captured_CSV_and_raw_stdout_bytes_unchanged": true,
+  "original2157_capture_inputs_unchanged_except_documented3prefixes": true,
+  "no_application_or_legacy_test_changes": true,
+  "new_python_tools_added_by_publication_fix": 0,
+  "tests_rerun_by_this_note": false,
+  "prior92_or196_relabelled": false,
+  "all_preserved_and_new_suites_passed": false,
+  "B38_failure_still_recorded": "146 != 142",
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false
+}

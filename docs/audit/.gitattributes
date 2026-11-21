@@ -1,0 +1,5 @@
+# Preserve standard CRLF CSV records and their verbatim captured diff lines.
+# Recognize CR as part of EOL without disabling the ordinary whitespace checks.
+# No text/eol normalization and no rule for any application or legacy test file.
+evidence/document-receiver-external-boundaries-07B39R4.csv whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+evidence/git-committed-diffcheck-before-CRLF-attribute-07B39R4.stdout.txt whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
