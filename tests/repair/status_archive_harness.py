@@ -232,10 +232,12 @@ check('critical containment and readonly close remain partial',
 check('entry, inventory, shift, license and permission follow-ups stay partial',
       all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
           for fid, rid in [('P3-002', 'R-245'), ('P4-030', 'R-246'), ('P3-014', 'R-247'),
-                           ('P1-032', 'R-248'), ('P1-012', 'R-249')]))
+                           ('P1-032', 'R-248'), ('P1-012', 'R-249; R-252')]))
 
 check('receipt transaction, identity collision and account mapping remain partial',
       all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
-          for fid, rid in [('P3-003', 'R-250'), ('P3-005', 'R-250'), ('P3-008', 'R-040; R-251')]))
+          for fid, rid in [('P3-003', 'R-250; R-253'), ('P3-005', 'R-250'), ('P3-008', 'R-040; R-251; R-254')]))
+
+check('deferred WPF pass remains partial', by_id['P1-013']['repair_status'] == 'partial_open' and by_id['P1-013']['repair_ids'] == 'R-252')
 
 print('RESULT: PASS — archive consistency checks; classifications are not WPF or SQL acceptance.')
