@@ -1,0 +1,26 @@
+{
+  "kind": "initial-authoring-source-claim-diagnostic-not-unittest-or-completion-capture",
+  "tool_input": {
+    "path": "docs/audit/tools/disposition07b/verify_document_receiver.py",
+    "bytes": 26526,
+    "sha256": "7ed6f4fb3672d7266620c185473c9a8d318bf7d73e800bc79b8b48b49bbcd631"
+  },
+  "facts_input": {
+    "path": "docs/audit/evidence/document-receiver-source-facts-07B39R4.json",
+    "bytes": 777248,
+    "sha256": "6b25f8299b5eff29f1e9dbcd4c6f952a4e2ec7fadee6b2a41b6df2dd58d287d6"
+  },
+  "read_input": {
+    "path": "docs/audit/evidence/document-receiver-source-review-log-07B39R4.json",
+    "bytes": 18462,
+    "sha256": "bd22dbc3b572a1fbb6cb2c604d36f1da53afe369ad3cb1a12802fdcef0b1097c"
+  },
+  "item_errors": [],
+  "receiver_errors": [],
+  "route_errors": [],
+  "read_errors": [],
+  "contexts": 72,
+  "source_identities": 24,
+  "requests": 26,
+  "tests_executed_by_this_probe": 0
+}

@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "kind": "bounded-new-R4-root-extension-adjudication-not-finding174-or-a-repaired-root",
+  "assessment_reference_date_utc": "2026-11-16",
+  "date_authority": "Current developer-supplied session date for this new review, not historical attribution or raw machine clock.",
+  "raw_clocks_are_calendar_authority": false,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "candidate_id": "LOCAL-R3-D08-ITEM-ENTRY",
+  "candidate_id_origin": "Name retained from conversation solely to identify the follow-up question; absent R3 artifact is not an input.",
+  "decision": "same-root-extension",
+  "root_id": "P7-122",
+  "local_candidate_resolution_complete": true,
+  "historical_root_fields_rewritten": false,
+  "root_remediated": false,
+  "new_finding_ids": [],
+  "all345_prior_findings_deduplicated": false,
+  "focused_root_reviews": {
+    "P7-045": {
+      "canonical_prior_row": {
+        "id": "P7-045",
+        "severity": "High",
+        "certainty": "confirmed",
+        "type": "report-criteria-result-snapshot-drift",
+        "status": "open-not-remediated",
+        "title": "معاينة التقرير قد تضع معايير فترة جديدة فوق نتائج الاستعلام السابق دون إعادة حساب",
+        "evidence": "SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml.cs:700-749;SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml.cs:827-837;SmartAuditERP/Form_WPF/frmRptSalesInPeriod.xaml.cs:298-355;SmartAuditERP/Form_WPF/frmRptSalesInPeriod.xaml.cs:541-569;SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml:219-266;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:705-749;SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs:518-551;SmartAuditERP/Form_WPF/frmRptItemsExpiration.xaml.cs:269-296;SmartAuditERP/Form_WPF/frmRptDailySales.xaml.cs:239-272;SmartAuditERP/Form_WPF/frmRptCategorySaleByDay.xaml.cs:344-380;SmartAuditERP/Form_WPF/frmRptSerialNo.xaml.cs:467-487;SmartAuditERP/Form_WPF/FrmRptSalesChart.xaml.cs:356-440;SmartAuditERP/Form_WPF/frmRptRentInvoices.xaml.cs:197-207;SmartAuditERP/Form_WPF/frmRptRentInvoices.xaml.cs:285-335;SmartAuditERP/Form_WPF/frmRptRentInvoices.xaml.cs:584-594;SmartAuditERP/Form_WPF/frmRptInvAnalysis.xaml.cs:1812-1857;SmartAuditERP/Form_WPF/frmRptItemsProfitDetails.xaml.cs:837-856;SmartAuditERP/Form_WPF/frmRptInvPurchaseDetails.xaml.cs:795-815;SmartAuditERP/Form_WPF/frmRptInvPurchaseDetails.xaml.cs:430-483;SmartAuditERP/Form_WPF/frmRptInvSalesDetails.xaml.cs:1136-1145;SmartAuditERP/Form_WPF/frmRptInvSalesDetails.xaml.cs:1465-1503;SmartAuditERP/Form_WPF/frmRptInvSalesDetailsPos.xaml.cs:853-885;SmartAuditERP/Form_WPF/frmRptInvSalesDetailsPosAndroid.xaml.cs:941-974;SmartAuditERP/Form_WPF/frmRptItemsSalesDetails.xaml.cs:452-479;SmartAuditERP/Form_WPF/frmRptItemsSalesDetailsPOS.xaml.cs:285-336;SmartAuditERP/Form_WPF/FrmRptSalesChart.xaml.cs:420-443;SmartAuditERP/Form_WPF/frmRptInvSalesDetails.xaml.cs:137-161;SmartAuditERP/Form_WPF/frmRptInvSalesDetails.xaml.cs:169-189;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:157-199;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:560-570;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:590-618;SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs:102-108;SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs:373-380;SmartAuditERP/Form_WPF/frmNkdTotSalePurch.xaml.cs:400-420;SmartAuditERP/Form_WPF/frmCostCenterBalance.xaml.cs:591-625;SmartAuditERP/Form_WPF/frmInvsProfit.xaml.cs:969-984;SmartAuditERP/Form_WPF/frmInvsProfit.xaml.cs:1001-1017;SmartAuditERP/Form_WPF/frmInvsProfit.xaml.cs:875-888;SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:492-518;SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:426-445;SmartAuditERP/Form_WPF/frmDecisionHelp.xaml.cs:403-419;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:149-174;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:649-681;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:824-830;SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs:433-468;SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs:660-705;SmartAuditERP/Form_WPF/frmRptEntries.xaml.cs:630-663;SmartAuditERP/Form_WPF/frmRptEntries.xaml:229-233;SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs:670-688;SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs:841-858;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:833-860;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:500-530;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:417-433;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:560-610;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml.cs:145-149;SmartAuditERP/Form_WPF/frmRptIncomeStatement.xaml.cs:129-149;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:90-91;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:199-225;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:549-595;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:782-790;SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs:455-470;SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs:517-545;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:704-732;SmartAuditERP/Form_WPF/frmRptKhzna.xaml.cs:509-535;SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs:42-103;SmartAuditERP/Form_WPF/frmAccountBalance.xaml:120-132;SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs:490-518;SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs:725-741;SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:642-689;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:609-648;SmartAuditERP/Form_WPF/frmRptItemsExpiration.xaml.cs:269-300;SmartAuditERP/Form_WPF/FrmReseved.xaml.cs:355-370;SmartAuditERP/Form_WPF/FrmReseved.xaml.cs:547-655;SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml.cs:700-749;SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml.cs:847-887;SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:77-151;SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:208-306;SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml:252-272;SmartAuditERP/Form_WPF/frmVATReturn.xaml.cs:676-715;SmartAuditERP/Form_WPF/frmVATReturn.xaml.cs:815-846;SmartAuditERP/Form_WPF/frmVATReturn.xaml.cs:287-295;SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:739-761;SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:948-984",
+        "next_phase": "8"
+      },
+      "canonical_prior_row_sha256": "86eafde96477b1bc285c0e9e69d5bf1ef17d5d5fe641cef3eac6dc3d0e91281f",
+      "relation_to_candidate": "distinct-root",
+      "reason": "Different: preview labels/results from different snapshots after criteria edit. Here a fresh positive request is copied before the first calculation; the issue exists without an old result or output preview."
+    },
+    "P7-058": {
+      "canonical_prior_row": {
+        "id": "P7-058",
+        "severity": "Medium",
+        "certainty": "confirmed",
+        "type": "implementation-defect",
+        "status": "open-not-remediated",
+        "title": "اختيار العميل في حركة المواد لا يرشّح استعلامات الحركة",
+        "evidence": "SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:187-205;SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:312-347;SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:889-943;SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml:410-446;SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:199-205;SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:312-347;SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:904-943;SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml:413-446",
+        "next_phase": "8"
+      },
+      "canonical_prior_row_sha256": "124762d2770241a47e2901c40d8f7b7bc18a414847ca7cd332384d65aa8f4432",
+      "relation_to_candidate": "distinct-root",
+      "reason": "Different: client selection has no effective SQL predicate in aggregate movement. The item predicate here exists and is gated by the all-items flag; a missing flag transition, not a missing client predicate."
+    },
+    "P7-085": {
+      "canonical_prior_row": {
+        "id": "P7-085",
+        "severity": "Medium",
+        "certainty": "confirmed",
+        "type": "implementation-defect",
+        "status": "open-not-remediated",
+        "title": "تعديل نص الصنف في الأرباح التفصيلية يبقي SelectedId السابق عند عرض التقرير",
+        "evidence": "SmartAuditERP/Form_WPF/frmRptItemsProfitDetails.xaml.cs:193-210;SmartAuditERP/Form_WPF/frmRptItemsProfitDetails.xaml.cs:502-518;SmartAuditERP/Form_WPF/frmRptItemsProfitDetails.xaml.cs:546-558;SmartAuditERP/Form_WPF/frmRptItemsProfitDetails.xaml.cs:575-628;SmartAuditERP/Form_WPF/frmRptItemsProfitDetails.xaml.cs:631-684;SmartAuditERP/Form_WPF/frmRptItemsProfitDetails.xaml.cs:837-852;SmartAuditERP/Form_WPF/frmRptItemsProfitDetails.xaml:277-313;SmartAuditERP/Form_WPF/frmRptItemsSalesDetails.xaml.cs:193-204;SmartAuditERP/Form_WPF/frmRptItemsSalesDetails.xaml.cs:353-425;SmartAuditERP/Form_WPF/frmRptItemsSalesDetails.xaml.cs:599-618;SmartAuditERP/Form_WPF/frmRptItemsSalesDetails.xaml.cs:679-691;SmartAuditERP/Form_WPF/frmRptItemsSalesDetails.xaml.cs:717-728;SmartAuditERP/Form_WPF/frmRptItemsSalesDetails.xaml:311-352;SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs:132-148;SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs:321-377;SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs:604-623;SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs:674-710;SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml:321-341;SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs:167-195;SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs:692-698;SmartAuditERP/Form_WPF/frmAccountBalance.xaml:102-107;SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs:283-304;SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs:801-814;SmartAuditERP/Form_WPF/frmAccountsStatement.xaml:152-162;SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:434-510;SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:788-802;SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:843-885;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:471-531;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:812-824;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:852-864;SmartAuditERP/Form_WPF/frmRptItemsExpiration.xaml.cs:215-263;SmartAuditERP/Form_WPF/frmRptItemsExpiration.xaml.cs:138-149;SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml:324-342;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml:323-341;SmartAuditERP/Form_WPF/frmRptItemsExpiration.xaml:323-327",
+        "next_phase": "8"
+      },
+      "canonical_prior_row_sha256": "6342e117e280587c49c5617b384facb52c580ebd7d27fb26887b58b58bd5c6ca",
+      "relation_to_candidate": "distinct-root",
+      "reason": "Different: typed text can retain a previously resolved SelectedId. Here the positive caller ID is freshly copied, and no text edit or stale resolved ID is needed."
+    },
+    "P7-122": {
+      "canonical_prior_row": {
+        "id": "P7-122",
+        "severity": "Medium",
+        "certainty": "confirmed",
+        "type": "implementation-defect",
+        "status": "open-not-remediated",
+        "title": "واجهة LastProcess لحركة الصنف تتلقى المخزن ولا تلغي خيار كل المستودعات قبل الاستعلام",
+        "evidence": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:209-235;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:253-260;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml:288-296;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1139-1167",
+        "next_phase": "8"
+      },
+      "canonical_prior_row_sha256": "e76303894afe9bf99a49d294b2129a12b159c1335c3b359431621c477afd87d3",
+      "relation_to_candidate": "same-root",
+      "reason": "Same causal root/invariant: a positive scoped entry request is assigned to the value holder without disabling the already-true all-scope switch; the SQL predicate is gated by that switch. Prior instance is detailed LastProcess storeId/selected safe/chkAll; new instance is aggregate ItemId/selectedItemId/chkAll. Different scope dimension and report instance do not justify a new root or per-caller duplication."
+    },
+    "P7-129": {
+      "canonical_prior_row": {
+        "id": "P7-129",
+        "severity": "Medium",
+        "certainty": "confirmed",
+        "type": "implementation-defect",
+        "status": "open-not-remediated",
+        "title": "متصلو آخر حركة الطرف لا يحافظون على نوع العميل أو المورد المختار",
+        "evidence": "SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs:275-316;SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs:2242-2254;SmartAuditERP/Form_WPF/frmSalePurch.xaml:764-772;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:215-242;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2433-2446;SmartAuditERP/Form_WPF/frmPurchInv.xaml:782-784;SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs:1230-1241;SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs:2658-2680;SmartAuditERP/Form_WPF/frmInvPOS.xaml:522-527;SmartAuditERP/Form_WPF/frmSrchClient.xaml.cs:96-125;SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs:253-273;SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs:1294-1308;SmartAuditERP/Form_WPF/frmcontract.xaml.cs:424-448;SmartAuditERP/Form_WPF/frmcontract.xaml.cs:1573-1595;SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:296-325;SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:2540-2555;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:489-511;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1213-1227;SmartAuditERP/Class/LoadData.cs:28-43;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:169-188;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:209-235;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:268-275;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:695-715;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml:390-412",
+        "next_phase": "8"
+      },
+      "canonical_prior_row_sha256": "425aceae4f86a8e31f24d08289fc5e6d96a47d57a3847719949d6edb8be69bad",
+      "relation_to_candidate": "distinct-root",
+      "reason": "Different: party type/customer-vs-supplier is not propagated by callers. Item identity is supplied here; the controlling all-items flag, not a party type parameter, suppresses its predicate."
+    },
+    "P7-130": {
+      "canonical_prior_row": {
+        "id": "P7-130",
+        "severity": "Medium",
+        "certainty": "confirmed",
+        "type": "implementation-defect",
+        "status": "open-not-remediated",
+        "title": "أمر آخر حركة للعميل في واجهة الإدخال والإخراج يرسل معرف طرف فارغاً فيطلب حركة كل الأطراف",
+        "evidence": "SmartAuditERP/Form_WPF/frmInvInOutput.xaml:551-559;SmartAuditERP/Form_WPF/frmInvInOutput.xaml.cs:409-439;SmartAuditERP/Form_WPF/frmInvInOutput.xaml.cs:2589-2623;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:169-188;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:209-235;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:268-275;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:695-715;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml:390-412",
+        "next_phase": "8"
+      },
+      "canonical_prior_row_sha256": "cfdc3d0d0b8634636bc3edafcf869181b6e05bed32e24716a021ca11a3f6e6ec",
+      "relation_to_candidate": "distinct-root",
+      "reason": "Different: the caller supplies -1 for client scope, so all-parties behavior follows an empty request. Here the reviewed path is conditional on a positive supplied item ID; invalid/zero parse does not establish this extension."
+    }
+  },
+  "source_chain": [
+    "SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs:49-64 constructor defaults;71-91 Loaded copy/calculation;166-303 item query and calculation",
+    "SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml:1-14 own Loaded wiring;312-317 all-items=True",
+    "SmartAuditERP/Form_WPF/frmInvInOutput.xaml.cs:StripItemProcess_Click",
+    "SmartAuditERP/Form_WPF/frmPOS.xaml.cs:StripItemProcess_Click",
+    "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:StripItemProcess_Click"
+  ],
+  "evidence_scope": "Three literal caller methods with own-XAML Click wiring, caller/local permission and settings helpers, aggregate startup/criteria and detailed root counterpart read. Positive valid input and normal earlier dependencies returning are stated conditions. Not global reachability, reflection, a WPF event observation or a database result.",
+  "counterevidence": [
+    "Aggregate manual item search explicitly clears chkAll before OpenItemSearch; only this local button method is claimed, not a new whole picker review.",
+    "Detailed ShowResult adds item predicate directly when SelectedId!=-1; its all-store flag does not gate that item predicate.",
+    "R1/old root P7-122 remains Medium/confirmed/open exactly as registered; this extension does not promote severity/certainty or prove any query actually ran."
+  ],
+  "caller_methods": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmInvInOutput.xaml.cs",
+      "method": "StripItemProcess_Click",
+      "source_method_sha256": "4deea3e4345baf1d0f65bc58765466a3b1b926b5a64c3027fd2f9892ba3929ab"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPOS.xaml.cs",
+      "method": "StripItemProcess_Click",
+      "source_method_sha256": "f2afa79afd3242ebfd8368058a20b60bce5ed1538aabce58f943d378222a0d1c"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs",
+      "method": "StripItemProcess_Click",
+      "source_method_sha256": "821aae84cadf4e017df56321bfd76321ad068c96220fe16c155c31589c5e81d8"
+    }
+  ],
+  "static_disposition": "Local novelty question resolved as evidence extension; no additional root, no runtime or financial consequence approved. Missing six R2 dictionaries remain a separate evidence-recovery limitation, not an excuse to duplicate known P7-122.",
+  "pinned_inputs": [
+    {
+      "path": "docs/audit/evidence/document-receiver-source-facts-07B39R4.json",
+      "bytes": 777248,
+      "sha256": "6b25f8299b5eff29f1e9dbcd4c6f952a4e2ec7fadee6b2a41b6df2dd58d287d6"
+    },
+    {
+      "path": "docs/audit/evidence/document-receiver-source-review-log-07B39R4.json",
+      "bytes": 18462,
+      "sha256": "bd22dbc3b572a1fbb6cb2c604d36f1da53afe369ad3cb1a12802fdcef0b1097c"
+    },
+    {
+      "path": "docs/audit/evidence/item-entry-prior-root-screen-07B39R4.json",
+      "bytes": 283405,
+      "sha256": "5b563bb276a3c3c89e92a31e95a007e424a8fe2a99680b566acaa613c639a29f"
+    },
+    {
+      "path": "docs/audit/evidence/capability-register-07B38.csv",
+      "bytes": 33915,
+      "sha256": "2e071fbad8546aeb26b2dd66854d17c58ad570e7b36525e823e9567b7466b3c5"
+    }
+  ]
+}

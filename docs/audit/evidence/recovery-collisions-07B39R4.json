@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "kind": "preserved-untracked-collision-reconciliation-before-fast-forward",
+  "target": "6e36c00e5991862eee9e38d997dc5681cb26963d",
+  "entry": "10ba215152f722c8808aea0bb672c1d1d4d9d711",
+  "archive": {
+    "path": "docs/audit/evidence/untracked-entry-docs-07B39R4.tar.gz",
+    "bytes": 14560801,
+    "sha256": "2ab6e6d3df2e30b038cb3c9f99ac957d6e13b59b119b074207535b2e19b3cc87",
+    "members": 1216,
+    "original_bytes": 66055726,
+    "all_members_verified": true
+  },
+  "collision_count": 1216,
+  "changed_entry_versions": [
+    {
+      "path": "docs/audit/DATE-IDENTITY-NOTE-07B37.md",
+      "entry_sha256": "01461bf7c3e36c678f837cd1eda0d48374c86f4b964ee5f89a5179a74eebdd57",
+      "recovered_sha256": "9b6b7de184900a2fbcd3adfe1807a2c59c643a16bcbc83cdfc48bae3ae462b7a",
+      "identical": false
+    },
+    {
+      "path": "docs/audit/IMPROVEMENTS.md",
+      "entry_sha256": "9c274439ea00d8e657eba0fe5374933a4523c33a62114b77fa26ef0b34dd46a3",
+      "recovered_sha256": "318d94cb725c3695381ab16f6b6dde5561c0d688c643cb45355eea63c7dd6834",
+      "identical": false
+    },
+    {
+      "path": "docs/audit/PHASE-07-REMAINING-07B37.md",
+      "entry_sha256": "5c219a78115de48f1051a0d89fc29893a11bddc90d6df8d54cea55c43a7e6cac",
+      "recovered_sha256": "8147b35927aa3042002017e5dc8513f7414a0c3202377e30a606428ec619e715",
+      "identical": false
+    },
+    {
+      "path": "docs/audit/PHASE-07B37.md",
+      "entry_sha256": "aecf3eab163f2cd433b1c884fc89d398c03d7a92021cce14e19a1ea3e11b5c45",
+      "recovered_sha256": "612ae451dd71561100c05c7b7e22a29fe98b5e1875190b919d40bfbe21f70739",
+      "identical": false
+    },
+    {
+      "path": "docs/audit/PLAN.md",
+      "entry_sha256": "e4c473e3e781689815e4b0878ac719cc3a97db482e82ba31d5dab2a237afd0b2",
+      "recovered_sha256": "f0f3767644efcd842095547349b58c29822251060e76e1495b55128add2d31b6",
+      "identical": false
+    },
+    {
+      "path": "docs/audit/README.md",
+      "entry_sha256": "c8025dad99941ca3b43e73b78b106b06391c04ccd66146f35a0e98ec83903843",
+      "recovered_sha256": "8e0d7f05674b98f9fa5549c099944233b280df3d0d50f24c4a2031d751425de3",
+      "identical": false
+    },
+    {
+      "path": "docs/audit/TRANSFER-PICKER-CONTRACTS-07B37.md",
+      "entry_sha256": "3b785e08d7ec17f815a3b1c2cf7991777640e199428b18e4349003e259c75f42",
+      "recovered_sha256": "5ced23cb25a1da715f147d716dd450ebe666f1c53e74fa316f34340298780e0d",
+      "identical": false
+    },
+    {
+      "path": "docs/audit/VALIDATION-07B37.md",
+      "entry_sha256": "940185a9f21b6a4160fd551a1e059c709b8d452baecbe5481adf08f1d7c9534d",
+      "recovered_sha256": "6c4d7457529b45a732179a4a268903960bec7ea93d5898436f2071af248b6d53",
+      "identical": false
+    },
+    {
+      "path": "docs/audit/tools/validate_transfer_picker_part.py",
+      "entry_sha256": "9ef7ae878494a2f0fe13e85cc7ecc18a7d9914a8dd6d853658475004a16e5716",
+      "recovered_sha256": "9e53a5e537cc2d0b10edea784e9bc720f13736e3c74ed7419d595bdf31d67a88",
+      "identical": false
+    }
+  ],
+  "identical_count": 1207,
+  "untracked_only_paths_kept": [],
+  "resolution": "Only archived verified untracked paths colliding with fetched tracked files are removed immediately before ff-only merge. Their exact entry versions remain in the verified entry tar; no current tracked file is deleted.",
+  "no_R2_R3_reconstruction": true
+}

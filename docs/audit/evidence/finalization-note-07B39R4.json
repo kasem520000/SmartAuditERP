@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "kind": "post-capture-publication-preservation-not-suite-rerun",
+  "actual_capture": {
+    "path": "docs/audit/evidence/validation-current-run01-receipt-07B39R4.json",
+    "sha256": "e4c1890180ee48547c7fd60347f4aafd3937758f01a555c3fdf92888fee18b4f"
+  },
+  "indexes": [
+    {
+      "path": "docs/audit/README.md",
+      "preserved_recovered_bytes": 79751,
+      "preserved_recovered_sha256": "8e0d7f05674b98f9fa5549c099944233b280df3d0d50f24c4a2031d751425de3",
+      "prefix_bytes": 1988,
+      "prefix_sha256": "e51f9d183ecfc49f62150ff6cff21c3f6e01957e5409973a119936b251a7fe53",
+      "published_bytes": 81739,
+      "published_sha256": "ff2dbaae2b75e82d0f6fe9c8c2540581d77ced22a21db43c2467ee3e39f88a47",
+      "full_recovered_R1_index_is_exact_suffix": true
+    },
+    {
+      "path": "docs/audit/PLAN.md",
+      "preserved_recovered_bytes": 134167,
+      "preserved_recovered_sha256": "f0f3767644efcd842095547349b58c29822251060e76e1495b55128add2d31b6",
+      "prefix_bytes": 1653,
+      "prefix_sha256": "b574f5896df10137880be25bb44b968c9cd949e0ce514dd5d7cc2a8ec3a74cbf",
+      "published_bytes": 135820,
+      "published_sha256": "4f57414036c2afb8516635ab40042a62653776edcbfd1ba9b8e9c2bf581eec5e",
+      "full_recovered_R1_index_is_exact_suffix": true
+    },
+    {
+      "path": "docs/audit/IMPROVEMENTS.md",
+      "preserved_recovered_bytes": 265668,
+      "preserved_recovered_sha256": "318d94cb725c3695381ab16f6b6dde5561c0d688c643cb45355eea63c7dd6834",
+      "prefix_bytes": 1332,
+      "prefix_sha256": "230752d6fca1427f26b7a39415e4af8cd2374036796d88b2374ba5f95f92fe24",
+      "published_bytes": 267000,
+      "published_sha256": "190a326392bfd8d1e4316517ccd460e1320659d4b7d9b77ec326570714f8d2ba",
+      "full_recovered_R1_index_is_exact_suffix": true
+    }
+  ],
+  "captured_inputs_changed_after_capture": [
+    "docs/audit/IMPROVEMENTS.md",
+    "docs/audit/PLAN.md",
+    "docs/audit/README.md"
+  ],
+  "other_captured_inputs_unchanged": 2154,
+  "other_recovered_tracked_audit_inputs_unchanged": 1311,
+  "late_publications_not_capture_inputs": [
+    {
+      "path": "docs/audit/PHASE-07B39R4.md",
+      "bytes": 8897,
+      "sha256": "b406db618091ea870ebfd48949a5de04e9b55affd7a121fcb290c0df46e98d65"
+    },
+    {
+      "path": "docs/audit/VALIDATION-07B39R4.md",
+      "bytes": 7285,
+      "sha256": "ee7f07bf42ff0dfb6b4a9bf6b01f3b37c9f6d6bdf21a1a163306a3acfcf4bcc8"
+    },
+    {
+      "path": "docs/audit/evidence/capability-reconciliation-07B39R4.json",
+      "bytes": 386376,
+      "sha256": "ae6561523253d7c09e5ca6da0962f3573b8cd16ad9e667113c15582c1a9d92ca"
+    },
+    {
+      "path": "docs/audit/evidence/validation-status-supplement-07B39R4.json",
+      "bytes": 1405,
+      "sha256": "94676420186840b87388b546b2e40a90e663a35fc4c9904fe9bca6fb98d663dd"
+    }
+  ],
+  "source_review_R4_was_capture_input": true,
+  "late_publications_retroactively_tested": false,
+  "prior_R2_R3_files_restored": false,
+  "prior196_tests_recertified": false,
+  "R4_new_root_ids": [],
+  "extension_root_id": "P7-122",
+  "capability_exit_certificates_issued": 0,
+  "whole_7B_static_assessment_complete": false,
+  "application_execution_count": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false
+}

@@ -1,0 +1,330 @@
+{
+  "schema_version": 1,
+  "kind": "new-R4-bounded-source-dispositions-and-unresolved-capability-exits",
+  "assessment_reference_date_utc": "2026-11-16",
+  "date_authority": "Current developer-supplied session date for this new review, not historical attribution or raw machine clock.",
+  "raw_clocks_are_calendar_authority": false,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "R2_R3_files_recovered": false,
+  "prior196_tests_recertified": false,
+  "R3_shared_receiver_metadata_only_blocker_replaced_by": "new-R4-bounded-whole-body-and-five-wrapper-source-review",
+  "receiver_outcomes": [
+    {
+      "id": "EMPTY",
+      "source_basis": "SmartAuditERP/Class/InvoiceOper.cs:3239-3241;3496-3499",
+      "source_disposition": "HasRows=false -> Invo=null.",
+      "limit": "Not Found/Empty typed output, and no proof that the caller preserved its previous draft.",
+      "observed_in_ERP": false
+    },
+    {
+      "id": "OUTER_FAILED",
+      "source_basis": "SmartAuditERP/Class/InvoiceOper.cs:3501-3507",
+      "source_disposition": "Outer exception reaches catch -> Invo=null. This includes a later uncaught cost-center query failure after some mutation.",
+      "limit": "No provider/parse failure is observed; a thrown dependency must be supplied to reason about this path.",
+      "observed_in_ERP": false
+    },
+    {
+      "id": "HEADER_WITH_NO_DETAIL",
+      "source_basis": "SmartAuditERP/Class/InvoiceOper.cs:3243-3365;3374-3376;3487-3494",
+      "source_disposition": "Header setters execute before detail Fill/row loop. Empty details do not set Invo=null; cost and cost-center work can still run.",
+      "limit": "Non-null ref is not proven complete; initial model lists/totals and subsequent helpers/setters must return normally.",
+      "observed_in_ERP": false
+    },
+    {
+      "id": "ROW_PARTIAL",
+      "source_basis": "SmartAuditERP/Class/InvoiceOper.cs:3419-3424;3451-3467;3476-3484",
+      "source_disposition": "Per-row catch projectError4 clears the error and continues the loop; totals are written before helper calls and Add. No local rollback or health flag in that catch.",
+      "limit": "Conditional source-order possibility, not an observed dropped row, wrong amount or transactional/SDK outcome.",
+      "observed_in_ERP": false
+    },
+    {
+      "id": "OPTIONAL_FIELD_CATCH",
+      "source_basis": "SmartAuditERP/Class/InvoiceOper.cs:3308-3317;3455-3475",
+      "source_disposition": "RefDate catch returns to header code; store/expiry catches return to the row. These differ from the outer null path.",
+      "limit": "No assumption that old/default values are zero, safe or owned by the same object.",
+      "observed_in_ERP": false
+    },
+    {
+      "id": "HELPER_CATCH",
+      "source_basis": "SmartAuditERP/Class/InvoiceOper.cs:3821-3939",
+      "source_disposition": "glassOtions and BindingCostDetaile have their own swallow-and-return catch. BindingItemDetails has no local catch and can route to the enclosing row catch before Add.",
+      "limit": "Only the local helper/caller exception boundary is adjudicated; no external list/setter/collection behavior or database success approved.",
+      "observed_in_ERP": false
+    },
+    {
+      "id": "NORMAL_LOCAL_RETURN",
+      "source_basis": "SmartAuditERP/Class/InvoiceOper.cs:3219-3508",
+      "source_disposition": "The method has void return; returned ref/caught errors do not encode Found/Empty/Failed/Partial or identity validation.",
+      "limit": "Successful control return, Close/Fill/Add or a populated field does not establish a complete correct document, ACL, snapshot or financial result.",
+      "observed_in_ERP": false
+    },
+    {
+      "id": "PRE_READER_NONRETURN",
+      "source_basis": "Selected five Navigate/CLR/Reset/LoadNumber methods in document-receiver-source-review-log-07B39R4.json",
+      "source_disposition": "Each selected wrapper calls CLR before the reader; several reset/number/bind dependency boundaries may fail or not return. If an earlier boundary does not return, the reader is not reached. Purchase/transfer catch coverage differs from sale/POS/input-output.",
+      "limit": "No guaranteed fallback or universal exception swallowing; returned/throwing dependencies and WPF event behavior are not executed or invented.",
+      "observed_in_ERP": false
+    }
+  ],
+  "wrapper_dispositions": {
+    "frmInvSale": {
+      "source_method_sha256": "57db219fcf3f699aff13a906d4754f6f96c928a8e0c5a6119bd4214d2cdf0e5b",
+      "source_range": [
+        1643,
+        1660
+      ],
+      "before_reader": "Conditional CLR if Invoic!=null; reset publication before reader.",
+      "null_path": "null -> new InvoiceDGV then CLR again; only caller void result, with later number/default dependencies.",
+      "typed_health_return": false,
+      "non_null_path": "Local bind/display calls conditional on returned ref, not a provider or row-completeness proof.",
+      "observed_in_ERP": false
+    },
+    "frmInvPurch": {
+      "source_method_sha256": "5afe24e048125815631015dd4807afce283e86ce63f4747d321d33353c5f7840",
+      "source_range": [
+        481,
+        502
+      ],
+      "before_reader": "Conditional this.CLR if non-null; purchase CLR wraps reset/number/default path in catch.",
+      "null_path": "null -> new InvoiceDGV then this.CLR again; catches may return, not a typed no-row vs failure.",
+      "typed_health_return": false,
+      "non_null_path": "Local bind/display calls conditional on returned ref, not a provider or row-completeness proof.",
+      "observed_in_ERP": false
+    },
+    "frmInvPOS": {
+      "source_method_sha256": "4e155ec216d6e85f3e0f20361990d997aa73f15a349c1679da9615c4053b89e5",
+      "source_range": [
+        1861,
+        1880
+      ],
+      "before_reader": "Unconditional CLR; resets InvType=3 and ProcType=1 before read, while header load writes DTO type from the returned row.",
+      "null_path": "null -> new InvoiceDGV then CLR again; source reset/type fields are not automatically synchronized with loaded return types.",
+      "typed_health_return": false,
+      "non_null_path": "Local bind/display calls conditional on returned ref, not a provider or row-completeness proof.",
+      "observed_in_ERP": false
+    },
+    "frmInvInputOutput": {
+      "source_method_sha256": "6f7be5f340a9fccd0a286a04f91e19295a5be968be82cf2b1d4c7e29f4b70146",
+      "source_range": [
+        483,
+        498
+      ],
+      "before_reader": "Unconditional CLR before reader, may request number and mutate bindings.",
+      "null_path": "null -> new InvoiceDGV only in this branch, without a second CLR here; unlike sale/purchase/POS.",
+      "typed_health_return": false,
+      "non_null_path": "Local bind/display calls conditional on returned ref, not a provider or row-completeness proof.",
+      "observed_in_ERP": false
+    },
+    "frmInventoryTransfer": {
+      "source_method_sha256": "a66fdfe9969777ec5154f4af1d9f812eeaca869674f1593f1037b734840c6099",
+      "source_range": [
+        402,
+        452
+      ],
+      "before_reader": "CLR only if _invoic!=null && !_isLoading; whole Navigate has a local catch.",
+      "null_path": "null -> new InvoiceDGV and return; non-null path performs additional transfer reference queries after binding, without a typed outcome.",
+      "typed_health_return": false,
+      "non_null_path": "Local bind/display calls conditional on returned ref, not a provider or row-completeness proof.",
+      "observed_in_ERP": false
+    }
+  },
+  "identity_dispositions": [
+    {
+      "boundary": "header query",
+      "current_source": "sqlstr forwarded to SqlCommand; first HasRows/Read header used; no local added branch/year/type predicate or returned-row equality check.",
+      "limit": "Caller query scope remains the caller responsibility; not a proof of global authorization failure or actual multirow data."
+    },
+    {
+      "boundary": "detail query",
+      "current_source": "Inv_Sub uses loaded Invo.InvGlobalID plus ProductId=0, joins Items/Units/ItemUnits and groups, then iterates.",
+      "limit": "Identity text is not deployed unique/FK/version evidence or a validated complete-row count."
+    },
+    {
+      "boundary": "EntryGlobalID",
+      "current_source": "Header entry lookup uses loaded inv_type/return mapping and loaded row branch; fallback generates key with Sync.ActiveSync/ClientCode/branchNo/entryNo.",
+      "limit": "A generated string is not evidence of an existing/matching entry row or correct cross-year identity."
+    },
+    {
+      "boundary": "cost-center query",
+      "current_source": "Entry_sub branch uses MainClass.BranchNo, EntryGlobalID uses Invo.EntryGlobalID and account uses Invo.InvAccCode.",
+      "limit": "Mixed sources are recorded, not adjudicated as a new correctness defect without owner policy, complete source-year mapping and model contract."
+    }
+  ],
+  "individual_external_boundary_register": {
+    "path": "docs/audit/evidence/document-receiver-external-boundaries-07B39R4.csv",
+    "bytes": 3624,
+    "sha256": "f5888528627585836e828209f84315cd0348f110d7075a9cab2ef1c441d1d08e"
+  },
+  "formal_new_R4_boundary_rows": 3,
+  "missing_R2_49_boundary_register_reconstructed": false,
+  "existing_roots_not_recounted": [
+    "P7-061 global/type/branch loss",
+    "P7-122 all-scope flag not cleared",
+    "P7-161 null/failure reset"
+  ],
+  "capabilities": {
+    "CAP7B38-D08": {
+      "canonical_capability_row": {
+        "id": "CAP7B38-D08",
+        "capability": "المخزون والحركة والصلاحية",
+        "entry_point": "آباء R1 الأربعة وLastProcess وفتح مستند/صنف",
+        "source_contract": "Inv/Inv_Sub/UDF/Opening ودفعة/مستودع/فرع/تاريخ",
+        "output_boundary": "InventoryData وReport/CSV وطفل مستند",
+        "related_part_numbers": "2;14;16;19",
+        "related_finding_ids": "P7-054;P7-055;P7-056;P7-057;P7-058;P7-059;P7-060;P7-061;P7-121;P7-129;P7-130",
+        "current_handoff_ids": "H7B38-01;H7B38-02;H7B38-03;H7B38-04",
+        "assessment_status": "historical-and-selected-current-source-assessment-boundaries-open",
+        "assessment_basis": "historical-FE-lineage-plus-explicit-current-source-scope-not-all-source-rereview",
+        "excluded_from_claim": "اكتمال body تاريخياً لا يغلق الأسرة؛ potential014/108/132 تبقى.",
+        "owner_role": "مالك المنتج والتقرير بالتنسيق مع مالك السياسة والمصدر",
+        "required_redacted_input": "راجع H7B38 ذات الصلة: قاموس/عقد/manifest منقح فقط؛ لا أسرار أو بيانات أعمال.",
+        "absence_impact": "يبقى هذا الحد غير محسوم؛ الإحالة لا تعني الموافقة أو غياب القدرة أو إغلاق الأسرة.",
+        "next_action": "لكل بقية R1: وحدة/حبيبة/كلفة/as-of/expiry ومعيار وهوية ومخرج ودليل أو استبعاد مسند/إحالة صريحة.",
+        "static_exit_criterion": "لكل بقية R1: وحدة/حبيبة/كلفة/as-of/expiry ومعيار وهوية ومخرج ودليل أو استبعاد مسند/إحالة صريحة.",
+        "local_semantic_obligations_complete": "false",
+        "whole_capability_certified": "false",
+        "runtime_status": "not-executed"
+      },
+      "source_backed_progress": "Fresh item-entry question resolved as same-root extension of122. Whole shared receiver and selected wrappers read, not just metadata.",
+      "remaining_readable_local": [
+        "Remaining D08 whole-capability entry/source/output evidence from unavailable R2/R3 must be recovered or independently re-established; no rebadging of old claimed exit.",
+        "ProductionOrder.ReadData/CLR and SafeAdjust.ReadData/CLR are readable-local alternate routes; only their Navigate and partial ReadData prefixes were displayed here.",
+        "Item/API consumers, InvoiceDetails child and nonselected output/identity/criteria policies remain locally attributable under the original26 scope."
+      ],
+      "next_action": "Remaining D08 whole-capability entry/source/output evidence from unavailable R2/R3 must be recovered or independently re-established; no rebadging of old claimed exit.",
+      "local_semantic_obligations_complete": false,
+      "whole_capability_certified": false,
+      "readable_local_work_externalized": false,
+      "independent_exit_decision": "withheld-for-named-readable-local-and-missing-review-evidence",
+      "external_boundary_ids": [
+        "EXT-R4-MODEL",
+        "EXT-R4-DEPLOYED-IDENTITY",
+        "EXT-R4-LOAD-POLICY"
+      ]
+    },
+    "CAP7B38-D16": {
+      "canonical_capability_row": {
+        "id": "CAP7B38-D16",
+        "capability": "التقرير الضريبي والإقرار وتفاصيل الطفل",
+        "entry_point": "frmTaxRptPeriod / frmVATReturn / frmTaxInvDetails",
+        "source_contract": "Inv/Inv_Sub/Receipts/Entry/تأجير وsource-set/branch/category",
+        "output_boundary": "RptTaxData/DTO/REPX ومجاميع ومعايير وفتح طفل",
+        "related_part_numbers": "1;15;16;17",
+        "related_finding_ids": "P7-043;P7-044;P7-045;P7-046;P7-051;P7-125;P7-126;P7-127;P7-128",
+        "current_handoff_ids": "H7B38-01;H7B38-02;H7B38-03;H7B38-04",
+        "assessment_status": "historical-and-selected-current-source-assessment-boundaries-open",
+        "assessment_basis": "historical-FE-lineage-plus-explicit-current-source-scope-not-all-source-rereview",
+        "excluded_from_claim": "لا قانون ضريبي من الموقع ولا إقرار منشور أو إصلاح 046/128.",
+        "owner_role": "مالك المنتج والتقرير بالتنسيق مع مالك السياسة والمصدر",
+        "required_redacted_input": "راجع H7B38 ذات الصلة: قاموس/عقد/manifest منقح فقط؛ لا أسرار أو بيانات أعمال.",
+        "absence_impact": "يبقى هذا الحد غير محسوم؛ الإحالة لا تعني الموافقة أو غياب القدرة أو إغلاق الأسرة.",
+        "next_action": "قاموس تصنيف وفئة ومصدر ومعدل وخصم/carryforward وbranch؛ لا تطابق parent/child قبل توحيد المقاييس والـsource-set.",
+        "static_exit_criterion": "قاموس تصنيف وفئة ومصدر ومعدل وخصم/carryforward وbranch؛ لا تطابق parent/child قبل توحيد المقاييس والـsource-set.",
+        "local_semantic_obligations_complete": "false",
+        "whole_capability_certified": "false",
+        "runtime_status": "not-executed"
+      },
+      "source_backed_progress": "Six global-key tax child invoice routes plus the local-number expense route and SandVAT reader boundary separated. Shared invoice receiver now read.",
+      "remaining_readable_local": [
+        "Missing R2/R3 tax source/receipt10 correction/matrix and individual boundary artifacts are not certified in this recovery; local originals remain readable.",
+        "The new receiver review does not establish all parent/alternative/child request/result/output clauses or source/year/rounding contracts."
+      ],
+      "next_action": "Missing R2/R3 tax source/receipt10 correction/matrix and individual boundary artifacts are not certified in this recovery; local originals remain readable.",
+      "local_semantic_obligations_complete": false,
+      "whole_capability_certified": false,
+      "readable_local_work_externalized": false,
+      "independent_exit_decision": "withheld-for-named-readable-local-and-missing-review-evidence",
+      "external_boundary_ids": [
+        "EXT-R4-MODEL",
+        "EXT-R4-DEPLOYED-IDENTITY",
+        "EXT-R4-LOAD-POLICY"
+      ]
+    },
+    "CAP7B38-D17": {
+      "canonical_capability_row": {
+        "id": "CAP7B38-D17",
+        "capability": "هوية المستند والتنقل وفتح الأطفال",
+        "entry_point": "document opener/ShowEntrySource/LastProcess وTableRow→child",
+        "source_contract": "GlobalID/type/branch/year/source مقابل رقم محلي/اسم عرض",
+        "output_boundary": "NavigationRequest/LoadOutcome وحد نشر حالة الأب",
+        "related_part_numbers": "11;14;16;17;19;27;28;31",
+        "related_finding_ids": "P7-061;P7-115;P7-130;P7-155;P7-156;P7-157;P7-158;P7-161",
+        "current_handoff_ids": "H7B38-03;H7B38-04;H7B38-05",
+        "assessment_status": "historical-and-selected-current-source-assessment-boundaries-open",
+        "assessment_basis": "historical-FE-lineage-plus-explicit-current-source-scope-not-all-source-rereview",
+        "excluded_from_claim": "لا حمل branch/year/ACL من مجرد تمرير id.",
+        "owner_role": "مالك المنتج والتقرير بالتنسيق مع مالك السياسة والمصدر",
+        "required_redacted_input": "راجع H7B38 ذات الصلة: قاموس/عقد/manifest منقح فقط؛ لا أسرار أو بيانات أعمال.",
+        "absence_impact": "يبقى هذا الحد غير محسوم؛ الإحالة لا تعني الموافقة أو غياب القدرة أو إغلاق الأسرة.",
+        "next_action": "كل route له DocumentRef/allowed-set وscope وFound/Empty/Failed/Partial لا void/اسم عرض؛ فرز paths غير المحسومة.",
+        "static_exit_criterion": "كل route له DocumentRef/allowed-set وscope وFound/Empty/Failed/Partial لا void/اسم عرض؛ فرز paths غير المحسومة.",
+        "local_semantic_obligations_complete": "false",
+        "whole_capability_certified": "false",
+        "runtime_status": "not-executed"
+      },
+      "source_backed_progress": "BindingInvoice3198-3508 and local row/cost/glass/entry helper boundaries plus five Navigate/CLR/reset/bind paths boundedly reviewed.26request call sites individually witnessed.",
+      "remaining_readable_local": [
+        "Other document-opener/ShowEntrySource/LastProcess/caller/year paths outside the three selected report owners remain local and uncensused here.",
+        "Read the whole ProductionOrder and SafeAdjust alternative receiver bodies/CLR with their report key/table requests; current partial prefixes do not complete them.",
+        "Match local DDL/resources and identity producers before deployment-specific manifest comparison; constructor/event/binding implementation contracts must remain separate from normal-return assumptions."
+      ],
+      "next_action": "Other document-opener/ShowEntrySource/LastProcess/caller/year paths outside the three selected report owners remain local and uncensused here.",
+      "local_semantic_obligations_complete": false,
+      "whole_capability_certified": false,
+      "readable_local_work_externalized": false,
+      "independent_exit_decision": "withheld-for-named-readable-local-and-missing-review-evidence",
+      "external_boundary_ids": [
+        "EXT-R4-MODEL",
+        "EXT-R4-DEPLOYED-IDENTITY",
+        "EXT-R4-LOAD-POLICY"
+      ]
+    }
+  },
+  "capability_exit_certificates_issued": 0,
+  "four_family_exit_certificates_issued": 0,
+  "pinned_inputs": [
+    {
+      "path": "docs/audit/evidence/document-receiver-source-facts-07B39R4.json",
+      "bytes": 777248,
+      "sha256": "6b25f8299b5eff29f1e9dbcd4c6f952a4e2ec7fadee6b2a41b6df2dd58d287d6"
+    },
+    {
+      "path": "docs/audit/evidence/document-receiver-source-review-log-07B39R4.json",
+      "bytes": 18462,
+      "sha256": "bd22dbc3b572a1fbb6cb2c604d36f1da53afe369ad3cb1a12802fdcef0b1097c"
+    },
+    {
+      "path": "docs/audit/evidence/item-entry-root-adjudication-07B39R4.json",
+      "bytes": 18472,
+      "sha256": "a980a064515bbb6852dded469f657fec8586c06fad9742973d794c511b69bda4"
+    },
+    {
+      "path": "docs/audit/evidence/document-open-request-matrix-07B39R4.json",
+      "bytes": 48138,
+      "sha256": "a7f83b1aa32454d70896b10ca85911cb0a9ca39390b4cb64fb86aa5ee8142c3e"
+    },
+    {
+      "path": "docs/audit/evidence/document-receiver-external-boundaries-07B39R4.csv",
+      "bytes": 3624,
+      "sha256": "f5888528627585836e828209f84315cd0348f110d7075a9cab2ef1c441d1d08e"
+    },
+    {
+      "path": "docs/audit/evidence/capability-register-07B38.csv",
+      "bytes": 33915,
+      "sha256": "2e071fbad8546aeb26b2dd66854d17c58ad570e7b36525e823e9567b7466b3c5"
+    },
+    {
+      "path": "docs/audit/evidence/scope-approval-recovered-07B39R1.json",
+      "bytes": 1897,
+      "sha256": "60ee4271ed68064685853afa1309abff6ad5100be4e54e33042272000614d906"
+    },
+    {
+      "path": "docs/audit/evidence/recovered-baseline-07B39R4.json",
+      "bytes": 221071,
+      "sha256": "2b0194a1ddac414ac15a94cc15913952117ef854998555cf54a41af3f45fc1f7"
+    }
+  ]
+}

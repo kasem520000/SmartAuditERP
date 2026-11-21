@@ -1,0 +1,828 @@
+{
+  "schema_version": 1,
+  "kind": "new-R4-exact-26-Navigate-call-site-witnesses-from-three-report-owners-not26-capabilities",
+  "assessment_reference_date_utc": "2026-11-16",
+  "date_authority": "Current developer-supplied session date for this new review, not historical attribution or raw machine clock.",
+  "raw_clocks_are_calendar_authority": false,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "requests": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs",
+      "selector": "OpenInventoryTransfer",
+      "line": 563,
+      "function": "frm.Navigate",
+      "argument_expression": "(\n                $\"SELECT * FROM Inv WHERE IS_Deleted=0 AND inv_type=8 \" +\n                $\"AND proc_type={procType} AND InvGlobalID=N'{globalId}'\")",
+      "argument_expression_sha256": "19966dc3ef7bd7609798ee4506acee435d14ca9f70031c2601b2ad9111ee30d4",
+      "key_syntax": "InvGlobalID",
+      "lexical_ancestors": [],
+      "source_method_sha256": "a940f40fbff844cf63df53f47d5a3582fcd29ffd04427a45091b32ca91ba54c7"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs",
+      "selector": "OpenBeginningInventory",
+      "line": 585,
+      "function": "frm.Navigate",
+      "argument_expression": "(\n                $\"SELECT * FROM Inv WHERE IS_Deleted=0 AND inv_type=9 \" +\n                $\"AND proc_type={procType} AND InvGlobalID=N'{globalId}'\")",
+      "argument_expression_sha256": "1a58107e8fc02d2256c786ff35c3deaebdcbd9e4dd4281734e8ad26ab6ec0595",
+      "key_syntax": "InvGlobalID",
+      "lexical_ancestors": [],
+      "source_method_sha256": "79eae1ecd74f1fb9ff710fcf2f534e80001c04d59465730f364b0d9571dc25bb"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs",
+      "selector": "OpenInputOutput",
+      "line": 606,
+      "function": "frm.Navigate",
+      "argument_expression": "(\n                $\"SELECT * FROM Inv WHERE IS_Deleted=0 AND inv_type={invType} \" +\n                $\"AND proc_type={procType} AND InvGlobalID=N'{globalId}'\")",
+      "argument_expression_sha256": "7e95378a359c5c42131fae2178069b9326159df7358df2b8364546736b079deb",
+      "key_syntax": "InvGlobalID",
+      "lexical_ancestors": [],
+      "source_method_sha256": "73422b0680550560fbbade7627a8b9db22414089132e99dfc21913dd8f0ee0a3"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs",
+      "selector": "OpenProductionOrder",
+      "line": 620,
+      "function": "frm.Navigate",
+      "argument_expression": "(\n                $\"SELECT * FROM Inv WHERE IS_Deleted=0 AND inv_type=6 \" +\n                $\"AND proc_type={procType} AND InvGlobalID=N'{globalId}'\")",
+      "argument_expression_sha256": "b61f842369c7bf5d1d7900ae16e4ccaa30d3f05a3861f697baae9d7ffc32a413",
+      "key_syntax": "InvGlobalID",
+      "lexical_ancestors": [],
+      "source_method_sha256": "0f5946bd3c289309b90c20519fb4e462708c065654d46478c0e68cde848d22b1"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs",
+      "selector": "OpenSafeAdjust",
+      "line": 630,
+      "function": "frm.Navigate",
+      "argument_expression": "(\n                $\"SELECT * FROM Inv WHERE IS_Deleted=0 AND inv_type=7 \" +\n                $\"AND proc_type={procType} AND InvGlobalID=N'{globalId}'\")",
+      "argument_expression_sha256": "2a377d346f94cf75a66a00a1bafba4560c0e3cdd36d69c8305a2e3025dd9f860",
+      "key_syntax": "InvGlobalID",
+      "lexical_ancestors": [],
+      "source_method_sha256": "11e14624a7844d4b304feb54b6d060f0b14a30d453e1ac5aaee3e975defa463d"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "selector": "OpenInvoiceByType",
+      "line": 1042,
+      "function": "f.Navigate",
+      "argument_expression": "($\"SELECT * FROM Inv WHERE IS_Deleted=0 \" +\n                                   $\"AND inv_type=2 AND proc_type=1 AND id={invNo}\")",
+      "argument_expression_sha256": "6509d9f73fcd29671af2c3d2154f18330fb35e646bf1497f05bef5a535651a7c",
+      "key_syntax": "local-id",
+      "lexical_ancestors": [],
+      "source_method_sha256": "4d02c7a740d83cecab25c26ccf27aa2f8fe72ce0aaf322aff576e47e139da71b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "selector": "OpenInvoiceByType",
+      "line": 1053,
+      "function": "f.Navigate",
+      "argument_expression": "($\"SELECT * FROM Inv WHERE IS_Deleted=0 \" +\n                                   $\"AND inv_type=2 AND proc_type=2 AND id={invNo}\")",
+      "argument_expression_sha256": "c01275bd74c29da707bba3d9cc024132b59b7d25e4f9fc0c7fff9cee64f1f13e",
+      "key_syntax": "local-id",
+      "lexical_ancestors": [],
+      "source_method_sha256": "4d02c7a740d83cecab25c26ccf27aa2f8fe72ce0aaf322aff576e47e139da71b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "selector": "OpenInvoiceByType",
+      "line": 1062,
+      "function": "f.Navigate",
+      "argument_expression": "($\"SELECT * FROM Inv WHERE IS_Deleted=0 \" +\n                                   $\"AND inv_type=1 AND proc_type=1 AND id={invNo}\")",
+      "argument_expression_sha256": "9db52f6911e923ae0d55fa6347a471cbe83fecd9ef69437405fb0318fea61059",
+      "key_syntax": "local-id",
+      "lexical_ancestors": [],
+      "source_method_sha256": "4d02c7a740d83cecab25c26ccf27aa2f8fe72ce0aaf322aff576e47e139da71b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "selector": "OpenInvoiceByType",
+      "line": 1072,
+      "function": "f.Navigate",
+      "argument_expression": "($\"SELECT * FROM Inv WHERE IS_Deleted=0 \" +\n                                   $\"AND inv_type=1 AND proc_type=2 AND id={invNo}\")",
+      "argument_expression_sha256": "ef709d2a94783b7c4e851e17119ce4ccbdb00a4f6f94ea5683acbe239c5627da",
+      "key_syntax": "local-id",
+      "lexical_ancestors": [],
+      "source_method_sha256": "4d02c7a740d83cecab25c26ccf27aa2f8fe72ce0aaf322aff576e47e139da71b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "selector": "OpenInvoiceByType",
+      "line": 1081,
+      "function": "f.Navigate",
+      "argument_expression": "($\"SELECT * FROM Inv WHERE IS_Deleted=0 \" +\n                                   $\"AND inv_type=3 AND proc_type=1 AND id={invNo}\")",
+      "argument_expression_sha256": "dde63cdce573c24cfa1d9a709f8275ddfd15f7244d741c702164b47affdea172",
+      "key_syntax": "local-id",
+      "lexical_ancestors": [],
+      "source_method_sha256": "4d02c7a740d83cecab25c26ccf27aa2f8fe72ce0aaf322aff576e47e139da71b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "selector": "OpenInvoiceByType",
+      "line": 1090,
+      "function": "f.Navigate",
+      "argument_expression": "($\"SELECT * FROM Inv WHERE IS_Deleted=0 \" +\n                                   $\"AND inv_type=3 AND proc_type=2 AND id={invNo}\")",
+      "argument_expression_sha256": "c32ecb35d42244fba79b9757a85be78c3d2c4f83ebbef48e966ff0ede4707167",
+      "key_syntax": "local-id",
+      "lexical_ancestors": [],
+      "source_method_sha256": "4d02c7a740d83cecab25c26ccf27aa2f8fe72ce0aaf322aff576e47e139da71b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "selector": "OpenInvoiceByType",
+      "line": 1100,
+      "function": "f.Navigate",
+      "argument_expression": "($\"SELECT * FROM Inv WHERE IS_Deleted=0 \" +\n                                   $\"AND inv_type=9 AND proc_type=1 AND id={invNo}\")",
+      "argument_expression_sha256": "62504a94fa3503feec09015eccbf8dcbbc5086cc95afafa6235dd41ac242041b",
+      "key_syntax": "local-id",
+      "lexical_ancestors": [],
+      "source_method_sha256": "4d02c7a740d83cecab25c26ccf27aa2f8fe72ce0aaf322aff576e47e139da71b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "selector": "OpenInvoiceByType",
+      "line": 1109,
+      "function": "f.Navigate",
+      "argument_expression": "($\"SELECT * FROM Inv WHERE IS_Deleted=0 \" +\n                                   $\"AND proc_type=1 AND inv_type=4 AND id={invNo}\")",
+      "argument_expression_sha256": "e0da0a7005b9e9c6bed70ec990714fa886dc06801dd8cc8d9f55b453bb423d52",
+      "key_syntax": "local-id",
+      "lexical_ancestors": [],
+      "source_method_sha256": "4d02c7a740d83cecab25c26ccf27aa2f8fe72ce0aaf322aff576e47e139da71b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "selector": "OpenInvoiceByType",
+      "line": 1119,
+      "function": "f.Navigate",
+      "argument_expression": "($\"SELECT * FROM Inv WHERE IS_Deleted=0 \" +\n                                   $\"AND proc_type=1 AND inv_type=5 AND id={invNo}\")",
+      "argument_expression_sha256": "c89bdd5c14558ba42a2369a543f205a68056b6eee91440275720341163a33a90",
+      "key_syntax": "local-id",
+      "lexical_ancestors": [],
+      "source_method_sha256": "4d02c7a740d83cecab25c26ccf27aa2f8fe72ce0aaf322aff576e47e139da71b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "selector": "OpenInvoiceByType",
+      "line": 1127,
+      "function": "f.Navigate",
+      "argument_expression": "($\"SELECT * FROM Inv WHERE IS_Deleted=0 \" +\n                                   $\"AND proc_type=1 AND inv_type=6 AND id={invNo}\")",
+      "argument_expression_sha256": "7a3f78637f176ace0cd55a13c877725804b4589626c88a7b903644b2c5935460",
+      "key_syntax": "local-id",
+      "lexical_ancestors": [],
+      "source_method_sha256": "4d02c7a740d83cecab25c26ccf27aa2f8fe72ce0aaf322aff576e47e139da71b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "selector": "OpenInvoiceByType",
+      "line": 1135,
+      "function": "f.Navigate",
+      "argument_expression": "($\"SELECT * FROM Inv WHERE IS_Deleted=0 \" +\n                                   $\"AND proc_type=2 AND inv_type=6 AND id={invNo}\")",
+      "argument_expression_sha256": "520a8297e9fe3817d1c4f74c3a2df3da818a13e59e0055d6ef4326d0a1623dc5",
+      "key_syntax": "local-id",
+      "lexical_ancestors": [],
+      "source_method_sha256": "4d02c7a740d83cecab25c26ccf27aa2f8fe72ce0aaf322aff576e47e139da71b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "selector": "OpenInvoiceByType",
+      "line": 1143,
+      "function": "f.Navigate",
+      "argument_expression": "($\"SELECT * FROM Inv WHERE IS_Deleted=0 \" +\n                                   $\"AND proc_type=1 AND inv_type=8 AND id={invNo}\")",
+      "argument_expression_sha256": "42d0e1424231cce307471effa07b351e86c42dd587272a060bc09ae6d2253b95",
+      "key_syntax": "local-id",
+      "lexical_ancestors": [],
+      "source_method_sha256": "4d02c7a740d83cecab25c26ccf27aa2f8fe72ce0aaf322aff576e47e139da71b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "selector": "OpenInvoiceByType",
+      "line": 1151,
+      "function": "f.Navigate",
+      "argument_expression": "($\"SELECT * FROM Inv WHERE IS_Deleted=0 \" +\n                                   $\"AND proc_type=2 AND inv_type=8 AND id={invNo}\")",
+      "argument_expression_sha256": "f48c7129c267eb0c65629123a00c6b0a3ab21ec9d4a24509d025845d7a8fff92",
+      "key_syntax": "local-id",
+      "lexical_ancestors": [],
+      "source_method_sha256": "4d02c7a740d83cecab25c26ccf27aa2f8fe72ce0aaf322aff576e47e139da71b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "selector": "OpenInvoiceByType",
+      "line": 1160,
+      "function": "f.Navigate",
+      "argument_expression": "($\"SELECT * FROM SafesAdjust WHERE id={invNo}\")",
+      "argument_expression_sha256": "3871d25bbc19b371efecbb93bddeef7a95ec862ad95e8c5b96a741cf6e31bd76",
+      "key_syntax": "local-id",
+      "lexical_ancestors": [],
+      "source_method_sha256": "4d02c7a740d83cecab25c26ccf27aa2f8fe72ce0aaf322aff576e47e139da71b"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs",
+      "selector": "OpenDetailsWindow",
+      "line": 797,
+      "function": "frm.Navigate",
+      "argument_expression": "(\n                        $\"SELECT * FROM Receipts WHERE ReceiptType=9 \" +\n                        $\"AND ISDeleted=0 AND ReceiptNo={row.DgvInvNo}\")",
+      "argument_expression_sha256": "2ec5066a5021b433fc48849e37eec6931b525768ec04643b371014f298907eb2",
+      "key_syntax": "ReceiptNo",
+      "lexical_ancestors": [
+        {
+          "kind": "if",
+          "condition": "row.DgvInvType == \"مصروفات\"",
+          "side": "consequence",
+          "line": 793
+        }
+      ],
+      "source_method_sha256": "3cc5f5567967735c2bcec3152dfbc46ca94063c941dd861e514a9106d34bea0a"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs",
+      "selector": "OpenDetailsWindow",
+      "line": 813,
+      "function": "frm.Navigate",
+      "argument_expression": "(\n                        $\"SELECT * FROM Inv WHERE IS_Deleted=0 AND proc_type=1 \" +\n                        $\"AND inv_type=1 AND InvGlobalID=N'{globalId}'\")",
+      "argument_expression_sha256": "68253682f7ac07803edb6d5a280bc67f970c81ae98c5227370844186d1c7d52f",
+      "key_syntax": "InvGlobalID",
+      "lexical_ancestors": [
+        {
+          "kind": "if",
+          "condition": "invType1 == 1 && operType == 1",
+          "side": "consequence",
+          "line": 808
+        }
+      ],
+      "source_method_sha256": "3cc5f5567967735c2bcec3152dfbc46ca94063c941dd861e514a9106d34bea0a"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs",
+      "selector": "OpenDetailsWindow",
+      "line": 823,
+      "function": "frm.Navigate",
+      "argument_expression": "(\n                        $\"SELECT * FROM Inv WHERE IS_Deleted=0 AND proc_type=1 \" +\n                        $\"AND inv_type=2 AND InvGlobalID=N'{globalId}'\")",
+      "argument_expression_sha256": "d1bb638b3d197311943d74fc94a10dcbe63f61d2896f107fae1e458f768df51c",
+      "key_syntax": "InvGlobalID",
+      "lexical_ancestors": [
+        {
+          "kind": "if",
+          "condition": "invType1 == 2 && operType == 1",
+          "side": "consequence",
+          "line": 818
+        },
+        {
+          "kind": "if",
+          "condition": "invType1 == 1 && operType == 1",
+          "side": "alternative",
+          "line": 808
+        }
+      ],
+      "source_method_sha256": "3cc5f5567967735c2bcec3152dfbc46ca94063c941dd861e514a9106d34bea0a"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs",
+      "selector": "OpenDetailsWindow",
+      "line": 833,
+      "function": "frm.Navigate",
+      "argument_expression": "(\n                        $\"SELECT * FROM Inv WHERE IS_Deleted=0 AND proc_type=1 \" +\n                        $\"AND inv_type=3 AND InvGlobalID=N'{globalId}'\")",
+      "argument_expression_sha256": "6dd03c2adbcac0e8789ff96bea827e596c24b49fe4fddb72e11c0662156c0c6c",
+      "key_syntax": "InvGlobalID",
+      "lexical_ancestors": [
+        {
+          "kind": "if",
+          "condition": "invType1 == 3 && operType == 1",
+          "side": "consequence",
+          "line": 828
+        },
+        {
+          "kind": "if",
+          "condition": "invType1 == 2 && operType == 1",
+          "side": "alternative",
+          "line": 818
+        },
+        {
+          "kind": "if",
+          "condition": "invType1 == 1 && operType == 1",
+          "side": "alternative",
+          "line": 808
+        }
+      ],
+      "source_method_sha256": "3cc5f5567967735c2bcec3152dfbc46ca94063c941dd861e514a9106d34bea0a"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs",
+      "selector": "OpenDetailsWindow",
+      "line": 844,
+      "function": "frm.Navigate",
+      "argument_expression": "(\n                        $\"SELECT * FROM Inv WHERE IS_Deleted=0 AND proc_type=2 \" +\n                        $\"AND inv_type=1 AND InvGlobalID=N'{globalId}'\")",
+      "argument_expression_sha256": "b7b2f54b189ce2830baefde807a10979edf1ee92beda925fd491455429373d08",
+      "key_syntax": "InvGlobalID",
+      "lexical_ancestors": [
+        {
+          "kind": "if",
+          "condition": "invType1 == 1 && operType == 2",
+          "side": "consequence",
+          "line": 838
+        },
+        {
+          "kind": "if",
+          "condition": "invType1 == 3 && operType == 1",
+          "side": "alternative",
+          "line": 828
+        },
+        {
+          "kind": "if",
+          "condition": "invType1 == 2 && operType == 1",
+          "side": "alternative",
+          "line": 818
+        },
+        {
+          "kind": "if",
+          "condition": "invType1 == 1 && operType == 1",
+          "side": "alternative",
+          "line": 808
+        }
+      ],
+      "source_method_sha256": "3cc5f5567967735c2bcec3152dfbc46ca94063c941dd861e514a9106d34bea0a"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs",
+      "selector": "OpenDetailsWindow",
+      "line": 855,
+      "function": "frm.Navigate",
+      "argument_expression": "(\n                        $\"SELECT * FROM Inv WHERE IS_Deleted=0 AND proc_type=2 \" +\n                        $\"AND inv_type=2 AND InvGlobalID=N'{globalId}'\")",
+      "argument_expression_sha256": "276eb5d23079c0ff996a684a052a2f81b0a54fe7ad5a98fa377d1555d1442a78",
+      "key_syntax": "InvGlobalID",
+      "lexical_ancestors": [
+        {
+          "kind": "if",
+          "condition": "invType1 == 2 && operType == 2",
+          "side": "consequence",
+          "line": 849
+        },
+        {
+          "kind": "if",
+          "condition": "invType1 == 1 && operType == 2",
+          "side": "alternative",
+          "line": 838
+        },
+        {
+          "kind": "if",
+          "condition": "invType1 == 3 && operType == 1",
+          "side": "alternative",
+          "line": 828
+        },
+        {
+          "kind": "if",
+          "condition": "invType1 == 2 && operType == 1",
+          "side": "alternative",
+          "line": 818
+        },
+        {
+          "kind": "if",
+          "condition": "invType1 == 1 && operType == 1",
+          "side": "alternative",
+          "line": 808
+        }
+      ],
+      "source_method_sha256": "3cc5f5567967735c2bcec3152dfbc46ca94063c941dd861e514a9106d34bea0a"
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs",
+      "selector": "OpenDetailsWindow",
+      "line": 865,
+      "function": "frm.Navigate",
+      "argument_expression": "(\n                        $\"SELECT * FROM Inv WHERE IS_Deleted=0 AND proc_type=2 \" +\n                        $\"AND inv_type=3 AND InvGlobalID=N'{globalId}'\")",
+      "argument_expression_sha256": "7f404df2f6375979fabd8eec1cc96e15edfb922ba2b2c4c92c22e8fe18e8742c",
+      "key_syntax": "InvGlobalID",
+      "lexical_ancestors": [
+        {
+          "kind": "if",
+          "condition": "invType1 == 3 && operType == 2",
+          "side": "consequence",
+          "line": 860
+        },
+        {
+          "kind": "if",
+          "condition": "invType1 == 2 && operType == 2",
+          "side": "alternative",
+          "line": 849
+        },
+        {
+          "kind": "if",
+          "condition": "invType1 == 1 && operType == 2",
+          "side": "alternative",
+          "line": 838
+        },
+        {
+          "kind": "if",
+          "condition": "invType1 == 3 && operType == 1",
+          "side": "alternative",
+          "line": 828
+        },
+        {
+          "kind": "if",
+          "condition": "invType1 == 2 && operType == 1",
+          "side": "alternative",
+          "line": 818
+        },
+        {
+          "kind": "if",
+          "condition": "invType1 == 1 && operType == 1",
+          "side": "alternative",
+          "line": 808
+        }
+      ],
+      "source_method_sha256": "3cc5f5567967735c2bcec3152dfbc46ca94063c941dd861e514a9106d34bea0a"
+    }
+  ],
+  "individual_dispositions": [
+    {
+      "id": "R4REQ-01",
+      "source_request_line": 563,
+      "source_request_path": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs",
+      "argument_expression_sha256": "19966dc3ef7bd7609798ee4506acee435d14ca9f70031c2601b2ad9111ee30d4",
+      "syntactically_named_target": "frmInventoryTransfer",
+      "target_is_type_bound_by_compiler": false,
+      "receiver_path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "receiver_route": "local Navigate -> InvoiceOper.BindingInvoice",
+      "key_disposition": "Preserves supplied InvGlobalID expression; source scope/year/global uniqueness is not established by spelling.",
+      "explicit_branch_predicate_present": false,
+      "health_disposition": "Navigate is void; Show/Activate does not inspect Found/Empty/Failed/Partial. Earlier dependencies are not executed.",
+      "remaining_local": "Receiver body and selected wrapper/reset/bind boundaries reviewed here; whole document-opener census and event/constructor/source-year contracts are not thereby complete."
+    },
+    {
+      "id": "R4REQ-02",
+      "source_request_line": 585,
+      "source_request_path": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs",
+      "argument_expression_sha256": "1a58107e8fc02d2256c786ff35c3deaebdcbd9e4dd4281734e8ad26ab6ec0595",
+      "syntactically_named_target": "frmInvPurch",
+      "target_is_type_bound_by_compiler": false,
+      "receiver_path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "receiver_route": "local Navigate -> InvoiceOper.BindingInvoice",
+      "key_disposition": "Preserves supplied InvGlobalID expression; source scope/year/global uniqueness is not established by spelling.",
+      "explicit_branch_predicate_present": false,
+      "health_disposition": "Navigate is void; Show/Activate does not inspect Found/Empty/Failed/Partial. Earlier dependencies are not executed.",
+      "remaining_local": "Receiver body and selected wrapper/reset/bind boundaries reviewed here; whole document-opener census and event/constructor/source-year contracts are not thereby complete."
+    },
+    {
+      "id": "R4REQ-03",
+      "source_request_line": 606,
+      "source_request_path": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs",
+      "argument_expression_sha256": "7e95378a359c5c42131fae2178069b9326159df7358df2b8364546736b079deb",
+      "syntactically_named_target": "frmInvInputOutput",
+      "target_is_type_bound_by_compiler": false,
+      "receiver_path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+      "receiver_route": "local Navigate -> InvoiceOper.BindingInvoice",
+      "key_disposition": "Preserves supplied InvGlobalID expression; source scope/year/global uniqueness is not established by spelling.",
+      "explicit_branch_predicate_present": false,
+      "health_disposition": "Navigate is void; Show/Activate does not inspect Found/Empty/Failed/Partial. Earlier dependencies are not executed.",
+      "remaining_local": "Receiver body and selected wrapper/reset/bind boundaries reviewed here; whole document-opener census and event/constructor/source-year contracts are not thereby complete."
+    },
+    {
+      "id": "R4REQ-04",
+      "source_request_line": 620,
+      "source_request_path": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs",
+      "argument_expression_sha256": "b61f842369c7bf5d1d7900ae16e4ccaa30d3f05a3861f697baae9d7ffc32a413",
+      "syntactically_named_target": "frmProductionOrder",
+      "target_is_type_bound_by_compiler": false,
+      "receiver_path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "receiver_route": "local Navigate -> own ReadData, not the shared BindingInvoice route",
+      "key_disposition": "Preserves supplied InvGlobalID expression; source scope/year/global uniqueness is not established by spelling.",
+      "explicit_branch_predicate_present": false,
+      "health_disposition": "Navigate is void; Show/Activate does not inspect Found/Empty/Failed/Partial. Earlier dependencies are not executed.",
+      "remaining_local": "Whole ReadData/CLR and report request-source linkage for this alternative receiver remain local, except SandVAT.ReadData was read here."
+    },
+    {
+      "id": "R4REQ-05",
+      "source_request_line": 630,
+      "source_request_path": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs",
+      "argument_expression_sha256": "2a377d346f94cf75a66a00a1bafba4560c0e3cdd36d69c8305a2e3025dd9f860",
+      "syntactically_named_target": "frmSafeAdjust",
+      "target_is_type_bound_by_compiler": false,
+      "receiver_path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs",
+      "receiver_route": "local Navigate -> own ReadData, not the shared BindingInvoice route",
+      "key_disposition": "Preserves supplied InvGlobalID expression; source scope/year/global uniqueness is not established by spelling.",
+      "explicit_branch_predicate_present": false,
+      "health_disposition": "Navigate is void; Show/Activate does not inspect Found/Empty/Failed/Partial. Earlier dependencies are not executed.",
+      "remaining_local": "Whole ReadData/CLR and report request-source linkage for this alternative receiver remain local, except SandVAT.ReadData was read here."
+    },
+    {
+      "id": "R4REQ-06",
+      "source_request_line": 1042,
+      "source_request_path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "argument_expression_sha256": "6509d9f73fcd29671af2c3d2154f18330fb35e646bf1497f05bef5a535651a7c",
+      "syntactically_named_target": "frmInvSale",
+      "target_is_type_bound_by_compiler": false,
+      "receiver_path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "receiver_route": "local Navigate -> InvoiceOper.BindingInvoice",
+      "key_disposition": "Display/local-number request, without explicit branch; same P7-061 identity-loss concern, not a new root per route.",
+      "explicit_branch_predicate_present": false,
+      "health_disposition": "Navigate is void; Show/Activate does not inspect Found/Empty/Failed/Partial. Earlier dependencies are not executed.",
+      "remaining_local": "Receiver body and selected wrapper/reset/bind boundaries reviewed here; whole document-opener census and event/constructor/source-year contracts are not thereby complete."
+    },
+    {
+      "id": "R4REQ-07",
+      "source_request_line": 1053,
+      "source_request_path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "argument_expression_sha256": "c01275bd74c29da707bba3d9cc024132b59b7d25e4f9fc0c7fff9cee64f1f13e",
+      "syntactically_named_target": "frmInvSale",
+      "target_is_type_bound_by_compiler": false,
+      "receiver_path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "receiver_route": "local Navigate -> InvoiceOper.BindingInvoice",
+      "key_disposition": "Display/local-number request, without explicit branch; same P7-061 identity-loss concern, not a new root per route.",
+      "explicit_branch_predicate_present": false,
+      "health_disposition": "Navigate is void; Show/Activate does not inspect Found/Empty/Failed/Partial. Earlier dependencies are not executed.",
+      "remaining_local": "Receiver body and selected wrapper/reset/bind boundaries reviewed here; whole document-opener census and event/constructor/source-year contracts are not thereby complete."
+    },
+    {
+      "id": "R4REQ-08",
+      "source_request_line": 1062,
+      "source_request_path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "argument_expression_sha256": "9db52f6911e923ae0d55fa6347a471cbe83fecd9ef69437405fb0318fea61059",
+      "syntactically_named_target": "frmInvPurch",
+      "target_is_type_bound_by_compiler": false,
+      "receiver_path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "receiver_route": "local Navigate -> InvoiceOper.BindingInvoice",
+      "key_disposition": "Display/local-number request, without explicit branch; same P7-061 identity-loss concern, not a new root per route.",
+      "explicit_branch_predicate_present": false,
+      "health_disposition": "Navigate is void; Show/Activate does not inspect Found/Empty/Failed/Partial. Earlier dependencies are not executed.",
+      "remaining_local": "Receiver body and selected wrapper/reset/bind boundaries reviewed here; whole document-opener census and event/constructor/source-year contracts are not thereby complete."
+    },
+    {
+      "id": "R4REQ-09",
+      "source_request_line": 1072,
+      "source_request_path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "argument_expression_sha256": "ef709d2a94783b7c4e851e17119ce4ccbdb00a4f6f94ea5683acbe239c5627da",
+      "syntactically_named_target": "frmInvPurch",
+      "target_is_type_bound_by_compiler": false,
+      "receiver_path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "receiver_route": "local Navigate -> InvoiceOper.BindingInvoice",
+      "key_disposition": "Display/local-number request, without explicit branch; same P7-061 identity-loss concern, not a new root per route.",
+      "explicit_branch_predicate_present": false,
+      "health_disposition": "Navigate is void; Show/Activate does not inspect Found/Empty/Failed/Partial. Earlier dependencies are not executed.",
+      "remaining_local": "Receiver body and selected wrapper/reset/bind boundaries reviewed here; whole document-opener census and event/constructor/source-year contracts are not thereby complete."
+    },
+    {
+      "id": "R4REQ-10",
+      "source_request_line": 1081,
+      "source_request_path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "argument_expression_sha256": "dde63cdce573c24cfa1d9a709f8275ddfd15f7244d741c702164b47affdea172",
+      "syntactically_named_target": "frmInvPOS",
+      "target_is_type_bound_by_compiler": false,
+      "receiver_path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+      "receiver_route": "local Navigate -> InvoiceOper.BindingInvoice",
+      "key_disposition": "Display/local-number request, without explicit branch; same P7-061 identity-loss concern, not a new root per route.",
+      "explicit_branch_predicate_present": false,
+      "health_disposition": "Navigate is void; Show/Activate does not inspect Found/Empty/Failed/Partial. Earlier dependencies are not executed.",
+      "remaining_local": "Receiver body and selected wrapper/reset/bind boundaries reviewed here; whole document-opener census and event/constructor/source-year contracts are not thereby complete."
+    },
+    {
+      "id": "R4REQ-11",
+      "source_request_line": 1090,
+      "source_request_path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "argument_expression_sha256": "c32ecb35d42244fba79b9757a85be78c3d2c4f83ebbef48e966ff0ede4707167",
+      "syntactically_named_target": "frmInvPOS",
+      "target_is_type_bound_by_compiler": false,
+      "receiver_path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+      "receiver_route": "local Navigate -> InvoiceOper.BindingInvoice",
+      "key_disposition": "Display/local-number request, without explicit branch; same P7-061 identity-loss concern, not a new root per route.",
+      "explicit_branch_predicate_present": false,
+      "health_disposition": "Navigate is void; Show/Activate does not inspect Found/Empty/Failed/Partial. Earlier dependencies are not executed.",
+      "remaining_local": "Receiver body and selected wrapper/reset/bind boundaries reviewed here; whole document-opener census and event/constructor/source-year contracts are not thereby complete."
+    },
+    {
+      "id": "R4REQ-12",
+      "source_request_line": 1100,
+      "source_request_path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "argument_expression_sha256": "62504a94fa3503feec09015eccbf8dcbbc5086cc95afafa6235dd41ac242041b",
+      "syntactically_named_target": "frmInvPurch",
+      "target_is_type_bound_by_compiler": false,
+      "receiver_path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "receiver_route": "local Navigate -> InvoiceOper.BindingInvoice",
+      "key_disposition": "Display/local-number request, without explicit branch; same P7-061 identity-loss concern, not a new root per route.",
+      "explicit_branch_predicate_present": false,
+      "health_disposition": "Navigate is void; Show/Activate does not inspect Found/Empty/Failed/Partial. Earlier dependencies are not executed.",
+      "remaining_local": "Receiver body and selected wrapper/reset/bind boundaries reviewed here; whole document-opener census and event/constructor/source-year contracts are not thereby complete."
+    },
+    {
+      "id": "R4REQ-13",
+      "source_request_line": 1109,
+      "source_request_path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "argument_expression_sha256": "e0da0a7005b9e9c6bed70ec990714fa886dc06801dd8cc8d9f55b453bb423d52",
+      "syntactically_named_target": "frmInvInputOutput",
+      "target_is_type_bound_by_compiler": false,
+      "receiver_path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+      "receiver_route": "local Navigate -> InvoiceOper.BindingInvoice",
+      "key_disposition": "Display/local-number request, without explicit branch; same P7-061 identity-loss concern, not a new root per route.",
+      "explicit_branch_predicate_present": false,
+      "health_disposition": "Navigate is void; Show/Activate does not inspect Found/Empty/Failed/Partial. Earlier dependencies are not executed.",
+      "remaining_local": "Receiver body and selected wrapper/reset/bind boundaries reviewed here; whole document-opener census and event/constructor/source-year contracts are not thereby complete."
+    },
+    {
+      "id": "R4REQ-14",
+      "source_request_line": 1119,
+      "source_request_path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "argument_expression_sha256": "c89bdd5c14558ba42a2369a543f205a68056b6eee91440275720341163a33a90",
+      "syntactically_named_target": "frmInvInputOutput",
+      "target_is_type_bound_by_compiler": false,
+      "receiver_path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+      "receiver_route": "local Navigate -> InvoiceOper.BindingInvoice",
+      "key_disposition": "Display/local-number request, without explicit branch; same P7-061 identity-loss concern, not a new root per route.",
+      "explicit_branch_predicate_present": false,
+      "health_disposition": "Navigate is void; Show/Activate does not inspect Found/Empty/Failed/Partial. Earlier dependencies are not executed.",
+      "remaining_local": "Receiver body and selected wrapper/reset/bind boundaries reviewed here; whole document-opener census and event/constructor/source-year contracts are not thereby complete."
+    },
+    {
+      "id": "R4REQ-15",
+      "source_request_line": 1127,
+      "source_request_path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "argument_expression_sha256": "7a3f78637f176ace0cd55a13c877725804b4589626c88a7b903644b2c5935460",
+      "syntactically_named_target": "frmProductionOrder",
+      "target_is_type_bound_by_compiler": false,
+      "receiver_path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "receiver_route": "local Navigate -> own ReadData, not the shared BindingInvoice route",
+      "key_disposition": "Display/local-number request, without explicit branch; same P7-061 identity-loss concern, not a new root per route.",
+      "explicit_branch_predicate_present": false,
+      "health_disposition": "Navigate is void; Show/Activate does not inspect Found/Empty/Failed/Partial. Earlier dependencies are not executed.",
+      "remaining_local": "Whole ReadData/CLR and report request-source linkage for this alternative receiver remain local, except SandVAT.ReadData was read here."
+    },
+    {
+      "id": "R4REQ-16",
+      "source_request_line": 1135,
+      "source_request_path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "argument_expression_sha256": "520a8297e9fe3817d1c4f74c3a2df3da818a13e59e0055d6ef4326d0a1623dc5",
+      "syntactically_named_target": "frmProductionOrder",
+      "target_is_type_bound_by_compiler": false,
+      "receiver_path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "receiver_route": "local Navigate -> own ReadData, not the shared BindingInvoice route",
+      "key_disposition": "Display/local-number request, without explicit branch; same P7-061 identity-loss concern, not a new root per route.",
+      "explicit_branch_predicate_present": false,
+      "health_disposition": "Navigate is void; Show/Activate does not inspect Found/Empty/Failed/Partial. Earlier dependencies are not executed.",
+      "remaining_local": "Whole ReadData/CLR and report request-source linkage for this alternative receiver remain local, except SandVAT.ReadData was read here."
+    },
+    {
+      "id": "R4REQ-17",
+      "source_request_line": 1143,
+      "source_request_path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "argument_expression_sha256": "42d0e1424231cce307471effa07b351e86c42dd587272a060bc09ae6d2253b95",
+      "syntactically_named_target": "frmInventoryTransfer",
+      "target_is_type_bound_by_compiler": false,
+      "receiver_path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "receiver_route": "local Navigate -> InvoiceOper.BindingInvoice",
+      "key_disposition": "Display/local-number request, without explicit branch; same P7-061 identity-loss concern, not a new root per route.",
+      "explicit_branch_predicate_present": false,
+      "health_disposition": "Navigate is void; Show/Activate does not inspect Found/Empty/Failed/Partial. Earlier dependencies are not executed.",
+      "remaining_local": "Receiver body and selected wrapper/reset/bind boundaries reviewed here; whole document-opener census and event/constructor/source-year contracts are not thereby complete."
+    },
+    {
+      "id": "R4REQ-18",
+      "source_request_line": 1151,
+      "source_request_path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "argument_expression_sha256": "f48c7129c267eb0c65629123a00c6b0a3ab21ec9d4a24509d025845d7a8fff92",
+      "syntactically_named_target": "frmInventoryTransfer",
+      "target_is_type_bound_by_compiler": false,
+      "receiver_path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "receiver_route": "local Navigate -> InvoiceOper.BindingInvoice",
+      "key_disposition": "Display/local-number request, without explicit branch; same P7-061 identity-loss concern, not a new root per route.",
+      "explicit_branch_predicate_present": false,
+      "health_disposition": "Navigate is void; Show/Activate does not inspect Found/Empty/Failed/Partial. Earlier dependencies are not executed.",
+      "remaining_local": "Receiver body and selected wrapper/reset/bind boundaries reviewed here; whole document-opener census and event/constructor/source-year contracts are not thereby complete."
+    },
+    {
+      "id": "R4REQ-19",
+      "source_request_line": 1160,
+      "source_request_path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "argument_expression_sha256": "3871d25bbc19b371efecbb93bddeef7a95ec862ad95e8c5b96a741cf6e31bd76",
+      "syntactically_named_target": "frmSafeAdjust",
+      "target_is_type_bound_by_compiler": false,
+      "receiver_path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs",
+      "receiver_route": "local Navigate -> own ReadData, not the shared BindingInvoice route",
+      "key_disposition": "Display/local-number request, without explicit branch; same P7-061 identity-loss concern, not a new root per route.",
+      "explicit_branch_predicate_present": false,
+      "health_disposition": "Navigate is void; Show/Activate does not inspect Found/Empty/Failed/Partial. Earlier dependencies are not executed.",
+      "remaining_local": "Whole ReadData/CLR and report request-source linkage for this alternative receiver remain local, except SandVAT.ReadData was read here."
+    },
+    {
+      "id": "R4REQ-20",
+      "source_request_line": 797,
+      "source_request_path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs",
+      "argument_expression_sha256": "2ec5066a5021b433fc48849e37eec6931b525768ec04643b371014f298907eb2",
+      "syntactically_named_target": "frmSandVAT",
+      "target_is_type_bound_by_compiler": false,
+      "receiver_path": "SmartAuditERP/Form_WPF/frmSandVAT.xaml.cs",
+      "receiver_route": "local Navigate -> own ReadData, not the shared BindingInvoice route",
+      "key_disposition": "Display/local-number request, without explicit branch; same P7-061 identity-loss concern, not a new root per route.",
+      "explicit_branch_predicate_present": false,
+      "health_disposition": "Navigate is void; Show/Activate does not inspect Found/Empty/Failed/Partial. Earlier dependencies are not executed.",
+      "remaining_local": "Whole ReadData/CLR and report request-source linkage for this alternative receiver remain local, except SandVAT.ReadData was read here."
+    },
+    {
+      "id": "R4REQ-21",
+      "source_request_line": 813,
+      "source_request_path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs",
+      "argument_expression_sha256": "68253682f7ac07803edb6d5a280bc67f970c81ae98c5227370844186d1c7d52f",
+      "syntactically_named_target": "frmInvPurch",
+      "target_is_type_bound_by_compiler": false,
+      "receiver_path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "receiver_route": "local Navigate -> InvoiceOper.BindingInvoice",
+      "key_disposition": "Preserves supplied InvGlobalID expression; source scope/year/global uniqueness is not established by spelling.",
+      "explicit_branch_predicate_present": false,
+      "health_disposition": "Navigate is void; Show/Activate does not inspect Found/Empty/Failed/Partial. Earlier dependencies are not executed.",
+      "remaining_local": "Receiver body and selected wrapper/reset/bind boundaries reviewed here; whole document-opener census and event/constructor/source-year contracts are not thereby complete."
+    },
+    {
+      "id": "R4REQ-22",
+      "source_request_line": 823,
+      "source_request_path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs",
+      "argument_expression_sha256": "d1bb638b3d197311943d74fc94a10dcbe63f61d2896f107fae1e458f768df51c",
+      "syntactically_named_target": "frmInvSale",
+      "target_is_type_bound_by_compiler": false,
+      "receiver_path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "receiver_route": "local Navigate -> InvoiceOper.BindingInvoice",
+      "key_disposition": "Preserves supplied InvGlobalID expression; source scope/year/global uniqueness is not established by spelling.",
+      "explicit_branch_predicate_present": false,
+      "health_disposition": "Navigate is void; Show/Activate does not inspect Found/Empty/Failed/Partial. Earlier dependencies are not executed.",
+      "remaining_local": "Receiver body and selected wrapper/reset/bind boundaries reviewed here; whole document-opener census and event/constructor/source-year contracts are not thereby complete."
+    },
+    {
+      "id": "R4REQ-23",
+      "source_request_line": 833,
+      "source_request_path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs",
+      "argument_expression_sha256": "6dd03c2adbcac0e8789ff96bea827e596c24b49fe4fddb72e11c0662156c0c6c",
+      "syntactically_named_target": "frmInvPOS",
+      "target_is_type_bound_by_compiler": false,
+      "receiver_path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+      "receiver_route": "local Navigate -> InvoiceOper.BindingInvoice",
+      "key_disposition": "Preserves supplied InvGlobalID expression; source scope/year/global uniqueness is not established by spelling.",
+      "explicit_branch_predicate_present": false,
+      "health_disposition": "Navigate is void; Show/Activate does not inspect Found/Empty/Failed/Partial. Earlier dependencies are not executed.",
+      "remaining_local": "Receiver body and selected wrapper/reset/bind boundaries reviewed here; whole document-opener census and event/constructor/source-year contracts are not thereby complete."
+    },
+    {
+      "id": "R4REQ-24",
+      "source_request_line": 844,
+      "source_request_path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs",
+      "argument_expression_sha256": "b7b2f54b189ce2830baefde807a10979edf1ee92beda925fd491455429373d08",
+      "syntactically_named_target": "frmInvPurch",
+      "target_is_type_bound_by_compiler": false,
+      "receiver_path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "receiver_route": "local Navigate -> InvoiceOper.BindingInvoice",
+      "key_disposition": "Preserves supplied InvGlobalID expression; source scope/year/global uniqueness is not established by spelling.",
+      "explicit_branch_predicate_present": false,
+      "health_disposition": "Navigate is void; Show/Activate does not inspect Found/Empty/Failed/Partial. Earlier dependencies are not executed.",
+      "remaining_local": "Receiver body and selected wrapper/reset/bind boundaries reviewed here; whole document-opener census and event/constructor/source-year contracts are not thereby complete."
+    },
+    {
+      "id": "R4REQ-25",
+      "source_request_line": 855,
+      "source_request_path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs",
+      "argument_expression_sha256": "276eb5d23079c0ff996a684a052a2f81b0a54fe7ad5a98fa377d1555d1442a78",
+      "syntactically_named_target": "frmInvSale",
+      "target_is_type_bound_by_compiler": false,
+      "receiver_path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "receiver_route": "local Navigate -> InvoiceOper.BindingInvoice",
+      "key_disposition": "Preserves supplied InvGlobalID expression; source scope/year/global uniqueness is not established by spelling.",
+      "explicit_branch_predicate_present": false,
+      "health_disposition": "Navigate is void; Show/Activate does not inspect Found/Empty/Failed/Partial. Earlier dependencies are not executed.",
+      "remaining_local": "Receiver body and selected wrapper/reset/bind boundaries reviewed here; whole document-opener census and event/constructor/source-year contracts are not thereby complete."
+    },
+    {
+      "id": "R4REQ-26",
+      "source_request_line": 865,
+      "source_request_path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs",
+      "argument_expression_sha256": "7f404df2f6375979fabd8eec1cc96e15edfb922ba2b2c4c92c22e8fe18e8742c",
+      "syntactically_named_target": "frmInvPOS",
+      "target_is_type_bound_by_compiler": false,
+      "receiver_path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+      "receiver_route": "local Navigate -> InvoiceOper.BindingInvoice",
+      "key_disposition": "Preserves supplied InvGlobalID expression; source scope/year/global uniqueness is not established by spelling.",
+      "explicit_branch_predicate_present": false,
+      "health_disposition": "Navigate is void; Show/Activate does not inspect Found/Empty/Failed/Partial. Earlier dependencies are not executed.",
+      "remaining_local": "Receiver body and selected wrapper/reset/bind boundaries reviewed here; whole document-opener census and event/constructor/source-year contracts are not thereby complete."
+    }
+  ],
+  "census_scope": "All syntactic .Navigate calls inside explicitly selected methods of frmRptInventory, frmRptItemsActivityDetailed, frmTaxInvDetails; not all repository calls or resolved generic/alias/reflection targets.",
+  "call_site_partition": {
+    "inventory_owner": 5,
+    "detailed_activity_owner": 14,
+    "tax_child_owner": 7
+  },
+  "distinct_row_keys_not_inferred_from_count": true,
+  "pinned_inputs": [
+    {
+      "path": "docs/audit/evidence/document-receiver-source-facts-07B39R4.json",
+      "bytes": 777248,
+      "sha256": "6b25f8299b5eff29f1e9dbcd4c6f952a4e2ec7fadee6b2a41b6df2dd58d287d6"
+    },
+    {
+      "path": "docs/audit/evidence/document-receiver-source-review-log-07B39R4.json",
+      "bytes": 18462,
+      "sha256": "bd22dbc3b572a1fbb6cb2c604d36f1da53afe369ad3cb1a12802fdcef0b1097c"
+    },
+    {
+      "path": "docs/audit/evidence/capability-register-07B38.csv",
+      "bytes": 33915,
+      "sha256": "2e071fbad8546aeb26b2dd66854d17c58ad570e7b36525e823e9567b7466b3c5"
+    }
+  ]
+}

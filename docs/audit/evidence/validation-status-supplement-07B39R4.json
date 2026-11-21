@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "kind": "post-capture-documentary-status-not-another-test-execution",
+  "actual_capture": {
+    "path": "docs/audit/evidence/validation-current-run01-receipt-07B39R4.json",
+    "bytes": 370524,
+    "sha256": "e4c1890180ee48547c7fd60347f4aafd3937758f01a555c3fdf92888fee18b4f"
+  },
+  "new_ledger": {
+    "path": "docs/audit/evidence/capability-reconciliation-07B39R4.json",
+    "bytes": 386376,
+    "sha256": "ae6561523253d7c09e5ca6da0962f3573b8cd16ad9e667113c15582c1a9d92ca"
+  },
+  "new_actual_combined_selected_tests": 92,
+  "actual_ok_records_by_module": {
+    "test_recovery_exit": 42,
+    "test_document_receiver": 50
+  },
+  "combined_all_passed": true,
+  "combined_seconds_reported": 8.911,
+  "R1_separate_run": 42,
+  "B38_separate_run": 43,
+  "B38_passed": 42,
+  "B38_failed": 1,
+  "B38_assertion_verbatim": "146 != 142",
+  "all_preserved_and_new_suites_passed": false,
+  "captured_inputs_unchanged_during_execution": 2157,
+  "source_review_R4_was_input": true,
+  "phase_validation_reconciliation_and_index_prefixes_written_after_capture": true,
+  "R2_R3_files_recovered": false,
+  "prior196_tests_recertified": false,
+  "new_R4_root_ids": [],
+  "extension_of_existing_root": "P7-122",
+  "capability_exit_certificates_issued": 0,
+  "whole_7B_static_assessment_complete": false,
+  "application_execution_count": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false
+}

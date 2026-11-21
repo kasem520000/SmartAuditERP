@@ -1,0 +1,397 @@
+{
+  "schema_version": 1,
+  "kind": "new-R4-actual-bounded-source-read-registrations",
+  "registration_reference_date_utc": "2026-11-16",
+  "date_authority": "Current developer session date, independent of raw clocks and preserved R1 assessment-date narrative.",
+  "individual_read_timestamps_invented": false,
+  "extraction_equals_reading": false,
+  "R3_reads_relabelled_as_R4": false,
+  "reads": [
+    {
+      "id": "R4READ-001",
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 3180,
+      "end": 3389,
+      "decoded_range_utf8_sha256": "174c319d232fca638aecc6f6574126c3246cba7742cabed7a44e7de6f7fe5722",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-002",
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 3390,
+      "end": 3510,
+      "decoded_range_utf8_sha256": "bdbfc37a464bf1dd68a9f1f0669875a7b6e554bb24039a4e491a49fbc1c1d522",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-003",
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 3815,
+      "end": 3944,
+      "decoded_range_utf8_sha256": "1dba4d524726928b9d68e6d14f714d5270d913ef3da273e66841f1f46d43d88b",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-004",
+      "path": "SmartAuditERP/Class/EntryOper.cs",
+      "start": 1290,
+      "end": 1347,
+      "decoded_range_utf8_sha256": "71febdc8a815a621e42f2fdc4dc92e0572529f049e7e0988cbc9c6efe8ab887c",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-005",
+      "path": "SmartAuditERP/Class/MainClass.cs",
+      "start": 325,
+      "end": 469,
+      "decoded_range_utf8_sha256": "20f8a38f57da64cb1c7f2e0c4c6d81b3aaa268800120f370c681c119ca3f6c4b",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-006",
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs",
+      "start": 1,
+      "end": 225,
+      "decoded_range_utf8_sha256": "77613e10857005e3b58aa7ca347abd456f0042f9358216604fc86eb731f95adc",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-007",
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs",
+      "start": 220,
+      "end": 313,
+      "decoded_range_utf8_sha256": "1e148f9ce3ba42b3392ca5640f648383705b05d4642db73e720ecd697b0f89e7",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-008",
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs",
+      "start": 512,
+      "end": 560,
+      "decoded_range_utf8_sha256": "7437e28b5e0deee331855e3a91d59f501cf2509b1b0526acd3328a98fe35028e",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-009",
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml.cs",
+      "start": 777,
+      "end": 896,
+      "decoded_range_utf8_sha256": "76c2040b8397f85390b2c4b37b5436f7bbf153809f225d81085de4f9b17ffb72",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-010",
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml",
+      "start": 1,
+      "end": 23,
+      "decoded_range_utf8_sha256": "027474449c1e3e5832103b6d21b98844dc82d6a1784123f391bb3d0598b1efe1",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-011",
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivity.xaml",
+      "start": 270,
+      "end": 361,
+      "decoded_range_utf8_sha256": "1ead1d2ad4c43fbbe02e396612250b818227bc5418f9d1e1c6ee8ada37845b35",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-012",
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "start": 200,
+      "end": 313,
+      "decoded_range_utf8_sha256": "f1ba060d915f3861502b02a2d60e43c5297e1c0d26bb15b16f97754b05f558fb",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-013",
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "start": 309,
+      "end": 470,
+      "decoded_range_utf8_sha256": "d542fa12e29afb2edc7c86c39d0c8eceef010c8aedcec529b57730a9bc5896a7",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-014",
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "start": 990,
+      "end": 1182,
+      "decoded_range_utf8_sha256": "a277b7aca94bc001e418269c70e117ff8979046019cbf76c35a1c862af7083ab",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-015",
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+      "start": 1170,
+      "end": 1196,
+      "decoded_range_utf8_sha256": "af4c0bb91b271777847ee34f862d67d5d29e02a447279db11a5381617091b06e",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-016",
+      "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml",
+      "start": 279,
+      "end": 308,
+      "decoded_range_utf8_sha256": "1bc1439a8840989540236c2e3f44b6b9b58eda1d3c63a1b1fa30595b6e52e0df",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-017",
+      "path": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs",
+      "start": 440,
+      "end": 640,
+      "decoded_range_utf8_sha256": "5bfc06a3bbd147625d0e14006a8d83353c561e0e760379f91a5f7c0f4389b204",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-018",
+      "path": "SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs",
+      "start": 775,
+      "end": 881,
+      "decoded_range_utf8_sha256": "786719f6d7b3987212ca66b3de8e23e90d847c080338d87f75f3a293b39411ea",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-019",
+      "path": "SmartAuditERP/Form_WPF/frmInvInOutput.xaml.cs",
+      "start": 2540,
+      "end": 2628,
+      "decoded_range_utf8_sha256": "d82dead139198f94fc25ae3ba94653683ab6df1c496b881229e33654aeb20498",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-020",
+      "path": "SmartAuditERP/Form_WPF/frmInvInOutput.xaml",
+      "start": 546,
+      "end": 560,
+      "decoded_range_utf8_sha256": "54a867c9d54e45bba8bf12d36a2c2c249903e6fff9cc73ac0fbbed50945cbba2",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-021",
+      "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs",
+      "start": 2380,
+      "end": 2451,
+      "decoded_range_utf8_sha256": "38b330721274fafc08cac1b4a1bd5725a64a61749e3dec71b29398cb0c3f57e8",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-022",
+      "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml",
+      "start": 777,
+      "end": 789,
+      "decoded_range_utf8_sha256": "e6f62d81156039d844af3d123cb1ff2b9161c41338a1c069c02325d4c8ca73cc",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-023",
+      "path": "SmartAuditERP/Form_WPF/frmPOS.xaml.cs",
+      "start": 2865,
+      "end": 2930,
+      "decoded_range_utf8_sha256": "a1598811585fc7ef7ff930cafb988401ccf142b8519968a7859ae652b28f0444",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-024",
+      "path": "SmartAuditERP/Form_WPF/frmPOS.xaml",
+      "start": 826,
+      "end": 838,
+      "decoded_range_utf8_sha256": "24c6d2c5345ff9286467adb0df3f7807427bf87a2c9b5c2255efe0608cbc3fdf",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-025",
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 1600,
+      "end": 1689,
+      "decoded_range_utf8_sha256": "67ad06b69de70f446f835efb64f51c3c0f457e54b857332112a21864ee6a809f",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-026",
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 1413,
+      "end": 1641,
+      "decoded_range_utf8_sha256": "72f2a06852fb94356912a792c60d9653da693a977b12aa25686378671f6151b5",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-027",
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 552,
+      "end": 575,
+      "decoded_range_utf8_sha256": "1e5e52a309602c8780c152748cccda1b28408092fef35eadc4c6e817279e7cf1",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-028",
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 475,
+      "end": 538,
+      "decoded_range_utf8_sha256": "70ce4adc4777f819f51ef129584f248bc30c47399b28de3cd3ec616272d8ce01",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-029",
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 1518,
+      "end": 1597,
+      "decoded_range_utf8_sha256": "1c45c9980667b37d63150b001d566f198c82770e978b783081d5fa85151f4fa1",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-030",
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 281,
+      "end": 475,
+      "decoded_range_utf8_sha256": "1fe04403583fb1538421124d238508037cd82ceaedd9fe9166ce0cf596d860b3",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-031",
+      "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+      "start": 1855,
+      "end": 1918,
+      "decoded_range_utf8_sha256": "d17a7f4edac27e95b24cf3393ccb1d50150aae6dcb962ad3d19802381c1d1526",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-032",
+      "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+      "start": 550,
+      "end": 644,
+      "decoded_range_utf8_sha256": "736bc7d7beaea786c74ae296ef3a37e566c1e5350e3484e9de2da86e4960c6de",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-033",
+      "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+      "start": 481,
+      "end": 553,
+      "decoded_range_utf8_sha256": "7b1e6abcb00c270eeac9d59bff170ea22becf76ff624fbcd90d0512d1201044f",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-034",
+      "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+      "start": 981,
+      "end": 1027,
+      "decoded_range_utf8_sha256": "52ab8913035d2448d74908739ceb98f3239b3259e894852ff37c9a1654924d79",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-035",
+      "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+      "start": 475,
+      "end": 519,
+      "decoded_range_utf8_sha256": "ce3f91ed8550134a2d98a6a07fadc6737ac562f708174889cafe09a5f9d65b1c",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-036",
+      "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+      "start": 650,
+      "end": 741,
+      "decoded_range_utf8_sha256": "04a8bfbc66894c9cc7b164cd478467ca7c05ac645dbef4df5b7a99e4b2dd81a8",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-037",
+      "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+      "start": 162,
+      "end": 206,
+      "decoded_range_utf8_sha256": "f5a7c12a15dad36ebf35950cb07b12081d38c871c992839d05d5d2e43b78df76",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-038",
+      "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+      "start": 288,
+      "end": 359,
+      "decoded_range_utf8_sha256": "4c2e4108e210eb8f769db4b13d533c6956c59d3e9dc2a35f80ccca1e5a249714",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-039",
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "start": 395,
+      "end": 555,
+      "decoded_range_utf8_sha256": "e845a27140e43182ca270d1f0e672e29d9e6865b1e3a8fc797a0880c0c83df3a",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-040",
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "start": 280,
+      "end": 378,
+      "decoded_range_utf8_sha256": "f0d5b900476eb41a82f33f6e711d89d044fd156a88cc40343da60ca00fe088e1",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-041",
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "start": 71,
+      "end": 87,
+      "decoded_range_utf8_sha256": "7b195b85b2ca613aaef499d80f8c81242a4f9621a38a7bd39459a9a1f3ec38ce",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-042",
+      "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+      "start": 2244,
+      "end": 2262,
+      "decoded_range_utf8_sha256": "7ba73663d02f41babc53db1e9dac002badd74b8e18c342bd3f430962c87650f0",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-043",
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "start": 842,
+      "end": 911,
+      "decoded_range_utf8_sha256": "9ab61363fc100b7d02a81bd4cf268628229474d2c4ff54d54dc98216291e597c",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-044",
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs",
+      "start": 1080,
+      "end": 1144,
+      "decoded_range_utf8_sha256": "783d88f2c8e05859ca6f0a0009e1b4a03d0895ce442a1cd9f3f5b3a10bf89142",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-045",
+      "path": "SmartAuditERP/Form_WPF/frmSandVAT.xaml.cs",
+      "start": 519,
+      "end": 626,
+      "decoded_range_utf8_sha256": "41a3ae96fb31f5691cbcfecd5b4a8024022b74f66a3417e1a9565130e5bf5cf8",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    },
+    {
+      "id": "R4READ-046",
+      "path": "SmartAuditERP/SmartAuditERP.csproj",
+      "start": 129,
+      "end": 139,
+      "decoded_range_utf8_sha256": "c1f6115062183a5e73e23e8858ddb07398d89de2a704e30d518b648882d8cf69",
+      "basis": "Actually displayed using read_file in this continuation; bounded range, not full-file or chronological event claim."
+    }
+  ],
+  "explicit_exclusions": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs",
+      "member": "ReadData",
+      "state": "Only842-911partial prefix displayed; whole method not registered or adjudicated."
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs",
+      "member": "ReadData",
+      "state": "Only1080-1144partial prefix displayed; whole method not registered or adjudicated."
+    },
+    {
+      "boundary": "UtilitiesProj InvoiceDGV/InvoiceItem constructors,setters,collections,enum mappings",
+      "state": "Project reference observed, not external-library execution or a complete implementation contract."
+    }
+  ],
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false
+}
