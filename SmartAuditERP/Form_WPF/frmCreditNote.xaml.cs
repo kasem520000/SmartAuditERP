@@ -177,6 +177,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void LoadInvData(int invId)
         {
+            txtInvVal.Text = string.Empty;
             try
             {
                 var adapter = new SqlDataAdapter(
@@ -186,9 +187,10 @@ namespace SmartAuditERP.Form_WPF
                 var dt = new DataTable();
                 adapter.Fill(dt);
 
-                if (dt.Rows.Count > 0)
-                    txtInvVal.Text = Convert.ToDouble(
-                        dt.Rows[0]["tot_net"]).ToString();
+                if (dt.Rows.Count != 1)
+                    throw new InvalidOperationException("قيمة الفاتورة غير متاحة أو رقمها غير فريد.");
+                txtInvVal.Text = Convert.ToDouble(
+                    dt.Rows[0]["tot_net"]).ToString();
             }
             catch (Exception ex)
             {
@@ -400,23 +402,27 @@ namespace SmartAuditERP.Form_WPF
                     var adapter = new SqlDataAdapter(
                         $"SELECT cust_id, id, tot_net FROM Inv " +
                         $"WHERE inv_type=1 AND IS_Deleted=0 " +
-                        $"AND InvGlobalID=N'{form.InvGlobalID}' " +
+                        $"AND InvGlobalID=@globalId " +
                         $"AND proc_type=1", conn);
+                    adapter.SelectCommand.Parameters.Add("@globalId", SqlDbType.NVarChar).Value = form.InvGlobalID;
                     var dt = new DataTable();
                     adapter.Fill(dt);
 
-                    if (dt.Rows.Count > 0)
-                    {
-                        cmbSupplies.SelectedValue =
-                            SafeParseDouble(dt.Rows[0]["cust_id"].ToString());
-                        txtInvNo.Text = dt.Rows[0]["id"].ToString();
-                        txtInvVal.Text = dt.Rows[0]["tot_net"].ToString();
-                        IsDiscounted(Convert.ToInt32(dt.Rows[0]["id"]));
-                    }
+                    if (dt.Rows.Count != 1)
+                        throw new InvalidOperationException("الفاتورة المختارة غير موجودة أو غير فريدة.");
+                    cmbSupplies.SelectedValue =
+                        SafeParseDouble(dt.Rows[0]["cust_id"].ToString());
+                    txtInvNo.Text = dt.Rows[0]["id"].ToString();
+                    txtInvVal.Text = dt.Rows[0]["tot_net"].ToString();
+                    IsDiscounted(Convert.ToInt32(dt.Rows[0]["id"]));
                 }
             }
             catch (Exception ex)
             {
+                txtInvNo.Text = string.Empty;
+                txtInvVal.Text = string.Empty;
+                txtPreviousDiscVal.Text = string.Empty;
+                ShowMsg("تعذر تحميل الفاتورة المختارة: " + ex.Message, "خطأ", MessageBoxImage.Warning);
                 Logger.Error($"frmCreditNote {ex.Message} {MainClass.UserName}");
             }
         }
@@ -433,7 +439,14 @@ namespace SmartAuditERP.Form_WPF
                 var dt = new DataTable();
                 adapter.Fill(dt);
 
-                if (dt.Rows.Count > 0)
+                if (dt.Rows.Count > 1)
+                {
+                    txtInvVal.Text = string.Empty;
+                    txtPreviousDiscVal.Text = string.Empty;
+                    ShowMsg("رقم الفاتورة غير فريد؛ استخدم البحث بهوية الفاتورة.", "تنبيه", MessageBoxImage.Warning);
+                    return;
+                }
+                if (dt.Rows.Count == 1)
                 {
                     cmbSupplies.SelectedValue =
                         SafeParseDouble(dt.Rows[0]["cust_id"].ToString());
@@ -448,12 +461,15 @@ namespace SmartAuditERP.Form_WPF
             }
             catch (Exception ex)
             {
+                txtInvVal.Text = string.Empty;
+                txtPreviousDiscVal.Text = string.Empty;
                 Logger.Error($"frmCreditNote {ex.Message} {MainClass.UserName}");
             }
         }
 
         private void IsDiscounted(int invNo)
         {
+            txtPreviousDiscVal.Text = string.Empty;
             try
             {
                 var adapter = new SqlDataAdapter(
@@ -501,6 +517,7 @@ namespace SmartAuditERP.Form_WPF
             }
             catch (Exception ex)
             {
+                txtPreviousDiscVal.Text = string.Empty;
                 Logger.Error($"frmCreditNote {ex.Message} {MainClass.UserName}");
             }
         }
@@ -809,16 +826,20 @@ namespace SmartAuditERP.Form_WPF
 
         private void GetCustBalance()
         {
+            txtInvVal.Text = string.Empty;
             try
             {
                 int accCode = -1;
                 var adapter1 = new SqlDataAdapter(
                     $"SELECT Code FROM Accounts_Index " +
-                    $"WHERE Type=2 AND AName=N'{cmbSupplies.Text}'", conn);
+                    $"WHERE Type=2 AND AName=@accountName", conn);
+                adapter1.SelectCommand.Parameters.Add("@accountName", SqlDbType.NVarChar).Value = cmbSupplies.Text;
                 var dt1 = new DataTable();
                 adapter1.Fill(dt1);
-                if (dt1.Rows.Count > 0)
-                    accCode = Convert.ToInt32(dt1.Rows[0][0]);
+                if (dt1.Rows.Count != 1 || dt1.Rows[0][0] == DBNull.Value)
+                    throw new InvalidOperationException("تعذر تحديد حساب وحيد للرصيد.");
+                accCode = Convert.ToInt32(dt1.Rows[0][0]);
+                if (accCode <= 0) throw new InvalidOperationException("حساب الرصيد غير صالح.");
 
                 string accFilter = $" AND Entry_sub.acc_no={accCode}";
                 string branchFilter = MainClass.BranchNo != -1
@@ -842,15 +863,10 @@ namespace SmartAuditERP.Form_WPF
                 var dt2 = new DataTable();
                 adapter2.Fill(dt2);
 
-                double dept = 0.0;
-                double credit = 0.0;
-
-                if (dt2.Rows.Count > 0 &&
-                    !string.IsNullOrEmpty(dt2.Rows[0][0].ToString()))
-                {
-                    dept = SafeParseDouble(dt2.Rows[0][0].ToString());
-                    credit = SafeParseDouble(dt2.Rows[0][1].ToString());
-                }
+                if (dt2.Rows.Count != 1 || dt2.Rows[0][0] == DBNull.Value || dt2.Rows[0][1] == DBNull.Value)
+                    throw new InvalidOperationException("الرصيد غير متاح.");
+                double dept = Convert.ToDouble(dt2.Rows[0][0]);
+                double credit = Convert.ToDouble(dt2.Rows[0][1]);
 
                 txtInvVal.Text = dept >= credit
                     ? Math.Round(dept - credit, 3).ToString()
@@ -858,6 +874,7 @@ namespace SmartAuditERP.Form_WPF
             }
             catch (Exception ex)
             {
+                txtInvVal.Text = string.Empty;
                 Logger.Error($"frmCreditNote {ex.Message} {MainClass.UserName}");
             }
         }
@@ -893,29 +910,40 @@ namespace SmartAuditERP.Form_WPF
                 SrchName = cmbSupplies.Text;
                 var adapter = new SqlDataAdapter(
                     $"SELECT id, name FROM Customers " +
-                    $"WHERE IS_Deleted=0 AND name=N'{SrchName}' " +
+                    $"WHERE IS_Deleted=0 AND name=@name " +
                     $"AND (type=2 OR type=3)", conn);
+                adapter.SelectCommand.Parameters.Add("@name", SqlDbType.NVarChar).Value = SrchName;
                 var dt = new DataTable();
                 adapter.Fill(dt);
 
-                if (dt.Rows.Count > 0)
+                if (dt.Rows.Count == 1)
                     cmbSupplies.SelectedValue = dt.Rows[0]["id"];
+                else if (dt.Rows.Count == 0)
+                {
+                    cmbSupplies.SelectedValue = null;
+                    AddNewItem(SrchName);
+                }
                 else
-                    AddNewItem();
+                {
+                    cmbSupplies.SelectedValue = null;
+                    ShowMsg("اسم المورد مكرر؛ اختر مورداً محدداً.", "تنبيه", MessageBoxImage.Warning);
+                }
             }
             catch (Exception ex)
             {
+                cmbSupplies.SelectedValue = null;
+                ShowMsg("تعذر البحث عن المورد: " + ex.Message, "خطأ", MessageBoxImage.Warning);
                 Logger.Error($"frmCreditNote {ex.Message} {MainClass.UserName}");
             }
         }
 
-        private void AddNewItem()
+        private void AddNewItem(string searchName = null)
         {
             var form = new frmAccountSrch
             {
                 cond = " AND ParentCode=2211 "
             };
-            SrchName = cmbSupplies.Text;
+            SrchName = searchName ?? cmbSupplies.Text;
             form.txtSrchNm.Text = SrchName;
             form.ShowDialog();
 
@@ -929,8 +957,13 @@ namespace SmartAuditERP.Form_WPF
                 var dt = new DataTable();
                 adapter.Fill(dt);
 
-                if (dt.Rows.Count > 0)
+                if (dt.Rows.Count == 1)
                     cmbSupplies.SelectedValue = dt.Rows[0]["id"];
+                else
+                {
+                    cmbSupplies.SelectedValue = null;
+                    ShowMsg("لا يوجد مورد وحيد مرتبط بالحساب المحدد.", "تنبيه", MessageBoxImage.Warning);
+                }
             }
         }
 

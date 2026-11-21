@@ -386,24 +386,27 @@ namespace SmartAuditERP.Form_WPF
                 var adapter = new SqlDataAdapter(
                     $"SELECT cust_id, id, tot_net FROM Inv " +
                     $"WHERE inv_type=2 AND IS_Deleted=0 " +
-                    $"AND InvGlobalID=N'{searchForm.InvGlobalID}' " +
+                    $"AND InvGlobalID=@globalId " +
                     $"AND proc_type=1",
                     _conn);
+                adapter.SelectCommand.Parameters.Add("@globalId", SqlDbType.NVarChar).Value = searchForm.InvGlobalID;
 
                 var table = new DataTable();
                 adapter.Fill(table);
 
-                if (table.Rows.Count > 0)
-                {
-                    cmbClients.EditValue = table.Rows[0]["cust_id"];
-                    txtInvNo.EditValue = table.Rows[0]["id"].ToString();
-                    txtInvVal.EditValue = table.Rows[0]["tot_net"].ToString();
-                    CheckPreviousDiscount(
-                        Convert.ToInt32(table.Rows[0]["id"]));
-                }
+                if (table.Rows.Count != 1)
+                    throw new InvalidOperationException("الفاتورة المختارة غير موجودة أو غير فريدة.");
+                cmbClients.EditValue = table.Rows[0]["cust_id"];
+                txtInvNo.EditValue = table.Rows[0]["id"].ToString();
+                txtInvVal.EditValue = table.Rows[0]["tot_net"].ToString();
+                CheckPreviousDiscount(
+                    Convert.ToInt32(table.Rows[0]["id"]));
             }
             catch (Exception ex)
             {
+                txtInvNo.EditValue = null;
+                txtInvVal.EditValue = null;
+                txtPreviousDiscVal.EditValue = null;
                 ShowError(ex.Message);
             }
         }
@@ -421,7 +424,14 @@ namespace SmartAuditERP.Form_WPF
                 var table = new DataTable();
                 adapter.Fill(table);
 
-                if (table.Rows.Count > 0)
+                if (table.Rows.Count > 1)
+                {
+                    txtInvVal.EditValue = null;
+                    txtPreviousDiscVal.EditValue = null;
+                    ShowError("رقم الفاتورة غير فريد؛ استخدم البحث بهوية الفاتورة.");
+                    return;
+                }
+                if (table.Rows.Count == 1)
                 {
                     cmbClients.EditValue = table.Rows[0]["cust_id"];
                     txtInvVal.EditValue = table.Rows[0]["tot_net"].ToString();
@@ -435,6 +445,8 @@ namespace SmartAuditERP.Form_WPF
             }
             catch (Exception ex)
             {
+                txtInvVal.EditValue = null;
+                txtPreviousDiscVal.EditValue = null;
                 ShowError(ex.Message);
             }
         }
@@ -448,29 +460,39 @@ namespace SmartAuditERP.Form_WPF
 
                 var adapter = new SqlDataAdapter(
                     $"SELECT id, name FROM Customers " +
-                    $"WHERE IS_Deleted=0 AND name=N'{name}' " +
+                    $"WHERE IS_Deleted=0 AND name=@name " +
                     $"AND (type=1 OR type=3)",
                     _conn);
+                adapter.SelectCommand.Parameters.Add("@name", SqlDbType.NVarChar).Value = name;
 
                 var table = new DataTable();
                 adapter.Fill(table);
 
-                if (table.Rows.Count > 0)
+                if (table.Rows.Count == 1)
                     cmbClients.EditValue = table.Rows[0]["id"];
+                else if (table.Rows.Count == 0)
+                {
+                    cmbClients.EditValue = null;
+                    OpenAccountSearch(name);
+                }
                 else
-                    OpenAccountSearch();
+                {
+                    cmbClients.EditValue = null;
+                    ShowError("اسم العميل مكرر؛ اختر عميلاً محدداً.");
+                }
             }
             catch (Exception ex)
             {
+                cmbClients.EditValue = null;
                 ShowError(ex.Message);
             }
         }
 
-        private void OpenAccountSearch()
+        private void OpenAccountSearch(string searchName = null)
         {
             var searchForm = new frmAccountSrch();
             searchForm.cond = " AND ParentCode=123 ";
-            _searchName = cmbClients.Text;
+            _searchName = searchName ?? cmbClients.Text;
             searchForm.txtSrchNm.Text = _searchName;
             searchForm.ShowDialog();
 
@@ -484,13 +506,19 @@ namespace SmartAuditERP.Form_WPF
                 var table = new DataTable();
                 adapter.Fill(table);
 
-                if (table.Rows.Count > 0)
+                if (table.Rows.Count == 1)
                     cmbClients.EditValue = table.Rows[0]["id"];
+                else
+                {
+                    cmbClients.EditValue = null;
+                    ShowError("لا يوجد عميل وحيد مرتبط بالحساب المحدد.");
+                }
             }
         }
 
         private void CheckPreviousDiscount(int invNo)
         {
+            txtPreviousDiscVal.EditValue = null;
             var adapter = new SqlDataAdapter(
                 $"SELECT Doc_No FROM CreditDeptNotes " +
                 $"WHERE Doc_Type=2 AND IS_Deleted=0 AND Inv_No={invNo}",
@@ -532,19 +560,22 @@ namespace SmartAuditERP.Form_WPF
 
         private void GetClientBalance()
         {
+            txtInvVal.EditValue = null;
             try
             {
                 // جلب كود الحساب
                 var accAdapter = new SqlDataAdapter(
                     $"SELECT Code FROM Accounts_Index " +
-                    $"WHERE Type=2 AND AName=N'{cmbClients.Text}'",
+                    $"WHERE Type=2 AND AName=@accountName",
                     _conn);
+                accAdapter.SelectCommand.Parameters.Add("@accountName", SqlDbType.NVarChar).Value = cmbClients.Text;
                 var accTable = new DataTable();
                 accAdapter.Fill(accTable);
 
-                int accCode = -1;
-                if (accTable.Rows.Count > 0)
-                    accCode = Convert.ToInt32(accTable.Rows[0][0]);
+                if (accTable.Rows.Count != 1 || accTable.Rows[0][0] == DBNull.Value)
+                    throw new InvalidOperationException("تعذر تحديد حساب وحيد للرصيد.");
+                int accCode = Convert.ToInt32(accTable.Rows[0][0]);
+                if (accCode <= 0) throw new InvalidOperationException("حساب الرصيد غير صالح.");
 
                 string branchFilter = MainClass.BranchNo != -1
                     ? $"Entry.branch={MainClass.BranchNo} " +
@@ -580,12 +611,14 @@ namespace SmartAuditERP.Form_WPF
             }
             catch (Exception ex)
             {
+                txtInvVal.EditValue = null;
                 Console.WriteLine(ex.Message);
             }
         }
 
         private void LoadInvoiceData(int invId)
         {
+            txtInvVal.EditValue = null;
             try
             {
                 var adapter = new SqlDataAdapter(
@@ -596,8 +629,9 @@ namespace SmartAuditERP.Form_WPF
                 var table = new DataTable();
                 adapter.Fill(table);
 
-                if (table.Rows.Count > 0)
-                    txtInvVal.EditValue = table.Rows[0]["tot_net"].ToString();
+                if (table.Rows.Count != 1)
+                    throw new InvalidOperationException("قيمة الفاتورة غير متاحة أو رقمها غير فريد.");
+                txtInvVal.EditValue = table.Rows[0]["tot_net"].ToString();
             }
             catch (Exception ex)
             {
