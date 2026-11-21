@@ -785,11 +785,10 @@ namespace SmartAuditERP.Form_WPF
                 MessageBoxButton.YesNo, MessageBoxImage.Question)
                 == MessageBoxResult.No) return;
 
-            // لا يوجد DeleteReceipt محدد هنا — نستخدم نفس آلية frmSandD
-            DXMessageBox.Show("تم حذف السند.", "تم",
-                            MessageBoxButton.OK, MessageBoxImage.Information);
-            SearchList.Clear();
-            CLR();
+            // No established deletion contract for the Android receipt type and
+            // its differently typed journal. Do not claim deletion or clear the form.
+            DXMessageBox.Show("حذف سند الأندرويد غير متاح حتى اعتماد ربطه بالقيد واختبار العملية.", "تنبيه",
+                            MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         private void btnFirst_Click(object sender, RoutedEventArgs e)

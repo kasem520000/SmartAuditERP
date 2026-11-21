@@ -11,6 +11,7 @@ def ordered(s,*needles):
  for v in needles:pos=s.index(v,pos+1)
  return True
 save=section(r,'private bool SaveReceiptLocked(', 'private static void InsertReceiptDocuments(')
+assert '(Receipt.ReceiptType.Value == 10 ? (int)EntryType.ClientVoucher : Receipt.ReceiptType.Value) != (int)Entr.Type' in save
 assert 'journalReference != Receipt.ReceiptNo' in save and 'Receipt.ReceiptDate.Value != Entr.EntryDate' in save
 assert 'ReceiptNo=@number AND ReceiptType=@type AND BranchID=@branch AND GlobalID<>@id' in save
 assert 'if (exists && reader.Read())' in save and 'if (sqlCommand3.ExecuteNonQuery() != 1)' in save
@@ -34,6 +35,11 @@ for form in ('frmSandSD','frmSandQD','frmSandD','frmSandQAndroid'):
  assert ordered(main,'SaveReceipt(receipt, entry, isNew, _receiptFiles)', 'committed = true;', 'Code = receipt.ReceiptNo;', '_receiptFiles = null;', 'await ')
  assert 'تم حفظ السند محلياً' in main and 'Code = Convert.ToInt32(txtNo.Text)' not in main
  assert 'if (_receiptSaveInProgress) return;' in section(s,'private void btnDelete_Click(', '\n        private void ')
+
+android=(root/'Form_WPF/frmSandQAndroid.xaml.cs').read_text(encoding='utf-8-sig')
+android_delete=section(android,'private void btnDelete_Click(', '\n        private void ')
+assert 'حذف سند الأندرويد غير متاح' in android_delete and 'تم حذف السند' not in android_delete
+assert 'SearchList.Clear()' not in android_delete and 'CLR()' not in android_delete
 
 # Independent model of the contract: not SQL Server lock/race behaviour.
 def db_new():

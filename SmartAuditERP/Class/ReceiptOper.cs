@@ -185,7 +185,8 @@ namespace SmartAuditERP
 				string.IsNullOrWhiteSpace(Receipt.EntryGlobalID) ||
 				!string.Equals(Receipt.EntryGlobalID, Entr.EntryGlobalID, StringComparison.Ordinal) ||
 				!Receipt.BranchID.HasValue || Receipt.BranchID.Value <= 0 || Receipt.BranchID.Value != Entr.Branch ||
-				!Receipt.ReceiptType.HasValue || Receipt.ReceiptType.Value != (int)Entr.Type ||
+				!Receipt.ReceiptType.HasValue ||
+				(Receipt.ReceiptType.Value == 10 ? (int)EntryType.ClientVoucher : Receipt.ReceiptType.Value) != (int)Entr.Type ||
 				Receipt.ReceiptNo <= 0 || Entr.EntryNo <= 0 ||
 				!int.TryParse(Entr.ReffNo, out int journalReference) || journalReference != Receipt.ReceiptNo ||
 				!Receipt.ReceiptDate.HasValue || Receipt.ReceiptDate.Value != Entr.EntryDate ||
