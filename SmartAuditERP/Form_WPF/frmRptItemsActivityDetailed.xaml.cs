@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -36,6 +36,9 @@ namespace SmartAuditERP.Form_WPF
         private string RptUrl;
 
         public int SelectedId { get; set; } = -1;
+        // Metadata is published with the last successfully completed result.
+        private string _reportSafe = "", _reportSafeCode = "", _reportClient = "";
+        private string _reportItemName = "", _reportItemCode = "", _reportFrom = "", _reportTo = "";
 
         private string StyleFile;
         private string StyleFolder;
@@ -301,15 +304,40 @@ namespace SmartAuditERP.Form_WPF
                 int storeFilter = 0, clientFilter = 0;
                 if (chkAll.IsChecked != true &&
                     (cmbSafes.SelectedIndex < 0 ||
-                     !int.TryParse(Convert.ToString(cmbSafes.SelectedValue), out storeFilter)))
+                     !int.TryParse(Convert.ToString(cmbSafes.SelectedValue), out storeFilter) || storeFilter <= 0))
                     throw new InvalidOperationException("يرجى اختيار المستودع.");
                 if (chkAllClients.IsChecked != true &&
                     (cmbClients.SelectedIndex < 0 ||
-                     !int.TryParse(Convert.ToString(cmbClients.SelectedValue), out clientFilter)))
+                     !int.TryParse(Convert.ToString(cmbClients.SelectedValue), out clientFilter) || clientFilter <= 0))
                     throw new InvalidOperationException("يرجى اختيار العميل أو المورد.");
 
                 if (chkAllProcType.IsChecked != true && cmbProcType.SelectedIndex < 0)
                     throw new InvalidOperationException("يرجى اختيار نوع العملية.");
+
+                int branchFilter = 0;
+                if (chkAllBranches.IsChecked != true &&
+                    (cmbBranches.SelectedIndex < 0 ||
+                     !int.TryParse(Convert.ToString(cmbBranches.SelectedValue), out branchFilter) || branchFilter <= 0))
+                    throw new InvalidOperationException("يرجى اختيار الفرع.");
+
+                bool boundedPeriod = cbLastProcess.IsChecked != true && ckTotalPeriod.IsChecked != true;
+                DateTime startDate = DateTime.Today, endExclusive = DateTime.Today;
+                string fromLabel = cbLastProcess.IsChecked == true ? "آخر حركة" : "الكل";
+                string toLabel = fromLabel;
+                if (boundedPeriod)
+                {
+                    startDate = txtDateFrom.DateTime.Date;
+                    var endDate = txtDateTo.DateTime.Date;
+                    if (startDate < new DateTime(1753, 1, 1) || endDate == DateTime.MaxValue.Date || startDate > endDate)
+                        throw new InvalidOperationException("فترة التقرير غير صالحة.");
+                    endExclusive = endDate.AddDays(1);
+                    fromLabel = startDate.ToShortDateString();
+                    toLabel = endDate.ToShortDateString();
+                }
+                string safeLabel = chkAll.IsChecked == true ? "الكل" : cmbSafes.Text;
+                string safeCode = chkAll.IsChecked == true ? "" : Convert.ToString(storeFilter);
+                string clientLabel = chkAllClients.IsChecked == true ? "الكل" : cmbClients.Text;
+                string itemName = txtItemName.Text, itemCode = txtItemCode.Text;
 
                 double incomeTotal  = 0.0;
                 double outcomeTotal = 0.0;
@@ -342,7 +370,7 @@ namespace SmartAuditERP.Form_WPF
                 }
                 else if (ckTotalPeriod.IsChecked != true)
                 {
-                    condItems += " and date>=@date1 and date<=@date2 ";
+                    condItems += " and date>=@date1 and date<@date2 ";
                 }
 
                 // العميل
@@ -351,10 +379,8 @@ namespace SmartAuditERP.Form_WPF
 
                 // الفرع
                 string condBranch = "";
-                if (chkAllBranches.IsChecked != true &&
-                    cmbBranches.SelectedIndex != -1 &&
-                    cmbBranches.SelectedValue != null)
-                    condBranch = $"inv.branch={cmbBranches.SelectedValue} and ";
+                if (chkAllBranches.IsChecked != true)
+                    condBranch = "inv.branch=@branch and ";
 
                 // نوع العملية
                 if (chkAllProcType.IsChecked != true &&
@@ -381,13 +407,14 @@ namespace SmartAuditERP.Form_WPF
                     $"AND Inv.IS_Deleted=0 {condItems} " +
                     $"ORDER BY inv.date {orderDirection}";
 
-                var adapter = new SqlDataAdapter(sql, conn);
-                adapter.SelectCommand.Parameters.Add(
-                    "@date1", SqlDbType.DateTime).Value =
-                    txtDateFrom.DateTime.Date;
-                adapter.SelectCommand.Parameters.Add(
-                    "@date2", SqlDbType.DateTime).Value =
-                    txtDateTo.DateTime.Date.AddHours(24);
+                using var adapter = new SqlDataAdapter(sql, conn);
+                if (chkAllBranches.IsChecked != true)
+                    adapter.SelectCommand.Parameters.Add("@branch", SqlDbType.Int).Value = branchFilter;
+                if (boundedPeriod)
+                {
+                    adapter.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = startDate;
+                    adapter.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = endExclusive;
+                }
 
                 var dt = new DataTable();
                 adapter.Fill(dt);
@@ -486,9 +513,17 @@ namespace SmartAuditERP.Form_WPF
                 }
 
                 txtTotStock.Text = balance.ToString(Common.DigitsNo);
+                _reportSafe = safeLabel; _reportSafeCode = safeCode; _reportClient = clientLabel;
+                _reportItemName = itemName; _reportItemCode = itemCode;
+                _reportFrom = fromLabel; _reportTo = toLabel;
             }
             catch (Exception ex)
             {
+                // Never leave a partial report available for export or printing.
+                ActivityList.Clear();
+                txtTotStock.Text = string.Empty;
+                _reportSafe = _reportSafeCode = _reportClient = "";
+                _reportItemName = _reportItemCode = _reportFrom = _reportTo = "";
                 DXMessageBox.Show($"خطأ في عرض البيانات:\n{ex.Message}",
                                 "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -700,12 +735,11 @@ namespace SmartAuditERP.Form_WPF
         {
             var list = ActivityList.Select(item => new InventoryData
             {
-                SafeMain      = cmbSafes.Text,
-                SafeMainCode  = cmbSafes.SelectedValue?.ToString() ?? "",
-                Clint         = cmbClients.SelectedIndex > -1
-                                 ? cmbClients.Text : "",
-                MainItemName  = txtItemName.Text,
-                MainItemCode  = txtItemCode.Text,
+                SafeMain      = _reportSafe,
+                SafeMainCode  = _reportSafeCode,
+                Clint         = _reportClient,
+                MainItemName  = _reportItemName,
+                MainItemCode  = _reportItemCode,
                 ProcessType   = item.DgvInvType,
                 SafeName      = item.DgvStore,
                 ItemCode      = item.DgvItemCode,
@@ -722,8 +756,8 @@ namespace SmartAuditERP.Form_WPF
                 Quantity      = "",
                 Price         = item.DgvPrice.ToString(),
                 Total         = item.DgvTot.ToString(),
-                FromDate      = txtDateFrom.DateTime.ToShortDateString(),
-                ToDate        = txtDateTo.DateTime.ToShortDateString(),
+                FromDate      = _reportFrom,
+                ToDate        = _reportTo,
                 Status        = " ",
                 InventoryType = Title,
                 SumBalance    = txtTotStock.Text,
