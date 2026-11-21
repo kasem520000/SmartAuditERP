@@ -1,0 +1,253 @@
+{
+  "schema_version": 1,
+  "kind": "direct-current-recovery-captures-not-recreated-missing-B39-output",
+  "capture_started_raw_environment_clock_utc": "2026-11-21T16:24:29.953721+00:00",
+  "HEAD_before_new_delivery_commit": "f16f3da60c72f243f90f466badc1bade90bf4abd",
+  "branch": "arena/94ae8414-smartauditerp",
+  "input_identities_before_runs": {
+    "docs/audit/evidence/ancestry-recovery-map-07B39R1.json": {
+      "bytes": 183982,
+      "sha256": "64d61ccf5ffff7864bca73979e2c2ace4f58c87bf271731b85ed75c16c7f35b2"
+    },
+    "docs/audit/evidence/capability-recovery-state-07B39R1.csv": {
+      "bytes": 81508,
+      "sha256": "2b0dced0cc696e0d983e472be8e5c9f7314db1589f975dd00f1cff0b6e6266b0"
+    },
+    "docs/audit/evidence/date-prospective-07B39R1.json": {
+      "bytes": 1135,
+      "sha256": "257d19ac3dcbb6561235983d13593b4ea518d1fb63e60c3a730d5b5676fa8a6a"
+    },
+    "docs/audit/evidence/finding-extensions-07B39R1.json": {
+      "bytes": 4784,
+      "sha256": "b12f4987ca30d69b5110130f654fe9d1bfc8167dd8c04f6544345f74bf61fefd"
+    },
+    "docs/audit/evidence/findings-additions-07B39R1.csv": {
+      "bytes": 2142,
+      "sha256": "5f810ee42669902bb3074fb39c703927062f9549437785029f33265107505d3d"
+    },
+    "docs/audit/evidence/policy-boundaries-07B39R1.csv": {
+      "bytes": 5968,
+      "sha256": "3de059d46130af2920b8066cc966ad2463a1514fc800d464e88e1117a52f8ec7"
+    },
+    "docs/audit/evidence/recovered-closure-07B39R1.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "docs/audit/evidence/recovered-closure-07B39R1.stdout.txt": {
+      "bytes": 2910,
+      "sha256": "ce925da4627058957fd2e1a4d7f26b1e550bcd654110303e6328e9c145f47c28"
+    },
+    "docs/audit/evidence/recovered-input-identities-07B39R1.json": {
+      "bytes": 198779,
+      "sha256": "523317c9b677b5713d2395ac657c76ae6d694bf2e98141345227f7618025cdbc"
+    },
+    "docs/audit/evidence/recovered-integrity-07B39R1.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "docs/audit/evidence/recovered-integrity-07B39R1.stdout.txt": {
+      "bytes": 2909,
+      "sha256": "488ad5f9957967cfd2e015a2d552125aba877a3f51744b73bb3a20f04a46a982"
+    },
+    "docs/audit/evidence/recovered-tests-07B39R1.stderr.txt": {
+      "bytes": 142,
+      "sha256": "82569a3d8dbbb92e3958d9650826d3e48d6af26ac4955e8d1788e3e1396383cf"
+    },
+    "docs/audit/evidence/recovered-tests-07B39R1.stdout.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "docs/audit/evidence/recovery-baseline-capture-receipt-07B39R1.json": {
+      "bytes": 3015,
+      "sha256": "c19231f8f669ed36e57c44d93271cb0dcfdd6ca86e4388d90f08e6484c461e4c"
+    },
+    "docs/audit/evidence/scope-approval-recovered-07B39R1.json": {
+      "bytes": 1897,
+      "sha256": "60ee4271ed68064685853afa1309abff6ad5100be4e54e33042272000614d906"
+    },
+    "docs/audit/evidence/source-facts-07B39R1.json": {
+      "bytes": 122012,
+      "sha256": "f4c650f837683365b5cd8a48e1a56e570b087eac97600221dc48e5537c4b8635"
+    },
+    "docs/audit/evidence/source-review-log-07B39R1.json": {
+      "bytes": 25371,
+      "sha256": "7ca351e99319f509df5374ff602b3c0bc04a52abf44acad6c9d0c55f7ff09cb7"
+    },
+    "docs/audit/evidence/untracked-entry-docs-07B39.tar.gz": {
+      "bytes": 14264991,
+      "sha256": "93011c5f68169814c15061f2ae78d4ce5988dbdf573ccb230cd26b937c525abc"
+    },
+    "docs/audit/evidence/workspace-entry-receipt-07B39.json": {
+      "bytes": 205309,
+      "sha256": "5fcfb3c16f07fd54aef6e0cfebabf8647af70121625b278bbf3517cfee987b3e"
+    },
+    "docs/audit/evidence/workspace-recovery-result-07B39R1.json": {
+      "bytes": 1163,
+      "sha256": "2e098fe382accef98fb760d916d2c0610d08e7c3b9b24cacbd113e63f48e31c1"
+    },
+    "docs/audit/tools/disposition07b/test_recovery_exit.py": {
+      "bytes": 16150,
+      "sha256": "71aa2080aa0ac993bad9ab9318ab9f0917584a944d725efe38087f386caa521f"
+    },
+    "docs/audit/tools/disposition07b/verify_recovery_exit.py": {
+      "bytes": 23061,
+      "sha256": "7b2dbd6c44a00cc27209af4f7b1d9174914c3ae643188f9f71b86ab7bba96510"
+    }
+  },
+  "recursive_tool_count": 144,
+  "runs": [
+    {
+      "name": "current-recovery-integrity",
+      "argv": [
+        "/usr/bin/python",
+        "-B",
+        "docs/audit/tools/disposition07b/verify_recovery_exit.py",
+        "--rederive"
+      ],
+      "raw_environment_clock_started_utc": "2026-11-21T16:24:29.958125+00:00",
+      "raw_environment_clock_ended_utc": "2026-11-21T16:24:33.170264+00:00",
+      "exit_code": 0,
+      "documented_expected_exit_code": 0,
+      "stdout": {
+        "path": "docs/audit/evidence/checks-07B39R1.stdout.txt",
+        "bytes": 4794,
+        "sha256": "16f1c30f42104fbe7e04f27e36c898b2645cec944b28ea6c4ea2dba42bf49401"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/checks-07B39R1.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "current-recovery-static-exit-open",
+      "argv": [
+        "/usr/bin/python",
+        "-B",
+        "docs/audit/tools/disposition07b/verify_recovery_exit.py",
+        "--require-complete",
+        "--rederive"
+      ],
+      "raw_environment_clock_started_utc": "2026-11-21T16:24:33.170555+00:00",
+      "raw_environment_clock_ended_utc": "2026-11-21T16:24:36.319038+00:00",
+      "exit_code": 2,
+      "documented_expected_exit_code": 2,
+      "stdout": {
+        "path": "docs/audit/evidence/closure-check-07B39R1.stdout.txt",
+        "bytes": 4794,
+        "sha256": "16f1c30f42104fbe7e04f27e36c898b2645cec944b28ea6c4ea2dba42bf49401"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/closure-check-07B39R1.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "current-recovery-documentary-tests",
+      "argv": [
+        "/usr/bin/python",
+        "-B",
+        "-W",
+        "error::ResourceWarning",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "docs/audit/tools/disposition07b",
+        "-p",
+        "test_recovery_exit.py"
+      ],
+      "raw_environment_clock_started_utc": "2026-11-21T16:24:36.319273+00:00",
+      "raw_environment_clock_ended_utc": "2026-11-21T16:24:39.982076+00:00",
+      "exit_code": 0,
+      "documented_expected_exit_code": 0,
+      "stdout": {
+        "path": "docs/audit/evidence/tests-07B39R1.stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/tests-07B39R1.stderr.txt",
+        "bytes": 141,
+        "sha256": "82c0660baaf1e4eda71b2838693c6b69cd5415b66180d11c7e41d3168cfe8aee"
+      }
+    },
+    {
+      "name": "preserved-B38-integrity-reparse-after-two-tools",
+      "argv": [
+        "/usr/bin/python",
+        "-B",
+        "docs/audit/tools/census07b/validate_7b_completion.py",
+        "--reparse"
+      ],
+      "raw_environment_clock_started_utc": "2026-11-21T16:24:39.982373+00:00",
+      "raw_environment_clock_ended_utc": "2026-11-21T16:24:48.881800+00:00",
+      "exit_code": 0,
+      "documented_expected_exit_code": 0,
+      "stdout": {
+        "path": "docs/audit/evidence/checks-preserved-B38-07B39R1.stdout.txt",
+        "bytes": 2909,
+        "sha256": "65e01da05a072588aab50d423fe61232a2597ad0227f9bdcc4b779f0d8cf4fc7"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/checks-preserved-B38-07B39R1.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "preserved-B38-tests-after-two-tools",
+      "argv": [
+        "/usr/bin/python",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "docs/audit/tools/census07b",
+        "-p",
+        "test_7b_completion.py"
+      ],
+      "raw_environment_clock_started_utc": "2026-11-21T16:24:48.882012+00:00",
+      "raw_environment_clock_ended_utc": "2026-11-21T16:24:51.500145+00:00",
+      "exit_code": 1,
+      "documented_expected_exit_code": 1,
+      "stdout": {
+        "path": "docs/audit/evidence/tests-preserved-B38-07B39R1.stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/tests-preserved-B38-07B39R1.stderr.txt",
+        "bytes": 768,
+        "sha256": "ae14e0ca3db97a8db8c13d7dd1b9ad9a552ee1b92971957af46e0276c85517e3"
+      }
+    }
+  ],
+  "reports_and_index_prefixes_authored_after_these_captures": true,
+  "outputs_are_direct_process_streams": true,
+  "raw_clock_is_not_date_authority": true,
+  "all_test_suites_passed": false,
+  "old_dispatcher_executed": false,
+  "application_execution_count": 0,
+  "application_remediation_performed": false,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "repair_start_and_synchronization": "unknown",
+  "capture_ended_raw_environment_clock_utc": "2026-11-21T16:24:51.500329+00:00",
+  "inputs_unchanged_during_captures": true,
+  "all_documented_exit_codes_matched": true,
+  "current_tests": {
+    "run": 42,
+    "successful": 42,
+    "failures": 0
+  },
+  "preserved_B38_tests": {
+    "run": 43,
+    "successful": 42,
+    "failures": 1,
+    "reason": "Frozen assertion expects142 recursive Python tools, current144=139legacy+3B38+2new recovery. Test source unmodified; no skip/filter/overlay/global patch. Earlier fresh recovery baseline142 had all43 pass."
+  },
+  "whole_7B_static_assessment_complete": false
+}

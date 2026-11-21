@@ -1,0 +1,4322 @@
+{
+  "schema_version": 1,
+  "source_identity": {
+    "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs": "ccdb93fe95e7d67ce31808fd97cbf6453c1fcd0d549a329ab1889807c03e9a47",
+    "SmartAuditERP/Form_WPF/frmPurchInv.xaml": "a7985ef37b4d6575a0a064de92fc02375beb90d3d1facbab3271f41191fbeeef",
+    "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs": "9cedfc57feff294e8b398e23f5dab011901fbdf3d02bd260e42bb18fb2359596",
+    "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml": "ee3ccdf5945caacbe667945b01b67103649a095fe160967c24e465624a353b31",
+    "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs": "0c0d85675aa2d5b8a1512034d5e21abcd45897176267603964b221bbfe507954",
+    "SmartAuditERP/Form_WPF/frmInvPurch.xaml": "0c519c74b0fa74213ffb19f9de07ee54b52ece09b00597c6a1fe48e369e15c11",
+    "SmartAuditERP/Form_WPF/frmCloseShift.xaml.cs": "2e8a2b58184979d742a276c97673c77a6d15db4bd39ca39778cb7d8d16601f79",
+    "SmartAuditERP/Form_WPF/frmCloseShift.xaml": "0cc57417ef3a9aa77e6ae48dd1d202c1a06277bcb2c42250e91de741be0682d8",
+    "SmartAuditERP/Form_WPF/frmEmpInvs.xaml.cs": "043d736751a09436c5fb31aac8a47a956ae624b61bcce9abe330920d2e45b2ca",
+    "SmartAuditERP/Form_WPF/frmEmpInvs.xaml": "5382584a6345c79b83fa1889476ec6290faaca4a118a93478fd6bc20ea08c284",
+    "SmartAuditERP/Form_WPF/frmAccountsDirectory.xaml.cs": "cb4c1814fa187145408848e9f254a9a8f3db38964825680cc808979d5bc8d0eb",
+    "SmartAuditERP/Form_WPF/frmAccountsDirectory.xaml": "80918c4b82cbd5c36a987a71d714d5e5480e2126edaf10098050814cf03930fd",
+    "SmartAuditERP/Form_WPF/frmEntriesSyncStatus.xaml.cs": "d8197163dd47efe1d0230e4fab4368f9383169ab36106b35c2239ff6f107d84a",
+    "SmartAuditERP/Form_WPF/frmEntriesSyncStatus.xaml": "1a669de2ab022ea161243c0520ceda19f361c1b8354823ba71e782ed682618e1",
+    "SmartAuditERP/Form_WPF/frmReceiptsSyncStatus.xaml.cs": "c25d9ea775f68770a9bd7d684ed14c89ac8bcd1a549fb1a5bf5ac52ac54aa414",
+    "SmartAuditERP/Form_WPF/frmReceiptsSyncStatus.xaml": "19ded04c6de553313c0340803cfb368c936a3273182cad9290a76650f99ac2de",
+    "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs": "87c814a3194cad2f8b896665a9a542373fa63485318bb373f08ab13e6bdbf234",
+    "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml": "8f3fe15b35bf2919f12d790fa4ec060b0dafc20e68d1921e1d33ac8265e164da",
+    "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs": "62ba7873884ca17f6ec63ebbe1af679b0f7bea0e7bb494c83791e457a040e0d6",
+    "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml": "1d7fd16d6eaf6250df7665cc9be5c0ff0fc1e3f94b56fe19c1520e7cf8916bad",
+    "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs": "713c3a9c9174f9efc99a85d3fd21770e2b04949878da674c3c201c458dfb0301",
+    "SmartAuditERP/Form_WPF/frmInvPOS.xaml": "ac6cb3a042ae8091111b10d7ef3e0e034e837adf18fa018a606177fb4dcd67b5",
+    "SmartAuditERP/Form_WPF/frmInvoiceDeliveries.xaml.cs": "2df1803357665878af1d98d70d6cdda28212187707d038569fde2ec3cc629673",
+    "SmartAuditERP/Form_WPF/frmInvoiceDeliveries.xaml": "d71d600957c4e0c9a3abe49eac570bb55d3fdd61e59432854d750819b680c47d",
+    "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs": "bf2f85f85bbca3addaff175ad39a5ebb78d525b5921548c740bc2a9f26f57a31",
+    "SmartAuditERP/Form_WPF/frmInvSale.xaml": "289a5a6bce98948818d3847a9cdf50870a35ca8269416a1ac3dd293db13e4e6d",
+    "SmartAuditERP/Form_WPF/frmCustAccountGet.xaml.cs": "ef81a7ed7e9a3097e5fb08c2e28690f14aa7715c4ff052857483812d2160edb9",
+    "SmartAuditERP/Form_WPF/frmCustAccountGet.xaml": "a75210be9042235070de1f3ecbb159bd7c44db8d61c18e527758b4cab9fbf286",
+    "SmartAuditERP/Form_WPF/FrmNewEntry.xaml.cs": "2eb018809493ee4b8198775ca58570e5a944a7cae64f7b19103fbcfc3df9f0be",
+    "SmartAuditERP/Form_WPF/FrmNewEntry.xaml": "dd77a212eb9c44df1241f2e15e8438bad6537bb25591d2fd3ed0f68f32d2a246",
+    "SmartAuditERP/Form_WPF/frmNetsales.xaml.cs": "7cac9e793dc5d830fec0bc52b9591b649563fe802b6ec3d81998b8fd8e7a0c1d",
+    "SmartAuditERP/Form_WPF/frmNetsales.xaml": "f0f2a8cd48accac285db3976efd9777cd8f89fb7de12897560124531bd518ee1",
+    "SmartAuditERP/Form_WPF/frmSafeGrd.xaml.cs": "c5a78ef957de11b8c6adf7f966a3ae64cfebc6c0e4128473e9603c865c364d95",
+    "SmartAuditERP/Form_WPF/frmSafeGrd.xaml": "4b3d6d5d70f9e776ebaf748464b0ed09fc5f49479bba71aaf45005ee8a78ebe7",
+    "SmartAuditERP/Form_WPF/frmSafesTransfer.xaml.cs": "f425304edd268d4ab70a3f8c5a27da88888831a6458cf29df91d7295b5cf4037",
+    "SmartAuditERP/Form_WPF/frmSafesTransfer.xaml": "b238792a8dc74b9e035f73540fd07c40d42e212ab27d451a103c263dec2c9329",
+    "SmartAuditERP/Form_WPF/frmSandQ.xaml.cs": "a284b02fcb32780545469ae42c7fca27c9e11e8ee5079f5ec8b035bfdc73a681",
+    "SmartAuditERP/Form_WPF/frmSandQ.xaml": "5e73dde97d2f8984eb539ab9b5460d935602935cf39a37969b8a77a9a60ef972",
+    "SmartAuditERP/Form_WPF/frmStocksSync.xaml.cs": "aca1c2cbeadef22b08e2917ab151db6739baf15cfaf24ba93ea824d8964c1881",
+    "SmartAuditERP/Form_WPF/frmStocksSync.xaml": "5db312a5b04f7763c53a9449478aacc02e9fd223d3afffbb890f164ac322b2b9",
+    "SmartAuditERP/Form_WPF/frmPrintBill.xaml.cs": "e21f285f5e14264c37644416c932f24077214e694a52fad6f49697f9df9ae12a",
+    "SmartAuditERP/Form_WPF/frmPrintBill.xaml": "35d74085ae1953eb914d510a7f60d8cc4f7077cdb90ff59ad1668a15349add4b",
+    "SmartAuditERP/Form_WPF/frmcontract.xaml.cs": "0f59de510dbc2297232cc3989a6f03d43a4697fdd103d5ff092242df70c05bee",
+    "SmartAuditERP/Form_WPF/frmcontract.xaml": "532fb7cc9f6d86042939f5441d30e9866a4f64a15d7fc14da413f2c89379a868",
+    "SmartAuditERP/Class/InvoiceOper.cs": "0bab36016f53ecd18360833d1fba980290702a52a98871fb397be9e813810d91"
+  },
+  "methods": {
+    "frmPurchInv": [
+      {
+        "method": "btnInvSrch_Click",
+        "start": 2036,
+        "end": 2047,
+        "syntax_utf8_sha256": "e24022c32a2b5015b69863293575b58b7508c7e70462da931e9cc7291ad94c98",
+        "calls": [
+          {
+            "function": "MainClass.ApplyPermissionToForm",
+            "line": 2040
+          },
+          {
+            "function": "MainClass.DoApplyUserSett",
+            "line": 2041
+          },
+          {
+            "function": "frm.ShowDialog",
+            "line": 2044
+          },
+          {
+            "function": "double.Parse",
+            "line": 2045
+          },
+          {
+            "function": "Navigate",
+            "line": 2046
+          }
+        ],
+        "assignments": [
+          {
+            "left": "frm.cmbProcType.IsEnabled",
+            "right": "false",
+            "line": 2039
+          },
+          {
+            "left": "frm.ProcType",
+            "right": "ProcType",
+            "line": 2042
+          },
+          {
+            "left": "frm.InvType",
+            "right": "InvType",
+            "line": 2043
+          }
+        ]
+      },
+      {
+        "method": "Navigate",
+        "start": 871,
+        "end": 878,
+        "syntax_utf8_sha256": "7cdffccf46190e4e61efc3727d3ff0adf34600edfe8d3445a39b0751a16385a7",
+        "calls": [
+          {
+            "function": "dgvSrch.Items.Refresh",
+            "line": 873
+          },
+          {
+            "function": "conn.Open",
+            "line": 875
+          },
+          {
+            "function": "ReadData",
+            "line": 876
+          },
+          {
+            "function": "cmd.ExecuteReader",
+            "line": 876
+          },
+          {
+            "function": "conn.Close",
+            "line": 877
+          }
+        ],
+        "assignments": []
+      },
+      {
+        "method": "ReadData",
+        "start": 880,
+        "end": 1023,
+        "syntax_utf8_sha256": "6bcf2bcb30276bc194058fa2028314cac2c1b5f14e8192b7697fe4ea065b1624",
+        "calls": [
+          {
+            "function": "CLR",
+            "line": 884
+          },
+          {
+            "function": "dr.Read",
+            "line": 885
+          },
+          {
+            "function": "CLR",
+            "line": 887
+          },
+          {
+            "function": "_gridSource.Clear",
+            "line": 888
+          },
+          {
+            "function": "Convert.ToInt32",
+            "line": 894
+          },
+          {
+            "function": "Convert.ToInt32",
+            "line": 895
+          },
+          {
+            "function": "Code.ToString",
+            "line": 896
+          },
+          {
+            "function": "Convert.ToDateTime",
+            "line": 897
+          },
+          {
+            "function": "dr[\"date\"].ToString",
+            "line": 897
+          },
+          {
+            "function": "Convert.ToInt32",
+            "line": 898
+          },
+          {
+            "function": "dr[\"safe\"].ToString",
+            "line": 900
+          },
+          {
+            "function": "dr[\"InvTotal\"].ToString",
+            "line": 901
+          },
+          {
+            "function": "dr[\"tot_net\"].ToString",
+            "line": 902
+          },
+          {
+            "function": "dr[\"minus\"].ToString",
+            "line": 903
+          },
+          {
+            "function": "dr[\"tax\"].ToString",
+            "line": 904
+          },
+          {
+            "function": "dr[\"notes\"].ToString",
+            "line": 905
+          },
+          {
+            "function": "Convert.ToInt32",
+            "line": 906
+          },
+          {
+            "function": "Convert.ToDateTime",
+            "line": 910
+          },
+          {
+            "function": "dr[\"Reff_date\"].ToString",
+            "line": 910
+          },
+          {
+            "function": "dr[\"Reff_No\"].ToString",
+            "line": 911
+          },
+          {
+            "function": "Convert.ToDouble",
+            "line": 917
+          },
+          {
+            "function": "dr[\"cust_id\"].ToString",
+            "line": 928
+          },
+          {
+            "function": "dr[\"salesman\"].ToString",
+            "line": 929
+          },
+          {
+            "function": "dr.Close",
+            "line": 931
+          },
+          {
+            "function": "adp.Fill",
+            "line": 937
+          },
+          {
+            "function": "Convert.ToInt32",
+            "line": 943
+          },
+          {
+            "function": "Convert.ToInt32",
+            "line": 944
+          },
+          {
+            "function": "Convert.ToDouble",
+            "line": 945
+          },
+          {
+            "function": "Convert.ToDouble",
+            "line": 946
+          },
+          {
+            "function": "Math.Round",
+            "line": 947
+          },
+          {
+            "function": "double.Parse",
+            "line": 948
+          },
+          {
+            "function": "dt.Rows[i][\"discount\"].ToString",
+            "line": 948
+          },
+          {
+            "function": "Convert.ToDouble",
+            "line": 949
+          },
+          {
+            "function": "Math.Round",
+            "line": 950
+          },
+          {
+            "function": "adpU.Fill",
+            "line": 960
+          },
+          {
+            "function": "Convert.ToDouble",
+            "line": 963
+          },
+          {
+            "function": "dtU.Rows[0][\"barcode\"].ToString",
+            "line": 964
+          },
+          {
+            "function": "Convert.ToDouble",
+            "line": 969
+          },
+          {
+            "function": "double.Parse",
+            "line": 974
+          },
+          {
+            "function": "dt.Rows[i][\"store\"].ToString",
+            "line": 974
+          },
+          {
+            "function": "Convert.ToInt32(dt.Rows[i][\"store\"]).ToString",
+            "line": 975
+          },
+          {
+            "function": "Convert.ToInt32",
+            "line": 975
+          },
+          {
+            "function": "(i + 1).ToString",
+            "line": 979
+          },
+          {
+            "function": "GetItemCode",
+            "line": 980
+          },
+          {
+            "function": "itemId.ToString",
+            "line": 981
+          },
+          {
+            "function": "GetItemName",
+            "line": 982
+          },
+          {
+            "function": "dt.Rows[i][\"Description\"].ToString",
+            "line": 983
+          },
+          {
+            "function": "GetUnitName",
+            "line": 985
+          },
+          {
+            "function": "val1.ToString",
+            "line": 986
+          },
+          {
+            "function": "perc.ToString",
+            "line": 987
+          },
+          {
+            "function": "dt.Rows[i][\"val\"].ToString",
+            "line": 988
+          },
+          {
+            "function": "dt.Rows[i][\"taxperc\"].ToString",
+            "line": 995
+          },
+          {
+            "function": "_gridSource.Add",
+            "line": 1001
+          },
+          {
+            "function": "adpCC.Fill",
+            "line": 1012
+          },
+          {
+            "function": "Convert.ToInt32",
+            "line": 1014
+          },
+          {
+            "function": "CalcTot",
+            "line": 1016
+          },
+          {
+            "function": "DXMessageBox.Show",
+            "line": 1020
+          }
+        ],
+        "assignments": [
+          {
+            "left": "txtNo.Background",
+            "right": "System.Windows.Media.Brushes.WhiteSmoke",
+            "line": 890
+          },
+          {
+            "left": "txtNo.Foreground",
+            "right": "System.Windows.Media.Brushes.Black",
+            "line": 891
+          },
+          {
+            "left": "isPrintd",
+            "right": "true",
+            "line": 892
+          },
+          {
+            "left": "ProcCode",
+            "right": "Convert.ToInt32(dr[\"proc_id\"])",
+            "line": 894
+          },
+          {
+            "left": "Code",
+            "right": "Convert.ToInt32(dr[\"id\"])",
+            "line": 895
+          },
+          {
+            "left": "txtNo.Text",
+            "right": "Code.ToString()",
+            "line": 896
+          },
+          {
+            "left": "txtDate.SelectedDate",
+            "right": "Convert.ToDateTime(dr[\"date\"].ToString())",
+            "line": 897
+          },
+          {
+            "left": "InvType",
+            "right": "Convert.ToInt32(dr[\"inv_type\"])",
+            "line": 898
+          },
+          {
+            "left": "cmbStore.SelectedValue",
+            "right": "dr[\"safe\"].ToString()",
+            "line": 900
+          },
+          {
+            "left": "txtSumVal.Text",
+            "right": "dr[\"InvTotal\"].ToString()",
+            "line": 901
+          },
+          {
+            "left": "txtNet.Text",
+            "right": "dr[\"tot_net\"].ToString()",
+            "line": 902
+          },
+          {
+            "left": "txtInvDiscVal.Text",
+            "right": "dr[\"minus\"].ToString()",
+            "line": 903
+          },
+          {
+            "left": "txtInvTax.Text",
+            "right": "dr[\"tax\"].ToString()",
+            "line": 904
+          },
+          {
+            "left": "txtNote.Text",
+            "right": "dr[\"notes\"].ToString()",
+            "line": 905
+          },
+          {
+            "left": "RestPurchCode",
+            "right": "Convert.ToInt32(dr[\"EntryID\"])",
+            "line": 906
+          },
+          {
+            "left": "txtRefDate.SelectedDate",
+            "right": "Convert.ToDateTime(dr[\"Reff_date\"].ToString())",
+            "line": 910
+          },
+          {
+            "left": "txtRefNo.Text",
+            "right": "dr[\"Reff_No\"].ToString()",
+            "line": 911
+          },
+          {
+            "left": "cmbPayType.SelectedIndex",
+            "right": "0",
+            "line": 918
+          },
+          {
+            "left": "cmbPayType.SelectedIndex",
+            "right": "1",
+            "line": 919
+          },
+          {
+            "left": "cmbPayType.SelectedIndex",
+            "right": "2",
+            "line": 922
+          },
+          {
+            "left": "cmbBanks.SelectedValue",
+            "right": "dr[\"bank\"]",
+            "line": 923
+          },
+          {
+            "left": "cmbClient.SelectedValue",
+            "right": "dr[\"cust_id\"].ToString()",
+            "line": 928
+          },
+          {
+            "left": "cmbSalesMen.SelectedValue",
+            "right": "dr[\"salesman\"].ToString()",
+            "line": 929
+          },
+          {
+            "left": "totP",
+            "right": "taxV",
+            "line": 951
+          },
+          {
+            "left": "perc",
+            "right": "new decimal(Convert.ToDouble(dtU.Rows[0][0]))",
+            "line": 963
+          },
+          {
+            "left": "bc",
+            "right": "dtU.Rows[0][\"barcode\"].ToString()",
+            "line": 964
+          },
+          {
+            "left": "storeVal",
+            "right": "Convert.ToInt32(dt.Rows[i][\"store\"]).ToString()",
+            "line": 975
+          },
+          {
+            "left": "No",
+            "right": "(i + 1).ToString()",
+            "line": 979
+          },
+          {
+            "left": "ItemCodeDgv",
+            "right": "GetItemCode(itemId)",
+            "line": 980
+          },
+          {
+            "left": "ItemIdDgv",
+            "right": "itemId.ToString()",
+            "line": 981
+          },
+          {
+            "left": "ItemNameDgv",
+            "right": "GetItemName(itemId)",
+            "line": 982
+          },
+          {
+            "left": "DescriptionDgv",
+            "right": "dt.Rows[i][\"Description\"].ToString()",
+            "line": 983
+          },
+          {
+            "left": "barcodeDgv1",
+            "right": "bc",
+            "line": 984
+          },
+          {
+            "left": "UnitDgv",
+            "right": "GetUnitName(unitId)",
+            "line": 985
+          },
+          {
+            "left": "QuantDgv",
+            "right": "val1.ToString()",
+            "line": 986
+          },
+          {
+            "left": "PercentUnitDgv",
+            "right": "perc.ToString()",
+            "line": 987
+          },
+          {
+            "left": "totQuantDgv",
+            "right": "dt.Rows[i][\"val\"].ToString()",
+            "line": 988
+          },
+          {
+            "left": "priceDgv",
+            "right": "$\"{exPr:0.00}\"",
+            "line": 989
+          },
+          {
+            "left": "SumPriceDgv",
+            "right": "$\"{sumP:0.00}\"",
+            "line": 990
+          },
+          {
+            "left": "AvgCostDgv",
+            "right": "$\"{avrgCost:0.00}\"",
+            "line": 991
+          },
+          {
+            "left": "discountValDgv",
+            "right": "$\"{disc:0.00}\"",
+            "line": 992
+          },
+          {
+            "left": "discountPerDgv",
+            "right": "sumP > 0 ? $\"{disc / sumP * 100:0.00}\" : \"0\"",
+            "line": 993
+          },
+          {
+            "left": "totPriceDgv",
+            "right": "$\"{totP:0.00}\"",
+            "line": 994
+          },
+          {
+            "left": "VatPerDgv",
+            "right": "dt.Rows[i][\"taxperc\"].ToString()",
+            "line": 995
+          },
+          {
+            "left": "VATValDgv",
+            "right": "$\"{taxV:0.00}\"",
+            "line": 996
+          },
+          {
+            "left": "NetValDgv",
+            "right": "$\"{totP + taxV:0.00}\"",
+            "line": 997
+          },
+          {
+            "left": "StockDgv",
+            "right": "\"0\"",
+            "line": 998
+          },
+          {
+            "left": "StoreDgv",
+            "right": "storeVal",
+            "line": 999
+          },
+          {
+            "left": "cmbCostCenter.SelectedValue",
+            "right": "Convert.ToInt32(dtCC.Rows[0][\"CCcode\"])",
+            "line": 1014
+          }
+        ]
+      }
+    ],
+    "frmInvoiceSrch": [
+      {
+        "method": "RefreshDisplayRows",
+        "start": 567,
+        "end": 596,
+        "syntax_utf8_sha256": "88a774f0fbc12b8b718123bce1713c5cab63df834d72f8f4794137fee57aa472",
+        "calls": [
+          {
+            "function": "_displayRows.Clear",
+            "line": 569
+          },
+          {
+            "function": "_displayRows.Add",
+            "line": 573
+          },
+          {
+            "function": "rv[\"InvGlobalID\"]?.ToString",
+            "line": 575
+          },
+          {
+            "function": "SafeInt",
+            "line": 576
+          },
+          {
+            "function": "SafeInt",
+            "line": 577
+          },
+          {
+            "function": "rv[\"ReffNo\"]?.ToString",
+            "line": 578
+          },
+          {
+            "function": "SafeDouble",
+            "line": 579
+          },
+          {
+            "function": "SafeInt",
+            "line": 580
+          },
+          {
+            "function": "Convert.ToDateTime",
+            "line": 583
+          },
+          {
+            "function": "SafeInt",
+            "line": 584
+          },
+          {
+            "function": "rv[\"cust\"]?.ToString",
+            "line": 585
+          },
+          {
+            "function": "rv[\"notes\"]?.ToString",
+            "line": 586
+          },
+          {
+            "function": "rv[\"CashCustomerName\"]?.ToString",
+            "line": 587
+          },
+          {
+            "function": "rv[\"CashCustomerMobile\"]?.ToString",
+            "line": 588
+          },
+          {
+            "function": "rv[\"mobile\"]?.ToString",
+            "line": 589
+          },
+          {
+            "function": "rv[\"TableNo\"]?.ToString",
+            "line": 590
+          },
+          {
+            "function": "rv[\"emp\"]?.ToString",
+            "line": 591
+          },
+          {
+            "function": "UpdateStatus",
+            "line": 595
+          }
+        ],
+        "assignments": [
+          {
+            "left": "InvGlobalID",
+            "right": "rv[\"InvGlobalID\"]?.ToString()      ?? \"\"",
+            "line": 575
+          },
+          {
+            "left": "ProcType",
+            "right": "SafeInt(rv[\"proc_type\"])",
+            "line": 576
+          },
+          {
+            "left": "Id",
+            "right": "SafeInt(rv[\"id\"])",
+            "line": 577
+          },
+          {
+            "left": "ReffNo",
+            "right": "rv[\"ReffNo\"]?.ToString()           ?? \"\"",
+            "line": 578
+          },
+          {
+            "left": "Net",
+            "right": "SafeDouble(rv[\"Net\"])",
+            "line": 579
+          },
+          {
+            "left": "PayType",
+            "right": "SafeInt(rv[\"PayType\"])",
+            "line": 580
+          },
+          {
+            "left": "InvDate",
+            "right": "rv[\"date\"] == DBNull.Value\n                                        ? DateTime.MinValue\n                                        : Convert.ToDateTime(rv[\"date\"])",
+            "line": 581
+          },
+          {
+            "left": "PaymentStatus",
+            "right": "SafeInt(rv[\"PaymentStatus\"])",
+            "line": 584
+          },
+          {
+            "left": "CustomerName",
+            "right": "rv[\"cust\"]?.ToString()             ?? \"\"",
+            "line": 585
+          },
+          {
+            "left": "Notes",
+            "right": "rv[\"notes\"]?.ToString()            ?? \"\"",
+            "line": 586
+          },
+          {
+            "left": "CashCustomerName",
+            "right": "rv[\"CashCustomerName\"]?.ToString() ?? \"\"",
+            "line": 587
+          },
+          {
+            "left": "CashCustomerMobile",
+            "right": "rv[\"CashCustomerMobile\"]?.ToString() ?? \"\"",
+            "line": 588
+          },
+          {
+            "left": "Mobile",
+            "right": "rv[\"mobile\"]?.ToString()           ?? \"\"",
+            "line": 589
+          },
+          {
+            "left": "TableNo",
+            "right": "rv[\"TableNo\"]?.ToString()          ?? \"\"",
+            "line": 590
+          },
+          {
+            "left": "EmpName",
+            "right": "rv[\"emp\"]?.ToString()              ?? \"\"",
+            "line": 591
+          }
+        ]
+      },
+      {
+        "method": "dgvItems_MouseDoubleClick",
+        "start": 266,
+        "end": 284,
+        "syntax_utf8_sha256": "73736a9058189ad1c86c9185c29a76ae927360c91f86971487d16349fb85cbb7",
+        "calls": [
+          {
+            "function": "Hide",
+            "line": 277
+          },
+          {
+            "function": "DXMessageBox.Show",
+            "line": 281
+          }
+        ],
+        "assignments": [
+          {
+            "left": "ISDone",
+            "right": "true",
+            "line": 273
+          },
+          {
+            "left": "InvGlobalID",
+            "right": "row.InvGlobalID",
+            "line": 274
+          },
+          {
+            "left": "ProcType",
+            "right": "row.ProcType",
+            "line": 275
+          },
+          {
+            "left": "PayType",
+            "right": "row.PayType",
+            "line": 276
+          }
+        ]
+      },
+      {
+        "method": "BtnReturn_Click",
+        "start": 286,
+        "end": 303,
+        "syntax_utf8_sha256": "c0d1a119bea7ab9fe8301b50c4001eaa52a4a06d00e4679c952f41cbc9d23763",
+        "calls": [
+          {
+            "function": "IsPreviousReturned",
+            "line": 291
+          },
+          {
+            "function": "DXMessageBox.Show",
+            "line": 293
+          },
+          {
+            "function": "Hide",
+            "line": 302
+          }
+        ],
+        "assignments": [
+          {
+            "left": "InvGlobalID",
+            "right": "row.InvGlobalID",
+            "line": 298
+          },
+          {
+            "left": "ProcType",
+            "right": "row.ProcType",
+            "line": 299
+          },
+          {
+            "left": "PayType",
+            "right": "row.PayType",
+            "line": 300
+          },
+          {
+            "left": "ISDone",
+            "right": "true",
+            "line": 301
+          }
+        ]
+      },
+      {
+        "method": "IsPreviousReturned",
+        "start": 603,
+        "end": 619,
+        "syntax_utf8_sha256": "3fc88f2748e6fc545c136321be95f118537e41582eff240643106ea864193d26",
+        "calls": [
+          {
+            "function": "new SqlDataAdapter(query, _conn).Fill",
+            "line": 615
+          }
+        ],
+        "assignments": []
+      }
+    ],
+    "frmInvPurch": [
+      {
+        "method": "stripExport_Click",
+        "start": 2370,
+        "end": 2400,
+        "syntax_utf8_sha256": "457cb8c9c862adfc1e3edf9d6d7f36f36a697e211eaab9c20b0f4609a59308ab",
+        "calls": [
+          {
+            "function": "this.IsInvExist",
+            "line": 2374
+          },
+          {
+            "function": "MessageBox.Show",
+            "line": 2376
+          },
+          {
+            "function": "MessageBox.Show",
+            "line": 2379
+          },
+          {
+            "function": "dlg.ShowDialog",
+            "line": 2389
+          },
+          {
+            "function": "MessageBox.Show",
+            "line": 2392
+          },
+          {
+            "function": "MessageBox.Show",
+            "line": 2397
+          }
+        ],
+        "assignments": [
+          {
+            "left": "Filter",
+            "right": "\"Excel Files (*.xlsx)|*.xlsx\"",
+            "line": 2387
+          }
+        ]
+      }
+    ],
+    "frmCloseShift": [
+      {
+        "method": "ExportToExcel",
+        "start": 1708,
+        "end": 1729,
+        "syntax_utf8_sha256": "cc091f4ecd813578ef34b2cf64dc3408b3a15554b8b93cfd7995bf888656ca4e",
+        "calls": [
+          {
+            "function": "saveDialog.ShowDialog",
+            "line": 1722
+          },
+          {
+            "function": "ShowSuccess",
+            "line": 1723
+          },
+          {
+            "function": "ShowError",
+            "line": 1727
+          }
+        ],
+        "assignments": [
+          {
+            "left": "Filter",
+            "right": "\"Excel Files|*.xlsx\"",
+            "line": 1718
+          },
+          {
+            "left": "FileName",
+            "right": "$\"إغلاقات_اليومية_{DateTime.Now:yyyyMMdd}\"",
+            "line": 1719
+          }
+        ]
+      }
+    ],
+    "frmEmpInvs": [
+      {
+        "method": "WireUpEvents",
+        "start": 91,
+        "end": 103,
+        "syntax_utf8_sha256": "6673ad77a75b3cbfa5bf792629598d1df1174bd3e0a2cac961e87d729f2070ef",
+        "calls": [
+          {
+            "function": "new Thread(ShowResult) { IsBackground = true }.Start",
+            "line": 93
+          },
+          {
+            "function": "Close",
+            "line": 94
+          },
+          {
+            "function": "PrintDevexpress",
+            "line": 95
+          },
+          {
+            "function": "PrintDevexpress",
+            "line": 96
+          },
+          {
+            "function": "Close",
+            "line": 99
+          }
+        ],
+        "assignments": [
+          {
+            "left": "btnShow.Click",
+            "right": "(s, e) => { showres = 1; new Thread(ShowResult) { IsBackground = true }.Start(); }",
+            "line": 93
+          },
+          {
+            "left": "showres",
+            "right": "1",
+            "line": 93
+          },
+          {
+            "left": "IsBackground",
+            "right": "true",
+            "line": 93
+          },
+          {
+            "left": "btnClose.Click",
+            "right": "(s, e) => Close()",
+            "line": 94
+          },
+          {
+            "left": "btnPrint.Click",
+            "right": "(s, e) => PrintDevexpress(1)",
+            "line": 95
+          },
+          {
+            "left": "btnPreview.Click",
+            "right": "(s, e) => PrintDevexpress(2)",
+            "line": 96
+          },
+          {
+            "left": "btnExport.Click",
+            "right": "BtnExport_Click",
+            "line": 97
+          },
+          {
+            "left": "btnClosedCasher.Click",
+            "right": "(s, e) => Close()",
+            "line": 99
+          },
+          {
+            "left": "chkAll.Checked",
+            "right": "ChkAll_Changed",
+            "line": 101
+          },
+          {
+            "left": "chkAll.Unchecked",
+            "right": "ChkAll_Changed",
+            "line": 102
+          }
+        ]
+      },
+      {
+        "method": "BtnExport_Click",
+        "start": 594,
+        "end": 629,
+        "syntax_utf8_sha256": "d3c980e4e6fc4473fb59707f04300b0635f861632f44b30976fc3baeb946aa76",
+        "calls": [
+          {
+            "function": "ShowWarning",
+            "line": 598
+          },
+          {
+            "function": "saveDialog.ShowDialog",
+            "line": 610
+          },
+          {
+            "function": "DXMessageBox.Show",
+            "line": 615
+          },
+          {
+            "function": "Process.Start",
+            "line": 619
+          },
+          {
+            "function": "ShowError",
+            "line": 626
+          }
+        ],
+        "assignments": [
+          {
+            "left": "Filter",
+            "right": "\"Excel Files (*.xlsx)|*.xlsx\"",
+            "line": 604
+          },
+          {
+            "left": "DefaultExt",
+            "right": "\".xlsx\"",
+            "line": 605
+          },
+          {
+            "left": "FileName",
+            "right": "$\"{cmbEmps.Text}_مبيعات_ومشتريات_{DateTime.Now:yyyy-MM-dd}\"",
+            "line": 606
+          },
+          {
+            "left": "UseShellExecute",
+            "right": "true",
+            "line": 621
+          }
+        ]
+      }
+    ],
+    "frmAccountsDirectory": [
+      {
+        "method": "btnExportExcel_Click",
+        "start": 736,
+        "end": 764,
+        "syntax_utf8_sha256": "355ecc5325be381d053ce6331e46cb0431bb54e91af7a50f1f9be7ea8406c5bb",
+        "calls": [
+          {
+            "function": "saveDialog.ShowDialog",
+            "line": 746
+          },
+          {
+            "function": "ExportToExcel",
+            "line": 748
+          },
+          {
+            "function": "MessageBox.Show",
+            "line": 750
+          },
+          {
+            "function": "Process.Start",
+            "line": 755
+          },
+          {
+            "function": "MessageBox.Show",
+            "line": 761
+          }
+        ],
+        "assignments": [
+          {
+            "left": "Filter",
+            "right": "\"Excel Files|*.xlsx\"",
+            "line": 742
+          },
+          {
+            "left": "FileName",
+            "right": "$\"دليل_الحسابات_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx\"",
+            "line": 743
+          },
+          {
+            "left": "UseShellExecute",
+            "right": "true",
+            "line": 755
+          }
+        ]
+      },
+      {
+        "method": "ExportToExcel",
+        "start": 766,
+        "end": 782,
+        "syntax_utf8_sha256": "ee7507cbb820ac5c8294b057fae73bb42e32c868425339ae1f917297ac55b13a",
+        "calls": [
+          {
+            "function": "MessageBox.Show",
+            "line": 775
+          }
+        ],
+        "assignments": []
+      }
+    ],
+    "frmEntriesSyncStatus": [
+      {
+        "method": "BindToData",
+        "start": 572,
+        "end": 591,
+        "syntax_utf8_sha256": "32469fb0d9af5322df2b4dfad39daddf2dd37f416e0033d385f71d7c51ddb125",
+        "calls": [
+          {
+            "function": "UtilitiesProj.Common.ToDataTable",
+            "line": 586
+          },
+          {
+            "function": "dataSet.Tables.Add",
+            "line": 587
+          },
+          {
+            "function": "inventoryList.Clear",
+            "line": 588
+          }
+        ],
+        "assignments": []
+      },
+      {
+        "method": "PrintDevexpress",
+        "start": 684,
+        "end": 767,
+        "syntax_utf8_sha256": "f9e02e962e217e740e97b717fc4e396a563e4f7875d14e7ef8f2af7808e48748",
+        "calls": [
+          {
+            "function": "ShowMessage",
+            "line": 694
+          },
+          {
+            "function": "string.IsNullOrEmpty",
+            "line": 699
+          },
+          {
+            "function": "ShowMessage",
+            "line": 701
+          },
+          {
+            "function": "Directory.Exists",
+            "line": 707
+          },
+          {
+            "function": "File.Exists",
+            "line": 707
+          },
+          {
+            "function": "ShowMessage",
+            "line": 709
+          },
+          {
+            "function": "string.IsNullOrEmpty",
+            "line": 713
+          },
+          {
+            "function": "ShowMessage",
+            "line": 715
+          },
+          {
+            "function": "XtraReport.FromFile",
+            "line": 722
+          },
+          {
+            "function": "BindToData",
+            "line": 723
+          },
+          {
+            "function": "File.Exists",
+            "line": 727
+          },
+          {
+            "function": "XtraReport.FromFile",
+            "line": 729
+          },
+          {
+            "function": "mainReport.FindControl",
+            "line": 732
+          },
+          {
+            "function": "string.IsNullOrEmpty",
+            "line": 740
+          },
+          {
+            "function": "mainReport.Print",
+            "line": 748
+          },
+          {
+            "function": "mainReport.ShowPreviewDialog",
+            "line": 753
+          },
+          {
+            "function": "mainReport.Dispose",
+            "line": 756
+          },
+          {
+            "function": "ShowMessage",
+            "line": 760
+          },
+          {
+            "function": "ShowError",
+            "line": 765
+          }
+        ],
+        "assignments": [
+          {
+            "left": "RptUrl",
+            "right": "MainClass.ReportsPath",
+            "line": 686
+          },
+          {
+            "left": "defPrinter",
+            "right": "MainClass.ReportsPrinter",
+            "line": 687
+          },
+          {
+            "left": "RptName",
+            "right": "\"rptInvsProfitSales.repx\"",
+            "line": 688
+          },
+          {
+            "left": "mainReport.DataSource",
+            "right": "BindToData()",
+            "line": 723
+          },
+          {
+            "left": "headerReport.DataSource",
+            "right": "Common.FoundationInfoDT",
+            "line": 730
+          },
+          {
+            "left": "headerSubreport.ReportSource",
+            "right": "headerReport",
+            "line": 735
+          },
+          {
+            "left": "mainReport.PrinterName",
+            "right": "defPrinter",
+            "line": 742
+          }
+        ]
+      }
+    ],
+    "frmReceiptsSyncStatus": [
+      {
+        "method": "BindToData",
+        "start": 545,
+        "end": 551,
+        "syntax_utf8_sha256": "b5aea9f3c0a5b6f6fcd24b0ddd46d9fa94de6a909dd792bfcd05425ab85e4e19",
+        "calls": [
+          {
+            "function": "ds.Tables.Add",
+            "line": 549
+          },
+          {
+            "function": "global::UtilitiesProj.Common.ToDataTable",
+            "line": 549
+          }
+        ],
+        "assignments": []
+      },
+      {
+        "method": "PrintDevexpress",
+        "start": 553,
+        "end": 620,
+        "syntax_utf8_sha256": "c1fc6c871a7378a3b5e1f53c669f5869f294a9ead5cd6d2de2f3865008e3617b",
+        "calls": [
+          {
+            "function": "DXMessageBox.Show",
+            "line": 561
+          },
+          {
+            "function": "string.IsNullOrEmpty",
+            "line": 566
+          },
+          {
+            "function": "DXMessageBox.Show",
+            "line": 568
+          },
+          {
+            "function": "Path.Combine",
+            "line": 573
+          },
+          {
+            "function": "Directory.Exists",
+            "line": 574
+          },
+          {
+            "function": "File.Exists",
+            "line": 574
+          },
+          {
+            "function": "DXMessageBox.Show",
+            "line": 576
+          },
+          {
+            "function": "XtraReport.FromFile",
+            "line": 583
+          },
+          {
+            "function": "BindToData",
+            "line": 584
+          },
+          {
+            "function": "Path.Combine",
+            "line": 586
+          },
+          {
+            "function": "File.Exists",
+            "line": 587
+          },
+          {
+            "function": "XtraReport.FromFile",
+            "line": 589
+          },
+          {
+            "function": "report.FindControl",
+            "line": 591
+          },
+          {
+            "function": "string.IsNullOrEmpty",
+            "line": 595
+          },
+          {
+            "function": "DXMessageBox.Show",
+            "line": 597
+          },
+          {
+            "function": "report.Print",
+            "line": 607
+          },
+          {
+            "function": "report.ShowPreviewDialog",
+            "line": 611
+          },
+          {
+            "function": "report.Dispose",
+            "line": 614
+          },
+          {
+            "function": "DXMessageBox.Show",
+            "line": 618
+          }
+        ],
+        "assignments": [
+          {
+            "left": "_rptUrl",
+            "right": "MainClass.ReportsPath",
+            "line": 555
+          },
+          {
+            "left": "_defPrinter",
+            "right": "MainClass.ReportsPrinter",
+            "line": 556
+          },
+          {
+            "left": "_rptName",
+            "right": "\"rptInvsProfitSales.repx\"",
+            "line": 557
+          },
+          {
+            "left": "report.DataSource",
+            "right": "BindToData()",
+            "line": 584
+          },
+          {
+            "left": "headerRpt.DataSource",
+            "right": "Common.FoundationInfoDT",
+            "line": 590
+          },
+          {
+            "left": "subHeader.ReportSource",
+            "right": "headerRpt",
+            "line": 592
+          },
+          {
+            "left": "report.PrinterName",
+            "right": "_defPrinter",
+            "line": 602
+          }
+        ]
+      }
+    ],
+    "frmInventoryTransfer": [
+      {
+        "method": "StripImportInv_Click",
+        "start": 1807,
+        "end": 1826,
+        "syntax_utf8_sha256": "736f4aa34a3ac7a47f3218f6ecadd1fa056de49d66f997366e4408de38012fdf",
+        "calls": [
+          {
+            "function": "frm.ShowDialog",
+            "line": 1812
+          },
+          {
+            "function": "Navigate",
+            "line": 1814
+          },
+          {
+            "function": "LoadInvoiceNumber",
+            "line": 1818
+          },
+          {
+            "function": "BindingControls",
+            "line": 1820
+          },
+          {
+            "function": "ShowError",
+            "line": 1824
+          }
+        ],
+        "assignments": [
+          {
+            "left": "_invoic.InvoiceType",
+            "right": "(InvoiceType)InvType",
+            "line": 1815
+          },
+          {
+            "left": "_invoic.ProcType",
+            "right": "ProcType",
+            "line": 1816
+          },
+          {
+            "left": "_invoic.InvNote",
+            "right": "\"\"",
+            "line": 1817
+          },
+          {
+            "left": "_invoic.ISNew",
+            "right": "true",
+            "line": 1819
+          }
+        ]
+      },
+      {
+        "method": "LoadInvoiceNumber",
+        "start": 329,
+        "end": 344,
+        "syntax_utf8_sha256": "4af9b620f48cecb8f6052861cf392334b32d5335dc4b109da74ec65cf2bd2bb5",
+        "calls": [
+          {
+            "function": "InvoiceOper.InvoiceNo",
+            "line": 333
+          },
+          {
+            "function": "_invoic.InvoiceNo.ToString",
+            "line": 334
+          },
+          {
+            "function": "string.Concat",
+            "line": 335
+          },
+          {
+            "function": "ProcType.ToString",
+            "line": 337
+          },
+          {
+            "function": "_invoic.InvoiceNo.ToString",
+            "line": 338
+          },
+          {
+            "function": "ShowError",
+            "line": 342
+          }
+        ],
+        "assignments": [
+          {
+            "left": "_invoic.InvoiceNo",
+            "right": "InvoiceOper.InvoiceNo(InvType, ProcType, _invObj.Prefixe)",
+            "line": 333
+          },
+          {
+            "left": "txtNo.Text",
+            "right": "_invoic.InvoiceNo.ToString()",
+            "line": 334
+          },
+          {
+            "left": "_invoic.InvCombinedId",
+            "right": "string.Concat(\n                    MainClass.BranchCode + _invObj.InvoiceCode,\n                    ProcType.ToString(),\n                    _invoic.InvoiceNo.ToString())",
+            "line": 335
+          }
+        ]
+      },
+      {
+        "method": "btnInvSrch_Click",
+        "start": 1642,
+        "end": 1657,
+        "syntax_utf8_sha256": "6c65c09f47b51d92bfefa3dfead6bb1828cdd5d69e5e38a04a92b79272f01e6c",
+        "calls": [
+          {
+            "function": "MainClass.ApplyPermissionToForm",
+            "line": 1647
+          },
+          {
+            "function": "MainClass.DoApplyUserSett",
+            "line": 1648
+          },
+          {
+            "function": "frm.ShowDialog",
+            "line": 1649
+          },
+          {
+            "function": "Navigate",
+            "line": 1651
+          },
+          {
+            "function": "ShowError",
+            "line": 1655
+          }
+        ],
+        "assignments": [
+          {
+            "left": "ProcType",
+            "right": "2",
+            "line": 1646
+          },
+          {
+            "left": "InvType",
+            "right": "8",
+            "line": 1646
+          }
+        ]
+      },
+      {
+        "method": "btnReceiveQuantity_Click",
+        "start": 1659,
+        "end": 1685,
+        "syntax_utf8_sha256": "4b0205fe0c20ab843704890ef47e6c5887212872feee565eb81aa4d2e09f9aae",
+        "calls": [
+          {
+            "function": "MainClass.ApplyPermissionToForm",
+            "line": 1665
+          },
+          {
+            "function": "MainClass.DoApplyUserSett",
+            "line": 1666
+          },
+          {
+            "function": "frm.ShowDialog",
+            "line": 1670
+          },
+          {
+            "function": "Navigate",
+            "line": 1673
+          },
+          {
+            "function": "LoadInvoiceNumber",
+            "line": 1677
+          },
+          {
+            "function": "ShowError",
+            "line": 1683
+          }
+        ],
+        "assignments": [
+          {
+            "left": "frm.cmbProcType.IsEnabled",
+            "right": "false",
+            "line": 1664
+          },
+          {
+            "left": "frm.ProcType",
+            "right": "1",
+            "line": 1667
+          },
+          {
+            "left": "frm.InvType",
+            "right": "8",
+            "line": 1668
+          },
+          {
+            "left": "frm.Cond",
+            "right": "\" AND InvoiceStatus = 1\"",
+            "line": 1669
+          },
+          {
+            "left": "_invoic.ProcType",
+            "right": "1",
+            "line": 1675
+          },
+          {
+            "left": "ProcType",
+            "right": "1",
+            "line": 1676
+          },
+          {
+            "left": "lblReceiveTransfer.Visibility",
+            "right": "Visibility.Visible",
+            "line": 1679
+          }
+        ]
+      },
+      {
+        "method": "BtnInvertoryOrder_Click",
+        "start": 1687,
+        "end": 1711,
+        "syntax_utf8_sha256": "21ba3696c044527c34140022f08994bb76f90ae502eeb47a79486ead9a7a12fb",
+        "calls": [
+          {
+            "function": "MainClass.ApplyPermissionToForm",
+            "line": 1693
+          },
+          {
+            "function": "MainClass.DoApplyUserSett",
+            "line": 1694
+          },
+          {
+            "function": "frm.ShowDialog",
+            "line": 1697
+          },
+          {
+            "function": "Navigate",
+            "line": 1700
+          },
+          {
+            "function": "LoadInvoiceNumber",
+            "line": 1704
+          },
+          {
+            "function": "ShowError",
+            "line": 1709
+          }
+        ],
+        "assignments": [
+          {
+            "left": "frm.cmbProcType.IsEnabled",
+            "right": "false",
+            "line": 1692
+          },
+          {
+            "left": "frm.ProcType",
+            "right": "1",
+            "line": 1695
+          },
+          {
+            "left": "frm.InvType",
+            "right": "14",
+            "line": 1696
+          },
+          {
+            "left": "_invoic.InvoiceType",
+            "right": "InvoiceType.SafesTransferTo",
+            "line": 1702
+          },
+          {
+            "left": "_invoic.ProcType",
+            "right": "2",
+            "line": 1703
+          },
+          {
+            "left": "_invoic.ISNew",
+            "right": "true",
+            "line": 1705
+          }
+        ]
+      },
+      {
+        "method": "btnInsertPurch_Click",
+        "start": 1713,
+        "end": 1737,
+        "syntax_utf8_sha256": "8becfd8ccf1ce2fabf6e7ebc753a208504df65b4da5a4d0e5fda8a6bee6f832e",
+        "calls": [
+          {
+            "function": "MainClass.ApplyPermissionToForm",
+            "line": 1719
+          },
+          {
+            "function": "MainClass.DoApplyUserSett",
+            "line": 1720
+          },
+          {
+            "function": "frm.ShowDialog",
+            "line": 1723
+          },
+          {
+            "function": "Navigate",
+            "line": 1726
+          },
+          {
+            "function": "LoadInvoiceNumber",
+            "line": 1730
+          },
+          {
+            "function": "ShowError",
+            "line": 1735
+          }
+        ],
+        "assignments": [
+          {
+            "left": "frm.cmbProcType.IsEnabled",
+            "right": "false",
+            "line": 1718
+          },
+          {
+            "left": "frm.ProcType",
+            "right": "1",
+            "line": 1721
+          },
+          {
+            "left": "frm.InvType",
+            "right": "1",
+            "line": 1722
+          },
+          {
+            "left": "_invoic.InvoiceType",
+            "right": "InvoiceType.SafesTransferTo",
+            "line": 1728
+          },
+          {
+            "left": "_invoic.ProcType",
+            "right": "2",
+            "line": 1729
+          },
+          {
+            "left": "_invoic.ISNew",
+            "right": "true",
+            "line": 1731
+          }
+        ]
+      }
+    ],
+    "frmInvInputOutput": [
+      {
+        "method": "StripImportInv_Click",
+        "start": 1788,
+        "end": 1805,
+        "syntax_utf8_sha256": "4a02fc87bf91d608041012d62749589b8df6fd16cbdf73acbf608435825251ea",
+        "calls": [
+          {
+            "function": "dlg.ShowDialog",
+            "line": 1792
+          },
+          {
+            "function": "Navigate",
+            "line": 1796
+          },
+          {
+            "function": "LoadInvNo",
+            "line": 1801
+          },
+          {
+            "function": "BindingControls",
+            "line": 1803
+          }
+        ],
+        "assignments": [
+          {
+            "left": "popupMenu.IsOpen",
+            "right": "false",
+            "line": 1790
+          },
+          {
+            "left": "Invoic.InvoiceType",
+            "right": "(InvoiceType)InvType",
+            "line": 1798
+          },
+          {
+            "left": "Invoic.ProcType",
+            "right": "ProcType",
+            "line": 1799
+          },
+          {
+            "left": "Invoic.InvNote",
+            "right": "\"\"",
+            "line": 1800
+          },
+          {
+            "left": "Invoic.ISNew",
+            "right": "true",
+            "line": 1802
+          }
+        ]
+      },
+      {
+        "method": "stripExport_Click",
+        "start": 1674,
+        "end": 1712,
+        "syntax_utf8_sha256": "82566514e2fb253ab5f21eaf4e6a98fdfca6f00bcafe27d4f11f4d34051e1df7",
+        "calls": [
+          {
+            "function": "isInvExist",
+            "line": 1679
+          },
+          {
+            "function": "DXMessageBox.Show",
+            "line": 1681
+          },
+          {
+            "function": "DXMessageBox.Show",
+            "line": 1685
+          },
+          {
+            "function": "saveDialog.ShowDialog",
+            "line": 1694
+          },
+          {
+            "function": "ExportDataGridToExcel",
+            "line": 1699
+          },
+          {
+            "function": "System.Diagnostics.Process.Start",
+            "line": 1701
+          },
+          {
+            "function": "DXMessageBox.Show",
+            "line": 1705
+          },
+          {
+            "function": "DXMessageBox.Show",
+            "line": 1709
+          }
+        ],
+        "assignments": [
+          {
+            "left": "popupMenu.IsOpen",
+            "right": "false",
+            "line": 1676
+          },
+          {
+            "left": "Filter",
+            "right": "\"Excel Files (*.xlsx)|*.xlsx\"",
+            "line": 1692
+          },
+          {
+            "left": "UseShellExecute",
+            "right": "true",
+            "line": 1703
+          }
+        ]
+      },
+      {
+        "method": "ExportDataGridToExcel",
+        "start": 1714,
+        "end": 1746,
+        "syntax_utf8_sha256": "3fff6f68e4a73a31a670bef35db1ca0cb75b23845ecfbd8508a954b7373ddfbb",
+        "calls": [
+          {
+            "function": "grid.Columns\n                .Where(c => c.Visibility == Visibility.Visible)\n                .Select",
+            "line": 1721
+          },
+          {
+            "function": "grid.Columns\n                .Where",
+            "line": 1721
+          },
+          {
+            "function": "c.Header?.ToString",
+            "line": 1723
+          },
+          {
+            "function": "writer.WriteLine",
+            "line": 1724
+          },
+          {
+            "function": "string.Join",
+            "line": 1724
+          },
+          {
+            "function": "item.ItemRowIndex.ToString",
+            "line": 1731
+          },
+          {
+            "function": "item.ItemQuantity.ToString",
+            "line": 1736
+          },
+          {
+            "function": "item.ItemPrice.ToString",
+            "line": 1737
+          },
+          {
+            "function": "item.ItemSumPrice.ToString",
+            "line": 1738
+          },
+          {
+            "function": "item.ItemDiscount.ToString",
+            "line": 1739
+          },
+          {
+            "function": "item.ItemVat.ToString",
+            "line": 1740
+          },
+          {
+            "function": "item.ItemNetPrice.ToString",
+            "line": 1741
+          },
+          {
+            "function": "writer.WriteLine",
+            "line": 1744
+          },
+          {
+            "function": "string.Join",
+            "line": 1744
+          }
+        ],
+        "assignments": []
+      }
+    ],
+    "frmInvPOS": [
+      {
+        "method": "StripImportInv_Click",
+        "start": 2884,
+        "end": 2899,
+        "syntax_utf8_sha256": "4030949f8c1d45563ac76c10303d3851e6374d2639de20bef9d6ebb3897b7674",
+        "calls": [
+          {
+            "function": "frm.ShowDialog",
+            "line": 2887
+          },
+          {
+            "function": "Navigate",
+            "line": 2890
+          },
+          {
+            "function": "LoadInvNo",
+            "line": 2896
+          },
+          {
+            "function": "BindingControls",
+            "line": 2898
+          }
+        ],
+        "assignments": [
+          {
+            "left": "Invoic.InvoiceType",
+            "right": "(InvoiceType)InvType",
+            "line": 2893
+          },
+          {
+            "left": "Invoic.ProcType",
+            "right": "ProcType",
+            "line": 2894
+          },
+          {
+            "left": "Invoic.InvNote",
+            "right": "\"\"",
+            "line": 2895
+          },
+          {
+            "left": "Invoic.ISNew",
+            "right": "true",
+            "line": 2897
+          }
+        ]
+      },
+      {
+        "method": "stripExport_Click",
+        "start": 2832,
+        "end": 2855,
+        "syntax_utf8_sha256": "6cfd5cdf2a9160d76babc5b48f6573869385709a1f42cfce5f0f166764ae66aa",
+        "calls": [
+          {
+            "function": "dlg.ShowDialog",
+            "line": 2841
+          },
+          {
+            "function": "ExportDataGridToExcel",
+            "line": 2843
+          },
+          {
+            "function": "System.Diagnostics.Process.Start",
+            "line": 2844
+          },
+          {
+            "function": "DXMessageBox.Show",
+            "line": 2847
+          },
+          {
+            "function": "DXMessageBox.Show",
+            "line": 2852
+          }
+        ],
+        "assignments": [
+          {
+            "left": "Filter",
+            "right": "\"Excel Files (*.xlsx)|*.xlsx\"",
+            "line": 2838
+          },
+          {
+            "left": "UseShellExecute",
+            "right": "true",
+            "line": 2846
+          }
+        ]
+      },
+      {
+        "method": "ExportDataGridToExcel",
+        "start": 3009,
+        "end": 3047,
+        "syntax_utf8_sha256": "521b6b7e9489a18a4d8ccabfde86288d452602c2fb377a3a8e7f664a23b67f5b",
+        "calls": [
+          {
+            "function": "sb.Append",
+            "line": 3020
+          },
+          {
+            "function": "col.Header.ToString",
+            "line": 3020
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 3022
+          },
+          {
+            "function": "sb.Append",
+            "line": 3029
+          },
+          {
+            "function": "sb.Append",
+            "line": 3030
+          },
+          {
+            "function": "sb.Append",
+            "line": 3031
+          },
+          {
+            "function": "sb.Append",
+            "line": 3032
+          },
+          {
+            "function": "sb.Append",
+            "line": 3033
+          },
+          {
+            "function": "sb.Append",
+            "line": 3034
+          },
+          {
+            "function": "sb.Append",
+            "line": 3035
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 3036
+          },
+          {
+            "function": "File.WriteAllText",
+            "line": 3040
+          },
+          {
+            "function": "sb.ToString",
+            "line": 3040
+          },
+          {
+            "function": "DXMessageBox.Show",
+            "line": 3044
+          }
+        ],
+        "assignments": []
+      }
+    ],
+    "frmInvoiceDeliveries": [
+      {
+        "method": "btnExportExcel_Click",
+        "start": 132,
+        "end": 162,
+        "syntax_utf8_sha256": "8aadd188b31b1a4d00b9f735833926780f31c2b98f4af52a60021d2e8f549e7e",
+        "calls": [
+          {
+            "function": "DXMessageBox.Show",
+            "line": 138
+          },
+          {
+            "function": "Path.Combine",
+            "line": 146
+          },
+          {
+            "function": "Environment.GetFolderPath",
+            "line": 147
+          },
+          {
+            "function": "ExportToExcel",
+            "line": 151
+          },
+          {
+            "function": "Process.Start",
+            "line": 152
+          },
+          {
+            "function": "DXMessageBox.Show",
+            "line": 156
+          }
+        ],
+        "assignments": [
+          {
+            "left": "UseShellExecute",
+            "right": "true",
+            "line": 152
+          }
+        ]
+      },
+      {
+        "method": "ExportToExcel",
+        "start": 872,
+        "end": 892,
+        "syntax_utf8_sha256": "edbce22e2bdab983286bc54d408f6e27e7ac2673e1bfbf11022c29b597e1e2de",
+        "calls": [
+          {
+            "function": "table.Columns.Add",
+            "line": 875
+          },
+          {
+            "function": "table.Columns.Add",
+            "line": 876
+          },
+          {
+            "function": "table.Columns.Add",
+            "line": 877
+          },
+          {
+            "function": "table.Columns.Add",
+            "line": 878
+          },
+          {
+            "function": "table.Columns.Add",
+            "line": 879
+          },
+          {
+            "function": "table.Rows.Add",
+            "line": 883
+          },
+          {
+            "function": "row.InvDate.ToString",
+            "line": 885
+          },
+          {
+            "function": "row.InvTotal.ToString",
+            "line": 887
+          },
+          {
+            "function": "table.WriteXml",
+            "line": 891
+          }
+        ],
+        "assignments": []
+      }
+    ],
+    "frmInvSale": [
+      {
+        "method": "stripExport_Click",
+        "start": 3295,
+        "end": 3329,
+        "syntax_utf8_sha256": "4a245dcc0bc236799bdac7e37404213bfef7e10222e9175b8cba145891f2fd16",
+        "calls": [
+          {
+            "function": "isInvExist",
+            "line": 3299
+          },
+          {
+            "function": "MessageBox.Show",
+            "line": 3301
+          },
+          {
+            "function": "MessageBox.Show",
+            "line": 3304
+          },
+          {
+            "function": "dlg.ShowDialog",
+            "line": 3313
+          },
+          {
+            "function": "ExportDataGridToExcel",
+            "line": 3316
+          },
+          {
+            "function": "System.Diagnostics.Process.Start",
+            "line": 3317
+          },
+          {
+            "function": "MessageBox.Show",
+            "line": 3320
+          },
+          {
+            "function": "Logger.Error",
+            "line": 3325
+          },
+          {
+            "function": "MessageBox.Show",
+            "line": 3326
+          }
+        ],
+        "assignments": [
+          {
+            "left": "Filter",
+            "right": "\"Excel Files(*.xlsx)|*.xlsx\"",
+            "line": 3311
+          },
+          {
+            "left": "UseShellExecute",
+            "right": "true",
+            "line": 3319
+          }
+        ]
+      },
+      {
+        "method": "ExportDataGridToExcel",
+        "start": 3747,
+        "end": 3776,
+        "syntax_utf8_sha256": "02077119745c74408de8d9a20b94cdc903d07871a8800f3be134322aac1267dd",
+        "calls": [
+          {
+            "function": "GridControl1.Columns\n                .Where(c => c.Visibility == Visibility.Visible)\n                .Select",
+            "line": 3752
+          },
+          {
+            "function": "GridControl1.Columns\n                .Where",
+            "line": 3752
+          },
+          {
+            "function": "c.Header?.ToString",
+            "line": 3754
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 3755
+          },
+          {
+            "function": "string.Join",
+            "line": 3755
+          },
+          {
+            "function": "item.ItemRowIndex.ToString",
+            "line": 3761
+          },
+          {
+            "function": "item.ItemQuantity.ToString",
+            "line": 3765
+          },
+          {
+            "function": "item.ItemPrice.ToString",
+            "line": 3766
+          },
+          {
+            "function": "item.ItemSumPrice.ToString",
+            "line": 3767
+          },
+          {
+            "function": "item.ItemDiscount.ToString",
+            "line": 3768
+          },
+          {
+            "function": "item.ItemVat.ToString",
+            "line": 3769
+          },
+          {
+            "function": "item.ItemNetPrice.ToString",
+            "line": 3770
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 3772
+          },
+          {
+            "function": "string.Join",
+            "line": 3772
+          },
+          {
+            "function": "File.WriteAllText",
+            "line": 3774
+          },
+          {
+            "function": "sb.ToString",
+            "line": 3774
+          }
+        ],
+        "assignments": []
+      }
+    ],
+    "frmCustAccountGet": [
+      {
+        "method": "ExportToExcel",
+        "start": 760,
+        "end": 811,
+        "syntax_utf8_sha256": "f290c510ccbfb53c7eab76abff51292412b551e09e479346580fdbed7e9122ac",
+        "calls": [
+          {
+            "function": "DXMessageBox.Show",
+            "line": 767
+          },
+          {
+            "function": "dlg.ShowDialog",
+            "line": 778
+          },
+          {
+            "function": "Path.GetExtension(filePath).ToLower",
+            "line": 781
+          },
+          {
+            "function": "Path.GetExtension",
+            "line": 781
+          },
+          {
+            "function": "ExportToCsv",
+            "line": 785
+          },
+          {
+            "function": "ExportToCsv",
+            "line": 794
+          },
+          {
+            "function": "ExportToCsv",
+            "line": 798
+          },
+          {
+            "function": "Process.Start",
+            "line": 802
+          },
+          {
+            "function": "ShowError",
+            "line": 809
+          }
+        ],
+        "assignments": [
+          {
+            "left": "Filter",
+            "right": "\"Excel Files (*.xlsx)|*.xlsx|CSV Files (*.csv)|*.csv\"",
+            "line": 774
+          },
+          {
+            "left": "FileName",
+            "right": "$\"{this.Title}_{DateTime.Now:yyyyMMdd}.xlsx\"",
+            "line": 775
+          },
+          {
+            "left": "UseShellExecute",
+            "right": "true",
+            "line": 804
+          }
+        ]
+      },
+      {
+        "method": "ExportToCsv",
+        "start": 813,
+        "end": 837,
+        "syntax_utf8_sha256": "e4e8023ce262a6fef35760fd6aabbf62363079859890307f902cea999a1b10c9",
+        "calls": [
+          {
+            "function": "columns.Add",
+            "line": 821
+          },
+          {
+            "function": "writer.WriteLine",
+            "line": 822
+          },
+          {
+            "function": "string.Join",
+            "line": 822
+          },
+          {
+            "function": "row[col]?.ToString()?.Replace",
+            "line": 831
+          },
+          {
+            "function": "row[col]?.ToString",
+            "line": 831
+          },
+          {
+            "function": "values.Add",
+            "line": 832
+          },
+          {
+            "function": "writer.WriteLine",
+            "line": 834
+          },
+          {
+            "function": "string.Join",
+            "line": 834
+          }
+        ],
+        "assignments": []
+      },
+      {
+        "method": "BtnExport_Click",
+        "start": 872,
+        "end": 875,
+        "syntax_utf8_sha256": "9167681511bf8cc063aa7f7983787c1ecab354c41c02c51fcba79174a12b523d",
+        "calls": [
+          {
+            "function": "ExportToExcel",
+            "line": 874
+          }
+        ],
+        "assignments": []
+      }
+    ],
+    "FrmNewEntry": [
+      {
+        "method": "btnExport_Click",
+        "start": 1050,
+        "end": 1079,
+        "syntax_utf8_sha256": "e4024bcd8a81ca67ecba41347295c1c5d61d60fc7def96000b17edfa13f120c6",
+        "calls": [
+          {
+            "function": "IsEntryExist",
+            "line": 1054
+          },
+          {
+            "function": "DXMessageBox.Show",
+            "line": 1056
+          },
+          {
+            "function": "DXMessageBox.Show",
+            "line": 1060
+          },
+          {
+            "function": "saveDialog.ShowDialog",
+            "line": 1070
+          },
+          {
+            "function": "ExportToHtml",
+            "line": 1072
+          },
+          {
+            "function": "Process.Start",
+            "line": 1073
+          },
+          {
+            "function": "ShowError",
+            "line": 1077
+          }
+        ],
+        "assignments": [
+          {
+            "left": "FileName",
+            "right": "\"قيد_يومية\"",
+            "line": 1065
+          },
+          {
+            "left": "Filter",
+            "right": "\"Excel File (*.xls)|*.xls|CSV File (*.csv)|*.csv\"",
+            "line": 1066
+          },
+          {
+            "left": "DefaultExt",
+            "right": "\".xls\"",
+            "line": 1067
+          },
+          {
+            "left": "UseShellExecute",
+            "right": "true",
+            "line": 1073
+          }
+        ]
+      },
+      {
+        "method": "ExportToHtml",
+        "start": 1081,
+        "end": 1102,
+        "syntax_utf8_sha256": "20bc5a30664a588d4066df63460a95eca2ab0fb94dd201cf50f07927bb70cb0a",
+        "calls": [
+          {
+            "function": "sb.AppendLine",
+            "line": 1084
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 1085
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 1086
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 1087
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 1088
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 1089
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 1090
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 1094
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 1095
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 1096
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 1097
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 1100
+          },
+          {
+            "function": "File.WriteAllText",
+            "line": 1101
+          },
+          {
+            "function": "sb.ToString",
+            "line": 1101
+          }
+        ],
+        "assignments": []
+      }
+    ],
+    "frmNetsales": [
+      {
+        "method": "btnExport_Click",
+        "start": 313,
+        "end": 339,
+        "syntax_utf8_sha256": "3d1221ab48471976a5109b2cf51ce7da49543e8e355293cc7a971e001f4e0555",
+        "calls": [
+          {
+            "function": "DXMessageBox.Show",
+            "line": 319
+          },
+          {
+            "function": "saveDialog.ShowDialog",
+            "line": 330
+          },
+          {
+            "function": "ExportToExcelHtml",
+            "line": 332
+          },
+          {
+            "function": "Process.Start",
+            "line": 333
+          },
+          {
+            "function": "ShowError",
+            "line": 337
+          }
+        ],
+        "assignments": [
+          {
+            "left": "FileName",
+            "right": "\"صافي_المبيعات\"",
+            "line": 325
+          },
+          {
+            "left": "Filter",
+            "right": "\"Excel File (*.xls)|*.xls|CSV File (*.csv)|*.csv\"",
+            "line": 326
+          },
+          {
+            "left": "DefaultExt",
+            "right": "\".xls\"",
+            "line": 327
+          },
+          {
+            "left": "UseShellExecute",
+            "right": "true",
+            "line": 333
+          }
+        ]
+      },
+      {
+        "method": "ExportToExcelHtml",
+        "start": 341,
+        "end": 367,
+        "syntax_utf8_sha256": "be22843694a9b7f4a61e9e31b09671b63c57d550dc27d3b48f929378eb89893a",
+        "calls": [
+          {
+            "function": "sb.AppendLine",
+            "line": 344
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 345
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 346
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 347
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 348
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 349
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 350
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 351
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 352
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 353
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 357
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 358
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 359
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 360
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 363
+          },
+          {
+            "function": "sb.AppendLine",
+            "line": 364
+          },
+          {
+            "function": "File.WriteAllText",
+            "line": 366
+          },
+          {
+            "function": "sb.ToString",
+            "line": 366
+          }
+        ],
+        "assignments": []
+      }
+    ],
+    "frmSafeGrd": [
+      {
+        "method": "btnPreview_Click",
+        "start": 673,
+        "end": 676,
+        "syntax_utf8_sha256": "774f226a44af0e409721bb63711dbf2efd7af47a84dbe3515569dfb6e9a2cfb9",
+        "calls": [
+          {
+            "function": "PrintReport",
+            "line": 675
+          }
+        ],
+        "assignments": []
+      },
+      {
+        "method": "btnPrint_Click",
+        "start": 678,
+        "end": 681,
+        "syntax_utf8_sha256": "79f57968528a67cfe865798b1e7edd617aec4fabbeceafc95f5a86e16bb4a7b5",
+        "calls": [
+          {
+            "function": "PrintReport",
+            "line": 680
+          }
+        ],
+        "assignments": []
+      },
+      {
+        "method": "PrintReport",
+        "start": 888,
+        "end": 917,
+        "syntax_utf8_sha256": "943e165ec2f5af5caa0ebfebef5747a7ef7307f1c3f2bc97262f8e528d589a0a",
+        "calls": [
+          {
+            "function": "DXMessageBox.Show",
+            "line": 895
+          },
+          {
+            "function": "string.IsNullOrWhiteSpace",
+            "line": 900
+          },
+          {
+            "function": "DXMessageBox.Show",
+            "line": 902
+          },
+          {
+            "function": "System.IO.Path.Combine",
+            "line": 907
+          },
+          {
+            "function": "Directory.Exists",
+            "line": 908
+          },
+          {
+            "function": "File.Exists",
+            "line": 908
+          },
+          {
+            "function": "DXMessageBox.Show",
+            "line": 910
+          },
+          {
+            "function": "SetStatus",
+            "line": 915
+          }
+        ],
+        "assignments": [
+          {
+            "left": "RptUrl",
+            "right": "MainClass.ReportsPath",
+            "line": 890
+          },
+          {
+            "left": "RptName",
+            "right": "\"rptSafeGrd.repx\"",
+            "line": 891
+          }
+        ]
+      }
+    ],
+    "frmSafesTransfer": [
+      {
+        "method": "btnPrint_Click",
+        "start": 1328,
+        "end": 1331,
+        "syntax_utf8_sha256": "79f57968528a67cfe865798b1e7edd617aec4fabbeceafc95f5a86e16bb4a7b5",
+        "calls": [
+          {
+            "function": "PrintReport",
+            "line": 1330
+          }
+        ],
+        "assignments": []
+      },
+      {
+        "method": "btnView_Click",
+        "start": 1333,
+        "end": 1336,
+        "syntax_utf8_sha256": "0266375f0ebcedec094ee95fef6f34ceaaa9dfba0b13a27a2970a6e0dbe11bf4",
+        "calls": [
+          {
+            "function": "PrintReport",
+            "line": 1335
+          }
+        ],
+        "assignments": []
+      },
+      {
+        "method": "PrintReport",
+        "start": 1338,
+        "end": 1376,
+        "syntax_utf8_sha256": "c1e6b27e50381b4f226cc26956e28fd021ff27e2bda0cadb4adbc6b8e91fa437",
+        "calls": [
+          {
+            "function": "DXMessageBox.Show",
+            "line": 1351
+          },
+          {
+            "function": "string.IsNullOrWhiteSpace",
+            "line": 1356
+          },
+          {
+            "function": "DXMessageBox.Show",
+            "line": 1358
+          },
+          {
+            "function": "System.IO.Path.Combine",
+            "line": 1363
+          },
+          {
+            "function": "Directory.Exists",
+            "line": 1364
+          },
+          {
+            "function": "File.Exists",
+            "line": 1364
+          },
+          {
+            "function": "DXMessageBox.Show",
+            "line": 1366
+          }
+        ],
+        "assignments": [
+          {
+            "left": "RptUrl",
+            "right": "MainClass.ReportsPath",
+            "line": 1340
+          },
+          {
+            "left": "RptName",
+            "right": "TabControl1.SelectedIndex == 0\n                ? \"rptSafeTransfer.repx\"\n                : \"rptReceiveTransfer.repx\"",
+            "line": 1341
+          }
+        ]
+      }
+    ],
+    "frmSandQ": [
+      {
+        "method": "btnPrint_Click",
+        "start": 1046,
+        "end": 1049,
+        "syntax_utf8_sha256": "399c0180945506c1e1a6f443a9748929fb49c35fe649b4c00fa632c752e44b5f",
+        "calls": [
+          {
+            "function": "PrintReceipt",
+            "line": 1048
+          }
+        ],
+        "assignments": []
+      },
+      {
+        "method": "btnView_Click",
+        "start": 1051,
+        "end": 1054,
+        "syntax_utf8_sha256": "8201345d4b70473050a0b9b3be80344f5479052b8647a056595c6e300c52048f",
+        "calls": [
+          {
+            "function": "PrintReceipt",
+            "line": 1053
+          }
+        ],
+        "assignments": []
+      },
+      {
+        "method": "PrintReceipt",
+        "start": 1338,
+        "end": 1367,
+        "syntax_utf8_sha256": "cf6343f871e971249ba6ae31228dbdac528e08b3a59707b02783d1f7de0e4422",
+        "calls": [
+          {
+            "function": "string.IsNullOrWhiteSpace",
+            "line": 1340
+          },
+          {
+            "function": "DXMessageBox.Show",
+            "line": 1342
+          },
+          {
+            "function": "string.IsNullOrWhiteSpace",
+            "line": 1347
+          },
+          {
+            "function": "DXMessageBox.Show",
+            "line": 1349
+          },
+          {
+            "function": "string.IsNullOrWhiteSpace",
+            "line": 1354
+          },
+          {
+            "function": "System.IO.Path.Combine",
+            "line": 1357
+          },
+          {
+            "function": "Directory.Exists",
+            "line": 1358
+          },
+          {
+            "function": "File.Exists",
+            "line": 1358
+          },
+          {
+            "function": "DXMessageBox.Show",
+            "line": 1360
+          },
+          {
+            "function": "SetStatus",
+            "line": 1365
+          }
+        ],
+        "assignments": [
+          {
+            "left": "RptName",
+            "right": "\"Receipt.repx\"",
+            "line": 1355
+          }
+        ]
+      }
+    ],
+    "frmStocksSync": [
+      {
+        "method": "btnPrint_Click",
+        "start": 243,
+        "end": 243,
+        "syntax_utf8_sha256": "203d69042e8467355814bd8e0b58731d4cff0cec6d5dddfaa8f0126783e077a2",
+        "calls": [
+          {
+            "function": "PrintReport",
+            "line": 243
+          }
+        ],
+        "assignments": []
+      },
+      {
+        "method": "btnPreview_Click",
+        "start": 245,
+        "end": 245,
+        "syntax_utf8_sha256": "f3aa02e1685c0f61aef0616ef23b5cf6913b4c370b9483922fb017b6363dafac",
+        "calls": [
+          {
+            "function": "PrintReport",
+            "line": 245
+          }
+        ],
+        "assignments": []
+      },
+      {
+        "method": "PrintReport",
+        "start": 349,
+        "end": 374,
+        "syntax_utf8_sha256": "6e565cda0ccbc0b42607048192135ce9f88420ebc991ca453eb459048f47b669",
+        "calls": [
+          {
+            "function": "DXMessageBox.Show",
+            "line": 356
+          },
+          {
+            "function": "string.IsNullOrWhiteSpace",
+            "line": 360
+          },
+          {
+            "function": "DXMessageBox.Show",
+            "line": 362
+          },
+          {
+            "function": "System.IO.Path.Combine",
+            "line": 366
+          },
+          {
+            "function": "Directory.Exists",
+            "line": 367
+          },
+          {
+            "function": "File.Exists",
+            "line": 367
+          },
+          {
+            "function": "DXMessageBox.Show",
+            "line": 369
+          },
+          {
+            "function": "SetStatus",
+            "line": 373
+          }
+        ],
+        "assignments": [
+          {
+            "left": "RptUrl",
+            "right": "MainClass.ReportsPath",
+            "line": 351
+          },
+          {
+            "left": "RptName",
+            "right": "\"rptInvsProfitSales.repx\"",
+            "line": 352
+          }
+        ]
+      }
+    ],
+    "frmPrintBill": [
+      {
+        "method": "Button1_Click",
+        "start": 34,
+        "end": 38,
+        "syntax_utf8_sha256": "4c4bb6ddb7e3f99795ede2f2fda8c0926184265da13ffc00307f8993138babff",
+        "calls": [
+          {
+            "function": "print",
+            "line": 37
+          }
+        ],
+        "assignments": [
+          {
+            "left": "Button1.Visibility",
+            "right": "Visibility.Collapsed",
+            "line": 36
+          }
+        ]
+      },
+      {
+        "method": "print",
+        "start": 43,
+        "end": 46,
+        "syntax_utf8_sha256": "081a680080f0ae506fc38ce408fbd9f3e185b21be779f1f33505af2a391d3b10",
+        "calls": [],
+        "assignments": []
+      }
+    ],
+    "frmcontract": [
+      {
+        "method": "SetupButtonEvents",
+        "start": 173,
+        "end": 205,
+        "syntax_utf8_sha256": "441f9bdd8c1011140db516e59ab45c57391974b7999ef699660bc8b270e86940",
+        "calls": [],
+        "assignments": [
+          {
+            "left": "btnNew.Click",
+            "right": "btnNew_Click",
+            "line": 175
+          },
+          {
+            "left": "btnSave.Click",
+            "right": "btnSave_Click",
+            "line": 176
+          },
+          {
+            "left": "btnSavePrint.Click",
+            "right": "btnSavePrint_Click",
+            "line": 177
+          },
+          {
+            "left": "btnPrint.Click",
+            "right": "btnPrint_Click",
+            "line": 178
+          },
+          {
+            "left": "btnView.Click",
+            "right": "btnView_Click",
+            "line": 179
+          },
+          {
+            "left": "btnDelete.Click",
+            "right": "btnDelete_Click",
+            "line": 180
+          },
+          {
+            "left": "btnClose.Click",
+            "right": "btnClose_Click",
+            "line": 181
+          },
+          {
+            "left": "btnFirst.Click",
+            "right": "btnFirst_Click",
+            "line": 182
+          },
+          {
+            "left": "btnPrevious.Click",
+            "right": "btnPrevious_Click",
+            "line": 183
+          },
+          {
+            "left": "btnNext.Click",
+            "right": "btnNext_Click",
+            "line": 184
+          },
+          {
+            "left": "btnLast.Click",
+            "right": "btnLast_Click",
+            "line": 185
+          },
+          {
+            "left": "btnInvSrch.Click",
+            "right": "btnInvSrch_Click",
+            "line": 186
+          },
+          {
+            "left": "btnCustAdd.Click",
+            "right": "btnCustAdd_Click",
+            "line": 187
+          },
+          {
+            "left": "btnZoom.Click",
+            "right": "btnZoom_Click",
+            "line": 188
+          },
+          {
+            "left": "cmbAddSalesMen.Click",
+            "right": "cmbAddSalesMen_Click",
+            "line": 189
+          },
+          {
+            "left": "btnAddCostCenter.Click",
+            "right": "btnAddCostCenter_Click",
+            "line": 190
+          },
+          {
+            "left": "btnInsertLinkedInv.Click",
+            "right": "btnInsertLinkedInv_Click",
+            "line": 191
+          },
+          {
+            "left": "BtnReceipts.Click",
+            "right": "BtnReceipts_Click",
+            "line": 192
+          },
+          {
+            "left": "stripImport.Click",
+            "right": "stripImport_Click",
+            "line": 194
+          },
+          {
+            "left": "BTnShowEntry.Click",
+            "right": "BTnShowEntry_Click",
+            "line": 195
+          },
+          {
+            "left": "BtnSaveDgvSettings.Click",
+            "right": "BtnSaveDgvSettings_Click",
+            "line": 196
+          },
+          {
+            "left": "BtnDefaultSetting.Click",
+            "right": "BtnDefaultSetting_Click",
+            "line": 197
+          },
+          {
+            "left": "OpenReportDesgin.Click",
+            "right": "OpenReportDesgin_Click",
+            "line": 198
+          },
+          {
+            "left": "ExportPDF.Click",
+            "right": "ExportPDF_Click",
+            "line": 199
+          },
+          {
+            "left": "ToolStripDropDownButton1.Click",
+            "right": "(s, ev) =>\n            {\n                ToolStrip2.IsOpen = true;\n            }",
+            "line": 201
+          },
+          {
+            "left": "ToolStrip2.IsOpen",
+            "right": "true",
+            "line": 203
+          }
+        ]
+      },
+      {
+        "method": "btnSavePrint_Click",
+        "start": 1994,
+        "end": 1998,
+        "syntax_utf8_sha256": "c2102ccd9287b3c0af73f3cc902cb05f1d03dc82cdee8ed6d1a06da639db0a2f",
+        "calls": [
+          {
+            "function": "ValidateInvoice",
+            "line": 1997
+          }
+        ],
+        "assignments": [
+          {
+            "left": "Invoic.IsPrinted",
+            "right": "true",
+            "line": 1996
+          }
+        ]
+      },
+      {
+        "method": "btnPrint_Click",
+        "start": 2000,
+        "end": 2007,
+        "syntax_utf8_sha256": "f23e59cfa276cff9672114b7864f997f9fbec3e83458acbc409fff88b07f418c",
+        "calls": [
+          {
+            "function": "RptPrint",
+            "line": 2003
+          },
+          {
+            "function": "new InvoiceOperContract()\n                    .MappingInvoicecontract",
+            "line": 2003
+          },
+          {
+            "function": "ShowMessage",
+            "line": 2006
+          }
+        ],
+        "assignments": []
+      },
+      {
+        "method": "btnView_Click",
+        "start": 2009,
+        "end": 2016,
+        "syntax_utf8_sha256": "07f602dd89bcdf5da78ac33734677fd1ae0b2107f246b77544d3bb6b5ad633e5",
+        "calls": [
+          {
+            "function": "RptPrint",
+            "line": 2012
+          },
+          {
+            "function": "new InvoiceOperContract()\n                    .MappingInvoicecontract",
+            "line": 2012
+          },
+          {
+            "function": "ShowMessage",
+            "line": 2015
+          }
+        ],
+        "assignments": []
+      },
+      {
+        "method": "SaveAndPrint",
+        "start": 2316,
+        "end": 2431,
+        "syntax_utf8_sha256": "3db6ae74dd13fede5bcec5b1ea35bb321636f791700174bad176d7208b1583bd",
+        "calls": [
+          {
+            "function": "ShowMessage",
+            "line": 2323
+          },
+          {
+            "function": "ShowMessage",
+            "line": 2330
+          },
+          {
+            "function": "ShowMessage",
+            "line": 2341
+          },
+          {
+            "function": "string.IsNullOrWhiteSpace",
+            "line": 2347
+          },
+          {
+            "function": "ShowMessage",
+            "line": 2349
+          },
+          {
+            "function": "SafeParseDouble",
+            "line": 2355
+          },
+          {
+            "function": "SafeParseDouble",
+            "line": 2357
+          },
+          {
+            "function": "SafeParseDouble",
+            "line": 2359
+          },
+          {
+            "function": "SafeParseDouble",
+            "line": 2361
+          },
+          {
+            "function": "SafeParseDouble",
+            "line": 2363
+          },
+          {
+            "function": "SafeParseDouble",
+            "line": 2365
+          },
+          {
+            "function": "SafeParseDouble",
+            "line": 2367
+          },
+          {
+            "function": "SafeParseDouble",
+            "line": 2369
+          },
+          {
+            "function": "SafeParseDouble",
+            "line": 2371
+          },
+          {
+            "function": "SafeParseDouble",
+            "line": 2373
+          },
+          {
+            "function": "operContract.MappingInvoicecontract",
+            "line": 2376
+          },
+          {
+            "function": "operContract.BindToEntry",
+            "line": 2378
+          },
+          {
+            "function": "operContract.SaveInvoice",
+            "line": 2380
+          },
+          {
+            "function": "Logger.Info",
+            "line": 2386
+          },
+          {
+            "function": "InvoiceOper.GetInvoiceType",
+            "line": 2388
+          },
+          {
+            "function": "operContract.SyncInvoice",
+            "line": 2401
+          },
+          {
+            "function": "Inventory.UpdateItemStock",
+            "line": 2404
+          },
+          {
+            "function": "msgForm.ShowDialog",
+            "line": 2409
+          },
+          {
+            "function": "CLR",
+            "line": 2414
+          },
+          {
+            "function": "CLR",
+            "line": 2423
+          },
+          {
+            "function": "this.Close",
+            "line": 2424
+          },
+          {
+            "function": "CLR",
+            "line": 2427
+          }
+        ],
+        "assignments": [
+          {
+            "left": "Invoic.contract_total_value",
+            "right": "SafeParseDouble(txtcontract_total_value.Text)",
+            "line": 2354
+          },
+          {
+            "left": "Invoic.original_work_amount",
+            "right": "SafeParseDouble(txtoriginal_work_amount.Text)",
+            "line": 2356
+          },
+          {
+            "left": "Invoic.special_discount",
+            "right": "SafeParseDouble(txtspecial_discount.Text)",
+            "line": 2358
+          },
+          {
+            "left": "Invoic.amount_after_discount",
+            "right": "SafeParseDouble(txtamount_after_discount.Text)",
+            "line": 2360
+          },
+          {
+            "left": "Invoic.vat_amount",
+            "right": "SafeParseDouble(txtvat_amount.Text)",
+            "line": 2362
+          },
+          {
+            "left": "Invoic.total_with_vat",
+            "right": "SafeParseDouble(txttotal_with_vat.Text)",
+            "line": 2364
+          },
+          {
+            "left": "Invoic.work_guarantee",
+            "right": "SafeParseDouble(txtwork_guarantee.Text)",
+            "line": 2366
+          },
+          {
+            "left": "Invoic.net_due_this_payment",
+            "right": "SafeParseDouble(txtnet_due_this_payment.Text)",
+            "line": 2368
+          },
+          {
+            "left": "Invoic.previously_paid_amount",
+            "right": "SafeParseDouble(txtpreviously_paid_amount.Text)",
+            "line": 2370
+          },
+          {
+            "left": "Invoic.remaining_contract_balance",
+            "right": "SafeParseDouble(txtremaining_contract_balance.Text)",
+            "line": 2372
+          },
+          {
+            "left": "ThreadContext.Properties[\"EmpID\"]",
+            "right": "MainClass.EmpNo",
+            "line": 2384
+          },
+          {
+            "left": "Invoic.ISNew",
+            "right": "false",
+            "line": 2394
+          },
+          {
+            "left": "entry",
+            "right": "null",
+            "line": 2400
+          },
+          {
+            "left": "Invoic.ISNew",
+            "right": "false",
+            "line": 2417
+          },
+          {
+            "left": "Invoic.IsPrinted",
+            "right": "true",
+            "line": 2418
+          },
+          {
+            "left": "Invoic.IsUpdated",
+            "right": "false",
+            "line": 2419
+          },
+          {
+            "left": "txtNo.Background",
+            "right": "Brushes.WhiteSmoke",
+            "line": 2420
+          }
+        ]
+      }
+    ],
+    "InvoiceOper": [
+      {
+        "method": "GetInvoiceGlobalID",
+        "start": 2872,
+        "end": 2902,
+        "syntax_utf8_sha256": "c27bee9102e64770c8e4477c6751e7661b2dbff1b62c82ad1f9ab5f8ed808409",
+        "calls": [
+          {
+            "function": "MainClass.ConnObj",
+            "line": 2875
+          },
+          {
+            "function": "sqlConnection.Open",
+            "line": 2878
+          },
+          {
+            "function": "Convert.ToInt64",
+            "line": 2883
+          },
+          {
+            "function": "RuntimeHelpers.GetObjectValue",
+            "line": 2883
+          },
+          {
+            "function": "new SqlCommand(\"select ISNULL(MAX(proc_id), 0) from Inv\", sqlConnection).ExecuteScalar",
+            "line": 2883
+          },
+          {
+            "function": "Conversions.ToString",
+            "line": 2889
+          },
+          {
+            "function": "Conversions.ToString",
+            "line": 2893
+          },
+          {
+            "function": "Convert.ToDouble",
+            "line": 2896
+          },
+          {
+            "function": "Operators.ConcatenateObject",
+            "line": 2896
+          },
+          {
+            "function": "new SqlCommand(\"Select COUNT(*) from inv where InvGlobalID= '\" + InvGlobalID + \"'\", sqlConnection).ExecuteScalar",
+            "line": 2896
+          },
+          {
+            "function": "sqlConnection.Close",
+            "line": 2899
+          }
+        ],
+        "assignments": [
+          {
+            "left": "sqlConnection",
+            "right": "MainClass.ConnObj()",
+            "line": 2875
+          },
+          {
+            "left": "AutoIncrementID",
+            "right": "(int)Convert.ToInt64(RuntimeHelpers.GetObjectValue(new SqlCommand(\"select ISNULL(MAX(proc_id), 0) from Inv\", sqlConnection).ExecuteScalar()))",
+            "line": 2883
+          },
+          {
+            "left": "InvGlobalID",
+            "right": "Sync.ClientCode + \"-\" + MainClass.BranchNo + \"-\" + Conversions.ToString(AutoIncrementID)",
+            "line": 2889
+          },
+          {
+            "left": "InvGlobalID",
+            "right": "MainClass.BranchNo + \"-\" + Conversions.ToString(AutoIncrementID)",
+            "line": 2893
+          }
+        ]
+      },
+      {
+        "method": "IsPreviousReturned",
+        "start": 798,
+        "end": 810,
+        "syntax_utf8_sha256": "97439e041c574c7d75aea08a72b396fcccd58e279161659c2431f2501c4c6d99",
+        "calls": [
+          {
+            "function": "MainClass.ConnObj",
+            "line": 801
+          },
+          {
+            "function": "sqlDataAdapter.Fill",
+            "line": 804
+          }
+        ],
+        "assignments": [
+          {
+            "left": "sqlDataAdapter",
+            "right": "new SqlDataAdapter(selectConnection: MainClass.ConnObj(), selectCommandText: \"select id from Inv where proc_type=2  and (Reff_No=N'\" + GlobalId + \"' or Reff_No=N'\" + InvCombinedId + \"' ) and  IS_Deleted=0 \")",
+            "line": 801
+          },
+          {
+            "left": "dataTable",
+            "right": "new DataTable()",
+            "line": 803
+          }
+        ]
+      },
+      {
+        "method": "ToArabicLetter",
+        "start": 550,
+        "end": 575,
+        "syntax_utf8_sha256": "c5c7c3949296eb767c0614af8925cc36b28a721234db880bdd7f69012722eb50",
+        "calls": [
+          {
+            "function": "Strings.Split",
+            "line": 555
+          },
+          {
+            "function": "Conversions.ToString",
+            "line": 555
+          },
+          {
+            "function": "InvoiceOper.NumberAsCurrency",
+            "line": 557
+          },
+          {
+            "function": "Conversions.ToDouble",
+            "line": 557
+          },
+          {
+            "function": "array[1].Length.Equals",
+            "line": 560
+          },
+          {
+            "function": "array[1].Substring",
+            "line": 566
+          },
+          {
+            "function": "InvoiceOper.FractionAsCurrency",
+            "line": 568
+          },
+          {
+            "function": "Conversions.ToDouble",
+            "line": 568
+          },
+          {
+            "function": "Operators.CompareString",
+            "line": 570
+          },
+          {
+            "function": "Operators.CompareString",
+            "line": 570
+          }
+        ],
+        "assignments": [
+          {
+            "left": "text",
+            "right": "\" فقط لا غير\"",
+            "line": 553
+          },
+          {
+            "left": "array",
+            "right": "Strings.Split(Conversions.ToString(givenNumber), \".\")",
+            "line": 555
+          },
+          {
+            "left": "text2",
+            "right": "InvoiceOper.NumberAsCurrency(Conversions.ToDouble(array[0]), MyCurrency)",
+            "line": 557
+          },
+          {
+            "left": "array[1]",
+            "right": "\"0\"",
+            "line": 562
+          },
+          {
+            "left": "array[1]",
+            "right": "array[1].Substring(0, 2)",
+            "line": 566
+          },
+          {
+            "left": "text2",
+            "right": "text2 + \" و\" + InvoiceOper.FractionAsCurrency(Conversions.ToDouble(array[1]), MyCurrency)",
+            "line": 568
+          },
+          {
+            "left": "text2",
+            "right": "text",
+            "line": 572
+          }
+        ]
+      }
+    ]
+  },
+  "import_tails": {
+    "frmInventoryTransfer": {
+      "method_start": 1807,
+      "method_end": 1826,
+      "guard_line": 1813,
+      "condition": "frm.isDone && frm.InvGID != \"-1\"",
+      "consequence_type": "expression_statement",
+      "assignments_in_consequence": [],
+      "assignments_in_following_sibling_statements": [
+        "_invoic.InvoiceType",
+        "_invoic.ProcType",
+        "_invoic.InvNote",
+        "_invoic.ISNew"
+      ],
+      "following_sibling_calls": [
+        {
+          "function": "LoadInvoiceNumber",
+          "line": 1818
+        },
+        {
+          "function": "BindingControls",
+          "line": 1820
+        }
+      ],
+      "meaning": "Lexical control-flow boundary only, conditional on normal return and completed earlier setters. No runtime/cancel/alias/default/save/stock claim."
+    },
+    "frmInvInputOutput": {
+      "method_start": 1788,
+      "method_end": 1805,
+      "guard_line": 1794,
+      "condition": "dlg.isDone && dlg.InvGID != \"-1\"",
+      "consequence_type": "block",
+      "assignments_in_consequence": [
+        "Invoic.InvoiceType",
+        "Invoic.ProcType",
+        "Invoic.InvNote",
+        "Invoic.ISNew"
+      ],
+      "assignments_in_following_sibling_statements": [],
+      "following_sibling_calls": [],
+      "meaning": "Lexical control-flow boundary only, conditional on normal return and completed earlier setters. No runtime/cancel/alias/default/save/stock claim."
+    },
+    "frmInvPOS": {
+      "method_start": 2884,
+      "method_end": 2899,
+      "guard_line": 2889,
+      "condition": "frm.isDone && frm.InvGID != \"-1\"",
+      "consequence_type": "expression_statement",
+      "assignments_in_consequence": [],
+      "assignments_in_following_sibling_statements": [
+        "Invoic.InvoiceType",
+        "Invoic.ProcType",
+        "Invoic.InvNote",
+        "Invoic.ISNew"
+      ],
+      "following_sibling_calls": [
+        {
+          "function": "LoadInvNo",
+          "line": 2896
+        },
+        {
+          "function": "BindingControls",
+          "line": 2898
+        }
+      ],
+      "meaning": "Lexical control-flow boundary only, conditional on normal return and completed earlier setters. No runtime/cancel/alias/default/save/stock claim."
+    }
+  },
+  "wiring": {
+    "frmPurchInv": {
+      "btnInvSrch_Click": {
+        "own_xaml_literal_references": [
+          {
+            "line": 360,
+            "attribute": "Click"
+          }
+        ],
+        "own_code_direct_invocations": [],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "Navigate": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [
+          {
+            "function": "Navigate",
+            "line": 2000
+          },
+          {
+            "function": "Navigate",
+            "line": 2004
+          },
+          {
+            "function": "Navigate",
+            "line": 2009
+          },
+          {
+            "function": "Navigate",
+            "line": 2014
+          },
+          {
+            "function": "Navigate",
+            "line": 2046
+          },
+          {
+            "function": "Navigate",
+            "line": 2369
+          }
+        ],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "ReadData": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [
+          {
+            "function": "ReadData",
+            "line": 876
+          }
+        ],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      }
+    },
+    "frmInvoiceSrch": {
+      "RefreshDisplayRows": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [
+          {
+            "function": "RefreshDisplayRows",
+            "line": 505
+          }
+        ],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "dgvItems_MouseDoubleClick": {
+        "own_xaml_literal_references": [
+          {
+            "line": 397,
+            "attribute": "MouseDoubleClick"
+          }
+        ],
+        "own_code_direct_invocations": [],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "BtnReturn_Click": {
+        "own_xaml_literal_references": [
+          {
+            "line": 534,
+            "attribute": "Click"
+          }
+        ],
+        "own_code_direct_invocations": [],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "IsPreviousReturned": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [
+          {
+            "function": "IsPreviousReturned",
+            "line": 291
+          }
+        ],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      }
+    },
+    "frmInvPurch": {
+      "stripExport_Click": {
+        "own_xaml_literal_references": [
+          {
+            "line": 1371,
+            "attribute": "Click"
+          }
+        ],
+        "own_code_direct_invocations": [],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      }
+    },
+    "frmCloseShift": {
+      "ExportToExcel": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [
+          {
+            "function": "ExportToExcel",
+            "line": 481
+          }
+        ],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      }
+    },
+    "frmEmpInvs": {
+      "WireUpEvents": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [
+          {
+            "function": "WireUpEvents",
+            "line": 88
+          }
+        ],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "BtnExport_Click": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [],
+        "own_code_simple_method_group_assignments": [
+          97
+        ],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      }
+    },
+    "frmAccountsDirectory": {
+      "btnExportExcel_Click": {
+        "own_xaml_literal_references": [
+          {
+            "line": 97,
+            "attribute": "Click"
+          }
+        ],
+        "own_code_direct_invocations": [],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "ExportToExcel": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [
+          {
+            "function": "ExportToExcel",
+            "line": 748
+          }
+        ],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      }
+    },
+    "frmEntriesSyncStatus": {
+      "BindToData": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [
+          {
+            "function": "BindToData",
+            "line": 723
+          }
+        ],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "PrintDevexpress": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [
+          {
+            "function": "PrintDevexpress",
+            "line": 450
+          },
+          {
+            "function": "PrintDevexpress",
+            "line": 459
+          }
+        ],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      }
+    },
+    "frmReceiptsSyncStatus": {
+      "BindToData": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [
+          {
+            "function": "BindToData",
+            "line": 584
+          }
+        ],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "PrintDevexpress": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [
+          {
+            "function": "PrintDevexpress",
+            "line": 338
+          },
+          {
+            "function": "PrintDevexpress",
+            "line": 340
+          }
+        ],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      }
+    },
+    "frmInventoryTransfer": {
+      "StripImportInv_Click": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      }
+    },
+    "frmInvInputOutput": {
+      "StripImportInv_Click": {
+        "own_xaml_literal_references": [
+          {
+            "line": 651,
+            "attribute": "Click"
+          }
+        ],
+        "own_code_direct_invocations": [],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      }
+    },
+    "frmInvPOS": {
+      "StripImportInv_Click": {
+        "own_xaml_literal_references": [
+          {
+            "line": 1347,
+            "attribute": "Click"
+          }
+        ],
+        "own_code_direct_invocations": [],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      }
+    },
+    "frmInvoiceDeliveries": {
+      "btnExportExcel_Click": {
+        "own_xaml_literal_references": [
+          {
+            "line": 515,
+            "attribute": "Click"
+          }
+        ],
+        "own_code_direct_invocations": [],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "ExportToExcel": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [
+          {
+            "function": "ExportToExcel",
+            "line": 151
+          }
+        ],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      }
+    },
+    "frmInvSale": {
+      "stripExport_Click": {
+        "own_xaml_literal_references": [
+          {
+            "line": 1175,
+            "attribute": "Click"
+          }
+        ],
+        "own_code_direct_invocations": [],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "ExportDataGridToExcel": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [
+          {
+            "function": "ExportDataGridToExcel",
+            "line": 3316
+          }
+        ],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      }
+    },
+    "frmCustAccountGet": {
+      "ExportToExcel": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [
+          {
+            "function": "ExportToExcel",
+            "line": 874
+          }
+        ],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "ExportToCsv": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [
+          {
+            "function": "ExportToCsv",
+            "line": 785
+          },
+          {
+            "function": "ExportToCsv",
+            "line": 794
+          },
+          {
+            "function": "ExportToCsv",
+            "line": 798
+          }
+        ],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "BtnExport_Click": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [],
+        "own_code_simple_method_group_assignments": [
+          92
+        ],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      }
+    },
+    "FrmNewEntry": {
+      "btnExport_Click": {
+        "own_xaml_literal_references": [
+          {
+            "line": 556,
+            "attribute": "Click"
+          }
+        ],
+        "own_code_direct_invocations": [],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "ExportToHtml": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [
+          {
+            "function": "ExportToHtml",
+            "line": 1072
+          }
+        ],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      }
+    },
+    "frmNetsales": {
+      "btnExport_Click": {
+        "own_xaml_literal_references": [
+          {
+            "line": 285,
+            "attribute": "Click"
+          }
+        ],
+        "own_code_direct_invocations": [],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "ExportToExcelHtml": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [
+          {
+            "function": "ExportToExcelHtml",
+            "line": 332
+          }
+        ],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      }
+    },
+    "frmSafeGrd": {
+      "btnPreview_Click": {
+        "own_xaml_literal_references": [
+          {
+            "line": 857,
+            "attribute": "Click"
+          }
+        ],
+        "own_code_direct_invocations": [],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "btnPrint_Click": {
+        "own_xaml_literal_references": [
+          {
+            "line": 863,
+            "attribute": "Click"
+          }
+        ],
+        "own_code_direct_invocations": [],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "PrintReport": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [
+          {
+            "function": "PrintReport",
+            "line": 675
+          },
+          {
+            "function": "PrintReport",
+            "line": 680
+          }
+        ],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      }
+    },
+    "frmSafesTransfer": {
+      "btnPrint_Click": {
+        "own_xaml_literal_references": [
+          {
+            "line": 1154,
+            "attribute": "Click"
+          }
+        ],
+        "own_code_direct_invocations": [],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "btnView_Click": {
+        "own_xaml_literal_references": [
+          {
+            "line": 1149,
+            "attribute": "Click"
+          }
+        ],
+        "own_code_direct_invocations": [],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "PrintReport": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [
+          {
+            "function": "PrintReport",
+            "line": 1330
+          },
+          {
+            "function": "PrintReport",
+            "line": 1335
+          }
+        ],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      }
+    },
+    "frmSandQ": {
+      "btnPrint_Click": {
+        "own_xaml_literal_references": [
+          {
+            "line": 693,
+            "attribute": "Click"
+          }
+        ],
+        "own_code_direct_invocations": [],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "btnView_Click": {
+        "own_xaml_literal_references": [
+          {
+            "line": 688,
+            "attribute": "Click"
+          }
+        ],
+        "own_code_direct_invocations": [],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "PrintReceipt": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [
+          {
+            "function": "PrintReceipt",
+            "line": 1048
+          },
+          {
+            "function": "PrintReceipt",
+            "line": 1053
+          }
+        ],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      }
+    },
+    "frmStocksSync": {
+      "btnPrint_Click": {
+        "own_xaml_literal_references": [
+          {
+            "line": 579,
+            "attribute": "Click"
+          }
+        ],
+        "own_code_direct_invocations": [],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "btnPreview_Click": {
+        "own_xaml_literal_references": [
+          {
+            "line": 574,
+            "attribute": "Click"
+          }
+        ],
+        "own_code_direct_invocations": [],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "PrintReport": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [
+          {
+            "function": "PrintReport",
+            "line": 243
+          },
+          {
+            "function": "PrintReport",
+            "line": 245
+          }
+        ],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      }
+    },
+    "frmPrintBill": {
+      "Button1_Click": {
+        "own_xaml_literal_references": [
+          {
+            "line": 1055,
+            "attribute": "Click"
+          }
+        ],
+        "own_code_direct_invocations": [],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "print": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [
+          {
+            "function": "print",
+            "line": 37
+          }
+        ],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      }
+    },
+    "frmcontract": {
+      "SetupButtonEvents": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [
+          {
+            "function": "SetupButtonEvents",
+            "line": 137
+          }
+        ],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "btnSavePrint_Click": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [],
+        "own_code_simple_method_group_assignments": [
+          177
+        ],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "btnPrint_Click": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [
+          {
+            "function": "btnPrint_Click",
+            "line": 154
+          }
+        ],
+        "own_code_simple_method_group_assignments": [
+          178
+        ],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "btnView_Click": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [
+          {
+            "function": "btnView_Click",
+            "line": 155
+          }
+        ],
+        "own_code_simple_method_group_assignments": [
+          179
+        ],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      },
+      "SaveAndPrint": {
+        "own_xaml_literal_references": [],
+        "own_code_direct_invocations": [
+          {
+            "function": "SaveAndPrint",
+            "line": 2308
+          }
+        ],
+        "own_code_simple_method_group_assignments": [],
+        "limit": "Searched this class code and its own XAML only. Not typed reachability, inherited/reflection/resource binding, authorization, or proof of global unreachability."
+      }
+    }
+  },
+  "execution_count": 0,
+  "limit": "Syntactic evidence supporting explicit bounded reviewer conclusions, not binding, runtime, completeness or external certification."
+}

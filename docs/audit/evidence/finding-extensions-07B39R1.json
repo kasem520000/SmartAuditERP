@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "new_roots": 0,
+  "extensions": [
+    {
+      "finding_id": "P7-050",
+      "reason": "Mismatched advertised/selected extension versus the actual local serializer; extends the existing format cause, not7 new roots.",
+      "routes": [
+        {
+          "name": "InvoiceDeliveries",
+          "actual_format": "DataTable.WriteXml to .xlsx",
+          "source_evidence": "SmartAuditERP/Form_WPF/frmInvoiceDeliveries.xaml.cs:132-161;SmartAuditERP/Form_WPF/frmInvoiceDeliveries.xaml.cs:872-893"
+        },
+        {
+          "name": "InputOutput",
+          "actual_format": "comma-delimited text to .xlsx",
+          "source_evidence": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs:1674-1747"
+        },
+        {
+          "name": "InvPOS",
+          "actual_format": "tab-delimited text to .xlsx",
+          "source_evidence": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs:2830-2849;SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs:3009-3047"
+        },
+        {
+          "name": "InvSale",
+          "actual_format": "comma-delimited text to .xlsx",
+          "source_evidence": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3295-3330;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3747-3776"
+        },
+        {
+          "name": "CustAccountGet",
+          "actual_format": "CSV fallback for .xlsx as well as.csv",
+          "source_evidence": "SmartAuditERP/Form_WPF/frmCustAccountGet.xaml.cs:760-842;SmartAuditERP/Form_WPF/frmCustAccountGet.xaml.cs:75-99"
+        },
+        {
+          "name": "FrmNewEntry",
+          "actual_format": "HTML for both .xls and .csv options",
+          "source_evidence": "SmartAuditERP/Form_WPF/FrmNewEntry.xaml.cs:1050-1102"
+        },
+        {
+          "name": "Netsales",
+          "actual_format": "HTML for both .xls and .csv options",
+          "source_evidence": "SmartAuditERP/Form_WPF/frmNetsales.xaml.cs:313-367"
+        }
+      ],
+      "limits": "Source-level serializer/request mismatch. No file, Excel, encoding rendering or financial data execution/acceptance."
+    },
+    {
+      "finding_id": "P1-033",
+      "reason": "Actual wired local handlers lead only to checks/status/comments or an empty print body. Distinct from P7-031 swallowing a real request and P7-166 reporting success.",
+      "routes": [
+        {
+          "name": "SafeGrd",
+          "source_evidence": "SmartAuditERP/Form_WPF/frmSafeGrd.xaml.cs:673-681;SmartAuditERP/Form_WPF/frmSafeGrd.xaml.cs:888-917"
+        },
+        {
+          "name": "SafesTransfer",
+          "source_evidence": "SmartAuditERP/Form_WPF/frmSafesTransfer.xaml.cs:1328-1376"
+        },
+        {
+          "name": "SandQ",
+          "source_evidence": "SmartAuditERP/Form_WPF/frmSandQ.xaml.cs:1046-1054;SmartAuditERP/Form_WPF/frmSandQ.xaml.cs:1338-1367"
+        },
+        {
+          "name": "StocksSync",
+          "source_evidence": "SmartAuditERP/Form_WPF/frmStocksSync.xaml.cs:349-375"
+        },
+        {
+          "name": "PrintBill",
+          "source_evidence": "SmartAuditERP/Form_WPF/frmPrintBill.xaml.cs:34-46;SmartAuditERP/Form_WPF/frmPrintBill.xaml:1043-1066"
+        },
+        {
+          "name": "contract SaveAndPrint only",
+          "source_evidence": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs:165-184;SmartAuditERP/Form_WPF/frmcontract.xaml.cs:1994-2016;SmartAuditERP/Form_WPF/frmcontract.xaml.cs:2316-2431"
+        }
+      ],
+      "negative_control": "Contract print/view do call RptPrint; do not classify every contract output as a placeholder. No conclusion on financial/save/stock effects from SaveAndPrint name."
+    },
+    {
+      "finding_id": "P7-160",
+      "reason": "InvPOS normal modal return has conversion assignments outside the Navigate acceptance guard, matching the existing import/nonaccept cause.",
+      "routes": [
+        {
+          "name": "InvPOS",
+          "source_evidence": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs:2884-2900;SmartAuditERP/Form_WPF/frmInvPOS.xaml:1340-1354"
+        }
+      ],
+      "controls": [
+        {
+          "name": "InputOutput guarded",
+          "source_evidence": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs:1788-1805"
+        },
+        {
+          "name": "InventoryTransfer tail outside guard, declaration-only local search",
+          "source_evidence": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs:1807-1826"
+        }
+      ],
+      "limits": "Transfer is not counted as a verified reachable UI extension. B37 receive/order/purchase tails are separate preserved documentary comparisons, not new roots or a retroactive extension."
+    }
+  ],
+  "original_registry_changed": false,
+  "prior_unavailable_B39_supplements_recreated": false,
+  "purpose": "New source-backed re-establishment with a new identity; do not relabel it the missing old extension drafts."
+}

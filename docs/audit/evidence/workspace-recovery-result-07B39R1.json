@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "environment_clock_recorded_verbatim_utc": "2026-11-21T16:16:02.893353+00:00",
+  "branch": "arena/94ae8414-smartauditerp",
+  "restored_HEAD": "f16f3da60c72f243f90f466badc1bade90bf4abd",
+  "recovery_mode": "fast-forward-only-to-same-current-branch-remote",
+  "restored_tracked_audit_files": 1266,
+  "entry_doc_files": 1216,
+  "entry_doc_paths_different_from_committed_version": [
+    "docs/audit/DATE-IDENTITY-NOTE-07B37.md",
+    "docs/audit/IMPROVEMENTS.md",
+    "docs/audit/PHASE-07-REMAINING-07B37.md",
+    "docs/audit/PHASE-07B37.md",
+    "docs/audit/PLAN.md",
+    "docs/audit/README.md",
+    "docs/audit/TRANSFER-PICKER-CONTRACTS-07B37.md",
+    "docs/audit/VALIDATION-07B37.md",
+    "docs/audit/tools/validate_transfer_picker_part.py"
+  ],
+  "entry_raw_archive_member_verification": true,
+  "committed_version_is_not_relabelled_entry_bytes": true,
+  "B39_pre_recovery_evidence_absent": true,
+  "applications_not_modified_or_executed": true,
+  "prior_claims_not_recreated": [
+    "79-obligation assessment",
+    "401-external-boundary decisions",
+    "four-findings supplement",
+    "28-tests capture",
+    "B39 delivery seal"
+  ]
+}
