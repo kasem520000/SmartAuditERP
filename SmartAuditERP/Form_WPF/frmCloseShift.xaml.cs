@@ -2213,6 +2213,11 @@ namespace SmartAuditERP.Form_WPF
                 DataTable dataTable = new DataTable();
                 adapter.Fill(dataTable);
 
+                // Never silently rewrite historic invoices while reading. Reject suspect
+                // source rows instead of silently normalizing their cash values.
+                foreach (DataRow row in dataTable.Rows)
+                    if (Convert.ToInt64(row["InvalidCashCount"]) > 0)
+                        throw new InvalidOperationException("توجد فواتير تحتاج مراجعة لمبالغ النقد أو الصافي قبل إعادة الإغلاق.");
                 foreach (DataRow row in dataTable.Rows)
                     ProcessGetCloseDataRow(closeShift, row);
 
@@ -2233,20 +2238,12 @@ namespace SmartAuditERP.Form_WPF
         {
             if (closeType == 1)
             {
-                EnsureConnectionOpen(conn1);
-
-                new SqlCommand(
-                    $"UPDATE [Inv] SET cash = tot_net " +
-                    $"WHERE cash > tot_net AND " +
-                    $"(Inv_type = 2 OR Inv_type = 3) AND " +
-                    $"sales_emp = {empId}",
-                    conn1).ExecuteNonQuery();
-
                 return "SELECT Inv.inv_type AS InvType, Inv.proc_type AS ProcType, " +
                        "pay_type AS Paytype, inv.VATPercent, 1 AS PaymentStatus, " +
                        "0 AS Remainder, SUM(tot_net) AS InvNet, " +
                        "SUM(InvTotal) AS InvTotal, bank AS BankId, " +
                        "SUM(cash) AS cash, SUM(visa) AS Mada, " +
+                       "SUM(CASE WHEN cash IS NULL OR tot_net IS NULL OR cash > tot_net THEN 1 ELSE 0 END) AS InvalidCashCount, " +
                        "SUM(tax) AS VAT, SUM(ExtraVAT) AS ExtraVAT, " +
                        "SUM(minus) AS Discount, " +
                        "ISNULL(SUM(ItemsDiscount), 0) AS ItemsDiscount, " +

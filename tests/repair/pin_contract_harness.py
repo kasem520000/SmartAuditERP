@@ -168,8 +168,8 @@ check("D2 repaired refuses while duplicates exist",
 check("D3 unique matches log in exactly as before",
       pin_login("legacy", 1) == pin_login("fixed", 1) == "row-order-wins")
 check("D4 refusal guard sits before any Rows[0] use on the PIN branch",
-      "Type != 1 && dt.Rows.Count > 1" in LOGIN and
-      LOGIN.index("Type != 1 && dt.Rows.Count > 1") < LOGIN.index('dt.Rows[0]["emp"]'))
+      "if (dt.Rows.Count > 1)" in LOGIN and
+      LOGIN.index("if (dt.Rows.Count > 1)") < LOGIN.index('dt.Rows[0]["emp"]'))
 
 print("Part E: P2-008(e) - lock: failed parse must not mean PIN zero")
 

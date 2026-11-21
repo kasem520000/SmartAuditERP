@@ -37,35 +37,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void Check()
         {
-            try
-            {
-                string passwordText = txtPass.Password;
-                string usernameText = txtUser.Text.Trim();
-
-                if (string.IsNullOrEmpty(passwordText))
-                {
-                    DXMessageBox.Show("يرجى إدخال كلمة المرور", "",
-                        MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-
-                if (string.Equals(passwordText, "auditor", StringComparison.Ordinal) &&
-                    string.Equals(usernameText, "auditor", StringComparison.Ordinal))
-                {
-                    Iscorrect = true;
-                    Close();
-                }
-                else
-                {
-                    DXMessageBox.Show("ليس لديك صلاحية، أو أن كلمة المرور المدخلة غير صحيحة", "",
-                        MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-            }
-            catch (Exception ex)
-            {
-                DXMessageBox.Show("خطأ Error details: " + ex.Message, "",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            Iscorrect = false;
+            DXMessageBox.Show("الدخول الإداري المشترك موقوف حتى توفير تحقق فردي آمن.",
+                "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
         }
 
         #endregion

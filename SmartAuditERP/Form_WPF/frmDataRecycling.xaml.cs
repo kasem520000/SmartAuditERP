@@ -102,6 +102,7 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
+                if (_currentStep == 6) EnsureRecyclingAvailable();
                 _currentStep++;
 
                 if (_currentStep == 1)
@@ -215,8 +216,14 @@ namespace SmartAuditERP.Form_WPF
 
         #region Create Database
 
+        private static void EnsureRecyclingAvailable()
+        {
+            throw new InvalidOperationException("تدوير قاعدة البيانات موقوف حتى توفير مسار إنشاء وترحيل آمن ومختبر.");
+        }
+
         private void CreateDatabase()
         {
+            EnsureRecyclingAvailable();
             var errorDetails = new StringBuilder();
 
             try
@@ -308,28 +315,6 @@ namespace SmartAuditERP.Form_WPF
                 try
                 {
                     new SqlCommand(createSql, masterConn).ExecuteNonQuery();
-
-                    // إعداد المستخدم auditor
-                    string[] setupCommands =
-                    {
-                        "IF NOT EXISTS (SELECT * FROM sys.server_principals WHERE name=N'auditor') " +
-                        "CREATE LOGIN [auditor] WITH PASSWORD=N'auditor', DEFAULT_DATABASE=[master]",
-                        "ALTER SERVER ROLE [sysadmin] ADD MEMBER [auditor]",
-                        "IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name=N'auditor') " +
-                        "CREATE USER [auditor] FOR LOGIN [auditor] WITH DEFAULT_SCHEMA=[dbo]",
-                        "ALTER ROLE [db_owner] ADD MEMBER [auditor]",
-                        "ALTER LOGIN sa ENABLE",
-                        "ALTER LOGIN sa WITH PASSWORD = 'auditor'"
-                    };
-
-                    foreach (string setupCmd in setupCommands)
-                    {
-                        try
-                        {
-                            new SqlCommand(setupCmd, masterConn).ExecuteNonQuery();
-                        }
-                        catch { /* ignore */ }
-                    }
                 }
                 catch (Exception ex)
                 {
@@ -438,6 +423,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void ApplyRecycling()
         {
+            EnsureRecyclingAvailable();
             string targetDb = txtDatabaseName.EditValue?.ToString().Trim() ?? string.Empty;
             string sourceDb = cmbDBs.EditValue?.ToString().Trim() ?? string.Empty;
 

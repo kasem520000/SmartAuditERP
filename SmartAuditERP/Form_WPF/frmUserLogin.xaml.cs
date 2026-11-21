@@ -184,27 +184,8 @@ namespace SmartAuditERP.Form_WPF
                     BuildConnectionStrings();
                 }
 
-                // التحقق من دخول auditor الخاص
-                string CombinedPwd = "";
+                // The former predictable support password is not an authentication method.
                 bool SecureLogin = false;
-
-                if (txtUser.Text.Trim().Equals("auditor", StringComparison.OrdinalIgnoreCase)
-                    && type == 1)
-                {
-                    CombinedPwd = "auditor"
-                                + DateTime.Now.Year.ToString()
-                                + DateTime.Now.Month.ToString();
-
-                    if (txtPwd.Password.Trim() != CombinedPwd)
-                    {
-                        MessageBox.Show("دخول غير صحيح", "",
-                            MessageBoxButton.OK, MessageBoxImage.Information);
-                        txtPwd.Clear();
-                        frmSecurityPnl.Secured = false;
-                        return;
-                    }
-                    SecureLogin = true;
-                }
 
                 // اللغة
                 MainClass.Language = cmblanguages.SelectedIndex == 0 ? "ar" : "en-us";
@@ -463,15 +444,16 @@ namespace SmartAuditERP.Form_WPF
             {
                 var frmSecurityPnl = new frmSecurityPnl();
                 SqlDataAdapter da;
+                // Public callers must not re-enable the former support bypass.
+                if (SecureLogin) return false;
 
                 if (Type == 1)
                 {
-                    string pwd = SecureLogin ? "auditor" : txtPwd.Password;
                     da = new SqlDataAdapter(
                         "select * from Users where username=@Username and pwd=@Password and IS_Deleted=0",
                         conn);
                     da.SelectCommand.Parameters.AddWithValue("@Username", txtUser.Text);
-                    da.SelectCommand.Parameters.AddWithValue("@Password", pwd);
+                    da.SelectCommand.Parameters.AddWithValue("@Password", txtPwd.Password);
                 }
                 else
                 {
@@ -486,17 +468,24 @@ namespace SmartAuditERP.Form_WPF
 
                 // Repair R-032 (audit finding P2-008): a duplicated SecureCode used to log in as
                 // WHICHEVER row came back first - row order deciding identity. For the PIN path an
-                // ambiguous match is refused outright until duplicates are removed; ordinary
-                // username+password login keeps matching at most one account by construction.
-                if (Type != 1 && dt.Rows.Count > 1)
+                // ambiguous match is refused for both PIN and username/password paths.
+                if (dt.Rows.Count > 1)
                 {
-                    MessageBox.Show("هذا الرقم السري مطابق لأكثر من حساب؛ لا يمكن الدخول حتى إزالة التكرار.",
+                    MessageBox.Show("بيانات الدخول مطابقة لأكثر من حساب؛ لا يمكن الدخول حتى إزالة التكرار.",
                         "", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return false;
                 }
 
                 if (dt.Rows.Count > 0)
                 {
+                    // Employee zero is a seeded support superuser, not a personal identity.
+                    // NULL or non-positive subjects are also rejected before branch checks.
+                    if (dt.Rows[0]["emp"] == DBNull.Value || Convert.ToInt32(dt.Rows[0]["emp"]) <= 0)
+                    {
+                        MessageBox.Show("حساب الدعم المشترك موقوف؛ استخدم حساباً شخصياً مصرحاً للفرع.",
+                            "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return false;
+                    }
                     // التحقق من صلاحية الفرع
                     var daEmpBranch = new SqlDataAdapter(
                         "select branch from EmpBranches where emp=@emp and branch=@branch", conn);
@@ -505,8 +494,7 @@ namespace SmartAuditERP.Form_WPF
                     DataTable dtEmpBranch = new DataTable();
                     daEmpBranch.Fill(dtEmpBranch);
 
-                    bool hasAccess = dtEmpBranch.Rows.Count > 0
-                                  || Convert.ToInt32(dt.Rows[0]["emp"]) == 0;
+                    bool hasAccess = dtEmpBranch.Rows.Count > 0;
 
                     if (hasAccess)
                     {

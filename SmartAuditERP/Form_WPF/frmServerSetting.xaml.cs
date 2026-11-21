@@ -228,41 +228,15 @@ namespace SmartAuditERP.Form_WPF
             ExecuteDbSetup(conn1, sql);
         }
 
+        private static void EnsureDatabaseProvisioningAvailable()
+        {
+            throw new InvalidOperationException("إنشاء قاعدة البيانات والاستعادة من سكربت موقوفان لحين تجهيز مسار إداري آمن ومختبر.");
+        }
+
         private void ExecuteDbSetup(SqlConnection conn1, string createSql)
         {
-            try
-            {
-                if (conn1.State == ConnectionState.Closed) conn1.Open();
-
-                new SqlCommand(createSql, conn1).ExecuteNonQuery();
-
-                string[] setupCmds =
-                {
-                    "IF NOT EXISTS (SELECT * FROM sys.server_principals WHERE name=N'auditor') " +
-                    "CREATE LOGIN [auditor] WITH PASSWORD=N'auditor', DEFAULT_DATABASE=[master]",
-                    "ALTER SERVER ROLE [sysadmin] ADD MEMBER [auditor]",
-                    "If Not EXISTS(SELECT * FROM sys.database_principals WHERE name=N'auditor') " +
-                    "CREATE USER [auditor] FOR LOGIN [auditor] WITH DEFAULT_SCHEMA=[dbo]",
-                    "ALTER ROLE [db_owner] ADD MEMBER[auditor]",
-                    "ALTER LOGIN sa ENABLE",
-                    "ALTER LOGIN sa WITH PASSWORD='auditor'",
-                };
-
-                foreach (var cmd in setupCmds)
-                {
-                    try { new SqlCommand(cmd, conn1).ExecuteNonQuery(); }
-                    catch { /* تجاهل أخطاء غير حرجة */ }
-                }
-            }
-            catch (Exception ex)
-            {
-                DXMessageBox.Show(ex.ToString(), "خطأ",
-                                MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            finally
-            {
-                if (conn1.State == ConnectionState.Open) conn1.Close();
-            }
+            // No embedded account/sa provisioning. Do not create a partial database.
+            throw new InvalidOperationException("إنشاء قاعدة البيانات والاستعادة من سكربت موقوفان لحين تجهيز مسار إداري آمن ومختبر.");
         }
 
         #endregion
@@ -523,6 +497,7 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
+                EnsureDatabaseProvisioningAvailable();
                 var checkPwd = new frmCheckPwd { CheckType = 100 };
                 checkPwd.ShowDialog();
                 if (!checkPwd.Iscorrect) return;
@@ -614,6 +589,7 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
+                EnsureDatabaseProvisioningAvailable();
                 if (string.IsNullOrWhiteSpace(txtRestore.Text))
                 {
                     DXMessageBox.Show("يجب تحديد مسار النسخة الاحتياطية.", "تنبيه",

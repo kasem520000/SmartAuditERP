@@ -87,24 +87,15 @@ namespace SmartAuditERP.Form_WPF
                         CheckDatabasePassword(enteredPassword);
                         break;
 
+                    // These shared embedded secrets cannot authorize privileged actions.
                     case 0:
-                        ValidateFixedPassword(enteredPassword, "auditor");
-                        break;
-
                     case 100:
-                        ValidateFixedPassword(enteredPassword, "auditor2021");
-                        break;
-
                     case 200:
-                        ValidateFixedPassword(enteredPassword, "2020AUDITOR");
-                        break;
-
                     case 300:
-                        ValidateFixedPassword(enteredPassword, "DARH2024");
-                        break;
-
                     case 400:
-                        ValidateFixedPassword(enteredPassword, "auditorzatca");
+                        Iscorrect = false;
+                        MessageBox.Show("هذه العملية موقوفة مؤقتاً لعدم توفر تحقق إداري آمن.",
+                            "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
                         break;
 
                     default:
@@ -158,23 +149,6 @@ namespace SmartAuditERP.Form_WPF
             {
                 Iscorrect = true;
                 Close();
-            }
-        }
-
-        private void ValidateFixedPassword(string enteredPassword, string correctPassword)
-        {
-            if (enteredPassword == correctPassword)
-            {
-                Iscorrect = true;
-                Close();
-            }
-            else
-            {
-                MessageBox.Show(
-                    "ليس لديك صلاحية، أو أن كلمة المرور المدخلة غير صحيحة",
-                    "⚠️ خطأ",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
             }
         }
 
