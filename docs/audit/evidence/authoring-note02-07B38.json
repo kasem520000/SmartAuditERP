@@ -1,0 +1,10 @@
+{
+  "event": "prestage-guard-rejected-untracked-generated-Python-cache",
+  "effect": "No staging or delivery seal was written by the rejected prestage block. delivery-summary-07B38.json was already written and is retained unchanged. Only verified-untracked .pyc files are removed; protected source/evidence is not touched.",
+  "removed_generated_files": {
+    "docs/audit/tools/__pycache__/check_invoice_picker_witnesses.cpython-311.pyc": "d9d889a2be9868de5e45454ab630c8f970f62306d23866f2741b6385fc554181",
+    "docs/audit/tools/__pycache__/check_amountword_contract_witnesses.cpython-311.pyc": "e2f94787ead5a67b8806c783240c3ee47646c0b0b70567df89591eecf2bb6b96"
+  },
+  "subsequent_documentary_process_environment": "PYTHONDONTWRITEBYTECODE=1",
+  "not_a_source_or_ERP_validation_failure": true
+}

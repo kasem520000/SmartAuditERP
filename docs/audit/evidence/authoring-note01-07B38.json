@@ -1,0 +1,18 @@
+{
+  "event": "authoring-wrapper-failed-before-review-scope-write",
+  "exception": "UnicodeDecodeError in UTF-8-only line-count check for an original source file; originals and existing evidence were not modified.",
+  "result": "Earlier exclusive writes succeeded. Do not rerun the authoring script. Continue only the not-yet-written tail using the already-declared strict read-only decoding fallback.",
+  "artifacts_at_failure": {
+    "evidence/capability-census-07B38.json": "dda01645d1cf64d7acdf7c53deb9ac9ec1990cab0e915142af56be0d0b0c4da9",
+    "evidence/capability-register-07B38.csv": "2e071fbad8546aeb26b2dd66854d17c58ad570e7b36525e823e9567b7466b3c5",
+    "evidence/census-tool-namespace-note-07B38.json": "34fefb469d80fa9d0660b0f3bd97ee4c275506e495f251fcf2f0c80f52228916",
+    "evidence/checks-07B38-entry.json": "6b5545ad2dbad0fc1f536944f8c70010c84b71ebe8fe4c71dcaab3248f3bd594",
+    "evidence/direct-dialog-contracts-07B38.csv": "310209c794f0d947cda6face2da583fe122a246019104f8ffa3e56d824127fa4",
+    "evidence/entry-receipt-07B38.json": "83efdd88f951091efd57db0986d4dbef8c46e7b13ac7ff5fbbe7caf18e8fcaa9",
+    "evidence/feature-lineage-07B38.csv": "5028e39f615fd582e59412d4c1208ba3b71dca350a2bb2b80c95a1a0e2c5a153",
+    "evidence/preservation-07B38.json": "74b462cbe0d20c195ca565f27360d1a39a885bed7c77c52448e8aa1ad231b5a9",
+    "evidence/screen-crosswalk-07B38.csv": "9071df562734c4b1254b7449b8042554a8594a16940a7a15143e9db1de59760e",
+    "tools/census07b/requirements-census-07B38.txt": "a6d63ae02101cf4840030bda9d39f41945a2b5461349c8a4c7f2db1093bce79a"
+  },
+  "not_a_validator_or_ERP_failure": true
+}

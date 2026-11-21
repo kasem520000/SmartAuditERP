@@ -1,0 +1,4 @@
+# Optional syntax-discovery dependencies only; not ERP/build dependencies.
+# Install to a temporary target rather than modifying the application environment.
+tree-sitter==0.25.2
+tree-sitter-c-sharp==0.23.1
