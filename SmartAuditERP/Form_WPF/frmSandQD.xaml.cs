@@ -20,6 +20,8 @@ namespace SmartAuditERP.Form_WPF
     {
         #region Fields
 
+        // Attachment selection belongs to this editor, not a process-wide static array.
+        private string[] _receiptFiles;
         private SqlConnection conn;
         private SqlConnection conn1;
         private SqlConnection conn2;
@@ -123,6 +125,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void CLR()
         {
+            _receiptFiles = null;
             txtNo.Text = ReceiptOper.ReceiptNo(ReceiptType).ToString();
             txtVal.Text = "";
             txtNotes.Text = "";
@@ -881,7 +884,7 @@ namespace SmartAuditERP.Form_WPF
                     int sandDId = Convert.ToInt32(maxCmd.ExecuteScalar()) + 1;
                     GlobalID = $"{MainClass.BranchNo}-{sandDId}";
                     txtNo.Text = ReceiptOper.ReceiptNo(ReceiptType).ToString();
-                    int.TryParse(txtNo.Text, out Code);
+
                 }
 
                 // ── الملاحظات الافتراضية ──────────────────────────────
@@ -908,12 +911,15 @@ namespace SmartAuditERP.Form_WPF
                     string depositName = (cmbDepositTO.SelectedItem as DataRowView)
                                             ?["name"]?.ToString() ?? "";
                     var daStock = new SqlDataAdapter(
-                        $"SELECT Code FROM Accounts_Index WHERE Type=2 {Accounting.BranchCondition} AND AName=N'{depositName}'",
+                        $"SELECT Code FROM Accounts_Index WHERE Type=2 {Accounting.BranchCondition} AND AName=@accountName",
                         conn1);
+                    daStock.SelectCommand.Parameters.Add("@accountName", SqlDbType.NVarChar).Value = depositName;
                     var dtStock = new DataTable();
                     daStock.Fill(dtStock);
-                    if (dtStock.Rows.Count > 0)
+                    if (dtStock.Rows.Count == 1)
                         stockOrBankAcc = Convert.ToInt32(dtStock.Rows[0][0]);
+                    else
+                        throw new InvalidOperationException("تعذر تحديد حساب وحيد للاسم المحدد ضمن الفرع؛ لم يُحفظ السند.");
                 }
 
                 // ── AccCode من SelectedValue مباشرة مثل الأصل ─────────
@@ -929,7 +935,7 @@ namespace SmartAuditERP.Form_WPF
                 var receipt = new Receipt
                 {
                     GlobalID = GlobalID,
-                    ReceiptNo = Code,
+                    ReceiptNo = isNew ? Convert.ToInt32(txtNo.Text) : Code,
                     BranchID = isNew
                                         ? MainClass.BranchNo
                                         : (cmbBranches.SelectedValue != null
@@ -988,16 +994,20 @@ namespace SmartAuditERP.Form_WPF
                 // ── الحفظ عبر ReceiptOper (مطابق للأصل) ──────────────
                 var receiptOp = new ReceiptOper();
                 var entry = receiptOp.BindReceiptToEntry(receipt);
-                bool saved = receiptOp.SaveReceipt(receipt, entry, isNew);
+                bool saved = receiptOp.SaveReceipt(receipt, entry, isNew, _receiptFiles);
 
                 if (!saved)
                 {
+                    if (isNew) { Code = -1; GlobalID = "-1"; EntryGlobalID = "-1"; }
                     string errMsg = MainClass.Language == "en"
                         ? "error in saving" : "خطأ أثناء الحفظ";
                     DXMessageBox.Show(errMsg, "",
                         MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
+
+                Code = receipt.ReceiptNo;
+                _receiptFiles = null; // the transaction committed; never replay selected files
 
                 // ── تسجيل اللوج ───────────────────────────────────────
                 ThreadContext.Properties["EmpID"] = MainClass.EmpNo;
@@ -1021,7 +1031,6 @@ namespace SmartAuditERP.Form_WPF
                 }
 
                 // ── نافذة النجاح ──────────────────────────────────────
-                Code = receipt.ReceiptNo;
                 SetStatus(isNew
                     ? $"تم حفظ سند قبض رقم {Code} بنجاح"
                     : $"تم تعديل سند قبض رقم {Code} بنجاح");
@@ -1108,7 +1117,7 @@ namespace SmartAuditERP.Form_WPF
 
             if (dialog.ShowDialog() == true)
             {
-                ReceiptOper.filePathDocument = dialog.FileNames;
+                _receiptFiles = dialog.FileNames;
                 SetStatus($"تم اختيار {dialog.FileNames.Length} ملف");
             }
         }

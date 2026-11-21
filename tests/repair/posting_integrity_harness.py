@@ -179,15 +179,15 @@ rep, per, _ = save_receipt("fixed", True, False)
 check("B4 SaveEnty-failure arm behaviour unchanged (rollback + false)",
       rep is False and per is False)
 
-null_arm = RECEIPT.split("if (Entr == null)")[1].split("if (new EntryOper().SaveEnty(Entr))")[0]
-check("B5 the null branch now rolls back before leaving the try block",
-      "sqlTransaction.Rollback();" in null_arm and "result = false;" in null_arm)
-check("B6 it no longer jumps to the success label",
-      "goto IL_05d1;" not in null_arm)
-check("B7 commit is still reachable ONLY through a successful SaveEnty",
-      RECEIPT.count("sqlTransaction.Commit();\n\t\t\t\t\tgoto IL_05d1;") == 1)
-check("B8 bilingual operator message follows the established style",
-      "Operators.CompareString(MainClass.Language, \"en\", TextCompare: false)" in null_arm)
+save_arm = RECEIPT.split("private bool SaveReceiptLocked(")[1].split("private static void InsertReceiptDocuments(")[0]
+check("B5 null entry is rejected before connection or mutation",
+      save_arm.index("Entr == null") < save_arm.index("connection = MainClass.ConnObj()"))
+check("B6 the writer no longer calls the independent SaveEnty transaction",
+      "SaveEnty(Entr)" not in save_arm and "WriteEntryInTransaction(Entr, connection, transaction, IsNew)" in save_arm)
+check("B7 commit follows receipt, journal, and document metadata in the same SQL transaction",
+      save_arm.index("sqlCommand3.ExecuteNonQuery()") < save_arm.index("WriteEntryInTransaction(Entr, connection, transaction, IsNew)") < save_arm.index("InsertReceiptDocuments(documents, Receipt.GlobalID, connection, transaction, copiedFiles)") < save_arm.index("transaction.Commit()"))
+check("B8 errors before commit attempt explicit rollback and return failure",
+      "transaction.Rollback();" in save_arm and "return false;" in save_arm)
 
 print()
 if FAILS:

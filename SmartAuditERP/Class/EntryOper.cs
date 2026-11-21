@@ -892,31 +892,39 @@ namespace SmartAuditERP
             }
         }
 
-        public bool SaveEnty(Entry entry)
+        // Caller owns connection, transaction and commit/rollback. Never open another
+        // connection here; receipt and journal must share the same SQL unit of work.
+        internal void WriteEntryInTransaction(Entry entry, SqlConnection conn,
+            SqlTransaction transaction, bool? expectedNew)
         {
             if (!ValidateEntryBeforeSave(entry, out string validationError))
-            {
-                MessageBox.Show(validationError, "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return false;
-            }
+                throw new InvalidOperationException(validationError);
+            if (conn == null || transaction == null || transaction.Connection != conn || conn.State != ConnectionState.Open)
+                throw new InvalidOperationException("معاملة القيد غير صالحة.");
 
-            using SqlConnection conn = MainClass.ConnObj();
-
-            if (conn.State != ConnectionState.Open)
-                conn.Open();
-
-            SqlTransaction transaction = conn.BeginTransaction();
-
-            try
-            {
                 // ─── التحقق من وجود القيد ───
                 bool isNew = true;
                 using (SqlCommand checkCmd = new SqlCommand(
-                    "SELECT COUNT(*) FROM Entry WHERE GlobalID = @GlobalID",
+                    "SELECT COUNT(*) FROM Entry WITH (UPDLOCK, HOLDLOCK) WHERE GlobalID = @GlobalID",
                     conn, transaction))
                 {
                     checkCmd.Parameters.AddWithValue("@GlobalID", entry.EntryGlobalID);
                     isNew = Convert.ToInt32(checkCmd.ExecuteScalar()) == 0;
+                }
+
+                if (expectedNew.HasValue && expectedNew.Value != isNew)
+                    throw new InvalidOperationException("حالة القيد المرتبط لا تطابق حالة السند؛ راجع هويته قبل الحفظ.");
+
+                if (!isNew && expectedNew.HasValue)
+                {
+                    using SqlCommand ownerCmd = new SqlCommand(
+                        "SELECT COUNT(*) FROM Entry WHERE GlobalID=@id AND branch=@branch AND type=@type AND IS_Deleted=0",
+                        conn, transaction);
+                    ownerCmd.Parameters.Add("@id", SqlDbType.VarChar).Value = entry.EntryGlobalID;
+                    ownerCmd.Parameters.Add("@branch", SqlDbType.Int).Value = entry.Branch;
+                    ownerCmd.Parameters.Add("@type", SqlDbType.Int).Value = (int)entry.Type;
+                    if (Convert.ToInt32(ownerCmd.ExecuteScalar()) != 1)
+                        throw new InvalidOperationException("نوع القيد المرتبط أو فرعه أو حالة حذفه غير مطابقة.");
                 }
 
                 if (!isNew)
@@ -962,11 +970,29 @@ namespace SmartAuditERP
                     subCmd.ExecuteNonQuery();
                 }
 
-                if (filePathDocument != null)
-                {
-                    foreach (string _ in filePathDocument)
-                        insertDocument(entry.EntryGlobalID);
-                }
+        }
+
+        public bool SaveEnty(Entry entry)
+        {
+            if (!ValidateEntryBeforeSave(entry, out string validationError))
+            {
+                MessageBox.Show(validationError, "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            using SqlConnection conn = MainClass.ConnObj();
+
+            if (conn.State != ConnectionState.Open)
+                conn.Open();
+
+            SqlTransaction transaction = conn.BeginTransaction();
+
+            try
+            {
+                WriteEntryInTransaction(entry, conn, transaction, null);
+
+                if (filePathDocument != null && filePathDocument.Length > 0)
+                    insertDocument(entry.EntryGlobalID);
 
                 transaction.Commit();
                 return true;

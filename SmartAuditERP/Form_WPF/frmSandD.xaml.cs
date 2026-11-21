@@ -24,6 +24,8 @@ namespace SmartAuditERP.Form_WPF
     {
         #region Fields
 
+        // Attachment selection belongs to this editor, not a process-wide static array.
+        private string[] _receiptFiles;
         private SqlConnection conn;
         private SqlConnection conn1;
 
@@ -149,6 +151,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void CLR()
         {
+            _receiptFiles = null;
             cmbSupplies.SelectedIndex  = -1;
             cmbDepositTo.SelectedIndex = -1;
             cmbSalesMan.SelectedIndex  = -1;
@@ -780,29 +783,32 @@ namespace SmartAuditERP.Form_WPF
                     txtNo.Text = ReceiptOper.ReceiptNo(ReceiptType).ToString();
                 }
 
-                if (Code == -1)
-                    Code = Convert.ToInt32(txtNo.Text);
-
                 // جلب أكواد الحسابات
                 int supplierAcc = 0, depositAcc = 0;
 
                 var accAdapter1 = new SqlDataAdapter(
                     $"SELECT Code FROM Accounts_Index WHERE Type=2 " +
-                    $"{Accounting.BranchCondition} AND AName=N'{cmbSupplies.Text}'",
+                    $"{Accounting.BranchCondition} AND AName=@accountName",
                     conn1);
+                accAdapter1.SelectCommand.Parameters.Add("@accountName", SqlDbType.NVarChar).Value = cmbSupplies.Text;
                 var dt1 = new DataTable();
                 accAdapter1.Fill(dt1);
-                if (dt1.Rows.Count > 0)
+                if (dt1.Rows.Count == 1)
                     supplierAcc = Convert.ToInt32(dt1.Rows[0][0]);
+                else
+                    throw new InvalidOperationException("تعذر تحديد حساب وحيد للاسم المحدد ضمن الفرع؛ لم يُحفظ السند.");
 
                 var accAdapter2 = new SqlDataAdapter(
                     $"SELECT Code FROM Accounts_Index WHERE Type=2 " +
-                    $"{Accounting.BranchCondition} AND AName=N'{cmbDepositTo.Text}'",
+                    $"{Accounting.BranchCondition} AND AName=@accountName",
                     conn1);
+                accAdapter2.SelectCommand.Parameters.Add("@accountName", SqlDbType.NVarChar).Value = cmbDepositTo.Text;
                 var dt2 = new DataTable();
                 accAdapter2.Fill(dt2);
-                if (dt2.Rows.Count > 0)
+                if (dt2.Rows.Count == 1)
                     depositAcc = Convert.ToInt32(dt2.Rows[0][0]);
+                else
+                    throw new InvalidOperationException("تعذر تحديد حساب وحيد للاسم المحدد ضمن الفرع؛ لم يُحفظ السند.");
 
                 int costCenterCode = -1;
                 if (cmbCostCenter.SelectedIndex > -1)
@@ -873,12 +879,16 @@ namespace SmartAuditERP.Form_WPF
                 var receiptOper = new ReceiptOper();
                 var entry       = receiptOper.BindReceiptToEntry(receipt);
 
-                if (!receiptOper.SaveReceipt(receipt, entry, isNew))
+                if (!receiptOper.SaveReceipt(receipt, entry, isNew, _receiptFiles))
                 {
+                    if (isNew) { Code = -1; GlobalID = "-1"; EntryGlobalID = "-1"; }
                     DXMessageBox.Show("خطأ أثناء الحفظ.", "خطأ",
                                     MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
+
+                Code = receipt.ReceiptNo;
+                _receiptFiles = null; // the transaction committed; never replay selected files
 
                 ThreadContext.Properties["EmpID"] = MainClass.EmpNo;
                 Logger.Info(
@@ -1024,7 +1034,7 @@ namespace SmartAuditERP.Form_WPF
                 Directory.CreateDirectory(dataPath);
 
             if (dlg.ShowDialog() == true)
-                ReceiptOper.filePathDocument = dlg.FileNames;
+                _receiptFiles = dlg.FileNames;
         }
 
         private void Btnshowdocument_Click(object sender, RoutedEventArgs e)

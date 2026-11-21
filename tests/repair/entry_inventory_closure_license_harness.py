@@ -19,7 +19,9 @@ for text in ('entry == null', 'string.IsNullOrWhiteSpace(entry.EntryGlobalID)', 
  'debit <= 0m', 'credit <= 0m', 'debit != credit', 'catch (OverflowException)'):
  assert text in validation,text
 save=part(entry,'public bool SaveEnty(', '#endregion')
-assert ordered(save,'ValidateEntryBeforeSave(entry', 'return false;', 'MainClass.ConnObj()', 'conn.BeginTransaction()', 'DELETE FROM Entry_Sub')
+assert ordered(save,'ValidateEntryBeforeSave(entry', 'return false;', 'MainClass.ConnObj()', 'conn.BeginTransaction()', 'WriteEntryInTransaction(entry, conn, transaction, null)')
+writer=part(entry,'internal void WriteEntryInTransaction(', 'public bool SaveEnty(')
+assert ordered(writer, 'ValidateEntryBeforeSave(entry', 'expectedNew.HasValue', 'DELETE FROM Entry_Sub')
 # Model policy only. C# uses Convert.ToDecimal(double) and is not executed here.
 def valid(rows):
  if not rows:return False

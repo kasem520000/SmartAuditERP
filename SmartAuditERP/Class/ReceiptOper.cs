@@ -156,54 +156,89 @@ namespace SmartAuditERP
 			return result;
 		}
 
+		private static readonly object ReceiptSaveGate = new object();
+		private static bool receiptSaveNeedsReview;
+
 		public bool SaveReceipt(Receipt Receipt, Entry Entr, bool IsNew)
 		{
-			bool result;
-			if (MainClass.IsTrial)
+			// Compatibility for external callers; local editors use the instance-owned overload.
+			string[] files = filePathDocument == null ? null : (string[])filePathDocument.Clone();
+			return SaveReceipt(Receipt, Entr, IsNew, files);
+		}
+
+		public bool SaveReceipt(Receipt Receipt, Entry Entr, bool IsNew, string[] documents)
+		{
+			lock (ReceiptSaveGate)
 			{
-				SqlConnection sqlConnection;
-				sqlConnection = MainClass.ConnObj();
-				if (sqlConnection.State != ConnectionState.Open)
+				if (receiptSaveNeedsReview)
 				{
-					sqlConnection.Open();
+					MessageBox.Show("نتيجة حفظ سابقة غير مؤكدة؛ راجع السند والقيد والمرفقات قبل إعادة المحاولة أو إعادة تشغيل البرنامج.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					return false;
 				}
-				new SqlCommand();
-				new SqlCommand();
-				SqlCommand sqlCommand;
-				sqlCommand = new SqlCommand("select max(id) from Entry ", sqlConnection);
-				SqlCommand sqlCommand2;
-				sqlCommand2 = new SqlCommand("select max(Proc_id) from Inv ", sqlConnection);
-				if ((Conversion.Val(Operators.ConcatenateObject("", sqlCommand.ExecuteScalar())) >= 50.0) | (Conversion.Val(Operators.ConcatenateObject("", sqlCommand2.ExecuteScalar())) >= 100.0))
-				{
-					string text;
-					text = "نأسف لقد وصلت لأقصى حد ادخال للنسخة التجريبية، يمكنك شراء البرنامج وتفعيله من خلال بيانات الدعم الفني بالبرنامج";
-					if (Operators.CompareString(MainClass.Language, "en", TextCompare: false) == 0)
-					{
-						text = "Sorry,You reach the maximum of entries, you can purchase the app and activate it from support data in the app";
-					}
-					MessageBox.Show(text, "", MessageBoxButtons.OK, MessageBoxIcon.Asterisk);
-					MainClass.IsTrial = true;
-					result = false;
-					goto IL_069c;
-				}
-				if (sqlConnection.State != ConnectionState.Open)
-				{
-					sqlConnection.Close();
-				}
+				return SaveReceiptLocked(Receipt, Entr, IsNew, documents == null ? null : (string[])documents.Clone());
 			}
-			new SqlCommand();
-			SqlConnection sqlConnection2;
-			sqlConnection2 = MainClass.ConnObj();
-			if (sqlConnection2.State != ConnectionState.Open)
+		}
+
+		private bool SaveReceiptLocked(Receipt Receipt, Entry Entr, bool IsNew, string[] documents)
+		{
+			if (Receipt == null || Entr == null || string.IsNullOrWhiteSpace(Receipt.GlobalID) ||
+				string.IsNullOrWhiteSpace(Receipt.EntryGlobalID) ||
+				!string.Equals(Receipt.EntryGlobalID, Entr.EntryGlobalID, StringComparison.Ordinal) ||
+				!Receipt.BranchID.HasValue || Receipt.BranchID.Value <= 0 || Receipt.BranchID.Value != Entr.Branch ||
+				!Receipt.ReceiptType.HasValue || Receipt.ReceiptType.Value != (int)Entr.Type)
 			{
-				sqlConnection2.Open();
+				MessageBox.Show("هوية السند أو القيد أو الفرع غير صالحة أو غير متطابقة؛ لم يتم الحفظ.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return false;
 			}
-			SqlTransaction sqlTransaction;
-			sqlTransaction = sqlConnection2.BeginTransaction();
+
+			SqlConnection connection = null;
+			SqlTransaction transaction = null;
+			bool commitStarted = false;
+			bool committed = false;
+			var copiedFiles = new List<string>();
 			try
 			{
-				SqlCommand sqlCommand3;
-				sqlCommand3 = ((!IsNew) ? new SqlCommand(StoredQueries.UpdateReceipt, sqlConnection2, sqlTransaction) : new SqlCommand(StoredQueries.InsertReceipt, sqlConnection2, sqlTransaction));
+				connection = MainClass.ConnObj();
+				connection.Open();
+				transaction = connection.BeginTransaction();
+				if (MainClass.IsTrial)
+				{
+					using SqlCommand trial = new SqlCommand("SELECT ISNULL(MAX(id),0) FROM Entry", connection, transaction);
+					using SqlCommand trialInv = new SqlCommand("SELECT ISNULL(MAX(Proc_id),0) FROM Inv", connection, transaction);
+					if (Convert.ToDouble(trial.ExecuteScalar()) >= 50.0 || Convert.ToDouble(trialInv.ExecuteScalar()) >= 100.0)
+						throw new InvalidOperationException("تم بلوغ الحد المسموح للنسخة التجريبية.");
+				}
+
+				// Lock the receipt identity; never silently insert over an existing document
+				// or relink an existing receipt to another entry or branch.
+				using (SqlCommand check = new SqlCommand(
+					"SELECT EntryGlobalID, BranchID, ISDeleted, ReceiptType, ReceiptNo FROM Receipts WITH (UPDLOCK, HOLDLOCK) WHERE GlobalID=@id", connection, transaction))
+				{
+					check.Parameters.Add("@id", SqlDbType.NVarChar).Value = Receipt.GlobalID;
+					using SqlDataReader reader = check.ExecuteReader();
+					bool exists = reader.Read();
+					if (IsNew == exists)
+						throw new InvalidOperationException("حالة السند لا تطابق السجل المحفوظ؛ راجع الهوية قبل المحاولة.");
+					if (exists && (reader["EntryGlobalID"] == DBNull.Value || reader["BranchID"] == DBNull.Value ||
+						reader["ISDeleted"] == DBNull.Value || Convert.ToBoolean(reader["ISDeleted"]) ||
+						reader["ReceiptType"] == DBNull.Value || Convert.ToInt32(reader["ReceiptType"]) != Receipt.ReceiptType.Value ||
+						Convert.ToInt32(reader["ReceiptNo"]) != Receipt.ReceiptNo ||
+						!string.Equals(Convert.ToString(reader["EntryGlobalID"]), Receipt.EntryGlobalID, StringComparison.Ordinal) ||
+						Convert.ToInt32(reader["BranchID"]) != Receipt.BranchID.Value))
+						throw new InvalidOperationException("ربط السند أو فرعه لا يطابق السجل المحفوظ.");
+				}
+
+				// Prevent a second receipt from claiming the same journal through this path.
+				using (SqlCommand links = new SqlCommand(
+					"SELECT COUNT(*) FROM Receipts WITH (UPDLOCK, HOLDLOCK) WHERE EntryGlobalID=@entry AND GlobalID<>@receipt", connection, transaction))
+				{
+					links.Parameters.Add("@entry", SqlDbType.NVarChar).Value = Receipt.EntryGlobalID;
+					links.Parameters.Add("@receipt", SqlDbType.NVarChar).Value = Receipt.GlobalID;
+					if (Convert.ToInt32(links.ExecuteScalar()) != 0)
+						throw new InvalidOperationException("القيد مرتبط بسند آخر؛ راجع السجلات قبل الحفظ.");
+				}
+
+				using SqlCommand sqlCommand3 = ((!IsNew) ? new SqlCommand(StoredQueries.UpdateReceipt, connection, transaction) : new SqlCommand(StoredQueries.InsertReceipt, connection, transaction));
 				sqlCommand3.Parameters.Add("@GlobalID", SqlDbType.VarChar).Value = Receipt.GlobalID;
 				sqlCommand3.Parameters.Add("@ReceiptNo", SqlDbType.Int).Value = Receipt.ReceiptNo;
 				sqlCommand3.Parameters.Add("@ReceiptDate", SqlDbType.DateTime).Value = Receipt.ReceiptDate;
@@ -234,81 +269,72 @@ namespace SmartAuditERP
 				sqlCommand3.Parameters.Add("@ISDeleted", SqlDbType.Bit).Value = Receipt.ISDeleted;
 				sqlCommand3.Parameters.Add("@Recipient", SqlDbType.NVarChar).Value = Receipt.Recipient;
 				sqlCommand3.ExecuteNonQuery();
-				if (ReceiptOper.filePathDocument != null)
-				{
-					string[] array;
-					array = ReceiptOper.filePathDocument;
-					for (int i = 0; i < array.Length; i = checked(i + 1))
-					{
-						_ = array[i];
-						ReceiptOper.insertDocument(Receipt.GlobalID);
-					}
-				}
-				if (Entr == null)
-				{
-					// Repair R-035 (audit finding P3-004): a null entry used to jump straight to
-					// the SUCCESS label without Commit, so finally discarded the still-open
-					// transaction - the receipt write was implicitly rolled back while callers
-					// were told the save succeeded. Fail loudly instead: roll back explicitly and
-					// report false, matching the SaveEnty-failure arm just below. (SaveInvoice's
-					// own explicit null branch is a different, deliberate contract - untouched.)
-					sqlTransaction.Rollback();
-					string textNull;
-					textNull = "تعذر حفظ القيد المرتبط بالسند؛ تم التراجع عن الحفظ";
-					if (Operators.CompareString(MainClass.Language, "en", TextCompare: false) == 0)
-					{
-						textNull = "The linked entry could not be saved; the operation was rolled back";
-					}
-					MessageBox.Show(textNull, "", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-					result = false;
-					goto end_IL_013a;
-				}
-				if (new EntryOper().SaveEnty(Entr))
-				{
-					sqlTransaction.Commit();
-					goto IL_05d1;
-				}
-				sqlTransaction.Rollback();
-				string text2;
-				text2 = "خطأ أثناء الحفظ";
-				if (Operators.CompareString(MainClass.Language, "en", TextCompare: false) == 0)
-				{
-					text2 = "error in saving";
-				}
-				MessageBox.Show(text2, "", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-				result = false;
-				goto end_IL_013a;
-			IL_05d1:
-				result = true;
-			end_IL_013a:;
+
+				new EntryOper().WriteEntryInTransaction(Entr, connection, transaction, IsNew);
+				InsertReceiptDocuments(documents, Receipt.GlobalID, connection, transaction, copiedFiles);
+				commitStarted = true;
+				transaction.Commit();
+				committed = true;
+				return true;
 			}
 			catch (Exception ex)
 			{
-				ProjectData.SetProjectError(ex);
-				Exception ex2;
-				ex2 = ex;
-				sqlTransaction.Rollback();
-				string text3;
-				text3 = "خطأ أثناء حفظ القيد";
-				if (Operators.CompareString(MainClass.Language, "en", TextCompare: false) == 0)
+				bool rollbackConfirmed = transaction == null;
+				if (transaction != null && !commitStarted)
 				{
-					text3 = "error in saving";
+					try { transaction.Rollback(); rollbackConfirmed = true; }
+					catch { rollbackConfirmed = false; }
 				}
-				MessageBox.Show((Operators.CompareString(MainClass.Language, "ar", TextCompare: false) != 0) ? (text3 + Environment.NewLine + "Error details: " + ex2.Message) : (text3 + Environment.NewLine + "تفاصيل الخطأ: " + ex2.Message), "", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-				result = false;
-				ProjectData.ClearProjectError();
+				bool unknown = commitStarted || !rollbackConfirmed;
+				if (unknown)
+					receiptSaveNeedsReview = true;
+				else
+				{
+					// Only delete new copies after confirmed rollback; unknown commit must
+					// retain them in case the database contains references to them.
+					foreach (string path in copiedFiles)
+					{
+						try { if (File.Exists(path)) File.Delete(path); }
+						catch { receiptSaveNeedsReview = true; }
+					}
+				}
+				string message = unknown || receiptSaveNeedsReview
+					? "نتيجة السند أو التنظيف غير مؤكدة؛ راجع قاعدة البيانات والمرفقات قبل إعادة المحاولة."
+					: "تعذر حفظ السند والقيد؛ لم تُعتمد المعاملة.";
+				MessageBox.Show(message + Environment.NewLine + "معرّف السند: " + Receipt.GlobalID + "، معرّف القيد: " + Receipt.EntryGlobalID + Environment.NewLine + ex.Message, "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return false;
 			}
 			finally
 			{
-				if (sqlConnection2.State != ConnectionState.Closed)
-				{
-					sqlConnection2.Close();
-				}
-				sqlTransaction.Dispose();
+				try { if (transaction != null) transaction.Dispose(); } catch { if (!committed) receiptSaveNeedsReview = true; }
+				try { if (connection != null) connection.Dispose(); } catch { if (!committed) receiptSaveNeedsReview = true; }
 			}
-			goto IL_069c;
-		IL_069c:
-			return result;
+		}
+
+		private static void InsertReceiptDocuments(string[] files, string receiptId, SqlConnection connection,
+			SqlTransaction transaction, List<string> copiedFiles)
+		{
+			if (files == null || files.Length == 0) return;
+			string root = Properties.Settings.Default.DocsRootPath;
+			if (string.IsNullOrWhiteSpace(root)) throw new InvalidOperationException("مسار المرفقات غير محدد.");
+			Directory.CreateDirectory(root);
+			foreach (string source in files)
+			{
+				if (string.IsNullOrWhiteSpace(source)) throw new InvalidOperationException("مسار المرفق غير صالح.");
+				string destination = Path.Combine(root, "Receipt-" + Guid.NewGuid().ToString("N") + Path.GetExtension(source));
+				using (FileStream input = File.OpenRead(source))
+				using (FileStream output = new FileStream(destination, FileMode.CreateNew, FileAccess.Write, FileShare.None))
+				{
+					copiedFiles.Add(destination);
+					input.CopyTo(output);
+				}
+				using SqlCommand command = new SqlCommand(
+					"INSERT INTO Documents (FileName, FileUrl, GlobalID, type) VALUES (@name,@path,@id,3)", connection, transaction);
+				command.Parameters.Add("@name", SqlDbType.NVarChar).Value = Path.GetFileName(source);
+				command.Parameters.Add("@path", SqlDbType.NVarChar).Value = destination;
+				command.Parameters.Add("@id", SqlDbType.NVarChar).Value = receiptId;
+				command.ExecuteNonQuery();
+			}
 		}
 
 		public bool SaveReceipt2(Receipt Receipt)

@@ -24,6 +24,8 @@ namespace SmartAuditERP.Form_WPF
     {
         #region Fields
 
+        // Attachment selection belongs to this editor, not a process-wide static array.
+        private string[] _receiptFiles;
         private SqlConnection conn;
         private SqlConnection conn1;
 
@@ -106,6 +108,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void CLR()
         {
+            _receiptFiles = null;
             cmbClients.SelectedIndex   = -1;
             cmbDepositTO.SelectedIndex = -1;
             cmbSalesMan.SelectedIndex  = -1;
@@ -597,32 +600,35 @@ namespace SmartAuditERP.Form_WPF
                     EntryOper.GetEntryGlobalID(ref EntryGlobalID, ref entryNo);
                     GlobalID = $"{MainClass.BranchNo}-" +
                         (Convert.ToInt32(new SqlCommand(
-                            $"SELECT MAX(AutoID) FROM Receipts WHERE BranchID={MainClass.BranchNo}",
+                            $"SELECT ISNULL(MAX(AutoID),0) FROM Receipts WHERE BranchID={MainClass.BranchNo}",
                             conn1).ExecuteScalar()) + 1);
                     txtNo.Text = ReceiptOper.ReceiptNo(ReceiptType).ToString();
                 }
-
-                if (Code == -1)
-                    Code = Convert.ToInt32(txtNo.Text);
 
                 // جلب الحسابات
                 int clientAcc = 0, depositAcc = 0;
 
                 var acc1 = new SqlDataAdapter(
                     $"SELECT Code FROM Accounts_Index WHERE Type=2 " +
-                    $"{Accounting.BranchCondition} AND AName=N'{cmbClients.Text}'",
+                    $"{Accounting.BranchCondition} AND AName=@accountName",
                     conn1);
+                acc1.SelectCommand.Parameters.Add("@accountName", SqlDbType.NVarChar).Value = cmbClients.Text;
                 var dt1 = new DataTable(); acc1.Fill(dt1);
-                if (dt1.Rows.Count > 0)
+                if (dt1.Rows.Count == 1)
                     clientAcc = Convert.ToInt32(dt1.Rows[0][0]);
+                else
+                    throw new InvalidOperationException("تعذر تحديد حساب وحيد للاسم المحدد ضمن الفرع؛ لم يُحفظ السند.");
 
                 var acc2 = new SqlDataAdapter(
                     $"SELECT Code FROM Accounts_Index WHERE Type=2 " +
-                    $"{Accounting.BranchCondition} AND AName=N'{cmbDepositTO.Text}'",
+                    $"{Accounting.BranchCondition} AND AName=@accountName",
                     conn1);
+                acc2.SelectCommand.Parameters.Add("@accountName", SqlDbType.NVarChar).Value = cmbDepositTO.Text;
                 var dt2 = new DataTable(); acc2.Fill(dt2);
-                if (dt2.Rows.Count > 0)
+                if (dt2.Rows.Count == 1)
                     depositAcc = Convert.ToInt32(dt2.Rows[0][0]);
+                else
+                    throw new InvalidOperationException("تعذر تحديد حساب وحيد للاسم المحدد ضمن الفرع؛ لم يُحفظ السند.");
 
                 int costCode = -1;
                 if (cmbCostCenter.SelectedIndex > -1)
@@ -691,12 +697,16 @@ namespace SmartAuditERP.Form_WPF
                 var receiptOper = new ReceiptOper();
                 var entry       = receiptOper.BindReceiptToEntry(receipt);
 
-                if (!receiptOper.SaveReceipt(receipt, entry, isNew))
+                if (!receiptOper.SaveReceipt(receipt, entry, isNew, _receiptFiles))
                 {
+                    if (isNew) { Code = -1; GlobalID = "-1"; EntryGlobalID = "-1"; }
                     DXMessageBox.Show("خطأ أثناء الحفظ.", "خطأ",
                                     MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
+
+                Code = receipt.ReceiptNo;
+                _receiptFiles = null; // the transaction committed; never replay selected files
 
                 ThreadContext.Properties["EmpID"] = MainClass.EmpNo;
                 Logger.Info(
@@ -826,7 +836,7 @@ namespace SmartAuditERP.Form_WPF
             };
 
             if (dlg.ShowDialog() == true)
-                ReceiptOper.filePathDocument = dlg.FileNames;
+                _receiptFiles = dlg.FileNames;
         }
 
         private void Btnshowdocument_Click11(object sender, RoutedEventArgs e)
