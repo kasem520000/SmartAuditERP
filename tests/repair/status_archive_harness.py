@@ -85,7 +85,7 @@ check('editor and period batch has bounded and partial classifications',
       all(by_id[fid]['repair_status'] == 'closed_in_scope' and by_id[fid]['repair_ids'] == rid
           for fid, rid in [('P7-007', 'R-120'), ('P7-148', 'R-122'), ('P7-097', 'R-124'), ('P7-126', 'R-125')])
       and all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
-          for fid, rid in [('P7-023', 'R-121'), ('P7-151', 'R-123')])
+          for fid, rid in [('P7-023', 'R-121; R-240'), ('P7-151', 'R-123')])
       and all(by_id[fid]['repair_status'] != 'closed_in_scope' for fid in ('P7-022', 'P7-024', 'P7-152')))
 check('serial VAT POS duplicate batch classifications retain partial scope',
       all(by_id[fid]['repair_status'] == 'closed_in_scope' and by_id[fid]['repair_ids'] == rid
@@ -155,7 +155,7 @@ check('payroll navigation and sales report findings remain partial',
 
 check('booking project and activity batch remains partial and guarded',
       all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
-          for fid, rid in [('P7-022', 'R-190'), ('P7-015', 'R-191'), ('P7-016', 'R-192; R-197'),
+          for fid, rid in [('P7-022', 'R-190; R-240'), ('P7-015', 'R-191'), ('P7-016', 'R-192; R-197'),
                            ('P7-017', 'R-193'), ('P7-058', 'R-194'), ('P7-010', 'R-195')])
       and by_id['P7-023']['repair_status'] == 'partial_open'
       and by_id['P7-011']['repair_status'] == 'partial_open')
@@ -190,7 +190,7 @@ check('production and project accreditation guards stay partial',
 check('salary, PM, import and report guards remain partial',
       all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
           for fid, rid in [('P7-004', 'R-220'), ('P7-014', 'R-221'), ('P7-144', 'R-222'),
-                           ('P7-147', 'R-223'), ('P7-065', 'R-224'), ('P7-082', 'R-225'),
+                           ('P7-147', 'R-223'), ('P7-065', 'R-224'), ('P7-082', 'R-225; R-239'),
                            ('P7-088', 'R-226'), ('P7-117', 'R-137; R-227')]))
 
 check('scale, tax, requirement and fingerprint results remain partial',
@@ -206,7 +206,7 @@ check('two unresolved findings remain pending review',
       {'P7-024', 'P7-032'})
 check('commercial report and balance failure guards remain partial',
       all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
-          for fid, rid in [('P7-084', 'R-238'), ('P7-102', 'R-237')]))
+          for fid, rid in [('P7-084', 'R-238; R-241'), ('P7-102', 'R-237')]))
 check('transfer picker follow-ups remain partial',
       all(by_id[fid]['repair_status'] == 'partial_open' and rid in by_id[fid]['repair_ids'].split('; ')
           for fid, rid in [('P7-159', 'R-236'), ('P7-160', 'R-235')]))
@@ -220,5 +220,9 @@ for status, section in sections.items():
     listed = re.findall(r'^- \*\*(P[1-7]-\d{3})(?:\s|\*)', section, re.M)
     expected = {row['id'] for row in rows if row['repair_status'] == status}
     check('owner list matches ' + status, len(listed) == len(set(listed)) and set(listed) == expected)
+
+check('booking and report follow-ups remain partial',
+      all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P7-023', 'R-121; R-240'), ('P7-040', 'R-141; R-241')]))
 
 print('RESULT: PASS — archive consistency checks; classifications are not WPF or SQL acceptance.')
