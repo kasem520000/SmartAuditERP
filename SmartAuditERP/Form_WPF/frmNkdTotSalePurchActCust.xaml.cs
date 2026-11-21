@@ -15,6 +15,8 @@ namespace SmartAuditERP.Form_WPF
 
         private SqlConnection conn;
         private ObservableCollection<SalePurchActRow> _rows;
+        private bool _calculating;
+        private int _criteriaVersion;
 
         #endregion
 
@@ -25,6 +27,42 @@ namespace SmartAuditERP.Form_WPF
             conn  = MainClass.ConnObj();
             _rows = new ObservableCollection<SalePurchActRow>();
             InitializeComponent();
+            foreach (ComboBox combo in new[] { cmbActs, cmbCust })
+                combo.SelectionChanged += CriteriaSelectionChanged;
+            foreach (CheckBox check in new[] { chkAllActs, chkAllCust })
+            {
+                check.Checked += CriteriaCheckedChanged;
+                check.Unchecked += CriteriaCheckedChanged;
+                check.Indeterminate += CriteriaCheckedChanged;
+            }
+            txtDateFrom.SelectedDateChanged += CriteriaSelectionChanged;
+            txtDateTo.SelectedDateChanged += CriteriaSelectionChanged;
+            // A worker still dispatches to this window; closing is deferred, not cancellation.
+            Closing += (sender, e) =>
+            {
+                if (!_calculating) return;
+                e.Cancel = true;
+                DXMessageBox.Show("انتظر انتهاء حساب التقرير قبل إغلاق النافذة.",
+                    "تنبيه", MessageBoxButton.OK, MessageBoxImage.Information);
+            };
+        }
+
+        private void CriteriaSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (IsLoaded) InvalidateResult();
+        }
+
+        private void CriteriaCheckedChanged(object sender, RoutedEventArgs e)
+        {
+            if (IsLoaded) InvalidateResult();
+        }
+
+        private void InvalidateResult()
+        {
+            _criteriaVersion++;
+            _rows.Clear();
+            txtSumPurch.Text = "0.00";
+            txtSumSale.Text = "0.00";
         }
 
         #endregion
@@ -115,150 +153,154 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnShow_Click(object sender, RoutedEventArgs e)
         {
-            if (chkAllActs.IsChecked != true && cmbActs.SelectedIndex == -1)
+            if (_calculating) return;
+            InvalidateResult();
+
+            int actId = 0, customerId = 0;
+            bool allActs = chkAllActs.IsChecked == true;
+            bool allCustomers = !chkAllCust.IsEnabled || chkAllCust.IsChecked == true;
+            if (!allActs && (!int.TryParse(Convert.ToString(cmbActs.SelectedValue), out actId) || actId <= 0))
             {
                 DXMessageBox.Show("يجب اختيار جهة العمل", "", MessageBoxButton.OK, MessageBoxImage.Warning);
-                cmbActs.Focus();
                 return;
             }
-
-            if (chkAllCust.IsEnabled && chkAllCust.IsChecked != true && cmbCust.SelectedIndex == -1)
+            if (!allCustomers && (!int.TryParse(Convert.ToString(cmbCust.SelectedValue), out customerId) || customerId <= 0))
             {
                 DXMessageBox.Show("يجب اختيار العميل", "", MessageBoxButton.OK, MessageBoxImage.Warning);
-                cmbCust.Focus();
                 return;
             }
-
-            _rows.Clear();
-            txtSumPurch.Text = "0.00";
-            txtSumSale.Text  = "0.00";
-
-            Thread workerThread = new Thread(CalcStock);
-            workerThread.SetApartmentState(ApartmentState.STA);
-            workerThread.IsBackground = true;
-            workerThread.Start();
-        }
-
-        private void CalcStock()
-        {
+            if (!txtDateFrom.SelectedDate.HasValue || !txtDateTo.SelectedDate.HasValue ||
+                txtDateFrom.SelectedDate.Value.Date > txtDateTo.SelectedDate.Value.Date ||
+                txtDateTo.SelectedDate.Value.Date == DateTime.MaxValue.Date)
+            {
+                DXMessageBox.Show("نطاق التاريخ غير صالح", "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            DateTime from = txtDateFrom.SelectedDate.Value.Date;
+            DateTime toExclusive = txtDateTo.SelectedDate.Value.Date.AddDays(1);
+            int branch = MainClass.BranchNo;
+            int version = _criteriaVersion;
+            var controls = new Control[] { btnShow, cmbActs, chkAllActs, cmbCust, chkAllCust, txtDateFrom, txtDateTo };
+            var enabled = new bool[controls.Length];
+            for (int i = 0; i < controls.Length; i++)
+            {
+                enabled[i] = controls[i].IsEnabled;
+                controls[i].IsEnabled = false;
+            }
+            _calculating = true;
+            ProgressBar1.Visibility = Visibility.Visible;
             try
             {
-                SqlDataAdapter itemAdapter = new SqlDataAdapter(
-                    "select id,name,nameEN from Items where IS_Deleted=0 order by id", conn);
-                DataTable itemsDt = new DataTable();
-                itemAdapter.Fill(itemsDt);
-
-                double totalPurch = 0.0, totalSale = 0.0;
-
-                string actFilter = "";
-                string custFilter = "";
-                string branchFilter = MainClass.BranchNo != -1
-                    ? $"inv.branch={MainClass.BranchNo} and "
-                    : "";
-
-                Dispatcher.Invoke(() =>
+                var worker = new Thread(() =>
                 {
-                    if (chkAllActs.IsChecked != true && cmbActs.SelectedValue != null)
-                        actFilter = $"acts.id={cmbActs.SelectedValue} and ";
-
-                    if (chkAllCust.IsChecked != true && cmbCust.SelectedValue != null)
-                        custFilter = $"customers.id={cmbCust.SelectedValue} and ";
-
-                    ProgressBar1.Visibility = Visibility.Visible;
-                    ProgressBar1.Maximum    = itemsDt.Rows.Count;
-                    ProgressBar1.Value      = 0;
-                });
-
-                DateTime dtFrom = DateTime.Today, dtTo = DateTime.Today;
-                Dispatcher.Invoke(() =>
-                {
-                    dtFrom = txtDateFrom.SelectedDate ?? DateTime.Today;
-                    dtTo   = (txtDateTo.SelectedDate ?? DateTime.Today).AddHours(24);
-                });
-
-                for (int i = 0; i < itemsDt.Rows.Count; i++)
-                {
-                    object itemId   = itemsDt.Rows[i]["id"];
-                    string itemName = string.Equals(MainClass.Language, "ar", StringComparison.OrdinalIgnoreCase)
-                        ? itemsDt.Rows[i]["name"].ToString()
-                        : itemsDt.Rows[i]["nameEN"].ToString();
-
-                    string baseWhere = $"inv,inv_sub,customers,acts where {branchFilter} Inv_Sub.ItemId={itemId} and inv.cust_id=customers.id and customers.act=acts.id and {actFilter}{custFilter} date>=@date1 and date<=@date2";
-
-                    double pQty = 0, pTotal = 0, pRetQty = 0, pRetTotal = 0;
-                    double sQty = 0, sTotal = 0, sRetQty = 0, sRetTotal = 0;
-
-                    ExecuteItemQuery($"select sum(val),sum(val1*exchange_price) from {baseWhere} and inv.proc_type=1 and inv_sub.proc_type=1 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
-                        conn, dtFrom.ToShortDateString(), dtTo.ToString(), ref pQty, ref pTotal);
-
-                    ExecuteItemQuery($"select sum(val),sum(val1*exchange_price) from {baseWhere} and inv.proc_type=2 and inv_sub.proc_type=1 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
-                        conn, dtFrom.ToShortDateString(), dtTo.ToString(), ref pRetQty, ref pRetTotal);
-
-                    ExecuteItemQuery($"select sum(val),sum(val1*exchange_price) from {baseWhere} and inv.proc_type=1 and inv_sub.proc_type=2 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
-                        conn, dtFrom.ToShortDateString(), dtTo.ToString(), ref sQty, ref sTotal);
-
-                    ExecuteItemQuery($"select sum(val),sum(val1*exchange_price) from {baseWhere} and inv.proc_type=2 and inv_sub.proc_type=2 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
-                        conn, dtFrom.ToShortDateString(), dtTo.ToString(), ref sRetQty, ref sRetTotal);
-
-                    double netPQty   = pQty   - pRetQty;
-                    double netPTotal = pTotal  - pRetTotal;
-                    double netSQty   = sQty    - sRetQty;
-                    double netSTotal = sTotal  - sRetTotal;
-
-                    if (netPQty != 0.0 || netSQty != 0.0)
+                    try { CalcStock(actId, customerId, allActs, allCustomers, branch, from, toExclusive, version); }
+                    catch (Exception ex)
                     {
-                        totalPurch += netPTotal;
-                        totalSale  += netSTotal;
-
                         Dispatcher.Invoke(() =>
                         {
-                            _rows.Add(new SalePurchActRow
-                            {
-                                Column1 = itemsDt.Rows[i]["id"].ToString(),
-                                Column2 = itemName,
-                                Column3 = netPQty.ToString("N4"),
-                                Column4 = netPTotal.ToString("N4"),
-                                Column6 = netSQty.ToString("N4"),
-                                Column5 = netSTotal.ToString("N4")
-                            });
+                            if (version != _criteriaVersion) return;
+                            InvalidateResult();
+                            ShowError(ex);
                         });
                     }
-
-                    Dispatcher.Invoke(() => ProgressBar1.Value++);
-                }
-
-                Dispatcher.Invoke(() =>
-                {
-                    txtSumPurch.Text        = totalPurch.ToString("N2");
-                    txtSumSale.Text         = totalSale.ToString("N2");
-                    ProgressBar1.Visibility = Visibility.Collapsed;
-                });
+                    finally
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            ProgressBar1.Visibility = Visibility.Collapsed;
+                            for (int i = 0; i < controls.Length; i++) controls[i].IsEnabled = enabled[i];
+                            _calculating = false;
+                        });
+                    }
+                }) { IsBackground = true };
+                worker.SetApartmentState(ApartmentState.STA);
+                worker.Start();
             }
-            catch (Exception ex)
+            catch
             {
-                Dispatcher.Invoke(() => ShowError(ex));
+                ProgressBar1.Visibility = Visibility.Collapsed;
+                for (int i = 0; i < controls.Length; i++) controls[i].IsEnabled = enabled[i];
+                _calculating = false;
+                throw;
             }
         }
 
-        private void ExecuteItemQuery(string sql, SqlConnection conn, string date1, string date2,
+        private void CalcStock(int actId, int customerId, bool allActs, bool allCustomers,
+            int branch, DateTime dateFrom, DateTime dateToExclusive, int version)
+        {
+            DataTable itemsDt = new DataTable();
+            using (var itemAdapter = new SqlDataAdapter(
+                "select id,name,nameEN from Items where IS_Deleted=0 order by id", conn))
+                itemAdapter.Fill(itemsDt);
+
+            double totalPurch = 0.0, totalSale = 0.0;
+            var stagedRows = new System.Collections.Generic.List<SalePurchActRow>();
+            string branchFilter = branch != -1 ? $"inv.branch={branch} and " : "";
+            string actFilter = allActs ? "" : $"acts.id={actId} and ";
+            string custFilter = allCustomers ? "" : $"customers.id={customerId} and ";
+            Dispatcher.Invoke(() => { ProgressBar1.Maximum = Math.Max(1, itemsDt.Rows.Count); ProgressBar1.Value = 0; });
+
+            for (int i = 0; i < itemsDt.Rows.Count; i++)
+            {
+                int itemId = Convert.ToInt32(itemsDt.Rows[i]["id"]);
+                string itemName = string.Equals(MainClass.Language, "ar", StringComparison.OrdinalIgnoreCase)
+                    ? itemsDt.Rows[i]["name"].ToString() : itemsDt.Rows[i]["nameEN"].ToString();
+                string baseWhere = $"inv,inv_sub,customers,acts where {branchFilter} Inv_Sub.ItemId={itemId} and inv.cust_id=customers.id and customers.act=acts.id and {actFilter}{custFilter} date>=@date1 and date<@date2";
+
+                double pQty = 0, pTotal = 0, pRetQty = 0, pRetTotal = 0;
+                double sQty = 0, sTotal = 0, sRetQty = 0, sRetTotal = 0;
+                ExecuteItemQuery($"select sum(val),sum(val1*exchange_price) from {baseWhere} and inv.inv_type=1 and inv.proc_type=1 and inv_sub.proc_type=1 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
+                    conn, dateFrom, dateToExclusive, ref pQty, ref pTotal);
+                ExecuteItemQuery($"select sum(val),sum(val1*exchange_price) from {baseWhere} and inv.inv_type=1 and inv.proc_type=2 and inv_sub.proc_type=2 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
+                    conn, dateFrom, dateToExclusive, ref pRetQty, ref pRetTotal);
+                ExecuteItemQuery($"select sum(val),sum(val1*exchange_price) from {baseWhere} and inv.inv_type IN (2,3) and inv.proc_type=1 and inv_sub.proc_type=2 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
+                    conn, dateFrom, dateToExclusive, ref sQty, ref sTotal);
+                ExecuteItemQuery($"select sum(val),sum(val1*exchange_price) from {baseWhere} and inv.inv_type IN (2,3) and inv.proc_type=2 and inv_sub.proc_type=1 and inv.InvGlobalID=inv_sub.InvGlobalID and inv.IS_Deleted=0",
+                    conn, dateFrom, dateToExclusive, ref sRetQty, ref sRetTotal);
+
+                double netPQty = pQty - pRetQty, netPTotal = pTotal - pRetTotal;
+                double netSQty = sQty - sRetQty, netSTotal = sTotal - sRetTotal;
+                if (netPQty != 0.0 || netSQty != 0.0 || netPTotal != 0.0 || netSTotal != 0.0)
+                {
+                    totalPurch += netPTotal;
+                    totalSale += netSTotal;
+                    stagedRows.Add(new SalePurchActRow
+                    {
+                        Column1 = itemId.ToString(), Column2 = itemName,
+                        Column3 = netPQty.ToString("N4"), Column4 = netPTotal.ToString("N4"),
+                        Column6 = netSQty.ToString("N4"), Column5 = netSTotal.ToString("N4")
+                    });
+                }
+                Dispatcher.Invoke(() => { if (version == _criteriaVersion) ProgressBar1.Value++; });
+            }
+            Dispatcher.Invoke(() =>
+            {
+                if (version != _criteriaVersion) return;
+                _rows.Clear();
+                foreach (SalePurchActRow row in stagedRows) _rows.Add(row);
+                txtSumPurch.Text = totalPurch.ToString("N2");
+                txtSumSale.Text = totalSale.ToString("N2");
+            });
+        }
+
+        private void ExecuteItemQuery(string sql, SqlConnection conn, DateTime date1, DateTime date2,
             ref double qty, ref double total)
         {
-            try
+            using (var adapter = new SqlDataAdapter(sql, conn))
             {
-                SqlDataAdapter adapter = new SqlDataAdapter(sql, conn);
                 adapter.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = date1;
                 adapter.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = date2;
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
-
-                if (dt.Rows.Count > 0 && !string.IsNullOrEmpty(dt.Rows[0][0]?.ToString()))
-                {
-                    double.TryParse(dt.Rows[0][0].ToString(), out qty);
-                    double.TryParse(dt.Rows[0][1].ToString(), out total);
-                    total = Math.Round(total, 4);
-                }
+                if (dt.Rows.Count == 0 || (dt.Rows[0][0] == DBNull.Value && dt.Rows[0][1] == DBNull.Value)) return;
+                if (dt.Rows[0][0] == DBNull.Value || dt.Rows[0][1] == DBNull.Value)
+                    throw new InvalidOperationException("مجاميع حركة الصنف غير مكتملة.");
+                qty = Convert.ToDouble(dt.Rows[0][0]);
+                total = Convert.ToDouble(dt.Rows[0][1]);
+                if (double.IsNaN(qty) || double.IsInfinity(qty) || double.IsNaN(total) || double.IsInfinity(total))
+                    throw new InvalidOperationException("مجاميع حركة الصنف غير صالحة.");
+                total = Math.Round(total, 4);
             }
-            catch { }
         }
 
         #endregion

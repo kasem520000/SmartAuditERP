@@ -27,7 +27,7 @@ check('update identifies booking and invoice and requires one active match', 'wh
 check('replacement is parameterized and uses persisted identity', 'DELETE FROM BookingAddition WHERE bookId=@BookingId' in booking and 'deleteAdditions.Parameters.Add("@BookingId", SqlDbType.Int).Value = bookingId' in booking and '(int)bookNo' not in booking)
 check('both booking operations and additions precede transaction commit', ordered(booking, ['conn.BeginTransaction()', 'InsertRentInv', 'SCOPE_IDENTITY()', 'DELETE FROM BookingAddition', 'insert into BookingAddition', 'transaction.Commit()']))
 check('addition uses resolved ID', 'insertCmd.Parameters.Add("@bookId", SqlDbType.Int).Value =\n                            bookingId;' in booking)
-check('catch attempts rollback', 'transaction?.Rollback()' in booking)
+check('catch attempts rollback without hiding failure', 'try { transaction.Rollback(); }' in booking and 'catch { rollbackFailed = true; }' in booking)
 def replace_additions(rows, persisted_id, proposal, addition, fail=False):
     working = {k: v[:] for k, v in rows.items()}
     working[persisted_id] = [addition]

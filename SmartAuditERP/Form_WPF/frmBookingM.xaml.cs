@@ -22,6 +22,9 @@ namespace SmartAuditERP.Form_WPF
         private int rowSelected2;
         private int _index;
         private bool ISfound;
+        // A commit/rollback with unknown outcome requires reconciliation; do
+        // not replay from this window until it is closed and checked.
+        private bool _bookingNeedsReview;
 
         private double DefVAT;
         private bool PricIncVAT;
@@ -534,17 +537,27 @@ namespace SmartAuditERP.Form_WPF
 
         #region Save
 
+        private static bool TryFiniteBookingAmount(string text, out double value)
+        {
+            return double.TryParse(text, out value) && !double.IsNaN(value) && !double.IsInfinity(value);
+        }
+
         private void Save()
         {
             SqlTransaction transaction = null;
+            bool commitStarted = false;
+            bool committed = false;
+            int previousProcId = ProcID;
 
             try
             {
+                if (_bookingNeedsReview)
+                {
+                    MessageBox.Show("نتيجة الحفظ السابقة تحتاج إلى مراجعة قاعدة البيانات قبل إعادة المحاولة. أغلق النافذة بعد التحقق.",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
                 if (string.IsNullOrWhiteSpace(txtNo.Text)) return;
-
-                if (conn.State != ConnectionState.Open) conn.Open();
-
-                transaction = conn.BeginTransaction();
 
                 if (cmbClients.SelectedIndex == -1)
                 {
@@ -578,15 +591,46 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
-                int.TryParse(hour.Text, out int hourVal);
-                int.TryParse(minute.Text, out int minuteVal);
-
-                if (hourVal == 0 && minuteVal == 0)
+                if (!(txtDate.EditValue is DateTime) || !(cmbBookingDate.EditValue is DateTime))
                 {
-                    MessageBox.Show("يجب تحديد مدة الحجز  ",
-                        "", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("يجب تحديد تاريخ الفاتورة وتاريخ الحجز.",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
+                if (!int.TryParse(hour.Text, out int hourVal) ||
+                    !int.TryParse(minute.Text, out int minuteVal) ||
+                    hourVal < 0 || minuteVal < 0 || minuteVal >= 60 ||
+                    (hourVal == 0 && minuteVal == 0))
+                {
+                    MessageBox.Show("يجب إدخال مدة موجبة بساعات صحيحة ودقائق من صفر إلى 59.",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                foreach (BookingAdditionItem item in _dgvDataList)
+                {
+                    if (item.Id <= 0 || double.IsNaN(item.Quantity) || double.IsInfinity(item.Quantity) ||
+                        item.Quantity <= 0 || item.Quantity > int.MaxValue ||
+                        item.Quantity != Math.Truncate(item.Quantity) ||
+                        double.IsNaN(item.UnitPrice) || double.IsInfinity(item.UnitPrice))
+                    {
+                        MessageBox.Show("تحقق من الإضافات: الصنف مطلوب والكمية عدد صحيح موجب والسعر قيمة صالحة.",
+                            "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+                }
+
+                if (!TryFiniteBookingAmount(txtPrice.Text, out double priceVal) ||
+                    !TryFiniteBookingAmount(txttotAdditions.Text, out double totAdditions) ||
+                    !TryFiniteBookingAmount(txtTotNet.Text, out double totNet) ||
+                    !TryFiniteBookingAmount(txtTotTax.Text, out double totTax))
+                {
+                    MessageBox.Show("تعذر قراءة مبالغ الحجز بصورة صالحة؛ راجع السعر وأعد حساب الإجماليات.",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                if (conn.State != ConnectionState.Open) conn.Open();
+                transaction = conn.BeginTransaction();
 
                 string bookingType = rbNormal.IsChecked == true
                     ? "حجز عادي" : "بحر مفتوح";
@@ -621,10 +665,6 @@ namespace SmartAuditERP.Form_WPF
                 }
 
                 double rentPeriod = hourVal + (minuteVal / 60.0);
-                double.TryParse(txtPrice.Text, out double priceVal);
-                double.TryParse(txttotAdditions.Text, out double totAdditions);
-                double.TryParse(txtTotNet.Text, out double totNet);
-                double.TryParse(txtTotTax.Text, out double totTax);
 
                 // إدراج أو تحديث RentInvoice
                 SqlCommand cmd = Code == -1
@@ -754,7 +794,10 @@ namespace SmartAuditERP.Form_WPF
                     }
                 }
 
+                commitStarted = true;
                 transaction.Commit();
+                committed = true;
+                transaction.Dispose();
                 transaction = null;
                 // Repair R-121 (P7-023): a blank form after saving is new,
                 // never an invisible continuation of the previous booking.
@@ -768,13 +811,44 @@ namespace SmartAuditERP.Form_WPF
             }
             catch (Exception ex)
             {
-                transaction?.Rollback();
-                MessageBox.Show("خطأ أثناء الحفظ\nتفاصيل الخطأ: " + ex.Message,
-                    "", MessageBoxButton.OK, MessageBoxImage.Error);
+                bool rollbackFailed = false;
+                if (transaction != null)
+                {
+                    try { transaction.Rollback(); }
+                    catch { rollbackFailed = true; }
+                }
+
+                if (commitStarted || committed || rollbackFailed)
+                {
+                    _bookingNeedsReview = true;
+                    string message = committed
+                        ? "تم اعتماد المعاملة لكن تعذر إكمال تحديث الشاشة. راجع الحجز قبل أي محاولة أخرى."
+                        : "نتيجة الحفظ أو التراجع غير مؤكدة. راجع قاعدة البيانات قبل إعادة المحاولة.";
+                    MessageBox.Show(message + "\nتفاصيل الخطأ: " + ex.Message,
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                else
+                {
+                    ProcID = previousProcId;
+                    MessageBox.Show("تعذر حفظ الحجز في هذه المحاولة.\nتفاصيل الخطأ: " + ex.Message,
+                        "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
             finally
             {
-                if (conn.State != ConnectionState.Closed) conn.Close();
+                Exception cleanupError = null;
+                try { if (transaction != null) transaction.Dispose(); }
+                catch (Exception ex) { cleanupError = ex; }
+                try { if (conn.State != ConnectionState.Closed) conn.Close(); }
+                catch (Exception ex) { if (cleanupError == null) cleanupError = ex; }
+                try { if (conn1.State != ConnectionState.Closed) conn1.Close(); }
+                catch (Exception ex) { if (cleanupError == null) cleanupError = ex; }
+                if (cleanupError != null)
+                {
+                    _bookingNeedsReview = true;
+                    MessageBox.Show("تعذر إنهاء اتصال الحجز بأمان. راجع حالة الحجز قبل إعادة المحاولة.\n" + cleanupError.Message,
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
         }
 

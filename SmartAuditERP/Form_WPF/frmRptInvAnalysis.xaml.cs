@@ -58,6 +58,27 @@ namespace SmartAuditERP.Form_WPF
 
             _itemsSource = new ObservableCollection<InvAnalysisRow>();
             dgvItems.ItemsSource = _itemsSource;
+
+            // Result rows and report headers must never outlive a changed filter.
+            // Register once per window; programmatic changes also invalidate a worker.
+            foreach (ComboBox combo in new[] { cmbStock, cmbSafe, cmbCust, cmbEmp, cmbSales })
+                combo.SelectionChanged += AnalysisFilter_SelectionChanged;
+            foreach (CheckBox check in new[] { chkAllStock, chkAllSafe, chkAllCust, chkAllEmp, chkAllSales })
+            {
+                check.Checked += AnalysisFilter_CheckedChanged;
+                check.Unchecked += AnalysisFilter_CheckedChanged;
+                check.Indeterminate += AnalysisFilter_CheckedChanged;
+            }
+            txtDateFrom.SelectedDateChanged += AnalysisFilter_SelectionChanged;
+            txtDateTo.SelectedDateChanged += AnalysisFilter_SelectionChanged;
+            // A worker still dispatches to this window; closing is deferred, not cancellation.
+            Closing += (sender, e) =>
+            {
+                if (!_analysisRunning) return;
+                e.Cancel = true;
+                DXMessageBox.Show("انتظر انتهاء حساب التقرير قبل إغلاق النافذة.",
+                    "تنبيه", MessageBoxButton.OK, MessageBoxImage.Information);
+            };
         }
 
         #endregion
@@ -247,6 +268,16 @@ namespace SmartAuditERP.Form_WPF
             if (IsLoaded) InvalidateAnalysisResult();
         }
 
+        private void AnalysisFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (IsLoaded) InvalidateAnalysisResult();
+        }
+
+        private void AnalysisFilter_CheckedChanged(object sender, RoutedEventArgs e)
+        {
+            if (IsLoaded) InvalidateAnalysisResult();
+        }
+
         private void InvalidateAnalysisResult()
         {
             _analysisVersion++;
@@ -329,6 +360,14 @@ namespace SmartAuditERP.Form_WPF
                 return false;
             }
 
+            if (!txtDateFrom.SelectedDate.HasValue || !txtDateTo.SelectedDate.HasValue ||
+                txtDateFrom.SelectedDate.Value.Date > txtDateTo.SelectedDate.Value.Date ||
+                txtDateTo.SelectedDate.Value.Date == DateTime.MaxValue.Date)
+            {
+                DXMessageBox.Show("نطاق التاريخ غير صالح.", "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
             return true;
         }
 
@@ -350,7 +389,9 @@ namespace SmartAuditERP.Form_WPF
             _analysisRunning = true;
             _activeAnalysisVersion = _analysisVersion;
             var controls = new Control[] { chkAllGroups, cmbGroups, rdStock, rdCust, rdItem,
-                rdSalesman, rdEmp, rdDay, rdMonth, rdGroup };
+                rdSalesman, rdEmp, rdDay, rdMonth, rdGroup, txtDateFrom, txtDateTo,
+                chkAllStock, cmbStock, chkAllSafe, cmbSafe, chkAllCust, cmbCust,
+                chkAllEmp, cmbEmp, chkAllSales, cmbSales };
             var enabled = new bool[controls.Length];
             for (int i = 0; i < controls.Length; i++)
             {
@@ -538,7 +579,7 @@ namespace SmartAuditERP.Form_WPF
             Dispatcher.Invoke(() =>
             {
                 if (txtDateFrom.SelectedDate.HasValue)
-                    result = txtDateFrom.SelectedDate.Value;
+                    result = txtDateFrom.SelectedDate.Value.Date;
             });
             return result;
         }
@@ -549,7 +590,7 @@ namespace SmartAuditERP.Form_WPF
             Dispatcher.Invoke(() =>
             {
                 if (txtDateTo.SelectedDate.HasValue)
-                    result = txtDateTo.SelectedDate.Value;
+                    result = txtDateTo.SelectedDate.Value.Date;
             });
             return result;
         }
@@ -739,7 +780,7 @@ namespace SmartAuditERP.Form_WPF
 
                 DateTime dateFrom = GetDateFrom();
                 DateTime dateTo = GetDateTo();
-                DateTime dateToPlus = dateTo.AddHours(24.0);
+                DateTime dateToPlus = dateTo.AddDays(1);
 
                 bool allSafe = GetCheckState(chkAllSafe);
                 bool allStock = GetCheckState(chkAllStock);
@@ -760,7 +801,7 @@ namespace SmartAuditERP.Form_WPF
                     if (!allCust) filter += $"cust_id={custVal} and ";
                     if (!allSales) filter += $"salesman={salesVal} and ";
                     filter += $"ItemsCategory.id={dt.Rows[i]["id"]} and ";
-                    filter += " date>=@date1 and date<=@date2 and ";
+                    filter += " date>=@date1 and date<@date2 and ";
 
                     double netTotal = 0, netDiscount = 0, netQty = 0, netCost = 0;
 
@@ -770,7 +811,7 @@ namespace SmartAuditERP.Form_WPF
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
                         " and inv_sub.proc_type=2 and inv.is_deleted=0", conn);
-                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
+                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom;
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
                     var dt2 = new DataTable();
                     adp2.Fill(dt2);
@@ -784,7 +825,7 @@ namespace SmartAuditERP.Form_WPF
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
                         " and inv_sub.proc_type=2 and inv.is_deleted=0", conn);
-                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
+                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom;
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
                     dt2 = new DataTable();
                     adp2.Fill(dt2);
@@ -803,7 +844,7 @@ namespace SmartAuditERP.Form_WPF
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
                         " and inv_sub.proc_type=2 and inv.is_deleted=0 " +
                         " group by inv_sub.ItemId,inv.date order by inv_sub.ItemId", conn);
-                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
+                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom;
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
                     dt2 = new DataTable();
                     adp2.Fill(dt2);
@@ -845,10 +886,10 @@ namespace SmartAuditERP.Form_WPF
 
                 UpdatePercentageColumns(totalNet, totalProfit);
             }
-            catch (Exception ex)
+            catch
             {
-                Dispatcher.Invoke(() =>
-                    DXMessageBox.Show("خطأ: " + ex.Message, "خطأ", MessageBoxButton.OK, MessageBoxImage.Error));
+                // The worker owns error reporting and invalidates all published rows.
+                throw;
             }
         }
 
@@ -871,7 +912,7 @@ namespace SmartAuditERP.Form_WPF
 
                 DateTime dateFrom = GetDateFrom();
                 DateTime dateTo = GetDateTo();
-                DateTime dateToPlus = dateTo.AddHours(24.0);
+                DateTime dateToPlus = dateTo.AddDays(1);
 
                 bool allSafe = GetCheckState(chkAllSafe);
                 bool allStock = GetCheckState(chkAllStock);
@@ -895,7 +936,7 @@ namespace SmartAuditERP.Form_WPF
                     filter += $"inv_sub.ItemId={dt.Rows[i]["id"]} and ";
                     if (!allSales) filter += $"salesman={salesVal} and ";
                     if (!allGroups) filter += $"ItemsCategory.id={groupVal} and ";
-                    filter += " date>=@date1 and date<=@date2 and ";
+                    filter += " date>=@date1 and date<@date2 and ";
 
                     // عدد الفواتير
                     var adp2 = new SqlDataAdapter(
@@ -903,7 +944,7 @@ namespace SmartAuditERP.Form_WPF
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
                         " and inv_sub.proc_type=2 and inv.is_deleted=0", conn);
-                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
+                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom;
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
                     var dt2 = new DataTable();
                     adp2.Fill(dt2);
@@ -917,7 +958,7 @@ namespace SmartAuditERP.Form_WPF
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
                         " and inv_sub.proc_type=2 and inv.is_deleted=0 group by inv_sub.ItemId", conn);
-                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
+                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom;
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
                     dt2 = new DataTable();
                     adp2.Fill(dt2);
@@ -937,7 +978,7 @@ namespace SmartAuditERP.Form_WPF
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
                         " and inv_sub.proc_type=2 and inv.is_deleted=0 group by inv_sub.ItemId,inv.date", conn);
-                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
+                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom;
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
                     dt2 = new DataTable();
                     adp2.Fill(dt2);
@@ -980,10 +1021,10 @@ namespace SmartAuditERP.Form_WPF
 
                 UpdatePercentageColumns(totalNet, totalProfit);
             }
-            catch (Exception ex)
+            catch
             {
-                Dispatcher.Invoke(() =>
-                    DXMessageBox.Show("خطأ: " + ex.Message, "خطأ", MessageBoxButton.OK, MessageBoxImage.Error));
+                // The worker owns error reporting and invalidates all published rows.
+                throw;
             }
         }
 
@@ -1009,7 +1050,7 @@ namespace SmartAuditERP.Form_WPF
                 double totalNet = 0, totalProfit = 0;
                 DateTime dateFrom = GetDateFrom();
                 DateTime dateTo = GetDateTo();
-                DateTime dateToPlus = dateTo.AddHours(24.0);
+                DateTime dateToPlus = dateTo.AddDays(1);
 
                 bool allSafe = GetCheckState(chkAllSafe);
                 bool allStock = GetCheckState(chkAllStock);
@@ -1037,14 +1078,14 @@ namespace SmartAuditERP.Form_WPF
                     filter += $"cust_id={dt.Rows[i]["id"]} and ";
                     if (!allSales) filter += $"salesman={salesVal} and ";
                     if (!allGroups) filter += $"ItemsCategory.id={groupVal} and ";
-                    filter += " date>=@date1 and date<=@date2 and ";
+                    filter += " date>=@date1 and date<@date2 and ";
 
                     var adp2 = new SqlDataAdapter(
                         "select distinct inv.InvGlobalID from inv,inv_sub,Items,ItemsCategory where " + filter +
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
                         " and inv_sub.proc_type=2 and inv.is_deleted=0", conn);
-                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
+                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom;
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
                     var dt2 = new DataTable();
                     adp2.Fill(dt2);
@@ -1057,7 +1098,7 @@ namespace SmartAuditERP.Form_WPF
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
                         " and inv_sub.proc_type=2 and inv.is_deleted=0 group by inv.InvGlobalID) as tbl", conn);
-                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
+                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom;
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
                     dt2 = new DataTable();
                     adp2.Fill(dt2);
@@ -1076,7 +1117,7 @@ namespace SmartAuditERP.Form_WPF
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
                         " and inv_sub.proc_type=2 and inv.is_deleted=0 group by inv_sub.ItemId,inv.date", conn);
-                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
+                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom;
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
                     dt2 = new DataTable();
                     adp2.Fill(dt2);
@@ -1116,10 +1157,10 @@ namespace SmartAuditERP.Form_WPF
 
                 UpdatePercentageColumns(totalNet, totalProfit);
             }
-            catch (Exception ex)
+            catch
             {
-                Dispatcher.Invoke(() =>
-                    DXMessageBox.Show("خطأ: " + ex.Message, "خطأ", MessageBoxButton.OK, MessageBoxImage.Error));
+                // The worker owns error reporting and invalidates all published rows.
+                throw;
             }
         }
 
@@ -1145,7 +1186,7 @@ namespace SmartAuditERP.Form_WPF
                 double totalNet = 0, totalProfit = 0;
                 DateTime dateFrom = GetDateFrom();
                 DateTime dateTo = GetDateTo();
-                DateTime dateToPlus = dateTo.AddHours(24.0);
+                DateTime dateToPlus = dateTo.AddDays(1);
 
                 bool allSafe = GetCheckState(chkAllSafe);
                 bool allStock = GetCheckState(chkAllStock);
@@ -1173,14 +1214,14 @@ namespace SmartAuditERP.Form_WPF
                     if (!allCust) filter += $"cust_id={custVal} and ";
                     filter += $"salesman={dt.Rows[i]["id"]} and ";
                     if (!allGroups) filter += $"ItemsCategory.id={groupVal} and ";
-                    filter += " date>=@date1 and date<=@date2 and ";
+                    filter += " date>=@date1 and date<@date2 and ";
 
                     var adp2 = new SqlDataAdapter(
                         "select distinct inv.InvGlobalID from inv,inv_sub,Items,ItemsCategory where " + filter +
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
                         " and inv_sub.proc_type=2 and inv.is_deleted=0", conn);
-                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
+                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom;
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
                     var dt2 = new DataTable();
                     adp2.Fill(dt2);
@@ -1193,7 +1234,7 @@ namespace SmartAuditERP.Form_WPF
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
                         " and inv_sub.proc_type=2 and inv.is_deleted=0 group by inv.InvGlobalID) as tbl", conn);
-                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
+                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom;
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
                     dt2 = new DataTable();
                     adp2.Fill(dt2);
@@ -1212,7 +1253,7 @@ namespace SmartAuditERP.Form_WPF
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
                         " and inv_sub.proc_type=2 and inv.is_deleted=0 group by inv_sub.ItemId,inv.date", conn);
-                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
+                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom;
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
                     dt2 = new DataTable();
                     adp2.Fill(dt2);
@@ -1252,10 +1293,10 @@ namespace SmartAuditERP.Form_WPF
 
                 UpdatePercentageColumns(totalNet, totalProfit);
             }
-            catch (Exception ex)
+            catch
             {
-                Dispatcher.Invoke(() =>
-                    DXMessageBox.Show("خطأ: " + ex.Message, "خطأ", MessageBoxButton.OK, MessageBoxImage.Error));
+                // The worker owns error reporting and invalidates all published rows.
+                throw;
             }
         }
 
@@ -1281,7 +1322,7 @@ namespace SmartAuditERP.Form_WPF
                 double totalNet = 0, totalProfit = 0;
                 DateTime dateFrom = GetDateFrom();
                 DateTime dateTo = GetDateTo();
-                DateTime dateToPlus = dateTo.AddHours(24.0);
+                DateTime dateToPlus = dateTo.AddDays(1);
 
                 bool allSafe = GetCheckState(chkAllSafe);
                 bool allStock = GetCheckState(chkAllStock);
@@ -1311,14 +1352,14 @@ namespace SmartAuditERP.Form_WPF
                     if (!allSales) filter += $"salesman={salesVal} and ";
                     filter += $"sales_emp={dt.Rows[i]["id"]} and ";
                     if (!allGroups) filter += $"ItemsCategory.id={groupVal} and ";
-                    filter += " date>=@date1 and date<=@date2 and ";
+                    filter += " date>=@date1 and date<@date2 and ";
 
                     var adp2 = new SqlDataAdapter(
                         "select distinct inv.InvGlobalID from inv,inv_sub,Items,ItemsCategory where " + filter +
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
                         " and inv_sub.proc_type=2 and inv.is_deleted=0", conn);
-                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
+                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom;
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
                     var dt2 = new DataTable();
                     adp2.Fill(dt2);
@@ -1331,7 +1372,7 @@ namespace SmartAuditERP.Form_WPF
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
                         " and inv_sub.proc_type=2 and inv.is_deleted=0 group by inv.InvGlobalID) as tbl", conn);
-                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
+                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom;
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
                     dt2 = new DataTable();
                     adp2.Fill(dt2);
@@ -1350,7 +1391,7 @@ namespace SmartAuditERP.Form_WPF
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
                         " and inv_sub.proc_type=2 and inv.is_deleted=0 group by inv_sub.ItemId,inv.date", conn);
-                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
+                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom;
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
                     dt2 = new DataTable();
                     adp2.Fill(dt2);
@@ -1390,10 +1431,10 @@ namespace SmartAuditERP.Form_WPF
 
                 UpdatePercentageColumns(totalNet, totalProfit);
             }
-            catch (Exception ex)
+            catch
             {
-                Dispatcher.Invoke(() =>
-                    DXMessageBox.Show("خطأ: " + ex.Message, "خطأ", MessageBoxButton.OK, MessageBoxImage.Error));
+                // The worker owns error reporting and invalidates all published rows.
+                throw;
             }
         }
 
@@ -1548,10 +1589,10 @@ namespace SmartAuditERP.Form_WPF
 
                 UpdatePercentageColumns(totalNet, totalProfit);
             }
-            catch (Exception ex)
+            catch
             {
-                Dispatcher.Invoke(() =>
-                    DXMessageBox.Show("خطأ: " + ex.Message, "خطأ", MessageBoxButton.OK, MessageBoxImage.Error));
+                // The worker owns error reporting and invalidates all published rows.
+                throw;
             }
         }
 
@@ -1570,10 +1611,10 @@ namespace SmartAuditERP.Form_WPF
                     "select distinct date=DATEADD(DAY, DATEDIFF(DAY, 0, date), 0) " +
                     " from inv,inv_sub where inv.InvGlobalID=inv_sub.InvGlobalID " +
                     " and inv.proc_type=1 and inv_sub.proc_type=2 " +
-                    " and date>=@date1 and date<=@date2 and IS_Deleted=0 " +
+                    " and date>=@date1 and date<@date2 and IS_Deleted=0 " +
                     " GROUP BY DATEADD(DAY, DATEDIFF(DAY, 0, date),0)", conn);
-                adp.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
-                adp.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateTo.AddDays(1.0).ToShortDateString();
+                adp.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom;
+                adp.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateTo.AddDays(1);
                 var dt = new DataTable();
                 adp.Fill(dt);
 
@@ -1609,7 +1650,7 @@ namespace SmartAuditERP.Form_WPF
                     if (!allCust) filter += $"cust_id={custVal} and ";
                     if (!allSales) filter += $"salesman={salesVal} and ";
                     if (!allGroups) filter += $"ItemsCategory.id={groupVal} and ";
-                    filter += " date>=@date1 and date<=@date2 and ";
+                    filter += " date>=@date1 and date<@date2 and ";
 
                     DateTime dayStart = Convert.ToDateTime(dt.Rows[i]["date"]);
                     DateTime dayEnd = dayStart.AddDays(1.0);
@@ -1691,10 +1732,10 @@ namespace SmartAuditERP.Form_WPF
 
                 UpdatePercentageColumns(totalNet, totalProfit);
             }
-            catch (Exception ex)
+            catch
             {
-                Dispatcher.Invoke(() =>
-                    DXMessageBox.Show("خطأ: " + ex.Message, "خطأ", MessageBoxButton.OK, MessageBoxImage.Error));
+                // The worker owns error reporting and invalidates all published rows.
+                throw;
             }
         }
 
@@ -1720,7 +1761,7 @@ namespace SmartAuditERP.Form_WPF
                 double totalNet = 0, totalProfit = 0;
                 DateTime dateFrom = GetDateFrom();
                 DateTime dateTo = GetDateTo();
-                DateTime dateToPlus = dateTo.AddHours(24.0);
+                DateTime dateToPlus = dateTo.AddDays(1);
 
                 bool allSafe = GetCheckState(chkAllSafe);
                 bool allCust = GetCheckState(chkAllCust);
@@ -1750,7 +1791,7 @@ namespace SmartAuditERP.Form_WPF
                     if (!allCust) filter += $"cust_id={custVal} and ";
                     if (!allSales) filter += $"salesman={salesVal} and ";
                     if (!allGroups) filter += $"ItemsCategory.id={groupVal} and ";
-                    filter += " date>=@date1 and date<=@date2 and ";
+                    filter += " date>=@date1 and date<@date2 and ";
 
                     // فواتير مبيعات
                     var adp2 = new SqlDataAdapter(
@@ -1758,7 +1799,7 @@ namespace SmartAuditERP.Form_WPF
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.inv_type=2 " +
                         " and inv.proc_type=1 and inv_sub.proc_type=2 and inv.is_deleted=0", conn);
-                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
+                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom;
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
                     var dt2 = new DataTable();
                     adp2.Fill(dt2);
@@ -1770,7 +1811,7 @@ namespace SmartAuditERP.Form_WPF
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.inv_type=3 " +
                         " and inv.proc_type=1 and inv_sub.proc_type=3 and inv.is_deleted=0", conn);
-                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
+                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom;
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
                     dt2 = new DataTable();
                     adp2.Fill(dt2);
@@ -1785,7 +1826,7 @@ namespace SmartAuditERP.Form_WPF
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
                         " and inv.inv_type=2 and inv_sub.proc_type=2 and inv.is_deleted=0 " +
                         " group by inv.InvGlobalID) as tbl", conn);
-                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
+                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom;
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
                     dt2 = new DataTable();
                     adp2.Fill(dt2);
@@ -1807,7 +1848,7 @@ namespace SmartAuditERP.Form_WPF
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
                         " and inv.inv_type=3 and inv_sub.proc_type=3 and inv.is_deleted=0 " +
                         " group by inv.InvGlobalID) as tbl", conn);
-                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
+                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom;
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
                     dt2 = new DataTable();
                     adp2.Fill(dt2);
@@ -1827,7 +1868,7 @@ namespace SmartAuditERP.Form_WPF
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
                         " and inv_sub.proc_type=2 and inv.is_deleted=0 group by inv_sub.ItemId,inv.date", conn);
-                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
+                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom;
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
                     dt2 = new DataTable();
                     adp2.Fill(dt2);
@@ -1867,10 +1908,10 @@ namespace SmartAuditERP.Form_WPF
 
                 UpdatePercentageColumns(totalNet, totalProfit);
             }
-            catch (Exception ex)
+            catch
             {
-                Dispatcher.Invoke(() =>
-                    DXMessageBox.Show("خطأ: " + ex.Message, "خطأ", MessageBoxButton.OK, MessageBoxImage.Error));
+                // The worker owns error reporting and invalidates all published rows.
+                throw;
             }
         }
 
