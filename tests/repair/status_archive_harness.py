@@ -236,7 +236,7 @@ check('entry, inventory, shift, license and permission follow-ups stay partial',
 
 check('receipt transaction, identity collision and account mapping remain partial',
       all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
-          for fid, rid in [('P3-003', 'R-250; R-253'), ('P3-005', 'R-250'), ('P3-008', 'R-040; R-251; R-254')]))
+          for fid, rid in [('P3-003', 'R-250; R-253; R-255'), ('P3-005', 'R-250; R-255'), ('P3-008', 'R-040; R-251; R-254; R-255; R-256')]))
 
 check('deferred WPF pass remains partial', by_id['P1-013']['repair_status'] == 'partial_open' and by_id['P1-013']['repair_ids'] == 'R-252')
 
