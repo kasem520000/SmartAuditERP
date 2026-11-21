@@ -185,7 +185,11 @@ namespace SmartAuditERP
 				string.IsNullOrWhiteSpace(Receipt.EntryGlobalID) ||
 				!string.Equals(Receipt.EntryGlobalID, Entr.EntryGlobalID, StringComparison.Ordinal) ||
 				!Receipt.BranchID.HasValue || Receipt.BranchID.Value <= 0 || Receipt.BranchID.Value != Entr.Branch ||
-				!Receipt.ReceiptType.HasValue || Receipt.ReceiptType.Value != (int)Entr.Type)
+				!Receipt.ReceiptType.HasValue || Receipt.ReceiptType.Value != (int)Entr.Type ||
+				Receipt.ReceiptNo <= 0 || Entr.EntryNo <= 0 ||
+				!int.TryParse(Entr.ReffNo, out int journalReference) || journalReference != Receipt.ReceiptNo ||
+				!Receipt.ReceiptDate.HasValue || Receipt.ReceiptDate.Value != Entr.EntryDate ||
+				Receipt.State != 1 || Receipt.ISDeleted != false || Entr.State != 1 || Entr.ISDeleted != false)
 			{
 				MessageBox.Show("هوية السند أو القيد أو الفرع غير صالحة أو غير متطابقة؛ لم يتم الحفظ.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return false;
@@ -226,6 +230,22 @@ namespace SmartAuditERP
 						!string.Equals(Convert.ToString(reader["EntryGlobalID"]), Receipt.EntryGlobalID, StringComparison.Ordinal) ||
 						Convert.ToInt32(reader["BranchID"]) != Receipt.BranchID.Value))
 						throw new InvalidOperationException("ربط السند أو فرعه لا يطابق السجل المحفوظ.");
+					if (exists && reader.Read())
+						throw new InvalidOperationException("هوية السند مكررة؛ يلزم المصالحة.");
+				}
+
+				// The displayed local number must not identify another receipt in this
+				// branch and type, including a deleted one. This is a conservative guard,
+				// not a global number allocator or a substitute for a unique constraint.
+				using (SqlCommand numbers = new SqlCommand(
+					"SELECT COUNT(*) FROM Receipts WITH (UPDLOCK, HOLDLOCK) WHERE ReceiptNo=@number AND ReceiptType=@type AND BranchID=@branch AND GlobalID<>@id", connection, transaction))
+				{
+					numbers.Parameters.Add("@number", SqlDbType.Int).Value = Receipt.ReceiptNo;
+					numbers.Parameters.Add("@type", SqlDbType.Int).Value = Receipt.ReceiptType.Value;
+					numbers.Parameters.Add("@branch", SqlDbType.Int).Value = Receipt.BranchID.Value;
+					numbers.Parameters.Add("@id", SqlDbType.NVarChar).Value = Receipt.GlobalID;
+					if (Convert.ToInt32(numbers.ExecuteScalar()) != 0)
+						throw new InvalidOperationException("رقم السند مكرر لنوعه وفرعه؛ يلزم المصالحة.");
 				}
 
 				// Prevent a second receipt from claiming the same journal through this path.
@@ -268,7 +288,8 @@ namespace SmartAuditERP
 				sqlCommand3.Parameters.Add("@Sync", SqlDbType.Bit).Value = Receipt.Sync;
 				sqlCommand3.Parameters.Add("@ISDeleted", SqlDbType.Bit).Value = Receipt.ISDeleted;
 				sqlCommand3.Parameters.Add("@Recipient", SqlDbType.NVarChar).Value = Receipt.Recipient;
-				sqlCommand3.ExecuteNonQuery();
+				if (sqlCommand3.ExecuteNonQuery() != 1)
+					throw new InvalidOperationException("لم يُكتب رأس السند مرة واحدة؛ راجع نتيجة المعاملة.");
 
 				new EntryOper().WriteEntryInTransaction(Entr, connection, transaction, IsNew);
 				InsertReceiptDocuments(documents, Receipt.GlobalID, connection, transaction, copiedFiles);
@@ -413,45 +434,112 @@ namespace SmartAuditERP
 
 		public bool DeleteReceipt(string ReceiptGID, string EntryGID)
 		{
-			new SqlCommand();
-			SqlConnection sqlConnection;
-			sqlConnection = MainClass.ConnObj();
-			if (sqlConnection.State != ConnectionState.Open)
+			lock (ReceiptSaveGate)
 			{
-				sqlConnection.Open();
+				if (receiptSaveNeedsReview)
+				{
+					MessageBox.Show("نتيجة حفظ أو حذف سند سابقة غير مؤكدة؛ راجع السند والقيد قبل المحاولة أو إعادة التشغيل.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					return false;
+				}
+				return DeleteReceiptLocked(ReceiptGID, EntryGID);
 			}
-			SqlTransaction sqlTransaction;
-			sqlTransaction = sqlConnection.BeginTransaction();
-			string text;
-			text = "";
-			bool result = default(bool);
+		}
+
+		private bool DeleteReceiptLocked(string receiptId, string entryId)
+		{
+			int branch = MainClass.BranchNo;
+			if (branch <= 0 || string.IsNullOrWhiteSpace(receiptId) || receiptId == "-1" ||
+				string.IsNullOrWhiteSpace(entryId) || entryId == "-1")
+			{
+				MessageBox.Show("هوية السند أو القيد أو الفرع غير صالحة؛ لم يتم الحذف.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return false;
+			}
+			SqlConnection connection = null;
+			SqlTransaction transaction = null;
+			bool commitStarted = false, committed = false;
 			try
 			{
-				if (Sync.ActiveSync & (Sync.SyncType > 0))
+				connection = MainClass.ConnObj();
+				connection.Open();
+				transaction = connection.BeginTransaction();
+				int number, type;
+				using (SqlCommand find = new SqlCommand(
+					"SELECT TOP (2) EntryGlobalID, BranchID, ISDeleted, ReceiptNo, ReceiptType FROM Receipts WITH (UPDLOCK, HOLDLOCK) WHERE GlobalID=@id", connection, transaction))
 				{
-					text = " , Sync=0 ";
+					find.Parameters.Add("@id", SqlDbType.NVarChar).Value = receiptId;
+					using SqlDataReader reader = find.ExecuteReader();
+					if (!reader.Read() || reader.IsDBNull(0) || !string.Equals(reader.GetString(0), entryId, StringComparison.Ordinal) ||
+						reader.IsDBNull(1) || Convert.ToInt32(reader["BranchID"]) != branch ||
+						reader.IsDBNull(2) || Convert.ToBoolean(reader["ISDeleted"]) || reader.IsDBNull(3) || reader.IsDBNull(4))
+						throw new InvalidOperationException("السند أو فرعه أو رابط قيده غير مطابق أو محذوف.");
+					number = Convert.ToInt32(reader["ReceiptNo"]);
+					type = Convert.ToInt32(reader["ReceiptType"]);
+					if (number <= 0 || type <= 0 || reader.Read())
+						throw new InvalidOperationException("هوية السند غير صالحة أو مكررة.");
 				}
-				new SqlCommand("update Receipts set ISDeleted=1 " + text + " where branchID=" + Conversions.ToString(MainClass.BranchNo) + " and GlobalID=N'" + ReceiptGID + "'", sqlConnection, sqlTransaction).ExecuteNonQuery();
-				new SqlCommand("update Entry set state=2 ,IS_Deleted=1 " + text + "  where branch=" + Conversions.ToString(MainClass.BranchNo) + " and GlobalID=N'" + EntryGID + "'", sqlConnection, sqlTransaction).ExecuteNonQuery();
-				sqlTransaction.Commit();
-				result = true;
-				return result;
+				using (SqlCommand links = new SqlCommand(
+					"SELECT COUNT(*) FROM Receipts WITH (UPDLOCK, HOLDLOCK) WHERE EntryGlobalID=@entry AND GlobalID<>@receipt", connection, transaction))
+				{
+					links.Parameters.Add("@entry", SqlDbType.NVarChar).Value = entryId;
+					links.Parameters.Add("@receipt", SqlDbType.NVarChar).Value = receiptId;
+					if (Convert.ToInt32(links.ExecuteScalar()) != 0)
+						throw new InvalidOperationException("القيد مرتبط بسند آخر؛ يلزم المصالحة.");
+				}
+				using (SqlCommand find = new SqlCommand(
+					"SELECT TOP (2) branch, type, doc_no, IS_Deleted, state FROM Entry WITH (UPDLOCK, HOLDLOCK) WHERE GlobalID=@id", connection, transaction))
+				{
+					find.Parameters.Add("@id", SqlDbType.VarChar).Value = entryId;
+					using SqlDataReader reader = find.ExecuteReader();
+					if (!reader.Read() || reader.IsDBNull(0) || Convert.ToInt32(reader["branch"]) != branch ||
+						reader.IsDBNull(1) || Convert.ToInt32(reader["type"]) != type ||
+						reader.IsDBNull(2) || Convert.ToInt32(reader["doc_no"]) != number ||
+						reader.IsDBNull(3) || Convert.ToBoolean(reader["IS_Deleted"]) ||
+						reader.IsDBNull(4) || Convert.ToInt32(reader["state"]) != 1)
+						throw new InvalidOperationException("القيد المرتبط مفقود أو غير مطابق أو غير نشط.");
+					if (reader.Read()) throw new InvalidOperationException("هوية القيد مكررة؛ يلزم المصالحة.");
+				}
+				string resetSync = Sync.ActiveSync && Sync.SyncType > 0 ? ", Sync=0" : "";
+				using (SqlCommand update = new SqlCommand(
+					"UPDATE Receipts SET ISDeleted=1 " + resetSync + " WHERE GlobalID=@id AND EntryGlobalID=@entry AND BranchID=@branch AND ReceiptNo=@number AND ReceiptType=@type AND ISDeleted=0", connection, transaction))
+				{
+					update.Parameters.Add("@id", SqlDbType.NVarChar).Value = receiptId;
+					update.Parameters.Add("@entry", SqlDbType.NVarChar).Value = entryId;
+					update.Parameters.Add("@branch", SqlDbType.Int).Value = branch;
+					update.Parameters.Add("@number", SqlDbType.Int).Value = number;
+					update.Parameters.Add("@type", SqlDbType.Int).Value = type;
+					if (update.ExecuteNonQuery() != 1) throw new InvalidOperationException("لم يُحدَّث سند وحيد.");
+				}
+				using (SqlCommand update = new SqlCommand(
+					"UPDATE Entry SET state=2, IS_Deleted=1 " + resetSync + " WHERE GlobalID=@id AND branch=@branch AND type=@type AND doc_no=@number AND IS_Deleted=0 AND state=1", connection, transaction))
+				{
+					update.Parameters.Add("@id", SqlDbType.VarChar).Value = entryId;
+					update.Parameters.Add("@branch", SqlDbType.Int).Value = branch;
+					update.Parameters.Add("@type", SqlDbType.Int).Value = type;
+					update.Parameters.Add("@number", SqlDbType.Int).Value = number;
+					if (update.ExecuteNonQuery() != 1) throw new InvalidOperationException("لم يُحدَّث قيد وحيد.");
+				}
+				commitStarted = true;
+				transaction.Commit();
+				committed = true;
+				return true;
 			}
-			catch (Exception projectError)
+			catch (Exception ex)
 			{
-				ProjectData.SetProjectError(projectError);
-				sqlTransaction.Rollback();
-				ProjectData.ClearProjectError();
+				bool rollbackConfirmed = transaction == null;
+				if (transaction != null && !commitStarted)
+				{
+					try { transaction.Rollback(); rollbackConfirmed = true; } catch { rollbackConfirmed = false; }
+				}
+				if (commitStarted || !rollbackConfirmed) receiptSaveNeedsReview = true;
+				string prefix = receiptSaveNeedsReview ? "نتيجة الحذف غير مؤكدة؛ راجع السند والقيد قبل إعادة المحاولة أو إعادة التشغيل." : "تعذر حذف السند والقيد؛ لم تُعتمد المعاملة.";
+				MessageBox.Show(prefix + Environment.NewLine + "السند: " + receiptId + "، القيد: " + entryId + "، الفرع: " + branch + Environment.NewLine + ex.Message, "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return false;
 			}
 			finally
 			{
-				if (sqlConnection.State != ConnectionState.Closed)
-				{
-					sqlConnection.Close();
-				}
-				sqlTransaction.Dispose();
+				try { if (transaction != null) transaction.Dispose(); } catch { if (!committed) receiptSaveNeedsReview = true; }
+				try { if (connection != null) connection.Dispose(); } catch { if (!committed) receiptSaveNeedsReview = true; }
 			}
-			return result;
 		}
 
 		// The two editors build their journal before entering this shared SQL unit of work.
@@ -794,6 +882,11 @@ namespace SmartAuditERP
 
 		public async Task SyncReceipt(Receipt receipt, Entry Eny, bool IsNew)
 		{
+			if (receipt == null || Eny == null || string.IsNullOrWhiteSpace(receipt.GlobalID) ||
+				string.IsNullOrWhiteSpace(receipt.EntryGlobalID) ||
+				!string.Equals(receipt.EntryGlobalID, Eny.EntryGlobalID, StringComparison.Ordinal))
+				throw new InvalidOperationException("هوية السند والقيد للمزامنة غير صالحة.");
+			string receiptId = receipt.GlobalID, entryId = Eny.EntryGlobalID;
 			ReceiptCRUD receiptCRUD;
 			receiptCRUD = new ReceiptCRUD(Sync.APIUrl);
 			EntryCRUD entryCRUD;
@@ -814,32 +907,26 @@ namespace SmartAuditERP
 				receiptCRUD.AddReceiptLocally(receipt, IsNew);
 				entryCRUD.AddEntryLocally(Eny, IsNew);
 			}
-			new SqlCommand();
-			SqlConnection sqlConnection;
-			sqlConnection = MainClass.ConnObj();
-			if (list.Count > 0)
+			// Do not let an API response mark an unrelated local document as synced.
+			// This validates acknowledgement identity, not remote atomicity or freshness.
+			if (list == null || list2 == null || list.Count > 1 || list2.Count > 1 ||
+				(list.Count == 1 && (list[0] == null || !string.Equals(list[0].GlobalID, receiptId, StringComparison.Ordinal))) ||
+				(list2.Count == 1 && (list2[0] == null || !string.Equals(list2[0].EntryGlobalID, entryId, StringComparison.Ordinal))))
+				throw new InvalidOperationException("استجابة المزامنة لا تطابق السند والقيد المرسلين؛ يلزم التحقق.");
+			if (list.Count == 0 && list2.Count == 0) return;
+			using SqlConnection sqlConnection = MainClass.ConnObj();
+			sqlConnection.Open();
+			if (list.Count == 1)
 			{
-				if (sqlConnection.State != ConnectionState.Open)
-				{
-					sqlConnection.Open();
-				}
-				foreach (Receipt item in list)
-				{
-					receipt = item;
-					new SqlCommand("update Receipts set Sync=1 where GlobalID=N'" + receipt.GlobalID + "'", sqlConnection).ExecuteNonQuery();
-				}
+				using SqlCommand markReceipt = new SqlCommand("UPDATE Receipts SET Sync=1 WHERE GlobalID=@id", sqlConnection);
+				markReceipt.Parameters.Add("@id", SqlDbType.NVarChar).Value = receiptId;
+				if (markReceipt.ExecuteNonQuery() != 1) throw new InvalidOperationException("تعذر تثبيت حالة مزامنة السند.");
 			}
-			if (list2.Count <= 0)
+			if (list2.Count == 1)
 			{
-				return;
-			}
-			if (sqlConnection.State != ConnectionState.Open)
-			{
-				sqlConnection.Open();
-			}
-			foreach (Entry item2 in list2)
-			{
-				new SqlCommand("update Entry set Sync=1 where GlobalID=N'" + item2.EntryGlobalID + "'", sqlConnection).ExecuteNonQuery();
+				using SqlCommand markEntry = new SqlCommand("UPDATE Entry SET Sync=1 WHERE GlobalID=@id", sqlConnection);
+				markEntry.Parameters.Add("@id", SqlDbType.VarChar).Value = entryId;
+				if (markEntry.ExecuteNonQuery() != 1) throw new InvalidOperationException("تعذر تثبيت حالة مزامنة القيد.");
 			}
 		}
 

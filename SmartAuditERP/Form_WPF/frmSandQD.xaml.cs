@@ -22,6 +22,7 @@ namespace SmartAuditERP.Form_WPF
 
         // Attachment selection belongs to this editor, not a process-wide static array.
         private string[] _receiptFiles;
+        private bool _receiptSaveInProgress;
         private SqlConnection conn;
         private SqlConnection conn1;
         private SqlConnection conn2;
@@ -788,6 +789,20 @@ namespace SmartAuditERP.Form_WPF
 
         private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            if (_receiptSaveInProgress) return;
+            _receiptSaveInProgress = true;
+            try { await SaveReceiptCore(); }
+            catch (Exception ex)
+            {
+                DXMessageBox.Show("تعذر إكمال العملية؛ راجع السند ونتيجة الحفظ والمزامنة قبل المحاولة.\n" + ex.Message,
+                    "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            finally { _receiptSaveInProgress = false; }
+        }
+
+        private async Task SaveReceiptCore()
+        {
+            bool committed = false;
             // ─── التحقق من الفترة المحاسبية ───────────────────────────
             DateTime dateVal = txtDate.DateTime != default(DateTime)
                 ? txtDate.DateTime : DateTime.Now;
@@ -984,13 +999,10 @@ namespace SmartAuditERP.Form_WPF
                 if (!saved)
                 {
                     if (isNew) { Code = -1; GlobalID = "-1"; EntryGlobalID = "-1"; }
-                    string errMsg = MainClass.Language == "en"
-                        ? "error in saving" : "خطأ أثناء الحفظ";
-                    DXMessageBox.Show(errMsg, "",
-                        MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
 
+                committed = true;
                 Code = receipt.ReceiptNo;
                 _receiptFiles = null; // the transaction committed; never replay selected files
 
@@ -1036,7 +1048,7 @@ namespace SmartAuditERP.Form_WPF
             catch (Exception ex)
             {
                 DXMessageBox.Show(
-                    "خطأ أثناء الحفظ\nتفاصيل الخطأ: " + ex.Message,
+                    (committed ? "تم حفظ السند محلياً، لكن فشلت خطوة لاحقة؛ راجع السند والمزامنة قبل المحاولة." : "خطأ قبل تأكيد حفظ السند.") + "\nتفاصيل الخطأ: " + ex.Message,
                     "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally { SafeClose(conn1); }
@@ -1044,6 +1056,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
+            if (_receiptSaveInProgress) return;
             if (Code == -1)
             {
                 DXMessageBox.Show("اختر سنداً ليتم حذفه", "",
@@ -1071,11 +1084,6 @@ namespace SmartAuditERP.Form_WPF
                 _searchItems.Clear();
                 CLR();
                 SetStatus("تم حذف السند");
-            }
-            else
-            {
-                DXMessageBox.Show("خطأ أثناء الحذف", "",
-                    MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 

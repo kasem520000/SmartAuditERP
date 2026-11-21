@@ -909,7 +909,10 @@ namespace SmartAuditERP
                     conn, transaction))
                 {
                     checkCmd.Parameters.AddWithValue("@GlobalID", entry.EntryGlobalID);
-                    isNew = Convert.ToInt32(checkCmd.ExecuteScalar()) == 0;
+                    int entryCount = Convert.ToInt32(checkCmd.ExecuteScalar());
+                    if (entryCount > 1)
+                        throw new InvalidOperationException("هوية القيد مكررة؛ يلزم المصالحة.");
+                    isNew = entryCount == 0;
                 }
 
                 if (expectedNew.HasValue && expectedNew.Value != isNew)
@@ -918,14 +921,25 @@ namespace SmartAuditERP
                 if (!isNew && expectedNew.HasValue)
                 {
                     using SqlCommand ownerCmd = new SqlCommand(
-                        "SELECT COUNT(*) FROM Entry WHERE GlobalID=@id AND branch=@branch AND type=@type AND IS_Deleted=0",
+                        "SELECT COUNT(*) FROM Entry WHERE GlobalID=@id AND branch=@branch AND type=@type AND IS_Deleted=0 AND state=1 AND id=@number AND doc_no=@reference",
                         conn, transaction);
                     ownerCmd.Parameters.Add("@id", SqlDbType.VarChar).Value = entry.EntryGlobalID;
                     ownerCmd.Parameters.Add("@branch", SqlDbType.Int).Value = entry.Branch;
                     ownerCmd.Parameters.Add("@type", SqlDbType.Int).Value = (int)entry.Type;
+                    ownerCmd.Parameters.Add("@number", SqlDbType.Int).Value = entry.EntryNo;
+                    if (!int.TryParse(entry.ReffNo, out int entryReference))
+                        throw new InvalidOperationException("مرجع القيد غير صالح.");
+                    ownerCmd.Parameters.Add("@reference", SqlDbType.Int).Value = entryReference;
                     if (Convert.ToInt32(ownerCmd.ExecuteScalar()) != 1)
-                        throw new InvalidOperationException("نوع القيد المرتبط أو فرعه أو حالة حذفه غير مطابقة.");
+                        throw new InvalidOperationException("هوية القيد أو نوعه أو رقمه أو مرجعه أو حالته غير مطابقة.");
                 }
+
+                // In document-owned entries, every detail must refer to the same
+                // stored entry number. Generic manual journals retain their contract.
+                if (expectedNew.HasValue)
+                    foreach (Account account in entry.Accounts)
+                        if (account.EntryNo != entry.EntryNo)
+                            throw new InvalidOperationException("رقم بند القيد لا يطابق رأس القيد.");
 
                 if (!isNew)
                 {
@@ -951,7 +965,8 @@ namespace SmartAuditERP
                     cmd.Parameters.Add("@Sync", SqlDbType.Bit).Value = false;
                     cmd.Parameters.Add("@IS_Deleted", SqlDbType.Bit).Value = entry.ISDeleted;
                     cmd.Parameters.Add("@IsVAT", SqlDbType.Bit).Value = entry.IsVAT;
-                    cmd.ExecuteNonQuery();
+                    if (cmd.ExecuteNonQuery() != 1)
+                        throw new InvalidOperationException("لم يُكتب رأس القيد مرة واحدة؛ راجع نتيجة المعاملة.");
                 }
 
                 foreach (Account account in entry.Accounts)
