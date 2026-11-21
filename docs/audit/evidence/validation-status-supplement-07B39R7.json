@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "kind": "post-capture-R7-status-from-actual-streams-not-ERP-or-global-green-certification",
+  "assessment_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "capability_exit_certificates_issued": 0,
+  "four_family_exit_certificates_issued": 0,
+  "new_accepted_external_handoffs": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "prior196_tests_recertified": false,
+  "R2_R3_files_recovered": false,
+  "receipt": {
+    "path": "docs/audit/evidence/validation-current-run01-receipt-07B39R7.json",
+    "bytes": 408162,
+    "sha256": "89903a18cd15ad283f068e74e33ce2fb1a20f81876ac80ac194646563ddbc29f"
+  },
+  "combined_actual_cases": 297,
+  "combined_actual_passed": 297,
+  "combined_actual_seconds": 35.005,
+  "actual_combined_partition": {
+    "test_recovery_exit": 42,
+    "test_document_receiver": 50,
+    "test_production_adjustment": 57,
+    "test_session_year": 62,
+    "test_entry_source": 86
+  },
+  "new_R7_cases_inside297_not_added_again": 86,
+  "B38_actual": {
+    "reported_tests": 43,
+    "reported_unittest_seconds": 1.824,
+    "actual_verbose_case_lines": 43,
+    "actual_case_status_counts": {
+      "ok": 42,
+      "FAIL": 1,
+      "ERROR": 0
+    },
+    "assertion_lines_verbatim": [
+      "AssertionError: 155 != 142"
+    ],
+    "exit_code": 1,
+    "suite_passed": false
+  },
+  "all_suites_green": false,
+  "wrapper_exit_code": 1,
+  "commands": 13,
+  "six_integrities_exit0": [
+    "R7-verify",
+    "R6-preserved-integrity",
+    "R5-preserved-integrity",
+    "R4-preserved-integrity",
+    "R1-preserved-integrity",
+    "B38-preserved-integrity"
+  ],
+  "five_completion_gates_exit2_open": [
+    "R7-completion-gate",
+    "R6-completion-gate",
+    "R5-completion-gate",
+    "R4-completion-gate",
+    "R1-completion-gate"
+  ],
+  "capture_inputs_unchanged_during_run": true,
+  "stable_input_versions": 2318,
+  "authored_consumed_versions_archived": 14,
+  "old_R1_R4_R5_R6_B38_tests_or_tools_edited": false,
+  "R5_run01_and_B38_genuine_failures_preserved": true,
+  "missing196_or345_or49_reconstructed_or_recertified": false,
+  "late_publication_versions_were_capture_inputs": false,
+  "pinned_inputs": [
+    {
+      "path": "docs/audit/evidence/validation-current-run01-receipt-07B39R7.json",
+      "bytes": 408162,
+      "sha256": "89903a18cd15ad283f068e74e33ce2fb1a20f81876ac80ac194646563ddbc29f"
+    },
+    {
+      "path": "docs/audit/evidence/validation-current-run01-journal-07B39R7.jsonl",
+      "bytes": 12251,
+      "sha256": "9f2334aa6a53b37bd86c2befa05650f2e36fb56950b20e21c779cb748e6f1745"
+    },
+    {
+      "path": "docs/audit/evidence/validation-consumed-inputs-run01-07B39R7.tar.gz",
+      "bytes": 555529,
+      "sha256": "dfc71ad4c18963be506c5cb9a7d4b0924731970671a56842c7af01579ecfc822"
+    },
+    {
+      "path": "docs/audit/evidence/R1-R4-R5-R6-R7-combined-tests-current-run01-07B39R7.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/audit/evidence/R1-R4-R5-R6-R7-combined-tests-current-run01-07B39R7.stderr.txt",
+      "bytes": 49161,
+      "sha256": "c62d3994ae21297d5b7295619ca3b9a68698138f65874e650dc5c066fc7e0c38"
+    },
+    {
+      "path": "docs/audit/evidence/B38-preserved-tests-current-run01-07B39R7.stderr.txt",
+      "bytes": 6640,
+      "sha256": "eb6d919270938dd8ce139b193e1679ad4b9e8e9c9848e72e8b72776b2664c046"
+    }
+  ],
+  "post_capture_local_followthrough": {
+    "kind": "post-run01-readable-local-followthrough-not-test-covered-by297",
+    "source_review": {
+      "path": "docs/audit/SOURCE-REVIEW-07B39R7-local.md",
+      "bytes": 18701,
+      "sha256": "90ee48dfb7ae0e93d74232da41e8f612c216e2b95cab6012ead10f84fce83005"
+    },
+    "authorship_identity_coverage_report": {
+      "path": "docs/audit/evidence/entry-source-local-followthrough-authorship-07B39R7.json",
+      "bytes": 2001,
+      "sha256": "a7e18824d3a1b024486e964659799e28d3d30054b094073ac70c8f816a298b16"
+    },
+    "facts": {
+      "path": "docs/audit/evidence/entry-source-local-followthrough-facts-07B39R7.json",
+      "bytes": 803188,
+      "sha256": "6c58c9ed9580f6c17b687c09f32f90d1a6c7bca2150ba0883dec3605aaee0586"
+    },
+    "reads": {
+      "path": "docs/audit/evidence/entry-source-local-followthrough-reads-07B39R7.json",
+      "bytes": 18716,
+      "sha256": "196584e575950f020097f2d5931e6533fcbf516b14fed922737b2f9051d6233f"
+    },
+    "decisions": {
+      "path": "docs/audit/evidence/entry-source-local-followthrough-decisions-07B39R7.json",
+      "bytes": 127734,
+      "sha256": "4e896695453eb901123f076c0b06733b21727bd0faedf0ae0fd1a4f8667ba436"
+    },
+    "was_R7_run01_input": false,
+    "covered_by_the_captured297_tests": false,
+    "new_unittest_cases_run": 0,
+    "selected_method_contexts": 93,
+    "overlap_with_initial177": 37,
+    "additional_contexts_not_in_initial177": 56,
+    "source_identities": 30,
+    "self_reported_display_ranges": 70,
+    "receipt_required_parameters": 29,
+    "receipt_explicitly_bound_parameters": 28,
+    "receipt_casefold_missing_parameters": [
+      "@recipient"
+    ],
+    "additional_source_support_without_new_findings": [
+      "P1-012",
+      "P2-010",
+      "P3-002",
+      "P3-003",
+      "P3-008",
+      "P3-025"
+    ],
+    "P1_013_and_P3_005_potential_not_promoted": true,
+    "new_numbered_findings": [],
+    "new_accepted_external_handoffs": 0,
+    "all_helpers_or_7B_complete": false,
+    "current_next_action_source": [
+      "Continue the19 LastProcess exact caller identities through four arguments, source connection/year and outcome/display ownership; this supplement did not read them.",
+      "Read the three selected linked-insert bodies not selected in R6 (frmInvInputOutput1816-1840, frmInvPOS2627-2654, frmInvPurch2173-2205), retaining all11 original call sites and the four previously selected contexts; do not use discovery as reading.",
+      "Finish remaining invoice/receipt Save helpers, alternate writers, row/model/default/return-ProcType and allowed-edit contracts before any whole-receiver or D17/capability exit.",
+      "Carry R7C-RECEIPT-READER post-close ordering and R6/R5 provenance/restore/contract-result/adjustment-unit questions; no financial acceptance or remediated status.",
+      "Compare unnumbered receipt-parameter/legacy/branch questions to any genuinely recovered six R2 dictionaries; do not reconstruct their rows from narrative."
+    ],
+    "completed_bounded_local_not_to_reread_only_for_counts": [
+      "FormPermission216-334 now read along with all1-350; no whole-app ACL certificate.",
+      "SaveReceipt2 command/binder and five restore bodies, Treasury/Common mapping now read; other Save/alternate writers remain.",
+      "Credit/Debt Save/Delete and Entry SaveEnty/allocator/read-key/local attachment helper now read; no atomicity/financial/branch-policy acceptance.",
+      "Selected branch loaders/filters and Customer Loaded/collector/ShowAccount/helper chain now read;17 individually paired request scopes remain unaccepted as document ACL."
+    ]
+  }
+}

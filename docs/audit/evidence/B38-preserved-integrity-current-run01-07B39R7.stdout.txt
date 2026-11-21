@@ -1,0 +1,63 @@
+{
+  "audit_reference_date_utc": "2026-11-16",
+  "application_baseline": "10ba215152f722c8808aea0bb672c1d1d4d9d711",
+  "integrity_errors": [],
+  "integrity_check_groups": [
+    "827-originals/335-registry/1226-protected/139-legacy-tools",
+    "syntax-discovery-is-not-semantic-review",
+    "26-proposed-semantic-workstreams-and6-unapproved-handoffs",
+    "all797-FE-file-row-provenance-not797-unique-capabilities",
+    "55-historical-seeds-and-inclusive-singleton-range-union",
+    "49-direct-modal-sites-in47-manually-reviewed-owner-contexts",
+    "RS14/SP3-full-ancestry-inputs-contracts-and-open-dispositions",
+    "integrity-success-is-separate-from-fail-closed-completion-gate"
+  ],
+  "integrity_ok": true,
+  "closure": {
+    "whole_7B_complete": false,
+    "blockers": [
+      "scope_approval-not-approved",
+      "external_handoff_acceptance-not-approved",
+      "whole_family_approval-not-approved",
+      "all_local_semantic_obligations_complete-not-proven",
+      "all_required_candidates_dispositioned-not-proven",
+      "all_open_observations_adjudicated-not-proven",
+      "capability-local-obligations-open",
+      "whole-capability-decisions-open"
+    ],
+    "meaning": "Static-audit closure only; never ERP, financial, repair or deployment acceptance."
+  },
+  "counts": {
+    "originals": 827,
+    "findings_unchanged": 335,
+    "protected_consumed_artifacts": 1226,
+    "legacy_top_level_python_tools_unchanged": 139,
+    "all_recursive_audit_python_tools": 155,
+    "historical_FE_rows": 797,
+    "proposed_semantic_workstreams_not_agreed": 26,
+    "source_CSharp_syntax_files": 477,
+    "source_XAML_XML_files": 277,
+    "discovery_candidates_not_semantically_dispositioned": 4409,
+    "historical_seed_screens_not_denominator": 55,
+    "direct_modal_sites_reviewed": 49,
+    "distinct_modal_owner_contexts": 47,
+    "current_review_scope_paths": 43
+  },
+  "fresh_full_in_memory_reparse_compared": true,
+  "new_checker_source_sha256": {
+    "tools/census07b/build_7b_census.py": "c9aad76050aee0feaec45f82b062e1cb8a97fc7d1bd445cf615d8ba8409638a9",
+    "tools/census07b/test_7b_completion.py": "56a6fffdbd2375c0d8a98067c2ce3d54b5ddd5c53441221a88774c340ab00bc6",
+    "tools/census07b/validate_7b_completion.py": "3622ef297cf334bb3896e04ff66c19c9ba0ced725e20a876a831b0c3d848500e"
+  },
+  "legacy_dispatcher_modified": false,
+  "ERP_or_SQL_runtime_tests_executed": 0,
+  "application_remediation_performed": false,
+  "phase_7C_started": false,
+  "phase_8_authorized": false,
+  "limits": [
+    "All797 rows have exact lineage, not797 distinct capabilities or fresh source reviews.",
+    "Syntax discovery, name matching and historical range union do not prove semantic completeness.",
+    "Readily reviewable local work remains local; external contracts do not excuse local omissions.",
+    "No complete7B/7, runtime, repair synchronization, financial, SDK/template or deployment acceptance."
+  ]
+}

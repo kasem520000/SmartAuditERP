@@ -1,0 +1,874 @@
+{
+  "schema_version": 1,
+  "kind": "R7-self-reported-current-display-ranges-not-machine-certified-reading-or-R6-history",
+  "assessment_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "prior196_tests_recertified": false,
+  "R2_R3_files_recovered": false,
+  "new_accepted_external_handoffs": 0,
+  "extraction_equals_reading": false,
+  "individual_read_timestamps_invented": false,
+  "independent_human_review_claimed": false,
+  "registration_basis": "Current read_file outputs and explicit, non-truncated decoded line displays via bash. Partial fragments remain partial. No source extraction or old narrative alone is a new read record.",
+  "form_permission_original_encoding_read_file_result": "application/octet-stream; then decoded with the preserved base.decode helper and displayed lines1-155/161-215/335-346.",
+  "reads": [
+    {
+      "id": "R7READ-001",
+      "path": "SmartAuditERP/Class/MainClass.cs",
+      "start": 25,
+      "end": 49,
+      "decoded_range_utf8_sha256": "f435fcec2b88d16f0bc6d0068de25a4b65d00c7d5325d532c6f368bfd50a5aee"
+    },
+    {
+      "id": "R7READ-002",
+      "path": "SmartAuditERP/Class/MainClass.cs",
+      "start": 321,
+      "end": 458,
+      "decoded_range_utf8_sha256": "3f1bf2a2e5c950b47fd2e35f215bc74c7b66ea36968b0609ac99187c2a70b42e"
+    },
+    {
+      "id": "R7READ-003",
+      "path": "SmartAuditERP/Class/FormPermission.cs",
+      "start": 1,
+      "end": 155,
+      "decoded_range_utf8_sha256": "2cb96114b9ad3b16e251e49b63ec0827eca3765d4428dd287a48e3872c36f250"
+    },
+    {
+      "id": "R7READ-004",
+      "path": "SmartAuditERP/Class/FormPermission.cs",
+      "start": 161,
+      "end": 215,
+      "decoded_range_utf8_sha256": "56f4599d8994f447d4cfd8bb9a54879c4e38afe0d0f8808c0fc003e361923869"
+    },
+    {
+      "id": "R7READ-005",
+      "path": "SmartAuditERP/Class/FormPermission.cs",
+      "start": 335,
+      "end": 346,
+      "decoded_range_utf8_sha256": "ae27fb40e740b057375a7d517526bbb3b894fb7c43322be61c322964da888048"
+    },
+    {
+      "id": "R7READ-006",
+      "path": "SmartAuditERP/Class/Common.cs",
+      "start": 1431,
+      "end": 1495,
+      "decoded_range_utf8_sha256": "5cf27ddf3d8fb90c6d636df229bd0f47a01fa9af1e2d895d0c41fe37c3d9e654"
+    },
+    {
+      "id": "R7READ-007",
+      "path": "SmartAuditERP/Class/EntryOper.cs",
+      "start": 1021,
+      "end": 1194,
+      "decoded_range_utf8_sha256": "6358f30411ebde1ef6dd861f3ceb6a8c9250e9ab484459f88ad5afeaa4ca6b75"
+    },
+    {
+      "id": "R7READ-008",
+      "path": "SmartAuditERP/Class/EntryOper.cs",
+      "start": 1260,
+      "end": 1382,
+      "decoded_range_utf8_sha256": "4abf5d956ba6bdae99eeba03c742bcaffce4ec7ee50f295c350b5a608519ea03"
+    },
+    {
+      "id": "R7READ-009",
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 3198,
+      "end": 3217,
+      "decoded_range_utf8_sha256": "1c0b61f28b54f2cedfcbdc41c1331cfaa22dd5bcc4e200e41e9912815e8a2a8b"
+    },
+    {
+      "id": "R7READ-010",
+      "path": "SmartAuditERP/Class/InvoiceOper.cs",
+      "start": 3219,
+      "end": 3508,
+      "decoded_range_utf8_sha256": "49d96fdf0c7d8146ce90eac404d58648eab08a198e9f0b10309a537c1302fc4c"
+    },
+    {
+      "id": "R7READ-011",
+      "path": "SmartAuditERP/Form_WPF/frmCostCenterBalance.xaml.cs",
+      "start": 14,
+      "end": 106,
+      "decoded_range_utf8_sha256": "83305c98e201dc6866298ebe71de3e7e6cd957a9937a555281e6f9d7021dbb56"
+    },
+    {
+      "id": "R7READ-012",
+      "path": "SmartAuditERP/Form_WPF/frmCostCenterBalance.xaml.cs",
+      "start": 181,
+      "end": 189,
+      "decoded_range_utf8_sha256": "4d0014bed674e9d9e79bdd212ef4b57b86802df09098d814134e448ae4cf9167"
+    },
+    {
+      "id": "R7READ-013",
+      "path": "SmartAuditERP/Form_WPF/frmCostCenterBalance.xaml.cs",
+      "start": 210,
+      "end": 314,
+      "decoded_range_utf8_sha256": "18e04b479d4d15ba90769240b0ca2feacbdd07d9bcf1c167daea576bfb488b47"
+    },
+    {
+      "id": "R7READ-014",
+      "path": "SmartAuditERP/Form_WPF/frmCostCenterBalance.xaml.cs",
+      "start": 347,
+      "end": 539,
+      "decoded_range_utf8_sha256": "b377597b5254f884527e082ce4c5834af2c9a8ea5ac4f01e82df8e6b21b898b4"
+    },
+    {
+      "id": "R7READ-015",
+      "path": "SmartAuditERP/Form_WPF/frmCostCenterBalance.xaml.cs",
+      "start": 1002,
+      "end": 1056,
+      "decoded_range_utf8_sha256": "8ad0eabd1cf01d0fcda8ac6946b860678ce0bd2e3393f2874b3258be4f6ba31d"
+    },
+    {
+      "id": "R7READ-016",
+      "path": "SmartAuditERP/Form_WPF/frmCustAccountGet.xaml.cs",
+      "start": 1,
+      "end": 124,
+      "decoded_range_utf8_sha256": "588d979ad0be8d3eec38f7caa6b5eeb11e1ccc35ae4b866f277748826cb1455b"
+    },
+    {
+      "id": "R7READ-017",
+      "path": "SmartAuditERP/Form_WPF/frmCustAccountGet.xaml.cs",
+      "start": 210,
+      "end": 238,
+      "decoded_range_utf8_sha256": "69f52a915385f224e13a3b50e1ef738171311456cc2b87ea22124bb097a2bd1f"
+    },
+    {
+      "id": "R7READ-018",
+      "path": "SmartAuditERP/Form_WPF/frmCustAccountGet.xaml.cs",
+      "start": 245,
+      "end": 479,
+      "decoded_range_utf8_sha256": "a10e7690287e9c89c8b2a13125e4e9eca464e4f3a222305690cfe90274ce223e"
+    },
+    {
+      "id": "R7READ-019",
+      "path": "SmartAuditERP/Form_WPF/frmCustAccountGet.xaml.cs",
+      "start": 925,
+      "end": 975,
+      "decoded_range_utf8_sha256": "542dac3e3b4e21e4ec07507b9b7646218d3f2c70526069c39550c319cf30faea"
+    },
+    {
+      "id": "R7READ-020",
+      "path": "SmartAuditERP/Form_WPF/frmCustLastPay.xaml.cs",
+      "start": 12,
+      "end": 92,
+      "decoded_range_utf8_sha256": "f908924a2fe99f7f3d3a5009e25e48d34cabddad8fe9cfd6938e3fcdb4162ca8"
+    },
+    {
+      "id": "R7READ-021",
+      "path": "SmartAuditERP/Form_WPF/frmCustLastPay.xaml.cs",
+      "start": 94,
+      "end": 303,
+      "decoded_range_utf8_sha256": "24b2bebd5c0ca321a3b893dbaf9425103c4dfd7cb176b4037f37b419bea7f47e"
+    },
+    {
+      "id": "R7READ-022",
+      "path": "SmartAuditERP/Form_WPF/frmCustLastPay.xaml.cs",
+      "start": 330,
+      "end": 347,
+      "decoded_range_utf8_sha256": "45ec548f4fb969a534e34d80fdc0e8632b2506b6588d15c1f9eb09b441bd0951"
+    },
+    {
+      "id": "R7READ-023",
+      "path": "SmartAuditERP/Form_WPF/frmCustLastPay.xaml.cs",
+      "start": 384,
+      "end": 438,
+      "decoded_range_utf8_sha256": "f7a5714c4ed8e312038a36aeaf60f5fb27cb9cf0c1d3efe8cad86bd84874e0d0"
+    },
+    {
+      "id": "R7READ-024",
+      "path": "SmartAuditERP/Form_WPF/frmEmpAccountGet.xaml.cs",
+      "start": 13,
+      "end": 95,
+      "decoded_range_utf8_sha256": "e51b2682991196cf7ae2eb7d1106a87c37f157752e5b38bea1c0653bb7712704"
+    },
+    {
+      "id": "R7READ-025",
+      "path": "SmartAuditERP/Form_WPF/frmEmpAccountGet.xaml.cs",
+      "start": 140,
+      "end": 155,
+      "decoded_range_utf8_sha256": "4ba47836beb70dbed305d8b6ccb5df0ce29ee555732b8e046fd81b65155f156d"
+    },
+    {
+      "id": "R7READ-026",
+      "path": "SmartAuditERP/Form_WPF/frmEmpAccountGet.xaml.cs",
+      "start": 160,
+      "end": 329,
+      "decoded_range_utf8_sha256": "ca920f049b26a9a39cb7b56861546088e4526f50bec72c86ad2016f7e2b90173"
+    },
+    {
+      "id": "R7READ-027",
+      "path": "SmartAuditERP/Form_WPF/frmEmpAccountGet.xaml.cs",
+      "start": 377,
+      "end": 423,
+      "decoded_range_utf8_sha256": "b51bb6af443917824b19c10d6d0ac41af589113aa877133eac6b2c67ff98202c"
+    },
+    {
+      "id": "R7READ-028",
+      "path": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs",
+      "start": 16,
+      "end": 63,
+      "decoded_range_utf8_sha256": "8608af2a1665a997b3ad75ce0e78790069a64954833f170d8808c35a3997d40e"
+    },
+    {
+      "id": "R7READ-029",
+      "path": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs",
+      "start": 230,
+      "end": 672,
+      "decoded_range_utf8_sha256": "7aef5fd9c13e495f6023c2541af70e48dadfac1f5d913f9738fecc30b7c9ed8b"
+    },
+    {
+      "id": "R7READ-030",
+      "path": "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs",
+      "start": 1,
+      "end": 85,
+      "decoded_range_utf8_sha256": "c677488fb8f63d68b3b0d940f89bfda2c07dbfba2beb9893e07c7361b5e7f527"
+    },
+    {
+      "id": "R7READ-031",
+      "path": "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs",
+      "start": 198,
+      "end": 334,
+      "decoded_range_utf8_sha256": "3d4748300ef477f76ef0eab946f6b056bbaca3a4bb77172960be8014a7ad06cf"
+    },
+    {
+      "id": "R7READ-032",
+      "path": "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs",
+      "start": 645,
+      "end": 739,
+      "decoded_range_utf8_sha256": "87f2c33469a6fe676b67fc9df5bc7dc323cdf3b12940753869e94c543e1785b5"
+    },
+    {
+      "id": "R7READ-033",
+      "path": "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs",
+      "start": 760,
+      "end": 899,
+      "decoded_range_utf8_sha256": "13b7f00b641dc4a28627812fb2ecdb72788ec1f316ec57b97ede13b0ddaea5a9"
+    },
+    {
+      "id": "R7READ-034",
+      "path": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs",
+      "start": 1,
+      "end": 65,
+      "decoded_range_utf8_sha256": "39b3b3d5f4a624d02a6f92a08957dcb15110581763aa13d83fa775d6853b08b0"
+    },
+    {
+      "id": "R7READ-035",
+      "path": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs",
+      "start": 160,
+      "end": 351,
+      "decoded_range_utf8_sha256": "3952dcd3eb80db558dc6b99a679aaccb81d25676f92bcd9e89c11314a9c6c239"
+    },
+    {
+      "id": "R7READ-036",
+      "path": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs",
+      "start": 645,
+      "end": 739,
+      "decoded_range_utf8_sha256": "3d3420bb6c634f4ddbe551b9142bcc113e2c778061a0dcdf42d9da48532bc372"
+    },
+    {
+      "id": "R7READ-037",
+      "path": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs",
+      "start": 760,
+      "end": 859,
+      "decoded_range_utf8_sha256": "c4579159dad5176f52910e131cc325f2227657c7e4f078f43477065da4bfc7cb"
+    },
+    {
+      "id": "R7READ-038",
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 61,
+      "end": 161,
+      "decoded_range_utf8_sha256": "5226efb0beb6da87b240f54da1dcf365cf2378b39fc774475ea07d1a3d0837a8"
+    },
+    {
+      "id": "R7READ-039",
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 345,
+      "end": 504,
+      "decoded_range_utf8_sha256": "bc6d9747ece0fc8d839bf05d47d683e5945eae1d0f655af30efbc933b9bbbfd8"
+    },
+    {
+      "id": "R7READ-040",
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 1528,
+      "end": 1572,
+      "decoded_range_utf8_sha256": "148a00689fb0673d000ae6b52077e47e1a2dbc41c6be084b3f2e5f28b02333db"
+    },
+    {
+      "id": "R7READ-041",
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 58,
+      "end": 236,
+      "decoded_range_utf8_sha256": "2a31b8a18287b10d593cf40a57253be824489cdaaee756ff36575a76ac76de9a"
+    },
+    {
+      "id": "R7READ-042",
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 1447,
+      "end": 1660,
+      "decoded_range_utf8_sha256": "249544ec63a3f923942589125d4f63e603a60cc876e0c7b3a640a8fcf47cf92d"
+    },
+    {
+      "id": "R7READ-043",
+      "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+      "start": 117,
+      "end": 273,
+      "decoded_range_utf8_sha256": "3fae33a1f2f721e6b49ace9ec580276e72c42dfabe27527520814a7aad350be4"
+    },
+    {
+      "id": "R7READ-044",
+      "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+      "start": 508,
+      "end": 622,
+      "decoded_range_utf8_sha256": "add2a8c901a81931d6e8d5b169c630535b1ab28c2f636d15c55d7690fd3f890b"
+    },
+    {
+      "id": "R7READ-045",
+      "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+      "start": 1009,
+      "end": 1032,
+      "decoded_range_utf8_sha256": "05ce5cf65fe5ad6b8c2da77b961d15d1ce34b5ec9582a526b2fd551e1326d10a"
+    },
+    {
+      "id": "R7READ-046",
+      "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+      "start": 1861,
+      "end": 1884,
+      "decoded_range_utf8_sha256": "6fe1ea7c0cbf06dcb5ae879c73830367c3fc3b744c1d71c319f907796eabde6e"
+    },
+    {
+      "id": "R7READ-047",
+      "path": "SmartAuditERP/Form_WPF/frminvoice.xaml.cs",
+      "start": 137,
+      "end": 309,
+      "decoded_range_utf8_sha256": "35ef7359f7a58498b0e9b8145d2209d08ee1183eb4010058edeae1e2ec3ad63f"
+    },
+    {
+      "id": "R7READ-048",
+      "path": "SmartAuditERP/Form_WPF/frminvoice.xaml.cs",
+      "start": 643,
+      "end": 714,
+      "decoded_range_utf8_sha256": "4f1c14703faba3df84b94c47b6a18da15b9ad6edb1eae811d790340d1af99097"
+    },
+    {
+      "id": "R7READ-049",
+      "path": "SmartAuditERP/Form_WPF/frminvoice.xaml.cs",
+      "start": 1938,
+      "end": 2090,
+      "decoded_range_utf8_sha256": "b8bd5eb198b97374d72b8f331f4e74aea2a526a8bd751e2e1f89d409a380d29d"
+    },
+    {
+      "id": "R7READ-050",
+      "path": "SmartAuditERP/Form_WPF/FrmIntialRestraiction.xaml.cs",
+      "start": 20,
+      "end": 102,
+      "decoded_range_utf8_sha256": "8010c080d7b3781c28d2ee37e0e5ee0d453e4f712021c818ddf8e16066126c8f"
+    },
+    {
+      "id": "R7READ-051",
+      "path": "SmartAuditERP/Form_WPF/FrmIntialRestraiction.xaml.cs",
+      "start": 119,
+      "end": 131,
+      "decoded_range_utf8_sha256": "62ceb6691709e1ff2311081a7476b4129a2881b245f5db0e19a735fdd0c2a89e"
+    },
+    {
+      "id": "R7READ-052",
+      "path": "SmartAuditERP/Form_WPF/FrmIntialRestraiction.xaml.cs",
+      "start": 220,
+      "end": 384,
+      "decoded_range_utf8_sha256": "79fa3be5e92022b5383eaf3b4d7830d070f1f544ac1fdcc698a564b243d5e149"
+    },
+    {
+      "id": "R7READ-053",
+      "path": "SmartAuditERP/Form_WPF/FrmNewEntry.xaml.cs",
+      "start": 52,
+      "end": 120,
+      "decoded_range_utf8_sha256": "cbd140727a2dda0b675138e3970656743d250cb5a91a535a996358a01db44616"
+    },
+    {
+      "id": "R7READ-054",
+      "path": "SmartAuditERP/Form_WPF/FrmNewEntry.xaml.cs",
+      "start": 147,
+      "end": 285,
+      "decoded_range_utf8_sha256": "81a5d913ee9aa4f01fd388c8e0591e396729ad5362379d948e20da242bad0dea"
+    },
+    {
+      "id": "R7READ-055",
+      "path": "SmartAuditERP/Form_WPF/FrmNewEntry.xaml.cs",
+      "start": 614,
+      "end": 644,
+      "decoded_range_utf8_sha256": "cba209730046463af7c8a1675628c35cd509c0271541348d4b4cfe859761dfd3"
+    },
+    {
+      "id": "R7READ-056",
+      "path": "SmartAuditERP/Form_WPF/frmCreditNote.xaml.cs",
+      "start": 19,
+      "end": 86,
+      "decoded_range_utf8_sha256": "92201da91ea5aee652901fd1500fe1edb218c2f2c5c705621a38e9b7c72651d6"
+    },
+    {
+      "id": "R7READ-057",
+      "path": "SmartAuditERP/Form_WPF/frmCreditNote.xaml.cs",
+      "start": 109,
+      "end": 131,
+      "decoded_range_utf8_sha256": "67df329eb8c30892dbedbb111c801f45bcb009950b194f4d86778fc1f6eab224"
+    },
+    {
+      "id": "R7READ-058",
+      "path": "SmartAuditERP/Form_WPF/frmCreditNote.xaml.cs",
+      "start": 201,
+      "end": 218,
+      "decoded_range_utf8_sha256": "d51fe5133fcc5ec26590cd0cdb18320ec842ea5dd129906da35b6d5d0af0a1cf"
+    },
+    {
+      "id": "R7READ-059",
+      "path": "SmartAuditERP/Form_WPF/frmCreditNote.xaml.cs",
+      "start": 286,
+      "end": 386,
+      "decoded_range_utf8_sha256": "8ad7322a0038595e996eea514c55f39c4e82fceb7a41c00602844337950172d5"
+    },
+    {
+      "id": "R7READ-060",
+      "path": "SmartAuditERP/Form_WPF/frmDebtNote.xaml.cs",
+      "start": 18,
+      "end": 85,
+      "decoded_range_utf8_sha256": "90c9bba15865eb203664000547d2ab3de7b19d982293be13f862cb80d89873a2"
+    },
+    {
+      "id": "R7READ-061",
+      "path": "SmartAuditERP/Form_WPF/frmDebtNote.xaml.cs",
+      "start": 130,
+      "end": 155,
+      "decoded_range_utf8_sha256": "acbe3c3fc0fe2bcead94226ea611830119037fc8cd50847326ae8543567fd369"
+    },
+    {
+      "id": "R7READ-062",
+      "path": "SmartAuditERP/Form_WPF/frmDebtNote.xaml.cs",
+      "start": 187,
+      "end": 296,
+      "decoded_range_utf8_sha256": "d78216af0f047c50ba2fea2bd1729ff7787c75ed45ec8077add3b0122255f459"
+    },
+    {
+      "id": "R7READ-063",
+      "path": "SmartAuditERP/Form_WPF/frmRptEntries.xaml.cs",
+      "start": 17,
+      "end": 75,
+      "decoded_range_utf8_sha256": "46b645703d3c46f898f52983a05be1c20ebf7e36b464cf2f57b1ac2d74dfb03a"
+    },
+    {
+      "id": "R7READ-064",
+      "path": "SmartAuditERP/Form_WPF/frmRptEntries.xaml.cs",
+      "start": 160,
+      "end": 163,
+      "decoded_range_utf8_sha256": "9f98d30370d3249c45ebc964b5ea9f8973ee9632b974b4a1ad999c75433c4392"
+    },
+    {
+      "id": "R7READ-065",
+      "path": "SmartAuditERP/Form_WPF/frmRptEntries.xaml.cs",
+      "start": 165,
+      "end": 169,
+      "decoded_range_utf8_sha256": "aa53ce3dd42d124de6f9c97c1f5ec694c19d0ec66eb80f32466d92d49c31292d"
+    },
+    {
+      "id": "R7READ-066",
+      "path": "SmartAuditERP/Form_WPF/frmRptEntries.xaml.cs",
+      "start": 181,
+      "end": 331,
+      "decoded_range_utf8_sha256": "14c7f547bbbb829b071353b07b3dd21d65fd8ae0c949cdaca940467f9196e5ba"
+    },
+    {
+      "id": "R7READ-067",
+      "path": "SmartAuditERP/Form_WPF/frmSandQ.xaml.cs",
+      "start": 17,
+      "end": 152,
+      "decoded_range_utf8_sha256": "39de4ad50acfe33983206149f0cb1e905fb9a8fa047764846b9f5a366e102009"
+    },
+    {
+      "id": "R7READ-068",
+      "path": "SmartAuditERP/Form_WPF/frmSandQ.xaml.cs",
+      "start": 415,
+      "end": 448,
+      "decoded_range_utf8_sha256": "51f6fc64d2e78bffde52f389d5b195c0fa0f38a66984f17f331e0ccccbdd730d"
+    },
+    {
+      "id": "R7READ-069",
+      "path": "SmartAuditERP/Form_WPF/frmSandQ.xaml.cs",
+      "start": 615,
+      "end": 750,
+      "decoded_range_utf8_sha256": "bf7b9cb83da0fb735d2fa25b3f828523d55b04b3daf67f1bec5cbbf4d4eb3452"
+    },
+    {
+      "id": "R7READ-070",
+      "path": "SmartAuditERP/Form_WPF/frmSandQ.xaml.cs",
+      "start": 1371,
+      "end": 1386,
+      "decoded_range_utf8_sha256": "7b9892b3b8ddeec4744c02f29bdd5414813368dff01d98910b78a0e601537a4b"
+    },
+    {
+      "id": "R7READ-071",
+      "path": "SmartAuditERP/Form_WPF/frmSandD.xaml.cs",
+      "start": 17,
+      "end": 183,
+      "decoded_range_utf8_sha256": "bcac7596bbdbf6ee98016c10e55d52b73eb0728a8fb47b8ba25dda6020f399e0"
+    },
+    {
+      "id": "R7READ-072",
+      "path": "SmartAuditERP/Form_WPF/frmSandD.xaml.cs",
+      "start": 400,
+      "end": 498,
+      "decoded_range_utf8_sha256": "5561068eb5e867faad1ca0e57c8dee3f3fb0ec56ecc32c031a44e54e8b0fc11f"
+    },
+    {
+      "id": "R7READ-073",
+      "path": "SmartAuditERP/Form_WPF/frmSandD.xaml.cs",
+      "start": 605,
+      "end": 654,
+      "decoded_range_utf8_sha256": "00ae0ad84aeb9f26bc8e76dd6925b8e1d69e56dd689f4e5ff15c6907a350e320"
+    },
+    {
+      "id": "R7READ-074",
+      "path": "SmartAuditERP/Form_WPF/frmSandQD.xaml.cs",
+      "start": 16,
+      "end": 169,
+      "decoded_range_utf8_sha256": "00751260fb1714bc802e6ac81dee3392cb00875533fd3691fac90361ed21b186"
+    },
+    {
+      "id": "R7READ-075",
+      "path": "SmartAuditERP/Form_WPF/frmSandQD.xaml.cs",
+      "start": 405,
+      "end": 491,
+      "decoded_range_utf8_sha256": "0dad6495259d322abee0e2a5a347e6f417460e04e376b6f0ebb7b0843a2aea57"
+    },
+    {
+      "id": "R7READ-076",
+      "path": "SmartAuditERP/Form_WPF/frmSandQD.xaml.cs",
+      "start": 610,
+      "end": 737,
+      "decoded_range_utf8_sha256": "6d1ddf34f82a590c907e1f220941b3c25e4da72b74a4e223cf1bac2a77f976fb"
+    },
+    {
+      "id": "R7READ-077",
+      "path": "SmartAuditERP/Form_WPF/frmSandQD.xaml.cs",
+      "start": 1489,
+      "end": 1502,
+      "decoded_range_utf8_sha256": "e5e0ee54b0931b8ce9bb3c58c2856b6ec8d00433c8531c0678e865a5caafc4e6"
+    },
+    {
+      "id": "R7READ-078",
+      "path": "SmartAuditERP/Form_WPF/frmSandSD.xaml.cs",
+      "start": 17,
+      "end": 161,
+      "decoded_range_utf8_sha256": "5e48c162471869155073d0e1919251fc1812bb63428cc51c7b1d61fdeeaa8ed2"
+    },
+    {
+      "id": "R7READ-079",
+      "path": "SmartAuditERP/Form_WPF/frmSandSD.xaml.cs",
+      "start": 414,
+      "end": 508,
+      "decoded_range_utf8_sha256": "5cdbc4ff3f6dd693190a091287342532a438277295828e85c6beeea1bab13aae"
+    },
+    {
+      "id": "R7READ-080",
+      "path": "SmartAuditERP/Form_WPF/frmSandSD.xaml.cs",
+      "start": 993,
+      "end": 1121,
+      "decoded_range_utf8_sha256": "7c3ba3b348f9b6eefa34dc935675afb19e99fa5d7dd1520f49218c8d418e4142"
+    },
+    {
+      "id": "R7READ-081",
+      "path": "SmartAuditERP/Form_WPF/frmSandSD.xaml.cs",
+      "start": 1443,
+      "end": 1459,
+      "decoded_range_utf8_sha256": "4962e8a7f1105eda79d9894af7aa62facde247a35e48fcc39bc192ce6d4bb8d5"
+    },
+    {
+      "id": "R7READ-082",
+      "path": "SmartAuditERP/Form_WPF/frmSandVAT.xaml.cs",
+      "start": 17,
+      "end": 166,
+      "decoded_range_utf8_sha256": "43c24ce32f46339612154c232ceb7cce5ac5972633dc2d76bc48f319bb0a2a31"
+    },
+    {
+      "id": "R7READ-083",
+      "path": "SmartAuditERP/Form_WPF/frmSandVAT.xaml.cs",
+      "start": 402,
+      "end": 425,
+      "decoded_range_utf8_sha256": "789645021c1e5dfa43f0d1ada5090dea6d171ddb9b2419e70f95828964d4df1d"
+    },
+    {
+      "id": "R7READ-084",
+      "path": "SmartAuditERP/Form_WPF/frmSandVAT.xaml.cs",
+      "start": 520,
+      "end": 627,
+      "decoded_range_utf8_sha256": "04fcd95219885050cd285da7df0e54b2d46f5ed9a890a8353542b55aff59ec73"
+    },
+    {
+      "id": "R7READ-085",
+      "path": "SmartAuditERP/Form_WPF/frmSandVAT.xaml.cs",
+      "start": 1451,
+      "end": 1459,
+      "decoded_range_utf8_sha256": "10171e64b4db7a6bf3eb5fe2ad0c726effcfc50d1a6caf63ce74f72b6cfa0066"
+    },
+    {
+      "id": "R7READ-086",
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 954,
+      "end": 1017,
+      "decoded_range_utf8_sha256": "64a40b83322750cced1bd2ee6a1b0b24a08d812dbec26d5920a18e975a9bbcdc"
+    },
+    {
+      "id": "R7READ-087",
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 1362,
+      "end": 1394,
+      "decoded_range_utf8_sha256": "775b4cc0d648b87d3609024d08c3ad5c1e2211627b5873ddd4eae310beae36e6"
+    },
+    {
+      "id": "R7READ-088",
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 1428,
+      "end": 1596,
+      "decoded_range_utf8_sha256": "9dc23959f617cb005e851697f9258436c207a3010e236c2b331bc7500d8c7037"
+    },
+    {
+      "id": "R7READ-089",
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 4703,
+      "end": 4725,
+      "decoded_range_utf8_sha256": "40fed9bdbd3ed6ed931b5ea68e5bf6f3de90148b783930ee0cb5ca5c12cdabad"
+    },
+    {
+      "id": "R7READ-090",
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 47457,
+      "end": 47491,
+      "decoded_range_utf8_sha256": "93358b30dad56b938837d6249977985ed435bbc97f513c108070d1861f03c0a2"
+    },
+    {
+      "id": "R7READ-091",
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 47872,
+      "end": 47915,
+      "decoded_range_utf8_sha256": "81f4445fe333111f2312c7ecbd494f020154b4cec33a75d24df625095d444953"
+    },
+    {
+      "id": "R7READ-092",
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "start": 50285,
+      "end": 50307,
+      "decoded_range_utf8_sha256": "badd6a0c9e18caed24b25653eb1ff762ba9f91f9964323cba54c038ce0cf31f7"
+    },
+    {
+      "id": "R7READ-093",
+      "path": "SmartAuditERP/Form_WPF/frmCostCenterBalance.xaml",
+      "start": 1,
+      "end": 18,
+      "decoded_range_utf8_sha256": "d6807e7142b47018794f615c3973c2dad1c61e825c828df77d2a8f5bd7c5da75"
+    },
+    {
+      "id": "R7READ-094",
+      "path": "SmartAuditERP/Form_WPF/frmCostCenterBalance.xaml",
+      "start": 626,
+      "end": 642,
+      "decoded_range_utf8_sha256": "743062328aa8c3923a3966a8e127e9eadf72b4bb8526a930bac9155da153b94d"
+    },
+    {
+      "id": "R7READ-095",
+      "path": "SmartAuditERP/Form_WPF/frmCustAccountGet.xaml",
+      "start": 1,
+      "end": 18,
+      "decoded_range_utf8_sha256": "c708b732a8ba7cee7ad7c9f8fbce9e05bf481357387eeaee642a08725210c872"
+    },
+    {
+      "id": "R7READ-096",
+      "path": "SmartAuditERP/Form_WPF/frmCustAccountGet.xaml",
+      "start": 530,
+      "end": 585,
+      "decoded_range_utf8_sha256": "7bc9f073c641a52ba785b37bc254f345eaf62dfb77130514fc5271f2a9232873"
+    },
+    {
+      "id": "R7READ-097",
+      "path": "SmartAuditERP/Form_WPF/frmCustLastPay.xaml",
+      "start": 1,
+      "end": 18,
+      "decoded_range_utf8_sha256": "14bb21ef1c0bca695a1d54eb943c948ae73f41bb36913c29cde9b785cd70a1fc"
+    },
+    {
+      "id": "R7READ-098",
+      "path": "SmartAuditERP/Form_WPF/frmCustLastPay.xaml",
+      "start": 459,
+      "end": 488,
+      "decoded_range_utf8_sha256": "d683fff8e0cc55e8b7db8a4cb504dee0ea00845ac00303c7b914895ea443d23b"
+    },
+    {
+      "id": "R7READ-099",
+      "path": "SmartAuditERP/Form_WPF/frmEmpAccountGet.xaml",
+      "start": 1,
+      "end": 18,
+      "decoded_range_utf8_sha256": "2d58a016361f50e2401f3a5f69726e2bfd5e046ec36e019c5ac741fa83c4abe3"
+    },
+    {
+      "id": "R7READ-100",
+      "path": "SmartAuditERP/Form_WPF/frmEmpAccountGet.xaml",
+      "start": 336,
+      "end": 392,
+      "decoded_range_utf8_sha256": "9453c78713747a9cd382256c9ef6befb24dfa4f50aad7c6a9434787c5d412dc5"
+    },
+    {
+      "id": "R7READ-101",
+      "path": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml",
+      "start": 1,
+      "end": 18,
+      "decoded_range_utf8_sha256": "73f9dc63f5334ec50972441ddc32fcbeb4a489797c6f2a6179ed137cec1eb352"
+    },
+    {
+      "id": "R7READ-102",
+      "path": "SmartAuditERP/Form_WPF/frmRptCostCenter.xaml",
+      "start": 461,
+      "end": 487,
+      "decoded_range_utf8_sha256": "89f6dcca4105c53f5e6f8bcfc5ccc9fb653169f6dc038792fab0d6f8ed33fae7"
+    },
+    {
+      "id": "R7READ-103",
+      "path": "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml",
+      "start": 1,
+      "end": 20,
+      "decoded_range_utf8_sha256": "d165255a85cf9d7aceef92b6759e850334e2f294d39177464c9b9ae776c6e327"
+    },
+    {
+      "id": "R7READ-104",
+      "path": "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml",
+      "start": 174,
+      "end": 187,
+      "decoded_range_utf8_sha256": "46aede2bfc5dbe93c12fc1e26d3804d92737b97d1c62704303c3225116af9b5b"
+    },
+    {
+      "id": "R7READ-105",
+      "path": "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml",
+      "start": 307,
+      "end": 323,
+      "decoded_range_utf8_sha256": "ddcdfb6133261516631721be39eddbaa0eb6498d10968481c263a14b3721d72b"
+    },
+    {
+      "id": "R7READ-106",
+      "path": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml",
+      "start": 1,
+      "end": 20,
+      "decoded_range_utf8_sha256": "8d0b92c1773e21ac366fd9a1b71c540702588662ec303744d2081c473840378f"
+    },
+    {
+      "id": "R7READ-107",
+      "path": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml",
+      "start": 150,
+      "end": 163,
+      "decoded_range_utf8_sha256": "8c56a3c27f383e711690c51810fbf81fb329f8134cef98432712133de81775c6"
+    },
+    {
+      "id": "R7READ-108",
+      "path": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml",
+      "start": 236,
+      "end": 252,
+      "decoded_range_utf8_sha256": "29b8ccc6849374198bb750df447153d4042261f4e520552d65b157a40d49e834"
+    },
+    {
+      "id": "R7READ-109",
+      "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml",
+      "start": 1,
+      "end": 18,
+      "decoded_range_utf8_sha256": "d41ae610d546d6cd1a811deeb742ff5d8f4c949f82f4196fd85883de14538d09"
+    },
+    {
+      "id": "R7READ-110",
+      "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml",
+      "start": 1,
+      "end": 18,
+      "decoded_range_utf8_sha256": "56f7ee0b78ca4418cbedca6ba46ed60fca322e5ec8f7a8384d25835dafa68b40"
+    },
+    {
+      "id": "R7READ-111",
+      "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml",
+      "start": 1,
+      "end": 18,
+      "decoded_range_utf8_sha256": "e3404b3e4817ec88c5dafafbb4f25b243b8dd15aad867df93b3742ce2e2d618d"
+    },
+    {
+      "id": "R7READ-112",
+      "path": "SmartAuditERP/Form_WPF/frminvoice.xaml",
+      "start": 1,
+      "end": 18,
+      "decoded_range_utf8_sha256": "3f48564e62fbd10ec143c58f5124071073c2c2e5bd8b854f071724fed1c93980"
+    },
+    {
+      "id": "R7READ-113",
+      "path": "SmartAuditERP/Form_WPF/FrmIntialRestraiction.xaml",
+      "start": 1,
+      "end": 18,
+      "decoded_range_utf8_sha256": "19aa98c185a32541f95a14af8ffddf132640a4fa4117362ff3c086a475537974"
+    },
+    {
+      "id": "R7READ-114",
+      "path": "SmartAuditERP/Form_WPF/FrmNewEntry.xaml",
+      "start": 1,
+      "end": 18,
+      "decoded_range_utf8_sha256": "6d5cf87627d80d88de33c657aa028f946ce78943a7c5ed11372c503f83afd9f3"
+    },
+    {
+      "id": "R7READ-115",
+      "path": "SmartAuditERP/Form_WPF/frmCreditNote.xaml",
+      "start": 1,
+      "end": 18,
+      "decoded_range_utf8_sha256": "7fad7959fb3a13d19dae97b9a28eb1b940a6da7048b01771192f21686dd72da5"
+    },
+    {
+      "id": "R7READ-116",
+      "path": "SmartAuditERP/Form_WPF/frmDebtNote.xaml",
+      "start": 1,
+      "end": 18,
+      "decoded_range_utf8_sha256": "b48fa14af09e5de5f3bbe45ca12f16aa4bf743dbc9fa4bee35e3a1d92d0e17df"
+    },
+    {
+      "id": "R7READ-117",
+      "path": "SmartAuditERP/Form_WPF/frmRptEntries.xaml",
+      "start": 1,
+      "end": 18,
+      "decoded_range_utf8_sha256": "ce28653ddc1070c8956151167a982ef52b30a1f5ec6c8bc38d52414fcefe79b5"
+    },
+    {
+      "id": "R7READ-118",
+      "path": "SmartAuditERP/Form_WPF/frmSandQ.xaml",
+      "start": 1,
+      "end": 18,
+      "decoded_range_utf8_sha256": "11230dcde862ed76496a95aae1f0e6b98c8e125f1da531ea44e0d8770f1ef0c7"
+    },
+    {
+      "id": "R7READ-119",
+      "path": "SmartAuditERP/Form_WPF/frmSandD.xaml",
+      "start": 1,
+      "end": 18,
+      "decoded_range_utf8_sha256": "c1f42886384eda02e0000fc7aeba2a3575486b0709ad177235b7cdae48880ab5"
+    },
+    {
+      "id": "R7READ-120",
+      "path": "SmartAuditERP/Form_WPF/frmSandQD.xaml",
+      "start": 1,
+      "end": 18,
+      "decoded_range_utf8_sha256": "b74306723e801aba924891eb5a9493c2d5cf0f030e93e5c25da7d55a7dce0acf"
+    },
+    {
+      "id": "R7READ-121",
+      "path": "SmartAuditERP/Form_WPF/frmSandSD.xaml",
+      "start": 1,
+      "end": 18,
+      "decoded_range_utf8_sha256": "3700f85349ae168b86a38a1f94cd93ae198a7589cbbb01ab583abe82f17a0026"
+    },
+    {
+      "id": "R7READ-122",
+      "path": "SmartAuditERP/Form_WPF/frmSandVAT.xaml",
+      "start": 1,
+      "end": 18,
+      "decoded_range_utf8_sha256": "d65225d1d40dc1ce80c93b4c04fac740198836c710d4d854f04b2e6817c9442b"
+    }
+  ]
+}

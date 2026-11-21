@@ -1,0 +1,172 @@
+{
+  "schema_version": 1,
+  "kind": "actual-post-publication-Python-guards-not-unittest-or-run01-recapture",
+  "assessment_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "base_HEAD": "de7c56282e4fe1eb5f487e1df7d9f1a88ecc31df",
+  "branch": "arena/94ae8414-smartauditerp",
+  "records": [
+    {
+      "id": "R7-integrity",
+      "argv": [
+        "/usr/bin/python",
+        "-B",
+        "-W",
+        "error::ResourceWarning",
+        "docs/audit/tools/disposition07b/verify_entry_source.py",
+        "--verify",
+        "--rederive"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "expected_exit_matched": true,
+      "wall_seconds": 4.658555,
+      "stdout": {
+        "path": "docs/audit/evidence/publication-check-R7-integrity-07B39R7.stdout.txt",
+        "bytes": 702,
+        "sha256": "21bd055bab63d397fbe180b524b2ebafe691b7d0896472894b35c8abb9d7a354"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/publication-check-R7-integrity-07B39R7.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "parsed_stdout": {
+        "schema_version": 1,
+        "errors": [],
+        "selected_complete_method_contexts": 177,
+        "selected_source_identities": 48,
+        "original_entry_calls_disposed": 7,
+        "five_original_pending_bodies_read": 5,
+        "dispatcher_navigate_sites": 17,
+        "distinct_receiver_types": 14,
+        "capability_exit_certificates_issued": 0,
+        "four_family_exit_certificates_issued": 0,
+        "whole_7B_static_assessment_complete": false,
+        "application_execution_count": 0,
+        "phase7C_started": false,
+        "phase8_authorized": false,
+        "limit": "Recorded source assertions/identity/coverage only; not reading, calendar, WPF order, all local helpers, deployed schema, authorization, runtime, financial or whole-capability acceptance."
+      },
+      "is_unittest_suite": false,
+      "new_ERP_or_SQL_execution": false
+    },
+    {
+      "id": "R7-open-gate",
+      "argv": [
+        "/usr/bin/python",
+        "-B",
+        "-W",
+        "error::ResourceWarning",
+        "docs/audit/tools/disposition07b/verify_entry_source.py",
+        "--verify",
+        "--require-complete",
+        "--rederive"
+      ],
+      "cwd": ".",
+      "exit_code": 2,
+      "expected_exit": 2,
+      "expected_exit_matched": true,
+      "wall_seconds": 4.54057,
+      "stdout": {
+        "path": "docs/audit/evidence/publication-check-R7-open-gate-07B39R7.stdout.txt",
+        "bytes": 702,
+        "sha256": "21bd055bab63d397fbe180b524b2ebafe691b7d0896472894b35c8abb9d7a354"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/publication-check-R7-open-gate-07B39R7.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "parsed_stdout": {
+        "schema_version": 1,
+        "errors": [],
+        "selected_complete_method_contexts": 177,
+        "selected_source_identities": 48,
+        "original_entry_calls_disposed": 7,
+        "five_original_pending_bodies_read": 5,
+        "dispatcher_navigate_sites": 17,
+        "distinct_receiver_types": 14,
+        "capability_exit_certificates_issued": 0,
+        "four_family_exit_certificates_issued": 0,
+        "whole_7B_static_assessment_complete": false,
+        "application_execution_count": 0,
+        "phase7C_started": false,
+        "phase8_authorized": false,
+        "limit": "Recorded source assertions/identity/coverage only; not reading, calendar, WPF order, all local helpers, deployed schema, authorization, runtime, financial or whole-capability acceptance."
+      },
+      "is_unittest_suite": false,
+      "new_ERP_or_SQL_execution": false
+    },
+    {
+      "id": "local-followthrough-source-guards",
+      "argv": [
+        "/usr/bin/python",
+        "-B",
+        "-W",
+        "error::ResourceWarning",
+        "-c",
+        "\nimport collections,json,re\nimport verify_entry_source as v\nf=v.load('entry-source-local-followthrough-facts-07B39R7.json')\nr=v.load('entry-source-local-followthrough-reads-07B39R7.json')\nd=v.load('entry-source-local-followthrough-decisions-07B39R7.json')\na=v.load('entry-source-local-followthrough-authorship-07B39R7.json')\nerrors=[]\nfor path,expected in f['source_identity'].items():\n    if v.identity(path)!=expected: errors.append('source-identity:'+path)\nfor path,sels in f['selectors_for_existing_parser_rederivation'].items():\n    text=v.base.decode((v.ROOT/path).read_bytes())\n    if v.source_methods(text,sels)!=f['methods'][path]:errors.append('source-rederivation:'+path)\nerrors+=v.prior.read_errors(r,f)\nfor obj in (d,a):\n    pins=obj.get('pinned_inputs',[])\n    if obj is a:pins=[obj[k] for k in ('facts','reads','decisions')]\n    for pin in pins:\n        if v.identity(pin['path'])!=pin:errors.append('pin:'+pin['path'])\nfor obj in (f,r,d,a):\n    if obj['was_R7_run01_input'] is not False or obj['covered_by_the_captured297_tests'] is not False:errors.append('retroactive-capture-claim')\n    if obj['whole_7B_static_assessment_complete'] is not False or obj['application_execution_count']!=0:errors.append('static-open-scope')\n    if obj['assessment_reference_date_utc']!=v.DATE or obj['raw_clocks_are_calendar_authority'] is not False:errors.append('reference-date-not-clock-authority')\nold=v.load(v.WORK)['remaining_original_R6_non_entry_calls']\nif d['remaining_original_R6_non_entry_calls_verbatim']!=old:errors.append('original30-identities')\ncore=v.load(v.FACTS);matrix=v.load(v.MATRIX)\nif [row['source_site_verbatim'] for row in d['per_original_request_scope_dispositions']]!=[row['source_site'] for row in matrix['routes']]:errors.append('original17-route-pairs')\nfor original,new in zip(matrix['routes'],d['per_original_request_scope_dispositions']):\n    for key in ('reader_selector','reader_whole_context_sha256','receiver_navigate_sha256'):\n        if new[key]!=original[key]:errors.append('route-reader-identity:'+key)\n    if new['selected_path_document_membership_certified'] is not False or new['accepted_external_handoff'] is not False:errors.append('route-not-ACL-or-handoff')\nrows={row['id']:row for row in v.base.rows('findings.csv',v.AUDIT)+v.base.rows('findings-additions-07B39R1.csv')}\nfor key,row in d['focused_root_reviews'].items():\n    if row['canonical_prior_row']!=rows[key]:errors.append('canonical-root:'+key)\nif d['new_numbered_finding_ids']!=[] or d['all339_semantically_reread'] is not False or d['all345_or_missing_six_recertified'] is not False:errors.append('novelty-scope')\nsq=v.base.decode((v.ROOT/(v.C+'StoredQueries.cs')).read_bytes())\nmatch=re.search(r'public static string InsertReceipt = (\"(?:\\\\.|[^\"\\\\])*\");',sq)\nexpected=re.findall(r'@\\w+',json.loads(match[1]))\nsource=f['methods'][v.C+'ReceiptOper.cs']['SaveReceipt2']['syntax_text']\nbound=re.findall(r'Parameters\\.Add\\(\"(@\\w+)\"',source)\nmissing=sorted(set(s.casefold() for s in expected)-set(s.casefold() for s in bound))\nc=d['receipt_parameter_comparison']\nif c['expected_parameter_spellings']!=expected or c['explicit_bound_parameter_spellings']!=bound or c['casefold_missing_parameters']!=missing:errors.append('exact-parameter-manifest')\nif len(expected)!=29 or len(bound)!=28 or missing!=['@recipient']:errors.append('local-parameter-discrepancy')\ncorekeys={(p,s) for p,fs in core['methods'].items() for s in fs}\nlocalkeys={(p,s) for p,fs in f['methods'].items() for s in fs}\nif (len(localkeys),len(localkeys&corekeys),len(localkeys-corekeys))!=(93,37,56):errors.append('overlap-not-added-as-tests')\nif a['new_test_cases_run']!=0:errors.append('not-a-new-unittest-result')\nprint(json.dumps({'errors':errors,'selected_contexts':len(localkeys),'overlap_with_core177':len(localkeys&corekeys),\n 'additional_not_in_core177':len(localkeys-corekeys),'source_identities':len(f['source_identity']),\n 'self_reported_display_range_unions':len(r['reads']),'exact_original_non_entry_calls':dict(collections.Counter(t['family'] for t in old)),\n 'exact_original_request_pairs':len(matrix['routes']),'expected_receipt_parameters':len(expected),'bound_receipt_parameters':len(bound),\n 'casefold_missing':missing,'new_unittest_cases_run':0,'was_run01_input':False,'application_execution_count':0,\n 'whole_7B_static_assessment_complete':False,'limit':'Source rederivation, recorded-identity/coverage and publication guards only; not reading, model defaults, provider/SQL/WPF/ACL/financial execution or calendar/whole-capability certification.'},ensure_ascii=False,indent=2))\nraise SystemExit(1 if errors else 0)\n"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "expected_exit_matched": true,
+      "wall_seconds": 1.552717,
+      "stdout": {
+        "path": "docs/audit/evidence/publication-check-local-followthrough-source-guards-07B39R7.stdout.txt",
+        "bytes": 776,
+        "sha256": "55eee34c5fa0cd13d8f11d1bfc852db1fef9e3677512fe58bb72f55038fce2c3"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/publication-check-local-followthrough-source-guards-07B39R7.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "parsed_stdout": {
+        "errors": [],
+        "selected_contexts": 93,
+        "overlap_with_core177": 37,
+        "additional_not_in_core177": 56,
+        "source_identities": 30,
+        "self_reported_display_range_unions": 70,
+        "exact_original_non_entry_calls": {
+          "last-process": 19,
+          "linked-insert": 11
+        },
+        "exact_original_request_pairs": 17,
+        "expected_receipt_parameters": 29,
+        "bound_receipt_parameters": 28,
+        "casefold_missing": [
+          "@recipient"
+        ],
+        "new_unittest_cases_run": 0,
+        "was_run01_input": false,
+        "application_execution_count": 0,
+        "whole_7B_static_assessment_complete": false,
+        "limit": "Source rederivation, recorded-identity/coverage and publication guards only; not reading, model defaults, provider/SQL/WPF/ACL/financial execution or calendar/whole-capability certification."
+      },
+      "is_unittest_suite": false,
+      "new_ERP_or_SQL_execution": false
+    }
+  ],
+  "errors": [],
+  "original_run01_receipt": {
+    "path": "docs/audit/evidence/validation-current-run01-receipt-07B39R7.json",
+    "bytes": 408162,
+    "sha256": "89903a18cd15ad283f068e74e33ce2fb1a20f81876ac80ac194646563ddbc29f"
+  },
+  "new_unittest_cases_run": 0,
+  "ERP_SQL_WPF_provider_or_SDK_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "capability_exit_certificates_issued": 0,
+  "four_family_exit_certificates_issued": 0,
+  "new_accepted_external_handoffs": 0,
+  "original26_capture_streams_preserved": true,
+  "original14_authored_consumed_versions_preserved": true,
+  "wrapper_exit_code": 0,
+  "postpublication_guard_success_is_not_all_suites_green": true
+}

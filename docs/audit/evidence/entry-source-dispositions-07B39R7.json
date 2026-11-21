@@ -1,0 +1,313 @@
+{
+  "schema_version": 1,
+  "kind": "R7-bounded-source-decisions-not-independent-capability-or-financial-acceptance",
+  "assessment_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "prior196_tests_recertified": false,
+  "R2_R3_files_recovered": false,
+  "new_accepted_external_handoffs": 0,
+  "source_decisions": [
+    {
+      "id": "R7D-ROW-KEYS",
+      "source_basis": [
+        "GetAccountMovements SELECT Entry.GlobalID -> ShowAccountData Rows.Add ordinal5 -> CreateResultTable DgvGenralNo:string -> XAML Button.Tag -> ShowEntrySource(btn.Tag.ToString()). Different integer DgvEntryNo is doc_no.",
+        "GetAccountStatement SP selected supplied fragment aliases es.EntryGlobalID AS DgvGenralNo -> report DefaultView -> XAML Button.Tag -> genralNo string -> ShowEntrySource. R7 reread corrects ownership attribution prospectively, not by rewriting R6.",
+        "LoadPeriodData SELECT Entry.GlobalID -> dt[GlobalID] string globalId -> BuildDataTable ordinal5 DgvGenralNo; ordinal6 DgvEntryNo is doc_no, separately -> XAML RowData.Row.DgvGenralNo -> string btn.Tag -> ShowEntrySource(globalId). Opening balance sentinel0 is rejected.",
+        "ShowAccount SELECT Entry.GlobalID -> row[GlobalID] string entryNumber -> BuildResultTable ordinal3 DgvEntryNo:string -> finalTable.DefaultView -> GridControl1.CurrentItem DataRowView[DgvEntryNo] -> ShowEntrySource(entryNumber). It is not the integer document number merely because the column is labelled رقم القيد.",
+        "ShowResult lastEntryQuery TOP1 Entry.GlobalID -> entryRow[GlobalID] -> InitializeResultTable ordinal9 EntryNo:string -> _resultTable.DefaultView -> dgvItems.CurrentItem DataRowView[EntryNo] -> ShowEntrySource(entryNumber). TOP1/order policy is not independently accepted as a financial last-payment policy.",
+        "ShowAccount SELECT Entry.GlobalID -> row[GlobalID] string entryNumber -> BuildResultTable ordinal3 DgvEntryNo:string -> DefaultView -> GridControl1.CurrentItem DataRowView[DgvEntryNo] -> ShowEntrySource(entryNumber).",
+        "DetailedResults SELECT Entry_sub.EntryGlobalID joined to Entry.GlobalID -> tempTable[EntryGlobalID] -> ProcessAndAddRow(isDetailed:true) -> CostCenterRow.DgvEntryGlobalId -> XAML Button.Tag -> ShowEntrySource(globalId). ShowResult aggregate writes an empty key; the handler has no nonempty/zero guard and swallows escaping exceptions."
+      ],
+      "source_disposition": "Complete the five original R6-not-selected containing bodies and compare both carried report callers. All seven forward a string entry-global key; current/captured database origin is not a parameter. Three CurrentItem callers are not proven tied to the clicked row by their button arguments.",
+      "limit": "No all-repository/never-reviewed claim, compiler binding, clicked-row schedule, wrong-row observation or financial last-payment acceptance.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    },
+    {
+      "id": "R7D-DISPATCH",
+      "source_basis": [
+        "EntryOper.ShowEntrySource:1023-1192",
+        "Resources.resx:954-1017;1366-1387;1431-1465;1496-1574"
+      ],
+      "source_disposition": "Pair17 exact Navigate sites to14 source receiver types. Entry first-row lookup -> id/branch/type; invoice probe -> first local id/type/proc -> typed id/branch query;11 other arms preserve different keys. Any invoice hit returns even if none of six pairs matches; unsupported noninvoice types have no switch action. No typed result.",
+      "limit": "Selected CREATE primary keys are not deployed tuple uniqueness, cross-database partitioning, alias/compiler resolution or an accepted allowed-set.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    },
+    {
+      "id": "R7D-INVOICE-HEALTH",
+      "source_basis": [
+        "InvoiceOper.BindingInvoice:3219-3508",
+        "frmInvPurch.Navigate:481-502/CLR:1531-1569",
+        "frmInvSale.Navigate:1643-1660/CLR:1607-1641",
+        "frmInvPOS.Navigate:1861-1880/CLR:559-619"
+      ],
+      "source_disposition": "Preclear occurs before shared binder. Empty and outer failure both null/reset; per-item catch can continue, so nonnull/UI bind cannot certify full hydration. Support P7-161 without a duplicate numbered finding.",
+      "limit": "Dispatcher creates new children; do not turn their blank/default state into a claim of report-parent draft loss. SDK defaults, financial correctness and partial rows are not observed.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    },
+    {
+      "id": "R7D-RECEIPT-HEALTH",
+      "source_basis": [
+        "frmSandQ:624-750",
+        "frmSandD:408-492",
+        "frmSandQD:618-731",
+        "frmSandSD:1001-1114",
+        "frmSandVAT:528-621"
+      ],
+      "source_disposition": "All five readers return before CLR on empty; Q/QD/SD/VAT catch in Navigate with written finally-close, D has only normal-tail close. Q reads EmpId after Close in its call argument; comparison readers QD/SD/VAT read all selected reader fields before normal Close.",
+      "limit": "No provider execution, actual exception/connection leak/disposal or rolled-back/healthy document claim. A finally helper call does not prove it returns or disposes.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    },
+    {
+      "id": "R7D-OTHER-HEALTH",
+      "source_basis": [
+        "frminvoice:1949-2082",
+        "FrmIntialRestraiction:234-309",
+        "FrmNewEntry:168-278",
+        "frmCreditNote:294-378",
+        "frmDebtNote:210-288",
+        "frmRptEntries:191-324"
+      ],
+      "source_disposition": "Rental empty clears and normal Navigate still sets SrchPrint; its reader catch can return normally. Initial/new/notes/entries return before reset on empty; late failures may leave a partly assigned receiver without a typed outcome. Distinguish source paths rather than equating void/Show with Found.",
+      "limit": "Core loader bodies are read, not all helper/financial models, account lookups, live datasets or whole receiver correctness.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    },
+    {
+      "id": "R7D-BRANCH",
+      "source_basis": [
+        "FrmIntialRestraiction.ReadDataFromReader:253-309",
+        "FrmNewEntry.ReadData:168-255",
+        "frmCreditNote.ReadData:313-378/LoadNxtNo:109-131",
+        "frmDebtNote.ReadData:232-288/LoadNextNumber:130-155",
+        "EntryOper.ReadEntryGlobalID:1347-1358",
+        "frmCustAccountGet.Loaded:74-121/ApplyBranchPermissions:216-235"
+      ],
+      "source_disposition": "Separate global header keys from current-branch rehydration: initial detail uses current branch; notes rebuild ledger key from current branch and omit header BranchId in request; note numbering uses global MAX per type (counterevidence to assumed branch-local collisions). Customer Loaded sets all-branches=true after branch defaults. These are source questions, not accepted authorization or observed cross-branch data.",
+      "limit": "Finish readable local writers/save/filter policies before a schema/policy handoff. Do not infer wrong-note collisions from missing predicates or treat current-branch=-1 as universally allowed.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    },
+    {
+      "id": "R7D-LIFECYCLE",
+      "source_basis": [
+        "17 source-paired Show/Navigate/Activate sites",
+        "14 selected constructors/core readers and actual XAML/code Loaded wiring",
+        "frmRptEntries.LoadLastEntry:160-169",
+        "frmInvPOS.CLR:559-619/Window_Loaded:210-270"
+      ],
+      "source_disposition": "Record source order and state writers, including Loaded resets and POS type reset. Preserve existing P7-132 potential; requested row versus Loaded.LoadLastEntry is not settled by Show returning.",
+      "limit": "No WPF event schedule, native chrome close order, visual realization or whole lifecycle certification is obtained by static syntax or passing guards.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    },
+    {
+      "id": "R7D-PERMISSION",
+      "source_basis": [
+        "MainClass:331-334;353-457",
+        "FormPermission:36-155;161-215;335-346 (decoded original source)",
+        "Common:1435-1487",
+        "frmInvPurch.frmSalePurch_Load:94-158"
+      ],
+      "source_disposition": "Dispatcher has no direct generic permission call; purchase Loaded has its own. Selected permission implementations return on no row/catch and initialize flags true, supporting P1-012 without a new finding. UI permission traversal/defaults are not document read authorization.",
+      "limit": "No blanket all-child-ACL absence/bypass or P1-013 potential promotion; remaining direct/upstream allowed-set contracts stay local.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    },
+    {
+      "id": "R7D-LEGACY-LOAD",
+      "source_basis": [
+        "five receipt Loaded and RestorePreviousReceipt whole bodies",
+        "frmSandQ:415-448",
+        "frmSandD:605-654",
+        "frmSandQD:405-491",
+        "frmSandSD:414-508",
+        "frmSandVAT:402-425"
+      ],
+      "source_disposition": "Actual Loaded source calls include legacy deletes or SaveReceipt2 plus conditional deletes. The source opening chain is not described as a pure database read. Nothing was executed, and migration/save-success contracts remain explicitly local work.",
+      "limit": "No legacy/business rows, migration run, data loss, transaction acceptance or new external boundary/handoff.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    }
+  ],
+  "capabilities": {
+    "CAP7B38-D05": {
+      "canonical_capability_row": {
+        "id": "CAP7B38-D05",
+        "capability": "أرصدة وكشوف الحساب وسنة القاعدة",
+        "entry_point": "frmAccountBalance / frmAccountsStatement وتفاصيل المستند",
+        "source_contract": "GL/Entry/Opening وقاعدة السنة وid/code/branch",
+        "output_boundary": "صفوف/مجاميع/DTO/قنوات تصدير وتنقل إلى طفل",
+        "related_part_numbers": "2;11;19",
+        "related_finding_ids": "P3-021;P7-061;P7-115;P7-116",
+        "current_handoff_ids": "H7B38-01;H7B38-03;H7B38-04",
+        "assessment_status": "historical-and-selected-current-source-assessment-boundaries-open",
+        "assessment_basis": "historical-FE-lineage-plus-explicit-current-source-scope-not-all-source-rereview",
+        "excluded_from_claim": "لا اعتماد ترتيب أو فتح سنة من لقطة supplied ولا قبول كشف حساب.",
+        "owner_role": "مالك المنتج والتقرير بالتنسيق مع مالك السياسة والمصدر",
+        "required_redacted_input": "راجع H7B38 ذات الصلة: قاموس/عقد/manifest منقح فقط؛ لا أسرار أو بيانات أعمال.",
+        "absence_impact": "يبقى هذا الحد غير محسوم؛ الإحالة لا تعني الموافقة أو غياب القدرة أو إغلاق الأسرة.",
+        "next_action": "اتساق مصدر السنة والمعايير وهوية الحساب والمستند بين إعادة العرض والطفل والمخرج.",
+        "static_exit_criterion": "اتساق مصدر السنة والمعايير وهوية الحساب والمستند بين إعادة العرض والطفل والمخرج.",
+        "local_semantic_obligations_complete": "false",
+        "whole_capability_certified": "false",
+        "runtime_status": "not-executed"
+      },
+      "bounded_source_work": "Seven entry callers and17 source-paired core dispatch paths with differing scope/load/reset outcomes.",
+      "whole_capability_certified": false,
+      "local_semantic_obligations_complete": false,
+      "readable_local_externalized": false,
+      "remaining_readable_local": [
+        "Finish statement totals/prior-balance/output and remaining key/year/allowed-set contracts; selected navigation work does not certify all account statements.",
+        "Resolve origin propagation beyond7 exact source callers without assuming cross-year key collisions."
+      ],
+      "accepted_external_handoff": false
+    },
+    "CAP7B38-D06": {
+      "canonical_capability_row": {
+        "id": "CAP7B38-D06",
+        "capability": "ميزان المراجعة والصندوق ومركز التكلفة",
+        "entry_point": "شجرة الميزان و cash/cost-center reports والمرشحات",
+        "source_contract": "سابق/فترة/ختامي وGL/Entry/CostCenter وشجرة الحساب",
+        "output_boundary": "Grid/12 حقلاً/DTO/HTML/CSV/طباعة محلية",
+        "related_part_numbers": "2;7;13",
+        "related_finding_ids": "P3-019;P7-052;P7-053;P7-062;P7-118;P7-119;P7-120",
+        "current_handoff_ids": "H7B38-01;H7B38-02;H7B38-04",
+        "assessment_status": "historical-and-selected-current-source-assessment-boundaries-open",
+        "assessment_basis": "historical-FE-lineage-plus-explicit-current-source-scope-not-all-source-rereview",
+        "excluded_from_claim": "لا مساواة 12 عموداً بصفوف القالب الخارجي أو قياس فهرس.",
+        "owner_role": "مالك المنتج والتقرير بالتنسيق مع مالك السياسة والمصدر",
+        "required_redacted_input": "راجع H7B38 ذات الصلة: قاموس/عقد/manifest منقح فقط؛ لا أسرار أو بيانات أعمال.",
+        "absence_impact": "يبقى هذا الحد غير محسوم؛ الإحالة لا تعني الموافقة أو غياب القدرة أو إغلاق الأسرة.",
+        "next_action": "عدم عد الأب والطفل مرتين، وقطع الوقت الصحيح وعضوية المركز ووصول أعمدة السابق إلى كل مخرج.",
+        "static_exit_criterion": "عدم عد الأب والطفل مرتين، وقطع الوقت الصحيح وعضوية المركز ووصول أعمدة السابق إلى كل مخرج.",
+        "local_semantic_obligations_complete": "false",
+        "whole_capability_certified": "false",
+        "runtime_status": "not-executed"
+      },
+      "bounded_source_work": "Seven entry callers and17 source-paired core dispatch paths with differing scope/load/reset outcomes.",
+      "whole_capability_certified": false,
+      "local_semantic_obligations_complete": false,
+      "readable_local_externalized": false,
+      "remaining_readable_local": [
+        "Complete cost-center/treasury/trial-balance calculation and output contracts independently of the two newly read cost-center source buttons.",
+        "Continue branch filter/default ordering and per-document scope using readable local writers."
+      ],
+      "accepted_external_handoff": false
+    },
+    "CAP7B38-D17": {
+      "canonical_capability_row": {
+        "id": "CAP7B38-D17",
+        "capability": "هوية المستند والتنقل وفتح الأطفال",
+        "entry_point": "document opener/ShowEntrySource/LastProcess وTableRow→child",
+        "source_contract": "GlobalID/type/branch/year/source مقابل رقم محلي/اسم عرض",
+        "output_boundary": "NavigationRequest/LoadOutcome وحد نشر حالة الأب",
+        "related_part_numbers": "11;14;16;17;19;27;28;31",
+        "related_finding_ids": "P7-061;P7-115;P7-130;P7-155;P7-156;P7-157;P7-158;P7-161",
+        "current_handoff_ids": "H7B38-03;H7B38-04;H7B38-05",
+        "assessment_status": "historical-and-selected-current-source-assessment-boundaries-open",
+        "assessment_basis": "historical-FE-lineage-plus-explicit-current-source-scope-not-all-source-rereview",
+        "excluded_from_claim": "لا حمل branch/year/ACL من مجرد تمرير id.",
+        "owner_role": "مالك المنتج والتقرير بالتنسيق مع مالك السياسة والمصدر",
+        "required_redacted_input": "راجع H7B38 ذات الصلة: قاموس/عقد/manifest منقح فقط؛ لا أسرار أو بيانات أعمال.",
+        "absence_impact": "يبقى هذا الحد غير محسوم؛ الإحالة لا تعني الموافقة أو غياب القدرة أو إغلاق الأسرة.",
+        "next_action": "كل route له DocumentRef/allowed-set وscope وFound/Empty/Failed/Partial لا void/اسم عرض؛ فرز paths غير المحسومة.",
+        "static_exit_criterion": "كل route له DocumentRef/allowed-set وscope وFound/Empty/Failed/Partial لا void/اسم عرض؛ فرز paths غير المحسومة.",
+        "local_semantic_obligations_complete": "false",
+        "whole_capability_certified": "false",
+        "runtime_status": "not-executed"
+      },
+      "bounded_source_work": "Seven entry callers and17 source-paired core dispatch paths with differing scope/load/reset outcomes.",
+      "whole_capability_certified": false,
+      "local_semantic_obligations_complete": false,
+      "readable_local_externalized": false,
+      "remaining_readable_local": [
+        "Continue19 exact LastProcess contexts/receiver scopes and remaining direct openers;17 paired core loads are not whole navigation.",
+        "Complete per-document allowed-set and the remaining local helpers/save/branch/health obligations in each matrix row."
+      ],
+      "accepted_external_handoff": false
+    },
+    "CAP7B38-D25": {
+      "canonical_capability_row": {
+        "id": "CAP7B38-D25",
+        "capability": "المخطط والمنح وهوية الفرع والتفرد",
+        "entry_point": "resource DDL/queries/permissions وأوامر التقرير/الطفل",
+        "source_contract": "schema/constraints/grants وid/BranchId/Code وdocument keys",
+        "output_boundary": "سياسة roles×commands×resource/branch/store محددة",
+        "related_part_numbers": "14;15;16;17;26;27",
+        "related_finding_ids": "P7-020;P7-021;P4-014",
+        "current_handoff_ids": "H7B38-04",
+        "assessment_status": "historical-and-selected-current-source-assessment-boundaries-open",
+        "assessment_basis": "historical-FE-lineage-plus-explicit-current-source-scope-not-all-source-rereview",
+        "excluded_from_claim": "لا SQL/schema deployment أو إذن من enabled/disabled وحده.",
+        "owner_role": "DBA ومالك الأمان",
+        "required_redacted_input": "راجع H7B38 ذات الصلة: قاموس/عقد/manifest منقح فقط؛ لا أسرار أو بيانات أعمال.",
+        "absence_impact": "يبقى هذا الحد غير محسوم؛ الإحالة لا تعني الموافقة أو غياب القدرة أو إغلاق الأسرة.",
+        "next_action": "تثبيت مصدر منقح للمخطط والمنح والمفاتيح والـbranch mapping؛ مورد IFNOTEXISTS ليس شهادة نشر أو ACL.",
+        "static_exit_criterion": "تثبيت مصدر منقح للمخطط والمنح والمفاتيح والـbranch mapping؛ مورد IFNOTEXISTS ليس شهادة نشر أو ACL.",
+        "local_semantic_obligations_complete": "false",
+        "whole_capability_certified": "false",
+        "runtime_status": "not-executed"
+      },
+      "bounded_source_work": "Seven entry callers and17 source-paired core dispatch paths with differing scope/load/reset outcomes.",
+      "whole_capability_certified": false,
+      "local_semantic_obligations_complete": false,
+      "readable_local_externalized": false,
+      "remaining_readable_local": [
+        "Read remaining note/receipt/entry writers and migrations before any individually evidenced unavailable uniqueness/branch/year contract handoff.",
+        "Supplied CREATE PKs and global MAX numbering are source contracts, not deployed uniqueness, grants or permission approval."
+      ],
+      "accepted_external_handoff": false
+    }
+  },
+  "new_numbered_finding_ids": [],
+  "formal_prior_boundary_registers_replaced": false,
+  "all17_requests_have_typed_healthy_results": false,
+  "not_certified": [
+    "No all-repository caller/alias census",
+    "No provider/SQL/WPF/SDK/migration execution",
+    "No cross-year collisions or wrong documents observed",
+    "No global per-document allowed-set accepted",
+    "No7B/7C/8 completion or repair",
+    "No missing R2/R3 capture/345 ledger/49-boundary reconstruction"
+  ],
+  "pinned_inputs": [
+    {
+      "path": "docs/audit/evidence/entry-source-source-facts-07B39R7.json",
+      "bytes": 2042790,
+      "sha256": "51e9a58987f48e2af16384749b53baedeea80f97abd8a6bcf9ce887198aa041b"
+    },
+    {
+      "path": "docs/audit/evidence/entry-source-source-review-log-07B39R7.json",
+      "bytes": 30189,
+      "sha256": "ed7c33804ca9f2d6144d49e2fbc6f30d50dbeeff53fe5bf4327473b88c4842cf"
+    },
+    {
+      "path": "docs/audit/evidence/entry-source-request-matrix-07B39R7.json",
+      "bytes": 67437,
+      "sha256": "b7760161566a9cb21dbda26def47354ba54b8eda36dfcc052de2d79074ba37df"
+    },
+    {
+      "path": "docs/audit/evidence/entry-source-local-worklist-07B39R7.json",
+      "bytes": 52530,
+      "sha256": "1b3f971b7eb88b33b49e50e7aadee131697e9aa6fd7819837b27d978a5e70016"
+    },
+    {
+      "path": "docs/audit/evidence/entry-source-root-adjudication-07B39R7.json",
+      "bytes": 311194,
+      "sha256": "1f8e76c759a00d7e61f0af4978aafb137010eae7cf91f56cfbde5efae1c9a3fd"
+    },
+    {
+      "path": "docs/audit/evidence/source-display-attribution-note-07B39R7.json",
+      "bytes": 5185,
+      "sha256": "7fe40304b00de86c653ec78032193ec57b005930db19bc08e6e74d7509c52bb7"
+    }
+  ]
+}

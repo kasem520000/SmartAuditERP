@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "errors": [],
+  "selected_method_contexts": 73,
+  "selected_local_classes": 5,
+  "source_identities": 15,
+  "bounded_request_call_sites": 11,
+  "capability_exit_certificates_issued": 0,
+  "four_family_exit_certificates_issued": 0,
+  "whole_7B_static_assessment_complete": false,
+  "application_execution_count": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "limit": "Integrity, selected syntax and recorded source-disposition guards only; no calendar, actual read, all-repository semantics, provider, deployed SQL, financial acceptance, or completion certified."
+}

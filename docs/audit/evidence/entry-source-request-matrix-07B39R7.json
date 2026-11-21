@@ -1,0 +1,986 @@
+{
+  "schema_version": 1,
+  "kind": "R7-source-paired-seventeen-dispatch-sites-fourteen-core-receivers-not-all-repository-navigation",
+  "assessment_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "prior196_tests_recertified": false,
+  "R2_R3_files_recovered": false,
+  "new_accepted_external_handoffs": 0,
+  "routes": [
+    {
+      "source_site": {
+        "id": "R7NAV-INV-11",
+        "receiver_variable_syntax": "f",
+        "receiver_type_syntax": "frmInvPurch",
+        "line": 1061,
+        "end": 1061,
+        "arguments_syntax": "(invQuery(1, 1))",
+        "case_label_syntax": null,
+        "lexical_scope_kind": "block",
+        "scope_start": 1057,
+        "scope_end": 1062,
+        "ancestors": [
+          {
+            "kind": "if",
+            "condition": "invType == 1 && procType == 1",
+            "side": "consequence",
+            "line": 1056
+          },
+          {
+            "kind": "if",
+            "condition": "invTable.Rows.Count > 0",
+            "side": "consequence",
+            "line": 1046
+          }
+        ],
+        "same_scope_Show_lines": [
+          1061
+        ],
+        "same_scope_Activate_lines": [
+          1061
+        ],
+        "compiler_bound_target": false
+      },
+      "request_identity_disposition": "Dispatcher creates a fresh receiver; the only caller-supplied value is the entry key. Database origin is not a request parameter.",
+      "scope_and_allowed_set_disposition": "Entry lookup is GlobalId in current catalog; Inv probe uses Entry.id and loaded branch. invQuery carries selected inv_type/proc_type/id/branch/IS_Deleted, not the InvGlobalID primary key or a database snapshot. First-row/uniqueness and per-document allowed-set remain unaccepted.",
+      "receiver_navigate_sha256": "5afe24e048125815631015dd4807afce283e86ce63f4747d321d33353c5f7840",
+      "receiver_constructor_sha256": "a960b27c88a40ced022b4e7c12d6923440495015eb7bc22722a4dba6a59c47f2",
+      "reader_selector": "InvoiceOper.BindingInvoice",
+      "reader_whole_context_sha256": "b51d6c65d47eebbaa98b7e8fba52e370669ef8e128d8fb3671a66c90c803305f",
+      "source_outcomes": {
+        "FoundPath": "Navigate preclears the newly constructed child, then BindingInvoice writes header/global key/branch and item rows when present; nonnull leads to UI bind. Not a typed Found certificate or evidence of an existing report-parent draft being cleared.",
+        "Empty": "Shared binder sets Invo=null; wrapper recreates InvoiceDGV and CLR/ResetInvoice. New/default state is not a NotFound result returned to the dispatcher.",
+        "Failed": "Outer binder catch also sets null and normally returns; wrapper follows the same reset branch. Wrapper binding/reset exceptions can still escape; no provider failure was observed.",
+        "Partial": "Per-item catch clears the exception and continues without returning a row-failure result. A nonnull header/list can therefore represent incomplete source hydration; defaults/SDK/list semantics are not fabricated.",
+        "Unsupported": "No typed Unsupported outcome. An Inv probe hit returns after the six if arms even for another type/proc pair; otherwise an unmatched Entry.type reaches no switch arm. No full enum, fallback or accepted allowed-set is inferred.",
+        "Denied": "No typed Denied/document-ACL result is returned by dispatcher/Navigate. Dispatcher does not directly apply MainClass permissions; purchase Loaded does call its own FormPermission. Button permissions and report filters are not independently accepted document authorization."
+      },
+      "outcome_labels_are_audit_categories_not_CSharp_return_types": true,
+      "whole_selected_Navigate_and_reader_bodies_read": true,
+      "remaining_readable_local": [
+        "Follow local type/proc/save/allowed-edit guards for returns, especially POS CLR/Loaded ProcType=1 versus the requested return pair; no event schedule assumed.",
+        "Carry exact R4 shared-item/binding/permission evidence; finish remaining local row/model/default and financial-output obligations rather than externalizing readable helpers.",
+        "Continue19 LastProcess source requests and other direct openers before whole D17 exit."
+      ],
+      "runtime_observed": false,
+      "whole_receiver_certified": false,
+      "accepted_external_handoff": false
+    },
+    {
+      "source_site": {
+        "id": "R7NAV-INV-12",
+        "receiver_variable_syntax": "f",
+        "receiver_type_syntax": "frmInvPurch",
+        "line": 1068,
+        "end": 1068,
+        "arguments_syntax": "(invQuery(1, 2))",
+        "case_label_syntax": null,
+        "lexical_scope_kind": "block",
+        "scope_start": 1064,
+        "scope_end": 1069,
+        "ancestors": [
+          {
+            "kind": "if",
+            "condition": "invType == 1 && procType == 2",
+            "side": "consequence",
+            "line": 1063
+          },
+          {
+            "kind": "if",
+            "condition": "invType == 1 && procType == 1",
+            "side": "alternative",
+            "line": 1056
+          },
+          {
+            "kind": "if",
+            "condition": "invTable.Rows.Count > 0",
+            "side": "consequence",
+            "line": 1046
+          }
+        ],
+        "same_scope_Show_lines": [
+          1068
+        ],
+        "same_scope_Activate_lines": [
+          1068
+        ],
+        "compiler_bound_target": false
+      },
+      "request_identity_disposition": "Dispatcher creates a fresh receiver; the only caller-supplied value is the entry key. Database origin is not a request parameter.",
+      "scope_and_allowed_set_disposition": "Entry lookup is GlobalId in current catalog; Inv probe uses Entry.id and loaded branch. invQuery carries selected inv_type/proc_type/id/branch/IS_Deleted, not the InvGlobalID primary key or a database snapshot. First-row/uniqueness and per-document allowed-set remain unaccepted.",
+      "receiver_navigate_sha256": "5afe24e048125815631015dd4807afce283e86ce63f4747d321d33353c5f7840",
+      "receiver_constructor_sha256": "a960b27c88a40ced022b4e7c12d6923440495015eb7bc22722a4dba6a59c47f2",
+      "reader_selector": "InvoiceOper.BindingInvoice",
+      "reader_whole_context_sha256": "b51d6c65d47eebbaa98b7e8fba52e370669ef8e128d8fb3671a66c90c803305f",
+      "source_outcomes": {
+        "FoundPath": "Navigate preclears the newly constructed child, then BindingInvoice writes header/global key/branch and item rows when present; nonnull leads to UI bind. Not a typed Found certificate or evidence of an existing report-parent draft being cleared.",
+        "Empty": "Shared binder sets Invo=null; wrapper recreates InvoiceDGV and CLR/ResetInvoice. New/default state is not a NotFound result returned to the dispatcher.",
+        "Failed": "Outer binder catch also sets null and normally returns; wrapper follows the same reset branch. Wrapper binding/reset exceptions can still escape; no provider failure was observed.",
+        "Partial": "Per-item catch clears the exception and continues without returning a row-failure result. A nonnull header/list can therefore represent incomplete source hydration; defaults/SDK/list semantics are not fabricated.",
+        "Unsupported": "No typed Unsupported outcome. An Inv probe hit returns after the six if arms even for another type/proc pair; otherwise an unmatched Entry.type reaches no switch arm. No full enum, fallback or accepted allowed-set is inferred.",
+        "Denied": "No typed Denied/document-ACL result is returned by dispatcher/Navigate. Dispatcher does not directly apply MainClass permissions; purchase Loaded does call its own FormPermission. Button permissions and report filters are not independently accepted document authorization."
+      },
+      "outcome_labels_are_audit_categories_not_CSharp_return_types": true,
+      "whole_selected_Navigate_and_reader_bodies_read": true,
+      "remaining_readable_local": [
+        "Follow local type/proc/save/allowed-edit guards for returns, especially POS CLR/Loaded ProcType=1 versus the requested return pair; no event schedule assumed.",
+        "Carry exact R4 shared-item/binding/permission evidence; finish remaining local row/model/default and financial-output obligations rather than externalizing readable helpers.",
+        "Continue19 LastProcess source requests and other direct openers before whole D17 exit."
+      ],
+      "runtime_observed": false,
+      "whole_receiver_certified": false,
+      "accepted_external_handoff": false
+    },
+    {
+      "source_site": {
+        "id": "R7NAV-INV-21",
+        "receiver_variable_syntax": "f",
+        "receiver_type_syntax": "frmInvSale",
+        "line": 1075,
+        "end": 1075,
+        "arguments_syntax": "(invQuery(2, 1))",
+        "case_label_syntax": null,
+        "lexical_scope_kind": "block",
+        "scope_start": 1071,
+        "scope_end": 1076,
+        "ancestors": [
+          {
+            "kind": "if",
+            "condition": "invType == 2 && procType == 1",
+            "side": "consequence",
+            "line": 1070
+          },
+          {
+            "kind": "if",
+            "condition": "invType == 1 && procType == 2",
+            "side": "alternative",
+            "line": 1063
+          },
+          {
+            "kind": "if",
+            "condition": "invType == 1 && procType == 1",
+            "side": "alternative",
+            "line": 1056
+          },
+          {
+            "kind": "if",
+            "condition": "invTable.Rows.Count > 0",
+            "side": "consequence",
+            "line": 1046
+          }
+        ],
+        "same_scope_Show_lines": [
+          1075
+        ],
+        "same_scope_Activate_lines": [
+          1075
+        ],
+        "compiler_bound_target": false
+      },
+      "request_identity_disposition": "Dispatcher creates a fresh receiver; the only caller-supplied value is the entry key. Database origin is not a request parameter.",
+      "scope_and_allowed_set_disposition": "Entry lookup is GlobalId in current catalog; Inv probe uses Entry.id and loaded branch. invQuery carries selected inv_type/proc_type/id/branch/IS_Deleted, not the InvGlobalID primary key or a database snapshot. First-row/uniqueness and per-document allowed-set remain unaccepted.",
+      "receiver_navigate_sha256": "57db219fcf3f699aff13a906d4754f6f96c928a8e0c5a6119bd4214d2cdf0e5b",
+      "receiver_constructor_sha256": "ab1852fec34b2495e09ab0dd237c25f85a3f819e8d2f5b9423ed0a323d6f8393",
+      "reader_selector": "InvoiceOper.BindingInvoice",
+      "reader_whole_context_sha256": "b51d6c65d47eebbaa98b7e8fba52e370669ef8e128d8fb3671a66c90c803305f",
+      "source_outcomes": {
+        "FoundPath": "Navigate preclears the newly constructed child, then BindingInvoice writes header/global key/branch and item rows when present; nonnull leads to UI bind. Not a typed Found certificate or evidence of an existing report-parent draft being cleared.",
+        "Empty": "Shared binder sets Invo=null; wrapper recreates InvoiceDGV and CLR/ResetInvoice. New/default state is not a NotFound result returned to the dispatcher.",
+        "Failed": "Outer binder catch also sets null and normally returns; wrapper follows the same reset branch. Wrapper binding/reset exceptions can still escape; no provider failure was observed.",
+        "Partial": "Per-item catch clears the exception and continues without returning a row-failure result. A nonnull header/list can therefore represent incomplete source hydration; defaults/SDK/list semantics are not fabricated.",
+        "Unsupported": "No typed Unsupported outcome. An Inv probe hit returns after the six if arms even for another type/proc pair; otherwise an unmatched Entry.type reaches no switch arm. No full enum, fallback or accepted allowed-set is inferred.",
+        "Denied": "No typed Denied/document-ACL result is returned by dispatcher/Navigate. Dispatcher does not directly apply MainClass permissions; purchase Loaded does call its own FormPermission. Button permissions and report filters are not independently accepted document authorization."
+      },
+      "outcome_labels_are_audit_categories_not_CSharp_return_types": true,
+      "whole_selected_Navigate_and_reader_bodies_read": true,
+      "remaining_readable_local": [
+        "Follow local type/proc/save/allowed-edit guards for returns, especially POS CLR/Loaded ProcType=1 versus the requested return pair; no event schedule assumed.",
+        "Carry exact R4 shared-item/binding/permission evidence; finish remaining local row/model/default and financial-output obligations rather than externalizing readable helpers.",
+        "Continue19 LastProcess source requests and other direct openers before whole D17 exit."
+      ],
+      "runtime_observed": false,
+      "whole_receiver_certified": false,
+      "accepted_external_handoff": false
+    },
+    {
+      "source_site": {
+        "id": "R7NAV-INV-22",
+        "receiver_variable_syntax": "f",
+        "receiver_type_syntax": "frmInvSale",
+        "line": 1082,
+        "end": 1082,
+        "arguments_syntax": "(invQuery(2, 2))",
+        "case_label_syntax": null,
+        "lexical_scope_kind": "block",
+        "scope_start": 1078,
+        "scope_end": 1083,
+        "ancestors": [
+          {
+            "kind": "if",
+            "condition": "invType == 2 && procType == 2",
+            "side": "consequence",
+            "line": 1077
+          },
+          {
+            "kind": "if",
+            "condition": "invType == 2 && procType == 1",
+            "side": "alternative",
+            "line": 1070
+          },
+          {
+            "kind": "if",
+            "condition": "invType == 1 && procType == 2",
+            "side": "alternative",
+            "line": 1063
+          },
+          {
+            "kind": "if",
+            "condition": "invType == 1 && procType == 1",
+            "side": "alternative",
+            "line": 1056
+          },
+          {
+            "kind": "if",
+            "condition": "invTable.Rows.Count > 0",
+            "side": "consequence",
+            "line": 1046
+          }
+        ],
+        "same_scope_Show_lines": [
+          1082
+        ],
+        "same_scope_Activate_lines": [
+          1082
+        ],
+        "compiler_bound_target": false
+      },
+      "request_identity_disposition": "Dispatcher creates a fresh receiver; the only caller-supplied value is the entry key. Database origin is not a request parameter.",
+      "scope_and_allowed_set_disposition": "Entry lookup is GlobalId in current catalog; Inv probe uses Entry.id and loaded branch. invQuery carries selected inv_type/proc_type/id/branch/IS_Deleted, not the InvGlobalID primary key or a database snapshot. First-row/uniqueness and per-document allowed-set remain unaccepted.",
+      "receiver_navigate_sha256": "57db219fcf3f699aff13a906d4754f6f96c928a8e0c5a6119bd4214d2cdf0e5b",
+      "receiver_constructor_sha256": "ab1852fec34b2495e09ab0dd237c25f85a3f819e8d2f5b9423ed0a323d6f8393",
+      "reader_selector": "InvoiceOper.BindingInvoice",
+      "reader_whole_context_sha256": "b51d6c65d47eebbaa98b7e8fba52e370669ef8e128d8fb3671a66c90c803305f",
+      "source_outcomes": {
+        "FoundPath": "Navigate preclears the newly constructed child, then BindingInvoice writes header/global key/branch and item rows when present; nonnull leads to UI bind. Not a typed Found certificate or evidence of an existing report-parent draft being cleared.",
+        "Empty": "Shared binder sets Invo=null; wrapper recreates InvoiceDGV and CLR/ResetInvoice. New/default state is not a NotFound result returned to the dispatcher.",
+        "Failed": "Outer binder catch also sets null and normally returns; wrapper follows the same reset branch. Wrapper binding/reset exceptions can still escape; no provider failure was observed.",
+        "Partial": "Per-item catch clears the exception and continues without returning a row-failure result. A nonnull header/list can therefore represent incomplete source hydration; defaults/SDK/list semantics are not fabricated.",
+        "Unsupported": "No typed Unsupported outcome. An Inv probe hit returns after the six if arms even for another type/proc pair; otherwise an unmatched Entry.type reaches no switch arm. No full enum, fallback or accepted allowed-set is inferred.",
+        "Denied": "No typed Denied/document-ACL result is returned by dispatcher/Navigate. Dispatcher does not directly apply MainClass permissions; purchase Loaded does call its own FormPermission. Button permissions and report filters are not independently accepted document authorization."
+      },
+      "outcome_labels_are_audit_categories_not_CSharp_return_types": true,
+      "whole_selected_Navigate_and_reader_bodies_read": true,
+      "remaining_readable_local": [
+        "Follow local type/proc/save/allowed-edit guards for returns, especially POS CLR/Loaded ProcType=1 versus the requested return pair; no event schedule assumed.",
+        "Carry exact R4 shared-item/binding/permission evidence; finish remaining local row/model/default and financial-output obligations rather than externalizing readable helpers.",
+        "Continue19 LastProcess source requests and other direct openers before whole D17 exit."
+      ],
+      "runtime_observed": false,
+      "whole_receiver_certified": false,
+      "accepted_external_handoff": false
+    },
+    {
+      "source_site": {
+        "id": "R7NAV-INV-31",
+        "receiver_variable_syntax": "f",
+        "receiver_type_syntax": "frmInvPOS",
+        "line": 1088,
+        "end": 1088,
+        "arguments_syntax": "(invQuery(3, 1))",
+        "case_label_syntax": null,
+        "lexical_scope_kind": "block",
+        "scope_start": 1085,
+        "scope_end": 1089,
+        "ancestors": [
+          {
+            "kind": "if",
+            "condition": "invType == 3 && procType == 1",
+            "side": "consequence",
+            "line": 1084
+          },
+          {
+            "kind": "if",
+            "condition": "invType == 2 && procType == 2",
+            "side": "alternative",
+            "line": 1077
+          },
+          {
+            "kind": "if",
+            "condition": "invType == 2 && procType == 1",
+            "side": "alternative",
+            "line": 1070
+          },
+          {
+            "kind": "if",
+            "condition": "invType == 1 && procType == 2",
+            "side": "alternative",
+            "line": 1063
+          },
+          {
+            "kind": "if",
+            "condition": "invType == 1 && procType == 1",
+            "side": "alternative",
+            "line": 1056
+          },
+          {
+            "kind": "if",
+            "condition": "invTable.Rows.Count > 0",
+            "side": "consequence",
+            "line": 1046
+          }
+        ],
+        "same_scope_Show_lines": [
+          1088
+        ],
+        "same_scope_Activate_lines": [
+          1088
+        ],
+        "compiler_bound_target": false
+      },
+      "request_identity_disposition": "Dispatcher creates a fresh receiver; the only caller-supplied value is the entry key. Database origin is not a request parameter.",
+      "scope_and_allowed_set_disposition": "Entry lookup is GlobalId in current catalog; Inv probe uses Entry.id and loaded branch. invQuery carries selected inv_type/proc_type/id/branch/IS_Deleted, not the InvGlobalID primary key or a database snapshot. First-row/uniqueness and per-document allowed-set remain unaccepted.",
+      "receiver_navigate_sha256": "4e155ec216d6e85f3e0f20361990d997aa73f15a349c1679da9615c4053b89e5",
+      "receiver_constructor_sha256": "294e44523b1cd76096e59f17d2c168b8abe6e10eb8c1cb80fe5bd8fd3480faef",
+      "reader_selector": "InvoiceOper.BindingInvoice",
+      "reader_whole_context_sha256": "b51d6c65d47eebbaa98b7e8fba52e370669ef8e128d8fb3671a66c90c803305f",
+      "source_outcomes": {
+        "FoundPath": "Navigate preclears the newly constructed child, then BindingInvoice writes header/global key/branch and item rows when present; nonnull leads to UI bind. Not a typed Found certificate or evidence of an existing report-parent draft being cleared.",
+        "Empty": "Shared binder sets Invo=null; wrapper recreates InvoiceDGV and CLR/ResetInvoice. New/default state is not a NotFound result returned to the dispatcher.",
+        "Failed": "Outer binder catch also sets null and normally returns; wrapper follows the same reset branch. Wrapper binding/reset exceptions can still escape; no provider failure was observed.",
+        "Partial": "Per-item catch clears the exception and continues without returning a row-failure result. A nonnull header/list can therefore represent incomplete source hydration; defaults/SDK/list semantics are not fabricated.",
+        "Unsupported": "No typed Unsupported outcome. An Inv probe hit returns after the six if arms even for another type/proc pair; otherwise an unmatched Entry.type reaches no switch arm. No full enum, fallback or accepted allowed-set is inferred.",
+        "Denied": "No typed Denied/document-ACL result is returned by dispatcher/Navigate. Dispatcher does not directly apply MainClass permissions; purchase Loaded does call its own FormPermission. Button permissions and report filters are not independently accepted document authorization."
+      },
+      "outcome_labels_are_audit_categories_not_CSharp_return_types": true,
+      "whole_selected_Navigate_and_reader_bodies_read": true,
+      "remaining_readable_local": [
+        "Follow local type/proc/save/allowed-edit guards for returns, especially POS CLR/Loaded ProcType=1 versus the requested return pair; no event schedule assumed.",
+        "Carry exact R4 shared-item/binding/permission evidence; finish remaining local row/model/default and financial-output obligations rather than externalizing readable helpers.",
+        "Continue19 LastProcess source requests and other direct openers before whole D17 exit."
+      ],
+      "runtime_observed": false,
+      "whole_receiver_certified": false,
+      "accepted_external_handoff": false
+    },
+    {
+      "source_site": {
+        "id": "R7NAV-INV-32",
+        "receiver_variable_syntax": "f",
+        "receiver_type_syntax": "frmInvPOS",
+        "line": 1094,
+        "end": 1094,
+        "arguments_syntax": "(invQuery(3, 2))",
+        "case_label_syntax": null,
+        "lexical_scope_kind": "block",
+        "scope_start": 1091,
+        "scope_end": 1095,
+        "ancestors": [
+          {
+            "kind": "if",
+            "condition": "invType == 3 && procType == 2",
+            "side": "consequence",
+            "line": 1090
+          },
+          {
+            "kind": "if",
+            "condition": "invType == 3 && procType == 1",
+            "side": "alternative",
+            "line": 1084
+          },
+          {
+            "kind": "if",
+            "condition": "invType == 2 && procType == 2",
+            "side": "alternative",
+            "line": 1077
+          },
+          {
+            "kind": "if",
+            "condition": "invType == 2 && procType == 1",
+            "side": "alternative",
+            "line": 1070
+          },
+          {
+            "kind": "if",
+            "condition": "invType == 1 && procType == 2",
+            "side": "alternative",
+            "line": 1063
+          },
+          {
+            "kind": "if",
+            "condition": "invType == 1 && procType == 1",
+            "side": "alternative",
+            "line": 1056
+          },
+          {
+            "kind": "if",
+            "condition": "invTable.Rows.Count > 0",
+            "side": "consequence",
+            "line": 1046
+          }
+        ],
+        "same_scope_Show_lines": [
+          1094
+        ],
+        "same_scope_Activate_lines": [
+          1094
+        ],
+        "compiler_bound_target": false
+      },
+      "request_identity_disposition": "Dispatcher creates a fresh receiver; the only caller-supplied value is the entry key. Database origin is not a request parameter.",
+      "scope_and_allowed_set_disposition": "Entry lookup is GlobalId in current catalog; Inv probe uses Entry.id and loaded branch. invQuery carries selected inv_type/proc_type/id/branch/IS_Deleted, not the InvGlobalID primary key or a database snapshot. First-row/uniqueness and per-document allowed-set remain unaccepted.",
+      "receiver_navigate_sha256": "4e155ec216d6e85f3e0f20361990d997aa73f15a349c1679da9615c4053b89e5",
+      "receiver_constructor_sha256": "294e44523b1cd76096e59f17d2c168b8abe6e10eb8c1cb80fe5bd8fd3480faef",
+      "reader_selector": "InvoiceOper.BindingInvoice",
+      "reader_whole_context_sha256": "b51d6c65d47eebbaa98b7e8fba52e370669ef8e128d8fb3671a66c90c803305f",
+      "source_outcomes": {
+        "FoundPath": "Navigate preclears the newly constructed child, then BindingInvoice writes header/global key/branch and item rows when present; nonnull leads to UI bind. Not a typed Found certificate or evidence of an existing report-parent draft being cleared.",
+        "Empty": "Shared binder sets Invo=null; wrapper recreates InvoiceDGV and CLR/ResetInvoice. New/default state is not a NotFound result returned to the dispatcher.",
+        "Failed": "Outer binder catch also sets null and normally returns; wrapper follows the same reset branch. Wrapper binding/reset exceptions can still escape; no provider failure was observed.",
+        "Partial": "Per-item catch clears the exception and continues without returning a row-failure result. A nonnull header/list can therefore represent incomplete source hydration; defaults/SDK/list semantics are not fabricated.",
+        "Unsupported": "No typed Unsupported outcome. An Inv probe hit returns after the six if arms even for another type/proc pair; otherwise an unmatched Entry.type reaches no switch arm. No full enum, fallback or accepted allowed-set is inferred.",
+        "Denied": "No typed Denied/document-ACL result is returned by dispatcher/Navigate. Dispatcher does not directly apply MainClass permissions; purchase Loaded does call its own FormPermission. Button permissions and report filters are not independently accepted document authorization."
+      },
+      "outcome_labels_are_audit_categories_not_CSharp_return_types": true,
+      "whole_selected_Navigate_and_reader_bodies_read": true,
+      "remaining_readable_local": [
+        "Follow local type/proc/save/allowed-edit guards for returns, especially POS CLR/Loaded ProcType=1 versus the requested return pair; no event schedule assumed.",
+        "Carry exact R4 shared-item/binding/permission evidence; finish remaining local row/model/default and financial-output obligations rather than externalizing readable helpers.",
+        "Continue19 LastProcess source requests and other direct openers before whole D17 exit."
+      ],
+      "runtime_observed": false,
+      "whole_receiver_certified": false,
+      "accepted_external_handoff": false
+    },
+    {
+      "source_site": {
+        "id": "R7NAV-ENTRY-03",
+        "receiver_variable_syntax": "inv2",
+        "receiver_type_syntax": "frminvoice",
+        "line": 1118,
+        "end": 1118,
+        "arguments_syntax": "($\"SELECT * FROM RentInvoice WHERE IS_Deleted=0 AND id={docNoStr} AND branch={branchStr}\")",
+        "case_label_syntax": "3",
+        "lexical_scope_kind": "switch_section",
+        "scope_start": 1114,
+        "scope_end": 1120,
+        "ancestors": [],
+        "same_scope_Show_lines": [
+          1117
+        ],
+        "same_scope_Activate_lines": [
+          1119
+        ],
+        "compiler_bound_target": false
+      },
+      "request_identity_disposition": "Dispatcher creates a fresh receiver; the only caller-supplied value is the entry key. Database origin is not a request parameter.",
+      "scope_and_allowed_set_disposition": "RentInvoice request retains IS_Deleted/id/loaded branch. Supplied primary key is proc_id, not this local id tuple; proc_type and original EntryGlobalID are not carried in this request.",
+      "receiver_navigate_sha256": "c7441ce26e2889edce950d05bf3f6d9631e6153662e881be7c2643e8dbcbb51c",
+      "receiver_constructor_sha256": "b5148399f7bd7399ed13445427d1fb2d2f2b2734bc70a9825f1fc83a461e0ab9",
+      "reader_selector": "ReadData",
+      "reader_whole_context_sha256": "bd8b070bef6da1c204bae711e02e9f4df38d2e6c40a6ee59e21cf21c059d9058",
+      "source_outcomes": {
+        "FoundPath": "ReadData assigns RentInvoice header and constructs one rent item, then optional marine/customer lookups; successful field assignment is not an accepted fully hydrated invoice.",
+        "Empty": "ReadData calls CLR then returns; Navigate still sets SrchPrint=true on normal return. Empty is not distinguished as a load-result type.",
+        "Failed": "ReadData catches and shows error; Navigate may still set SrchPrint=true. Connection-open/ExecuteReader or escaping cleanup exceptions are not normalized by a Navigate catch/finally.",
+        "Partial": "Some UI/header assignments precede later lookups/conversions; the catch does not roll them back or return Partial. No actual partial business document was observed.",
+        "Unsupported": "No typed Unsupported outcome. An Inv probe hit returns after the six if arms even for another type/proc pair; otherwise an unmatched Entry.type reaches no switch arm. No full enum, fallback or accepted allowed-set is inferred.",
+        "Denied": "No typed Denied/document-ACL result is returned by dispatcher/Navigate. Dispatcher does not directly apply MainClass permissions; purchase Loaded does call its own FormPermission. Button permissions and report filters are not independently accepted document authorization."
+      },
+      "outcome_labels_are_audit_categories_not_CSharp_return_types": true,
+      "whole_selected_Navigate_and_reader_bodies_read": true,
+      "remaining_readable_local": [
+        "Complete local marine/period/customer hydration and transition guards and exact key/proc/branch writers; void/SrchPrint is not full success.",
+        "Continue product/finance and allowed-set obligations outside this selected core loader."
+      ],
+      "runtime_observed": false,
+      "whole_receiver_certified": false,
+      "accepted_external_handoff": false
+    },
+    {
+      "source_site": {
+        "id": "R7NAV-ENTRY-05",
+        "receiver_variable_syntax": "sq",
+        "receiver_type_syntax": "frmSandQ",
+        "line": 1125,
+        "end": 1125,
+        "arguments_syntax": "($\"SELECT * FROM Receipts WHERE ReceiptType=5 AND ISDeleted=0 AND ReceiptNo={docNoStr} AND BranchID={branchStr}\")",
+        "case_label_syntax": "5",
+        "lexical_scope_kind": "switch_section",
+        "scope_start": 1122,
+        "scope_end": 1127,
+        "ancestors": [],
+        "same_scope_Show_lines": [
+          1124
+        ],
+        "same_scope_Activate_lines": [
+          1126
+        ],
+        "compiler_bound_target": false
+      },
+      "request_identity_disposition": "Dispatcher creates a fresh receiver; the only caller-supplied value is the entry key. Database origin is not a request parameter.",
+      "scope_and_allowed_set_disposition": "Receipts request retains ReceiptType/ISDeleted/ReceiptNo plus BranchID loaded from Entry. Supplied primary key is GlobalID, so this tuple is not certified unique or proven linked back to the original entry by this request. This is not P3-011 update/delete completion.",
+      "receiver_navigate_sha256": "d7119243956909971a60ec216c4ebcd06e2e9ce598e82d4e7355d10b543f2aa3",
+      "receiver_constructor_sha256": "0b0f69b6e7b3221d387d0a411d191996bb52da124cb262d892f6a10f7979774a",
+      "reader_selector": "ReadData",
+      "reader_whole_context_sha256": "57b02707f8ea02a40c587e0fccd6fce6e46076e6aee61517740440d224942997",
+      "source_outcomes": {
+        "FoundPath": "ReadData has a row -> CLR -> assigns ReceiptNo, GlobalID and EntryGlobalID plus selected fields. A successfully completed written path is not an actual provider/financial acceptance.",
+        "Empty": "HasRows false returns before CLR, so it does not explicitly reset an existing receiver. Q/QD/SD/VAT close reader and set a no-record status; D returns and its Navigate performs normal-tail close.",
+        "Failed": "Navigate catches and reports error, then executes its written close helper in finally; helper invocation is not a proof of disposal/health, and a cleanup exception can still escape. No typed Failed returns.",
+        "Partial": "CLR and field assignments precede later conversions/UI binding; no local staging/rollback result is returned. For Q specifically, reader.Close precedes two reader[EmpId] accesses inside the LoadEditorName argument, outside the callee catch; QD/SD/VAT read fields before normal close.",
+        "Unsupported": "No typed Unsupported outcome. An Inv probe hit returns after the six if arms even for another type/proc pair; otherwise an unmatched Entry.type reaches no switch arm. No full enum, fallback or accepted allowed-set is inferred.",
+        "Denied": "No typed Denied/document-ACL result is returned by dispatcher/Navigate. Dispatcher does not directly apply MainClass permissions; purchase Loaded does call its own FormPermission. Button permissions and report filters are not independently accepted document authorization."
+      },
+      "outcome_labels_are_audit_categories_not_CSharp_return_types": true,
+      "whole_selected_Navigate_and_reader_bodies_read": true,
+      "remaining_readable_local": [
+        "Read local save/update/receipt-type/global-key guards and payment/treasury event writers before any financial or document-ACL claim.",
+        "Finish local RestorePreviousReceipt -> SaveReceipt2/treasury failure and delete-gating contracts where called; Loaded source writes are not run or accepted.",
+        "Keep Q post-close EmpId ordering a source-backed issue pending full novelty comparison; do not label a provider exception observed."
+      ],
+      "runtime_observed": false,
+      "whole_receiver_certified": false,
+      "accepted_external_handoff": false
+    },
+    {
+      "source_site": {
+        "id": "R7NAV-ENTRY-06",
+        "receiver_variable_syntax": "sd",
+        "receiver_type_syntax": "frmSandD",
+        "line": 1132,
+        "end": 1132,
+        "arguments_syntax": "($\"SELECT * FROM Receipts WHERE ReceiptType=6 AND ISDeleted=0 AND ReceiptNo={docNoStr} AND BranchID={branchStr}\")",
+        "case_label_syntax": "6",
+        "lexical_scope_kind": "switch_section",
+        "scope_start": 1129,
+        "scope_end": 1134,
+        "ancestors": [],
+        "same_scope_Show_lines": [
+          1131
+        ],
+        "same_scope_Activate_lines": [
+          1133
+        ],
+        "compiler_bound_target": false
+      },
+      "request_identity_disposition": "Dispatcher creates a fresh receiver; the only caller-supplied value is the entry key. Database origin is not a request parameter.",
+      "scope_and_allowed_set_disposition": "Receipts request retains ReceiptType/ISDeleted/ReceiptNo plus BranchID loaded from Entry. Supplied primary key is GlobalID, so this tuple is not certified unique or proven linked back to the original entry by this request. This is not P3-011 update/delete completion.",
+      "receiver_navigate_sha256": "e55b1877505a634ea47d581e1f5e5758db08ebbb0818f65268a9b724c52f874b",
+      "receiver_constructor_sha256": "a156a1320d9866ced0fd07e26df5785e1a94a915578985782f4964df6a278947",
+      "reader_selector": "ReadData",
+      "reader_whole_context_sha256": "75a8290e1923f4a78bee64bcdfbafd1e4cb1822476758efd82755281299bb600",
+      "source_outcomes": {
+        "FoundPath": "ReadData has a row -> CLR -> assigns ReceiptNo, GlobalID and EntryGlobalID plus selected fields. A successfully completed written path is not an actual provider/financial acceptance.",
+        "Empty": "HasRows false returns before CLR, so it does not explicitly reset an existing receiver. Q/QD/SD/VAT close reader and set a no-record status; D returns and its Navigate performs normal-tail close.",
+        "Failed": "Navigate has no catch/finally: ExecuteReader/ReadData or subsequent exceptions can escape before normal-tail reader/connection close; no exception, leak or automatic cleanup was observed.",
+        "Partial": "CLR and field assignments precede later conversions/UI binding; no local staging/rollback result is returned. For Q specifically, reader.Close precedes two reader[EmpId] accesses inside the LoadEditorName argument, outside the callee catch; QD/SD/VAT read fields before normal close.",
+        "Unsupported": "No typed Unsupported outcome. An Inv probe hit returns after the six if arms even for another type/proc pair; otherwise an unmatched Entry.type reaches no switch arm. No full enum, fallback or accepted allowed-set is inferred.",
+        "Denied": "No typed Denied/document-ACL result is returned by dispatcher/Navigate. Dispatcher does not directly apply MainClass permissions; purchase Loaded does call its own FormPermission. Button permissions and report filters are not independently accepted document authorization."
+      },
+      "outcome_labels_are_audit_categories_not_CSharp_return_types": true,
+      "whole_selected_Navigate_and_reader_bodies_read": true,
+      "remaining_readable_local": [
+        "Read local save/update/receipt-type/global-key guards and payment/treasury event writers before any financial or document-ACL claim.",
+        "Finish local RestorePreviousReceipt -> SaveReceipt2/treasury failure and delete-gating contracts where called; Loaded source writes are not run or accepted.",
+        "Keep Q post-close EmpId ordering a source-backed issue pending full novelty comparison; do not label a provider exception observed."
+      ],
+      "runtime_observed": false,
+      "whole_receiver_certified": false,
+      "accepted_external_handoff": false
+    },
+    {
+      "source_site": {
+        "id": "R7NAV-ENTRY-07",
+        "receiver_variable_syntax": "sqd",
+        "receiver_type_syntax": "frmSandQD",
+        "line": 1139,
+        "end": 1139,
+        "arguments_syntax": "($\"SELECT * FROM Receipts WHERE ReceiptType=7 AND ISDeleted=0 AND ReceiptNo={docNoStr} AND BranchID={branchStr}\")",
+        "case_label_syntax": "7",
+        "lexical_scope_kind": "switch_section",
+        "scope_start": 1136,
+        "scope_end": 1141,
+        "ancestors": [],
+        "same_scope_Show_lines": [
+          1138
+        ],
+        "same_scope_Activate_lines": [
+          1140
+        ],
+        "compiler_bound_target": false
+      },
+      "request_identity_disposition": "Dispatcher creates a fresh receiver; the only caller-supplied value is the entry key. Database origin is not a request parameter.",
+      "scope_and_allowed_set_disposition": "Receipts request retains ReceiptType/ISDeleted/ReceiptNo plus BranchID loaded from Entry. Supplied primary key is GlobalID, so this tuple is not certified unique or proven linked back to the original entry by this request. This is not P3-011 update/delete completion.",
+      "receiver_navigate_sha256": "f7029b8ae8e8b037954e98c449ee7bfb964e3512a71996856299e4df40bf0a94",
+      "receiver_constructor_sha256": "5302936817a27f5cbd5b4ee0b5febfea3a6b7f8ff21fa873e7564181c328af54",
+      "reader_selector": "ReadData",
+      "reader_whole_context_sha256": "b9c7446e566c2624303687888b91114c85e3b5b0e4776544120c309c3b4be936",
+      "source_outcomes": {
+        "FoundPath": "ReadData has a row -> CLR -> assigns ReceiptNo, GlobalID and EntryGlobalID plus selected fields. A successfully completed written path is not an actual provider/financial acceptance.",
+        "Empty": "HasRows false returns before CLR, so it does not explicitly reset an existing receiver. Q/QD/SD/VAT close reader and set a no-record status; D returns and its Navigate performs normal-tail close.",
+        "Failed": "Navigate catches and reports error, then executes its written close helper in finally; helper invocation is not a proof of disposal/health, and a cleanup exception can still escape. No typed Failed returns.",
+        "Partial": "CLR and field assignments precede later conversions/UI binding; no local staging/rollback result is returned. For Q specifically, reader.Close precedes two reader[EmpId] accesses inside the LoadEditorName argument, outside the callee catch; QD/SD/VAT read fields before normal close.",
+        "Unsupported": "No typed Unsupported outcome. An Inv probe hit returns after the six if arms even for another type/proc pair; otherwise an unmatched Entry.type reaches no switch arm. No full enum, fallback or accepted allowed-set is inferred.",
+        "Denied": "No typed Denied/document-ACL result is returned by dispatcher/Navigate. Dispatcher does not directly apply MainClass permissions; purchase Loaded does call its own FormPermission. Button permissions and report filters are not independently accepted document authorization."
+      },
+      "outcome_labels_are_audit_categories_not_CSharp_return_types": true,
+      "whole_selected_Navigate_and_reader_bodies_read": true,
+      "remaining_readable_local": [
+        "Read local save/update/receipt-type/global-key guards and payment/treasury event writers before any financial or document-ACL claim.",
+        "Finish local RestorePreviousReceipt -> SaveReceipt2/treasury failure and delete-gating contracts where called; Loaded source writes are not run or accepted.",
+        "Keep Q post-close EmpId ordering a source-backed issue pending full novelty comparison; do not label a provider exception observed."
+      ],
+      "runtime_observed": false,
+      "whole_receiver_certified": false,
+      "accepted_external_handoff": false
+    },
+    {
+      "source_site": {
+        "id": "R7NAV-ENTRY-08",
+        "receiver_variable_syntax": "ssd",
+        "receiver_type_syntax": "frmSandSD",
+        "line": 1146,
+        "end": 1146,
+        "arguments_syntax": "($\"SELECT * FROM Receipts WHERE ReceiptType=8 AND ISDeleted=0 AND ReceiptNo={docNoStr} AND BranchID={branchStr}\")",
+        "case_label_syntax": "8",
+        "lexical_scope_kind": "switch_section",
+        "scope_start": 1143,
+        "scope_end": 1148,
+        "ancestors": [],
+        "same_scope_Show_lines": [
+          1145
+        ],
+        "same_scope_Activate_lines": [
+          1147
+        ],
+        "compiler_bound_target": false
+      },
+      "request_identity_disposition": "Dispatcher creates a fresh receiver; the only caller-supplied value is the entry key. Database origin is not a request parameter.",
+      "scope_and_allowed_set_disposition": "Receipts request retains ReceiptType/ISDeleted/ReceiptNo plus BranchID loaded from Entry. Supplied primary key is GlobalID, so this tuple is not certified unique or proven linked back to the original entry by this request. This is not P3-011 update/delete completion.",
+      "receiver_navigate_sha256": "f85ff6d039b9e205ebca4a23da198bda46e33e0fbb46ff31d6789914c1fe8b3a",
+      "receiver_constructor_sha256": "f50cde4f0a77ca33e074a8e51527e7b826f7c04e57874d6fe4e992737e2b732f",
+      "reader_selector": "ReadData",
+      "reader_whole_context_sha256": "14ef803c762b0633eb82731c1e9a03a99327452020b95b3028b96a12afaacbed",
+      "source_outcomes": {
+        "FoundPath": "ReadData has a row -> CLR -> assigns ReceiptNo, GlobalID and EntryGlobalID plus selected fields. A successfully completed written path is not an actual provider/financial acceptance.",
+        "Empty": "HasRows false returns before CLR, so it does not explicitly reset an existing receiver. Q/QD/SD/VAT close reader and set a no-record status; D returns and its Navigate performs normal-tail close.",
+        "Failed": "Navigate catches and reports error, then executes its written close helper in finally; helper invocation is not a proof of disposal/health, and a cleanup exception can still escape. No typed Failed returns.",
+        "Partial": "CLR and field assignments precede later conversions/UI binding; no local staging/rollback result is returned. For Q specifically, reader.Close precedes two reader[EmpId] accesses inside the LoadEditorName argument, outside the callee catch; QD/SD/VAT read fields before normal close.",
+        "Unsupported": "No typed Unsupported outcome. An Inv probe hit returns after the six if arms even for another type/proc pair; otherwise an unmatched Entry.type reaches no switch arm. No full enum, fallback or accepted allowed-set is inferred.",
+        "Denied": "No typed Denied/document-ACL result is returned by dispatcher/Navigate. Dispatcher does not directly apply MainClass permissions; purchase Loaded does call its own FormPermission. Button permissions and report filters are not independently accepted document authorization."
+      },
+      "outcome_labels_are_audit_categories_not_CSharp_return_types": true,
+      "whole_selected_Navigate_and_reader_bodies_read": true,
+      "remaining_readable_local": [
+        "Read local save/update/receipt-type/global-key guards and payment/treasury event writers before any financial or document-ACL claim.",
+        "Finish local RestorePreviousReceipt -> SaveReceipt2/treasury failure and delete-gating contracts where called; Loaded source writes are not run or accepted.",
+        "Keep Q post-close EmpId ordering a source-backed issue pending full novelty comparison; do not label a provider exception observed."
+      ],
+      "runtime_observed": false,
+      "whole_receiver_certified": false,
+      "accepted_external_handoff": false
+    },
+    {
+      "source_site": {
+        "id": "R7NAV-ENTRY-09",
+        "receiver_variable_syntax": "svat",
+        "receiver_type_syntax": "frmSandVAT",
+        "line": 1153,
+        "end": 1153,
+        "arguments_syntax": "($\"SELECT * FROM Receipts WHERE ReceiptType=9 AND ISDeleted=0 AND ReceiptNo={docNoStr} AND BranchID={branchStr}\")",
+        "case_label_syntax": "9",
+        "lexical_scope_kind": "switch_section",
+        "scope_start": 1150,
+        "scope_end": 1155,
+        "ancestors": [],
+        "same_scope_Show_lines": [
+          1152
+        ],
+        "same_scope_Activate_lines": [
+          1154
+        ],
+        "compiler_bound_target": false
+      },
+      "request_identity_disposition": "Dispatcher creates a fresh receiver; the only caller-supplied value is the entry key. Database origin is not a request parameter.",
+      "scope_and_allowed_set_disposition": "Receipts request retains ReceiptType/ISDeleted/ReceiptNo plus BranchID loaded from Entry. Supplied primary key is GlobalID, so this tuple is not certified unique or proven linked back to the original entry by this request. This is not P3-011 update/delete completion.",
+      "receiver_navigate_sha256": "a5884265449c0ffa6333390a5b8f576c34caa131bfb644adfa9dd00bf7ff186d",
+      "receiver_constructor_sha256": "0cb512e7c1bb7044a94196f3e2a858bf2e6bee4f12b5990f7f58314f252f8b78",
+      "reader_selector": "ReadData",
+      "reader_whole_context_sha256": "10ef06242a8f5b7f8239ba1912d6121a10c98dedc885317af94b0d24616c9186",
+      "source_outcomes": {
+        "FoundPath": "ReadData has a row -> CLR -> assigns ReceiptNo, GlobalID and EntryGlobalID plus selected fields. A successfully completed written path is not an actual provider/financial acceptance.",
+        "Empty": "HasRows false returns before CLR, so it does not explicitly reset an existing receiver. Q/QD/SD/VAT close reader and set a no-record status; D returns and its Navigate performs normal-tail close.",
+        "Failed": "Navigate catches and reports error, then executes its written close helper in finally; helper invocation is not a proof of disposal/health, and a cleanup exception can still escape. No typed Failed returns.",
+        "Partial": "CLR and field assignments precede later conversions/UI binding; no local staging/rollback result is returned. For Q specifically, reader.Close precedes two reader[EmpId] accesses inside the LoadEditorName argument, outside the callee catch; QD/SD/VAT read fields before normal close.",
+        "Unsupported": "No typed Unsupported outcome. An Inv probe hit returns after the six if arms even for another type/proc pair; otherwise an unmatched Entry.type reaches no switch arm. No full enum, fallback or accepted allowed-set is inferred.",
+        "Denied": "No typed Denied/document-ACL result is returned by dispatcher/Navigate. Dispatcher does not directly apply MainClass permissions; purchase Loaded does call its own FormPermission. Button permissions and report filters are not independently accepted document authorization."
+      },
+      "outcome_labels_are_audit_categories_not_CSharp_return_types": true,
+      "whole_selected_Navigate_and_reader_bodies_read": true,
+      "remaining_readable_local": [
+        "Read local save/update/receipt-type/global-key guards and payment/treasury event writers before any financial or document-ACL claim.",
+        "Finish local RestorePreviousReceipt -> SaveReceipt2/treasury failure and delete-gating contracts where called; Loaded source writes are not run or accepted.",
+        "Keep Q post-close EmpId ordering a source-backed issue pending full novelty comparison; do not label a provider exception observed."
+      ],
+      "runtime_observed": false,
+      "whole_receiver_certified": false,
+      "accepted_external_handoff": false
+    },
+    {
+      "source_site": {
+        "id": "R7NAV-ENTRY-00",
+        "receiver_variable_syntax": "fir",
+        "receiver_type_syntax": "FrmIntialRestraiction",
+        "line": 1160,
+        "end": 1160,
+        "arguments_syntax": "($\"SELECT * FROM Entry WHERE IS_Deleted=0 AND type=0 AND GlobalId=N'{glid}'\")",
+        "case_label_syntax": "0",
+        "lexical_scope_kind": "switch_section",
+        "scope_start": 1157,
+        "scope_end": 1162,
+        "ancestors": [],
+        "same_scope_Show_lines": [
+          1159
+        ],
+        "same_scope_Activate_lines": [
+          1161
+        ],
+        "compiler_bound_target": false
+      },
+      "request_identity_disposition": "Dispatcher creates a fresh receiver; the only caller-supplied value is the entry key. Database origin is not a request parameter.",
+      "scope_and_allowed_set_disposition": "Header query retains original GlobalId/type0. ReadDataFromReader then queries Entry_sub with MainClass.BranchNo instead of the loaded header branch; all-branches=-1 or another branch is not automatically reconciled.",
+      "receiver_navigate_sha256": "18074def8f690767cd19f02a0edad82cf2f23c27ab6e48930352d33e8b816c35",
+      "receiver_constructor_sha256": "606e6e2781176fe528456b1c49ae2fa618f24995386a42199dff198cc4185656",
+      "reader_selector": "ReadDataFromReader",
+      "reader_whole_context_sha256": "15006732f81f2cdedd6325e7f8fc17037c38b701369fb6dcd6d75cdc200f53de",
+      "source_outcomes": {
+        "FoundPath": "Selected reader consumes the first row and assigns its local header/key and selected detail fields; exact branch policies differ, so this is only a written Found-path classification.",
+        "Empty": "HasRows false returns before clear/reset in the selected reader; the already-constructed/shown window is not replaced with an explicit Empty result.",
+        "Failed": "Selected Navigate catches and reports/logs errors and has a written close in finally; credit/initial/new/report reader also has local catches. None returns an error-status object to ShowEntrySource.",
+        "Partial": "Header/clear operations precede all later detail/helper work; caught exceptions have no written atomic snapshot/rollback result. No actual provider/data failure was observed.",
+        "Unsupported": "No typed Unsupported outcome. An Inv probe hit returns after the six if arms even for another type/proc pair; otherwise an unmatched Entry.type reaches no switch arm. No full enum, fallback or accepted allowed-set is inferred.",
+        "Denied": "No typed Denied/document-ACL result is returned by dispatcher/Navigate. Dispatcher does not directly apply MainClass permissions; purchase Loaded does call its own FormPermission. Button permissions and report filters are not independently accepted document authorization."
+      },
+      "outcome_labels_are_audit_categories_not_CSharp_return_types": true,
+      "whole_selected_Navigate_and_reader_bodies_read": true,
+      "remaining_readable_local": [
+        "Reconcile loaded header branch versus current-branch detail/save policy and the -1 all-branches sentinel in local writers.",
+        "Finish local account/detail helpers and allowed-set, not just Navigate/ReadData body coverage."
+      ],
+      "runtime_observed": false,
+      "whole_receiver_certified": false,
+      "accepted_external_handoff": false
+    },
+    {
+      "source_site": {
+        "id": "R7NAV-ENTRY-10",
+        "receiver_variable_syntax": "fne",
+        "receiver_type_syntax": "FrmNewEntry",
+        "line": 1167,
+        "end": 1167,
+        "arguments_syntax": "($\"SELECT * FROM Entry WHERE IS_Deleted=0 AND type=10 AND GlobalId=N'{glid}'\")",
+        "case_label_syntax": "10",
+        "lexical_scope_kind": "switch_section",
+        "scope_start": 1164,
+        "scope_end": 1169,
+        "ancestors": [],
+        "same_scope_Show_lines": [
+          1166
+        ],
+        "same_scope_Activate_lines": [
+          1168
+        ],
+        "compiler_bound_target": false
+      },
+      "request_identity_disposition": "Dispatcher creates a fresh receiver; the only caller-supplied value is the entry key. Database origin is not a request parameter.",
+      "scope_and_allowed_set_disposition": "Header retains GlobalId/type10; selected reader records header branch in txtBranch and loads details by GlobalId without an added current-branch predicate. Do not impose the initial-entry reader policy on this different reader.",
+      "receiver_navigate_sha256": "889ffe0d4452997fe1af922695b47437fb211526802a7fe3584eae4db79c2582",
+      "receiver_constructor_sha256": "4dc053b91b316e47ae71aed53279ba3d9fbf916cefd1214b5dec0c7fe642b7ce",
+      "reader_selector": "ReadData",
+      "reader_whole_context_sha256": "30bbb196572287914d18d1db3a02f91fcc1642d7d35774d8028655740dc66251",
+      "source_outcomes": {
+        "FoundPath": "Selected reader consumes the first row and assigns its local header/key and selected detail fields; exact branch policies differ, so this is only a written Found-path classification.",
+        "Empty": "HasRows false returns before clear/reset in the selected reader; the already-constructed/shown window is not replaced with an explicit Empty result.",
+        "Failed": "Selected Navigate catches and reports/logs errors and has a written close in finally; credit/initial/new/report reader also has local catches. None returns an error-status object to ShowEntrySource.",
+        "Partial": "Header/clear operations precede all later detail/helper work; caught exceptions have no written atomic snapshot/rollback result. No actual provider/data failure was observed.",
+        "Unsupported": "No typed Unsupported outcome. An Inv probe hit returns after the six if arms even for another type/proc pair; otherwise an unmatched Entry.type reaches no switch arm. No full enum, fallback or accepted allowed-set is inferred.",
+        "Denied": "No typed Denied/document-ACL result is returned by dispatcher/Navigate. Dispatcher does not directly apply MainClass permissions; purchase Loaded does call its own FormPermission. Button permissions and report filters are not independently accepted document authorization."
+      },
+      "outcome_labels_are_audit_categories_not_CSharp_return_types": true,
+      "whole_selected_Navigate_and_reader_bodies_read": true,
+      "remaining_readable_local": [
+        "Follow local header/detail/save scopes and current reader connection-close/reopen sequence; no provider outcome was tested.",
+        "Finish local account/detail helpers and allowed-set."
+      ],
+      "runtime_observed": false,
+      "whole_receiver_certified": false,
+      "accepted_external_handoff": false
+    },
+    {
+      "source_site": {
+        "id": "R7NAV-ENTRY-16",
+        "receiver_variable_syntax": "fcn",
+        "receiver_type_syntax": "frmCreditNote",
+        "line": 1174,
+        "end": 1174,
+        "arguments_syntax": "($\"SELECT * FROM CreditDeptNotes WHERE IS_Deleted=0 AND Doc_Type=1 AND Doc_No={docNoStr}\")",
+        "case_label_syntax": "16",
+        "lexical_scope_kind": "switch_section",
+        "scope_start": 1171,
+        "scope_end": 1176,
+        "ancestors": [],
+        "same_scope_Show_lines": [
+          1173
+        ],
+        "same_scope_Activate_lines": [
+          1175
+        ],
+        "compiler_bound_target": false
+      },
+      "request_identity_disposition": "Dispatcher creates a fresh receiver; the only caller-supplied value is the entry key. Database origin is not a request parameter.",
+      "scope_and_allowed_set_disposition": "CreditDeptNotes request carries Doc_Type/Doc_No but no BranchId/original entry key. Reader reconstructs EntryGlobalId by current MainClass.BranchNo. Counterevidence: both number loaders use global MAX(Doc_No) per Doc_Type, not branch-local numbering; absence of a BranchId predicate alone does not prove a wrong note or cross-branch collision.",
+      "receiver_navigate_sha256": "90ab4f8f53adb60a6a385ebab729b83fe6fdd54b906c26be505fc983a4720cbd",
+      "receiver_constructor_sha256": "c0c90350116833e7f366194cb2f651b1aa6a789a797e12ec786bbe0e7f79b1a9",
+      "reader_selector": "ReadData",
+      "reader_whole_context_sha256": "b7d40b8b1ac1fe084207d7c25cd5196a5d1602e06d9f1c9085dc4a992bdad443",
+      "source_outcomes": {
+        "FoundPath": "Selected reader consumes the first row and assigns its local header/key and selected detail fields; exact branch policies differ, so this is only a written Found-path classification.",
+        "Empty": "HasRows false returns before clear/reset in the selected reader; the already-constructed/shown window is not replaced with an explicit Empty result.",
+        "Failed": "Selected Navigate catches and reports/logs errors and has a written close in finally; credit/initial/new/report reader also has local catches. None returns an error-status object to ShowEntrySource.",
+        "Partial": "Header/clear operations precede all later detail/helper work; caught exceptions have no written atomic snapshot/rollback result. No actual provider/data failure was observed.",
+        "Unsupported": "No typed Unsupported outcome. An Inv probe hit returns after the six if arms even for another type/proc pair; otherwise an unmatched Entry.type reaches no switch arm. No full enum, fallback or accepted allowed-set is inferred.",
+        "Denied": "No typed Denied/document-ACL result is returned by dispatcher/Navigate. Dispatcher does not directly apply MainClass permissions; purchase Loaded does call its own FormPermission. Button permissions and report filters are not independently accepted document authorization."
+      },
+      "outcome_labels_are_audit_categories_not_CSharp_return_types": true,
+      "whole_selected_Navigate_and_reader_bodies_read": true,
+      "remaining_readable_local": [
+        "Read note writers, invoice lookups and ledger linkage together with branch/global MAX policy; do not assume either duplicates or enforced uniqueness from CREATE alone.",
+        "Finish local per-document allowed-set and save consistency before any individually evidenced external manifest handoff."
+      ],
+      "runtime_observed": false,
+      "whole_receiver_certified": false,
+      "accepted_external_handoff": false
+    },
+    {
+      "source_site": {
+        "id": "R7NAV-ENTRY-17",
+        "receiver_variable_syntax": "fdn",
+        "receiver_type_syntax": "frmDebtNote",
+        "line": 1181,
+        "end": 1181,
+        "arguments_syntax": "($\"SELECT * FROM CreditDeptNotes WHERE IS_Deleted=0 AND Doc_Type=2 AND Doc_No={docNoStr}\")",
+        "case_label_syntax": "17",
+        "lexical_scope_kind": "switch_section",
+        "scope_start": 1178,
+        "scope_end": 1183,
+        "ancestors": [],
+        "same_scope_Show_lines": [
+          1180
+        ],
+        "same_scope_Activate_lines": [
+          1182
+        ],
+        "compiler_bound_target": false
+      },
+      "request_identity_disposition": "Dispatcher creates a fresh receiver; the only caller-supplied value is the entry key. Database origin is not a request parameter.",
+      "scope_and_allowed_set_disposition": "CreditDeptNotes request carries Doc_Type/Doc_No but no BranchId/original entry key. Reader reconstructs EntryGlobalId by current MainClass.BranchNo. Counterevidence: both number loaders use global MAX(Doc_No) per Doc_Type, not branch-local numbering; absence of a BranchId predicate alone does not prove a wrong note or cross-branch collision.",
+      "receiver_navigate_sha256": "5bd1022db79b55ec0ea98ffa6a37fef45e4438911719bd3a8c2739e93d5d456d",
+      "receiver_constructor_sha256": "1e16f0efea79a472d9d7a2274261c50219513e1c28a39344f65cfd03449bfb8e",
+      "reader_selector": "ReadData",
+      "reader_whole_context_sha256": "952f4a96df79fc686d826581076e6b09172ad537cc588130c6ed1e6b51949233",
+      "source_outcomes": {
+        "FoundPath": "Selected reader consumes the first row and assigns its local header/key and selected detail fields; exact branch policies differ, so this is only a written Found-path classification.",
+        "Empty": "HasRows false returns before clear/reset in the selected reader; the already-constructed/shown window is not replaced with an explicit Empty result.",
+        "Failed": "Selected Navigate catches and reports/logs errors and has a written close in finally; credit/initial/new/report reader also has local catches. None returns an error-status object to ShowEntrySource.",
+        "Partial": "Header/clear operations precede all later detail/helper work; caught exceptions have no written atomic snapshot/rollback result. No actual provider/data failure was observed.",
+        "Unsupported": "No typed Unsupported outcome. An Inv probe hit returns after the six if arms even for another type/proc pair; otherwise an unmatched Entry.type reaches no switch arm. No full enum, fallback or accepted allowed-set is inferred.",
+        "Denied": "No typed Denied/document-ACL result is returned by dispatcher/Navigate. Dispatcher does not directly apply MainClass permissions; purchase Loaded does call its own FormPermission. Button permissions and report filters are not independently accepted document authorization."
+      },
+      "outcome_labels_are_audit_categories_not_CSharp_return_types": true,
+      "whole_selected_Navigate_and_reader_bodies_read": true,
+      "remaining_readable_local": [
+        "Read note writers, invoice lookups and ledger linkage together with branch/global MAX policy; do not assume either duplicates or enforced uniqueness from CREATE alone.",
+        "Finish local per-document allowed-set and save consistency before any individually evidenced external manifest handoff."
+      ],
+      "runtime_observed": false,
+      "whole_receiver_certified": false,
+      "accepted_external_handoff": false
+    },
+    {
+      "source_site": {
+        "id": "R7NAV-ENTRY-13",
+        "receiver_variable_syntax": "fre",
+        "receiver_type_syntax": "frmRptEntries",
+        "line": 1188,
+        "end": 1188,
+        "arguments_syntax": "($\"SELECT * FROM Entry WHERE IS_Deleted=0 AND type=13 AND GlobalId=N'{glid}'\")",
+        "case_label_syntax": "13",
+        "lexical_scope_kind": "switch_section",
+        "scope_start": 1185,
+        "scope_end": 1190,
+        "ancestors": [],
+        "same_scope_Show_lines": [
+          1187
+        ],
+        "same_scope_Activate_lines": [
+          1189
+        ],
+        "compiler_bound_target": false
+      },
+      "request_identity_disposition": "Dispatcher creates a fresh receiver; the only caller-supplied value is the entry key. Database origin is not a request parameter.",
+      "scope_and_allowed_set_disposition": "Header and Entry_sub detail query use GlobalId/type13. Loaded independently calls LoadLastEntry using current-branch condition (>1), so final event ordering/selection is not inferred from Show();Navigate();Activate().",
+      "receiver_navigate_sha256": "2c48ed78192188f33504515e45a6705d07cdbcd4f7175df1c0f3681949faa762",
+      "receiver_constructor_sha256": "082e1ebdd58261dfbfa2a22c49c4817efad31a4476ae706b10b5dfdb25241ee7",
+      "reader_selector": "ReadData",
+      "reader_whole_context_sha256": "ae329c41d994a8d34dfd610b2dc96706d015fb5df9cc569ef5c98c703862eb0f",
+      "source_outcomes": {
+        "FoundPath": "Selected reader consumes the first row and assigns its local header/key and selected detail fields; exact branch policies differ, so this is only a written Found-path classification.",
+        "Empty": "HasRows false returns before clear/reset in the selected reader; the already-constructed/shown window is not replaced with an explicit Empty result.",
+        "Failed": "Selected Navigate catches and reports/logs errors and has a written close in finally; credit/initial/new/report reader also has local catches. None returns an error-status object to ShowEntrySource.",
+        "Partial": "Header/clear operations precede all later detail/helper work; caught exceptions have no written atomic snapshot/rollback result. No actual provider/data failure was observed.",
+        "Unsupported": "No typed Unsupported outcome. An Inv probe hit returns after the six if arms even for another type/proc pair; otherwise an unmatched Entry.type reaches no switch arm. No full enum, fallback or accepted allowed-set is inferred.",
+        "Denied": "No typed Denied/document-ACL result is returned by dispatcher/Navigate. Dispatcher does not directly apply MainClass permissions; purchase Loaded does call its own FormPermission. Button permissions and report filters are not independently accepted document authorization."
+      },
+      "outcome_labels_are_audit_categories_not_CSharp_return_types": true,
+      "whole_selected_Navigate_and_reader_bodies_read": true,
+      "remaining_readable_local": [
+        "Reconcile Loaded.LoadLastEntry versus explicit requested GlobalId without assuming WPF event scheduling.",
+        "Finish report/receipt-link/detail helpers and allowed-set beyond the selected reader."
+      ],
+      "runtime_observed": false,
+      "whole_receiver_certified": false,
+      "accepted_external_handoff": false
+    }
+  ],
+  "source_order_only_not_WPF_schedule": true,
+  "query_strings_executed": false,
+  "compiler_binding_or_SQL_uniqueness_proved": false,
+  "deployed_or_cross_database_accepted": false,
+  "all_local_receiver_helpers_or_financial_hydration_certified": false,
+  "pinned_inputs": [
+    {
+      "path": "docs/audit/evidence/entry-source-source-facts-07B39R7.json",
+      "bytes": 2042790,
+      "sha256": "51e9a58987f48e2af16384749b53baedeea80f97abd8a6bcf9ce887198aa041b"
+    },
+    {
+      "path": "docs/audit/evidence/entry-source-source-review-log-07B39R7.json",
+      "bytes": 30189,
+      "sha256": "ed7c33804ca9f2d6144d49e2fbc6f30d50dbeeff53fe5bf4327473b88c4842cf"
+    },
+    {
+      "path": "docs/audit/evidence/source-display-attribution-note-07B39R7.json",
+      "bytes": 5185,
+      "sha256": "7fe40304b00de86c653ec78032193ec57b005930db19bc08e6e74d7509c52bb7"
+    },
+    {
+      "path": "docs/audit/evidence/document-receiver-source-facts-07B39R4.json",
+      "bytes": 777248,
+      "sha256": "6b25f8299b5eff29f1e9dbcd4c6f952a4e2ec7fadee6b2a41b6df2dd58d287d6"
+    }
+  ]
+}

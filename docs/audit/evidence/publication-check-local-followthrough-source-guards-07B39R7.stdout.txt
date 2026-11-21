@@ -1,0 +1,23 @@
+{
+  "errors": [],
+  "selected_contexts": 93,
+  "overlap_with_core177": 37,
+  "additional_not_in_core177": 56,
+  "source_identities": 30,
+  "self_reported_display_range_unions": 70,
+  "exact_original_non_entry_calls": {
+    "last-process": 19,
+    "linked-insert": 11
+  },
+  "exact_original_request_pairs": 17,
+  "expected_receipt_parameters": 29,
+  "bound_receipt_parameters": 28,
+  "casefold_missing": [
+    "@recipient"
+  ],
+  "new_unittest_cases_run": 0,
+  "was_run01_input": false,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "limit": "Source rederivation, recorded-identity/coverage and publication guards only; not reading, model defaults, provider/SQL/WPF/ACL/financial execution or calendar/whole-capability certification."
+}

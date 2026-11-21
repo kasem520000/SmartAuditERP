@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "kind": "actual-post-capture-source-authorship-identity-and-coverage-check-not-unittest-receipt",
+  "assessment_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "capability_exit_certificates_issued": 0,
+  "four_family_exit_certificates_issued": 0,
+  "new_accepted_external_handoffs": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "was_R7_run01_input": false,
+  "covered_by_the_captured297_tests": false,
+  "R2_R3_files_recovered": false,
+  "prior196_tests_recertified": false,
+  "facts": {
+    "path": "docs/audit/evidence/entry-source-local-followthrough-facts-07B39R7.json",
+    "bytes": 803188,
+    "sha256": "6c58c9ed9580f6c17b687c09f32f90d1a6c7bca2150ba0883dec3605aaee0586"
+  },
+  "reads": {
+    "path": "docs/audit/evidence/entry-source-local-followthrough-reads-07B39R7.json",
+    "bytes": 18716,
+    "sha256": "196584e575950f020097f2d5931e6533fcbf516b14fed922737b2f9051d6233f"
+  },
+  "decisions": {
+    "path": "docs/audit/evidence/entry-source-local-followthrough-decisions-07B39R7.json",
+    "bytes": 127734,
+    "sha256": "4e896695453eb901123f076c0b06733b21727bd0faedf0ae0fd1a4f8667ba436"
+  },
+  "selected_method_contexts": 93,
+  "method_contexts_already_in_core177": 37,
+  "additional_contexts_not_in_core177": 56,
+  "source_identities": 30,
+  "self_reported_display_range_unions": 70,
+  "body_and_selected_text_range_coverage_errors": [],
+  "all_source_identity_checks_match": true,
+  "receipt_expected_parameters": 29,
+  "receipt_explicit_bound_parameters": 28,
+  "receipt_casefold_missing_parameters": [
+    "@recipient"
+  ],
+  "original_request_pairs_retained": 17,
+  "exact_original_call_counts_retained": {
+    "last-process": 19,
+    "linked-insert": 11
+  },
+  "new_test_cases_run": 0,
+  "original297_plus_new_contexts_is_not_a_test_total": true,
+  "initial_capture_does_not_retroactively_cover_this_supplement": true
+}

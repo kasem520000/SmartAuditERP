@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "kind": "R7-prospective-source-display-attribution-reconciliation-not-frozen-R6-rewrite",
+  "assessment_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "prior196_tests_recertified": false,
+  "R2_R3_files_recovered": false,
+  "new_accepted_external_handoffs": 0,
+  "preserved_original_R6_range_rows": [
+    {
+      "id": "R6READ-19",
+      "path": "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs",
+      "start": 1,
+      "end": 85,
+      "decoded_range_utf8_sha256": "c677488fb8f63d68b3b0d940f89bfda2c07dbfba2beb9893e07c7361b5e7f527"
+    },
+    {
+      "id": "R6READ-20",
+      "path": "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs",
+      "start": 198,
+      "end": 334,
+      "decoded_range_utf8_sha256": "3d4748300ef477f76ef0eab946f6b056bbaca3a4bb77172960be8014a7ad06cf"
+    },
+    {
+      "id": "R6READ-21",
+      "path": "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs",
+      "start": 800,
+      "end": 899,
+      "decoded_range_utf8_sha256": "e8ed119438301d9601421d52cf20d2f5be475cb2bb944900737a734a0beac9f6"
+    },
+    {
+      "id": "R6READ-22",
+      "path": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs",
+      "start": 1,
+      "end": 65,
+      "decoded_range_utf8_sha256": "39b3b3d5f4a624d02a6f92a08957dcb15110581763aa13d83fa775d6853b08b0"
+    },
+    {
+      "id": "R6READ-23",
+      "path": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs",
+      "start": 160,
+      "end": 351,
+      "decoded_range_utf8_sha256": "3952dcd3eb80db558dc6b99a679aaccb81d25676f92bcd9e89c11314a9c6c239"
+    },
+    {
+      "id": "R6READ-24",
+      "path": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs",
+      "start": 645,
+      "end": 739,
+      "decoded_range_utf8_sha256": "3d3420bb6c634f4ddbe551b9142bcc113e2c778061a0dcdf42d9da48532bc372"
+    },
+    {
+      "id": "R6READ-25",
+      "path": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs",
+      "start": 760,
+      "end": 859,
+      "decoded_range_utf8_sha256": "c4579159dad5176f52910e131cc325f2227657c7e4f078f43477065da4bfc7cb"
+    }
+  ],
+  "prior_actual_display_chronology_reconstructed": false,
+  "R6_consumed_log_rewritten": false,
+  "prospective_R7_reread_is_not_retroactive_R6_read_certification": true,
+  "resolved_current_source_ownership": [
+    {
+      "path": "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs",
+      "ranges_now_displayed": [
+        [
+          1,
+          85
+        ],
+        [
+          198,
+          334
+        ],
+        [
+          645,
+          739
+        ],
+        [
+          760,
+          899
+        ]
+      ],
+      "owned_bodies": [
+        "GetAccountStatement",
+        "ShowResult",
+        "LoadYearPreviews",
+        "btnShow_Click",
+        "BtnShowDetail_Click"
+      ],
+      "disposition": "800-899 belongs to AccountsStatement and contains its year/show/detail handlers. 645-739 is part of its print binding;760-799 is a reflection conversion tail, not AccountBalance year handlers. Those two partial fragments do not certify the whole print/export methods."
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs",
+      "ranges_now_displayed": [
+        [
+          1,
+          65
+        ],
+        [
+          160,
+          351
+        ],
+        [
+          645,
+          739
+        ],
+        [
+          760,
+          859
+        ]
+      ],
+      "owned_bodies": [
+        "ShowAccountData",
+        "GetPreviousBalance",
+        "GetAccountMovements",
+        "btnShow_Click",
+        "LoadYearPreviewsList",
+        "BtnShowDetail_Click"
+      ],
+      "disposition": "645-739 and760-859 belong to AccountBalance and contain its year show/selection and source-opening handlers. Do not reverse the two file owners."
+    }
+  ],
+  "limit": "Passing R6 hashes/range-coverage checks did not prove the disputed earlier display attribution. Current R7 review uses fresh displays; the original log, archive, capture and publications remain byte-preserved. This does not reconstruct a missing transcript.",
+  "assessment_date_disposition": "Use2026-11-16UTC as this assessment reference. Raw machine clocks and green DATE-equality tests do not authenticate civil time; no frozen history is relabelled.",
+  "pinned_inputs": [
+    {
+      "path": "docs/audit/evidence/session-year-source-review-log-07B39R6.json",
+      "bytes": 13711,
+      "sha256": "f16a1f9ec45190823dbab673e477504cadeceba29497ad653e199a2295e35d3f"
+    },
+    {
+      "path": "docs/audit/evidence/entry-source-source-review-log-07B39R7.json",
+      "bytes": 30189,
+      "sha256": "ed7c33804ca9f2d6144d49e2fbc6f30d50dbeeff53fe5bf4327473b88c4842cf"
+    },
+    {
+      "path": "docs/audit/evidence/entry-recovery-identities-07B39R7.json",
+      "bytes": 834210,
+      "sha256": "6f33d79e8e59141d28fe3d9639fba28c4da97f3cbd39cc3e51841b3ff30f0f2a"
+    },
+    {
+      "path": "docs/audit/evidence/entry-recovery-receipt-07B39R7.json",
+      "bytes": 1520,
+      "sha256": "e5f2f4398c2098eed7e5843329e4ee792302cc36a40e20e020a09654f6b9788a"
+    }
+  ]
+}

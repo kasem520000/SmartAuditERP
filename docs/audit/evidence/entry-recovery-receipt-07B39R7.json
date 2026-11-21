@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "kind": "actual-R7-fast-forward-recovery-verification-existing-archive-reuse-not-reconstructed-R6-or-missing196",
+  "assessment_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "recovery_entry_input": {
+    "path": "docs/audit/evidence/entry-recovery-identities-07B39R7.json",
+    "bytes": 834210,
+    "sha256": "6f33d79e8e59141d28fe3d9639fba28c4da97f3cbd39cc3e51841b3ff30f0f2a"
+  },
+  "restored_HEAD": "de7c56282e4fe1eb5f487e1df7d9f1a88ecc31df",
+  "branch": "arena/94ae8414-smartauditerp",
+  "merge_mode": "ff-only-on-current-branch",
+  "preserved_entry_files": 1216,
+  "preserved_entry_bytes": 66055726,
+  "same_archive_member_bytes_verified_before_collision_removal": true,
+  "identical_collisions_restored": 1207,
+  "different_collisions_preserved_in_existing_archive_then_remote_versions_restored": 9,
+  "existing_R4_archive_identity": {
+    "path": "docs/audit/evidence/untracked-entry-docs-07B39R4.tar.gz",
+    "bytes": 14560801,
+    "sha256": "2ab6e6d3df2e30b038cb3c9f99ac957d6e13b59b119b074207535b2e19b3cc87"
+  },
+  "temporary_duplicate_removed_only_after_exact_match_to_restored_archive": true,
+  "new_duplicate_archive_committed": false,
+  "restored_tracked_audit_files": 1477,
+  "application_sources_checked_unchanged": 827,
+  "application_execution_count": 0,
+  "missing_R2_R3_reconstructed": false,
+  "prior196_tests_recertified": false,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false
+}
