@@ -47,7 +47,7 @@ check('deferred findings retain an explicit blocker and stay open', all(
       r['blocker_id'] and not r['repair_ids'] for r in rows if r['repair_status'] == 'deferred_blocked'))
 check('unreviewed findings are not silently called deferred', all(
       not r['blocker_id'] and not r['repair_ids'] for r in rows if r['repair_status'] == 'pending_review'))
-check('critical security findings remain blocked', all(by_id[x]['repair_status'] == 'deferred_blocked'
+check('critical security containment remains partial, not closed', all(by_id[x]['repair_status'] == 'partial_open' and by_id[x]['blocker_id']
       for x in ('P1-007', 'P1-008')))
 check('wider unaddressed lifecycle finding stays partial', by_id['P1-030']['repair_status'] == 'partial_open')
 check('all explicitly partial findings stay open', all(by_id[x]['repair_status'] == 'partial_open'
@@ -92,7 +92,7 @@ check('serial VAT POS duplicate batch classifications retain partial scope',
           for fid, rid in [('P7-128', 'R-127'), ('P7-075', 'R-129')])
       and all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
           for fid, rid in [('P7-135', 'R-126'), ('P7-143', 'R-128')])
-      and rules['audit_delivery'] == 'B37')
+      and rules['audit_delivery'] == 'B38')
 check('rental production print purchase and HTML batch has bounded statuses',
       all(by_id[fid]['repair_status'] == 'closed_in_scope' and by_id[fid]['repair_ids'] == rid
           for fid, rid in [('P7-074', 'R-130'), ('P7-119', 'R-132'), ('P7-098', 'R-134')])
@@ -112,7 +112,7 @@ check('plan-only repairs are included and P5-027 remains partial',
 check('shared headings are mapped to correct repairs', all(by_id[k]['repair_ids'] == v for k, v in {
       'P4-001': 'R-042', 'P4-002': 'R-043', 'P5-019': 'R-053', 'P5-022': 'R-055',
       'P6-014': 'R-061', 'P6-016': 'R-062'}.items()))
-check('input requests from owner are extracted', 'سياسة الحسابات' in by_id['P1-007']['remaining_or_scope'])
+check('input requests from owner are extracted', 'المشتق' in by_id['P1-010']['remaining_or_scope'])
 check('audit status is preserved rather than overwritten', all(r['audit_status'] == 'open-not-remediated' for r in rows))
 original = builder.AUDIT
 with tempfile.TemporaryDirectory() as temp:
@@ -165,7 +165,7 @@ check('project file, picker and contract findings remain partial',
           for fid, rid in [('P7-019', 'R-196'), ('P7-145', 'R-198'), ('P7-037', 'R-199'),
                            ('P7-011', 'R-200'), ('P7-012', 'R-201'), ('P7-013', 'R-202')])
       and by_id['P7-016']['repair_ids'] == 'R-192; R-197'
-      and rules['audit_commit'].startswith('0423c61')
+      and rules['audit_commit'].startswith('f16f3da')
       and all(by_id[fid]['repair_status'] == 'partial_open' for fid in ('P7-157', 'P7-159', 'P7-160')))
 
 check('purchase and packing batch remains partial',
@@ -224,5 +224,9 @@ for status, section in sections.items():
 check('booking and report follow-ups remain partial',
       all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
           for fid, rid in [('P7-023', 'R-121; R-240'), ('P7-040', 'R-141; R-241')]))
+
+check('critical containment and readonly close remain partial',
+      all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P1-007', 'R-242'), ('P1-008', 'R-243'), ('P3-015', 'R-244')]))
 
 print('RESULT: PASS — archive consistency checks; classifications are not WPF or SQL acceptance.')
