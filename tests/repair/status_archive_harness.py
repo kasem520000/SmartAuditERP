@@ -73,7 +73,7 @@ check('period, tax, and scoped activity batch remains conservative',
       all(by_id[fid]['repair_status'] == 'closed_in_scope' and by_id[fid]['repair_ids'] == rid
           for fid, rid in [('P7-086', 'R-110'), ('P7-122', 'R-111'), ('P7-130', 'R-112')])
       and all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
-          for fid, rid in [('P7-124', 'R-109'), ('P7-129', 'R-111')])
+          for fid, rid in [('P7-124', 'R-109'), ('P7-129', 'R-111; R-263')])
       and by_id['P7-123']['repair_status'] == 'partial_open')
 check('follow-up batch and previously fixed export are recorded with scope',
       all(by_id[fid]['repair_status'] == 'closed_in_scope' and by_id[fid]['repair_ids'] == rid
@@ -247,3 +247,7 @@ check('broader receipt key finding remains partial', by_id['P3-011']['repair_sta
 check('deferred WPF pass remains partial', by_id['P1-013']['repair_status'] == 'partial_open' and by_id['P1-013']['repair_ids'] == 'R-252')
 
 print('RESULT: PASS — archive consistency checks; classifications are not WPF or SQL acceptance.')
+
+check('notice print and party activity remain open with follow-ups',
+      by_id['P7-055']['repair_status'] == 'partial_open' and by_id['P7-055']['repair_ids'] == 'R-152; R-262'
+      and by_id['P7-129']['repair_status'] == 'partial_open' and by_id['P7-129']['repair_ids'] == 'R-111; R-263')
