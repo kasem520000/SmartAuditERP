@@ -1,0 +1,524 @@
+{
+  "schema_version": 1,
+  "kind": "new-R6-successor-individual-write-dispositions-does-not-rewrite-R5-read-chronology",
+  "assessment_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "prior196_tests_recertified": false,
+  "R2_R3_files_recovered": false,
+  "new_accepted_external_handoffs": 0,
+  "original_discovery_scope_preserved": "The eight literal-qualified MainClass connstr/originalConnStr/Database/DataBaseName writer owners returned by rg, parsed afresh. This is not type/alias/reflection analysis and not a full repository assignment census.",
+  "twelve_original_pending_bodies": [
+    [
+      "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs",
+      "btnShow_Click",
+      671,
+      690
+    ],
+    [
+      "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs",
+      "btnShow_Click",
+      841,
+      858
+    ],
+    [
+      "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "InsertLinkedCreditNote",
+      2804,
+      2847
+    ],
+    [
+      "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "InsertLinkedFromQuotation",
+      2770,
+      2802
+    ],
+    [
+      "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "InsertLinkedReturn",
+      2734,
+      2768
+    ],
+    [
+      "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs",
+      "btnAddall_Click",
+      105,
+      116
+    ],
+    [
+      "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs",
+      "btnadd_Click",
+      97,
+      103
+    ],
+    [
+      "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+      "btnClose_Click",
+      123,
+      131
+    ],
+    [
+      "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+      "LoadData",
+      541,
+      638
+    ],
+    [
+      "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+      "Login",
+      142,
+      277
+    ],
+    [
+      "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+      "btnInsertLinkedInv_Click",
+      2072,
+      2123
+    ],
+    [
+      "SmartAuditERP/Home.xaml.cs",
+      "checkConn",
+      635,
+      690
+    ]
+  ],
+  "individual_write_dispositions": [
+    {
+      "original_R5_write_identity": {
+        "path": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs",
+        "line": 676,
+        "left": "MainClass.originalConnStr",
+        "containing_member": "btnShow_Click",
+        "context_start": 671,
+        "context_end": 690
+      },
+      "was_whole_context_read_in_R5": false,
+      "whole_containing_context_read_in_R6": true,
+      "current_method_sha256": "89babbbb244a8ddda3feb5a44546e8e67df44bf035ccfd859a61cb47cbe8e465",
+      "source_disposition_id": "R6D-REPORT-YEAR",
+      "whole_capability_exit": false
+    },
+    {
+      "original_R5_write_identity": {
+        "path": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs",
+        "line": 677,
+        "left": "MainClass.connstr",
+        "containing_member": "btnShow_Click",
+        "context_start": 671,
+        "context_end": 690
+      },
+      "was_whole_context_read_in_R5": false,
+      "whole_containing_context_read_in_R6": true,
+      "current_method_sha256": "89babbbb244a8ddda3feb5a44546e8e67df44bf035ccfd859a61cb47cbe8e465",
+      "source_disposition_id": "R6D-REPORT-YEAR",
+      "whole_capability_exit": false
+    },
+    {
+      "original_R5_write_identity": {
+        "path": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs",
+        "line": 686,
+        "left": "MainClass.connstr",
+        "containing_member": "btnShow_Click",
+        "context_start": 671,
+        "context_end": 690
+      },
+      "was_whole_context_read_in_R5": false,
+      "whole_containing_context_read_in_R6": true,
+      "current_method_sha256": "89babbbb244a8ddda3feb5a44546e8e67df44bf035ccfd859a61cb47cbe8e465",
+      "source_disposition_id": "R6D-REPORT-YEAR",
+      "whole_capability_exit": false
+    },
+    {
+      "original_R5_write_identity": {
+        "path": "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs",
+        "line": 845,
+        "left": "MainClass.originalConnStr",
+        "containing_member": "btnShow_Click",
+        "context_start": 841,
+        "context_end": 858
+      },
+      "was_whole_context_read_in_R5": false,
+      "whole_containing_context_read_in_R6": true,
+      "current_method_sha256": "7dbaa67c39b8c8b17af0938fbf931a350a5fca9ef9df25bb5bc7b2c7bca7c1be",
+      "source_disposition_id": "R6D-REPORT-YEAR",
+      "whole_capability_exit": false
+    },
+    {
+      "original_R5_write_identity": {
+        "path": "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs",
+        "line": 846,
+        "left": "MainClass.connstr",
+        "containing_member": "btnShow_Click",
+        "context_start": 841,
+        "context_end": 858
+      },
+      "was_whole_context_read_in_R5": false,
+      "whole_containing_context_read_in_R6": true,
+      "current_method_sha256": "7dbaa67c39b8c8b17af0938fbf931a350a5fca9ef9df25bb5bc7b2c7bca7c1be",
+      "source_disposition_id": "R6D-REPORT-YEAR",
+      "whole_capability_exit": false
+    },
+    {
+      "original_R5_write_identity": {
+        "path": "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs",
+        "line": 854,
+        "left": "MainClass.connstr",
+        "containing_member": "btnShow_Click",
+        "context_start": 841,
+        "context_end": 858
+      },
+      "was_whole_context_read_in_R5": false,
+      "whole_containing_context_read_in_R6": true,
+      "current_method_sha256": "7dbaa67c39b8c8b17af0938fbf931a350a5fca9ef9df25bb5bc7b2c7bca7c1be",
+      "source_disposition_id": "R6D-REPORT-YEAR",
+      "whole_capability_exit": false
+    },
+    {
+      "original_R5_write_identity": {
+        "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+        "line": 2738,
+        "left": "MainClass.originalConnStr",
+        "containing_member": "InsertLinkedReturn",
+        "context_start": 2734,
+        "context_end": 2768
+      },
+      "was_whole_context_read_in_R5": false,
+      "whole_containing_context_read_in_R6": true,
+      "current_method_sha256": "3961165432c760a3aab15b797c1cc8519680f6f00277cd4ae00f1ba3db378397",
+      "source_disposition_id": "R6D-LINKED-PARENT",
+      "whole_capability_exit": false
+    },
+    {
+      "original_R5_write_identity": {
+        "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+        "line": 2739,
+        "left": "MainClass.connstr",
+        "containing_member": "InsertLinkedReturn",
+        "context_start": 2734,
+        "context_end": 2768
+      },
+      "was_whole_context_read_in_R5": false,
+      "whole_containing_context_read_in_R6": true,
+      "current_method_sha256": "3961165432c760a3aab15b797c1cc8519680f6f00277cd4ae00f1ba3db378397",
+      "source_disposition_id": "R6D-LINKED-PARENT",
+      "whole_capability_exit": false
+    },
+    {
+      "original_R5_write_identity": {
+        "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+        "line": 2774,
+        "left": "MainClass.originalConnStr",
+        "containing_member": "InsertLinkedFromQuotation",
+        "context_start": 2770,
+        "context_end": 2802
+      },
+      "was_whole_context_read_in_R5": false,
+      "whole_containing_context_read_in_R6": true,
+      "current_method_sha256": "d5ca8dc33465ee3e256398f69439f6a2822f24f94cfce12b8438c14604fa4916",
+      "source_disposition_id": "R6D-LINKED-PARENT",
+      "whole_capability_exit": false
+    },
+    {
+      "original_R5_write_identity": {
+        "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+        "line": 2775,
+        "left": "MainClass.connstr",
+        "containing_member": "InsertLinkedFromQuotation",
+        "context_start": 2770,
+        "context_end": 2802
+      },
+      "was_whole_context_read_in_R5": false,
+      "whole_containing_context_read_in_R6": true,
+      "current_method_sha256": "d5ca8dc33465ee3e256398f69439f6a2822f24f94cfce12b8438c14604fa4916",
+      "source_disposition_id": "R6D-LINKED-PARENT",
+      "whole_capability_exit": false
+    },
+    {
+      "original_R5_write_identity": {
+        "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+        "line": 2808,
+        "left": "MainClass.originalConnStr",
+        "containing_member": "InsertLinkedCreditNote",
+        "context_start": 2804,
+        "context_end": 2847
+      },
+      "was_whole_context_read_in_R5": false,
+      "whole_containing_context_read_in_R6": true,
+      "current_method_sha256": "d7a9d8d1e6bb8beb32f279110bd87fc821253fc10c0f947cee7127cb8786d9bf",
+      "source_disposition_id": "R6D-LINKED-PARENT",
+      "whole_capability_exit": false
+    },
+    {
+      "original_R5_write_identity": {
+        "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+        "line": 2809,
+        "left": "MainClass.connstr",
+        "containing_member": "InsertLinkedCreditNote",
+        "context_start": 2804,
+        "context_end": 2847
+      },
+      "was_whole_context_read_in_R5": false,
+      "whole_containing_context_read_in_R6": true,
+      "current_method_sha256": "d7a9d8d1e6bb8beb32f279110bd87fc821253fc10c0f947cee7127cb8786d9bf",
+      "source_disposition_id": "R6D-LINKED-PARENT",
+      "whole_capability_exit": false
+    },
+    {
+      "original_R5_write_identity": {
+        "path": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs",
+        "line": 102,
+        "left": "MainClass.connstr",
+        "containing_member": "btnadd_Click",
+        "context_start": 97,
+        "context_end": 103
+      },
+      "was_whole_context_read_in_R5": false,
+      "whole_containing_context_read_in_R6": true,
+      "current_method_sha256": "8ecb2fb3981056f13d7efe836a448abf94e4199ff6a2f5be28c264da751fe17e",
+      "source_disposition_id": "R6D-ITEMS-EXIT",
+      "whole_capability_exit": false
+    },
+    {
+      "original_R5_write_identity": {
+        "path": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs",
+        "line": 111,
+        "left": "MainClass.connstr",
+        "containing_member": "btnAddall_Click",
+        "context_start": 105,
+        "context_end": 116
+      },
+      "was_whole_context_read_in_R5": false,
+      "whole_containing_context_read_in_R6": true,
+      "current_method_sha256": "39526fff511121d0ca317a6265a33a484779894860fe0c9321f6662fae045db0",
+      "source_disposition_id": "R6D-ITEMS-EXIT",
+      "whole_capability_exit": false
+    },
+    {
+      "original_R5_write_identity": {
+        "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+        "line": 128,
+        "left": "MainClass.connstr",
+        "containing_member": "btnClose_Click",
+        "context_start": 123,
+        "context_end": 131
+      },
+      "was_whole_context_read_in_R5": false,
+      "whole_containing_context_read_in_R6": true,
+      "current_method_sha256": "4f2ea30a3e51ae1cadc5b1e4c373cab2cfed89cf9f98b3eb8de1fb2931207643",
+      "source_disposition_id": "R6D-SEARCH-EXIT",
+      "whole_capability_exit": false
+    },
+    {
+      "original_R5_write_identity": {
+        "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+        "line": 218,
+        "left": "MainClass.DataBaseName",
+        "containing_member": "Login",
+        "context_start": 142,
+        "context_end": 277
+      },
+      "was_whole_context_read_in_R5": false,
+      "whole_containing_context_read_in_R6": true,
+      "current_method_sha256": "7f0bd530b52a39ae2a8f018a97bb89b1547ac0578c6cb0b4d3821b372fb66115",
+      "source_disposition_id": "R6D-BOOTSTRAP",
+      "whole_capability_exit": false
+    },
+    {
+      "original_R5_write_identity": {
+        "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+        "line": 290,
+        "left": "MainClass.connstr",
+        "containing_member": "BuildConnectionStrings",
+        "context_start": 279,
+        "context_end": 310
+      },
+      "was_whole_context_read_in_R5": true,
+      "whole_containing_context_read_in_R6": true,
+      "current_method_sha256": "0c31611bd3d0d2627985c308c4a61e7ecdb33aa76f0526949d15ea7994dc9b40",
+      "source_disposition_id": "R6D-BOOTSTRAP",
+      "whole_capability_exit": false
+    },
+    {
+      "original_R5_write_identity": {
+        "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+        "line": 298,
+        "left": "MainClass.connstr",
+        "containing_member": "BuildConnectionStrings",
+        "context_start": 279,
+        "context_end": 310
+      },
+      "was_whole_context_read_in_R5": true,
+      "whole_containing_context_read_in_R6": true,
+      "current_method_sha256": "0c31611bd3d0d2627985c308c4a61e7ecdb33aa76f0526949d15ea7994dc9b40",
+      "source_disposition_id": "R6D-BOOTSTRAP",
+      "whole_capability_exit": false
+    },
+    {
+      "original_R5_write_identity": {
+        "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+        "line": 308,
+        "left": "MainClass.connstr",
+        "containing_member": "BuildConnectionStrings",
+        "context_start": 279,
+        "context_end": 310
+      },
+      "was_whole_context_read_in_R5": true,
+      "whole_containing_context_read_in_R6": true,
+      "current_method_sha256": "0c31611bd3d0d2627985c308c4a61e7ecdb33aa76f0526949d15ea7994dc9b40",
+      "source_disposition_id": "R6D-BOOTSTRAP",
+      "whole_capability_exit": false
+    },
+    {
+      "original_R5_write_identity": {
+        "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+        "line": 573,
+        "left": "MainClass.Database",
+        "containing_member": "LoadData",
+        "context_start": 541,
+        "context_end": 638
+      },
+      "was_whole_context_read_in_R5": false,
+      "whole_containing_context_read_in_R6": true,
+      "current_method_sha256": "8a235c85064ae621e72e19e2b999dcf901c326466fa1cd8e6dbc5905cdc9d332",
+      "source_disposition_id": "R6D-BOOTSTRAP",
+      "whole_capability_exit": false
+    },
+    {
+      "original_R5_write_identity": {
+        "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+        "line": 708,
+        "left": "MainClass.connstr",
+        "containing_member": "LoadBranches",
+        "context_start": 665,
+        "context_end": 765
+      },
+      "was_whole_context_read_in_R5": true,
+      "whole_containing_context_read_in_R6": true,
+      "current_method_sha256": "12740e012cc23dfa7192b8c38db937e8c4dd79fb9664f63a7edf26be41c6a75c",
+      "source_disposition_id": "R6D-BOOTSTRAP",
+      "whole_capability_exit": false
+    },
+    {
+      "original_R5_write_identity": {
+        "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+        "line": 713,
+        "left": "MainClass.connstr",
+        "containing_member": "LoadBranches",
+        "context_start": 665,
+        "context_end": 765
+      },
+      "was_whole_context_read_in_R5": true,
+      "whole_containing_context_read_in_R6": true,
+      "current_method_sha256": "12740e012cc23dfa7192b8c38db937e8c4dd79fb9664f63a7edf26be41c6a75c",
+      "source_disposition_id": "R6D-BOOTSTRAP",
+      "whole_capability_exit": false
+    },
+    {
+      "original_R5_write_identity": {
+        "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+        "line": 718,
+        "left": "MainClass.connstr",
+        "containing_member": "LoadBranches",
+        "context_start": 665,
+        "context_end": 765
+      },
+      "was_whole_context_read_in_R5": true,
+      "whole_containing_context_read_in_R6": true,
+      "current_method_sha256": "12740e012cc23dfa7192b8c38db937e8c4dd79fb9664f63a7edf26be41c6a75c",
+      "source_disposition_id": "R6D-BOOTSTRAP",
+      "whole_capability_exit": false
+    },
+    {
+      "original_R5_write_identity": {
+        "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+        "line": 946,
+        "left": "MainClass.Database",
+        "containing_member": "cmbDatabases_SelectionChangeCommitted",
+        "context_start": 911,
+        "context_end": 961
+      },
+      "was_whole_context_read_in_R5": true,
+      "whole_containing_context_read_in_R6": true,
+      "current_method_sha256": "60e1a9d9441c5d764701ed381df2e911b345daf4cee5a1ee186ebd4b92094647",
+      "source_disposition_id": "R6D-BOOTSTRAP",
+      "whole_capability_exit": false
+    },
+    {
+      "original_R5_write_identity": {
+        "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+        "line": 2078,
+        "left": "MainClass.originalConnStr",
+        "containing_member": "btnInsertLinkedInv_Click",
+        "context_start": 2072,
+        "context_end": 2123
+      },
+      "was_whole_context_read_in_R5": false,
+      "whole_containing_context_read_in_R6": true,
+      "current_method_sha256": "0d99be43329d9ef976cbef76276728cf77340eac808e5fe4188c1d5a84ac18e9",
+      "source_disposition_id": "R6D-LINKED-PARENT",
+      "whole_capability_exit": false
+    },
+    {
+      "original_R5_write_identity": {
+        "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+        "line": 2079,
+        "left": "MainClass.connstr",
+        "containing_member": "btnInsertLinkedInv_Click",
+        "context_start": 2072,
+        "context_end": 2123
+      },
+      "was_whole_context_read_in_R5": false,
+      "whole_containing_context_read_in_R6": true,
+      "current_method_sha256": "0d99be43329d9ef976cbef76276728cf77340eac808e5fe4188c1d5a84ac18e9",
+      "source_disposition_id": "R6D-LINKED-PARENT",
+      "whole_capability_exit": false
+    },
+    {
+      "original_R5_write_identity": {
+        "path": "SmartAuditERP/Home.xaml.cs",
+        "line": 655,
+        "left": "MainClass.Database",
+        "containing_member": "checkConn",
+        "context_start": 635,
+        "context_end": 690
+      },
+      "was_whole_context_read_in_R5": false,
+      "whole_containing_context_read_in_R6": true,
+      "current_method_sha256": "6cea683058c4aeae868befcfb686706f2c6c7f4b4d3f9c2bd08947b11df01889",
+      "source_disposition_id": "R6D-BOOTSTRAP",
+      "whole_capability_exit": false
+    }
+  ],
+  "original_R5_writes_or_read_chronology_rewritten": false,
+  "repository_alias_assignment_census_completed": false,
+  "whole_D17_complete": false,
+  "remaining_readable_local": [
+    "All remaining ShowEntrySource callers, all dispatch child receivers/allowed-set/health publication and LastProcess consumers outside this slice.",
+    "Alias/reflection/connection object ownership and full route-scoped database/year/branch identity; no whole-repository assignment census from eight literal owners."
+  ],
+  "pinned_inputs": [
+    {
+      "path": "docs/audit/evidence/identity-year-local-worklist-rev02-07B39R5.json",
+      "bytes": 15696,
+      "sha256": "d905d5510520ab945f34dae07ef094cccbc9972bb40f5237114dc826118a4457"
+    },
+    {
+      "path": "docs/audit/evidence/session-year-source-facts-07B39R6.json",
+      "bytes": 743814,
+      "sha256": "fe34affdda2e8756de75f201cee6712d7eb131efe06cf48140588dfdbbcc69d3"
+    },
+    {
+      "path": "docs/audit/evidence/session-year-source-review-log-07B39R6.json",
+      "bytes": 13711,
+      "sha256": "f16a1f9ec45190823dbab673e477504cadeceba29497ad653e199a2295e35d3f"
+    },
+    {
+      "path": "docs/audit/evidence/session-year-dispositions-07B39R6.json",
+      "bytes": 30982,
+      "sha256": "4145dcacaf665d639146cf94fef104993e852309d25c3b1d28789db57f5a9214"
+    }
+  ]
+}

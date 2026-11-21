@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "kind": "R6-post-capture-publication-finalization-not-a-suite-rerun-or-exit",
+  "assessment_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "late_publications": [
+    {
+      "path": "docs/audit/PHASE-07B39R6.md",
+      "bytes": 8389,
+      "sha256": "dc8bb72a10a5734120ddc4b5a00b24150d2c253225a3339fabcedaa438670f96"
+    },
+    {
+      "path": "docs/audit/VALIDATION-07B39R6.md",
+      "bytes": 7548,
+      "sha256": "e6038fe7a49efa7b8ec508ddfd70de26ea67b3da84015306cf869496a1d76989"
+    },
+    {
+      "path": "docs/audit/evidence/capability-reconciliation-07B39R6.json",
+      "bytes": 553324,
+      "sha256": "e7207c20b8b1771c28dcb15611d6c28e4192538d95a2ead71743764255f9bc5d"
+    },
+    {
+      "path": "docs/audit/evidence/validation-status-supplement-07B39R6.json",
+      "bytes": 2120,
+      "sha256": "58d8787049a0c670aaca2f83dcc0cb58a6eb0a7e41d4737a980bd4549c3ba449"
+    },
+    {
+      "path": "docs/audit/evidence/navigation-local-next-worklist-07B39R6.json",
+      "bytes": 49112,
+      "sha256": "92ea305a48a1a4d49395e7df925081b87547f1e7ff4a6da9ed604817505c40f5"
+    },
+    {
+      "path": "docs/audit/evidence/index-prefix-publication-note-07B39R6.json",
+      "bytes": 1910,
+      "sha256": "ddacff29f4e2625a1135b9657536bc86aed4c30ec6bf38c10bd86b5c033dc517"
+    },
+    {
+      "path": "docs/audit/README.md",
+      "bytes": 85290,
+      "sha256": "f414247006a9dc00f457cb1ee8a9cc91cad5366eb7fd2f6076e98203aa81eb3b"
+    },
+    {
+      "path": "docs/audit/PLAN.md",
+      "bytes": 139061,
+      "sha256": "c1c5bf911eda72b6d7f74ada7c200ba6a570a18c1d349db2f3980b843d16d3c2"
+    },
+    {
+      "path": "docs/audit/IMPROVEMENTS.md",
+      "bytes": 269849,
+      "sha256": "25c6613067f9644f5327f17278769e8a1a3de9c1da2a3509e2d25664071325b6"
+    }
+  ],
+  "these_current_versions_were_run01_inputs": false,
+  "the_three_prior_index_versions_were_inputs": true,
+  "allowed_changed_run01_input_paths": [
+    "docs/audit/IMPROVEMENTS.md",
+    "docs/audit/PLAN.md",
+    "docs/audit/README.md"
+  ],
+  "capture_receipt": {
+    "path": "docs/audit/evidence/validation-current-run01-receipt-07B39R6.json",
+    "bytes": 396438,
+    "sha256": "1d977c710ba0fb8ce659283dd47d739450d164f6598faa6fcb94f9001bfb8eb5"
+  },
+  "source_review_unchanged_since_capture": {
+    "path": "docs/audit/SOURCE-REVIEW-07B39R6.md",
+    "bytes": 14426,
+    "sha256": "6a567dfc90fc0a2250e2187a92b595abb4c9a80754ae5f1c4f9fe50f762fe212"
+  },
+  "all_three_new_tools_unchanged_since_capture": [
+    {
+      "path": "docs/audit/tools/disposition07b/verify_session_year.py",
+      "bytes": 33877,
+      "sha256": "78bc72c36bc60ac4cdc059f713b3011ab85365d2ef9e1f3e0256a730529455f7"
+    },
+    {
+      "path": "docs/audit/tools/disposition07b/test_session_year.py",
+      "bytes": 17583,
+      "sha256": "9c730befe852a4aea4ac2e718f9a35cf9e83b7d82eeef1a16e52a3472c8847c0"
+    },
+    {
+      "path": "docs/audit/tools/disposition07b/capture_session_year.py",
+      "bytes": 9712,
+      "sha256": "6239d9d23a2136efc93b3e060ccc5719e556d2879d09b77a71f06c7c96ad18a4"
+    }
+  ],
+  "no_prior_R1_R4_R5_B38_tools_or_captures_rewritten": true,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "capability_exit_certificates_issued": 0,
+  "four_family_exit_certificates_issued": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "next_check": "Separate stdlib archive/hash/case-record/reference check, not a suite rerun, independent human semantic review or financial acceptance."
+}

@@ -1,0 +1,466 @@
+{
+  "schema_version": 1,
+  "kind": "R6-individual-session-year-linked-result-source-decisions-no-whole-capability-certification",
+  "assessment_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "prior196_tests_recertified": false,
+  "R2_R3_files_recovered": false,
+  "new_accepted_external_handoffs": 0,
+  "source_decisions": [
+    {
+      "id": "R6D-BOOTSTRAP",
+      "source_basis": [
+        "SmartAuditERP/Home.xaml.cs:635-690",
+        "SmartAuditERP/Home.xaml.cs:394-502",
+        "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:142-277",
+        "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:541-638",
+        "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:279-310",
+        "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:665-765",
+        "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:911-961",
+        "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:361-390",
+        "SmartAuditERP/Class/MainClass.cs:45-49"
+      ],
+      "source_disposition": "MainClass.Database physical name, DataBaseName display label, connstr mutable string, originalConnStr shared backup, MainClass.conn last factory object and captured window connections are separate state. Login chooses physical SelectedValue versus display Text; startup persists the physical name. Home.checkConn writes Database and its own connection but not connstr; Home.Loaded later recaptures ConnObj. Login MARS strings and later LoadBranches rewrites are path-specific, not a universal provider configuration.",
+      "limit": "No session/year deployment mapping, successful login, MARS behavior, live credentials, branch authorization, cloud DTO state or event order certified. P1-009/017/031 and P2-003/012 retain their existing fields. StartupData.json values were never opened.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    },
+    {
+      "id": "R6D-REPORT-YEAR",
+      "source_basis": [
+        "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs:841-858",
+        "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs:671-690",
+        "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs:865-871",
+        "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs:839-845",
+        "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs:207-239",
+        "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs:814-837"
+      ],
+      "source_disposition": "Both show handlers back up/switch the global string only when the shared flag and a nonnull selected value are present. On normal return from ShowResult/ShowAccountData, they restore connstr, set the flag false and create a new window connection, without clearing the visible year. A second click without a selection event therefore does not repeat the previous-year switch: direct support for existing P7-115. The main statement sets the flag even for inserted index zero; the detailed balance requires index >0.",
+      "limit": "Normal-tail restoration is not finally. The inner show methods catch ordinary query exceptions, so an ordinary caught SQL failure is NOT asserted to skip restoration. Only a propagating exception that actually escapes before the tail can skip it. No financial misstatement or database collision observed.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    },
+    {
+      "id": "R6D-LINKED-PARENT",
+      "source_basis": [
+        "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2721-2732",
+        "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2734-2768",
+        "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2770-2802",
+        "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2804-2847",
+        "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1607-1641",
+        "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:1546-1605",
+        "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:558-570",
+        "SmartAuditERP/Form_WPF/frmcontract.xaml.cs:2072-2123",
+        "SmartAuditERP/Form_WPF/frmcontract.xaml.cs:173-205",
+        "SmartAuditERP/Class/InvoiceOper.cs:3941-4013",
+        "SmartAuditERP/Class/InvoiceOperContract.cs:2166-2243"
+      ],
+      "source_disposition": "Three sale bodies and the guarded contract body optionally overwrite the shared backup/string with a trusted-auth previous-database expression, replace local conn, then CLR before calling a void InsertFromInv helper. On normal helper return they still apply the new/ref/payment/date/item tail, with no accepted-result guard, own restore or CheckBeforeClear. Helpers can return before binding if search is not accepted. This extends the existing P7-160 parent/modal-result root, without making a new numbered finding. Contract button wiring exists in SetupButtonEvents called from frmcontract_Load, despite no XAML Click attribute. Its year combo is collapsed in the selected XAML.",
+      "limit": "No actual cancellation, lost draft, saved wrong-database invoice, eligibility balance or runtime reachability of a particular contract-year selection is observed. A normal helper return is not hydration success. Parent fields, factory consumers and captured connections are distinguished. CLR/helper/setter exceptions can cut the tail short; no rollback is invented.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    },
+    {
+      "id": "R6D-SEARCH-EXIT",
+      "source_basis": [
+        "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:49-66",
+        "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:88-116",
+        "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:123-131",
+        "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:266-284",
+        "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:286-303",
+        "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:310-334",
+        "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:336-408"
+      ],
+      "source_disposition": "The explicit close button restores connstr and clears ReturnYearPreviews. Escape calls Close directly, not that button handler. Enter/double-click/return-button acceptance writes ISDone and InvGlobalID; it does not add database provenance. _conn is readonly and captured at construction. Query branches distinguish InvContratct from Inv, use type/proc and a branch predicate except the selected InvType14 branch. A string restore cannot rewrite a previously constructed connection.",
+      "limit": "No comprehensive native-close/routed-command/alias/reflection census, row eligibility or provider result is certified. Selected XAML root has no Closing declaration; that is not a proof that no external close behavior exists. Search cancellation and acceptance have different written tails.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    },
+    {
+      "id": "R6D-ITEMS-EXIT",
+      "source_basis": [
+        "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:49-66",
+        "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:97-103",
+        "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:105-116",
+        "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:79-85",
+        "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:92-95",
+        "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:299-338",
+        "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:340-349",
+        "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:351-364",
+        "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:188-229",
+        "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:231-287"
+      ],
+      "source_disposition": "Selected-items button calls a void helper, then restores connstr if the shared flag is true, but does not clear the flag; this tail can also follow a no-selection or caught-helper return. All-items marks done and restores string plus clears flag before Close. CloseWithoutResult resets the appropriate local model and ISDone=false, then closes without restoring the session; explicit cancel and Escape use it. Constructor-captured readonly _conn still supplies SQL after changes to the global string. Contract invcontract is distinct from inv in declarations/helper assignment, while selected-row modification/removal loops through inv.InvoiceItems.",
+      "limit": "No SQL/WPF result or SDK collection defaults, cloning/alias semantics or actual filtered contract list certified. Per-item-id selection behavior is only source evidence here, not a new item-identity root. Missing DTO definitions cannot be presumed to repair the local cross-model path. Remaining readable-local caller/DTO boundary review stays explicit.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    },
+    {
+      "id": "R6D-ENTRY-DISPATCH",
+      "source_basis": [
+        "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs:873-891",
+        "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs:784-792",
+        "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs:331-346",
+        "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs:284-329",
+        "SmartAuditERP/Class/EntryOper.cs:1023-1192",
+        "SmartAuditERP/Properties/Resources.resx:4703-4725;50285-50307"
+      ],
+      "source_disposition": "The two report detail buttons pass Tag bound to DgvGenralNo. Balance rows source it from Entry.GlobalID; selected statement SQL fragments alias es.EntryGlobalID. ShowEntrySource(string glid) constructs a fresh current-global connection, resolves Entry by GlobalId, then uses loaded Entry.id and branch to search Inv and route local document ids. It has no originating database/year argument. Selected previous-year report rows may therefore outlive the restored global database context. This is a conditional provenance source question, not an assertion of an actual colliding key or wrong opened document.",
+      "limit": "Full dispatcher body was read, including empty return, invoice six arms and other entry-type arms. This does NOT mean every child receiver or every caller has been read or compiler-bound. No universal allowed-set/ACL/hydration/Found/Empty/Failed/Partial contract certified; remaining receiver/caller work is local, not an unavailable SDK handoff.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    },
+    {
+      "id": "R6D-YEAR-REGISTRY",
+      "source_basis": [
+        "SmartAuditERP/Form_WPF/frmSettings.xaml.cs:1551-1584",
+        "SmartAuditERP/Form_WPF/frmSettings.xaml.cs:2644-2657",
+        "SmartAuditERP/Form_WPF/frmSettings.xaml.cs:2659-2672",
+        "SmartAuditERP/Form_WPF/frmSettings.xaml.cs:2706-2740",
+        "SmartAuditERP/Form_WPF/frmSettings.xaml.cs:2742-2766",
+        "SmartAuditERP/Properties/Resources.resx:4798-4808;50417-50431",
+        "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:640-663"
+      ],
+      "source_disposition": "Year_Previews is a readable local mapping of display Dbname to physical DbAutoName, with id PK and IS_Deleted, not a financial-year component added to invoice keys. The settings caller passes both local row names to the parameterized delete-by-label/insert writer; the selected delete writer and loader were also read. Login master catalog lookup is distinct from the per-database Year_Previews lists. Selected DDL is resource text, not deployed schema.",
+      "limit": "No live master catalog contents, grants, uniqueness of mapped database/year/tenant, success of delete+insert or deployed patch execution certified. The settings writer has no shown transaction around delete+insert; no failure/interleaving is claimed. Its full surrounding settings/database-management path and deployment comparison remain local/contract work, respectively, not accepted completion handoffs.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    }
+  ],
+  "path_outcomes": [
+    {
+      "id": "REPORT-NORMAL",
+      "source_basis": [
+        "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs:841-858",
+        "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs:671-690"
+      ],
+      "source_disposition": "Normal show return reaches global string restore, flag false and replacement window connection while selected year remains visible.",
+      "limit": "Conditional on prior backup/switch and completed statements; no finally or row success implied.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    },
+    {
+      "id": "REPORT-NO-ACCOUNT",
+      "source_basis": [
+        "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs:278-323",
+        "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs:167-250"
+      ],
+      "source_disposition": "The inner show method can return before a query for no selected account; caller normal-tail restore still follows a normal return.",
+      "limit": "No data load, rows or successful financial output is implied by restore.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    },
+    {
+      "id": "REPORT-CAUGHT",
+      "source_basis": [
+        "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs:278-323",
+        "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs:167-250"
+      ],
+      "source_disposition": "An error caught inside the show method can return normally and still let the caller restore.",
+      "limit": "Do not conflate a handled query error with an exception escaping the handler.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    },
+    {
+      "id": "REPORT-ESCAPED",
+      "source_basis": [
+        "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs:841-858",
+        "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs:671-690"
+      ],
+      "source_disposition": "A propagating exception before the normal tail can skip the caller restoration because these handlers have no finally.",
+      "limit": "Hypothetical path only; no caught provider error is asserted to escape, and no runtime event was observed.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    },
+    {
+      "id": "SEARCH-BUTTON-CANCEL",
+      "source_basis": [
+        "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:123-131",
+        "SmartAuditERP/Class/InvoiceOper.cs:3941-4013"
+      ],
+      "source_disposition": "Explicit button restores string and clears flag; helper may return before binding with ISDone=false.",
+      "limit": "The parent was already cleared before this helper was called and has its own unconditional-on-normal-return mutation tail.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    },
+    {
+      "id": "SEARCH-ESCAPE",
+      "source_basis": [
+        "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:88-116",
+        "SmartAuditERP/Class/InvoiceOper.cs:3941-4013"
+      ],
+      "source_disposition": "Escape calls Close without explicit restore in this written path; the void helper can return to the linked caller.",
+      "limit": "No native-close equivalence, successful close or all-program restore absence asserted.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    },
+    {
+      "id": "SEARCH-ACCEPT",
+      "source_basis": [
+        "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:266-284",
+        "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:88-116",
+        "SmartAuditERP/Class/InvoiceOper.cs:3941-4013"
+      ],
+      "source_disposition": "Acceptance sets global invoice key and done; normal helper path binds header before opening the item child.",
+      "limit": "No database tag, hydration success or branch/year uniqueness inferred from InvGlobalID text alone.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    },
+    {
+      "id": "ITEMS-NONE",
+      "source_basis": [
+        "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:299-338",
+        "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:97-103"
+      ],
+      "source_disposition": "No selected rows sets ISDone=false and returns from helper; the outer button can still restore the string without clearing the shared flag.",
+      "limit": "No inserted rows or parent acceptance is implied. A caught helper exception can also return before success.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    },
+    {
+      "id": "ITEMS-SOME",
+      "source_basis": [
+        "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:299-338",
+        "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:97-103"
+      ],
+      "source_disposition": "Normal success adjusts/removes inv.InvoiceItems, sets done and requests Close; outer button restoration does not clear the year flag.",
+      "limit": "No actual close order or SDK alias/clone/financial behavior certified; contract uses a different model field.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    },
+    {
+      "id": "ITEMS-ALL",
+      "source_basis": [
+        "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:105-116"
+      ],
+      "source_disposition": "All-items sets done, restores string and clears shared flag when true, then requests Close.",
+      "limit": "No full model hydration, list validity or provider success certified.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    },
+    {
+      "id": "ITEMS-CANCEL",
+      "source_basis": [
+        "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:351-364",
+        "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:79-85",
+        "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs:92-95"
+      ],
+      "source_disposition": "Explicit cancel/Escape resets local model/result and requests Close without the selected/all string-restoration tails.",
+      "limit": "No rollback of earlier parent header binding or shared state is written in this helper; actual object semantics are not executed.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    },
+    {
+      "id": "LINKED-HELPER-RETURN",
+      "source_basis": [
+        "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2734-2768",
+        "SmartAuditERP/Form_WPF/frmcontract.xaml.cs:2072-2123",
+        "SmartAuditERP/Class/InvoiceOper.cs:3941-4013",
+        "SmartAuditERP/Class/InvoiceOperContract.cs:2166-2243"
+      ],
+      "source_disposition": "After a normal void helper return, linked callers publish new/ref/date/payment changes without a done result.",
+      "limit": "Return means control flow only, not Found/accepted/fully-loaded; no lost draft was observed.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    },
+    {
+      "id": "ENTRY-EMPTY",
+      "source_basis": [
+        "SmartAuditERP/Class/EntryOper.cs:1023-1192"
+      ],
+      "source_disposition": "A zero-row Entry lookup returns before any window route.",
+      "limit": "Void return does not distinguish empty from other caller-visible outcomes or certify the originating database.",
+      "observed_in_ERP": false,
+      "is_capability_exit": false
+    }
+  ],
+  "capabilities": {
+    "CAP7B38-D05": {
+      "canonical_capability_row": {
+        "id": "CAP7B38-D05",
+        "capability": "أرصدة وكشوف الحساب وسنة القاعدة",
+        "entry_point": "frmAccountBalance / frmAccountsStatement وتفاصيل المستند",
+        "source_contract": "GL/Entry/Opening وقاعدة السنة وid/code/branch",
+        "output_boundary": "صفوف/مجاميع/DTO/قنوات تصدير وتنقل إلى طفل",
+        "related_part_numbers": "2;11;19",
+        "related_finding_ids": "P3-021;P7-061;P7-115;P7-116",
+        "current_handoff_ids": "H7B38-01;H7B38-03;H7B38-04",
+        "assessment_status": "historical-and-selected-current-source-assessment-boundaries-open",
+        "assessment_basis": "historical-FE-lineage-plus-explicit-current-source-scope-not-all-source-rereview",
+        "excluded_from_claim": "لا اعتماد ترتيب أو فتح سنة من لقطة supplied ولا قبول كشف حساب.",
+        "owner_role": "مالك المنتج والتقرير بالتنسيق مع مالك السياسة والمصدر",
+        "required_redacted_input": "راجع H7B38 ذات الصلة: قاموس/عقد/manifest منقح فقط؛ لا أسرار أو بيانات أعمال.",
+        "absence_impact": "يبقى هذا الحد غير محسوم؛ الإحالة لا تعني الموافقة أو غياب القدرة أو إغلاق الأسرة.",
+        "next_action": "اتساق مصدر السنة والمعايير وهوية الحساب والمستند بين إعادة العرض والطفل والمخرج.",
+        "static_exit_criterion": "اتساق مصدر السنة والمعايير وهوية الحساب والمستند بين إعادة العرض والطفل والمخرج.",
+        "local_semantic_obligations_complete": "false",
+        "whole_capability_certified": "false",
+        "runtime_status": "not-executed"
+      },
+      "whole_capability_certified": false,
+      "local_semantic_obligations_complete": false,
+      "readable_local_externalized": false,
+      "bounded_new_decisions": [
+        "R6D-REPORT-YEAR",
+        "R6D-YEAR-REGISTRY"
+      ],
+      "remaining_readable_local": [
+        "Remaining main/detail statement calculation, predicate and output contracts and resource procedure bodies outside selected key fragments; selected body reads are not financial acceptance.",
+        "Complete source-context propagation across report detail/refresh/print callers, then compare redacted database-year mapping; ordinary source work is not an external handoff."
+      ]
+    },
+    "CAP7B38-D17": {
+      "canonical_capability_row": {
+        "id": "CAP7B38-D17",
+        "capability": "هوية المستند والتنقل وفتح الأطفال",
+        "entry_point": "document opener/ShowEntrySource/LastProcess وTableRow→child",
+        "source_contract": "GlobalID/type/branch/year/source مقابل رقم محلي/اسم عرض",
+        "output_boundary": "NavigationRequest/LoadOutcome وحد نشر حالة الأب",
+        "related_part_numbers": "11;14;16;17;19;27;28;31",
+        "related_finding_ids": "P7-061;P7-115;P7-130;P7-155;P7-156;P7-157;P7-158;P7-161",
+        "current_handoff_ids": "H7B38-03;H7B38-04;H7B38-05",
+        "assessment_status": "historical-and-selected-current-source-assessment-boundaries-open",
+        "assessment_basis": "historical-FE-lineage-plus-explicit-current-source-scope-not-all-source-rereview",
+        "excluded_from_claim": "لا حمل branch/year/ACL من مجرد تمرير id.",
+        "owner_role": "مالك المنتج والتقرير بالتنسيق مع مالك السياسة والمصدر",
+        "required_redacted_input": "راجع H7B38 ذات الصلة: قاموس/عقد/manifest منقح فقط؛ لا أسرار أو بيانات أعمال.",
+        "absence_impact": "يبقى هذا الحد غير محسوم؛ الإحالة لا تعني الموافقة أو غياب القدرة أو إغلاق الأسرة.",
+        "next_action": "كل route له DocumentRef/allowed-set وscope وFound/Empty/Failed/Partial لا void/اسم عرض؛ فرز paths غير المحسومة.",
+        "static_exit_criterion": "كل route له DocumentRef/allowed-set وscope وFound/Empty/Failed/Partial لا void/اسم عرض؛ فرز paths غير المحسومة.",
+        "local_semantic_obligations_complete": "false",
+        "whole_capability_certified": "false",
+        "runtime_status": "not-executed"
+      },
+      "whole_capability_certified": false,
+      "local_semantic_obligations_complete": false,
+      "readable_local_externalized": false,
+      "bounded_new_decisions": [
+        "R6D-ENTRY-DISPATCH",
+        "R6D-BOOTSTRAP"
+      ],
+      "remaining_readable_local": [
+        "All remaining ShowEntrySource callers, all dispatch child receivers/allowed-set/health publication and LastProcess consumers outside this slice.",
+        "Alias/reflection/connection object ownership and full route-scoped database/year/branch identity; no whole-repository assignment census from eight literal owners."
+      ]
+    },
+    "CAP7B38-D21": {
+      "canonical_capability_row": {
+        "id": "CAP7B38-D21",
+        "capability": "منتقي الفاتورة والرجوع والأهلية وجميع المتصلين المباشرين",
+        "entry_point": "16 new frmInvoiceSrch، Enter/double-click/Return وCond/filters",
+        "source_contract": "Inv/InvContratct وProcType/type1/2/20/23/branch/status وkey",
+        "output_boundary": "ISDone/InvGlobalID/ProcType/PayType ثم reader/child",
+        "related_part_numbers": "27;28;35;36;37",
+        "related_finding_ids": "P7-155;P7-156;P7-157;P7-158;P7-159;P7-160",
+        "current_handoff_ids": "H7B38-03;H7B38-04;H7B38-05",
+        "assessment_status": "historical-and-selected-current-source-assessment-boundaries-open",
+        "assessment_basis": "historical-FE-lineage-plus-explicit-current-source-scope-not-all-source-rereview",
+        "excluded_from_claim": "لا السنة السابقة أو modal/chrome schedule أو دعم enum من الاسم.",
+        "owner_role": "مالك المنتج والتقرير بالتنسيق مع مالك السياسة والمصدر",
+        "required_redacted_input": "راجع H7B38 ذات الصلة: قاموس/عقد/manifest منقح فقط؛ لا أسرار أو بيانات أعمال.",
+        "absence_impact": "يبقى هذا الحد غير محسوم؛ الإحالة لا تعني الموافقة أو غياب القدرة أو إغلاق الأسرة.",
+        "next_action": "عقد request/result واحد ذو هوية وأهلية؛ مراجعة Return وReff_No وcaller PurchInv بدل إسقاط حكم16علىكلcaller.",
+        "static_exit_criterion": "عقد request/result واحد ذو هوية وأهلية؛ مراجعة Return وReff_No وcaller PurchInv بدل إسقاط حكم16علىكلcaller.",
+        "local_semantic_obligations_complete": "false",
+        "whole_capability_certified": "false",
+        "runtime_status": "not-executed"
+      },
+      "whole_capability_certified": false,
+      "local_semantic_obligations_complete": false,
+      "readable_local_externalized": false,
+      "bounded_new_decisions": [
+        "R6D-SEARCH-EXIT",
+        "R6D-ITEMS-EXIT",
+        "R6D-LINKED-PARENT"
+      ],
+      "remaining_readable_local": [
+        "Other direct InsertFromInv/selector callers, eligibility/remaining-return balance and every return/close path; SDK DTO semantics may be compared only after readable local producer/consumer work.",
+        "Complete contract selected-items/result propagation and local related-root adjudication; missing six finding dictionaries prevent a full historical novelty decision."
+      ]
+    },
+    "CAP7B38-D22": {
+      "canonical_capability_row": {
+        "id": "CAP7B38-D22",
+        "capability": "ترك المسودة والجديد والتنقل والإغلاق",
+        "entry_point": "new/open/first/next/last/close/Loaded/F6 في المحررات المختارة",
+        "source_contract": "ISNew/IsUpdated وsetters/dirty وقرارSave/Discard/Stay",
+        "output_boundary": "طلب انتقال منفصل عن LoadOutcome ثم commit واحد",
+        "related_part_numbers": "29;30;31;32;35;37",
+        "related_finding_ids": "P7-159;P7-160;P7-161;P7-162",
+        "current_handoff_ids": "H7B38-03;H7B38-05",
+        "assessment_status": "historical-and-selected-current-source-assessment-boundaries-open",
+        "assessment_basis": "historical-FE-lineage-plus-explicit-current-source-scope-not-all-source-rereview",
+        "excluded_from_claim": "لا أحداث إطار أو غياب dirty من عدم وجود setter محلي.",
+        "owner_role": "مالك المنتج والتقرير بالتنسيق مع مالك السياسة والمصدر",
+        "required_redacted_input": "راجع H7B38 ذات الصلة: قاموس/عقد/manifest منقح فقط؛ لا أسرار أو بيانات أعمال.",
+        "absence_impact": "يبقى هذا الحد غير محسوم؛ الإحالة لا تعني الموافقة أو غياب القدرة أو إغلاق الأسرة.",
+        "next_action": "كل أول كتابة محلية لها قرار ترك مستقل، وكل طلب إغلاق له مالك واحد مع تمييز catch-return/nonreturn.",
+        "static_exit_criterion": "كل أول كتابة محلية لها قرار ترك مستقل، وكل طلب إغلاق له مالك واحد مع تمييز catch-return/nonreturn.",
+        "local_semantic_obligations_complete": "false",
+        "whole_capability_certified": "false",
+        "runtime_status": "not-executed"
+      },
+      "whole_capability_certified": false,
+      "local_semantic_obligations_complete": false,
+      "readable_local_externalized": false,
+      "bounded_new_decisions": [
+        "R6D-LINKED-PARENT",
+        "R6D-ITEMS-EXIT"
+      ],
+      "remaining_readable_local": [
+        "Every new/import/navigate/close/dirty guard caller and atomic parent publication outside these linked paths.",
+        "Local per-window connection retention, normal/exception exits and event wiring beyond selected source intervals; no generalized rollback or lifecycle order certification."
+      ]
+    }
+  },
+  "new_numbered_finding_ids": [],
+  "formal_prior_boundary_registers_replaced": false,
+  "not_certified": [
+    "Live or static whole7B completion",
+    "Financial-year partition or tenant/global-key uniqueness",
+    "Provider failure/MARS requirement or wrong-database write observed",
+    "SDK/list cloning/alias defaults, child event ordering or accepted user action",
+    "All339 reread or missing six/196/49 recertified"
+  ],
+  "pinned_inputs": [
+    {
+      "path": "docs/audit/evidence/session-year-source-facts-07B39R6.json",
+      "bytes": 743814,
+      "sha256": "fe34affdda2e8756de75f201cee6712d7eb131efe06cf48140588dfdbbcc69d3"
+    },
+    {
+      "path": "docs/audit/evidence/session-year-source-review-log-07B39R6.json",
+      "bytes": 13711,
+      "sha256": "f16a1f9ec45190823dbab673e477504cadeceba29497ad653e199a2295e35d3f"
+    },
+    {
+      "path": "docs/audit/evidence/entry-identities-07B39R6.json",
+      "bytes": 391899,
+      "sha256": "75f63b4ef0f0ebc590894505e0e9c74c367b325d0a829917588d8cb6bf9e24e8"
+    },
+    {
+      "path": "docs/audit/evidence/identity-year-local-worklist-rev02-07B39R5.json",
+      "bytes": 15696,
+      "sha256": "d905d5510520ab945f34dae07ef094cccbc9972bb40f5237114dc826118a4457"
+    },
+    {
+      "path": "docs/audit/evidence/production-adjustment-dispositions-rev02-07B39R5.json",
+      "bytes": 19514,
+      "sha256": "268bde58017b0e1eabe43b1802f5ec22561eb8389ff2cecf0a256aeaa46093af"
+    },
+    {
+      "path": "docs/audit/evidence/production-adjustment-root-adjudication-rev02-07B39R5.json",
+      "bytes": 305527,
+      "sha256": "a8f1de4ff266be37316323b56bc6168c1b34c6855eab040db32e53e6ac3ec22a"
+    },
+    {
+      "path": "docs/audit/evidence/capability-reconciliation-07B39R5.json",
+      "bytes": 467478,
+      "sha256": "98445de0c449d735839341380afac450ca670838d32d88fdd2fb1f0cb68f3b78"
+    }
+  ]
+}

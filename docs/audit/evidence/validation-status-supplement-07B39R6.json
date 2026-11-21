@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "kind": "post-capture-R6-validation-status-supplement-not-a-new-suite-run",
+  "assessment_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "receipt": {
+    "path": "docs/audit/evidence/validation-current-run01-receipt-07B39R6.json",
+    "bytes": 396438,
+    "sha256": "1d977c710ba0fb8ce659283dd47d739450d164f6598faa6fcb94f9001bfb8eb5"
+  },
+  "combined_actual_cases": 211,
+  "combined_actual_passed": 211,
+  "combined_actual_seconds": 40.265,
+  "new_R6_cases_inside211_not_added_again": 62,
+  "actual_combined_partition": {
+    "test_recovery_exit": {
+      "cases": 42,
+      "passed": 42
+    },
+    "test_document_receiver": {
+      "cases": 50,
+      "passed": 50
+    },
+    "test_production_adjustment": {
+      "cases": 57,
+      "passed": 57
+    },
+    "test_session_year": {
+      "cases": 62,
+      "passed": 62
+    }
+  },
+  "B38_actual": {
+    "cases": 43,
+    "passed": 42,
+    "failures": 1,
+    "seconds": 2.59,
+    "assertion_verbatim": "AssertionError: 152 != 142"
+  },
+  "all_suites_green": false,
+  "wrapper_exit_code": 1,
+  "four_completion_gates_exit2_open": true,
+  "capture_inputs_unchanged_during_run": 2271,
+  "authored_consumed_versions_archived": 10,
+  "old_R1_R4_R5_B38_tests_or_tools_edited": false,
+  "R5_run01_failure_and_actual_149_not_relabelled": true,
+  "late_publication_versions_were_capture_inputs": false,
+  "pinned_inputs": [
+    {
+      "path": "docs/audit/evidence/capability-reconciliation-07B39R6.json",
+      "bytes": 553324,
+      "sha256": "e7207c20b8b1771c28dcb15611d6c28e4192538d95a2ead71743764255f9bc5d"
+    },
+    {
+      "path": "docs/audit/evidence/navigation-local-next-worklist-07B39R6.json",
+      "bytes": 49112,
+      "sha256": "92ea305a48a1a4d49395e7df925081b87547f1e7ff4a6da9ed604817505c40f5"
+    }
+  ],
+  "new_accepted_external_handoffs": 0,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "capability_exit_certificates_issued": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "prior196_tests_recertified": false,
+  "R2_R3_files_recovered": false
+}

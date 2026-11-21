@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "errors": [],
+  "selected_complete_method_contexts": 92,
+  "source_identities": 21,
+  "original_pending_bodies_read": 12,
+  "original_literal_write_rows_disposed": 27,
+  "capability_exit_certificates_issued": 0,
+  "four_family_exit_certificates_issued": 0,
+  "whole_7B_static_assessment_complete": false,
+  "application_execution_count": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "limit": "Syntax/identity/recorded-source-disposition guards only. Not actual reading, calendar, runtime, all routes, financial acceptance, missing196 recertification or whole-capability completion."
+}
