@@ -414,37 +414,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void RestorePreviousReceipt()
         {
-            try
-            {
-                EnsureOpen(conn);
-                string sql = $"SELECT * FROM SandQ WHERE branch={MainClass.BranchNo}";
-                var adapter = new SqlDataAdapter(sql, conn);
-                var dt = new DataTable();
-                adapter.Fill(dt);
-
-                foreach (DataRow row in dt.Rows)
-                {
-                    try
-                    {
-                        int receiptNo = Convert.ToInt32(row["id"]);
-                        new SqlCommand(
-                            $"DELETE FROM SandQ WHERE id={receiptNo}",
-                            conn).ExecuteNonQuery();
-                    }
-                    catch
-                    {
-                        // تجاهل خطأ الصف الواحد
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                SetStatus("خطأ في الاستعادة: " + ex.Message);
-            }
-            finally
-            {
-                EnsureClose(conn);
-            }
+            // Never mutate historical rows just because the screen was opened.
+            // Warn when legacy rows exist or the check cannot be completed.
+            ReceiptOper.LegacyReceiptRowsClear("SandQ", MainClass.BranchNo);
         }
 
         #endregion
@@ -453,68 +425,50 @@ namespace SmartAuditERP.Form_WPF
 
         private void GetCustBalance()
         {
+            txtBalance.Text = string.Empty;
+            txtBalanceType.Text = string.Empty;
             try
             {
                 if (cmbClients.SelectedIndex == -1) return;
-
                 string clientName = (cmbClients.SelectedItem as DataRowView)?["name"]?.ToString()
                                     ?? cmbClients.Text;
-
                 EnsureOpen(conn);
-
-                var codeAdapter = new SqlDataAdapter(
-                    $"SELECT Code FROM Accounts_Index WHERE Type=2 AND AName=N'{clientName}'", conn);
+                using var codeAdapter = new SqlDataAdapter(
+                    "SELECT Code FROM Accounts_Index WHERE Type=2 AND AName=@name", conn);
+                codeAdapter.SelectCommand.Parameters.Add("@name", SqlDbType.NVarChar).Value = clientName;
                 var codeDt = new DataTable();
                 codeAdapter.Fill(codeDt);
-
-                int accCode = -1;
-                if (codeDt.Rows.Count > 0)
-                    int.TryParse(codeDt.Rows[0]["Code"].ToString(), out accCode);
-
-                if (accCode == -1)
-                {
-                    txtBalance.Text = "";
-                    txtBalanceType.Text = "";
-                    EnsureClose(conn);
-                    return;
-                }
+                if (codeDt.Rows.Count != 1 || codeDt.Rows[0]["Code"] == DBNull.Value ||
+                    !int.TryParse(codeDt.Rows[0]["Code"].ToString(), out int accCode) || accCode <= 0)
+                    throw new InvalidOperationException("تعذر تحديد حساب وحيد صالح لعرض الرصيد.");
 
                 string branchCond = MainClass.BranchNo != -1
-                    ? $"Entry.branch={MainClass.BranchNo} AND Entry_sub.branch={MainClass.BranchNo} AND "
-                    : "";
-
-                string balanceSql = $@"SELECT SUM(Entry_sub.dept) AS dept,
-                                      SUM(Entry_sub.credit) AS credit
-                               FROM Entry
-                               INNER JOIN Entry_sub ON Entry.GlobalID = Entry_sub.EntryGlobalID
-                               WHERE {branchCond}
-                                     Entry.IS_Deleted = 0
-                                 AND Entry.state = 1
-                                 AND Entry.date <= @date2
-                                 AND Entry_sub.acc_no = {accCode}";
-
-                var balanceCmd = new SqlCommand(balanceSql, conn);
-
-                // ✅ إصلاح: DateTime لا يدعم ??
-                DateTime selectedDate = txtDate.DateTime != default(DateTime)
-                    ? txtDate.DateTime
-                    : DateTime.Now;
-                balanceCmd.Parameters.AddWithValue("@date2", selectedDate.AddHours(24));
-
-                var balanceAdapter = new SqlDataAdapter(balanceCmd);
+                    ? "Entry.branch=@branch AND Entry_sub.branch=@branch AND " : "";
+                string balanceSql = $@"SELECT COUNT_BIG(*) AS rowsCount,
+                                      COUNT_BIG(Entry_sub.dept) AS debitCount,
+                                      COUNT_BIG(Entry_sub.credit) AS creditCount,
+                                      SUM(Entry_sub.dept) AS dept, SUM(Entry_sub.credit) AS credit
+                               FROM Entry INNER JOIN Entry_sub ON Entry.GlobalID=Entry_sub.EntryGlobalID
+                               WHERE {branchCond} Entry.IS_Deleted=0 AND Entry.state=1
+                                 AND Entry.date<@endExclusive AND Entry_sub.acc_no=@account";
+                using var balanceCmd = new SqlCommand(balanceSql, conn);
+                DateTime selectedDate = txtDate.DateTime != default(DateTime) ? txtDate.DateTime : DateTime.Now;
+                balanceCmd.Parameters.Add("@endExclusive", SqlDbType.DateTime).Value = selectedDate.Date.AddDays(1);
+                balanceCmd.Parameters.Add("@account", SqlDbType.Int).Value = accCode;
+                if (MainClass.BranchNo != -1)
+                    balanceCmd.Parameters.Add("@branch", SqlDbType.Int).Value = MainClass.BranchNo;
+                using var balanceAdapter = new SqlDataAdapter(balanceCmd);
                 var balanceDt = new DataTable();
                 balanceAdapter.Fill(balanceDt);
-
-                double dept = 0;
-                double credit = 0;
-
-                if (balanceDt.Rows.Count > 0
-                    && !string.IsNullOrWhiteSpace(balanceDt.Rows[0][0].ToString()))
-                {
-                    double.TryParse(balanceDt.Rows[0]["dept"].ToString(), out dept);
-                    double.TryParse(balanceDt.Rows[0]["credit"].ToString(), out credit);
-                }
-
+                if (balanceDt.Rows.Count != 1) throw new InvalidOperationException("الرصيد غير متاح.");
+                DataRow row = balanceDt.Rows[0];
+                long count = Convert.ToInt64(row["rowsCount"]);
+                if (Convert.ToInt64(row["debitCount"]) != count || Convert.ToInt64(row["creditCount"]) != count)
+                    throw new InvalidOperationException("الرصيد يتضمن مبالغ غير معروفة.");
+                double dept = count == 0 ? 0 : Convert.ToDouble(row["dept"]);
+                double credit = count == 0 ? 0 : Convert.ToDouble(row["credit"]);
+                if (!double.IsFinite(dept) || !double.IsFinite(credit) || !double.IsFinite(dept - credit))
+                    throw new InvalidOperationException("الرصيد غير صالح.");
                 if (dept >= credit)
                 {
                     txtBalance.Text = Math.Round(dept - credit, 3).ToString();
@@ -530,12 +484,11 @@ namespace SmartAuditERP.Form_WPF
             }
             catch (Exception ex)
             {
+                txtBalance.Text = string.Empty;
+                txtBalanceType.Text = string.Empty;
                 SetStatus("خطأ في حساب الرصيد: " + ex.Message);
             }
-            finally
-            {
-                EnsureClose(conn);
-            }
+            finally { EnsureClose(conn); }
         }
 
         #endregion
@@ -809,8 +762,16 @@ namespace SmartAuditERP.Form_WPF
 
         #region Button Events - Operations
 
+        private bool VoucherMutationAvailable()
+        {
+            DXMessageBox.Show("حفظ وحذف هذا النوع من السندات معطلان حتى اعتماد الربط بالقيد وتنفيذ العملية واختبارها بأمان.",
+                "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return false;
+        }
+
         private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            if (!VoucherMutationAvailable()) return;
             if (string.IsNullOrWhiteSpace(txtVal.Text))
             {
                 DXMessageBox.Show("ادخل القيمة", "",
@@ -1015,6 +976,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
+            if (!VoucherMutationAvailable()) return;
             if (Code == -1)
             {
                 DXMessageBox.Show("اختر سنداً ليتم حذفه", "",

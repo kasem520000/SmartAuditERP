@@ -310,8 +310,16 @@ namespace SmartAuditERP.Form_WPF
 
         #region Save
 
+        private bool LegacyVoucherMutationAvailable()
+        {
+            MessageBox.Show("حفظ وحذف السند الضريبي القديم معطلان حتى توثيق ربط القيد وإعادة تنفيذ العملية واختبارها.",
+                "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return false;
+        }
+
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            if (!LegacyVoucherMutationAvailable()) return;
             if (conn.State != ConnectionState.Open) conn.Open();
             var transaction = conn.BeginTransaction();
             try
@@ -528,6 +536,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
+            if (!LegacyVoucherMutationAvailable()) return;
             try
             {
                 if (Code == -1)

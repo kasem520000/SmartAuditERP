@@ -15,8 +15,10 @@ and mode advance only after commit.
 
 P3-011: edit/cancel keyed on ReceiptNo+Branch although receipt numbers
 repeat lawfully across voucher types within one branch - an operation could
-strike another type's row. Both statements now include this form's own
-ReceiptType.
+strike another type's row. The retained statements include this form's own
+ReceiptType. Subsequent containment now blocks both handlers before these
+statements, because their journal lifecycle remains unresolved; these models
+do not claim that saving or deletion is currently available.
 
 Run: python3 tests/repair/voucher_contract_harness.py
 Exit 0 on PASS.
@@ -169,9 +171,7 @@ if FAILS:
     for f in FAILS:
         print(" -", f)
     sys.exit(1)
-print("RESULT: PASS - R-036 (P3-009/P3-011): Q/VAT vouchers insert with a real")
-print("primary-key identity, retries after failure stay creates, and edit/cancel")
-print("reach only their own voucher type even when numbers collide across types.")
-print("The linked-entry column keeps the established '-1' sentinel until the")
-print("posting-link policy work (BLK-P3-010) defines propagation semantics.")
+print("RESULT: PASS - R-036 historical SQL witnesses and independent models only.")
+print("Q/VAT save and delete handlers are now blocked pending a safe ledger lifecycle;")
+print("these tests do not establish that those operations currently execute.")
 sys.exit(0)

@@ -18,6 +18,48 @@ namespace SmartAuditERP
 	{
 		public static string[] filePathDocument;
 
+		// Legacy rows cannot be deleted or migrated safely by opening a window.
+		// A failed or ambiguous check must not be mistaken for an absence of historical rows.
+		public static bool LegacyReceiptRowsClear(string legacyTable, int branch)
+		{
+			string sql;
+			switch (legacyTable)
+			{
+				case "SandQ": sql = "SELECT COUNT_BIG(*) FROM dbo.SandQ WHERE branch=@branch OR branch IS NULL"; break;
+				case "SandVAT": sql = "SELECT COUNT_BIG(*) FROM dbo.SandVAT WHERE branch=@branch OR branch IS NULL"; break;
+				case "SandSD": sql = "SELECT COUNT_BIG(*) FROM dbo.SandSD WHERE branch=@branch OR branch IS NULL"; break;
+				case "SandQD": sql = "SELECT COUNT_BIG(*) FROM dbo.SandQD WHERE branch=@branch OR branch IS NULL"; break;
+				case "SandD": sql = "SELECT COUNT_BIG(*) FROM dbo.SandD WHERE branch=@branch OR branch IS NULL"; break;
+				default:
+					MessageBox.Show("نوع السند القديم غير معروف؛ لم يُجر فحص الأمان.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					return false;
+			}
+			if (branch <= 0)
+			{
+				MessageBox.Show("لا يمكن التحقق من السندات القديمة دون فرع محدد.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return false;
+			}
+			try
+			{
+				using SqlConnection connection = MainClass.ConnObj();
+				connection.Open();
+				using SqlCommand command = new SqlCommand(sql, connection);
+				command.Parameters.Add("@branch", SqlDbType.Int).Value = branch;
+				object result = command.ExecuteScalar();
+				if (result == null || result == DBNull.Value || Convert.ToInt64(result) != 0)
+				{
+					MessageBox.Show("توجد سجلات في جدول السندات القديم لهذا الفرع أو بفرع غير معروف؛ لم تُنقل أو تُحذف تلقائياً. يلزم فحصها ومصالحتها قبل الحفظ أو الحذف.", "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+					return false;
+				}
+				return true;
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("تعذر التحقق من السندات القديمة؛ لم يُسمح بالتعديل. راجع قاعدة البيانات قبل المحاولة." + Environment.NewLine + ex.Message, "تنبيه", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return false;
+			}
+		}
+
 		public Entry BindReceiptToEntry(Receipt Receipt)
 		{
 			Entry result;
@@ -184,7 +226,8 @@ namespace SmartAuditERP
 			if (Receipt == null || Entr == null || string.IsNullOrWhiteSpace(Receipt.GlobalID) ||
 				string.IsNullOrWhiteSpace(Receipt.EntryGlobalID) ||
 				!string.Equals(Receipt.EntryGlobalID, Entr.EntryGlobalID, StringComparison.Ordinal) ||
-				!Receipt.BranchID.HasValue || Receipt.BranchID.Value <= 0 || Receipt.BranchID.Value != Entr.Branch ||
+				!Receipt.BranchID.HasValue || Receipt.BranchID.Value <= 0 ||
+				Receipt.BranchID.Value != Entr.Branch || Receipt.BranchID.Value != MainClass.BranchNo ||
 				!Receipt.ReceiptType.HasValue ||
 				(Receipt.ReceiptType.Value == 10 ? (int)EntryType.ClientVoucher : Receipt.ReceiptType.Value) != (int)Entr.Type ||
 				Receipt.ReceiptNo <= 0 || Entr.EntryNo <= 0 ||

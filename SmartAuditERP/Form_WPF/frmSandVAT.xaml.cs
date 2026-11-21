@@ -401,27 +401,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void RestorePreviousReceipt()
         {
-            try
-            {
-                EnsureOpen(conn);
-                var adapter = new SqlDataAdapter(
-                    $"SELECT * FROM SandVAT WHERE branch={MainClass.BranchNo}", conn);
-                var dt = new DataTable();
-                adapter.Fill(dt);
-
-                foreach (DataRow row in dt.Rows)
-                {
-                    try
-                    {
-                        int receiptNo = Convert.ToInt32(row["id"]);
-                        new SqlCommand($"DELETE FROM SandVAT WHERE id={receiptNo}", conn)
-                            .ExecuteNonQuery();
-                    }
-                    catch { }
-                }
-            }
-            catch (Exception ex) { SetStatus("خطأ في الاستعادة: " + ex.Message); }
-            finally { EnsureClose(conn); }
+            // Never mutate historical rows just because the screen was opened.
+            // Warn when legacy rows exist or the check cannot be completed.
+            ReceiptOper.LegacyReceiptRowsClear("SandVAT", MainClass.BranchNo);
         }
 
         #endregion
@@ -672,8 +654,16 @@ namespace SmartAuditERP.Form_WPF
 
         #region Button Events - Operations
 
+        private bool VoucherMutationAvailable()
+        {
+            DXMessageBox.Show("حفظ وحذف هذا النوع من السندات معطلان حتى اعتماد الربط بالقيد وتنفيذ العملية واختبارها بأمان.",
+                "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+            return false;
+        }
+
         private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            if (!VoucherMutationAvailable()) return;
             // ── التحقق ──
             if (string.IsNullOrWhiteSpace(txtVal.Text))
             {
@@ -860,6 +850,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
+            if (!VoucherMutationAvailable()) return;
             if (Code == -1)
             {
                 DXMessageBox.Show("اختر سنداً ليتم حذفه", "",

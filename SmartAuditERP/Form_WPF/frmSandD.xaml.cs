@@ -614,53 +614,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void RestorePreviousReceipt()
         {
-            // نفس منطق WinForms — استعادة الوثائق المعلقة
-            try
-            {
-                if (conn.State != ConnectionState.Open) conn.Open();
-
-                var adapter = new SqlDataAdapter(
-                    $"SELECT * FROM SandD WHERE branch={MainClass.BranchNo}",
-                    conn);
-                var dt = new DataTable();
-                adapter.Fill(dt);
-
-                foreach (DataRow row in dt.Rows)
-                {
-                    // استعادة ومزامنة السند
-                    var receipt = new Receipt
-                    {
-                        ReceiptNo   = Convert.ToInt32(row["id"]),
-                        BranchID    = Convert.ToInt32(row["branch"]),
-                        ReceiptType = ReceiptType,
-                        State       = 1,
-                        Payment     = Convert.ToDouble(row["val"]),
-                        VAT         = 0,
-                        NetVal      = Convert.ToDouble(row["val"]),
-                        ISDeleted   = Convert.ToBoolean(row["IS_Deleted"]),
-                        Notes       = row["notes"]?.ToString() ?? "",
-                        ClientCode  = Sync.ClientCode,
-                        BranchType  = Sync.BranchType,
-                        DistBranch  = Sync.DistBranch,
-                    };
-
-                    if (new ReceiptOper().SaveReceipt2(receipt))
-                    {
-                        new SqlCommand(
-                            $"DELETE FROM SandD WHERE id={receipt.ReceiptNo}",
-                            conn).ExecuteNonQuery();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine(
-                    $"خطأ في RestorePreviousReceipt: {ex.Message}");
-            }
-            finally
-            {
-                if (conn.State != ConnectionState.Closed) conn.Close();
-            }
+            // Never mutate historical rows just because the screen was opened.
+            // Warn when legacy rows exist or the check cannot be completed.
+            ReceiptOper.LegacyReceiptRowsClear("SandD", MainClass.BranchNo);
         }
 
         #endregion
@@ -729,6 +685,7 @@ namespace SmartAuditERP.Form_WPF
         private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
             if (_receiptSaveInProgress) return;
+            if (!ReceiptOper.LegacyReceiptRowsClear("SandD", MainClass.BranchNo)) return;
             _receiptSaveInProgress = true;
             try { await SaveReceiptCore(); }
             catch (Exception ex)
@@ -956,6 +913,7 @@ namespace SmartAuditERP.Form_WPF
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             if (_receiptSaveInProgress) return;
+            if (!ReceiptOper.LegacyReceiptRowsClear("SandD", MainClass.BranchNo)) return;
             if (Code == -1)
             {
                 DXMessageBox.Show("اختر سنداً ليتم حذفه.", "تنبيه",

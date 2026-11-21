@@ -405,93 +405,11 @@ namespace SmartAuditERP.Form_WPF
 
         #region Restore Previous Receipts
 
-        // ✅ إصلاح كامل: مطابق للأصل مع SaveReceipt2
         private void RestorePreviousReceipt()
         {
-            try
-            {
-                SafeOpen(conn);
-                var adapter = new SqlDataAdapter(
-                    $"SELECT * FROM SandQD WHERE branch = {MainClass.BranchNo}", conn);
-                var dt = new DataTable();
-                adapter.Fill(dt);
-
-                foreach (DataRow row in dt.Rows)
-                {
-                    try
-                    {
-                        var receipt = new Receipt();
-
-                        // جلب EntryGlobalID
-                        var subAdapter = new SqlDataAdapter(
-                            $@"SELECT GlobalID FROM Entry
-                               WHERE id = {row["rest_id"]}
-                                 AND branch = {row["branch"]}",
-                            conn);
-                        var subDt = new DataTable();
-                        subAdapter.Fill(subDt);
-
-                        if (subDt.Rows.Count > 0)
-                            receipt.EntryGlobalID = subDt.Rows[0]["GlobalID"].ToString();
-
-                        // GlobalID الجديد
-                        var maxCmd = new SqlCommand(
-                            $"SELECT ISNULL(MAX(AutoID), 0) FROM Receipts WHERE BranchID={MainClass.BranchNo}",
-                            conn);
-                        int nextId = Convert.ToInt32(maxCmd.ExecuteScalar()) + 1;
-                        receipt.GlobalID = $"{MainClass.BranchNo}-{nextId}";
-
-                        receipt.ReceiptNo = Convert.ToInt32(row["id"]);
-                        receipt.BranchID = Convert.ToInt32(row["branch"]);
-                        receipt.ReceiptType = ReceiptType;
-                        receipt.State = 1;
-                        receipt.Payment = Convert.ToDouble(row["val"]);
-                        receipt.VAT = 0.0;
-                        receipt.NetVal = Convert.ToDouble(row["val"]);
-                        receipt.ReceiptDate = Convert.ToDateTime(row["date"]);
-                        receipt.ReffNo = "-1";
-                        receipt.Reffdate = Convert.ToDateTime(row["date"]);
-                        receipt.ISDeleted = Convert.ToBoolean(row["IS_Deleted"]);
-                        receipt.Notes = row["notes"].ToString();
-
-                        // ✅ في SandQD الأصل: EmpId = emp_person
-                        receipt.EmpId = Convert.ToInt32(row["emp_person"]);
-
-                        var treasury = new Treasury(Convert.ToInt32(row["safe_bank_id"]));
-
-                        // ✅ في SandQD: CreditAcc=acc_code, DebitAcc=treasury.AccCode
-                        receipt.CreditAcc = row["acc_code"].ToString();
-                        receipt.DebitAcc = treasury.AccCode;
-                        receipt.ClientID = Convert.ToInt32(row["cust_id"]);
-                        receipt.BankId = -1;
-                        receipt.TreasuryID = Convert.ToInt32(row["safe_bank_id"]);
-                        receipt.SalesManID = Convert.ToInt32(row["sales_emp"]);
-                        receipt.PaymentType = 1;
-                        receipt.CheckState = 1;
-                        receipt.CheckDate = Convert.ToDateTime(row["date"]);
-                        receipt.CheckNo = "-1";
-                        receipt.Checkbank = "";
-                        receipt.Cccode = row["Cccode"]?.ToString() ?? "";
-                        receipt.Sync = false;
-                        receipt.ClientCode = Sync.ClientCode;
-                        receipt.BranchType = Sync.BranchType;
-                        receipt.DistBranch = Sync.DistBranch;
-
-                        var receiptOper = new ReceiptOper();
-                        bool saved = receiptOper.SaveReceipt2(receipt);
-
-                        if (saved)
-                        {
-                            new SqlCommand(
-                                $"DELETE FROM SandQD WHERE id = {receipt.ReceiptNo}",
-                                conn).ExecuteNonQuery();
-                        }
-                    }
-                    catch { /* استمر مع الصف التالي */ }
-                }
-            }
-            catch (Exception ex) { SetStatus("خطأ في استعادة السندات: " + ex.Message); }
-            finally { SafeClose(conn); }
+            // Never mutate historical rows just because the screen was opened.
+            // Warn when legacy rows exist or the check cannot be completed.
+            ReceiptOper.LegacyReceiptRowsClear("SandQD", MainClass.BranchNo);
         }
 
         #endregion
@@ -501,51 +419,40 @@ namespace SmartAuditERP.Form_WPF
         // ✅ إصلاح: استخدام txtDate مثل الأصل وليس txtToDate
         private void GetCustBalance()
         {
+            txtBalance.Text = string.Empty;
+            txtBalanceType.Text = string.Empty;
             try
             {
-                if (cmbAccounts.SelectedIndex == -1
-                    || cmbAccounts.SelectedValue == null) return;
-
-                int accCode = Convert.ToInt32(cmbAccounts.SelectedValue);
-
+                if (cmbAccounts.SelectedIndex == -1 || cmbAccounts.SelectedValue == null) return;
+                if (!int.TryParse(cmbAccounts.SelectedValue.ToString(), out int accCode) || accCode <= 0)
+                    throw new InvalidOperationException("حساب الرصيد غير صالح.");
                 string branchCond = MainClass.BranchNo != -1
-                    ? $"Entry.branch={MainClass.BranchNo} AND Entry_sub.branch={MainClass.BranchNo} AND "
-                    : "";
-
-                string sql = $@"SELECT SUM(Entry_sub.dept)   AS dept,
-                                       SUM(Entry_sub.credit) AS credit
-                                FROM Entry
-                                INNER JOIN Entry_sub
-                                        ON Entry.GlobalID = Entry_sub.EntryGlobalID
-                                WHERE {branchCond}
-                                      Entry.IS_Deleted = 0
-                                  AND Entry.state = 1
-                                  AND Entry.date <= @date2
-                                  AND Entry_sub.acc_no = {accCode}";
-
+                    ? "Entry.branch=@branch AND Entry_sub.branch=@branch AND " : "";
+                string sql = $@"SELECT COUNT_BIG(*) AS rowsCount,
+                                       COUNT_BIG(Entry_sub.dept) AS debitCount,
+                                       COUNT_BIG(Entry_sub.credit) AS creditCount,
+                                       SUM(Entry_sub.dept) AS dept, SUM(Entry_sub.credit) AS credit
+                                FROM Entry INNER JOIN Entry_sub ON Entry.GlobalID=Entry_sub.EntryGlobalID
+                                WHERE {branchCond} Entry.IS_Deleted=0 AND Entry.state=1
+                                  AND Entry.date<@endExclusive AND Entry_sub.acc_no=@account";
                 SafeOpen(conn);
-                var cmd = new SqlCommand(sql, conn);
-
-                // ✅ إصلاح: استخدام txtDate مثل الأصل
-                DateTime dateVal = txtDate.DateTime != default(DateTime)
-                    ? txtDate.DateTime
-                    : DateTime.Now;
-                cmd.Parameters.AddWithValue("@date2", dateVal.AddHours(24));
-
-                var adapter = new SqlDataAdapter(cmd);
+                using var cmd = new SqlCommand(sql, conn);
+                DateTime dateVal = txtDate.DateTime != default(DateTime) ? txtDate.DateTime : DateTime.Now;
+                cmd.Parameters.Add("@endExclusive", SqlDbType.DateTime).Value = dateVal.Date.AddDays(1);
+                cmd.Parameters.Add("@account", SqlDbType.Int).Value = accCode;
+                if (MainClass.BranchNo != -1) cmd.Parameters.Add("@branch", SqlDbType.Int).Value = MainClass.BranchNo;
+                using var adapter = new SqlDataAdapter(cmd);
                 var dt = new DataTable();
                 adapter.Fill(dt);
-
-                double dept = 0;
-                double credit = 0;
-
-                if (dt.Rows.Count > 0
-                    && !string.IsNullOrWhiteSpace(dt.Rows[0][0]?.ToString()))
-                {
-                    double.TryParse(dt.Rows[0]["dept"].ToString(), out dept);
-                    double.TryParse(dt.Rows[0]["credit"].ToString(), out credit);
-                }
-
+                if (dt.Rows.Count != 1) throw new InvalidOperationException("الرصيد غير متاح.");
+                DataRow row = dt.Rows[0];
+                long count = Convert.ToInt64(row["rowsCount"]);
+                if (Convert.ToInt64(row["debitCount"]) != count || Convert.ToInt64(row["creditCount"]) != count)
+                    throw new InvalidOperationException("الرصيد يتضمن مبالغ غير معروفة.");
+                double dept = count == 0 ? 0 : Convert.ToDouble(row["dept"]);
+                double credit = count == 0 ? 0 : Convert.ToDouble(row["credit"]);
+                if (!double.IsFinite(dept) || !double.IsFinite(credit) || !double.IsFinite(dept - credit))
+                    throw new InvalidOperationException("الرصيد غير صالح.");
                 if (dept >= credit)
                 {
                     txtBalance.Text = Math.Round(dept - credit, 3).ToString();
@@ -559,7 +466,12 @@ namespace SmartAuditERP.Form_WPF
                     txtBalanceType.Foreground = System.Windows.Media.Brushes.Green;
                 }
             }
-            catch (Exception ex) { SetStatus("خطأ في حساب الرصيد: " + ex.Message); }
+            catch (Exception ex)
+            {
+                txtBalance.Text = string.Empty;
+                txtBalanceType.Text = string.Empty;
+                SetStatus("خطأ في حساب الرصيد: " + ex.Message);
+            }
             finally { SafeClose(conn); }
         }
 
@@ -790,6 +702,7 @@ namespace SmartAuditERP.Form_WPF
         private async void btnSave_Click(object sender, RoutedEventArgs e)
         {
             if (_receiptSaveInProgress) return;
+            if (!ReceiptOper.LegacyReceiptRowsClear("SandQD", MainClass.BranchNo)) return;
             _receiptSaveInProgress = true;
             try { await SaveReceiptCore(); }
             catch (Exception ex)
@@ -1057,6 +970,7 @@ namespace SmartAuditERP.Form_WPF
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             if (_receiptSaveInProgress) return;
+            if (!ReceiptOper.LegacyReceiptRowsClear("SandQD", MainClass.BranchNo)) return;
             if (Code == -1)
             {
                 DXMessageBox.Show("اختر سنداً ليتم حذفه", "",
