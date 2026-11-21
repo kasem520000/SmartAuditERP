@@ -227,6 +227,11 @@ check('booking and report follow-ups remain partial',
 
 check('critical containment and readonly close remain partial',
       all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
-          for fid, rid in [('P1-007', 'R-242'), ('P1-008', 'R-243'), ('P3-015', 'R-244')]))
+          for fid, rid in [('P1-007', 'R-242'), ('P1-008', 'R-243'), ('P3-015', 'R-244; R-247')]))
+
+check('entry, inventory, shift, license and permission follow-ups stay partial',
+      all(by_id[fid]['repair_status'] == 'partial_open' and by_id[fid]['repair_ids'] == rid
+          for fid, rid in [('P3-002', 'R-245'), ('P4-030', 'R-246'), ('P3-014', 'R-247'),
+                           ('P1-032', 'R-248'), ('P1-012', 'R-249')]))
 
 print('RESULT: PASS — archive consistency checks; classifications are not WPF or SQL acceptance.')
