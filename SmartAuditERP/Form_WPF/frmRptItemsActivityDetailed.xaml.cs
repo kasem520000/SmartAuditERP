@@ -232,6 +232,10 @@ namespace SmartAuditERP.Form_WPF
             txtTotStock.Text = string.Empty;
             try
             {
+                // Every local caller requests an item and its store. Only -1 is
+                // the explicit sentinel for an unfiltered party, never an invalid item/store.
+                if (itemId <= 0 || storeId <= 0 || (clientId != -1 && clientId <= 0))
+                    throw new InvalidOperationException("المادة أو المستودع أو الطرف غير صالح.");
                 if ((storeId > 0 || clientId > 0) && !IsLoaded)
                     throw new InvalidOperationException("لم تكتمل تهيئة قوائم التقرير.");
 

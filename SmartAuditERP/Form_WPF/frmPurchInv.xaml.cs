@@ -2439,11 +2439,16 @@ namespace SmartAuditERP.Form_WPF
             int.TryParse(GetRowCellValue(idx, "StoreDgv")?.ToString(), out int storeId);
             int custId = cmbClient.SelectedIndex > -1
                 ? Convert.ToInt32(cmbClient.SelectedValue) : -1;
+            if (custId <= 0)
+            {
+                DXMessageBox.Show("يرجى اختيار المورد.");
+                return;
+            }
             var frm = new frmRptItemsActivityDetailed();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
             frm.Show();
-            frm.LastProcess(itemId, storeId, custId, 1);
+            frm.LastProcess(itemId, storeId, custId, 2);
         }
         private void StripItemCost_Click(object sender, RoutedEventArgs e)
         {

@@ -1312,10 +1312,13 @@ namespace SmartAuditERP.Form_WPF
             dlg.Show();
             if (cmbClient.SelectedIndex > -1)
             {
-                int.TryParse(cmbClient.SelectedValue?.ToString(),
-                    out int custId);
+                if (!int.TryParse(cmbClient.SelectedValue?.ToString(), out int custId) || custId <= 0)
+                {
+                    DXMessageBox.Show("يرجى اختيار الطرف.");
+                    return;
+                }
                 dlg.LastProcess(_selectedItem.ItemId,
-                    _selectedItem.InvertoryId, custId, 2);
+                    _selectedItem.InvertoryId, custId, InvType == 4 || InvType == 14 ? 2 : 1);
             }
         }
 

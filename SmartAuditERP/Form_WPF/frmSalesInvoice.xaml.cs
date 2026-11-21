@@ -2565,7 +2565,7 @@ namespace SmartAuditERP.Form_WPF
                 frm.LastProcess(
                     _itemsSource[RowIndex].ItemId,
                     _itemsSource[RowIndex].StoreId,
-                    Convert.ToInt32(cmbClient.SelectedValue), 1);
+                    Convert.ToInt32(cmbClient.SelectedValue), InvType == 1 ? 2 : 1);
         }
 
         private void StripLastItem_Click(object sender, RoutedEventArgs e)

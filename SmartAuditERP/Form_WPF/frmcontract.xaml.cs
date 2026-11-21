@@ -1590,7 +1590,7 @@ namespace SmartAuditERP.Form_WPF
                 form.LastProcess(
                     GetGridCellInt(focusedRow, "ItemId"),
                     GetGridCellInt(focusedRow, "InvertoryId"),
-                    SafeGetSelectedValue<int>(cmbClient), 1);
+                    SafeGetSelectedValue<int>(cmbClient), InvType == 1 ? 2 : 1);
         }
 
         private void ItemCost1()

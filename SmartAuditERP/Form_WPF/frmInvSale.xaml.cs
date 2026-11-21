@@ -1233,7 +1233,7 @@ namespace SmartAuditERP.Form_WPF
             frm.Show();
             int custId = GetSelectedValue<int>(LookUpEdit1);
             if (custId > -1)
-                frm.LastProcess(item.ItemId, item.InvertoryId, custId, 1);
+                frm.LastProcess(item.ItemId, item.InvertoryId, custId, InvType == 1 ? 2 : 1);
         }
 
         private void ItemCost1()

@@ -1235,8 +1235,13 @@ namespace SmartAuditERP.Form_WPF
                 frm.txtItemName.Text = si.ItemName;
                 frm.txtItemCode.Text = si.ItemCode;
                 frm.Show();
+                if (Invoic.Customer <= 0)
+                {
+                    DXMessageBox.Show("يرجى اختيار العميل.");
+                    return;
+                }
                 frm.LastProcess(si.ItemId, si.InvertoryId,
-                    Invoic.Customer, 2);
+                    Invoic.Customer, 1);
             }
         }
 

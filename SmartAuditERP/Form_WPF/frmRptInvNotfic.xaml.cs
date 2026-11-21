@@ -27,6 +27,8 @@ namespace SmartAuditERP.Form_WPF
 
         // ═══ Private Fields ═══
         private List<InvoiceTxt> _invoicesList;
+        private string _resultFrom = string.Empty;
+        private string _resultTo = string.Empty;
 
         private bool   _printHeader = true;
         private bool   _printFooter = true;
@@ -226,8 +228,16 @@ namespace SmartAuditERP.Form_WPF
             try
             {
                 GridControl2.ItemsSource = null;
-                _invoicesList?.Clear();
+                _invoicesList = null;
+                _resultFrom = _resultTo = string.Empty;
                 ResetSummaries();
+                if (invType != 21 && invType != 22)
+                    throw new InvalidOperationException("نوع تقرير الإشعارات غير صالح.");
+                if ((ckAllClients.IsChecked != true && (cmbClients.SelectedIndex < 0 || cmbClients.SelectedValue == null)) ||
+                    (ckAllUsers.IsChecked != true && (cmbusers.SelectedIndex < 0 || cmbusers.SelectedValue == null)) ||
+                    (cbAllSalesmen.IsChecked != true && (cmbSaleman.SelectedIndex < 0 || cmbSaleman.SelectedValue == null)) ||
+                    (ckAllInvs.IsChecked != true && (cmbInvType.SelectedIndex < 0 || cmbInvType.SelectedIndex > 1)))
+                    throw new InvalidOperationException("يجب تحديد كل معيار مطلوب أو اختيار الكل.");
 
                 // ═══ بناء شروط SQL مطابقة للكود الأصلي ═══
                 string cond = "";
@@ -276,16 +286,23 @@ namespace SmartAuditERP.Form_WPF
                         cond += "(inv.proc_type = 1) And ";
                 }
 
-                // الفترة الزمنية
-                DateTime fromDate = DateTime.Parse(
-                    txtFromDate.DateTime.ToShortDateString() + " " +
-                    (txtStartTime.Text ?? "00:00"));
-                DateTime toDate = DateTime.Parse(
-                    txtToDate.DateTime.ToShortDateString() + " " +
-                    (txtEndTime.Text ?? "23:59"));
-
-                if (ckTotalPeriod.IsChecked != true)
+                // Preserve the exact requested endpoints and capture them with the rows.
+                // An all-period request does not depend on disabled date/time controls.
+                bool allPeriod = ckTotalPeriod.IsChecked == true;
+                DateTime fromDate = DateTime.Today, toDate = DateTime.Today;
+                if (!allPeriod)
+                {
+                    if (txtFromDate.DateTime == default(DateTime) || txtToDate.DateTime == default(DateTime) ||
+                        !TimeSpan.TryParse(txtStartTime.Text, out TimeSpan startTime) ||
+                        !TimeSpan.TryParse(txtEndTime.Text, out TimeSpan endTime) ||
+                        startTime < TimeSpan.Zero || startTime >= TimeSpan.FromDays(1) ||
+                        endTime < TimeSpan.Zero || endTime >= TimeSpan.FromDays(1))
+                        throw new InvalidOperationException("تاريخ أو وقت الفترة غير صالح.");
+                    fromDate = txtFromDate.DateTime.Date.Add(startTime);
+                    toDate = txtToDate.DateTime.Date.Add(endTime);
+                    if (fromDate > toDate) throw new InvalidOperationException("بداية الفترة بعد نهايتها.");
                     cond += "inv.date BETWEEN @DateFrom AND @DateTo And ";
+                }
 
                 // إزالة " And " الأخيرة
                 if (cond.EndsWith(" And "))
@@ -318,7 +335,10 @@ namespace SmartAuditERP.Form_WPF
                     " AND inv.IS_Deleted = 0 ORDER BY inv.date DESC";
 
                 // ═══ استدعاء دالة البناء (مطابقة للأصل) ═══
-                _invoicesList = BindingListOfInvoices1(sqlstr, withItems: false, fromDate, toDate);
+                var loaded = BindingListOfInvoices1(sqlstr, withItems: false, fromDate, toDate);
+                _resultFrom = allPeriod ? "الكل" : fromDate.ToString();
+                _resultTo = allPeriod ? "الكل" : toDate.ToString();
+                _invoicesList = loaded;
 
                 // ربط البيانات بالـ DataGrid
                 GridControl2.ItemsSource = _invoicesList;
@@ -328,7 +348,11 @@ namespace SmartAuditERP.Form_WPF
             }
             catch (Exception ex)
             {
-                DXMessageBox.Show($"Error: {ex.Message}", "Error",
+                _invoicesList = null;
+                GridControl2.ItemsSource = null;
+                _resultFrom = _resultTo = string.Empty;
+                ResetSummaries();
+                DXMessageBox.Show($"تعذر تحميل تقرير الإشعارات: {ex.Message}", "خطأ",
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -340,11 +364,11 @@ namespace SmartAuditERP.Form_WPF
         public List<InvoiceTxt> BindingListOfInvoices1(
             string sqlstr, bool withItems, DateTime date1, DateTime date2)
         {
-            var sqlConn = MainClass.ConnObj();
+            using var sqlConn = MainClass.ConnObj();
             if (sqlConn.State != ConnectionState.Open)
                 sqlConn.Open();
 
-            var da = new SqlDataAdapter(sqlstr, sqlConn);
+            using var da = new SqlDataAdapter(sqlstr, sqlConn);
             da.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = date1;
             da.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = date2;
 
@@ -375,6 +399,7 @@ namespace SmartAuditERP.Form_WPF
 
             var dt = new DataTable();
             var list = new List<InvoiceTxt>();
+            var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
             try
             {
@@ -389,6 +414,9 @@ namespace SmartAuditERP.Form_WPF
                         try
                         {
                             var row      = dt.Rows[i];
+                            string globalId = row["InvGlobalID"]?.ToString();
+                            if (string.IsNullOrWhiteSpace(globalId) || !seen.Add(globalId))
+                                throw new InvalidOperationException("هوية إشعار مفقودة أو مكررة في نتيجة التقرير.");
                             var invObj   = new InvoiceObj(
                                 Convert.ToInt32(row["inv_type"]),
                                 Convert.ToInt32(row["proc_type"]));
@@ -492,13 +520,16 @@ namespace SmartAuditERP.Form_WPF
                             list.Add(inv);
                             ProgressBar1.Value++;
                         }
-                        catch { }
+                        catch (Exception ex)
+                        {
+                            throw new InvalidOperationException("تعذر قراءة أحد صفوف التقرير؛ لم تُعرض نتيجة جزئية.", ex);
+                        }
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                DXMessageBox.Show("خطأ في تحميل البيانات: " + ex.Message);
+                throw;
             }
             finally
             {
@@ -784,18 +815,41 @@ namespace SmartAuditERP.Form_WPF
 
             try
             {
+                // Use the same loaded rows and totals as the visible report.  The
+                // WinForms GridView bridge cannot read this WPF DataGrid.
+                double paidTotal = 0, remainderTotal = 0;
+                foreach (var inv in _invoicesList)
+                {
+                    paidTotal += inv.Paid;
+                    remainderTotal += inv.Remainder;
+                }
+                var printRows = new List<InventoryData>();
+                foreach (var inv in _invoicesList)
+                    printRows.Add(new InventoryData
+                    {
+                        ProcessType = "", InventoryType = "",
+                        InvType = inv.InvoiceTypeTxt, InvoiceNo = inv.InvoiceNo.ToString(),
+                        RefsInvNo = inv.ReffNo, InvDate = inv.InvDate.ToShortDateString(),
+                        InvTime = inv.InvoiceTime, Clint = inv.ClientTxt, EmpName = inv.UserTxt,
+                        BranchName = inv.BranchTxt, SafeName = inv.InvertoryName,
+                        Total = inv.SumPrice.ToString("N2"), NetDiscount = inv.TotDiscount.ToString("N2"),
+                        NetBeforeTax = inv.Total.ToString("N2"), Tax = inv.VAT.ToString("N2"),
+                        ExtraTax = inv.ExtraVAT.ToString("N2"), TotalTax = inv.TotalTax.ToString("N2"),
+                        Paid = inv.Paid.ToString("N2"), Remainder = inv.Remainder.ToString("N2"),
+                        Net = inv.Net.ToString("N2"), Cash = inv.Paycash.ToString("N2"),
+                        Network = inv.PayATM.ToString("N2"), Paytype = inv.PaymentTxt,
+                        Sum = _sumSumPrice.ToString("N2"), SumNetDiscount = _sumDiscount.ToString("N2"),
+                        Total1 = _sumTotal.ToString("N2"), SumTax = _sumVAT.ToString("N2"),
+                        SummaryExtraTax = _sumExtraVAT.ToString("N2"), SummaryTotalTax = _sumTotalTax.ToString("N2"),
+                        SummaryPaid = paidTotal.ToString("N2"), SummaryRemainder = remainderTotal.ToString("N2"),
+                        SummaryCash = _sumPaycash.ToString("N2"), SummaryNetwork = _sumPayATM.ToString("N2"),
+                        NetTotal = _sumNet.ToString("N2"), FromDate = _resultFrom, ToDate = _resultTo,
+                        User = Common.GetEmpName(MainClass.EmpNo), PrintDate = DateTime.Now.ToShortDateString()
+                    });
+                var data = new DataSet("Name");
+                data.Tables.Add(UtilitiesProj.Common.ToDataTable(printRows));
                 var report = new Report();
-                report.Printing(
-                    printType,
-                    report.BindToData(
-                        null,
-                        "",
-                        txtFromDate.DateTime.ToString(),
-                        txtToDate.DateTime.ToString()),
-                    _rptUrl,
-                    _rptName,
-                    _defPrinter,
-                    _printNo);
+                report.Printing(printType, data, _rptUrl, _rptName, _defPrinter, _printNo);
             }
             catch (Exception ex)
             {
