@@ -1,0 +1,314 @@
+{
+  "tag": "07B39R14",
+  "mechanical_checks_green": true,
+  "problems": [],
+  "stage7_audit_workstream_complete": true,
+  "stage7_worklist_resolutions": {
+    "item1_19_LastProcess_helpers": {
+      "status": "read in R8 (flags carried)",
+      "evidence": [
+        "PHASE-07B39R8.md"
+      ]
+    },
+    "item2_11_linked_insert_identities": {
+      "status": "read in R8 (flags carried)",
+      "evidence": [
+        "PHASE-07B39R8.md"
+      ]
+    },
+    "item3_remaining_helpers_writers": {
+      "status": "completed in R11 (SearchByID/ItemOper + merge/replace/unit/qty/price/discount/VAT local read; roots P7-181,P7-182,168-172)",
+      "evidence": [
+        "PHASE-07B39R13-rev02.md",
+        "evidence/search-item-family-contract-07B39R11.json"
+      ]
+    },
+    "item4_FormPermission_full": {
+      "status": "read in R7",
+      "evidence": [
+        "PHASE-07B39R7.md",
+        "SOURCE-REVIEW-07B39R7-local.md"
+      ]
+    },
+    "item5_SaveReceipt2_Recipient": {
+      "status": "adjudicated in R10 as confirmed root (renumbered P7-179 in rev02); independently qualified by the concurrent line",
+      "evidence": [
+        "evidence/recipient-notify-contract-07B39R10.json",
+        "PHASE-07B39R13-rev02.md"
+      ]
+    },
+    "item6_notify_save_delete_branch_scope": {
+      "status": "adjudicated in R10 as confirmed root (renumbered P7-180 in rev02; concurrent line corrected column counts to 22/22/24 — adopted in rev02 note)",
+      "evidence": [
+        "evidence/recipient-notify-contract-07B39R10.json",
+        "PHASE-07B39R13-rev02.md"
+      ]
+    },
+    "item7_local_recovery_helpers": {
+      "status": "read in R7",
+      "evidence": [
+        "PHASE-07B39R7.md"
+      ]
+    },
+    "carried_Q_reader": {
+      "status": "adjudicated R12: root P7-173",
+      "evidence": [
+        "evidence/q-reader-year-branch-contract-07B39R12.json"
+      ]
+    },
+    "carried_year_provenance": {
+      "status": "adjudicated R12: root P7-176",
+      "evidence": [
+        "evidence/q-reader-year-branch-contract-07B39R12.json"
+      ]
+    },
+    "carried_branch_rehydration": {
+      "status": "adjudicated R12: root P7-174",
+      "evidence": [
+        "evidence/q-reader-year-branch-contract-07B39R12.json"
+      ]
+    },
+    "allowed_set_per_document_branch_year": {
+      "status": "ledger built R13; D05/D06 exit gates adjudicated NOT MET with numbered roots",
+      "evidence": [
+        "evidence/capability-allowed-set-07B39R13.json"
+      ]
+    },
+    "path_ledger_unification": {
+      "status": "this slice (R14)",
+      "evidence": [
+        "evidence/phase7-completion-gate-07B39R14.json"
+      ]
+    }
+  },
+  "stage7_whole_certification": false,
+  "certification_blockers": [
+    "capability-exits-not-granted: D05/D06 adjudicated NOT MET (roots P7-179/P7-180/P7-174/P7-176/P7-178 et al); 24 other capabilities carry their per-capability exit criteria",
+    "four-family-exits-not-granted",
+    "remediation-gated: exit criteria require stage-8 fixes of numbered roots first",
+    "B38 preserved failure (162/163/169 != 142 across runs) acknowledged, unresolved",
+    "runtime certification never performed (application_execution_count = 0 by design)"
+  ],
+  "stage8_remediation_status": {
+    "running_by_owner_directive": true,
+    "branches": [
+      "fix/stage1-p1-security (33/33 P1 addressed: 29 complete + 4 partial)",
+      "fix/stage2-p2-authz (12/16 P2 addressed)"
+    ]
+  },
+  "stage8_audit_licensing": "blocked-on-stage7-certification (fail-closed)",
+  "registry": {
+    "bytes": 230126,
+    "bom": false,
+    "crlf": 351,
+    "lf_only": 0,
+    "rows": 350,
+    "p7_max": 182
+  },
+  "seven_c_root_ids": [
+    "P7-179",
+    "P7-180",
+    "P7-181",
+    "P7-182",
+    "P7-168",
+    "P7-169",
+    "P7-170",
+    "P7-171",
+    "P7-172",
+    "P7-173",
+    "P7-174",
+    "P7-175",
+    "P7-176",
+    "P7-177",
+    "P7-178"
+  ],
+  "renumbering_applied": {
+    "P7-164->P7-179": "SaveReceipt2 Recipient",
+    "P7-165->P7-180": "Settingmqtt notify transaction/scope",
+    "P7-166->P7-181": "item-search SQL string-concat family",
+    "P7-167->P7-182": "POS scale barcode wrong-row write"
+  },
+  "unified_path_ledger": {
+    "phase docs R10-R14": [
+      "docs/audit/PHASE-07B39R10.md",
+      "docs/audit/PHASE-07B39R11-rev02.md",
+      "docs/audit/PHASE-07B39R11.md",
+      "docs/audit/PHASE-07B39R12.md",
+      "docs/audit/PHASE-07B39R13-rev02.md",
+      "docs/audit/PHASE-07B39R13.md"
+    ],
+    "evidence R10-R14": [
+      "docs/audit/evidence/7c-start-gate-07B39R10.json",
+      "docs/audit/evidence/B38-preserved-integrity-run01-07B39R11.stderr.txt",
+      "docs/audit/evidence/B38-preserved-integrity-run01-07B39R11.stdout.txt",
+      "docs/audit/evidence/B38-preserved-integrity-run02-07B39R11.stderr.txt",
+      "docs/audit/evidence/B38-preserved-integrity-run02-07B39R11.stdout.txt",
+      "docs/audit/evidence/B38-preserved-tests-run01-07B39R11.stderr.txt",
+      "docs/audit/evidence/B38-preserved-tests-run01-07B39R11.stdout.txt",
+      "docs/audit/evidence/B38-preserved-tests-run02-07B39R11.stderr.txt",
+      "docs/audit/evidence/B38-preserved-tests-run02-07B39R11.stdout.txt",
+      "docs/audit/evidence/R1-through-R9-plus-R11-tests-run01-07B39R11.stderr.txt",
+      "docs/audit/evidence/R1-through-R9-plus-R11-tests-run01-07B39R11.stdout.txt",
+      "docs/audit/evidence/R1-through-R9-plus-R11-tests-run02-07B39R11.stderr.txt",
+      "docs/audit/evidence/R1-through-R9-plus-R11-tests-run02-07B39R11.stdout.txt",
+      "docs/audit/evidence/R11-completion-gate-run01-07B39R11.stderr.txt",
+      "docs/audit/evidence/R11-completion-gate-run01-07B39R11.stdout.txt",
+      "docs/audit/evidence/R11-completion-gate-run02-07B39R11.stderr.txt",
+      "docs/audit/evidence/R11-completion-gate-run02-07B39R11.stdout.txt",
+      "docs/audit/evidence/R11-verify-run01-07B39R11.stderr.txt",
+      "docs/audit/evidence/R11-verify-run01-07B39R11.stdout.txt",
+      "docs/audit/evidence/R11-verify-run02-07B39R11.stderr.txt",
+      "docs/audit/evidence/R11-verify-run02-07B39R11.stdout.txt",
+      "docs/audit/evidence/R9-completion-gate-run01-07B39R11.stderr.txt",
+      "docs/audit/evidence/R9-completion-gate-run01-07B39R11.stdout.txt",
+      "docs/audit/evidence/R9-completion-gate-run02-07B39R11.stderr.txt",
+      "docs/audit/evidence/R9-completion-gate-run02-07B39R11.stdout.txt",
+      "docs/audit/evidence/R9-preserved-integrity-run01-07B39R11.stderr.txt",
+      "docs/audit/evidence/R9-preserved-integrity-run01-07B39R11.stdout.txt",
+      "docs/audit/evidence/R9-preserved-integrity-run02-07B39R11.stderr.txt",
+      "docs/audit/evidence/R9-preserved-integrity-run02-07B39R11.stdout.txt",
+      "docs/audit/evidence/canonical-register-restoration-07B39R11.json",
+      "docs/audit/evidence/capability-allowed-set-07B39R13.json",
+      "docs/audit/evidence/capability-reconciliation-07B39R11.json",
+      "docs/audit/evidence/concurrent-explicit-four-path-resolution-07B39R11.stderr.txt",
+      "docs/audit/evidence/concurrent-explicit-four-path-resolution-07B39R11.stdout.txt",
+      "docs/audit/evidence/concurrent-integration-07B39R11.json",
+      "docs/audit/evidence/concurrent-normal-merge-07B39R11.stderr.txt",
+      "docs/audit/evidence/concurrent-normal-merge-07B39R11.stdout.txt",
+      "docs/audit/evidence/concurrent-remote-collision-07B39R11.json",
+      "docs/audit/evidence/concurrent-resolved-staged-whitespace-07B39R11.stderr.txt",
+      "docs/audit/evidence/concurrent-resolved-staged-whitespace-07B39R11.stdout.txt",
+      "docs/audit/evidence/development-corrections-07B39R11.json",
+      "docs/audit/evidence/entry-before-hydration-07B39R11.json",
+      "docs/audit/evidence/entry-hydration-forward-07B39R11.stderr.txt",
+      "docs/audit/evidence/entry-hydration-forward-07B39R11.stdout.txt",
+      "docs/audit/evidence/entry-hydration-receipt-07B39R11.json",
+      "docs/audit/evidence/index-prefixes-07B39R11.json",
+      "docs/audit/evidence/index-prefixes-rev02-07B39R11.json",
+      "docs/audit/evidence/postmerge-R11-integrity-07B39R11.stderr.txt",
+      "docs/audit/evidence/postmerge-R11-integrity-07B39R11.stdout.txt",
+      "docs/audit/evidence/postmerge-R11-open-gate-07B39R11.stderr.txt",
+      "docs/audit/evidence/postmerge-R11-open-gate-07B39R11.stdout.txt",
+      "docs/audit/evidence/postmerge-R9-integrity-07B39R11.stderr.txt",
+      "docs/audit/evidence/postmerge-R9-integrity-07B39R11.stdout.txt",
+      "docs/audit/evidence/pre-concurrent-remote-local-07B39R11.tar.gz",
+      "docs/audit/evidence/publication-R11-integrity-07B39R11.stderr.txt",
+      "docs/audit/evidence/publication-R11-integrity-07B39R11.stdout.txt",
+      "docs/audit/evidence/publication-R11-open-gate-07B39R11.stderr.txt",
+      "docs/audit/evidence/publication-R11-open-gate-07B39R11.stdout.txt",
+      "docs/audit/evidence/publication-R9-integrity-07B39R11.stderr.txt",
+      "docs/audit/evidence/publication-R9-integrity-07B39R11.stdout.txt",
+      "docs/audit/evidence/publication-integrity-07B39R11.json",
+      "docs/audit/evidence/q-reader-year-branch-contract-07B39R12.json",
+      "docs/audit/evidence/recipient-notify-contract-07B39R10.json",
+      "docs/audit/evidence/reconciliation-adjudications-07B39R11.json",
+      "docs/audit/evidence/reconciliation-derivation-run01-07B39R11.stderr.txt",
+      "docs/audit/evidence/reconciliation-derivation-run01-07B39R11.stdout.txt",
+      "docs/audit/evidence/reconciliation-derivation-run01-consumed-07B39R11.tar.gz",
+      "docs/audit/evidence/reconciliation-derivation-run01-receipt-07B39R11.json",
+      "docs/audit/evidence/reconciliation-derivation-run02-07B39R11.stderr.txt",
+      "docs/audit/evidence/reconciliation-derivation-run02-07B39R11.stdout.txt",
+      "docs/audit/evidence/reconciliation-derivation-run02-consumed-07B39R11.tar.gz",
+      "docs/audit/evidence/reconciliation-derivation-run02-receipt-07B39R11.json",
+      "docs/audit/evidence/reconciliation-entry-07B39R11.json",
+      "docs/audit/evidence/reconciliation-source-facts-07B39R11.json",
+      "docs/audit/evidence/reconciliation-source-review-07B39R11.json",
+      "docs/audit/evidence/reference-date-provenance-07B39R11.json",
+      "docs/audit/evidence/remote-32c1852-frozen-07B39R11.tar.gz",
+      "docs/audit/evidence/remote-9a552b7-frozen-07B39R11.tar.gz",
+      "docs/audit/evidence/remote-R10-frozen-07B39R11.tar.gz",
+      "docs/audit/evidence/search-item-family-contract-07B39R11.json",
+      "docs/audit/evidence/second-concurrent-explicit-CSV-resolution-07B39R11.stderr.txt",
+      "docs/audit/evidence/second-concurrent-explicit-CSV-resolution-07B39R11.stdout.txt",
+      "docs/audit/evidence/second-concurrent-integration-07B39R11.json",
+      "docs/audit/evidence/second-concurrent-normal-merge-07B39R11.stderr.txt",
+      "docs/audit/evidence/second-concurrent-normal-merge-07B39R11.stdout.txt",
+      "docs/audit/evidence/second-concurrent-resolved-default-diffcheck-07B39R11.stderr.txt",
+      "docs/audit/evidence/second-concurrent-resolved-default-diffcheck-07B39R11.stdout.txt",
+      "docs/audit/evidence/second-postmerge-R11-integrity-07B39R11.stderr.txt",
+      "docs/audit/evidence/second-postmerge-R11-integrity-07B39R11.stdout.txt",
+      "docs/audit/evidence/second-postmerge-R11-open-gate-07B39R11.stderr.txt",
+      "docs/audit/evidence/second-postmerge-R11-open-gate-07B39R11.stdout.txt",
+      "docs/audit/evidence/second-postmerge-R9-integrity-07B39R11.stderr.txt",
+      "docs/audit/evidence/second-postmerge-R9-integrity-07B39R11.stdout.txt",
+      "docs/audit/evidence/staged-default-check-07B39R11.json",
+      "docs/audit/evidence/staged-default-check-07B39R11.stderr.txt",
+      "docs/audit/evidence/staged-default-check-07B39R11.stdout.txt",
+      "docs/audit/evidence/validation-run01-consumed-07B39R11.tar.gz",
+      "docs/audit/evidence/validation-run01-journal-07B39R11.jsonl",
+      "docs/audit/evidence/validation-run01-receipt-07B39R11.json",
+      "docs/audit/evidence/validation-run02-consumed-07B39R11.tar.gz",
+      "docs/audit/evidence/validation-run02-journal-07B39R11.jsonl",
+      "docs/audit/evidence/validation-run02-receipt-07B39R11.json"
+    ],
+    "disposition tools": [
+      "docs/audit/tools/disposition07b/author_save_edit.py",
+      "docs/audit/tools/disposition07b/capture_entry_source.py",
+      "docs/audit/tools/disposition07b/capture_linked_activity.py",
+      "docs/audit/tools/disposition07b/capture_production_adjustment.py",
+      "docs/audit/tools/disposition07b/capture_reconciliation_07B39R11.py",
+      "docs/audit/tools/disposition07b/capture_save_edit.py",
+      "docs/audit/tools/disposition07b/capture_session_year.py",
+      "docs/audit/tools/disposition07b/publish_save_edit.py",
+      "docs/audit/tools/disposition07b/publish_save_edit_rev02.py",
+      "docs/audit/tools/disposition07b/reconcile_entry_07B39R11.py",
+      "docs/audit/tools/disposition07b/test_document_receiver.py",
+      "docs/audit/tools/disposition07b/test_entry_source.py",
+      "docs/audit/tools/disposition07b/test_linked_activity.py",
+      "docs/audit/tools/disposition07b/test_production_adjustment.py",
+      "docs/audit/tools/disposition07b/test_reconciliation_07B39R11.py",
+      "docs/audit/tools/disposition07b/test_recovery_exit.py",
+      "docs/audit/tools/disposition07b/test_save_edit.py",
+      "docs/audit/tools/disposition07b/test_session_year.py",
+      "docs/audit/tools/disposition07b/verify_allowed_set_07B39R13.py",
+      "docs/audit/tools/disposition07b/verify_document_receiver.py",
+      "docs/audit/tools/disposition07b/verify_entry_source.py",
+      "docs/audit/tools/disposition07b/verify_linked_activity.py",
+      "docs/audit/tools/disposition07b/verify_production_adjustment.py",
+      "docs/audit/tools/disposition07b/verify_recipient_notify_07B39R10.py",
+      "docs/audit/tools/disposition07b/verify_reconciliation_07B39R11.py",
+      "docs/audit/tools/disposition07b/verify_recovery_exit.py",
+      "docs/audit/tools/disposition07b/verify_save_edit.py",
+      "docs/audit/tools/disposition07b/verify_session_year.py"
+    ]
+  },
+  "evidence_chain": {
+    "7c-start-gate-07B39R10.json": {
+      "present": true,
+      "bytes": 3431,
+      "json_valid": true,
+      "sha256_16": "ad5527c6d8164580"
+    },
+    "recipient-notify-contract-07B39R10.json": {
+      "present": true,
+      "bytes": 4413,
+      "json_valid": true,
+      "sha256_16": "eab3f786af53b326"
+    },
+    "search-item-family-contract-07B39R11.json": {
+      "present": true,
+      "bytes": 16997,
+      "json_valid": true,
+      "sha256_16": "28ac430d637212e6"
+    },
+    "q-reader-year-branch-contract-07B39R12.json": {
+      "present": true,
+      "bytes": 10448,
+      "json_valid": true,
+      "sha256_16": "0079805df03e227a"
+    },
+    "capability-allowed-set-07B39R13.json": {
+      "present": true,
+      "bytes": 14670,
+      "json_valid": true,
+      "sha256_16": "b916679c77e3b82b"
+    },
+    "concurrent-integration-07B39R11.json": {
+      "present": true,
+      "bytes": 8207,
+      "json_valid": true,
+      "sha256_16": "ffe4824d7f464f1e"
+    }
+  },
+  "meaning": "Static-audit workstream verdict only; never ERP, financial, repair or deployment acceptance."
+}
