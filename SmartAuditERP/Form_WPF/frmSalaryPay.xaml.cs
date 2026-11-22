@@ -100,6 +100,9 @@ namespace SmartAuditERP.Form_WPF
             LoadNxtNo();
             cmbEmp.Focus();
             Code = -1;
+            // P7-004 fix: هوية القيد تُصفّر مع النموذج — كانت تبقى من السند
+            // السابق فتُلصق بالسند الجديد التالي
+            EntryGlobalID_Field = "-1";
 
             if (cmbYear.Items.Count > 0)
             {
@@ -294,6 +297,9 @@ namespace SmartAuditERP.Form_WPF
                 string month = cmbMonth.Text;
                 string year  = cmbYear.Text;
 
+                // P7-005 fix: استبعاد الاستحقاق المحذوف — كان الرأس الملغى
+                // يغذي الصرف كأنه مستحق سليم (الاستحقاق يُلغى منطقياً بـ
+                // IS_Deleted=1 من شاشة الاستحقاق نفسها)
                 var adapter = new SqlDataAdapter(
                     $"SELECT ISNULL(E.id,0) AS id, ISNULL(E.name,'') AS name, " +
                     $"ISNULL(E.AccCode,'') AS AccCode, " +
@@ -309,10 +315,22 @@ namespace SmartAuditERP.Form_WPF
                     $"LEFT JOIN Salary_Res_Details SD ON SD.GlobalId=RS.GlobalId " +
                     $"LEFT JOIN Employees E ON SD.res_emp=E.id " +
                     $"WHERE E.id={empId} " +
+                    $"AND RS.IS_Deleted=0 " +
                     $"AND RS.month={month} AND RS.year={year}",
                     conn);
                 var dt = new DataTable();
                 adapter.Fill(dt);
+
+                // P7-005 fix: التعدد رفض صريح لا أخذ أول صف بصمت — أكثر من
+                // استحقاق نشط لنفس الموظف والفترة حالة غامضة يجب حلها لا تجاهلها
+                if (dt.Rows.Count > 1)
+                {
+                    DXMessageBox.Show(
+                        $"يوجد أكثر من استحقاق نشط للموظف في الفترة ({dt.Rows.Count}) —\n" +
+                        $"حدد الاستحقاق المراد الصرف منه أو احذف المكرر.", "تنبيه",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
 
                 if (dt.Rows.Count > 0)
                 {
@@ -434,8 +452,9 @@ namespace SmartAuditERP.Form_WPF
         private void btnClose_Click(object sender, RoutedEventArgs e)
             => Close();
 
-        private async void btnSave_Click(object sender, RoutedEventArgs e)
+        private void btnSave_Click(object sender, RoutedEventArgs e)
         {
+            SqlTransaction tx = null;
             try
             {
                 if (cmbBranch.SelectedIndex == -1)
@@ -456,70 +475,61 @@ namespace SmartAuditERP.Form_WPF
                                     MessageBoxButton.OK, MessageBoxImage.Warning);
                     cmbDepositTo.Focus(); return;
                 }
-
-                if (conn.State != ConnectionState.Open) conn.Open();
-
-                // جلب معرف الموظف المسؤول
-                int respEmpId = -1;
-                if (!string.IsNullOrWhiteSpace(txtEmp.Text))
+                if (!int.TryParse(cmbMonth.Text, out int payMonth) ||
+                    !int.TryParse(cmbYear.Text, out int payYear))
                 {
-                    var empAdapter = new SqlDataAdapter(
-                        $"SELECT id FROM Employees WHERE name='{txtEmp.Text}'",
-                        conn);
-                    var empDt = new DataTable();
-                    empAdapter.Fill(empDt);
-                    if (empDt.Rows.Count > 0)
-                        respEmpId = Convert.ToInt32(empDt.Rows[0][0]);
-                }
-
-                bool isNew = Code == -1;
-
-                if (!isNew)
-                {
-                    // تحديث
-                    var cmd = new SqlCommand(
-                        $"UPDATE SalaryPay SET date=@date, " +
-                        $"month={cmbMonth.Text}, year={cmbYear.Text}, " +
-                        $"branch={cmbBranch.SelectedValue}, " +
-                        $"emp={cmbEmp.SelectedValue}, " +
-                        $"tot_salary={txtTotSalary.Text}, " +
-                        $"salary_add={txtSalaryAdd.Text}, " +
-                        $"salary_sub={txtSalarySub.Text}, " +
-                        $"salary_net={txtNet.Text}, " +
-                        $"emp_resp={respEmpId}, " +
-                        $"notes=N'{txtNotes.Text}', " +
-                        $"Houses=N'{TxtHous.Text}', " +
-                        $"Travel=N'{TxtTravel.Text}' " +
-                        $"WHERE id={Code}", conn);
-                    cmd.Parameters.Add("@date", SqlDbType.DateTime).Value =
-                        txtDate.DateTime.ToShortDateString();
-                    cmd.ExecuteNonQuery();
-                    DXMessageBox.Show("تم تحديث السند بنجاح.", "تم",
-                                    MessageBoxButton.OK, MessageBoxImage.Information);
-                    CLR();
-                    return;
-                }
-
-                // التحقق من الراتب المكرر
-                var checkAdapter = new SqlDataAdapter(
-                    $"SELECT id FROM SalaryPay " +
-                    $"WHERE IS_Deleted=0 " +
-                    $"AND year=N'{cmbYear.Text}' " +
-                    $"AND month={cmbMonth.Text} " +
-                    $"AND emp={cmbEmp.SelectedValue}", conn);
-                var checkDt = new DataTable();
-                checkAdapter.Fill(checkDt);
-
-                if (checkDt.Rows.Count > 0)
-                {
-                    DXMessageBox.Show("لقد تم دفع راتب الموظف سابقاً.", "تنبيه",
+                    DXMessageBox.Show("يجب اختيار الشهر والسنة.", "تنبيه",
                                     MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
-                LoadNxtNo();
+                double netVal = double.TryParse(txtNet.Text, out double nv) ? nv : 0;
+                if (netVal <= 0)
+                {
+                    DXMessageBox.Show("قيمة السند يجب أن تكون أكبر من صفر.", "تنبيه",
+                                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
 
-                // البحث عن كود الصندوق
+                if (string.IsNullOrWhiteSpace(TxtAccCode.Text))
+                {
+                    DXMessageBox.Show(
+                        "لا يوجد حساب محاسبي للموظف — لا يمكن إنشاء قيد الصرف.",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                if (conn.State != ConnectionState.Open) conn.Open();
+
+                // P7-004 fix: الموظف المسؤول هو هوية الجلسة مباشرة — كان البحث
+                // بالاسم قد يلتقط موظفاً آخر يحمل الاسم نفسه
+                int respEmpId = MainClass.EmpNo;
+
+                bool isNew = Code == -1;
+
+                // التحقق من الراتب المكرر (المسار الجديد فقط — قبل المعاملة)
+                if (isNew)
+                {
+                    var checkAdapter = new SqlDataAdapter(
+                        $"SELECT id FROM SalaryPay " +
+                        $"WHERE IS_Deleted=0 " +
+                        $"AND year=N'{cmbYear.Text}' " +
+                        $"AND month={cmbMonth.Text} " +
+                        $"AND emp={cmbEmp.SelectedValue}", conn);
+                    var checkDt = new DataTable();
+                    checkAdapter.Fill(checkDt);
+
+                    if (checkDt.Rows.Count > 0)
+                    {
+                        DXMessageBox.Show("لقد تم دفع راتب الموظف سابقاً.", "تنبيه",
+                                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+
+                    LoadNxtNo();
+                }
+
+                // البحث عن كود الصندوق (مصدر الدفع)
                 var stockAdapter = new SqlDataAdapter(
                     $"SELECT Code FROM Accounts_Index " +
                     $"WHERE Type=2 {Accounting.BranchCondition} " +
@@ -533,45 +543,209 @@ namespace SmartAuditERP.Form_WPF
                                     "خطأ", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
+                string treasuryAcc = stockDt.Rows[0]["Code"].ToString();
 
-                // إدراج سند الراتب
-                var insertCmd = new SqlCommand(
-                    $"INSERT INTO SalaryPay(" +
-                    $"id, date, month, year, branch, emp, " +
-                    $"tot_salary, salary_add, salary_sub, salary_net, " +
-                    $"emp_resp, notes, IS_Deleted, Houses, Travel, " +
-                    $"EntryGlobalID, ResGlobalID) " +
-                    $"VALUES({txtNo.Text}, @date, {cmbMonth.Text}, " +
-                    $"{cmbYear.Text}, {cmbBranch.SelectedValue}, " +
-                    $"{cmbEmp.SelectedValue}, " +
-                    $"{txtTotSalary.Text}, {txtSalaryAdd.Text}, " +
-                    $"{txtSalarySub.Text}, {txtNet.Text}, " +
-                    $"{respEmpId}, N'{txtNotes.Text}', 0, " +
-                    $"N'{TxtHous.Text}', N'{TxtTravel.Text}', " +
-                    $"@EntryGlobalID, @ResGlobalID)", conn);
-                insertCmd.Parameters.Add("@date", SqlDbType.DateTime).Value =
-                    txtDate.DateTime.ToShortDateString();
-                insertCmd.Parameters.Add("@EntryGlobalID", SqlDbType.NVarChar).Value =
-                    EntryGlobalID_Field;
-                insertCmd.Parameters.Add("@ResGlobalID", SqlDbType.NVarChar).Value =
-                    TxtResGlobalID.Text;
-                insertCmd.ExecuteNonQuery();
+                // P7-004 fix: سند الصرف وقيده معاً — الصرف الجديد يولّد قيداً
+                // حقيقياً (النوع 26 «سند صرف راتب» من بذور EntryTypes)، والسجل
+                // القديم الذي حُفظ بهوية وهمية (-1) يُرمم بأول تعديل بإنشاء
+                // قيده المفقود ثم ربطه
+                bool entryIsNew = string.IsNullOrEmpty(EntryGlobalID_Field) ||
+                                  EntryGlobalID_Field == "-1";
+                if (entryIsNew)
+                {
+                    int entryNo = 26;
+                    EntryOper.GetEntryGlobalID(ref EntryGlobalID_Field, ref entryNo);
+                }
+
+                Entry entry = BindSalaryPayToEntry(netVal, treasuryAcc, respEmpId);
+                if (entry == null) return;
+
+                double totSal  = double.TryParse(txtTotSalary.Text, out double ts) ? ts : 0;
+                double addVal  = double.TryParse(txtSalaryAdd.Text, out double av) ? av : 0;
+                double subVal  = double.TryParse(txtSalarySub.Text,  out double sv) ? sv : 0;
+                double housVal = double.TryParse(TxtHous.Text,      out double hv) ? hv : 0;
+                double travVal = double.TryParse(TxtTravel.Text,    out double tv) ? tv : 0;
+
+                tx = conn.BeginTransaction();
+
+                if (!isNew)
+                {
+                    // تحديث
+                    var cmd = new SqlCommand(
+                        "UPDATE SalaryPay SET date=@date, month=@month, year=@year, " +
+                        "branch=@branch, emp=@emp, tot_salary=@tot_salary, " +
+                        "salary_add=@salary_add, salary_sub=@salary_sub, " +
+                        "salary_net=@salary_net, emp_resp=@emp_resp, notes=@notes, " +
+                        "Houses=@Houses, Travel=@Travel, " +
+                        "EntryGlobalID=@EntryGlobalID, ResGlobalID=@ResGlobalID " +
+                        "WHERE id=@id", conn, tx);
+                    cmd.Parameters.Add("@date", SqlDbType.DateTime).Value =
+                        txtDate.DateTime;
+                    cmd.Parameters.Add("@month", SqlDbType.Int).Value = payMonth;
+                    cmd.Parameters.Add("@year", SqlDbType.Int).Value = payYear;
+                    cmd.Parameters.Add("@branch", SqlDbType.Int).Value =
+                        Convert.ToInt32(cmbBranch.SelectedValue);
+                    cmd.Parameters.Add("@emp", SqlDbType.Int).Value =
+                        Convert.ToInt32(cmbEmp.SelectedValue);
+                    cmd.Parameters.Add("@tot_salary", SqlDbType.Float).Value = totSal;
+                    cmd.Parameters.Add("@salary_add", SqlDbType.Float).Value = addVal;
+                    cmd.Parameters.Add("@salary_sub", SqlDbType.Float).Value = subVal;
+                    cmd.Parameters.Add("@salary_net", SqlDbType.Float).Value = netVal;
+                    cmd.Parameters.Add("@emp_resp", SqlDbType.Int).Value = respEmpId;
+                    cmd.Parameters.Add("@notes", SqlDbType.NVarChar).Value = txtNotes.Text;
+                    cmd.Parameters.Add("@Houses", SqlDbType.Float).Value = housVal;
+                    cmd.Parameters.Add("@Travel", SqlDbType.Float).Value = travVal;
+                    cmd.Parameters.Add("@EntryGlobalID", SqlDbType.NVarChar).Value =
+                        EntryGlobalID_Field;
+                    cmd.Parameters.Add("@ResGlobalID", SqlDbType.NVarChar).Value =
+                        TxtResGlobalID.Text;
+                    cmd.Parameters.Add("@id", SqlDbType.Int).Value = Code;
+                    cmd.ExecuteNonQuery();
+                }
+                else
+                {
+                    // إدراج سند الراتب
+                    var insertCmd = new SqlCommand(
+                        "INSERT INTO SalaryPay(" +
+                        "id, date, month, year, branch, emp, " +
+                        "tot_salary, salary_add, salary_sub, salary_net, " +
+                        "emp_resp, notes, IS_Deleted, Houses, Travel, " +
+                        "EntryGlobalID, ResGlobalID) " +
+                        "VALUES(@id, @date, @month, @year, @branch, @emp, " +
+                        "@tot_salary, @salary_add, @salary_sub, @salary_net, " +
+                        "@emp_resp, @notes, 0, @Houses, @Travel, " +
+                        "@EntryGlobalID, @ResGlobalID)", conn, tx);
+                    insertCmd.Parameters.Add("@id", SqlDbType.Int).Value =
+                        Convert.ToInt32(txtNo.Text);
+                    insertCmd.Parameters.Add("@date", SqlDbType.DateTime).Value =
+                        txtDate.DateTime;
+                    insertCmd.Parameters.Add("@month", SqlDbType.Int).Value = payMonth;
+                    insertCmd.Parameters.Add("@year", SqlDbType.Int).Value = payYear;
+                    insertCmd.Parameters.Add("@branch", SqlDbType.Int).Value =
+                        Convert.ToInt32(cmbBranch.SelectedValue);
+                    insertCmd.Parameters.Add("@emp", SqlDbType.Int).Value =
+                        Convert.ToInt32(cmbEmp.SelectedValue);
+                    insertCmd.Parameters.Add("@tot_salary", SqlDbType.Float).Value = totSal;
+                    insertCmd.Parameters.Add("@salary_add", SqlDbType.Float).Value = addVal;
+                    insertCmd.Parameters.Add("@salary_sub", SqlDbType.Float).Value = subVal;
+                    insertCmd.Parameters.Add("@salary_net", SqlDbType.Float).Value = netVal;
+                    insertCmd.Parameters.Add("@emp_resp", SqlDbType.Int).Value = respEmpId;
+                    insertCmd.Parameters.Add("@notes", SqlDbType.NVarChar).Value =
+                        txtNotes.Text;
+                    insertCmd.Parameters.Add("@Houses", SqlDbType.Float).Value = housVal;
+                    insertCmd.Parameters.Add("@Travel", SqlDbType.Float).Value = travVal;
+                    insertCmd.Parameters.Add("@EntryGlobalID", SqlDbType.NVarChar).Value =
+                        EntryGlobalID_Field;
+                    insertCmd.Parameters.Add("@ResGlobalID", SqlDbType.NVarChar).Value =
+                        TxtResGlobalID.Text;
+                    insertCmd.ExecuteNonQuery();
+                }
+
+                // P7-004 fix: القيد شرط الالتزام — السجل والقيد معاملة واحدة،
+                // فشل القيد يتراجع بالسند كله (لا سند صرف بلا أثر محاسبي)
+                if (!new EntryOper().SaveEnty(entry, conn, tx, entryIsNew))
+                {
+                    try { tx.Rollback(); } catch { }
+                    return;
+                }
+
+                tx.Commit();
 
                 Code = Convert.ToInt32(txtNo.Text);
+                txtEntryGlobalId.Text = EntryGlobalID_Field;
 
-                DXMessageBox.Show("تم حفظ السند بنجاح.", "تم",
-                                MessageBoxButton.OK, MessageBoxImage.Information);
+                DXMessageBox.Show(isNew
+                    ? "تم حفظ السند بنجاح."
+                    : "تم تحديث السند بنجاح.", "تم",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
                 CLR();
                 LoadDG("");
             }
             catch (Exception ex)
             {
+                try { tx?.Rollback(); } catch { }
                 DXMessageBox.Show($"خطأ أثناء الحفظ:\n{ex.Message}", "خطأ",
                                 MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
+                if (tx != null)
+                {
+                    try { tx.Dispose(); } catch { }
+                }
                 if (conn.State != ConnectionState.Closed) conn.Close();
+            }
+        }
+
+        // P7-004 fix: قيد سند صرف الراتب (النوع 26): مدين حساب الموظف (تصفير
+        // الالتزام المستحق من قيد الاستحقاق 27) ودائن حساب الصندوق/البنك مصدر
+        // الدفع — متوازن بقيمة الصافي المدفوع
+        private Entry BindSalaryPayToEntry(double netVal, string treasuryAccCode, int respEmpId)
+        {
+            try
+            {
+                int branchId = Convert.ToInt32(cmbBranch.SelectedValue);
+                DateTime payDate = txtDate.DateTime;
+
+                var entry = new Entry
+                {
+                    EntryGlobalID = EntryGlobalID_Field,
+                    ClientCode = Sync.ClientCode,
+                    EntryNo = Convert.ToInt32(
+                        EntryGlobalID_Field.Substring(
+                            EntryGlobalID_Field.LastIndexOf('-') + 1)),
+                    EntryDate = payDate,
+                    ReffNo = txtNo.Text,
+                    RefDate = payDate,
+                    Type = (EntryType)26,
+                    State = 1,
+                    Note = txtNotes.Text,
+                    Branch = branchId,
+                    EmpID = respEmpId,
+                    DistBranch = Sync.DistBranch,
+                    BranchType = Sync.BranchType
+                };
+
+                string note = string.IsNullOrWhiteSpace(txtNotes.Text)
+                    ? $"صرف راتب {cmbEmp.Text} شهر {cmbMonth.Text}/{cmbYear.Text}"
+                    : txtNotes.Text;
+
+                var accounts = new List<Account>();
+
+                // المدين: حساب الموظف
+                accounts.Add(new Account
+                {
+                    EntryGlobalID = entry.EntryGlobalID,
+                    EntryNo = entry.EntryNo,
+                    Name = cmbEmp.Text,
+                    Code = TxtAccCode.Text,
+                    Debt = netVal,
+                    Credit = 0.0,
+                    Note = note,
+                    CCcode = "-1"
+                });
+
+                // الدائن: الصندوق/البنك مصدر الدفع
+                accounts.Add(new Account
+                {
+                    EntryGlobalID = entry.EntryGlobalID,
+                    EntryNo = entry.EntryNo,
+                    Name = cmbDepositTo.Text,
+                    Code = treasuryAccCode,
+                    Debt = 0.0,
+                    Credit = netVal,
+                    Note = note,
+                    CCcode = "-1"
+                });
+
+                entry.Accounts = accounts;
+                return entry;
+            }
+            catch (Exception ex)
+            {
+                DXMessageBox.Show($"خطأ في بناء قيد السند:\n{ex.Message}", "خطأ",
+                                MessageBoxButton.OK, MessageBoxImage.Error);
+                return null;
             }
         }
 
@@ -704,6 +878,14 @@ namespace SmartAuditERP.Form_WPF
             => RecalcNet();
 
         private void TxtTravel_TextChanged(object sender, TextChangedEventArgs e)
+            => RecalcNet();
+
+        // P7-006 fix: الحوافز والخصومات قابلة للتحرير من الواجهة لكن تعديلهما
+        // لم يعد احتساب الصافي — فيُحفظ صافٍ قديم لا يطابق مكوناته المعروضة
+        private void txtSalaryAdd_TextChanged(object sender, TextChangedEventArgs e)
+            => RecalcNet();
+
+        private void txtSalarySub_TextChanged(object sender, TextChangedEventArgs e)
             => RecalcNet();
 
         private void rdCash_CheckedChanged(object sender, RoutedEventArgs e)

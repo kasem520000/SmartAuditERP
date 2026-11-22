@@ -354,7 +354,7 @@ namespace SmartAuditERP.Form_WPF
                 }
 
                 // جمع الصفوف المحددة
-                var selectedRows = new ArrayList();
+                var selectedRows = new System.Collections.Generic.List<SalaryRow>();
                 foreach (var row in _salarySource)
                     if (row.IsSelected) selectedRows.Add(row);
 
@@ -385,13 +385,20 @@ namespace SmartAuditERP.Form_WPF
 
                 var reseved = new Reseved();
 
+                // P7-001 fix: التحقق من كل الصفوف قبل أي كتابة — لا حفظ جزئي
+                // إذا فشل صف في المنتصف بعد حفظ ما قبله
                 foreach (SalaryRow row in selectedRows)
                 {
-                    // التحقق من صلاحية الراتب
                     if (!ValidateWorkDate(row.Emp) || !ValidateNetSalaryRow(row))
                         return;
+                }
 
-                    var resvd = new Reseved.resvd
+                // P7-001 fix: الدفعة كاملة + قيد واحد للمجموعة — لا استدعاء
+                // حفظ لكل موظف (كان يكرر الرأس ويهدر القيد)
+                var resvdList = new System.Collections.Generic.List<Reseved.resvd>();
+                foreach (SalaryRow row in selectedRows)
+                {
+                    resvdList.Add(new Reseved.resvd
                     {
                         GlobalID      = _globalID,
                         _id           = resNo,
@@ -417,10 +424,20 @@ namespace SmartAuditERP.Form_WPF
                         _year         = GetSelectedYearInt(),
                         Cccode        = "-1",
                         Sync          = false.ToString()
-                    };
-
-                    reseved.SaveReceipt1(resvd, reseved.BindreservedToEntry(resvd, selectedRows), IsNew);
+                    });
                 }
+
+                // P7-001 fix: الرابط المطبوع بصفوف الشاشة — null يوقف الحفظ
+                // (لا استحقاق بلا قيد بعد الآن)
+                Entry groupEntry = reseved.BindreservedToEntry(resvdList[0], selectedRows);
+                if (groupEntry == null)
+                    return;
+
+                // P7-001 fix: النتيجة تُفحص — فشل الحفظ لا يليه «تم الحفظ»
+                if (!reseved.SaveReceipts(resvdList, groupEntry, IsNew))
+                    return;
+
+                txtEntryGlobalId.Text = _entryGlobalID;
 
                 var savedMsg = new frmSavedMsg();
                 savedMsg.ShowDialog();
@@ -707,7 +724,10 @@ namespace SmartAuditERP.Form_WPF
                             Total     = total,
                             Sal_Sub   = subSal,
                             Net_Sal   = net,
-                            Notes     = "إستحقاق راتب"
+                            // P7-003 fix: هوية الموظف تُستعاد مع التحميل — كانت
+                            // تسقط إلى صفر فيُحفظ التفصيل بموظف مجهول عند إعادة الحفظ
+                            Emp       = Convert.ToInt32(row["id"]),
+                            Notes     = row["Notes"].ToString()
                         });
                     }
 
@@ -743,6 +763,30 @@ namespace SmartAuditERP.Form_WPF
             txtEntryGlobalId.Text = dr["EntryGlobalID"].ToString();
             TxtGlobalID.Text      = dr["GlobalID"].ToString();
             txtDate.DateTime      = Convert.ToDateTime(dr["date"]);
+
+            // P7-003/P7-002 fix: شهر السند وسنته يستعادان مع فتحه — كانت الفترة
+            // الحالية للشاشة تكتب فوق فترة السند المحمّل عند إعادة الحفظ
+            try
+            {
+                int loadedMonth = Convert.ToInt32(dr["month"]);
+                if (loadedMonth >= 1 && loadedMonth <= cmbMonth.Items.Count)
+                    cmbMonth.SelectedIndex = loadedMonth - 1;
+            }
+            catch { }
+            try
+            {
+                string loadedYear = Convert.ToInt32(dr["year"]).ToString();
+                for (int i = 0; i < cmbYear.Items.Count; i++)
+                {
+                    if (cmbYear.Items[i].ToString() == loadedYear)
+                    {
+                        cmbYear.SelectedIndex = i;
+                        break;
+                    }
+                }
+            }
+            catch { }
+
             TabControl1.SelectedIndex = 0;
             btnviewEntry.Visibility   = Visibility.Visible;
             IsNew = false;
@@ -800,6 +844,9 @@ namespace SmartAuditERP.Form_WPF
                             Total     = total,
                             Sal_Sub   = subSal,
                             Net_Sal   = net,
+                            // P7-003 fix: هوية الموظف تُستعاد مع التحميل — كانت
+                            // تسقط إلى صفر فيُحفظ التفصيل بموظف مجهول عند إعادة الحفظ
+                            Emp       = Convert.ToInt32(row["id"]),
                             Notes     = row["Notes"].ToString()
                         });
                     }

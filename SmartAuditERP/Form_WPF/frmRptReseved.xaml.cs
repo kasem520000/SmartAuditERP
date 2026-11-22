@@ -101,80 +101,25 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
-                if (conn.State == ConnectionState.Open) conn.Close();
-                conn.Open();
-
-                var detailDt = new DataTable();
-                detailDt.Columns.Add("DgvNo",      typeof(int));
-                detailDt.Columns.Add("Empnam",      typeof(string));
-                detailDt.Columns.Add("AccCode",     typeof(int));
-                detailDt.Columns.Add("BasicSal",    typeof(decimal));
-                detailDt.Columns.Add("HousSal",     typeof(decimal));
-                detailDt.Columns.Add("TravelSal",   typeof(decimal));
-                detailDt.Columns.Add("Sal_add",     typeof(decimal));
-                detailDt.Columns.Add("Total",       typeof(decimal));
-                detailDt.Columns.Add("Sal_Sub",     typeof(decimal));
-                detailDt.Columns.Add("Net_Sal",     typeof(decimal));
-                detailDt.Columns.Add("Notes",       typeof(string));
-                detailDt.Columns.Add("Emp",         typeof(int));
-
-                string sql =
-                    "SELECT ISNULL(E.id,0) AS id, ISNULL(E.name,'') AS name, " +
-                    "ISNULL(E.AccCode,'') AS AccCode, ISNULL(SD.Basic,0) AS Basic, " +
-                    "ISNULL(SD.Houses,0) AS Houses, ISNULL(SD.travel,0) AS travel, " +
-                    "ISNULL(SD.sal_add,0) AS sal_add, ISNULL(SD.sal_Sub,0) AS sal_Sub, " +
-                    "ISNULL(SD.Net,0) AS Net, ISNULL(RS.Notes,0) AS Notes " +
-                    "FROM Salary_Res RS " +
-                    "LEFT JOIN Salary_Res_Details SD ON SD.GlobalId=RS.GlobalId " +
-                    "LEFT JOIN Employees E ON SD.res_emp=E.id " +
-                    $"WHERE RS.GlobalId=N'{selectedItem.GlobalID}'";
-
-                var adapter = new SqlDataAdapter(sql, conn);
-                var dt = new DataTable();
-                adapter.Fill(dt);
-
-                string notes = selectedItem.Notes;
-
-                for (int i = 0; i < dt.Rows.Count; i++)
-                {
-                    DataRow row = dt.Rows[i];
-                    decimal basic  = Convert.ToDecimal(row["Basic"]);
-                    decimal houses = Convert.ToDecimal(row["Houses"]);
-                    decimal travel = Convert.ToDecimal(row["travel"]);
-                    decimal salAdd = Convert.ToDecimal(row["sal_add"]);
-                    decimal salSub = Convert.ToDecimal(row["sal_Sub"]);
-                    decimal total  = basic + houses + travel + salAdd;
-                    decimal net    = total - salSub;
-
-                    detailDt.Rows.Add(i + 1,
-                        row["name"], Convert.ToInt32(row["AccCode"]),
-                        basic, houses, travel, salAdd, total, salSub, net,
-                        notes, row["id"]);
-                }
-
-                if (detailDt.Rows.Count > 0)
-                {
-                    // فتح نافذة FrmReseved (WPF)
-                    var frmReseved = new FrmReseved();
-                    frmReseved.IsNew = false;
-                    frmReseved.txtNo.Text            = selectedItem.Id.ToString();
-                    frmReseved.txtEntryGlobalId.Text = selectedItem.EntryGlobalID;
-                    frmReseved.TxtGlobalID.Text      = selectedItem.GlobalID;
-                    frmReseved.TabControl1.SelectedIndex = 0;
-                    frmReseved.btnviewEntry.Visibility  = Visibility.Visible;
-                    frmReseved.GridControl1.ItemsSource = detailDt.DefaultView;
-                    frmReseved.Show();
-                    frmReseved.Activate();
-                    this.Hide();
-                }
-
-                conn.Close();
+                // P7-002 fix: الفتح من التقرير عبر محمل النافذة نفسها بعد Show —
+                // كان المسار يضبط الهويات قبل Show فيمحوها Window_Loaded/CLR،
+                // ويحقن DataView غريباً فوق مصدر الحفظ الداخلي (_salarySource)
+                // فتعرض الشاشة بيانات لا يراها محرك الحفظ ولا الطباعة.
+                // النمط الآن كتوأمه OpenSalaryReserved: Show ثم Navigate.
+                var frmReseved = new FrmReseved();
+                frmReseved.Show();
+                frmReseved.Navigate(
+                    "SELECT SR.id, SR.Date, SR.EntryGlobalID, SR.GlobalID, " +
+                    "SR.month, SR.year, SR.Notes " +
+                    "FROM Salary_Res SR " +
+                    $"WHERE SR.IS_Deleted=0 AND SR.GlobalId=N'{selectedItem.GlobalID}'");
+                frmReseved.Activate();
+                this.Hide();
             }
             catch (Exception ex)
             {
                 DXMessageBox.Show($"خطأ:\n{ex.Message}", "خطأ",
                                 MessageBoxButton.OK, MessageBoxImage.Error);
-                conn.Close();
             }
         }
 

@@ -3534,6 +3534,16 @@ BEGIN
 	-- interfering with SELECT statements.
 	SET NOCOUNT ON;
 
+   -- P7-009 fix: حارس تفرد الحدث الواحد — إعادة قراءة دفعة من الجهاز
+   -- (فشل ClearGLog أو انقطاع بين الالتزام والمسح) لا تدرج الحدث مرتين
+   IF NOT EXISTS (SELECT 1 FROM Attendance
+                   WHERE _machineNumber=@_machineNumber
+                     AND _enrollNumber=@_enrollNumber
+                     AND _verifyMode=@_verifyMode
+                     AND _inOutMode=@_inOutMode
+                     AND _year=@_year AND _month=@_month AND _day=@_day
+                     AND _hour=@_hour AND _minute=@_minute
+                     AND takeJoureny=@takeJoureny AND _statu=@_statu)
    insert into Attendance(_machineNumber,_enrollNumber,
 _enrollMachineNumber,_verifyMode,_inOutMode,_year,_month,_day,_hour,_minute,takeJoureny,_statu)values(@_machineNumber,@_enrollNumber,@_enrollMachineNumber,@_verifyMode,@_inOutMode,@_year,@_month,@_day,@_hour,@_minute,@takeJoureny,@_statu)
 
@@ -51340,6 +51350,42 @@ AS
 BEGIN
  set @stock = (select Quantity from ProductStocks where ProductId=@item and BranchId=@branch and InventoryId=@Inventory and UnitId=(select unit from Items where id=@item))   
 	if (@stock is null) set @stock=0
+END')
+END
+GO
+
+-- P7-009 fix: حارس تفرد لإجراء البصمة على قواعد البيانات القائمة؛
+-- إعادة قراءة دفعة من سجل الجهاز (فشل المسح أو انقطاع بين الالتزام
+-- والمسح) كانت تدرج الحدث مرتين. الإجراء الجديد يرفض إدراج
+-- الحدث نفسه مرة ثانية (حدث معرف بمواصفات ثلاث عشرة كاملة).
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND OBJECT_ID = OBJECT_ID('dbo.[AddGdata]'))
+BEGIN
+exec('ALTER PROCEDURE [dbo].[AddGdata]
+	@_machineNumber int,
+	@_enrollNumber int,
+	@_enrollMachineNumber int,
+	@_verifyMode int,
+	@_inOutMode int,
+	@_year int,
+	@_month int,
+	@_day int,
+	@_hour int,
+	@_minute int,
+	@takeJoureny int,
+	@_statu bit
+AS
+BEGIN
+	SET NOCOUNT ON;
+   IF NOT EXISTS (SELECT 1 FROM Attendance
+				   WHERE _machineNumber=@_machineNumber
+					 AND _enrollNumber=@_enrollNumber
+					 AND _verifyMode=@_verifyMode
+					 AND _inOutMode=@_inOutMode
+					 AND _year=@_year AND _month=@_month AND _day=@_day
+					 AND _hour=@_hour AND _minute=@_minute
+					 AND takeJoureny=@takeJoureny AND _statu=@_statu)
+	insert into Attendance(_machineNumber,_enrollNumber,
+_enrollMachineNumber,_verifyMode,_inOutMode,_year,_month,_day,_hour,_minute,takeJoureny,_statu)values(@_machineNumber,@_enrollNumber,@_enrollMachineNumber,@_verifyMode,@_inOutMode,@_year,@_month,@_day,@_hour,@_minute,@takeJoureny,@_statu)
 END')
 END
 GO

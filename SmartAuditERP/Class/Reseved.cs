@@ -130,6 +130,19 @@ namespace SmartAuditERP
 
                 public bool SaveReceipt1(resvd rs, Entry Entr, bool IsNew)
                 {
+                        // P7-001 fix: الحجز بلا قيده مرفوض (fail-closed) — كان القيد
+                        // امتيازاً اختيارياً: null يمرر الحفظ كاملاً ثم تعود الدالة true
+                        if (Entr == null)
+                        {
+                                string text0;
+                                text0 = "لا يمكن حفظ الاستحقاق دون قيده";
+                                if (Operators.CompareString(MainClass.Language, "en", TextCompare: false) == 0)
+                                {
+                                        text0 = "cannot save the accrual without its entry";
+                                }
+                                MessageBox.Show(text0, "", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                                return false;
+                        }
                         new SqlCommand();
                         new SqlDataAdapter();
                         DataTable dataTable;
@@ -231,7 +244,8 @@ namespace SmartAuditERP
                                 sqlCommand.ExecuteNonQuery();
                                 // P3-003 fix: القيد داخل معاملة الحجز نفسها ونية المستدعي الصريحة
                                 // (IsNew بعد تسوية فحص الوجود) — النجاح يعتمد الحجز وقيمه معاً
-                                if (Entr != null && !new EntryOper().SaveEnty(Entr, sqlConnection, sqlTransaction, IsNew))
+                                // P7-001 fix: Entr مضمون غير فارغ بحارس بداية الدالة
+                                if (!new EntryOper().SaveEnty(Entr, sqlConnection, sqlTransaction, IsNew))
                                 {
                                         try
                                         {
@@ -288,7 +302,12 @@ namespace SmartAuditERP
                         return result;
                 }
 
-                public Entry BindreservedToEntry(resvd Receipt, ArrayList dt)
+                // P7-001 fix: رابط مطبوع بصفوف الشاشة نفسها (SalaryRow) — المسار القديم
+                // كان يقيد عناصر ArrayList كـDataRow فيرمي استثناءً في أول صف ويعيد
+                // null، ثم يمرر الشاشة null إلى الحفظ فيتم الاستحقاق بلا قيد ويعلن
+                // النجاح. البناء الآن لكل صف موجب الصافي: دائن حساب الموظف (AccCode)
+                // ومدين حساب التكلفة (DebitAcc) — قيد المجموعة يُبنى مرة واحدة.
+                public Entry BindreservedToEntry(resvd Receipt, System.Collections.Generic.List<SmartAuditERP.Form_WPF.FrmReseved.SalaryRow> rows)
                 {
                         checked
                         {
@@ -314,22 +333,18 @@ namespace SmartAuditERP
                                         entry.EmpID = MainClass.EmpNo;
                                         entry.DistBranch = Sync.DistBranch;
                                         entry.BranchType = Sync.BranchType;
-                                        if (decimal.Compare(Receipt._Net, 0m) > 0)
+                                        foreach (SmartAuditERP.Form_WPF.FrmReseved.SalaryRow current in rows)
                                         {
-                                                int num;
-                                                num = dt.Count - 1;
-                                                for (int i = 0; i <= num; i++)
+                                                if (decimal.Compare(current.Net_Sal, 0m) > 0)
                                                 {
-                                                        DataRow dataRow;
-                                                        dataRow = (DataRow)dt[i];
                                                         Account account;
                                                         account = new Account();
                                                         account.EntryGlobalID = entry.EntryGlobalID;
                                                         account.EntryNo = entry.EntryNo;
-                                                        account.Name = Conversions.ToString(dataRow["AccCode"]);
-                                                        account.Code = Conversions.ToString(dataRow["AccCode"]);
+                                                        account.Name = Conversions.ToString(current.AccCode);
+                                                        account.Code = Conversions.ToString(current.AccCode);
                                                         account.Debt = 0.0;
-                                                        account.Credit = Convert.ToDouble(RuntimeHelpers.GetObjectValue(dataRow["Net_Sal"]));
+                                                        account.Credit = Convert.ToDouble(current.Net_Sal);
                                                         account.Note = Receipt.Notes;
                                                         account.CCcode = Conversions.ToString(-1);
                                                         list.Add(account);
@@ -338,7 +353,7 @@ namespace SmartAuditERP
                                                         account.EntryNo = entry.EntryNo;
                                                         account.Name = Receipt.DebitAcc;
                                                         account.Code = Receipt.DebitAcc;
-                                                        account.Debt = Convert.ToDouble(RuntimeHelpers.GetObjectValue(dataRow["Net_Sal"]));
+                                                        account.Debt = Convert.ToDouble(current.Net_Sal);
                                                         account.Credit = 0.0;
                                                         account.Note = Receipt.Notes;
                                                         account.CCcode = Receipt.Cccode;
@@ -365,6 +380,155 @@ namespace SmartAuditERP
                                 }
                                 return result;
                         }
+                }
+
+                // P7-001 fix: استحقاق المجموعة وقيدها نتيجة واحدة: رأس Salary_Res
+                // يُكتب مرة (لا مرة لكل موظف)، تفاصيل كل موظف بالوجود المحروس
+                // (UPDLOCK+HOLDLOCK)، والقيد الواحد للدفعة كلها — كل ذلك داخل
+                // معاملة واحدة، والقيد شرط النجاح (Entr==null = رفض). النتيجة
+                // bool تفحصها الشاشة قبل أي رسالة نجاح.
+                public bool SaveReceipts(System.Collections.Generic.List<resvd> rows, Entry Entr, bool IsNew)
+                {
+                        bool result;
+                        SqlConnection sqlConnection;
+                        sqlConnection = MainClass.ConnObj();
+                        if (sqlConnection.State != ConnectionState.Open)
+                        {
+                                sqlConnection.Open();
+                        }
+                        SqlTransaction sqlTransaction;
+                        sqlTransaction = null;
+                        try
+                        {
+                                if (rows == null || rows.Count == 0 || Entr == null)
+                                {
+                                        string text0;
+                                        text0 = "لا يوجد ما يُحفظ أو القيد مفقود";
+                                        if (Operators.CompareString(MainClass.Language, "en", TextCompare: false) == 0)
+                                        {
+                                                text0 = "nothing to save or the entry is missing";
+                                        }
+                                        MessageBox.Show(text0, "", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                                        result = false;
+                                }
+                                else
+                                {
+                                        sqlTransaction = sqlConnection.BeginTransaction();
+                                        resvd rs;
+                                        rs = rows[0];
+                                        SqlCommand sqlCommand;
+                                        sqlCommand = new SqlCommand("select GlobalID from Salary_Res with (UPDLOCK, HOLDLOCK) where id=@id", sqlConnection, sqlTransaction);
+                                        sqlCommand.Parameters.Add("@id", SqlDbType.Int).Value = rs._id;
+                                        DataTable dataTable;
+                                        dataTable = new DataTable();
+                                        new SqlDataAdapter(sqlCommand).Fill(dataTable);
+                                        if (dataTable.Rows.Count > 0)
+                                        {
+                                                IsNew = false;
+                                        }
+                                        if (IsNew)
+                                        {
+                                                sqlCommand = new SqlCommand("insert into Salary_Res(id,GlobalID,date,month,year,IS_Deleted,branch,notes,EntryGlobalID) values(@id,@GlobalID,@date,@month,@year,@IS_Deleted,@branch,@notes,@EntryGlobalID)", sqlConnection, sqlTransaction);
+                                        }
+                                        else
+                                        {
+                                                sqlCommand = new SqlCommand("update  Salary_Res set date=@date,month=@month,year=@year,branch=@branch,notes=@notes,EntryGlobalID=@EntryGlobalID where GlobalID=@GlobalID", sqlConnection, sqlTransaction);
+                                        }
+                                        sqlCommand.Parameters.Add("@id", SqlDbType.Int).Value = rs._id;
+                                        sqlCommand.Parameters.Add("@GlobalID", SqlDbType.NVarChar).Value = rs.GlobalID;
+                                        sqlCommand.Parameters.Add("@date", SqlDbType.DateTime).Value = rs.ReceiptDate;
+                                        sqlCommand.Parameters.Add("@month", SqlDbType.Int).Value = rs._Month;
+                                        sqlCommand.Parameters.Add("@year", SqlDbType.Int).Value = rs._year;
+                                        sqlCommand.Parameters.Add("@IS_Deleted", SqlDbType.Bit).Value = rs.ISDeleted;
+                                        sqlCommand.Parameters.Add("@Branch", SqlDbType.Int).Value = rs.BranchID;
+                                        sqlCommand.Parameters.Add("@Notes", SqlDbType.NVarChar).Value = rs.Notes;
+                                        sqlCommand.Parameters.Add("@EntryGlobalID", SqlDbType.NVarChar).Value = rs.EntryGlobalID;
+                                        sqlCommand.ExecuteNonQuery();
+                                        foreach (resvd current in rows)
+                                        {
+                                                sqlCommand = new SqlCommand("select GlobalID from Salary_Res_Details with (UPDLOCK, HOLDLOCK) where GlobalID=@GlobalID and res_emp=@res_emp", sqlConnection, sqlTransaction);
+                                                sqlCommand.Parameters.Add("@GlobalID", SqlDbType.NVarChar).Value = current.GlobalID;
+                                                sqlCommand.Parameters.Add("@res_emp", SqlDbType.Int).Value = current._res_emp;
+                                                DataTable dataTable2;
+                                                dataTable2 = new DataTable();
+                                                new SqlDataAdapter(sqlCommand).Fill(dataTable2);
+                                                bool flag;
+                                                flag = dataTable2.Rows.Count == 0;
+                                                if (flag)
+                                                {
+                                                        sqlCommand = new SqlCommand("insert into Salary_Res_Details(GlobalID,res_emp,Basic,Houses,Travel,sal_add,sal_sub,Net) values(@GlobalID,@res_emp,@Basic,@Houses,@Travel,@sal_add,@sal_sub,@Net)", sqlConnection, sqlTransaction);
+                                                }
+                                                else
+                                                {
+                                                        sqlCommand = new SqlCommand("update  Salary_Res_Details set res_emp=@res_emp,Basic=@Basic,Houses=@Houses,Travel=@Travel,sal_add=@sal_add,sal_sub=@sal_sub,Net=@Net where GlobalID=@GlobalID and res_emp=@res_emp ", sqlConnection, sqlTransaction);
+                                                }
+                                                sqlCommand.Parameters.Add("@GlobalID", SqlDbType.NVarChar).Value = current.GlobalID;
+                                                sqlCommand.Parameters.Add("@res_emp", SqlDbType.Int).Value = current._res_emp;
+                                                sqlCommand.Parameters.Add("@Basic", SqlDbType.Float).Value = current._Basic;
+                                                sqlCommand.Parameters.Add("@Houses", SqlDbType.Float).Value = current._Houses;
+                                                sqlCommand.Parameters.Add("@Travel", SqlDbType.Float).Value = current._Travel;
+                                                sqlCommand.Parameters.Add("@sal_add", SqlDbType.Float).Value = current._saladd;
+                                                sqlCommand.Parameters.Add("@sal_sub", SqlDbType.Float).Value = current._salsub;
+                                                sqlCommand.Parameters.Add("@Net", SqlDbType.Float).Value = current._Net;
+                                                sqlCommand.ExecuteNonQuery();
+                                        }
+                                        // P7-001 fix: القيد شرط الالتزام — فشله يتراجع بكل الحجز
+                                        if (!new EntryOper().SaveEnty(Entr, sqlConnection, sqlTransaction, IsNew))
+                                        {
+                                                try
+                                                {
+                                                        sqlTransaction.Rollback();
+                                                }
+                                                catch
+                                                {
+                                                }
+                                                string text;
+                                                text = "خطأ أثناء الحفظ";
+                                                if (Operators.CompareString(MainClass.Language, "en", TextCompare: false) == 0)
+                                                {
+                                                        text = "error in saving";
+                                                }
+                                                MessageBox.Show(text, "", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                                                result = false;
+                                        }
+                                        else
+                                        {
+                                                sqlTransaction.Commit();
+                                                result = true;
+                                        }
+                                }
+                        }
+                        catch (Exception ex)
+                        {
+                                ProjectData.SetProjectError(ex);
+                                // P3-003 fix: تراجع حراس عن أي كتابة معلّقة ثم رسالة الخطأ
+                                try
+                                {
+                                        sqlTransaction?.Rollback();
+                                }
+                                catch
+                                {
+                                }
+                                Exception ex2;
+                                ex2 = ex;
+                                string text2;
+                                text2 = "خطأ أثناء حفظ الاستحقاق";
+                                if (Operators.CompareString(MainClass.Language, "en", TextCompare: false) == 0)
+                                {
+                                        text2 = "error in saving";
+                                }
+                                MessageBox.Show((Operators.CompareString(MainClass.Language, "ar", TextCompare: false) != 0) ? (text2 + Environment.NewLine + "Error details: " + ex2.Message) : (text2 + Environment.NewLine + "تفاصيل الخطأ: " + ex2.Message), "", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                                result = false;
+                                ProjectData.ClearProjectError();
+                        }
+                        finally
+                        {
+                                if (sqlConnection.State != ConnectionState.Closed)
+                                {
+                                        sqlConnection.Close();
+                                }
+                        }
+                        return result;
                 }
         }
 }
