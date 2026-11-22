@@ -1,0 +1,495 @@
+{
+  "schema_version": 1,
+  "kind": "R13-capability-allowed-set-landscape-and-D06-trial-balance-double-count",
+  "tag": "07B39R13",
+  "application_execution_count": 0,
+  "read_only": true,
+  "branch_mechanism": {
+    "Accounting_BranchCondition_default": {
+      "line": 13,
+      "text": " and (acc_branch={MainClass.BranchNo} or acc_branch is null ) — session branch or shared (null)"
+    },
+    "User_LoadUserOperPermission_sets_condition": {
+      "line": 55
+    },
+    "OperNo_17_disables_branch_condition": {
+      "line": 112,
+      "effect": "permission 17 (ShowBranchsAccounts) empties the account branch filter — all-branches account view"
+    }
+  },
+  "capability_landscape": {
+    "D01": {
+      "files": [
+        {
+          "name": "frm_ReportDesign.cs",
+          "bytes": 562,
+          "branch_scope_pattern": false,
+          "year_preview_refs": false
+        },
+        {
+          "name": "frmRptUsersRecords.xaml.cs",
+          "missing": true
+        }
+      ],
+      "branch_scope_pattern_present": false,
+      "year_preview_refs_present": false
+    },
+    "D02": {
+      "files": [
+        {
+          "name": "Print.cs",
+          "bytes": 51654,
+          "branch_scope_pattern": true,
+          "year_preview_refs": false
+        },
+        {
+          "name": "Report.cs",
+          "bytes": 26943,
+          "branch_scope_pattern": false,
+          "year_preview_refs": false
+        }
+      ],
+      "branch_scope_pattern_present": true,
+      "year_preview_refs_present": false
+    },
+    "D03": {
+      "files": [
+        {
+          "name": "frmPrintBarcode.xaml.cs",
+          "bytes": 12335,
+          "branch_scope_pattern": false,
+          "year_preview_refs": false
+        },
+        {
+          "name": "frmMultiBarcode.xaml.cs",
+          "bytes": 7544,
+          "branch_scope_pattern": false,
+          "year_preview_refs": false
+        },
+        {
+          "name": "frmItemsBarcode.xaml.cs",
+          "bytes": 18837,
+          "branch_scope_pattern": false,
+          "year_preview_refs": false
+        }
+      ],
+      "branch_scope_pattern_present": false,
+      "year_preview_refs_present": false
+    },
+    "D04": {
+      "files": [
+        {
+          "name": "Number2Arabic.cs",
+          "bytes": 7963,
+          "branch_scope_pattern": false,
+          "year_preview_refs": false
+        },
+        {
+          "name": "Common.cs",
+          "bytes": 91847,
+          "branch_scope_pattern": true,
+          "year_preview_refs": false
+        }
+      ],
+      "branch_scope_pattern_present": true,
+      "year_preview_refs_present": false
+    },
+    "D05": {
+      "files": [
+        {
+          "name": "frmAccountBalance.xaml.cs",
+          "bytes": 36369,
+          "branch_scope_pattern": true,
+          "year_preview_refs": true
+        },
+        {
+          "name": "frmAccountsStatement.xaml.cs",
+          "bytes": 36376,
+          "branch_scope_pattern": true,
+          "year_preview_refs": true
+        }
+      ],
+      "branch_scope_pattern_present": true,
+      "year_preview_refs_present": true
+    },
+    "D06": {
+      "files": [
+        {
+          "name": "frmMezanMorg3a.xaml.cs",
+          "bytes": 38110,
+          "branch_scope_pattern": true,
+          "year_preview_refs": false
+        },
+        {
+          "name": "frmRptCostCenter.xaml.cs",
+          "bytes": 34620,
+          "branch_scope_pattern": true,
+          "year_preview_refs": false
+        },
+        {
+          "name": "frmRptKhzna.xaml.cs",
+          "bytes": 22232,
+          "branch_scope_pattern": true,
+          "year_preview_refs": false
+        }
+      ],
+      "branch_scope_pattern_present": true,
+      "year_preview_refs_present": false
+    },
+    "D07": {
+      "files": [
+        {
+          "name": "frmRptIncomeStatement.xaml.cs",
+          "bytes": 24405,
+          "branch_scope_pattern": true,
+          "year_preview_refs": false
+        },
+        {
+          "name": "frmItemsBalances.xaml.cs",
+          "bytes": 8436,
+          "branch_scope_pattern": true,
+          "year_preview_refs": false
+        }
+      ],
+      "branch_scope_pattern_present": true,
+      "year_preview_refs_present": false
+    },
+    "D08": {
+      "files": [
+        {
+          "name": "frmRptItemsActivity.xaml.cs",
+          "bytes": 37131,
+          "branch_scope_pattern": true,
+          "year_preview_refs": false
+        },
+        {
+          "name": "frmRptItemsExpiration.xaml.cs",
+          "bytes": 15224,
+          "branch_scope_pattern": true,
+          "year_preview_refs": false
+        }
+      ],
+      "branch_scope_pattern_present": true,
+      "year_preview_refs_present": false
+    },
+    "D09": {
+      "files": [
+        {
+          "name": "frmInvsProfit.xaml.cs",
+          "bytes": 43950,
+          "branch_scope_pattern": true,
+          "year_preview_refs": false
+        },
+        {
+          "name": "frmRptItemsProfit.xaml.cs",
+          "bytes": 26610,
+          "branch_scope_pattern": true,
+          "year_preview_refs": false
+        }
+      ],
+      "branch_scope_pattern_present": true,
+      "year_preview_refs_present": false
+    },
+    "D10": {
+      "files": [
+        {
+          "name": "frmRptInvSalesDetails.xaml.cs",
+          "bytes": 63168,
+          "branch_scope_pattern": true,
+          "year_preview_refs": false
+        },
+        {
+          "name": "frmRptInvSalesDetailsPos.xaml.cs",
+          "bytes": 37020,
+          "branch_scope_pattern": true,
+          "year_preview_refs": false
+        }
+      ],
+      "branch_scope_pattern_present": true,
+      "year_preview_refs_present": false
+    },
+    "D11": {
+      "files": [
+        {
+          "name": "frmRptInvPurchDetails.xaml.cs",
+          "missing": true
+        },
+        {
+          "name": "frmTaxInvDetails.xaml.cs",
+          "bytes": 44582,
+          "branch_scope_pattern": true,
+          "year_preview_refs": false
+        }
+      ],
+      "branch_scope_pattern_present": true,
+      "year_preview_refs_present": false
+    },
+    "D12": {
+      "files": [
+        {
+          "name": "frmDecisionHelp.xaml.cs",
+          "bytes": 20942,
+          "branch_scope_pattern": true,
+          "year_preview_refs": false
+        },
+        {
+          "name": "frmrptUsersRecords.xaml.cs",
+          "bytes": 5821,
+          "branch_scope_pattern": false,
+          "year_preview_refs": false
+        }
+      ],
+      "branch_scope_pattern_present": true,
+      "year_preview_refs_present": false
+    },
+    "D13": {
+      "files": [
+        {
+          "name": "frmInvBySalesMen.xaml.cs",
+          "bytes": 34502,
+          "branch_scope_pattern": true,
+          "year_preview_refs": false
+        },
+        {
+          "name": "FrmRptSalesChart.xaml.cs",
+          "bytes": 17401,
+          "branch_scope_pattern": true,
+          "year_preview_refs": false
+        }
+      ],
+      "branch_scope_pattern_present": true,
+      "year_preview_refs_present": false
+    },
+    "D14": {
+      "files": [
+        {
+          "name": "frmProductionOrder.xaml.cs",
+          "bytes": 77838,
+          "branch_scope_pattern": true,
+          "year_preview_refs": false
+        }
+      ],
+      "branch_scope_pattern_present": true,
+      "year_preview_refs_present": false
+    },
+    "D15": {
+      "files": [
+        {
+          "name": "frmRptSand.xaml.cs",
+          "missing": true
+        },
+        {
+          "name": "frmSalaryPay.xaml.cs",
+          "bytes": 33660,
+          "branch_scope_pattern": true,
+          "year_preview_refs": false
+        }
+      ],
+      "branch_scope_pattern_present": true,
+      "year_preview_refs_present": false
+    },
+    "D16": {
+      "files": [
+        {
+          "name": "frmTaxRptPeriod.xaml.cs",
+          "bytes": 41469,
+          "branch_scope_pattern": true,
+          "year_preview_refs": false
+        },
+        {
+          "name": "frmVATReturn.xaml.cs",
+          "bytes": 34042,
+          "branch_scope_pattern": true,
+          "year_preview_refs": false
+        }
+      ],
+      "branch_scope_pattern_present": true,
+      "year_preview_refs_present": false
+    },
+    "D17": {
+      "files": [
+        {
+          "name": "frmInvoiceSrch.xaml.cs",
+          "bytes": 26284,
+          "branch_scope_pattern": true,
+          "year_preview_refs": true
+        },
+        {
+          "name": "frmRptEntries.xaml.cs",
+          "bytes": 28562,
+          "branch_scope_pattern": true,
+          "year_preview_refs": false
+        }
+      ],
+      "branch_scope_pattern_present": true,
+      "year_preview_refs_present": true
+    },
+    "D18": {
+      "files": [
+        {
+          "name": "frmItemsSrch.xaml.cs",
+          "bytes": 19006,
+          "branch_scope_pattern": true,
+          "year_preview_refs": false
+        }
+      ],
+      "branch_scope_pattern_present": true,
+      "year_preview_refs_present": false
+    },
+    "D19": {
+      "files": [
+        {
+          "name": "frmRecyclingData.xaml.cs",
+          "bytes": 45753,
+          "branch_scope_pattern": true,
+          "year_preview_refs": false
+        }
+      ],
+      "branch_scope_pattern_present": true,
+      "year_preview_refs_present": false
+    },
+    "D20": {
+      "files": [
+        {
+          "name": "frmEditItems.xaml.cs",
+          "bytes": 12863,
+          "branch_scope_pattern": false,
+          "year_preview_refs": false
+        },
+        {
+          "name": "frmUnits.xaml.cs",
+          "bytes": 14452,
+          "branch_scope_pattern": true,
+          "year_preview_refs": false
+        }
+      ],
+      "branch_scope_pattern_present": true,
+      "year_preview_refs_present": false
+    },
+    "D21": {
+      "files": [
+        {
+          "name": "frmInvoiceSrch.xaml.cs",
+          "bytes": 26284,
+          "branch_scope_pattern": true,
+          "year_preview_refs": true
+        }
+      ],
+      "branch_scope_pattern_present": true,
+      "year_preview_refs_present": true
+    },
+    "D22": {
+      "files": [
+        {
+          "name": "frmInvPurch.xaml.cs",
+          "bytes": 107390,
+          "branch_scope_pattern": true,
+          "year_preview_refs": false
+        },
+        {
+          "name": "frmInvSale.xaml.cs",
+          "bytes": 144406,
+          "branch_scope_pattern": true,
+          "year_preview_refs": true
+        }
+      ],
+      "branch_scope_pattern_present": true,
+      "year_preview_refs_present": true
+    },
+    "D23": {
+      "files": [
+        {
+          "name": "frmSettings.xaml.cs",
+          "bytes": 174024,
+          "branch_scope_pattern": true,
+          "year_preview_refs": true
+        }
+      ],
+      "branch_scope_pattern_present": true,
+      "year_preview_refs_present": true
+    },
+    "D24": {
+      "files": [
+        {
+          "name": "EntityOperations.cs",
+          "bytes": 116511,
+          "branch_scope_pattern": true,
+          "year_preview_refs": false
+        }
+      ],
+      "branch_scope_pattern_present": true,
+      "year_preview_refs_present": false
+    },
+    "D25": {
+      "files": [
+        {
+          "name": "frmServerSetting.xaml.cs",
+          "bytes": 36499,
+          "branch_scope_pattern": false,
+          "year_preview_refs": false
+        }
+      ],
+      "branch_scope_pattern_present": false,
+      "year_preview_refs_present": false
+    },
+    "D26": {
+      "files": [],
+      "branch_scope_pattern_present": false,
+      "year_preview_refs_present": false
+    }
+  },
+  "capability_landscape_note": "Pattern presence in selected entry files is an allowed-set indicator, not a certificate that every query in the capability is scoped. D26 is the phase completion capability itself (no entry files).",
+  "trial_balance_D06": {
+    "file": "SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs",
+    "LoadtTreeList_192_229_sha16": "04105f485be528f4",
+    "TravarseTree_357_495_sha16": "1f77a0038f57fd77",
+    "CalcSum_508_535_sha16": "7fe11b095e0e7d8e",
+    "display_rows_built_from": "ALL AccountList nodes (parents and leaves) — line 202",
+    "parent_aggregates_children_at": 459,
+    "parent_final_from_aggregates_at": 475,
+    "calcsum_sums_all_display_rows_at": 512,
+    "calcsum_sums": [
+      "TrDebtorMovement",
+      "TrCreditorMovement",
+      "TrDeptFinal",
+      "TrCreditFinal"
+    ],
+    "adjudication": "CalcSum iterates _displayRows which LoadtTreeList fills from ALL AccountList nodes; parents already aggregate their children (TravarseTree), so each leaf movement/final is counted once for the leaf row and once more for every displayed ancestor — totals and the balanced indicator operate on double-counted sums when the full tree is displayed (btnShow and btnlvl4 both rebuild the full list).",
+    "chkPrevbalance_label": "استثناء الرصيد السابق (exclusion) — the conditional previous add is consistent with the label, not an inversion",
+    "date_param_note": "@date1 values are passed as dtFrom.ToShortDateString() strings (culture-fragile pattern, same-thread parse) — observation, not a root"
+  },
+  "exit_criterion_adjudications": {
+    "D05": {
+      "criterion": "اتساق مصدر السنة والمعايير وهوية الحساب والمستند بين إعادة العرض والطفل والمخرج",
+      "status": "NOT MET — adjudicated with numbered roots",
+      "roots": [
+        "P7-115 (restore-to-current-DB pattern)",
+        "P7-176 (year-source inconsistency into the entry-source child, R12)",
+        "P7-174 (session-branch lines under a global-key header breaks document identity at the Initial child, R12)"
+      ],
+      "allowed_set_landscape": "frmAccountBalance/frmAccountsStatement both branch-scoped and year-preview aware; the inconsistency is between redisplay and child, not absence of scoping"
+    },
+    "D06": {
+      "criterion": "عدم عد الأب والطفل مرتين، وقطع الوقت الصحيح وعضوية المركز ووصول أعمدة السابق إلى كل مخرج",
+      "status": "NOT MET — adjudicated with numbered roots",
+      "roots": [
+        "P7-178 (parent+child double-count in CalcSum, this slice)",
+        "P7-118 (level filter shows wrong level)",
+        "P7-119 (print drops previous columns)",
+        "P3-019 (previous dropped in aggregation and secondary-only)",
+        "P7-052/P7-053 (center membership)",
+        "P7-062 (cash cutoff at midnight)"
+      ],
+      "allowed_set_landscape": "frmMezanMorg3a/frmRptCostCenter/frmRptKhzna all branch-scoped; exit failures are aggregation/output semantics, not scoping absence"
+    }
+  },
+  "findings_csv": {
+    "bytes": 229713,
+    "bom": false,
+    "crlf": 350,
+    "lf_only": 0,
+    "rows": 349,
+    "last_id": "P7-177",
+    "p7_max": 177
+  }
+}
