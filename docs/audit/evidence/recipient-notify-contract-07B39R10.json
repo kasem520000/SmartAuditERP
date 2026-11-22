@@ -1,0 +1,203 @@
+{
+ "schema_version": 1,
+ "tag": "07B39R10",
+ "read_only": true,
+ "application_execution_count": 0,
+ "insert_receipt": {
+  "unique_parameter_names": [
+   "BankId",
+   "BranchID",
+   "Cccode",
+   "CheckDate",
+   "CheckNo",
+   "CheckState",
+   "Checkbank",
+   "ClientID",
+   "CreditAcc",
+   "DebitAcc",
+   "EmpId",
+   "EntryGlobalID",
+   "GlobalID",
+   "ISDeleted",
+   "NetVal",
+   "Notes",
+   "Payment",
+   "PaymentType",
+   "ReceiptDate",
+   "ReceiptNo",
+   "ReceiptType",
+   "Recipient",
+   "ReffNo",
+   "Reffdate",
+   "SalesManID",
+   "State",
+   "Sync",
+   "TreasuryID",
+   "VAT"
+  ],
+  "count": 29,
+  "contains_Recipient": true,
+  "utf8_sha256_of_query_literal": "9e7d905df1dcb0a0b6fff66dea1462cef1f8d21f2afbe35e462d9fa005ed7c67"
+ },
+ "update_receipt": {
+  "unique_parameter_names": [
+   "BankId",
+   "Cccode",
+   "CheckDate",
+   "CheckNo",
+   "CheckState",
+   "Checkbank",
+   "ClientID",
+   "CreditAcc",
+   "DebitAcc",
+   "EmpId",
+   "EntryGlobalID",
+   "GlobalID",
+   "ISDeleted",
+   "NetVal",
+   "Notes",
+   "Payment",
+   "PaymentType",
+   "ReceiptDate",
+   "ReceiptType",
+   "Recipient",
+   "ReffNo",
+   "Reffdate",
+   "SalesManID",
+   "State",
+   "Sync",
+   "TreasuryID",
+   "VAT"
+  ],
+  "count": 27,
+  "contains_Recipient": true
+ },
+ "save_receipt2": {
+  "body_start_line": 300,
+  "body_utf8_sha256": "64265f9b49f729a642cebc6c330aff9fc3bfaa0b6b22adb66b82041a799c21f1",
+  "parameters_added": 28,
+  "unique_names": [
+   "BankID",
+   "BranchID",
+   "Cccode",
+   "CheckDate",
+   "CheckNo",
+   "CheckState",
+   "Checkbank",
+   "ClientID",
+   "CreditAcc",
+   "DebitAcc",
+   "EmpId",
+   "EntryGlobalID",
+   "GlobalID",
+   "ISDeleted",
+   "NetVal",
+   "Notes",
+   "Payment",
+   "PaymentType",
+   "ReceiptDate",
+   "ReceiptNo",
+   "ReceiptType",
+   "ReffNo",
+   "Reffdate",
+   "SalesManID",
+   "Sync",
+   "TreasuryID",
+   "VAT",
+   "state"
+  ],
+  "adds_Recipient": false,
+  "uses_query": true,
+  "execute_line": 343
+ },
+ "save_receipt_v1": {
+  "body_start_line": 160,
+  "adds_Recipient": true,
+  "relative_recipient_add_line": 77,
+  "reads_model_property_Recipient": true
+ },
+ "sync_import_site": {
+  "query_selection_line": 589,
+  "adds_Recipient_within_35_lines": true,
+  "relative_recipient_add_line": 30,
+  "reads_model_property_Recipient": true
+ },
+ "save_receipt2_call_sites": {
+  "frmSandD": [
+   637
+  ],
+  "frmSandSD": [
+   484
+  ],
+  "frmSandQD": [
+   477
+  ],
+  "frmSandQAndroid": [
+   347
+  ]
+ },
+ "insert_setting_notify": {
+  "body_start_line": 3882,
+  "body_utf8_sha256": "aee0dc7f572da4a8054ff96e30f9cac943ef369ed874366f031fe09d72b940ea",
+  "checks_existing_by": true,
+  "delete_statement": true,
+  "delete_filters_branch": false,
+  "insert_column_count": 16,
+  "addwithvalue_count": 24,
+  "inserts_branchid": true,
+  "has_transaction": false,
+  "plaintext_pwd_column_written": true,
+  "delete_then_insert_no_rollback_window": true
+ },
+ "connect_mqt_list": {
+  "start_line": 983,
+  "select_all_no_branch_filter": true,
+  "reads_first_row_only": true,
+  "reads_branchid_column": false,
+  "reads_pwd_column": true
+ },
+ "check_mqtt_stat": {
+  "line": 1068,
+  "filters_is_active_only": true
+ },
+ "branchid_read": {
+  "line": 734
+ },
+ "adjudication_lexical": {
+  "insert_required_minus_save2_added_case_insensitive": [
+   "Recipient"
+  ],
+  "case_only_spelling_differences_present": [
+   "BankId",
+   "State"
+  ],
+  "save2_always_throws_at_execute_lexical_expectation": true,
+  "model_property_exists_via_v1_and_sync_reads": true,
+  "new_root_proposals": [
+   {
+    "id": "P7-164",
+    "title": "SaveReceipt2 omits the @Recipient parameter required by InsertReceipt/UpdateReceipt so every legacy receipt restore save fails at ExecuteNonQuery with rollback and the conditional legacy-row delete never runs",
+    "severity": "High",
+    "certainty": "confirmed",
+    "type": "implementation-defect",
+    "next_phase": "8"
+   },
+   {
+    "id": "P7-165",
+    "title": "MQTT notify settings save deletes the Settingmqtt row by DB then re-inserts without a transaction; a failed insert after a successful delete leaves the database without notify settings, and consumers read the first row with no branch filter",
+    "severity": "Medium",
+    "certainty": "confirmed",
+    "type": "implementation-defect",
+    "next_phase": "8"
+   }
+  ],
+  "not_certified": [
+   "SqlClient binding",
+   "deployed schema",
+   "runtime execution",
+   "WPF lifecycle",
+   "provider behavior",
+   "financial acceptance"
+  ]
+ }
+}
