@@ -1058,6 +1058,10 @@ namespace SmartAuditERP.Form_WPF
                     if (procType == 2)
                         frm.Title = "مرتجع مشتريات";
 
+                    // P2-001 fix (الشريحة الثالثة): صلاحيات المستخدم
+                    // تُطبّق على المحرر المفتوح من التقرير قبل Show
+                    MainClass.ApplyPermissionToForm(frm);
+                    MainClass.DoApplyUserSett(frm);
                     frm.Show();
                     frm.InvType = 1;
                     frm.ProcType = procType;

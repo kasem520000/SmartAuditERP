@@ -149,11 +149,13 @@ namespace SmartAuditERP.Form_WPF
         {
             switch (e.Key)
             {
-                case Key.F5: btnNew_Click(null, null); break;
-                case Key.F6: btnSave_Click(null, null); break;
-                case Key.F7: btnPrint_Click(null, null); break;
-                case Key.F8: btnView_Click(null, null); break;
-                case Key.F9: btnDelete_Click(null, null); break;
+                // P2-001 fix (الشريحة الثالثة): مسارات F-keys تحترم تمكين
+                // الأزرار المقابلة — تعطيل الزر يمنع المسار البديل (fail-closed)
+                case Key.F5: if (btnNew.IsEnabled) btnNew_Click(null, null); break;
+                case Key.F6: if (btnSave.IsEnabled) btnSave_Click(null, null); break;
+                case Key.F7: if (btnPrint.IsEnabled) btnPrint_Click(null, null); break;
+                case Key.F8: if (btnView.IsEnabled) btnView_Click(null, null); break;
+                case Key.F9: if (btnDelete.IsEnabled) btnDelete_Click(null, null); break;
                 case Key.Escape: this.Close(); break;
             }
         }

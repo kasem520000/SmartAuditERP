@@ -1964,11 +1964,12 @@ namespace SmartAuditERP.Form_WPF
                 e.Handled = true;
             }
             if (e.Key == Key.F1) { AddNewItem(); e.Handled = true; }
-            if (e.Key == Key.F5) { btnNew_Click(null, null); e.Handled = true; }
-            if (e.Key == Key.F6) { btnSave_Click(null, null); e.Handled = true; }
-            if (e.Key == Key.F7) { btnPrint_Click(null, null); e.Handled = true; }
-            if (e.Key == Key.F8) { btnView_Click(null, null); e.Handled = true; }
-            if (e.Key == Key.F9) { btnDelete_Click(null, null); e.Handled = true; }
+            // P2-001 fix (الشريحة الثالثة): مسارات F-keys تحترم تمكين الأزرار المقابلة
+            if (e.Key == Key.F5) { if (btnNew.IsEnabled) btnNew_Click(null, null); e.Handled = true; }
+            if (e.Key == Key.F6) { if (btnSave.IsEnabled) btnSave_Click(null, null); e.Handled = true; }
+            if (e.Key == Key.F7) { if (btnPrint.IsEnabled) btnPrint_Click(null, null); e.Handled = true; }
+            if (e.Key == Key.F8) { if (btnView.IsEnabled) btnView_Click(null, null); e.Handled = true; }
+            if (e.Key == Key.F9) { if (btnDelete.IsEnabled) btnDelete_Click(null, null); e.Handled = true; }
         }
 
         #endregion

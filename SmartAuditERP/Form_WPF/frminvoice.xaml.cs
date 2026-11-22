@@ -2829,31 +2829,32 @@ namespace SmartAuditERP.Form_WPF
                     e.Handled = true;
                     break;
                 case Key.F5:
-                    this.btnDeleteRow_Click(null, null);
+                    // P2-001 fix (الشريحة الثالثة): F-keys تحترم تمكين الأزرار المقابلة
+                    if (this.btnDeleteRow.IsEnabled) this.btnDeleteRow_Click(null, null);
                     e.Handled = true;
                     break;
                 case Key.F6:
-                    this.btnPay_Click(null, null);
+                    if (this.btnPay.IsEnabled) this.btnPay_Click(null, null);
                     e.Handled = true;
                     break;
                 case Key.F7:
-                    this.btnHoldOrd_Click(null, null);
+                    if (this.btnHoldOrd.IsEnabled) this.btnHoldOrd_Click(null, null);
                     e.Handled = true;
                     break;
                 case Key.F8:
-                    this.btnReplace_Click(null, null);
+                    if (this.btnReplace.IsEnabled) this.btnReplace_Click(null, null);
                     e.Handled = true;
                     break;
                 case Key.F9:
-                    this.btnCloseDay_Click(null, null);
+                    if (this.btnCloseDay.IsEnabled) this.btnCloseDay_Click(null, null);
                     e.Handled = true;
                     break;
                 case Key.F11:
-                    this.btnExpection_Click(null, null);
+                    if (this.btnExpection.IsEnabled) this.btnExpection_Click(null, null);
                     e.Handled = true;
                     break;
                 case Key.F12:
-                    this.btnNew_Click(null, null);
+                    if (this.btnNew.IsEnabled) this.btnNew_Click(null, null);
                     e.Handled = true;
                     break;
             }

@@ -308,12 +308,13 @@ namespace SmartAuditERP.Form_WPF
                 case Key.F4: AddUnit(); break;
                 case Key.F5: deleteRow(); break;
                 case Key.F6: PayBill(); break;
-                case Key.F7: btnHoldOrd_Click(null, null); break;
+                // P2-001 fix (الشريحة الثالثة): F-keys تحترم تمكين الأزرار المقابلة
+                case Key.F7: if (btnHoldOrd.IsEnabled) btnHoldOrd_Click(null, null); break;
                 case Key.F8: DeleteInv(); break;
-                case Key.F9: btnCloseDay_Click(null, null); break;
-                case Key.F12: btnNew_Click(null, null); break;
+                case Key.F9: if (btnCloseDay.IsEnabled) btnCloseDay_Click(null, null); break;
+                case Key.F12: if (btnNew.IsEnabled) btnNew_Click(null, null); break;
                 case Key.Return: ReadBarcode(); break;
-                case Key.OemPipe: btnMunalBarcode_Click(null, null); break;
+                case Key.OemPipe: if (btnMunalBarcode.IsEnabled) btnMunalBarcode_Click(null, null); break;
             }
         }
 

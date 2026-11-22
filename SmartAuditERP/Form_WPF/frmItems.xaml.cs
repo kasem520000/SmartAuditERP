@@ -200,7 +200,9 @@ namespace SmartAuditERP.Form_WPF
                     !string.IsNullOrWhiteSpace(cmbUnit.Text) &&
                     !string.IsNullOrWhiteSpace(txtSalePrice.Text))
                 {
-                    btnSave_Click(sender, e);
+                    // P2-001 fix (الشريحة الثالثة): مسار F6 يحترم تمكين زر الحفظ
+                    if (btnSave.IsEnabled)
+                        btnSave_Click(sender, e);
                 }
                 else
                 {

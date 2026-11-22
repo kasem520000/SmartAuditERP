@@ -3237,8 +3237,20 @@ namespace SmartAuditERP
 
         #region Menu Click Events - Accounting Definitions
 
+        // P2-001 fix (الشريحة الثالثة): فتّاحات Home تحترم حالة شريطها الخاص —
+        // strip مخفي (لا صلاحية للمستخدم) أو معطّل لا يفتح نافذته عبر أي
+        // مسار بديل (fail-closed). النمط نفسه المعتمد في فتّاح Marine/POS مسبقاً.
+        private bool CanOpenStrip(System.Windows.Controls.MenuItem strip)
+        {
+            return strip != null &&
+                   strip.IsEnabled &&
+                   strip.Visibility == System.Windows.Visibility.Visible;
+        }
+
         private void stripAccountsDirectory_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripAccountsDirectory)) return;
             var frm = new frmAccountsDirectory();
             frm.Show();
             frm.Activate();
@@ -3246,6 +3258,8 @@ namespace SmartAuditERP
 
         private void stripTreeAcc_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripTreeAcc)) return;
             MainClass.ApplyPermissionToForm(frmAccountsTree);
             MainClass.DoApplyUserSett(frmAccountsTree);
             frmAccountsTree.Show();
@@ -3254,6 +3268,8 @@ namespace SmartAuditERP
 
         private void stripBox_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripBox)) return;
             MainClass.ApplyPermissionToForm(frmTreasury);
             MainClass.DoApplyUserSett(frmTreasury);
             frmTreasury.Show();
@@ -3262,6 +3278,8 @@ namespace SmartAuditERP
 
         private void stripBank_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripBank)) return;
             MainClass.ApplyPermissionToForm(frmBanks);
             MainClass.DoApplyUserSett(frmBanks);
             frmBanks.Show();
@@ -3270,6 +3288,8 @@ namespace SmartAuditERP
 
         private void stripCostCenterCard_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripCostCenterCard)) return;
             MainClass.ApplyPermissionToForm(frmCostCenter);
             MainClass.DoApplyUserSett(frmCostCenter);
             frmCostCenter.Show();
@@ -3278,6 +3298,8 @@ namespace SmartAuditERP
 
         private void StripPaymentMethodCustomr_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripPaymentMethodCustomr)) return;
             var frm = new frmCustomers();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -3289,6 +3311,8 @@ namespace SmartAuditERP
 
         private void StripExpenses_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripExpenses)) return;
             var frm = new frmExpensesAccount();
             frm.Show();
         }
@@ -3299,6 +3323,8 @@ namespace SmartAuditERP
 
         private void stripIntialBalance_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripIntialBalance)) return;
             FrmIntialRestraiction.Name = "FrmIntialRestraiction";
             MainClass.ApplyPermissionToForm(FrmIntialRestraiction);
             MainClass.DoApplyUserSett(FrmIntialRestraiction);
@@ -3308,6 +3334,8 @@ namespace SmartAuditERP
 
         private void stripAddRestriction_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripAddRestriction)) return;
             var frm = new FrmNewEntry();
             frm.Name = "FrmNewEntry";
             MainClass.ApplyPermissionToForm(frm);
@@ -3318,6 +3346,8 @@ namespace SmartAuditERP
 
         private void stripSandQabth_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripSandQabth)) return;
             var frm = new frmSandQD();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -3327,6 +3357,8 @@ namespace SmartAuditERP
 
         private void stripSandSarf_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripSandSarf)) return;
             var frm = new frmSandSD();
             MainClass.ApplyPermissionToForm(frm);
             frm.Show();
@@ -3335,6 +3367,8 @@ namespace SmartAuditERP
 
         private void stripSandVAT_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripSandVAT)) return;
             var frm = new frmSandVAT();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -3348,6 +3382,8 @@ namespace SmartAuditERP
 
         private void stripRestraction_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripRestraction)) return;
             MainClass.ApplyPermissionToForm(frmRptEntries);
             MainClass.DoApplyUserSett(frmRptEntries);
             frmRptEntries.Show();
@@ -3356,6 +3392,8 @@ namespace SmartAuditERP
 
         private void stripSandat_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripSandat)) return;
             MainClass.ApplyPermissionToForm(frmSummaryD);
             MainClass.DoApplyUserSett(frmSummaryD);
             frmSummaryD.Show();
@@ -3364,6 +3402,8 @@ namespace SmartAuditERP
 
         private void stripAccountBala_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripAccountBala)) return;
             var frm = new frmAccountBalance();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -3373,6 +3413,8 @@ namespace SmartAuditERP
 
         private void stripAccountStatement_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripAccountStatement)) return;
             var frm = new frmAccountsStatement();
             frm.Show();
             frm.Activate();
@@ -3380,6 +3422,8 @@ namespace SmartAuditERP
 
         private void stripShowKhzna_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripShowKhzna)) return;
             MainClass.ApplyPermissionToForm(frmRptKhzna);
             MainClass.DoApplyUserSett(frmRptKhzna);
             frmRptKhzna.Show();
@@ -3388,6 +3432,8 @@ namespace SmartAuditERP
 
         private void stripRptBalances_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripRptBalances)) return;
             var frm = new frmRptBalances();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -3397,6 +3443,8 @@ namespace SmartAuditERP
 
         private void StripRptCostCenter_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripRptCostCenter)) return;
             var frm = new frmRptCostCenter();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -3406,6 +3454,8 @@ namespace SmartAuditERP
 
         private void StripCostCenter_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripCostCenter)) return;
             var frm = new frmCostCenterBalance();
             frm.Show();
             frm.Activate();
@@ -3413,6 +3463,8 @@ namespace SmartAuditERP
 
         private void stripDailyProcess_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripDailyProcess)) return;
             MainClass.ApplyPermissionToForm(frmRptDailyProcess);
             MainClass.DoApplyUserSett(frmRptDailyProcess);
             frmRptDailyProcess.Show();
@@ -3421,6 +3473,8 @@ namespace SmartAuditERP
 
         private void stripMezan_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripMezan)) return;
             var frm = new frmMezanMorg3a();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -3433,6 +3487,8 @@ namespace SmartAuditERP
 
         private void stripIncomeAnalysis_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripIncomeAnalysis)) return;
             var frm = new frmRptIncomeStatement();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -3446,6 +3502,8 @@ namespace SmartAuditERP
 
         private void stripIncomeAnalysis2_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripIncomeAnalysis2)) return;
             var frm = new IncomeStatementForm();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -3456,6 +3514,8 @@ namespace SmartAuditERP
 
         private void stripBadgetAnalys_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripBadgetAnalys)) return;
             var frm = new frmMezanyaArba7();
             frm.Tag = "frmMezanyaArba74";
             MainClass.ApplyPermissionToForm(frm);
@@ -3470,6 +3530,8 @@ namespace SmartAuditERP
 
         private void stripMenuTaxReport_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripMenuTaxReport)) return;
             var frm = new frmVATReturn();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -3483,6 +3545,8 @@ namespace SmartAuditERP
 
         private void StripItemDirctory_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripItemDirctory)) return;
             var frm = new frmItemsDir();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -3492,6 +3556,8 @@ namespace SmartAuditERP
 
         private void stripStore_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripStore)) return;
             MainClass.ApplyPermissionToForm(frmSafes);
             MainClass.DoApplyUserSett(frmSafes);
             frmSafes.Show();
@@ -3500,6 +3566,8 @@ namespace SmartAuditERP
 
         private void stripGroup_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripGroup)) return;
             MainClass.ApplyPermissionToForm(frmItemCategory);
             MainClass.DoApplyUserSett(frmItemCategory);
             frmItemCategory.Show();
@@ -3508,6 +3576,8 @@ namespace SmartAuditERP
 
         private void stripUnit_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripUnit)) return;
             MainClass.ApplyPermissionToForm(frmUnits);
             MainClass.DoApplyUserSett(frmUnits);
             frmUnits.Show();
@@ -3516,6 +3586,8 @@ namespace SmartAuditERP
 
         private void stripItem_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripItem)) return;
             MainClass.ApplyPermissionToForm(frmItems);
             MainClass.DoApplyUserSett(frmItems);
             frmItems.Show();
@@ -3528,6 +3600,8 @@ namespace SmartAuditERP
 
         private void stripTransfer_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripTransfer)) return;
             var frm = new frmInventoryTransfer();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -3541,6 +3615,8 @@ namespace SmartAuditERP
 
         private void stripFirstStock_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripFirstStock)) return;
             var frm = new frmInvPurch();
             frm.Tag = "SalePurch3";
             frm.InvType = 9;
@@ -3557,6 +3633,8 @@ namespace SmartAuditERP
 
         private void stripInputInv_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripInputInv)) return;
             var frm = new frmInvInputOutput();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -3570,6 +3648,8 @@ namespace SmartAuditERP
 
         private void stripOutputInv_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripOutputInv)) return;
             var frm = new frmInvInputOutput();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -3590,6 +3670,8 @@ namespace SmartAuditERP
 
         private void StripInvertoryDeliveries_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripInvertoryDeliveries)) return;
             var frm = new frmInvoiceDeliveries();
             frm.Show();
             frm.Activate();
@@ -3597,6 +3679,8 @@ namespace SmartAuditERP
 
         private void stripInvertoryOrderInv_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripInvertoryOrderInv)) return;
             var frm = new frmInvInputOutput();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -3610,6 +3694,8 @@ namespace SmartAuditERP
 
         private void StripPrintBarcode_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripPrintBarcode)) return;
             var frm = new frmPrintBarcode();
             frm.Show();
         }
@@ -3620,6 +3706,8 @@ namespace SmartAuditERP
 
         private void stripSafeGrd_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripSafeGrd)) return;
             MainClass.ApplyPermissionToForm(frmSafeGrd);
             MainClass.DoApplyUserSett(frmSafeGrd);
             frmSafeGrd.Show();
@@ -3628,6 +3716,8 @@ namespace SmartAuditERP
 
         private void StripSafeGrdDate_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripSafeGrdDate)) return;
             MainClass.ApplyPermissionToForm(frmSafeGrdToDate);
             MainClass.DoApplyUserSett(frmSafeGrdToDate);
             frmSafeGrdToDate.Show();
@@ -3636,6 +3726,8 @@ namespace SmartAuditERP
 
         private void stripItemMov_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripItemMov)) return;
             var frm = new frmRptItemsActivityDetailed();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -3645,6 +3737,8 @@ namespace SmartAuditERP
 
         private void stripItemsMovs_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripItemsMovs)) return;
             var frm = new frmRptItemsActivity();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -3654,6 +3748,8 @@ namespace SmartAuditERP
 
         private void stripExpire_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripExpire)) return;
             MainClass.ApplyPermissionToForm(frmItemsExpire);
             MainClass.DoApplyUserSett(frmItemsExpire);
             frmItemsExpire.Show();
@@ -3662,6 +3758,8 @@ namespace SmartAuditERP
 
         private void stripSalesAanalysis_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripSalesAanalysis)) return;
             MainClass.ApplyPermissionToForm(frmRptInvAnalysis);
             MainClass.DoApplyUserSett(frmRptInvAnalysis);
             frmRptInvAnalysis.Show();
@@ -3670,6 +3768,8 @@ namespace SmartAuditERP
 
         private void stripTotalSalePurch_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripTotalSalePurch)) return;
             MainClass.ApplyPermissionToForm(frmNkdTotSalePurch);
             MainClass.DoApplyUserSett(frmNkdTotSalePurch);
             frmNkdTotSalePurch.Show();
@@ -3678,6 +3778,8 @@ namespace SmartAuditERP
 
         private void stripBenefits_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripBenefits)) return;
             MainClass.ApplyPermissionToForm(frmNetsales);
             MainClass.DoApplyUserSett(frmNetsales);
             frmNetsales.Show();
@@ -3686,6 +3788,8 @@ namespace SmartAuditERP
 
         private void stripDecision_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripDecision)) return;
             MainClass.ApplyPermissionToForm(frmDecisionHelp);
             MainClass.DoApplyUserSett(frmDecisionHelp);
             frmDecisionHelp.Show();
@@ -3694,6 +3798,8 @@ namespace SmartAuditERP
 
         private void StripRptProducedItems_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripRptProducedItems)) return;
             var frm = new frmRptProducedItems();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -3703,6 +3809,8 @@ namespace SmartAuditERP
 
         private void stripInvbyTypes_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripInvbyTypes)) return;
             MainClass.ApplyPermissionToForm(frmInvSumByType);
             MainClass.DoApplyUserSett(frmInvSumByType);
             frmInvSumByType.invtype = 2;
@@ -3713,6 +3821,8 @@ namespace SmartAuditERP
 
         private void stripIInvoicesByType_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripIInvoicesByType)) return;
             var frm = new frmRptInventory();
             frm.Show();
             frm.Activate();
@@ -3720,6 +3830,8 @@ namespace SmartAuditERP
 
         private void StripItemsExpiration_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripItemsExpiration)) return;
             var frm = new frmRptItemsExpiration();
             frm.Show();
             frm.Activate();
@@ -3727,6 +3839,8 @@ namespace SmartAuditERP
 
         private void StripItemsRptSerialNo_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripItemsRptSerialNo)) return;
             var frm = new frmRptSerialNo();
             frm.Show();
             frm.Activate();
@@ -3734,6 +3848,8 @@ namespace SmartAuditERP
 
         private void StripItemsRptSerialNoSummary_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripItemsRptSerialNoSummary)) return;
             var frm = new frmRptSerialNoSummary();
             frm.Show();
             frm.Activate();
@@ -3745,6 +3861,8 @@ namespace SmartAuditERP
 
         private void stripPurchInv_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripPurchInv)) return;
             var frm = new frmInvPurch();
             frm.InvType = 1;
             frm.ProcType = 1;
@@ -3769,6 +3887,8 @@ namespace SmartAuditERP
 
         private void stripPurchReturn_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripPurchReturn)) return;
             var frm = new frmInvPurch();
             frm.InvType = 1;
             frm.ProcType = 2;
@@ -3792,6 +3912,8 @@ namespace SmartAuditERP
 
         private void stripPaySupl_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripPaySupl)) return;
             var frm = new frmSandD();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -3801,6 +3923,8 @@ namespace SmartAuditERP
 
         private void stripShowSand_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripShowSand)) return;
             MainClass.ApplyPermissionToForm(frmSummaryQ);
             MainClass.DoApplyUserSett(frmSummaryQ);
             frmSummaryQ.Show();
@@ -3809,6 +3933,8 @@ namespace SmartAuditERP
 
         private void stripCreditNote_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripCreditNote)) return;
             var frm = new frmCreditNote();
             frm.Show();
             frm.Activate();
@@ -3877,6 +4003,8 @@ namespace SmartAuditERP
 
         private void stripSupplAccou_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripSupplAccou)) return;
             var frm = new frmCustAccountGet();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -3890,6 +4018,8 @@ namespace SmartAuditERP
 
         private void StripRptInvPurchaseDetails_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripRptInvPurchaseDetails)) return;
             var frm = new frmRptInvPurchaseDetails();
             frm.Invtype = 1;
             frm.rbSales.IsChecked = true;
@@ -3899,6 +4029,8 @@ namespace SmartAuditERP
 
         private void StripRptReturnPurchaseDetails_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripRptReturnPurchaseDetails)) return;
             var frm = new frmRptInvPurchaseDetails();
             frm.Invtype = 1;
             frm.Show();
@@ -3909,6 +4041,8 @@ namespace SmartAuditERP
 
         private void StripRptNetPurchase_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripRptNetPurchase)) return;
             var frm = new frmRptInvPurchaseDetails();
             frm.Show();
             frm.Title = "صافي المشتريات";
@@ -3918,6 +4052,8 @@ namespace SmartAuditERP
 
         private void stripPurchDetails_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripPurchDetails)) return;
             var frm = new frmInvDetails();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -3929,6 +4065,8 @@ namespace SmartAuditERP
 
         private void StripItemsPurchDetails_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripItemsPurchDetails)) return;
             var frm = new frmRptItemsSalesDetails();
             frm.Title = MainClass.Language == "ar" ? "مشتريات الأصناف تجميعي" : "Item purchase report is aggregate";
             frm.OperType = 2;
@@ -3938,6 +4076,8 @@ namespace SmartAuditERP
 
         private void stripSupplAccBala_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripSupplAccBala)) return;
             var frm = new frmCustAccount();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -3950,6 +4090,8 @@ namespace SmartAuditERP
 
         private void stripSadadSuppl_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripSadadSuppl)) return;
             var frm = new frmCustLastPay();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -3962,6 +4104,8 @@ namespace SmartAuditERP
 
         private void stripEmpPurchess_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripEmpPurchess)) return;
             var frm = new frmEmpInvs();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -3973,6 +4117,8 @@ namespace SmartAuditERP
 
         private void stripSupplInv_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripSupplInv)) return;
             MainClass.ApplyPermissionToForm(frmInvSumByClient);
             MainClass.DoApplyUserSett(frmInvSumByClient);
             frmInvSumByClient.Clienttype = 2;
@@ -3984,6 +4130,8 @@ namespace SmartAuditERP
 
         private void stripAddSupplier_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripAddSupplier)) return;
             var frm = new frmCustomers();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -3999,6 +4147,8 @@ namespace SmartAuditERP
 
         private void stripPOS_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripPOS)) return;
             var frm = new frmInvPOS();
             frm.InvType = 3;
             frm.ProcType = 1;
@@ -4035,6 +4185,8 @@ namespace SmartAuditERP
 
         private void stripSaleInv_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripSaleInv)) return;
             var frm = new frmInvSale();
             frm.InvType = 2;
             frm.ProcType = 1;
@@ -4049,6 +4201,8 @@ namespace SmartAuditERP
 
         private void stripSaleRetu_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripSaleRetu)) return;
             var frm = new frmInvSale();
             MainClass.ApplyPermissionToForm(frm);
             frm.InvType = 2;
@@ -4064,6 +4218,8 @@ namespace SmartAuditERP
 
         private void stripShowPrice_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripShowPrice)) return;
             var frm = new frmInvSale();
             frm.InvType = 2;
             frm.ProcType = 4;
@@ -4078,6 +4234,8 @@ namespace SmartAuditERP
 
         private void stripCloseCasher_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripCloseCasher)) return;
             var frmPwd = new frmCheckPwd();
             var frmPOS = new frmPOS();
             frmPwd.operNo = 1;
@@ -4123,6 +4281,8 @@ namespace SmartAuditERP
 
         private void stripSandQclient_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripSandQclient)) return;
             var frm = new frmSandQ();
             frm.Name = "frmSandQ";
             MainClass.ApplyPermissionToForm(frm);
@@ -4133,6 +4293,8 @@ namespace SmartAuditERP
 
         private void stripShowSanadat_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripShowSanadat)) return;
             MainClass.ApplyPermissionToForm(frmSummaryQ);
             MainClass.DoApplyUserSett(frmSummaryQ);
             frmSummaryQ.Show();
@@ -4141,6 +4303,8 @@ namespace SmartAuditERP
 
         private void stripDeptNote_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripDeptNote)) return;
             var frm = new frmDebtNote();
             frm.Show();
             frm.Activate();
@@ -4198,6 +4362,8 @@ namespace SmartAuditERP
 
         private void stripinvcontract_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripinvcontract)) return;
             var frm = new frmcontract();
             frm.InvType = 23;
             frm.ProcType = 1;
@@ -4219,6 +4385,8 @@ namespace SmartAuditERP
 
         private void stripinvcontractreturn_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripinvcontractreturn)) return;
             var frm = new frmcontract();
             frm.InvType = 23;
             frm.ProcType = 2;
@@ -4251,6 +4419,8 @@ namespace SmartAuditERP
 
         private void stripShiftCloses_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripShiftCloses)) return;
             var frm = new frmCloseShift();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -4260,6 +4430,8 @@ namespace SmartAuditERP
 
         private void StripRptInvSalesDetails_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripRptInvSalesDetails)) return;
             var frm = new frmRptInvSalesDetails();
             frm.rbSales.IsChecked = true;
             frm.Show();
@@ -4268,6 +4440,8 @@ namespace SmartAuditERP
 
         private void StripRptReturnSalesDetails_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripRptReturnSalesDetails)) return;
             var frm = new frmRptInvSalesDetails();
             frm.Show();
             frm.Title = MainClass.Language == "en-us" ? "Sales return report" : "تقرير مردود فواتير المبيعات";
@@ -4277,6 +4451,8 @@ namespace SmartAuditERP
 
         private void StripRptNetSalesDetails_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripRptNetSalesDetails)) return;
             var frm = new frmRptInvSalesDetails();
             frm.Show();
             frm.Title = MainClass.Language == "en-us" ? "Net sales report" : "صافي المبيعات";
@@ -4286,6 +4462,8 @@ namespace SmartAuditERP
 
         private void stripDetailSales_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripDetailSales)) return;
             var frm = new frmInvDetails();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -4296,20 +4474,34 @@ namespace SmartAuditERP
 
         private void StripItemsSalesDetails_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripItemsSalesDetails)) return;
             var frm = new frmRptItemsSalesDetails();
             frm.Title = MainClass.Language == "ar" ? "مبيعات الأصناف تجميعي" : "Item sales report is aggregate";
             frm.Show();
             frm.Activate();
         }
 
-        private void StripSaleByCategry_Click(object sender, RoutedEventArgs e) { var frm = new frmRptSalesByCategory(); frm.Show(); frm.Activate(); }
-        private void StripInvProfit_Click(object sender, RoutedEventArgs e) { var frm = new frmInvsProfit(); frm.Show(); frm.Activate(); }
-        private void StripItemProfit_Click(object sender, RoutedEventArgs e) { var frm = new frmRptItemsProfit(); frm.Show(); frm.Activate(); }
-        private void StripItemsProfitDetails_Click(object sender, RoutedEventArgs e) { var frm = new frmRptItemsProfitDetails(); frm.Show(); frm.Activate(); }
-        private void StripRptSalesmen_Click(object sender, RoutedEventArgs e) { var frm = new frmInvBySalesMen(); frm.Show(); frm.Activate(); }
+        private void StripSaleByCategry_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripSaleByCategry)) return; var frm = new frmRptSalesByCategory(); frm.Show(); frm.Activate(); }
+        private void StripInvProfit_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripInvProfit)) return; var frm = new frmInvsProfit(); frm.Show(); frm.Activate(); }
+        private void StripItemProfit_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripItemProfit)) return; var frm = new frmRptItemsProfit(); frm.Show(); frm.Activate(); }
+        private void StripItemsProfitDetails_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripItemsProfitDetails)) return; var frm = new frmRptItemsProfitDetails(); frm.Show(); frm.Activate(); }
+        private void StripRptSalesmen_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripRptSalesmen)) return; var frm = new frmInvBySalesMen(); frm.Show(); frm.Activate(); }
 
         private void stripEmpSales_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripEmpSales)) return;
             var frm = new frmEmpInvs();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -4321,6 +4513,8 @@ namespace SmartAuditERP
 
         private void stripCleintBala_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripCleintBala)) return;
             var frm = new frmCustAccountGet();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -4334,6 +4528,8 @@ namespace SmartAuditERP
 
         private void stripClientsBalans_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripClientsBalans)) return;
             var frm = new frmCustAccount();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -4346,6 +4542,8 @@ namespace SmartAuditERP
 
         private void stripClientPay_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripClientPay)) return;
             var frm = new frmCustLastPay();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -4358,6 +4556,8 @@ namespace SmartAuditERP
 
         private void stripInvbyclient_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripInvbyclient)) return;
             MainClass.ApplyPermissionToForm(frmInvSumByClient);
             MainClass.DoApplyUserSett(frmInvSumByClient);
             frmInvSumByClient.Clienttype = 1;
@@ -4368,6 +4568,8 @@ namespace SmartAuditERP
 
         private void StripSalesInPeriod_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripSalesInPeriod)) return;
             var frm = new frmRptSalesInPeriod();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -4375,10 +4577,16 @@ namespace SmartAuditERP
             frm.Activate();
         }
 
-        private void StripGraphSale_Click(object sender, RoutedEventArgs e) { new FrmRptSalesChart().Show(); }
-        private void stripDetailSalescontract_Click(object sender, RoutedEventArgs e) { frmInvSalContactDetails.Show(); }
+        private void StripGraphSale_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripGraphSale)) return; new FrmRptSalesChart().Show(); }
+        private void stripDetailSalescontract_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripDetailSalescontract)) return; frmInvSalContactDetails.Show(); }
         private void stripAddclient_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripAddclient)) return;
             var frm = new frmCustomers();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -4387,41 +4595,67 @@ namespace SmartAuditERP
             frm.Show();
             frm.Activate();
         }
-        private void stripAddSaleman_Click(object sender, RoutedEventArgs e) { var frm = new frmSalesMen(); MainClass.ApplyPermissionToForm(frm); MainClass.DoApplyUserSett(frm); frm.Show(); frm.Activate(); }
+        private void stripAddSaleman_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripAddSaleman)) return; var frm = new frmSalesMen(); MainClass.ApplyPermissionToForm(frm); MainClass.DoApplyUserSett(frm); frm.Show(); frm.Activate(); }
 
         // POS Reports
         private void RptPOSSales_Click(object sender, RoutedEventArgs e) { var frm = new frmRptInvSalesDetailsPos(); frm.Show(); frm.Activate(); }
         private void RptPOSItemSalesDetailed_Click(object sender, RoutedEventArgs e) { var frm = new frmItemsalesdetailsPos(); frm.Show(); frm.Activate(); }
         private void RptPOSItemSales_Click(object sender, RoutedEventArgs e) { var frm = new frmRptItemsSalesDetailsPOS(); frm.Show(); frm.Activate(); }
-        private void StripRptDailySales_Click(object sender, RoutedEventArgs e) { var frm = new frmRptDailySales(); MainClass.ApplyPermissionToForm(frm); MainClass.DoApplyUserSett(frm); frm.Show(); frm.Activate(); }
-        private void StripCategorySaleByDay_Click(object sender, RoutedEventArgs e) { var frm = new frmRptCategorySaleByDay(); frm.Show(); }
+        private void StripRptDailySales_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripRptDailySales)) return; var frm = new frmRptDailySales(); MainClass.ApplyPermissionToForm(frm); MainClass.DoApplyUserSett(frm); frm.Show(); frm.Activate(); }
+        private void StripCategorySaleByDay_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripCategorySaleByDay)) return; var frm = new frmRptCategorySaleByDay(); frm.Show(); }
         private void ToolItemAndroidSal_Click(object sender, RoutedEventArgs e) { frmRptInvSalesDetailsPosAndroid.Show(); }
 
         #endregion
 
         #region Menu Click Events - HR
 
-        private void stripDefineManag_Click(object sender, RoutedEventArgs e) { MainClass.ApplyPermissionToForm(frmManagement); MainClass.DoApplyUserSett(frmManagement); frmManagement.Show(); frmManagement.Activate(); }
-        private void stripDefineClass_Click(object sender, RoutedEventArgs e) { MainClass.ApplyPermissionToForm(frmDepartments); MainClass.DoApplyUserSett(frmDepartments); frmDepartments.Show(); frmDepartments.Activate(); }
-        private void stripDefineEmp_Click(object sender, RoutedEventArgs e) { MainClass.ApplyPermissionToForm(frmEmployees); MainClass.DoApplyUserSett(frmEmployees); frmEmployees.Show(); frmEmployees.Activate(); }
-        private void stripWard_Click(object sender, RoutedEventArgs e) { MainClass.ApplyPermissionToForm(frmEmpSalaryAddSub); MainClass.DoApplyUserSett(frmEmpSalaryAddSub); frmEmpSalaryAddSub.Show(); frmEmpSalaryAddSub.Activate(); }
+        private void stripDefineManag_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripDefineManag)) return; MainClass.ApplyPermissionToForm(frmManagement); MainClass.DoApplyUserSett(frmManagement); frmManagement.Show(); frmManagement.Activate(); }
+        private void stripDefineClass_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripDefineClass)) return; MainClass.ApplyPermissionToForm(frmDepartments); MainClass.DoApplyUserSett(frmDepartments); frmDepartments.Show(); frmDepartments.Activate(); }
+        private void stripDefineEmp_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripDefineEmp)) return; MainClass.ApplyPermissionToForm(frmEmployees); MainClass.DoApplyUserSett(frmEmployees); frmEmployees.Show(); frmEmployees.Activate(); }
+        private void stripWard_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripWard)) return; MainClass.ApplyPermissionToForm(frmEmpSalaryAddSub); MainClass.DoApplyUserSett(frmEmpSalaryAddSub); frmEmpSalaryAddSub.Show(); frmEmpSalaryAddSub.Activate(); }
         private void ToolStripResevedSalary_Click(object sender, RoutedEventArgs e) { FrmReseved.Show(); }
         private void ToolStripSandSalary_Click(object sender, RoutedEventArgs e) { frmSalaryPay.Show(); frmSalaryPay.Activate(); }
         private void ToolStripMenuItemreseved_Click(object sender, RoutedEventArgs e) { MainClass.ApplyPermissionToForm(frmRptReseved); MainClass.DoApplyUserSett(frmRptReseved); frmRptReseved.Show(); frmRptReseved.Activate(); }
-        private void stripPaySalary_Click(object sender, RoutedEventArgs e) { MainClass.ApplyPermissionToForm(frmRptSalary); MainClass.DoApplyUserSett(frmRptSalary); frmRptSalary.Show(); frmRptSalary.Activate(); }
+        private void stripPaySalary_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripPaySalary)) return; MainClass.ApplyPermissionToForm(frmRptSalary); MainClass.DoApplyUserSett(frmRptSalary); frmRptSalary.Show(); frmRptSalary.Activate(); }
         private void ToolStripMenuItemAccountEmp_Click(object sender, RoutedEventArgs e) { frmEmpAccountGet.Show(); }
-        private void StripUsersRecords_Click(object sender, RoutedEventArgs e) { var frm = new frmrptUsersRecords(); frm.Show(); frm.Activate(); }
+        private void StripUsersRecords_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripUsersRecords)) return; var frm = new frmrptUsersRecords(); frm.Show(); frm.Activate(); }
 
         #endregion
 
         #region Menu Click Events - Marine
 
-        private void stripMarineGrp_Click(object sender, RoutedEventArgs e) { MainClass.ApplyPermissionToForm(frmGroupM); MainClass.DoApplyUserSett(frmGroupM); frmGroupM.Show(); frmGroupM.Activate(); }
-        private void stripAddMarine_Click(object sender, RoutedEventArgs e) { MainClass.ApplyPermissionToForm(frmItemM); MainClass.DoApplyUserSett(frmItemM); frmItemM.Show(); frmItemM.Activate(); }
-        private void stripMarineAdds_Click(object sender, RoutedEventArgs e) { var frm = new frmAdditions(); MainClass.ApplyPermissionToForm(frm); MainClass.DoApplyUserSett(frm); frm.Activate(); frm.ShowDialog(); }
+        private void stripMarineGrp_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripMarineGrp)) return; MainClass.ApplyPermissionToForm(frmGroupM); MainClass.DoApplyUserSett(frmGroupM); frmGroupM.Show(); frmGroupM.Activate(); }
+        private void stripAddMarine_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripAddMarine)) return; MainClass.ApplyPermissionToForm(frmItemM); MainClass.DoApplyUserSett(frmItemM); frmItemM.Show(); frmItemM.Activate(); }
+        private void stripMarineAdds_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripMarineAdds)) return; var frm = new frmAdditions(); MainClass.ApplyPermissionToForm(frm); MainClass.DoApplyUserSett(frm); frm.Activate(); frm.ShowDialog(); }
 
         private void stripMarineOwner_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripMarineOwner)) return;
             var frm = new frmOwners();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -4430,12 +4664,20 @@ namespace SmartAuditERP
             frm.ShowDialog();
         }
 
-        private void stripMarineAttend_Click(object sender, RoutedEventArgs e) { MainClass.ApplyPermissionToForm(frmAttendM); MainClass.DoApplyUserSett(frmAttendM); frmAttendM.Show(); frmAttendM.Activate(); }
-        private void stripMarineViolation_Click(object sender, RoutedEventArgs e) { MainClass.ApplyPermissionToForm(frmViolationM); MainClass.DoApplyUserSett(frmViolationM); frmViolationM.Show(); frmViolationM.Activate(); }
-        private void stripMarineQueue_Click(object sender, RoutedEventArgs e) { MainClass.ApplyPermissionToForm(frmQueueM); MainClass.DoApplyUserSett(frmQueueM); frmQueueM.Show(); frmQueueM.Activate(); }
+        private void stripMarineAttend_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripMarineAttend)) return; MainClass.ApplyPermissionToForm(frmAttendM); MainClass.DoApplyUserSett(frmAttendM); frmAttendM.Show(); frmAttendM.Activate(); }
+        private void stripMarineViolation_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripMarineViolation)) return; MainClass.ApplyPermissionToForm(frmViolationM); MainClass.DoApplyUserSett(frmViolationM); frmViolationM.Show(); frmViolationM.Activate(); }
+        private void stripMarineQueue_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripMarineQueue)) return; MainClass.ApplyPermissionToForm(frmQueueM); MainClass.DoApplyUserSett(frmQueueM); frmQueueM.Show(); frmQueueM.Activate(); }
 
         private void stripMarineInv_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripMarineInv)) return;
             var frm = new frminvoice();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -4444,11 +4686,17 @@ namespace SmartAuditERP
             frm.Activate();
         }
 
-        private void stripJoinInvs_Click(object sender, RoutedEventArgs e) { MainClass.ApplyPermissionToForm(frmHoldM); MainClass.DoApplyUserSett(frmHoldM); frmHoldM.Show(); frmHoldM.Activate(); }
-        private void stripMarineBook_Click(object sender, RoutedEventArgs e) { MainClass.ApplyPermissionToForm(frmBookingM); MainClass.DoApplyUserSett(frmBookingM); frmBookingM.Show(); frmBookingM.Activate(); }
+        private void stripJoinInvs_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripJoinInvs)) return; MainClass.ApplyPermissionToForm(frmHoldM); MainClass.DoApplyUserSett(frmHoldM); frmHoldM.Show(); frmHoldM.Activate(); }
+        private void stripMarineBook_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripMarineBook)) return; MainClass.ApplyPermissionToForm(frmBookingM); MainClass.DoApplyUserSett(frmBookingM); frmBookingM.Show(); frmBookingM.Activate(); }
 
         private void stripMarineCloseCasher_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripMarineCloseCasher)) return;
             var frmPwd = new frmCheckPwd();
             frmPwd.operNo = 1;
             frmPwd.ShowDialog();
@@ -4480,6 +4728,8 @@ namespace SmartAuditERP
 
         private void stripClosesRpt_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripClosesRpt)) return;
             var frm = new frmCloseShift();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -4487,17 +4737,25 @@ namespace SmartAuditERP
             frm.ShowDialog();
         }
 
-        private void StripRptRentInvoices_Click(object sender, RoutedEventArgs e) { var frm = new frmRptRentInvoices(); frm.Show(); frm.Activate(); }
+        private void StripRptRentInvoices_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripRptRentInvoices)) return; var frm = new frmRptRentInvoices(); frm.Show(); frm.Activate(); }
 
         #endregion
 
         #region Menu Click Events - Projects
 
-        private void stripPMTerm_Click(object sender, RoutedEventArgs e) { var frm = new frmTermsPM(); frm.Show(); frm.Activate(); }
-        private void stripPMContractor_Click(object sender, RoutedEventArgs e) { var frm = new frmContractorPM(); frm.Show(); frm.Activate(); }
+        private void stripPMTerm_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripPMTerm)) return; var frm = new frmTermsPM(); frm.Show(); frm.Activate(); }
+        private void stripPMContractor_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripPMContractor)) return; var frm = new frmContractorPM(); frm.Show(); frm.Activate(); }
 
         private void stripPMClient_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripPMClient)) return;
             var frm = new frmClientPM();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -4512,55 +4770,117 @@ namespace SmartAuditERP
             frm.Activate();
         }
 
-        private void stripStagePM_Click(object sender, RoutedEventArgs e) { var frm = new frmProjectStagesPM(); frm.Show(); frm.Activate(); }
-        private void stripPMContract_Click(object sender, RoutedEventArgs e) { var frm = new frmContractPM(); frm.Show(); frm.Activate(); }
-        private void stripExecutePM_Click(object sender, RoutedEventArgs e) { var frm = new frmAssignProjectPM(); frm.Show(); frm.Activate(); }
-        private void StripProjCyclePM_Click(object sender, RoutedEventArgs e) { var frm = new frmProjCyclePM(); frm.Show(); frm.Activate(); }
-        private void stripRequirements_Click(object sender, RoutedEventArgs e) { var frm = new frmRequirementPM(); frm.Show(); frm.Activate(); }
-        private void stripCashVoucherPM_Click(object sender, RoutedEventArgs e) { var frm = new frmCashVoucherPM(); frm.Show(); frm.Activate(); }
-        private void stripPaymentVoucherPM_Click(object sender, RoutedEventArgs e) { var frm = new frmPaymentVoucher(); frm.Show(); frm.Activate(); }
+        private void stripStagePM_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripStagePM)) return; var frm = new frmProjectStagesPM(); frm.Show(); frm.Activate(); }
+        private void stripPMContract_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripPMContract)) return; var frm = new frmContractPM(); frm.Show(); frm.Activate(); }
+        private void stripExecutePM_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripExecutePM)) return; var frm = new frmAssignProjectPM(); frm.Show(); frm.Activate(); }
+        private void StripProjCyclePM_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripProjCyclePM)) return; var frm = new frmProjCyclePM(); frm.Show(); frm.Activate(); }
+        private void stripRequirements_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripRequirements)) return; var frm = new frmRequirementPM(); frm.Show(); frm.Activate(); }
+        private void stripCashVoucherPM_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripCashVoucherPM)) return; var frm = new frmCashVoucherPM(); frm.Show(); frm.Activate(); }
+        private void stripPaymentVoucherPM_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripPaymentVoucherPM)) return; var frm = new frmPaymentVoucher(); frm.Show(); frm.Activate(); }
 
         #endregion
 
         #region Menu Click Events - Settings
 
-        private void stripFoundation_Click(object sender, RoutedEventArgs e) { MainClass.ApplyPermissionToForm(frmFonudation); MainClass.DoApplyUserSett(frmFonudation); frmFonudation.Show(); frmFonudation.Activate(); }
-        private void stripBranch_Click(object sender, RoutedEventArgs e) { var frm = new frmBranches(); MainClass.ApplyPermissionToForm(frm); MainClass.DoApplyUserSett(frm); frm.Show(); frm.Activate(); }
-        private void StripZatcaSetting_Click(object sender, RoutedEventArgs e) { var frm = new frmZatcaSetting(); frm.Show(); frm.Activate(); }
-        private void stripBackup_Click(object sender, RoutedEventArgs e) { MainClass.ApplyPermissionToForm(frmBackupRstore); MainClass.DoApplyUserSett(frmBackupRstore); frmBackupRstore.Show(); frmBackupRstore.Activate(); }
-        private void stripDefaultPrint_Click(object sender, RoutedEventArgs e) { frmInvRptType.ShowDialog(); }
-        private void stripMonitorItem_Click(object sender, RoutedEventArgs e) { MainClass.ApplyPermissionToForm(dfh); MainClass.DoApplyUserSett(dfh); dfh.Show(); dfh.Activate(); }
-        private void stripDataRecycling_Click(object sender, RoutedEventArgs e) { var frm = new frmRecyclingData(); MainClass.ApplyPermissionToForm(frm); MainClass.DoApplyUserSett(frm); frm.Show(); frm.Activate(); }
-        private void stripCreateDb_Click(object sender, RoutedEventArgs e) { var frm = new frmDBManagment(); frm.Show(); frm.Activate(); }
+        private void stripFoundation_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripFoundation)) return; MainClass.ApplyPermissionToForm(frmFonudation); MainClass.DoApplyUserSett(frmFonudation); frmFonudation.Show(); frmFonudation.Activate(); }
+        private void stripBranch_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripBranch)) return; var frm = new frmBranches(); MainClass.ApplyPermissionToForm(frm); MainClass.DoApplyUserSett(frm); frm.Show(); frm.Activate(); }
+        private void StripZatcaSetting_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripZatcaSetting)) return; var frm = new frmZatcaSetting(); frm.Show(); frm.Activate(); }
+        private void stripBackup_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripBackup)) return; MainClass.ApplyPermissionToForm(frmBackupRstore); MainClass.DoApplyUserSett(frmBackupRstore); frmBackupRstore.Show(); frmBackupRstore.Activate(); }
+        private void stripDefaultPrint_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripDefaultPrint)) return; frmInvRptType.ShowDialog(); }
+        private void stripMonitorItem_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripMonitorItem)) return; MainClass.ApplyPermissionToForm(dfh); MainClass.DoApplyUserSett(dfh); dfh.Show(); dfh.Activate(); }
+        private void stripDataRecycling_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripDataRecycling)) return; var frm = new frmRecyclingData(); MainClass.ApplyPermissionToForm(frm); MainClass.DoApplyUserSett(frm); frm.Show(); frm.Activate(); }
+        private void stripCreateDb_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripCreateDb)) return; var frm = new frmDBManagment(); frm.Show(); frm.Activate(); }
         private void mainStripEmailMang_Click(object sender, RoutedEventArgs e) { var frm = new frmEmailMang(); MainClass.ApplyPermissionToForm(frm); MainClass.DoApplyUserSett(frm); frm.Show(); frm.Activate(); }
-        private void StripImportData_Click(object sender, RoutedEventArgs e) { var frm = new frmImportDataGeneral(); frm.Show(); frm.Activate(); }
-        private void stripMaintainInvs_Click(object sender, RoutedEventArgs e) { var frm = new frmReGenerateEntries(); frm.Show(); frm.Activate(); }
-        private void StripOffers_Click(object sender, RoutedEventArgs e) { var frm = new frmOffers(); frm.Show(); frm.Activate(); }
-        private void striptoolsendData_Click(object sender, RoutedEventArgs e) { FrmSyncMQtt.Show(); }
+        private void StripImportData_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripImportData)) return; var frm = new frmImportDataGeneral(); frm.Show(); frm.Activate(); }
+        private void stripMaintainInvs_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripMaintainInvs)) return; var frm = new frmReGenerateEntries(); frm.Show(); frm.Activate(); }
+        private void StripOffers_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripOffers)) return; var frm = new frmOffers(); frm.Show(); frm.Activate(); }
+        private void striptoolsendData_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(striptoolsendData)) return; FrmSyncMQtt.Show(); }
         private void AccountingPeriods_Click(object sender, RoutedEventArgs e) { FrmAccountingPeriods.Show(); }
         private void ToolStripMenuItemRestorData_Click(object sender, RoutedEventArgs e)
         {
         }
      //   private void ToolStripMenuItemRestorData_Click(object sender, RoutedEventArgs e) { FrmRestorData.Show(); }
-        private void stripAddUser_Click(object sender, RoutedEventArgs e) { MainClass.ApplyPermissionToForm(frmAddUsers); MainClass.DoApplyUserSett(frmAddUsers); frmAddUsers.Show(); frmAddUsers.Activate(); }
-        private void stripUserPerm_Click(object sender, RoutedEventArgs e) { MainClass.ApplyPermissionToForm(frmUsersPermissions); MainClass.DoApplyUserSett(frmUsersPermissions); frmUsersPermissions.Show(); frmUsersPermissions.Activate(); }
-        private void stripChangePwd_Click(object sender, RoutedEventArgs e) { MainClass.ApplyPermissionToForm(frmChangePwd); MainClass.DoApplyUserSett(frmChangePwd); frmChangePwd.Show(); frmChangePwd.Activate(); }
-        private void stripGnrlSetting_Click(object sender, RoutedEventArgs e) { MainClass.ApplyPermissionToForm(frmSettings); MainClass.DoApplyUserSett(frmSettings); frmSettings.Show(); frmSettings.Activate(); }
-        private void stripfingDevice_Click(object sender, RoutedEventArgs e) { MainClass.ApplyPermissionToForm(frmFPSSetting); MainClass.DoApplyUserSett(frmFPSSetting); frmFPSSetting.Show(); frmFPSSetting.Activate(); }
+        private void stripAddUser_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripAddUser)) return; MainClass.ApplyPermissionToForm(frmAddUsers); MainClass.DoApplyUserSett(frmAddUsers); frmAddUsers.Show(); frmAddUsers.Activate(); }
+        private void stripUserPerm_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripUserPerm)) return; MainClass.ApplyPermissionToForm(frmUsersPermissions); MainClass.DoApplyUserSett(frmUsersPermissions); frmUsersPermissions.Show(); frmUsersPermissions.Activate(); }
+        private void stripChangePwd_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripChangePwd)) return; MainClass.ApplyPermissionToForm(frmChangePwd); MainClass.DoApplyUserSett(frmChangePwd); frmChangePwd.Show(); frmChangePwd.Activate(); }
+        private void stripGnrlSetting_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripGnrlSetting)) return; MainClass.ApplyPermissionToForm(frmSettings); MainClass.DoApplyUserSett(frmSettings); frmSettings.Show(); frmSettings.Activate(); }
+        private void stripfingDevice_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripfingDevice)) return; MainClass.ApplyPermissionToForm(frmFPSSetting); MainClass.DoApplyUserSett(frmFPSSetting); frmFPSSetting.Show(); frmFPSSetting.Activate(); }
         private void ToolStripMenuItemsallahSetting_Click(object sender, RoutedEventArgs e)
         {
         }
         // private void ToolStripMenuItemsallahSetting_Click(object sender, RoutedEventArgs e) { FrmWebhooksetting.Show(); }
 
             // Sync
-        private void StripSynInv_Click(object sender, RoutedEventArgs e) { var frm = new frmInvsSyncStatus(); frm.Show(); frm.Activate(); }
-        private void StripSynEntry_Click(object sender, RoutedEventArgs e) { var frm = new frmEntriesSyncStatus(); frm.Show(); frm.Activate(); }
-        private void StripSynReceipt_Click(object sender, RoutedEventArgs e) { var frm = new frmReceiptsSyncStatus(); frm.Show(); frm.Activate(); }
-        private void stripSyncStocks_Click(object sender, RoutedEventArgs e) { var frm = new frmStocksSync(); MainClass.ApplyPermissionToForm(frm); MainClass.DoApplyUserSett(frm); frm.Show(); frm.Activate(); }
+        private void StripSynInv_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripSynInv)) return; var frm = new frmInvsSyncStatus(); frm.Show(); frm.Activate(); }
+        private void StripSynEntry_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripSynEntry)) return; var frm = new frmEntriesSyncStatus(); frm.Show(); frm.Activate(); }
+        private void StripSynReceipt_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripSynReceipt)) return; var frm = new frmReceiptsSyncStatus(); frm.Show(); frm.Activate(); }
+        private void stripSyncStocks_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripSyncStocks)) return; var frm = new frmStocksSync(); MainClass.ApplyPermissionToForm(frm); MainClass.DoApplyUserSett(frm); frm.Show(); frm.Activate(); }
         private void btnSyncData_Click(object sender, RoutedEventArgs e) { var frm = new frmmanagementSync(); MainClass.ApplyPermissionToForm(frm); MainClass.DoApplyUserSett(frm); frm.Show(); frm.Activate(); }
-        private void StripPaymentTypeSetting_Click(object sender, RoutedEventArgs e) { var frm = new frmCloudPaymentSetting(); frm.Show(); frm.Activate(); }
-        private void StripPriceSetting_Click(object sender, RoutedEventArgs e) { var frm = new frmCloudPriceSetting(); frm.Show(); }
-        private void StripZatcaSyncInv_Click(object sender, RoutedEventArgs e) { var frm = new frmInvsSyncStatusZatca(); frm.Show(); frm.Activate(); }
+        private void StripPaymentTypeSetting_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripPaymentTypeSetting)) return; var frm = new frmCloudPaymentSetting(); frm.Show(); frm.Activate(); }
+        private void StripPriceSetting_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripPriceSetting)) return; var frm = new frmCloudPriceSetting(); frm.Show(); }
+        private void StripZatcaSyncInv_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripZatcaSyncInv)) return; var frm = new frmInvsSyncStatusZatca(); frm.Show(); frm.Activate(); }
         private void ToolstripDevicesAndroid_Click(object sender, RoutedEventArgs e) { frmDevicesAndroid.Show(); }
 
         #endregion
@@ -4569,20 +4889,32 @@ namespace SmartAuditERP
 
         private void StripEgyUploadedInvoice_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripEgyUploadedInvoice)) return;
         }
       //  private void StripEgyUploadedInvoice_Click(object sender, RoutedEventArgs e) { var frm = new SentEinvoice(); frm.Show(); frm.Activate(); }
-        private void StripEtaSetting_Click(object sender, RoutedEventArgs e) { var frm = new frmEtaSetting(); frm.Show(); frm.Activate(); }
+        private void StripEtaSetting_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripEtaSetting)) return; var frm = new frmEtaSetting(); frm.Show(); frm.Activate(); }
 
         #endregion
 
         #region Menu Click Events - Support
 
-        private void StripLicense_Click(object sender, RoutedEventArgs e) { var frm = new frmLicenseManagment(); frm.Show(); frm.Activate(); }
-        private void stripAbout_Click(object sender, RoutedEventArgs e) { MainClass.ApplyPermissionToForm(frmAbout); MainClass.DoApplyUserSett(frmAbout); frmAbout.Show(); frmAbout.Activate(); }
-        private void StripUpdateProgram_Click(object sender, RoutedEventArgs e) { var frm = new FrmUpdate(); frm.Show(); frm.Activate(); }
+        private void StripLicense_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripLicense)) return; var frm = new frmLicenseManagment(); frm.Show(); frm.Activate(); }
+        private void stripAbout_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(stripAbout)) return; MainClass.ApplyPermissionToForm(frmAbout); MainClass.DoApplyUserSett(frmAbout); frmAbout.Show(); frmAbout.Activate(); }
+        private void StripUpdateProgram_Click(object sender, RoutedEventArgs e) {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripUpdateProgram)) return; var frm = new FrmUpdate(); frm.Show(); frm.Activate(); }
 
         private void StripDownLoadTeamViewer_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripDownLoadTeamViewer)) return;
             string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TeamViewer_Setup_x64.exe");
             if (File.Exists(filePath))
                 Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });
@@ -4592,6 +4924,8 @@ namespace SmartAuditERP
 
         private void StripDownLoadAnydesk_Click(object sender, RoutedEventArgs e)
         {
+            // P2-001 fix: شريط مخفي/معطّل = ممنوع الفتح (fail-closed)
+            if (!CanOpenStrip(StripDownLoadAnydesk)) return;
             string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "AnyDesk.exe");
             if (File.Exists(filePath))
                 Process.Start(new ProcessStartInfo(filePath) { UseShellExecute = true });

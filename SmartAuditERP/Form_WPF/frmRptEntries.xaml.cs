@@ -554,6 +554,10 @@ namespace SmartAuditERP.Form_WPF
                 InvType  = invType,
                 ProcType = procType
             };
+            // P2-001 fix (الشريحة الثالثة): المحرر المفتوح من التقرير يخضع
+            // لصلاحيات المستخدم — التطبيق قبل Show (نمط P1-013 المؤجل)
+            MainClass.ApplyPermissionToForm(frm);
+            MainClass.DoApplyUserSett(frm);
             frm.Show();
             frm.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 AND inv_type={invType} " +
                          $"AND proc_type={procType} AND EntryID=N'{txtNo.Text.Trim()}'");
@@ -567,6 +571,10 @@ namespace SmartAuditERP.Form_WPF
                 InvType  = invType,
                 ProcType = procType
             };
+            // P2-001 fix (الشريحة الثالثة): المحرر المفتوح من التقرير يخضع
+            // لصلاحيات المستخدم — التطبيق قبل Show (نمط P1-013 المؤجل)
+            MainClass.ApplyPermissionToForm(frm);
+            MainClass.DoApplyUserSett(frm);
             frm.Show();
             frm.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 AND inv_type={invType} " +
                          $"AND proc_type={procType} AND EntryID=N'{txtNo.Text.Trim()}'");

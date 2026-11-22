@@ -793,6 +793,10 @@ namespace SmartAuditERP.Form_WPF
                 if (row.DgvInvType == "مصروفات")
                 {
                     var frm = new frmSandVAT();
+                    // P2-001 fix (الشريحة الثالثة): صلاحيات المستخدم
+                    // تُطبّق على المحرر المفتوح من التقرير قبل Show
+                    MainClass.ApplyPermissionToForm(frm);
+                    MainClass.DoApplyUserSett(frm);
                     frm.Show();
                     frm.Navigate(
                         $"SELECT * FROM Receipts WHERE ReceiptType=9 " +
@@ -808,6 +812,10 @@ namespace SmartAuditERP.Form_WPF
                 if (invType1 == 1 && operType == 1)
                 {
                     var frm = new frmInvPurch { ProcType = 1, InvType = 1 };
+                    // P2-001 fix (الشريحة الثالثة): صلاحيات المستخدم
+                    // تُطبّق على المحرر المفتوح من التقرير قبل Show
+                    MainClass.ApplyPermissionToForm(frm);
+                    MainClass.DoApplyUserSett(frm);
                     frm.Show();
                     frm.WindowState = System.Windows.WindowState.Maximized;
                     frm.Navigate(
@@ -818,6 +826,10 @@ namespace SmartAuditERP.Form_WPF
                 else if (invType1 == 2 && operType == 1)
                 {
                     var frm = new frmInvSale { ProcType = 1, InvType = 2 };
+                    // P2-001 fix (الشريحة الثالثة): صلاحيات المستخدم
+                    // تُطبّق على المحرر المفتوح من التقرير قبل Show
+                    MainClass.ApplyPermissionToForm(frm);
+                    MainClass.DoApplyUserSett(frm);
                     frm.Show();
                     frm.WindowState = System.Windows.WindowState.Maximized;
                     frm.Navigate(
@@ -828,6 +840,10 @@ namespace SmartAuditERP.Form_WPF
                 else if (invType1 == 3 && operType == 1)
                 {
                     var frm = new frmInvPOS();
+                    // P2-001 fix (الشريحة الثالثة): صلاحيات المستخدم
+                    // تُطبّق على المحرر المفتوح من التقرير قبل Show
+                    MainClass.ApplyPermissionToForm(frm);
+                    MainClass.DoApplyUserSett(frm);
                     frm.Show();
                     frm.WindowState = System.Windows.WindowState.Maximized;
                     frm.Navigate(
@@ -839,6 +855,10 @@ namespace SmartAuditERP.Form_WPF
                 {
                     var frm = new frmInvPurch
                         { Title = "مرتجع مشتريات", ProcType = 2, InvType = 1 };
+                    // P2-001 fix (الشريحة الثالثة): صلاحيات المستخدم
+                    // تُطبّق على المحرر المفتوح من التقرير قبل Show
+                    MainClass.ApplyPermissionToForm(frm);
+                    MainClass.DoApplyUserSett(frm);
                     frm.Show();
                     frm.WindowState = System.Windows.WindowState.Maximized;
                     frm.Navigate(
@@ -850,6 +870,10 @@ namespace SmartAuditERP.Form_WPF
                 {
                     var frm = new frmInvSale
                         { Title = "مرتجع مبيع", ProcType = 2, InvType = 2 };
+                    // P2-001 fix (الشريحة الثالثة): صلاحيات المستخدم
+                    // تُطبّق على المحرر المفتوح من التقرير قبل Show
+                    MainClass.ApplyPermissionToForm(frm);
+                    MainClass.DoApplyUserSett(frm);
                     frm.Show();
                     frm.WindowState = System.Windows.WindowState.Maximized;
                     frm.Navigate(
@@ -860,6 +884,10 @@ namespace SmartAuditERP.Form_WPF
                 else if (invType1 == 3 && operType == 2)
                 {
                     var frm = new frmInvPOS { Title = "مرتجع" };
+                    // P2-001 fix (الشريحة الثالثة): صلاحيات المستخدم
+                    // تُطبّق على المحرر المفتوح من التقرير قبل Show
+                    MainClass.ApplyPermissionToForm(frm);
+                    MainClass.DoApplyUserSett(frm);
                     frm.Show();
                     frm.WindowState = System.Windows.WindowState.Maximized;
                     frm.Navigate(

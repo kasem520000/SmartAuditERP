@@ -337,11 +337,12 @@ namespace SmartAuditERP.Form_WPF
                     e.Handled = true;
                     break;
                 case Key.F6:
-                    btnPay_Click(null, null);
+                    // P2-001 fix (الشريحة الثالثة): F-keys تحترم تمكين الأزرار المقابلة
+                    if (btnPay.IsEnabled) btnPay_Click(null, null);
                     e.Handled = true;
                     break;
                 case Key.F7:
-                    btnHoldOrd_Click(null, null);
+                    if (btnHoldOrd.IsEnabled) btnHoldOrd_Click(null, null);
                     e.Handled = true;
                     break;
                 case Key.F8:
@@ -349,11 +350,11 @@ namespace SmartAuditERP.Form_WPF
                     e.Handled = true;
                     break;
                 case Key.F9:
-                    btnCloseDay_Click(null, null);
+                    if (btnCloseDay.IsEnabled) btnCloseDay_Click(null, null);
                     e.Handled = true;
                     break;
                 case Key.F12:
-                    btnNew_Click(null, null);
+                    if (btnNew.IsEnabled) btnNew_Click(null, null);
                     e.Handled = true;
                     break;
                 case Key.Return:

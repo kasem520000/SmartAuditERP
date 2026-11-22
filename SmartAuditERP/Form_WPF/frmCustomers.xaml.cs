@@ -153,7 +153,8 @@ namespace SmartAuditERP.Form_WPF
 
         private void FrmCustomers_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.F6)
+            // P2-001 fix (الشريحة الثالثة): مسار F6 يحترم تمكين زر الحفظ
+            if (e.Key == Key.F6 && btnSave.IsEnabled)
                 BtnSave_Click(sender, new RoutedEventArgs());
         }
 

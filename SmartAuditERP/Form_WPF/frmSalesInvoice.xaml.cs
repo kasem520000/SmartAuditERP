@@ -2795,6 +2795,10 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
                 var frm = new frmSandQ();
+                // P2-001 fix (الشريحة الثالثة): صلاحيات المستخدم تُطبّق
+                // على السند المفتوح من الفاتورة قبل Show
+                MainClass.ApplyPermissionToForm(frm);
+                MainClass.DoApplyUserSett(frm);
                 frm.Show();
                 frm.cmbClients.SelectedValue = cmbClient.SelectedValue;
                 frm.txtVal.Text = txtNet.Text;

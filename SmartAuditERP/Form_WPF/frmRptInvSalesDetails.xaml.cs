@@ -1045,6 +1045,10 @@ namespace SmartAuditERP.Form_WPF
                     {
                         var form = new frmInvSale();
                         if (procType == 2) form.Title = "مرتجع مبيعات";
+                        // P2-001 fix (الشريحة الثالثة): صلاحيات المستخدم
+                        // تُطبّق على المحرر المفتوح من التقرير قبل Show
+                        MainClass.ApplyPermissionToForm(form);
+                        MainClass.DoApplyUserSett(form);
                         form.Show();
                         form.InvType     = 2;
                         form.ProcType    = procType;
@@ -1059,6 +1063,10 @@ namespace SmartAuditERP.Form_WPF
                     {
                         var form = new frmInvPOS();
                         if (procType == 2) form.Title = "مرتجع";
+                        // P2-001 fix (الشريحة الثالثة): صلاحيات المستخدم
+                        // تُطبّق على المحرر المفتوح من التقرير قبل Show
+                        MainClass.ApplyPermissionToForm(form);
+                        MainClass.DoApplyUserSett(form);
                         form.Show();
                         form.ProcType    = procType;
                         form.WindowState = WindowState.Maximized;
