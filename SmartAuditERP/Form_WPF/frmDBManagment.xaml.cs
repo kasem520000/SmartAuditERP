@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
@@ -156,7 +156,7 @@ namespace SmartAuditERP.Form_WPF
                 }
 
                 string connString = BuildConnectionString();
-                var masterConn = new SqlConnection(connString);
+                var masterConn = MainClass.CreateSqlConnection(connString);
 
                 if (masterConn.State != ConnectionState.Open)
                     masterConn.Open();
@@ -193,7 +193,7 @@ namespace SmartAuditERP.Form_WPF
 
                 // الاتصال بالقاعدة الجديدة وإنشاء الجداول
                 string newConnStr = BuildConnectionString(autoName);
-                var newConn = new SqlConnection(newConnStr);
+                var newConn = MainClass.CreateSqlConnection(newConnStr);
 
                 if (newConn.State == ConnectionState.Closed)
                     newConn.Open();
@@ -348,7 +348,7 @@ namespace SmartAuditERP.Form_WPF
             try
             {
                 string connString = BuildConnectionString();
-                var conn = new SqlConnection(connString);
+                var conn = MainClass.CreateSqlConnection(connString);
 
                 if (conn.State != ConnectionState.Open)
                     conn.Open();
@@ -439,7 +439,7 @@ namespace SmartAuditERP.Form_WPF
 
         public void UpdateAccountingPeriod()
         {
-            var conn = new SqlConnection(
+            var conn = MainClass.CreateSqlConnection(
                 $"server={MainClass.Server};database=master;trusted_connection=yes;");
 
             try
@@ -503,7 +503,7 @@ namespace SmartAuditERP.Form_WPF
             try
             {
                 string connStr = BuildConnectionString();
-                var conn = new SqlConnection(connStr);
+                var conn = MainClass.CreateSqlConnection(connStr);
 
                 if (conn.State != ConnectionState.Open)
                     conn.Open();

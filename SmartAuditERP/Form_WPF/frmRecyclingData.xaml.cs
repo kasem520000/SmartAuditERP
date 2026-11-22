@@ -183,7 +183,7 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
-                using (var masterConn = new SqlConnection(
+                using (var masterConn = MainClass.CreateSqlConnection(
                     $"server={MainClass.Server};trusted_connection=true;"))
                 {
                     await masterConn.OpenAsync();
@@ -223,7 +223,7 @@ namespace SmartAuditERP.Form_WPF
                     await CreateDatabaseOnServerAsync(masterConn, autoDbName);
 
                     // تطبيق الـ Schema
-                    using (var newConn = new SqlConnection(
+                    using (var newConn = MainClass.CreateSqlConnection(
                         $"server={MainClass.Server};database={autoDbName.Trim()};trusted_connection=true"))
                     {
                         await newConn.OpenAsync();
@@ -742,7 +742,7 @@ namespace SmartAuditERP.Form_WPF
             SqlTransaction transaction = null;
             try
             {
-                using (var sqlConn = new SqlConnection(
+                using (var sqlConn = MainClass.CreateSqlConnection(
                     $"server={MainClass.Server};Database={_toDbName.Trim()};trusted_connection=true;"))
                 {
                     sqlConn.Open();
@@ -864,7 +864,7 @@ namespace SmartAuditERP.Form_WPF
             SqlTransaction transaction = null;
             try
             {
-                using (var sqlConn = new SqlConnection(
+                using (var sqlConn = MainClass.CreateSqlConnection(
                     $"server={MainClass.Server};Database={_toDbName.Trim()};trusted_connection=true;"))
                 {
                     sqlConn.Open();

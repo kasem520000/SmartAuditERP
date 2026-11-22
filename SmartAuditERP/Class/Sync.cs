@@ -515,7 +515,7 @@ namespace SmartAuditERP
                     return 0;
                 }
 
-                using var sqlConnection = new SqlConnection(MainClass.connstr);
+                using var sqlConnection = MainClass.CreateSqlConnection(MainClass.connstr);
                 sqlConnection.Open();
 
                 using var cmd = new SqlCommand(

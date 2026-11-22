@@ -444,7 +444,7 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
-                using (var conn2 = new SqlConnection(MainClass.connstr))
+                using (var conn2 = MainClass.CreateSqlConnection(MainClass.connstr))
                 {
                     conn2.Open();
                     using (var cmd = new SqlCommand(

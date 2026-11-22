@@ -105,7 +105,7 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
-                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                using (SqlConnection sqlConn = MainClass.CreateSqlConnection(connStr))
                 {
                     sqlConn.Open();
                     using (SqlDataAdapter da = new SqlDataAdapter(
@@ -288,7 +288,7 @@ namespace SmartAuditERP.Form_WPF
                 dataTable.Columns.Add("balance", typeof(decimal));
                 dataTable.Columns.Add("Notes", typeof(string));
 
-                using (SqlConnection sqlConn = new SqlConnection(connStr))
+                using (SqlConnection sqlConn = MainClass.CreateSqlConnection(connStr))
                 {
                     sqlConn.Open();
 
@@ -651,7 +651,7 @@ namespace SmartAuditERP.Form_WPF
             decimal result = 0m;
             try
             {
-                using (SqlConnection sqlConn = new SqlConnection(MainClass.connstr))
+                using (SqlConnection sqlConn = MainClass.CreateSqlConnection(MainClass.connstr))
                 {
                     sqlConn.Open();
                     using (SqlCommand cmd = new SqlCommand(

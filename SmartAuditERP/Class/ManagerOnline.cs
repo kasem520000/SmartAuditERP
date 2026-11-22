@@ -23,7 +23,7 @@ namespace SmartAuditERP
 	{
 		public static string connString = "server=" + MainClass.Server.Trim() + ";database=master;trusted_connection=True";
 
-		public static SqlConnection conn = new SqlConnection(ManagerOnline.connString);
+		public static SqlConnection conn = MainClass.CreateSqlConnection(ManagerOnline.connString);
 
 		private static SqlConnection conn1 = MainClass.ConnObj();
 
@@ -99,7 +99,7 @@ namespace SmartAuditERP
 			{
 				List<ClListManagerOnline> list;
 				list = new List<ClListManagerOnline>();
-				using (SqlConnection sqlConnection = new SqlConnection(ManagerOnline.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(ManagerOnline.connString))
 				{
 					sqlConnection.Open();
 					using SqlCommand sqlCommand = new SqlCommand("SELECT\r\n                                        ISNULL([ClientName],'') AS ClientName,\r\n                                        ISNULL(ClientMobile,'0') AS ClientMobile,\r\n                                        ISNULL(ClientEmail,'-') AS ClientEmail,\r\n                                        ISNULL(city,'-') AS city,\r\n                                        ISNULL(Salesman,'DarH') AS Salesman,\r\n                                        ISNULL(LiciensesNo,1) AS LiciensesNo,\r\n                                        isnull(LicenseDate,'')as LicenseDate,\r\n                                        isnull(licenseID,'-')as licenseID,\r\n                                        isnull(LicenseFeatures,'000001') as LicenseFeatures\r\n                                    FROM License;", sqlConnection);
@@ -141,7 +141,7 @@ namespace SmartAuditERP
 				{
 					ManagerOnline.connString = "server=" + MainClass.Server.Trim() + ";database=master;MultipleActiveResultSets=true;user id=" + MainClass.NetUserId + "; pwd=" + MainClass.NetPwd;
 				}
-				using (SqlConnection sqlConnection = new SqlConnection(ManagerOnline.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(ManagerOnline.connString))
 				{
 					sqlConnection.Open();
 					using SqlCommand sqlCommand = new SqlCommand("SELECT\r\n                                        ISNULL([ClientName],'') AS ClientName                                     \r\n                                    FROM License;", sqlConnection);
@@ -175,7 +175,7 @@ namespace SmartAuditERP
 				{
 					ManagerOnline.connString = "server=" + MainClass.Server.Trim() + ";database=master;MultipleActiveResultSets=true;user id=" + MainClass.NetUserId + "; pwd=" + MainClass.NetPwd;
 				}
-				using (SqlConnection sqlConnection = new SqlConnection(ManagerOnline.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(ManagerOnline.connString))
 				{
 					sqlConnection.Open();
 					using SqlCommand sqlCommand = new SqlCommand("SELECT\r\n                                        ISNULL([ClientEmail],'') AS ClientEmail                                     \r\n                                    FROM License;", sqlConnection);
@@ -465,7 +465,7 @@ namespace SmartAuditERP
 			{
 				string text;
 				text = "-";
-				using (SqlConnection sqlConnection = new SqlConnection(MainClass.connstr))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(MainClass.connstr))
 				{
 					sqlConnection.Open();
 					using SqlCommand sqlCommand = new SqlCommand("select top 1 * from Entry where IS_Deleted=0 order by date desc;", sqlConnection);
@@ -496,7 +496,7 @@ namespace SmartAuditERP
 			{
 				List<ListZatacCrm> list;
 				list = new List<ListZatacCrm>();
-				using (SqlConnection sqlConnection = new SqlConnection(MainClass.connstr))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(MainClass.connstr))
 				{
 					sqlConnection.Open();
 					using SqlCommand selectCommand = new SqlCommand("select * from SettingZatca where IsActive=1;", ManagerOnline.conn1);
@@ -655,7 +655,7 @@ namespace SmartAuditERP
 			try
 			{
 				string text = default(string);
-				using (SqlConnection sqlConnection = new SqlConnection(ManagerOnline.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(ManagerOnline.connString))
 				{
 					sqlConnection.Open();
 					using SqlCommand sqlCommand = new SqlCommand("SELECT \r\n      [DbAutoName]\r\n      ,[Dbname]\r\n  FROM [master].[dbo].[DatabasesManagment] \r\n  where Dbname=" + Dbname + ";", sqlConnection);

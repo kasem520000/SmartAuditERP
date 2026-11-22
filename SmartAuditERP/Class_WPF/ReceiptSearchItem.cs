@@ -69,7 +69,7 @@ namespace SmartAuditERP.Form_WPF
     internal static class MainClass1
     {
         public static SqlConnection ConnObj()
-            => new SqlConnection("يجب وضع connection string هنا");
+            => MainClass.CreateSqlConnection("يجب وضع connection string هنا");
 
         public static int    BranchNo        { get; set; } = -1;
         public static int    EmpNo           { get; set; } = -1;

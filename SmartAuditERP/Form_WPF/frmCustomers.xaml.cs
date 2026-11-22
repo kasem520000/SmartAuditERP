@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -1754,7 +1754,7 @@ namespace SmartAuditERP.Form_WPF
             if (!Directory.Exists(docsPath))
                 Directory.CreateDirectory(docsPath);
 
-            using var sqlConn = new SqlConnection(MainClass.connstr);
+            using var sqlConn = MainClass.CreateSqlConnection(MainClass.connstr);
 
             foreach (string filePath in filePathDocument)
             {
@@ -1787,7 +1787,7 @@ namespace SmartAuditERP.Form_WPF
 
         public static void GetDocuments(ref DataTable docTable, string customerId)
         {
-            using var sqlConn = new SqlConnection(MainClass.connstr);
+            using var sqlConn = MainClass.CreateSqlConnection(MainClass.connstr);
             using var cmd = new SqlCommand(
                 "SELECT Id, FileName, FileUrl FROM Documents " +
                 "WHERE type=4 AND GlobalID=@GlobalID",

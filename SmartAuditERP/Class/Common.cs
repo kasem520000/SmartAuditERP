@@ -1135,7 +1135,7 @@ namespace SmartAuditERP
             try
             {
                 string connectionString = BuildMasterConnectionString();
-                using var sqlConnection = new SqlConnection(connectionString);
+                using var sqlConnection = MainClass.CreateSqlConnection(connectionString);
                 if (sqlConnection.State == ConnectionState.Closed)
                     sqlConnection.Open();
 
@@ -1274,7 +1274,7 @@ namespace SmartAuditERP
             try
             {
                 string connStr = BuildMasterConnectionString();
-                using var sqlConnection = new SqlConnection(connStr);
+                using var sqlConnection = MainClass.CreateSqlConnection(connStr);
                 if (sqlConnection.State != ConnectionState.Open)
                     sqlConnection.Open();
                 var frmUserLogin = new frmUserLogin();
@@ -1305,7 +1305,7 @@ namespace SmartAuditERP
         {
             try
             {
-                using var connection = new SqlConnection(MainClass.connstr);
+                using var connection = MainClass.CreateSqlConnection(MainClass.connstr);
                 if (connection.State != ConnectionState.Open)
                     connection.Open();
 
@@ -1341,7 +1341,7 @@ namespace SmartAuditERP
                     + ";database=master;MultipleActiveResultSets=True;"
                     + "user id=" + MainClass.NetUserId
                     + "; pwd=" + MainClass.NetPwd;
-                using var connection = new SqlConnection(connStr);
+                using var connection = MainClass.CreateSqlConnection(connStr);
                 if (connection.State != ConnectionState.Open)
                     connection.Open();
 
@@ -1390,7 +1390,7 @@ namespace SmartAuditERP
             try
             {
                 string connStr = BuildMasterConnectionString();
-                using var connection = new SqlConnection(connStr);
+                using var connection = MainClass.CreateSqlConnection(connStr);
                 if (connection.State != ConnectionState.Open)
                     connection.Open();
 
@@ -1517,7 +1517,7 @@ namespace SmartAuditERP
             try
             {
                 var databasesWithTable = GetDatabasesWithTable("Accounts_Index");
-                conn = new SqlConnection(BuildMasterConnectionString());
+                conn = MainClass.CreateSqlConnection(BuildMasterConnectionString());
                 if (conn.State != ConnectionState.Open) conn.Open();
 
                 // إنشاء جدول DatabasesManagment إن لم يوجد
@@ -1591,7 +1591,7 @@ namespace SmartAuditERP
             try
             {
                 string connStr = BuildMasterConnectionString();
-                using var masterConn = new SqlConnection(connStr);
+                using var masterConn = MainClass.CreateSqlConnection(connStr);
                 masterConn.Open();
 
                 using var cmd = new SqlCommand(
@@ -1607,7 +1607,7 @@ namespace SmartAuditERP
                     string dbName = reader["name"].ToString();
                     int dbId = Convert.ToInt32(reader["dbid"]);
 
-                    using var checkConn = new SqlConnection(connStr);
+                    using var checkConn = MainClass.CreateSqlConnection(connStr);
                     checkConn.Open();
                     using var checkCmd = new SqlCommand(
                         $"SELECT COUNT(*) FROM [{dbName}].INFORMATION_SCHEMA.TABLES "
@@ -1629,7 +1629,7 @@ namespace SmartAuditERP
         public static void GetValidDBname(ref string Dbname, ref int Id)
         {
             string connStr = BuildMasterConnectionString();
-            using var conn = new SqlConnection(connStr);
+            using var conn = MainClass.CreateSqlConnection(connStr);
             if (conn.State != ConnectionState.Open) conn.Open();
 
             using var adapter = new SqlDataAdapter(
@@ -1906,7 +1906,7 @@ namespace SmartAuditERP
         {
             try
             {
-                conn = new SqlConnection(BuildMasterConnectionString());
+                conn = MainClass.CreateSqlConnection(BuildMasterConnectionString());
                 if (conn.State != ConnectionState.Open) conn.Open();
 
                 using var adapter = new SqlDataAdapter(
@@ -1970,7 +1970,7 @@ namespace SmartAuditERP
         {
             try
             {
-                conn = new SqlConnection(BuildMasterConnectionString());
+                conn = MainClass.CreateSqlConnection(BuildMasterConnectionString());
                 if (conn.State != ConnectionState.Open) conn.Open();
 
                 new SqlCommand(@"
@@ -2019,7 +2019,7 @@ namespace SmartAuditERP
         {
             try
             {
-                conn = new SqlConnection(BuildMasterConnectionString());
+                conn = MainClass.CreateSqlConnection(BuildMasterConnectionString());
                 if (conn.State != ConnectionState.Open) conn.Open();
 
                 new SqlCommand(@"
@@ -2057,7 +2057,7 @@ namespace SmartAuditERP
             try
             {
                 string connStr = BuildMasterConnectionString();
-                using var connection = new SqlConnection(connStr);
+                using var connection = MainClass.CreateSqlConnection(connStr);
                 if (connection.State != ConnectionState.Open)
                     connection.Open();
 
@@ -2224,7 +2224,7 @@ namespace SmartAuditERP
         {
             try
             {
-                using var conn = new SqlConnection(MainClass.connstr);
+                using var conn = MainClass.CreateSqlConnection(MainClass.connstr);
                 conn.Open();
                 int count = Convert.ToInt32(
                     new SqlCommand(
@@ -2275,7 +2275,7 @@ namespace SmartAuditERP
             try
             {
                 string reportsPath = MainClass.ReportsPath;
-                using var connection = new SqlConnection(MainClass.connstr);
+                using var connection = MainClass.CreateSqlConnection(MainClass.connstr);
                 connection.Open();
 
                 using var adapter = new SqlDataAdapter(

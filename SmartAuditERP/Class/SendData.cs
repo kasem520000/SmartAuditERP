@@ -26,7 +26,7 @@ namespace SmartAuditERP
 
 		public static string connString = "";
 
-		public static SqlConnection conn = new SqlConnection(global::SmartAuditERP.SendData.connString);
+		public static SqlConnection conn = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString);
 
 		public static string lastErrorMsg;
 
@@ -47,7 +47,7 @@ namespace SmartAuditERP
 				cmdText = "SELECT  [id], ISNULL([name],'') AS name, ISNULL([nameEN],'') AS nameEn, ISNULL([code],'') AS code,\r\n                                    ISNULL([barcode],'') AS barcode, ISNULL([Grpcode],1) AS Grpcode, ISNULL([group_id],1) AS group_id,\r\n                                    ISNULL([unit],1) AS unit, ISNULL([ShowInPOS],1) AS ShowInPOS, ISNULL([Wscale],0) AS Wscale,\r\n                                    ISNULL([purch_price],0) AS purch_price, ISNULL([sale_price],0) AS sale_price, ISNULL([limit],0) AS limit,\r\n                                    ISNULL([tax],0) AS tax, ISNULL([discount],0) AS discount, ISNULL([tax_group],0) AS tax_group,\r\n                                    ISNULL([store],1) AS store, ISNULL([IS_Deleted],0) AS IS_Deleted, ISNULL([ItemType],1) AS ItemType,\r\n                                    ISNULL([ItemProperty],'') AS ItemProperty, ISNULL([FillValue],'') AS FillValue, ISNULL([MaxQtyLimit],0) AS MaxQtyLimit,\r\n                                    ISNULL([WithholdingTax],0) AS WithholdingTax, ISNULL([EgyItemCode],'') AS EgyItemCode,\r\n                                    ISNULL([EgyCodeType],'') AS EgyCodeType, ISNULL([MaxDicountParcent],0) AS MaxDicountParcent,\r\n                                    ISNULL([is_extra_tax_applied],0) AS is_extra_tax_applied,\r\n                                    ISNULL(MaxDiscountAmount,0)as MaxDiscountAmount ,ISNULL(showInAndroid,0)as showInAndroid,ISNULL(Item_Sort,0)as Item_Sort FROM Items " + Cond + ";";
 				List<ListItems> list;
 				list = new List<ListItems>();
-				using (SqlConnection sqlConnection = new SqlConnection(global::SmartAuditERP.SendData.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString))
 				{
 					sqlConnection.Open();
 					using SqlCommand sqlCommand = new SqlCommand(cmdText, sqlConnection);
@@ -109,7 +109,7 @@ namespace SmartAuditERP
 			string result = default(string);
 			try
 			{
-				global::SmartAuditERP.SendData.conn = new SqlConnection(global::SmartAuditERP.SendData.connString);
+				global::SmartAuditERP.SendData.conn = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString);
 				string cmdText;
 				cmdText = " \r\nSELECT isnull([ItemId],0) as Itemid\r\n      ,isnull([unit],1)as unit\r\n      ,isnull([perc],0) as perc\r\n      ,isnull([purch],0)as purch\r\n      ,isnull([sale],1) as sale\r\n      ,isnull([barcode],'')as barcode\r\n      FROM ItemUnits " + Cond + " ;\r\n";
 				List<ListItemunit> list;
@@ -152,7 +152,7 @@ namespace SmartAuditERP
 			string result = default(string);
 			try
 			{
-				global::SmartAuditERP.SendData.conn = new SqlConnection(global::SmartAuditERP.SendData.connString);
+				global::SmartAuditERP.SendData.conn = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString);
 				string cmdText;
 				cmdText = "\r\nSELECT \r\n    ISNULL([Proc_id], 0) AS Proc_id,\r\n    ISNULL([ItemID], 0) AS ItemID,\r\n    ISNULL([UnitID], 0) AS UnitID,\r\n    ISNULL([time], '') AS time,\r\n    ISNULL([date], '') AS date,\r\n    ISNULL([purch_price], 0) AS purch_price,\r\n    ISNULL([sale_price], 0) AS sale_price,\r\n    ISNULL([low_purch_price], 0) AS low_purch_price,\r\n    ISNULL([high_purch_price], 0) AS high_purch_price,\r\n    ISNULL([low_sale_price], 0) AS low_sale_price,\r\n    ISNULL([high_sale_price], 0) AS high_sale_price,\r\n    ISNULL([CompetitorPrice], 0) AS CompetitorPrice,\r\n    ISNULL([Emp], '') AS Emp,\r\n    ISNULL([IS_Deleted], 0) AS IS_Deleted,\r\n    ISNULL([ConsumerPrice], 0) AS ConsumerPrice,\r\n    ISNULL([WholesalePrice], 0) AS WholesalePrice\r\nFROM \r\n    ItemPrices " + Cond + " ;\r\n";
 				List<ItemPrices> list;
@@ -205,7 +205,7 @@ namespace SmartAuditERP
 			string result = default(string);
 			try
 			{
-				global::SmartAuditERP.SendData.conn = new SqlConnection(global::SmartAuditERP.SendData.connString);
+				global::SmartAuditERP.SendData.conn = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString);
 				string cmdText;
 				cmdText = "\r\n        SELECT \r\n            ISNULL([Id], 0) AS [Id],\r\n            ISNULL([itemId], 0) AS [itemId],\r\n            ISNULL([ComponentId], 0) AS [ComponentId],\r\n            ISNULL([price], 0) AS [price],\r\n            ISNULL([quantity], 0) AS [quantity],\r\n            ISNULL([unit], '') AS [unit],\r\n            ISNULL([total], 0) AS [total],\r\n            ISNULL([type], 0) AS [type],\r\n            ISNULL([store], '') AS [store]\r\n        FROM ItemComponents " + Cond + ";\r\n    ";
 				List<ItemComponent> list;
@@ -250,7 +250,7 @@ namespace SmartAuditERP
 			string result = default(string);
 			try
 			{
-				global::SmartAuditERP.SendData.conn = new SqlConnection(global::SmartAuditERP.SendData.connString);
+				global::SmartAuditERP.SendData.conn = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString);
 				string cmdText;
 				cmdText = "\r\n        SELECT \r\n    ISNULL([id], 0) AS [id], \r\n    ISNULL([ItemId], 0) AS [ItemId], \r\n    ISNULL([SerialNo], '') AS [SerialNo], \r\n    ISNULL([InvGlobalID], 0) AS [InvGlobalID]\r\nFROM \r\n    ItemSerialNo " + Cond + ";\r\n;\r\n    ";
 				List<ItemSerialNo> list;
@@ -290,7 +290,7 @@ namespace SmartAuditERP
 			string result = default(string);
 			try
 			{
-				global::SmartAuditERP.SendData.conn = new SqlConnection(global::SmartAuditERP.SendData.connString);
+				global::SmartAuditERP.SendData.conn = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString);
 				string idScan;
 				idScan = string.Empty;
 				string cmdText;
@@ -385,7 +385,7 @@ namespace SmartAuditERP
 			{
 				string image;
 				image = string.Empty;
-				global::SmartAuditERP.SendData.conn = new SqlConnection(global::SmartAuditERP.SendData.connString);
+				global::SmartAuditERP.SendData.conn = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString);
 				string cmdText;
 				cmdText = "\r\n        SELECT \r\n            ISNULL([CategoryId], 0) AS [CategoryId],\r\n            ISNULL([Code], '') AS [Code],\r\n            ISNULL([ParentCode], '') AS [ParentCode],\r\n            ISNULL([type], 0) AS [type],\r\n            ISNULL([name], '') AS [name],\r\n            ISNULL([nameEN], '') AS [nameEN],\r\n            ISNULL([color], '') AS [color],\r\n            ISNULL([printer], '') AS [printer],\r\n            ISNULL([image], 0x0) AS [image],\r\n            ISNULL([ShowInPOS], 0) AS [ShowInPOS],\r\n            ISNULL([DispalyOrder], 0) AS [DispalyOrder],\r\n            ISNULL([IS_Deleted], 0) AS [IS_Deleted],\r\n            ISNULL([PrintAllItems], 0) AS [PrintAllItems],\r\n            ISNULL([PrintItemsSeparately], 0) AS [PrintItemsSeparately],\r\n            ISNULL([BranchId], 0) AS [BranchId],\r\n            ISNULL([AllBranch], 0) AS [AllBranch],\r\n            ISNULL([Id], 0) AS [Id]\r\n        FROM ItemsCategory " + Cond + " ;";
 				List<ListItemsCategory> list;
@@ -444,7 +444,7 @@ namespace SmartAuditERP
 			string result = default(string);
 			try
 			{
-				global::SmartAuditERP.SendData.conn = new SqlConnection(global::SmartAuditERP.SendData.connString);
+				global::SmartAuditERP.SendData.conn = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString);
 				string cmdText;
 				cmdText = "\r\n        SELECT \r\n            ISNULL([ItemId], 0) AS [ItemId],\r\n            ISNULL([Barcode], '') AS [Barcode]\r\nfrom Itembarcodes " + Cond + ";";
 				List<listItemBarcode> list;
@@ -482,7 +482,7 @@ namespace SmartAuditERP
 			string result = default(string);
 			try
 			{
-				global::SmartAuditERP.SendData.conn = new SqlConnection(global::SmartAuditERP.SendData.connString);
+				global::SmartAuditERP.SendData.conn = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString);
 				string cmdText;
 				cmdText = "\r\n        SELECT \r\n    ISNULL([name], '') AS [name],\r\n    ISNULL([defaultInv], 0) AS [defaultInv],\r\n    ISNULL([IS_Deleted], 0) AS [IS_Deleted],\r\n    ISNULL([UnitId], 0) AS [UnitId],\r\n    ISNULL([Id], 0) AS [Id],\r\n    ISNULL([UnitCode], '') AS [UnitCode]\r\nFROM units " + Cond + ";\r\n";
 				List<ListUnit> list;
@@ -524,7 +524,7 @@ namespace SmartAuditERP
 			string result;
 			try
 			{
-				global::SmartAuditERP.SendData.conn = new SqlConnection(global::SmartAuditERP.SendData.connString);
+				global::SmartAuditERP.SendData.conn = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString);
 				string cmdText;
 				cmdText = "\r\nSELECT ISNULL(A.[Code], '') AS Code,\r\n               ISNULL(A.[AName], '') AS AName,\r\n               ISNULL(CAST(A.[Nature] AS NVARCHAR(50)), '0') AS Nature,  -- التأكد من تحويل Nature إلى NVARCHAR\r\n               ISNULL(A.[Type], '') AS AccountType,\r\n               ISNULL(A.[ParentCode], '') AS ParentCode,\r\n               ISNULL(A.[Date], GETDATE()) AS [Date],\r\n               ISNULL(A.[UserName], '') AS UserName,\r\n               ISNULL(A.[IValue], 0) AS IValue,\r\n               ISNULL(A.[FinalAcc], 0) AS FinalAcc,\r\n               ISNULL(A.[Total_Debts], 0) AS Total_Debts,\r\n               ISNULL(A.[Total_Credits], 0) AS Total_Credits,\r\n               ISNULL(A.[Account_Value], 0) AS Account_Value,\r\n               ISNULL(A.[Acc_branch], '') AS Acc_branch,\r\n               ISNULL(A.[CostCenter], '') AS CostCenter,\r\n               ISNULL(A.[IsDeleted], 0) AS IsDeleted\r\n        FROM Accounts_Index A\r\n        LEFT JOIN Customers C ON A.Code = C.AccountCode\r\n        WHERE C.AccountCode = A.Code " + Cond + ";\r\n        ";
 				List<ListAccounCust> list;
@@ -575,7 +575,7 @@ namespace SmartAuditERP
 			string result;
 			try
 			{
-				global::SmartAuditERP.SendData.conn = new SqlConnection(global::SmartAuditERP.SendData.connString);
+				global::SmartAuditERP.SendData.conn = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString);
 				string cmdText;
 				cmdText = "\r\nSELECT ISNULL(A.[Code], '') AS Code,\r\n               ISNULL(A.[AName], '') AS AName,\r\n               ISNULL(CAST(A.[Nature] AS NVARCHAR(50)), '0') AS Nature,  -- التأكد من تحويل Nature إلى NVARCHAR\r\n               ISNULL(A.[Type], '') AS AccountType,\r\n               ISNULL(A.[ParentCode], '') AS ParentCode,\r\n               ISNULL(A.[Date], GETDATE()) AS [Date],\r\n               ISNULL(A.[UserName], '') AS UserName,\r\n               ISNULL(A.[IValue], 0) AS IValue,\r\n               ISNULL(A.[FinalAcc], 0) AS FinalAcc,\r\n               ISNULL(A.[Total_Debts], 0) AS Total_Debts,\r\n               ISNULL(A.[Total_Credits], 0) AS Total_Credits,\r\n               ISNULL(A.[Account_Value], 0) AS Account_Value,\r\n               ISNULL(A.[Acc_branch], '') AS Acc_branch,\r\n               ISNULL(A.[CostCenter], '') AS CostCenter,\r\n               ISNULL(A.[IsDeleted], 0) AS IsDeleted\r\n        FROM Accounts_Index A\r\n        LEFT JOIN Employees E ON A.Code = E.AccCode\r\n        WHERE E.AccCode = A.Code " + Cond + ";\r\n        ";
 				List<ListAccounCust> list;
@@ -626,7 +626,7 @@ namespace SmartAuditERP
 			string result;
 			try
 			{
-				global::SmartAuditERP.SendData.conn = new SqlConnection(global::SmartAuditERP.SendData.connString);
+				global::SmartAuditERP.SendData.conn = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString);
 				string cmdText;
 				cmdText = "SELECT\r\n    ISNULL([Code], 0) AS [Code],\r\n    ISNULL([AName], '') AS [AName],\r\n    ISNULL([Nature], 0) AS [Nature],\r\n    ISNULL([Type], 0) AS [Type],\r\n    ISNULL([ParentCode], 0) AS [ParentCode],\r\n    ISNULL([Date], GETDATE()) AS [Date], -- تعويض التاريخ الحالي إذا كانت القيمة NULL\r\n    ISNULL([UserName], '') AS [UserName],\r\n    ISNULL([IValue], 0) AS [IValue],\r\n    ISNULL([FinalAcc], 0) AS [FinalAcc],\r\n    ISNULL([Total_Debts], 0) AS [Total_Debts],\r\n    ISNULL([Total_Credits], 0) AS [Total_Credits],\r\n    ISNULL([Account_Value], 0) AS [Account_Value],\r\n    ISNULL([Acc_branch], '') AS [Acc_branch],\r\n    ISNULL([CostCenter], 0) AS [CostCenter],\r\n    ISNULL([IsDeleted], 0) AS [IsDeleted]\r\nFROM Accounts_Index " + Cond + ";";
 				List<ListAccountIndex> list;
@@ -789,7 +789,7 @@ namespace SmartAuditERP
 			string result;
 			try
 			{
-				global::SmartAuditERP.SendData.conn = new SqlConnection(global::SmartAuditERP.SendData.connString);
+				global::SmartAuditERP.SendData.conn = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString);
 				string cmdText;
 				cmdText = "SELECT  \r\n      ISNULL([id], 0) AS [id],\r\n      ISNULL([name], '') AS [name],\r\n      ISNULL([manag], '') AS [manag],\r\n      ISNULL([dep], '') AS [dep],\r\n      ISNULL([state], '') AS [state],\r\n      ISNULL([job], '') AS [job],\r\n      ISNULL([branch], '') AS [branch],\r\n      ISNULL([birth_date], '1990-01-01') AS [birth_date],\r\n      ISNULL([insurance_no], '') AS [insurance_no],\r\n      ISNULL([work_date], '1990-01-01') AS [work_date],\r\n      ISNULL([marital_state], '') AS [marital_state],\r\n      ISNULL([nationality], '') AS [nationality],\r\n      ISNULL([sex], '') AS [sex],\r\n      ISNULL([tel], '') AS [tel],\r\n      ISNULL([mobile], '') AS [mobile],\r\n      ISNULL([email], '') AS [email],\r\n      ISNULL([address], '') AS [address],\r\n      ISNULL([notes], '') AS [notes],\r\n      ISNULL([image], '') AS [image], \r\n      ISNULL([salary_basic], 0) AS [salary_basic],\r\n      ISNULL([salary_add], 0) AS [salary_add],\r\n      ISNULL([salary_other], 0) AS [salary_other],\r\n      ISNULL([house], 0) AS [house],\r\n      ISNULL([food], 0) AS [food],\r\n      ISNULL([travel], 0) AS [travel],\r\n      ISNULL([medical], 0) AS [medical],\r\n      ISNULL([IS_Deleted], 0) AS [IS_Deleted],\r\n      ISNULL([AccCode], '') AS [AccCode],\r\n      ISNULL([CardNo], '') AS [CardNo],\r\n      ISNULL([BankNo], '') AS [BankNo],\r\n      ISNULL([BankName], '') AS [BankName]\r\nFROM Employees " + Cond + ";";
 				List<ListEmployee> list;
@@ -859,7 +859,7 @@ namespace SmartAuditERP
 				list = new List<ListEmpBranch>();
 				string cmdText;
 				cmdText = ("\r\n    SELECT ISNULL([emp],0) as Emp\r\n      ,ISNULL([branch],1)as Branch\r\n  FROM EmpBranches" + cond) ?? "";
-				using (SqlConnection sqlConnection = new SqlConnection(global::SmartAuditERP.SendData.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString))
 				{
 					using SqlCommand sqlCommand = new SqlCommand(cmdText, sqlConnection);
 					sqlConnection.Open();
@@ -895,7 +895,7 @@ namespace SmartAuditERP
 				list = new List<ListUsers>();
 				string cmdText;
 				cmdText = ("\r\n    SELECT \r\n        ISNULL([id], 0) AS [id],\r\n        ISNULL([emp], '') AS [emp],\r\n        ISNULL([username], '') AS [username],\r\n        ISNULL([pwd], '') AS [pwd],\r\n        ISNULL([IS_Deleted], 0) AS [IS_Deleted],\r\n        ISNULL([SecureCode], '') AS [SecureCode],\r\n        ISNULL([LoginSecode], '') AS [LoginSecode]\r\n    FROM \r\n        Users " + cond) ?? "";
-				using (SqlConnection sqlConnection = new SqlConnection(global::SmartAuditERP.SendData.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString))
 				{
 					using SqlCommand sqlCommand = new SqlCommand(cmdText, sqlConnection);
 					sqlConnection.Open();
@@ -936,7 +936,7 @@ namespace SmartAuditERP
 				list = new List<ListUserPermission>();
 				string cmdText;
 				cmdText = ("\r\n    SELECT \r\n        ISNULL([user_id], 0) AS [user_id],\r\n        ISNULL([Form_id], 0) AS [Form_id],\r\n        ISNULL([IS_New], 0) AS [IS_New],\r\n        ISNULL([IS_Save], 0) AS [IS_Save],\r\n        ISNULL([IS_Delete], 0) AS [IS_Delete],\r\n        ISNULL([IS_Search], 0) AS [IS_Search],\r\n        ISNULL([IS_Print], 0) AS [IS_Print],\r\n        ISNULL([IS_Edit], 0) AS [IS_Edit]\r\n    FROM \r\n        User_Permissions " + cond) ?? "";
-				using (SqlConnection sqlConnection = new SqlConnection(global::SmartAuditERP.SendData.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString))
 				{
 					using SqlCommand sqlCommand = new SqlCommand(cmdText, sqlConnection);
 					sqlConnection.Open();
@@ -978,7 +978,7 @@ namespace SmartAuditERP
 				list = new List<ListOperationPermission>();
 				string cmdText;
 				cmdText = ("\r\n    SELECT Isnull([id],0)as id\r\n      ,Isnull([emp],0) as emp\r\n      ,Isnull([OperNo],0) as OperNo\r\n      ,Isnull([pwd],0) as pwd\r\n      ,Isnull([lastChanged],0) as lastChanged\r\n      ,Isnull([IS_Deleted],0) as IS_Deleted\r\n      ,Isnull([OperVal],0) as OperVal\r\n      ,Isnull([Activated],0) as Activated\r\n  FROM  [OperationPermission] " + cond) ?? "";
-				using (SqlConnection sqlConnection = new SqlConnection(global::SmartAuditERP.SendData.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString))
 				{
 					using SqlCommand sqlCommand = new SqlCommand(cmdText, sqlConnection);
 					sqlConnection.Open();
@@ -1018,7 +1018,7 @@ namespace SmartAuditERP
 			{
 				List<ListInvoice> list;
 				list = new List<ListInvoice>();
-				using (SqlConnection sqlConnection = new SqlConnection(global::SmartAuditERP.SendData.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString))
 				{
 					sqlConnection.Open();
 					using SqlDataReader sqlDataReader = new SqlCommand(("\r\n        SELECT ISNULL([InvGlobalID], '') AS InvGlobalID, ISNULL([proc_id], 0) AS proc_id, ISNULL([proc_type], 0) AS proc_type, ISNULL([id], 0) AS id, \r\n               ISNULL([date], GETDATE()) AS [date], ISNULL([inv_type], 0) AS inv_type, ISNULL([OrderType], 0) AS OrderType, \r\n               ISNULL([safe], 0) AS safe, ISNULL([stock], 0) AS stock, ISNULL([cust_id], 0) AS cust_id, ISNULL([sales_emp], 0) AS sales_emp, \r\n               ISNULL([InvTotal], 0) AS InvTotal, ISNULL([tot_purch], 0) AS tot_purch, ISNULL([AdditionsTot], 0) AS AdditionsTot, \r\n               ISNULL([Insurance], 0) AS Insurance, ISNULL([tot_net], 0) AS tot_net, ISNULL([EntryID], '') AS EntryID, \r\n               ISNULL([purch_rest_id], 0) AS purch_rest_id, ISNULL([Reff_No], '') AS Reff_No, ISNULL([Reff_date], GETDATE()) AS Reff_date, \r\n               ISNULL([branch], 0) AS branch, ISNULL([IS_Buy], 0) AS IS_Buy, ISNULL([minus], 0) AS minus, ISNULL([paid], 0) AS paid, \r\n               ISNULL([salesman], 0) AS salesman, ISNULL([tax], 0) AS tax, ISNULL([ExtraVAT], 0) AS ExtraVAT, ISNULL([pay_type], 0) AS pay_type, \r\n               ISNULL([bank], 0) AS bank, ISNULL([cash], 0) AS cash, ISNULL([visa], 0) AS visa, ISNULL([notes], '') AS notes, \r\n               ISNULL([IS_Deleted], 0) AS IS_Deleted, ISNULL([Sync], 0) AS Sync, ISNULL([InvProfit], 0) AS InvProfit, \r\n               ISNULL([InvoiceStatus], 0) AS InvoiceStatus, ISNULL([AdditionalCost], 0) AS AdditionalCost, \r\n               ISNULL([PriceIncVAT], 0) AS PriceIncVAT, ISNULL([PaymentStatus], 0) AS PaymentStatus, ISNULL([IssueDate], GETDATE()) AS IssueDate, \r\n               ISNULL([InvCombinedId], 0) AS InvCombinedId, ISNULL([ItemsDiscount], 0) AS ItemsDiscount, ISNULL([InvCost], 0) AS InvCost, \r\n               ISNULL([FreeVATSales], 0) AS FreeVATSales, ISNULL([InvSum], 0) AS InvSum, ISNULL([VATPercent], 0) AS VATPercent, \r\n               ISNULL([CurrencyCode], '') AS CurrencyCode, ISNULL([CloudID], '') AS CloudID, ISNULL([CashCustomerName], '') AS CashCustomerName, \r\n               ISNULL([CashCustomerMobile], '') AS CashCustomerMobile, ISNULL([QRCode], '') AS QRCode, ISNULL([InvoiceHash], '') AS InvoiceHash, \r\n               ISNULL([UUID], '') AS UUID, ISNULL([ZatcaSent], 0) AS ZatcaSent, ISNULL([TotalWithholdingTax], 0) AS TotalWithholdingTax, \r\n               ISNULL([TableNo], '') AS TableNo, ISNULL([Balance_previews], 0) AS Balance_previews\r\n        FROM Inv " + cond) ?? "", sqlConnection).ExecuteReader();
@@ -1108,7 +1108,7 @@ namespace SmartAuditERP
 			{
 				List<listInvSub> list;
 				list = new List<listInvSub>();
-				using (SqlConnection sqlConnection = new SqlConnection(global::SmartAuditERP.SendData.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString))
 				{
 					sqlConnection.Open();
 					using SqlCommand sqlCommand = new SqlCommand("\r\n            SELECT \r\n                ISNULL([InvGlobalID], '') AS InvGlobalID,\r\n                ISNULL([id], 0) AS id,\r\n                ISNULL([proc_id], 0) AS proc_id,\r\n                ISNULL([proc_type], 0) AS proc_type,\r\n                ISNULL([store], 0) AS store,\r\n                ISNULL([ItemId], 0) AS ItemId,\r\n                ISNULL([unit], 0) AS unit,\r\n                ISNULL([UnitEquality], 0) AS UnitEquality,\r\n                ISNULL([val], 0) AS val,\r\n                ISNULL([val1], 0) AS val1,\r\n                ISNULL([exchange_price], 0) AS exchange_price,\r\n                ISNULL([expire_date], GETDATE()) AS expire_date,\r\n                ISNULL([taxperc], 0) AS taxperc,\r\n                ISNULL([taxval], 0) AS taxval,\r\n                ISNULL([discount], 0) AS discount,\r\n                ISNULL([notes], '') AS notes,\r\n                ISNULL([Description], '') AS Description,\r\n                ISNULL([ProductId], 0) AS ProductId,\r\n                ISNULL([AvrgCost], 0) AS AvrgCost,\r\n                ISNULL([CurrentQnty], 0) AS CurrentQnty,\r\n                ISNULL([ItemAddedCost], 0) AS ItemAddedCost,\r\n                ISNULL([ItemPriceWithoutVAT], 0) AS ItemPriceWithoutVAT,\r\n                ISNULL([WithholdingTax], 0) AS WithholdingTax,\r\n                ISNULL([WithholdingTaxPerc], 0) AS WithholdingTaxPerc,\r\n                ISNULL([ItemCostCenter], '') AS ItemCostCenter,\r\n                ISNULL([ItemAdditionalTax], 0) AS ItemAdditionalTax,\r\n                ISNULL([ItemAdditionalTaxPerc], 0) AS ItemAdditionalTaxPerc\r\n            FROM [dbo].[Inv_Sub] " + InvGlobalID + " ", sqlConnection);
@@ -1169,7 +1169,7 @@ namespace SmartAuditERP
 			{
 				List<ListEntry> list;
 				list = new List<ListEntry>();
-				using (SqlConnection sqlConnection = new SqlConnection(global::SmartAuditERP.SendData.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString))
 				{
 					sqlConnection.Open();
 					using SqlCommand sqlCommand = new SqlCommand(("\r\n            SELECT \r\n                ISNULL([GlobalID], '') AS GlobalID,\r\n                ISNULL([id], 0) AS id,\r\n                ISNULL([date], GETDATE()) AS date,\r\n                ISNULL([doc_no], '') AS doc_no,\r\n                ISNULL([type], '') AS type,\r\n                ISNULL([state], 0) AS state,\r\n                ISNULL([notes], '') AS notes,\r\n                ISNULL([branch], 0) AS branch,\r\n                ISNULL([IS_Deleted], 0) AS IS_Deleted,\r\n                ISNULL([EmpID], 0) AS EmpID,\r\n                ISNULL([Sync], 0) AS Sync,\r\n                ISNULL([IsVAT], 0) AS IsVAT\r\n            FROM Entry " + cond) ?? "", sqlConnection);
@@ -1213,7 +1213,7 @@ namespace SmartAuditERP
 			{
 				List<ListEntrySub> list;
 				list = new List<ListEntrySub>();
-				using (SqlConnection sqlConnection = new SqlConnection(global::SmartAuditERP.SendData.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString))
 				{
 					sqlConnection.Open();
 					using SqlCommand sqlCommand = new SqlCommand(("\r\n            SELECT \r\n                ISNULL([EntryGlobalID], '') AS EntryGlobalID,\r\n                ISNULL([res_id], 0) AS res_id,\r\n                ISNULL([dept], 0) AS dept,\r\n                ISNULL([credit], 0) AS credit,\r\n                ISNULL([acc_no], '') AS acc_no,\r\n                ISNULL([CCcode], '') AS CCcode,\r\n                ISNULL([notes], '') AS notes,\r\n                ISNULL([branch], 0) AS branch\r\n            FROM [dbo].[Entry_sub] " + cond) ?? "", sqlConnection);
@@ -1253,7 +1253,7 @@ namespace SmartAuditERP
 			{
 				List<ListOffers> list;
 				list = new List<ListOffers>();
-				using (SqlConnection sqlConnection = new SqlConnection(global::SmartAuditERP.SendData.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString))
 				{
 					sqlConnection.Open();
 					using SqlCommand sqlCommand = new SqlCommand(("\r\n   SELECT\r\n      ISNULL([OfferID], 0) AS OfferID,\r\n      ISNULL([OfferType], '') AS OfferType,\r\n      ISNULL([OfferStartDate], '') AS OfferStartDate,\r\n      ISNULL([OfferExpire], '') AS OfferExpire,\r\n      ISNULL([OfferName], '') AS OfferName,\r\n      ISNULL([OfferDate], '') AS OfferDate,\r\n      ISNULL([OfferAccount], '') AS OfferAccount,\r\n      ISNULL([InvoiceID], 0) AS InvoiceID,\r\n      ISNULL([OfferValue], 0) AS OfferValue,\r\n      ISNULL([OfferPercentage], 0) AS OfferPercentage,\r\n      ISNULL([OfferValueTarget], 0) AS OfferValueTarget,\r\n      ISNULL([OfferQntyTarget], 0) AS OfferQntyTarget,\r\n      ISNULL([EmpId], 0) AS EmpId,\r\n      ISNULL([IsDeleted], 0) AS IsDeleted\r\n  FROM Offer\r\n" + cond) ?? "", sqlConnection);
@@ -1299,7 +1299,7 @@ namespace SmartAuditERP
 			{
 				List<ListOfferForClient> list;
 				list = new List<ListOfferForClient>();
-				using (SqlConnection sqlConnection = new SqlConnection(global::SmartAuditERP.SendData.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString))
 				{
 					sqlConnection.Open();
 					using SqlCommand sqlCommand = new SqlCommand("SELECT \r\n    ISNULL([id], 0) AS id,\r\n    ISNULL([OfferId], 0) AS OfferId,\r\n    ISNULL([ClientID], 0) AS ClientID,\r\n    ISNULL([CatatogryID], 0) AS CatatogryID,\r\n    ISNULL([ItemID], 0) AS ItemID,\r\n    ISNULL([IsForAllItems], 0) AS IsForAllItems,\r\n    ISNULL([unit], '') AS unit,\r\n    ISNULL([OfferTargetQnty], 0.0) AS OfferTargetQnty,\r\n    ISNULL([OfferItemValue], 0.0) AS OfferItemValue,\r\n    ISNULL([OfferItemPercentage], 0.0) AS OfferItemPercentage\r\nFROM OfferForClient", sqlConnection);
@@ -1341,7 +1341,7 @@ namespace SmartAuditERP
 			{
 				List<OfferItem> list;
 				list = new List<OfferItem>();
-				using (SqlConnection sqlConnection = new SqlConnection(global::SmartAuditERP.SendData.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString))
 				{
 					sqlConnection.Open();
 					using SqlCommand sqlCommand = new SqlCommand("SELECT \r\n    ISNULL([id], 0) AS id,\r\n    ISNULL([OfferId], 0) AS OfferId,\r\n    ISNULL([CatatogryID], 0) AS CatatogryID,\r\n    ISNULL([ItemID], 0) AS ItemID,\r\n    ISNULL([OfferNatural], 0) AS OfferNatural,\r\n    ISNULL([IsGroupedItems], 0) AS IsGroupedItems,\r\n    ISNULL([unit], '') AS unit,\r\n    ISNULL([OfferTargetQnty], 0.0) AS OfferTargetQnty,\r\n    ISNULL([OfferItemTargetQnty], 0.0) AS OfferItemTargetQnty,\r\n    ISNULL([OfferItemPrice], 0.0) AS OfferItemPrice,\r\n    ISNULL([OfferTotalPrice], 0.0) AS OfferTotalPrice,\r\n    ISNULL([OfferItemValue], 0.0) AS OfferItemValue,\r\n    ISNULL([OfferItemPercentage], 0.0) AS OfferItemPercentage,\r\n    ISNULL([OfferItemStock], 0.0) AS OfferItemStock\r\nFROM [dbo].[OfferItems]", sqlConnection);
@@ -1387,7 +1387,7 @@ namespace SmartAuditERP
 			{
 				List<ListRecipt> list;
 				list = new List<ListRecipt>();
-				using (SqlConnection sqlConnection = new SqlConnection(global::SmartAuditERP.SendData.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString))
 				{
 					sqlConnection.Open();
 					using SqlCommand sqlCommand = new SqlCommand(("SELECT \r\n            ISNULL([AutoID], 0) AS AutoID,\r\n            ISNULL([GlobalID], 0) AS GlobalID,\r\n            ISNULL([ReceiptNo], 0) AS ReceiptNo,\r\n            ISNULL([ReceiptDate], '1900-01-01') AS ReceiptDate,\r\n            ISNULL([EmpId], 0) AS EmpId,\r\n            ISNULL([ClientID], 0) AS ClientID,\r\n            ISNULL([CreditAcc], '') AS CreditAcc,\r\n            ISNULL([DebitAcc], '') AS DebitAcc,\r\n            ISNULL([Payment], 0.0) AS Payment,\r\n            ISNULL([VAT], 0.0) AS VAT,\r\n            ISNULL([NetVal], 0.0) AS NetVal,\r\n            ISNULL([ReceiptType], 0) AS ReceiptType,\r\n            ISNULL([PaymentType], 0) AS PaymentType,\r\n            ISNULL([BankId], 0) AS BankId,\r\n            ISNULL([TreasuryID], 0) AS TreasuryID,\r\n            ISNULL([SalesManID], 0) AS SalesManID,\r\n            ISNULL([CheckNo], '') AS CheckNo,\r\n            ISNULL([CheckDate], '1900-01-01') AS CheckDate,\r\n            ISNULL([Checkbank], '') AS Checkbank,\r\n            ISNULL([CheckState], 0) AS CheckState,\r\n            ISNULL([State], 0) AS State,\r\n            ISNULL([Notes], '') AS Notes,\r\n            ISNULL([EntryGlobalID], 0) AS EntryGlobalID,\r\n            ISNULL([BranchID], 0) AS BranchID,\r\n            ISNULL([ISDeleted], 0) AS ISDeleted,\r\n            ISNULL([Cccode], '') AS Cccode,\r\n            ISNULL([ReffNo], '') AS ReffNo,\r\n            ISNULL([Reffdate], '1900-01-01') AS Reffdate,\r\n            ISNULL([Sync], 0) AS Sync,\r\n            ISNULL([MobPOSID], 0) AS MobPOSID\r\n            FROM Receipts " + cond) ?? "", sqlConnection);
@@ -1451,7 +1451,7 @@ namespace SmartAuditERP
 				list = new List<ListSafes>();
 				string cmdText;
 				cmdText = "SELECT ISNULL([id], 0) AS id, ISNULL([name], '') AS name, ISNULL([branch], '') AS branch, ISNULL([status], 0) AS status, ISNULL([IS_Default], 0) AS IS_Default, ISNULL([notes], '') AS notes, ISNULL([IS_Deleted], 0) AS IS_Deleted FROM Safes";
-				using (SqlConnection sqlConnection = new SqlConnection(global::SmartAuditERP.SendData.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString))
 				{
 					using SqlCommand sqlCommand = new SqlCommand(cmdText, sqlConnection);
 					sqlConnection.Open();
@@ -1492,7 +1492,7 @@ namespace SmartAuditERP
 				list = new List<ListSafeEmp>();
 				string cmdText;
 				cmdText = "SELECT ISNULL(safe_id, 0) AS safe_id, ISNULL(emp_id, 0)  FROM Safe_Emps";
-				using (SqlConnection sqlConnection = new SqlConnection(global::SmartAuditERP.SendData.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString))
 				{
 					using SqlCommand sqlCommand = new SqlCommand(cmdText, sqlConnection);
 					sqlConnection.Open();
@@ -1528,7 +1528,7 @@ namespace SmartAuditERP
 				list = new List<ListStock>();
 				string cmdText;
 				cmdText = "SELECT ISNULL([id], 0) AS id, ISNULL([name], '') AS name, ISNULL([Acc_Code], '') AS Acc_Code, ISNULL([branch], '') AS branch, ISNULL([status], 0) AS status, ISNULL([IS_Default], 0) AS IS_Default, ISNULL([notes], '') AS notes, ISNULL([IS_Deleted], 0) AS IS_Deleted FROM Stocks";
-				using (SqlConnection sqlConnection = new SqlConnection(global::SmartAuditERP.SendData.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString))
 				{
 					using SqlCommand sqlCommand = new SqlCommand(cmdText, sqlConnection);
 					sqlConnection.Open();
@@ -1570,7 +1570,7 @@ namespace SmartAuditERP
 				list = new List<ListStockEmp>();
 				string cmdText;
 				cmdText = "SELECT ISNULL([stock_id], 0) AS stock_id, ISNULL([emp_id], 0) AS emp_id FROM Stock_Emps";
-				using (SqlConnection sqlConnection = new SqlConnection(global::SmartAuditERP.SendData.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString))
 				{
 					using SqlCommand sqlCommand = new SqlCommand(cmdText, sqlConnection);
 					sqlConnection.Open();
@@ -1606,7 +1606,7 @@ namespace SmartAuditERP
 				list = new List<ListBranches>();
 				string cmdText;
 				cmdText = "SELECT ISNULL([id], 0) AS id,isnull(BranchId,0)as BranchId ,ISNULL([name], '') AS name, ISNULL([Tel], '') AS Tel, ISNULL([Mobile], '') AS Mobile, ISNULL([Fax], '') AS Fax, ISNULL([Email], '') AS Email, ISNULL([Address], '') AS Address, ISNULL([notes], '') AS notes, ISNULL([IS_Deleted], 0) AS IS_Deleted, ISNULL([IsDefault], 0) AS IsDefault, ISNULL([Code], '') AS Code,  ISNULL([CustomersAcc], '') AS CustomersAcc, ISNULL([SupliersAcc], '') AS SupliersAcc, ISNULL([TreasuriesAcc], '') AS TreasuriesAcc, ISNULL([BanksAcc], '') AS BanksAcc, ISNULL([InventoryAcc], '') AS InventoryAcc, ISNULL([AppAcc], '') AS AppAcc, ISNULL([IsActive], 0) AS IsActive, ISNULL([CostCenter], '') AS CostCenter, ISNULL([EmployeeAcc], '') AS EmployeeAcc FROM Branches";
-				using (SqlConnection sqlConnection = new SqlConnection(global::SmartAuditERP.SendData.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString))
 				{
 					using SqlCommand sqlCommand = new SqlCommand(cmdText, sqlConnection);
 					sqlConnection.Open();
@@ -1661,7 +1661,7 @@ namespace SmartAuditERP
 				list = new List<ListBank>();
 				string cmdText;
 				cmdText = "SELECT ISNULL([id], 0) AS id, ISNULL([name], '') AS name, ISNULL([country], '') AS country, ISNULL([city], '') AS city, ISNULL([Acc_Code], '') AS Acc_Code, ISNULL([area], '') AS area, ISNULL([tel], '') AS tel, ISNULL([mobile], '') AS mobile, ISNULL([notes], '') AS notes, ISNULL([IS_Deleted], 0) AS IS_Deleted, ISNULL([DisPre], 0) AS DisPre, ISNULL([ChangeInPOS], 0) AS ChangeInPOS FROM Banks";
-				using (SqlConnection sqlConnection = new SqlConnection(global::SmartAuditERP.SendData.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString))
 				{
 					using SqlCommand sqlCommand = new SqlCommand(cmdText, sqlConnection);
 					sqlConnection.Open();
@@ -1705,7 +1705,7 @@ namespace SmartAuditERP
 			{
 				List<ListCasherClosed> list;
 				list = new List<ListCasherClosed>();
-				using (SqlConnection sqlConnection = new SqlConnection(global::SmartAuditERP.SendData.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString))
 				{
 					sqlConnection.Open();
 					SqlDataReader sqlDataReader;
@@ -1749,7 +1749,7 @@ namespace SmartAuditERP
 			{
 				List<ListCasherClosedSub> list;
 				list = new List<ListCasherClosedSub>();
-				using (SqlConnection sqlConnection = new SqlConnection(global::SmartAuditERP.SendData.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(global::SmartAuditERP.SendData.connString))
 				{
 					sqlConnection.Open();
 					SqlDataReader sqlDataReader;

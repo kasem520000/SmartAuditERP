@@ -1408,7 +1408,7 @@ namespace SmartAuditERP
             if (filePathDocument == null || filePathDocument.Length == 0)
                 return;
 
-            using SqlConnection conn = new SqlConnection(MainClass.connstr);
+            using SqlConnection conn = MainClass.CreateSqlConnection(MainClass.connstr);
 
             foreach (string filePath in filePathDocument)
             {
@@ -1443,7 +1443,7 @@ namespace SmartAuditERP
 
         public static void getdocuments(ref DataTable dtt, string invGlobalID)
         {
-            using SqlConnection conn = new SqlConnection(MainClass.connstr);
+            using SqlConnection conn = MainClass.CreateSqlConnection(MainClass.connstr);
             using SqlCommand cmd = new SqlCommand(
                 "SELECT Id, FileName, FileUrl FROM Documents " +
                 "WHERE type = 1 AND GlobalID = @GlobalID", conn);

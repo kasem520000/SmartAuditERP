@@ -26,7 +26,7 @@ namespace SmartAuditERP
 
 		public void SaveCasherClosedsToLocal(List<CasherClosedDto> list)
 		{
-			using SqlConnection sqlConnection = new SqlConnection(MainClass.connstr);
+			using SqlConnection sqlConnection = MainClass.CreateSqlConnection(MainClass.connstr);
 			sqlConnection.Open();
 			using SqlTransaction sqlTransaction = sqlConnection.BeginTransaction();
 			try

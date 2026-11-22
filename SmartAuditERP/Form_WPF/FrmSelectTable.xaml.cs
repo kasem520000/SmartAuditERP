@@ -379,7 +379,7 @@ namespace SmartAuditERP.Form_WPF
             var list = new List<string>();
             try
             {
-                using var localConn = new SqlConnection(MainClass.connstr);
+                using var localConn = MainClass.CreateSqlConnection(MainClass.connstr);
                 string sql =
                     "SELECT name FROM Items WHERE id IN " +
                     "(SELECT itemid FROM inv_Sub WHERE invglobalid IN " +

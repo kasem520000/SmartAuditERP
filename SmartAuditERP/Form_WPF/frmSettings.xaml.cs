@@ -75,7 +75,7 @@ namespace SmartAuditERP.Form_WPF
 
             conn = MainClass.ConnObj();
             conn1 = MainClass.ConnObj();
-            con1 = new SqlConnection($"server={serverName}; integrated security = true");
+            con1 = MainClass.CreateSqlConnection($"server={serverName}; integrated security = true");
 
             startSyncDate = DateTime.Now;
             endSyncDate = DateTime.Now.AddYears(1);
@@ -3970,7 +3970,7 @@ namespace SmartAuditERP.Form_WPF
         private void Cmbservername_SelectedIndexChanged(object sender, SelectionChangedEventArgs e)
         {
             serverName = Cmbservername.Text;
-            con1 = new SqlConnection($"server={serverName}; integrated security = true");
+            con1 = MainClass.CreateSqlConnection($"server={serverName}; integrated security = true");
             LoadDataBase();
         }
 
@@ -4113,16 +4113,16 @@ namespace SmartAuditERP.Form_WPF
         {
             if (MainClass.Conn_type == 1)
             {
-                return new SqlConnection($"server={MainClass.Server.Trim()};database=master;trusted_connection=true");
+                return MainClass.CreateSqlConnection($"server={MainClass.Server.Trim()};database=master;trusted_connection=true");
             }
 
             if (MainClass.Conn_type == 2)
             {
-                return new SqlConnection(
+                return MainClass.CreateSqlConnection(
                     $"server={MainClass.Server};database=master;MultipleActiveResultSets=True;user id='{MainClass.NetUserId}'; pwd='{MainClass.NetPwd}'");
             }
 
-            return new SqlConnection($"server={MainClass.Server.Trim()};database=master;trusted_connection=true");
+            return MainClass.CreateSqlConnection($"server={MainClass.Server.Trim()};database=master;trusted_connection=true");
         }
 
         #endregion

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -221,7 +221,7 @@ namespace SmartAuditERP.Form_WPF
 
             try
             {
-                var masterConn = new SqlConnection(
+                var masterConn = MainClass.CreateSqlConnection(
                     $"server={MainClass.Server};trusted_connection=true;");
 
                 if (masterConn.State != ConnectionState.Open)
@@ -327,7 +327,7 @@ namespace SmartAuditERP.Form_WPF
                 }
 
                 // الاتصال بقاعدة البيانات الجديدة وإنشاء الجداول
-                var newDbConn = new SqlConnection(
+                var newDbConn = MainClass.CreateSqlConnection(
                     $"server={MainClass.Server};database={autoName.Trim()};trusted_connection=true");
 
                 if (newDbConn.State == ConnectionState.Closed)
@@ -691,7 +691,7 @@ namespace SmartAuditERP.Form_WPF
         {
             string targetDb = txtDatabaseName.EditValue?.ToString().Trim() ?? string.Empty;
 
-            var targetConn = new SqlConnection(
+            var targetConn = MainClass.CreateSqlConnection(
                 $"server={MainClass.Server};Database={targetDb};trusted_connection=true;");
 
             try

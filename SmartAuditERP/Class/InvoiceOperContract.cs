@@ -1481,7 +1481,7 @@ namespace SmartAuditERP
 				Directory.CreateDirectory(text);
 			}
 			SqlConnection sqlConnection;
-			sqlConnection = new SqlConnection(MainClass.connstr);
+			sqlConnection = MainClass.CreateSqlConnection(MainClass.connstr);
 			string text2;
 			text2 = text;
 			if (!Directory.Exists(text2))

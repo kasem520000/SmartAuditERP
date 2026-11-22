@@ -48,7 +48,7 @@ namespace SmartAuditERP.Form_WPF
                     FROM MeasurementAttributes
                     ORDER BY DisplayOrder";
 
-                using SqlConnection conn = new SqlConnection(connectionString);
+                using SqlConnection conn = MainClass.CreateSqlConnection(connectionString);
                 using SqlDataAdapter adapter = new SqlDataAdapter(sql, conn);
 
                 DataTable dt = new DataTable();
@@ -86,7 +86,7 @@ namespace SmartAuditERP.Form_WPF
 
             try
             {
-                using SqlConnection conn = new SqlConnection(connectionString);
+                using SqlConnection conn = MainClass.CreateSqlConnection(connectionString);
                 conn.Open();
 
                 int nextOrder = 1;
@@ -133,7 +133,7 @@ namespace SmartAuditERP.Form_WPF
 
             try
             {
-                using SqlConnection conn = new SqlConnection(connectionString);
+                using SqlConnection conn = MainClass.CreateSqlConnection(connectionString);
                 conn.Open();
 
                 using SqlCommand cmd = new SqlCommand(
@@ -174,7 +174,7 @@ namespace SmartAuditERP.Form_WPF
 
             try
             {
-                using SqlConnection conn = new SqlConnection(connectionString);
+                using SqlConnection conn = MainClass.CreateSqlConnection(connectionString);
                 conn.Open();
 
                 using SqlCommand cmd = new SqlCommand(
@@ -206,7 +206,7 @@ namespace SmartAuditERP.Form_WPF
                 int currentOrder = int.TryParse(selected.DisplayOrder, out int co) ? co : 0;
                 int selectedId   = int.TryParse(selected.AttributeID, out int sid) ? sid : 0;
 
-                using SqlConnection conn = new SqlConnection(connectionString);
+                using SqlConnection conn = MainClass.CreateSqlConnection(connectionString);
                 conn.Open();
 
                 int prevOrder = 0;
@@ -249,7 +249,7 @@ namespace SmartAuditERP.Form_WPF
                 int currentOrder = int.TryParse(selected.DisplayOrder, out int co) ? co : 0;
                 int selectedId   = int.TryParse(selected.AttributeID, out int sid) ? sid : 0;
 
-                using SqlConnection conn = new SqlConnection(connectionString);
+                using SqlConnection conn = MainClass.CreateSqlConnection(connectionString);
                 conn.Open();
 
                 int nextOrder = 0;

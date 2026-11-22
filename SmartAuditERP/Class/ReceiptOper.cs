@@ -746,7 +746,7 @@ namespace SmartAuditERP
 				Directory.CreateDirectory(docsRootPath);
 			}
 			SqlConnection sqlConnection;
-			sqlConnection = new SqlConnection(MainClass.connstr);
+			sqlConnection = MainClass.CreateSqlConnection(MainClass.connstr);
 			string text;
 			text = docsRootPath;
 			if (!Directory.Exists(text))
@@ -779,7 +779,7 @@ namespace SmartAuditERP
 		public static object getdocuments(ref DataTable dtt, string InvGlobalID)
 		{
 			SqlConnection sqlConnection;
-			sqlConnection = new SqlConnection(MainClass.connstr);
+			sqlConnection = MainClass.CreateSqlConnection(MainClass.connstr);
 			SqlCommand sqlCommand;
 			sqlCommand = new SqlCommand("SELECT Id,FileName, Fileurl FROM Documents WHERE type=3 and GlobalID = @GlobalID", sqlConnection);
 			sqlCommand.Parameters.AddWithValue("@GlobalID", InvGlobalID);
@@ -813,7 +813,7 @@ namespace SmartAuditERP
 		public static object GetCodeCustomerbyid(int id)
 		{
 			SqlConnection sqlConnection;
-			sqlConnection = new SqlConnection(MainClass.connstr);
+			sqlConnection = MainClass.CreateSqlConnection(MainClass.connstr);
 			SqlCommand sqlCommand;
 			sqlCommand = new SqlCommand("SELECT AccountCode FROM Customers WHERE id=@id ", sqlConnection);
 			sqlCommand.Parameters.AddWithValue("@id", id);

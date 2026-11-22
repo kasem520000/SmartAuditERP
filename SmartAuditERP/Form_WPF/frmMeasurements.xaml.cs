@@ -58,7 +58,7 @@ namespace SmartAuditERP.Form_WPF
                     WHERE cm.IsActive = 1
                     ORDER BY cm.MeasurementDate DESC";
 
-                using SqlConnection conn = new SqlConnection(connectionString);
+                using SqlConnection conn = MainClass.CreateSqlConnection(connectionString);
                 using SqlDataAdapter adapter = new SqlDataAdapter(sql, conn);
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
@@ -87,7 +87,7 @@ namespace SmartAuditERP.Form_WPF
                     WHERE Cust_ID = @CustID AND IsActive = 1
                     ORDER BY MeasurementDate DESC";
 
-                using SqlConnection conn = new SqlConnection(connectionString);
+                using SqlConnection conn = MainClass.CreateSqlConnection(connectionString);
                 using SqlDataAdapter adapter = new SqlDataAdapter(sql, conn);
                 adapter.SelectCommand.Parameters.AddWithValue("@CustID", currentCustID);
                 DataTable dt = new DataTable();
@@ -153,7 +153,7 @@ namespace SmartAuditERP.Form_WPF
                     WHERE mobile LIKE @Search OR name LIKE @Search
                     ORDER BY name";
 
-                using SqlConnection conn = new SqlConnection(connectionString);
+                using SqlConnection conn = MainClass.CreateSqlConnection(connectionString);
                 using SqlDataAdapter adapter = new SqlDataAdapter(sql, conn);
                 adapter.SelectCommand.Parameters.AddWithValue("@Search", "%" + keyword + "%");
 
@@ -287,7 +287,7 @@ namespace SmartAuditERP.Form_WPF
                 int measurementId = 0;
                 int.TryParse(selected.MeasurementID, out measurementId);
 
-                using SqlConnection conn = new SqlConnection(connectionString);
+                using SqlConnection conn = MainClass.CreateSqlConnection(connectionString);
                 conn.Open();
 
                 using SqlCommand cmd = new SqlCommand("sp_DeleteMeasurement", conn)

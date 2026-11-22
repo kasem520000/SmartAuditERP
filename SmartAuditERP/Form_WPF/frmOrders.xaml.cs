@@ -212,7 +212,7 @@ namespace SmartAuditERP.Form_WPF
 
             try
             {
-                using SqlConnection conn = new SqlConnection(connectionString);
+                using SqlConnection conn = MainClass.CreateSqlConnection(connectionString);
                 conn.Open();
                 using SqlCommand cmd = new SqlCommand(
                     "DELETE FROM TailoringOrders WHERE OrderID=@ID", conn);
@@ -311,7 +311,7 @@ namespace SmartAuditERP.Form_WPF
                 try
                 {
                     int newStatusId = Convert.ToInt32(cmbNewStatus.SelectedValue);
-                    using SqlConnection conn2 = new SqlConnection(connectionString);
+                    using SqlConnection conn2 = MainClass.CreateSqlConnection(connectionString);
                     conn2.Open();
                     using SqlCommand cmd2 = new SqlCommand("sp_UpdateOrderStatus", conn2)
                         { CommandType = CommandType.StoredProcedure };

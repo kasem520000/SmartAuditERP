@@ -1,4 +1,4 @@
-﻿using ClosedXML.Excel;
+using ClosedXML.Excel;
 using DevExpress.Export.Xl;
 using DevExpress.Spreadsheet;
 using DevExpress.XtraReports.UI;
@@ -248,7 +248,7 @@ namespace SmartAuditERP.Form_WPF
 
             try
             {
-                using (SqlConnection conn = new SqlConnection(_connection.ConnectionString))
+                using (SqlConnection conn = MainClass.CreateSqlConnection(_connection.ConnectionString))
                 using (SqlCommand cmd = new SqlCommand("GetAccountStatement", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;

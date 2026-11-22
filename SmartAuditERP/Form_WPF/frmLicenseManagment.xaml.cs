@@ -1,4 +1,4 @@
-﻿using AuditorAPI.Models;
+using AuditorAPI.Models;
 using DevExpress.Xpf.Core;
 using Microsoft.Win32;
 using Newtonsoft.Json;
@@ -101,13 +101,13 @@ namespace SmartAuditERP.Form_WPF
                     if (MainClass.Conn_type == 1 && MainClass.UseServerAuth)
                         connectionString = $"server={MainClass.Server};database=master;user id={MainClass.NetUserId}; pwd={MainClass.NetPwd}";
 
-                    conn = new SqlConnection(connectionString);
+                    conn = MainClass.CreateSqlConnection(connectionString);
                     if (conn.State != System.Data.ConnectionState.Open)
                         conn.Open();
                 }
                 else if (MainClass.Conn_type == 2)
                 {
-                    conn = new SqlConnection($"server={MainClass.Server};database=master;MultipleActiveResultSets=True;user id='{MainClass.NetUserId}'; pwd='{MainClass.NetPwd}'");
+                    conn = MainClass.CreateSqlConnection($"server={MainClass.Server};database=master;MultipleActiveResultSets=True;user id='{MainClass.NetUserId}'; pwd='{MainClass.NetPwd}'");
                     if (conn.State == System.Data.ConnectionState.Closed)
                         conn.Open();
 
@@ -999,7 +999,7 @@ namespace SmartAuditERP.Form_WPF
                     connectionString = $"server={MainClass.Server};database=master;MultipleActiveResultSets=true;user id={MainClass.NetUserId}; pwd={MainClass.NetPwd}";
                 }
 
-                SqlConnection tempConn = new SqlConnection(connectionString);
+                SqlConnection tempConn = MainClass.CreateSqlConnection(connectionString);
                 if (tempConn.State != System.Data.ConnectionState.Open)
                     tempConn.Open();
 

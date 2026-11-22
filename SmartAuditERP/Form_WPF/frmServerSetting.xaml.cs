@@ -99,7 +99,7 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
-                using var localConn = new SqlConnection(BuildConnStr());
+                using var localConn = MainClass.CreateSqlConnection(BuildConnStr());
                 localConn.Open();
 
                 var adapter = new SqlDataAdapter(
@@ -263,7 +263,7 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
-                using var localConn = new SqlConnection(BuildConnStr());
+                using var localConn = MainClass.CreateSqlConnection(BuildConnStr());
                 localConn.Open();
 
                 var cmd = new SqlCommand(
@@ -319,7 +319,7 @@ namespace SmartAuditERP.Form_WPF
 
             try
             {
-                using var localConn = new SqlConnection(
+                using var localConn = MainClass.CreateSqlConnection(
                     $"server={MainClass.Server};trusted_connection=true;");
                 localConn.Open();
 
@@ -398,7 +398,7 @@ namespace SmartAuditERP.Form_WPF
                     }
                 }
 
-                conn = new SqlConnection(BuildConnStr());
+                conn = MainClass.CreateSqlConnection(BuildConnStr());
                 var frmUserLogin = new frmUserLogin();
                 if (rdLocal.IsChecked == true)
                 {
@@ -468,13 +468,13 @@ namespace SmartAuditERP.Form_WPF
 
                 if (rdLocal.IsChecked == true)
                 {
-                    frmUserLogin.conn = new SqlConnection(
+                    frmUserLogin.conn = MainClass.CreateSqlConnection(
                         $"server={txtServer.Text};database={dbValue};trusted_connection=true;");
                     frmUserLogin.conn_type = 1;
                 }
                 else
                 {
-                    frmUserLogin.conn = new SqlConnection(
+                    frmUserLogin.conn = MainClass.CreateSqlConnection(
                         $"server={txtServer.Text};database={dbValue};" +
                         $"user id={txtUser.Text}; pwd={txtPWD.Password};");
                     frmUserLogin.conn_type   = 2;
@@ -516,7 +516,7 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
-                using var localConn = new SqlConnection(BuildConnStr());
+                using var localConn = MainClass.CreateSqlConnection(BuildConnStr());
                 localConn.Open();
 
                 // التحقق من التكرار
@@ -557,7 +557,7 @@ namespace SmartAuditERP.Form_WPF
                 CreateDatabase(localConn, autoName);
 
                 string connStr2 = BuildConnStr(autoName.Trim());
-                using var conn2 = new SqlConnection(connStr2);
+                using var conn2 = MainClass.CreateSqlConnection(connStr2);
 
                 var sqlParts = Properties.Resources.CrystalLiteDB.Split(
                     new[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
@@ -611,13 +611,13 @@ namespace SmartAuditERP.Form_WPF
                 string dbName = ""; int id = 1;
                 Common.GetValidDBname(ref dbName, ref id);
 
-                using var localConn = new SqlConnection(
+                using var localConn = MainClass.CreateSqlConnection(
                     $"server={MainClass.Server};trusted_connection=true;");
                 localConn.Open();
 
                 CreateDatabase(localConn, dbName);
 
-                using var conn2 = new SqlConnection(
+                using var conn2 = MainClass.CreateSqlConnection(
                     $"server={MainClass.Server};database={dbName.Trim()};trusted_connection=true");
                 conn2.Open();
 
@@ -713,7 +713,7 @@ namespace SmartAuditERP.Form_WPF
 
                 try
                 {
-                    using var localConn = new SqlConnection(BuildConnStr(item.AutoName));
+                    using var localConn = MainClass.CreateSqlConnection(BuildConnStr(item.AutoName));
                     var parts = Properties.Resources.AlterDb.Split(
                         new[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
                     localConn.Open();
@@ -747,7 +747,7 @@ namespace SmartAuditERP.Form_WPF
 
                 try
                 {
-                    using var localConn = new SqlConnection(BuildConnStr(item.AutoName));
+                    using var localConn = MainClass.CreateSqlConnection(BuildConnStr(item.AutoName));
                     localConn.Open();
 
                     using var sr = new StreamReader(
@@ -857,7 +857,7 @@ namespace SmartAuditERP.Form_WPF
             {
                 try
                 {
-                    using var localConn = new SqlConnection(BuildConnStr());
+                    using var localConn = MainClass.CreateSqlConnection(BuildConnStr());
                     localConn.Open();
                     new SqlCommand(sql, localConn).ExecuteNonQuery();
                     DXMessageBox.Show($"تم {action} قاعدة البيانات بنجاح.", "تم",

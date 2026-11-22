@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -18,7 +18,7 @@ namespace SmartAuditERP
         {
             List<AccountingPeriod> periods = new List<AccountingPeriod>();
 
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = MainClass.CreateSqlConnection(_connectionString))
             {
                 string query = "SELECT * FROM AccountingPeriods ORDER BY StartDate DESC";
                 SqlCommand cmd = new SqlCommand(query, conn);
@@ -49,7 +49,7 @@ namespace SmartAuditERP
 
         public AccountingPeriod GetActivePeriod()
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = MainClass.CreateSqlConnection(_connectionString))
             {
                 string query = "SELECT TOP 1 * FROM AccountingPeriods WHERE IsActive = 1";
                 SqlCommand cmd = new SqlCommand(query, conn);
@@ -75,7 +75,7 @@ namespace SmartAuditERP
 
         public bool AddPeriod(AccountingPeriod period)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = MainClass.CreateSqlConnection(_connectionString))
             {
                 string query = @"INSERT INTO AccountingPeriods (PeriodName, StartDate, EndDate, IsActive, IsClosed, Notes, CreatedDate)
                                  VALUES (@Name, @Start, @End, @IsActive, 0, @Notes, GETDATE())";
@@ -102,7 +102,7 @@ namespace SmartAuditERP
 
         public bool UpdatePeriod(AccountingPeriod period)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = MainClass.CreateSqlConnection(_connectionString))
             {
                 string query = @"UPDATE AccountingPeriods 
                                  SET PeriodName = @Name, StartDate = @Start, EndDate = @End, 
@@ -132,7 +132,7 @@ namespace SmartAuditERP
 
         public bool ClosePeriod(int periodID, string closedBy)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = MainClass.CreateSqlConnection(_connectionString))
             {
                 string query = @"UPDATE AccountingPeriods 
                                  SET IsClosed = 1, IsActive = 0, ClosedBy = @ClosedBy, ClosedDate = GETDATE()
@@ -149,7 +149,7 @@ namespace SmartAuditERP
 
         public bool ReopenPeriod(int periodID)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = MainClass.CreateSqlConnection(_connectionString))
             {
                 string query = @"UPDATE AccountingPeriods 
                                  SET IsClosed = 0, ClosedBy = NULL, ClosedDate = NULL
@@ -165,7 +165,7 @@ namespace SmartAuditERP
 
         public bool ActivatePeriod(int periodID)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = MainClass.CreateSqlConnection(_connectionString))
             {
                 conn.Open();
 
@@ -184,7 +184,7 @@ namespace SmartAuditERP
 
         public bool DeletePeriod(int periodID)
         {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
+            using (SqlConnection conn = MainClass.CreateSqlConnection(_connectionString))
             {
                 string query = "DELETE FROM AccountingPeriods WHERE PeriodID = @ID";
                 SqlCommand cmd = new SqlCommand(query, conn);

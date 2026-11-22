@@ -1,4 +1,4 @@
-﻿using DevExpress.Xpf.Core;
+using DevExpress.Xpf.Core;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -74,7 +74,7 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
-                using SqlConnection conn = new SqlConnection(connectionString);
+                using SqlConnection conn = MainClass.CreateSqlConnection(connectionString);
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(
                     "SELECT CategoryID, CategoryName FROM OptionCategories WHERE IsActive=1 ORDER BY DisplayOrder", conn);
@@ -342,7 +342,7 @@ namespace SmartAuditERP.Form_WPF
 
             try
             {
-                using SqlConnection conn = new SqlConnection(connectionString);
+                using SqlConnection conn = MainClass.CreateSqlConnection(connectionString);
                 conn.Open();
                 using SqlTransaction transaction = conn.BeginTransaction();
 

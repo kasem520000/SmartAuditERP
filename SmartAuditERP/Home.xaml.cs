@@ -1,4 +1,4 @@
-﻿using DevExpress.Charts.Model;
+using DevExpress.Charts.Model;
 using drHamiedNotify;
 using Newtonsoft.Json;
 using SmartAuditERP.Form_WPF;
@@ -1445,13 +1445,13 @@ namespace SmartAuditERP
                 switch (connType)
                 {
                     case 2:
-                        this.conn = new SqlConnection("server=" + MainClass.Server + ";database=" + dbName + ";user id=" + serverUser + ";pwd=" + serverPass);
+                        this.conn = MainClass.CreateSqlConnection("server=" + MainClass.Server + ";database=" + dbName + ";user id=" + serverUser + ";pwd=" + serverPass);
                         break;
                     case 1:
                         if (MainClass.UseServerAuth)
-                            this.conn = new SqlConnection("server=" + MainClass.Server + ";database=" + dbName + ";user id=" + serverUser + ";pwd=" + serverPass);
+                            this.conn = MainClass.CreateSqlConnection("server=" + MainClass.Server + ";database=" + dbName + ";user id=" + serverUser + ";pwd=" + serverPass);
                         else
-                            this.conn = new SqlConnection("server=" + MainClass.Server + ";database=" + dbName + ";trusted_connection=true;");
+                            this.conn = MainClass.CreateSqlConnection("server=" + MainClass.Server + ";database=" + dbName + ";trusted_connection=true;");
                         break;
                 }
 

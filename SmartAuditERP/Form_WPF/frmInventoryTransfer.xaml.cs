@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -1944,7 +1944,7 @@ namespace SmartAuditERP.Form_WPF
                     pars.Add(new SqlParameter("@d2", (txtDateTo.SelectedDate ?? DateTime.Today).Date.AddDays(1)));
                 }
 
-                using var conn = new SqlConnection(MainClass.connstr);
+                using var conn = MainClass.CreateSqlConnection(MainClass.connstr);
                 conn.Open();
                 using var cmd = new SqlCommand(sb.ToString(), conn);
                 foreach (var p in pars)

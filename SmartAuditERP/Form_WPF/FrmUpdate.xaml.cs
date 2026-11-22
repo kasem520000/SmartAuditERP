@@ -38,7 +38,7 @@ namespace SmartAuditERP.Form_WPF
             FileDownload = System.IO.Path.Combine(FolderUpdate, "newFileUpdate.zip");
 
             connString = $"server={MainClass.Server.Trim()};database=master;trusted_connection=True";
-            conn = new SqlConnection(connString);
+            conn = MainClass.CreateSqlConnection(connString);
         }
 
         #endregion

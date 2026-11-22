@@ -51,7 +51,7 @@ namespace SmartAuditERP.Form_WPF
                     WHERE IsActive = 1
                     ORDER BY DisplayOrder";
 
-                using SqlConnection conn = new SqlConnection(connectionString);
+                using SqlConnection conn = MainClass.CreateSqlConnection(connectionString);
                 using SqlDataAdapter adapter = new SqlDataAdapter(sql, conn);
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
@@ -84,7 +84,7 @@ namespace SmartAuditERP.Form_WPF
                     WHERE CategoryID=@CatID AND IsActive=1
                     ORDER BY DisplayOrder";
 
-                using SqlConnection conn = new SqlConnection(connectionString);
+                using SqlConnection conn = MainClass.CreateSqlConnection(connectionString);
                 using SqlDataAdapter adapter = new SqlDataAdapter(sql, conn);
                 adapter.SelectCommand.Parameters.AddWithValue("@CatID", categoryID);
                 DataTable dt = new DataTable();
@@ -129,7 +129,7 @@ namespace SmartAuditERP.Form_WPF
 
             try
             {
-                using SqlConnection conn = new SqlConnection(connectionString);
+                using SqlConnection conn = MainClass.CreateSqlConnection(connectionString);
                 conn.Open();
 
                 int nextOrder = 1;
@@ -164,7 +164,7 @@ namespace SmartAuditERP.Form_WPF
 
             try
             {
-                using SqlConnection conn = new SqlConnection(connectionString);
+                using SqlConnection conn = MainClass.CreateSqlConnection(connectionString);
                 conn.Open();
                 using SqlCommand cmd = new SqlCommand(
                     "UPDATE OptionCategories SET CategoryName=@Name WHERE CategoryID=@ID", conn);
@@ -192,7 +192,7 @@ namespace SmartAuditERP.Form_WPF
 
             try
             {
-                using SqlConnection conn = new SqlConnection(connectionString);
+                using SqlConnection conn = MainClass.CreateSqlConnection(connectionString);
                 conn.Open();
                 using SqlCommand cmd = new SqlCommand(
                     "UPDATE OptionCategories SET IsActive=0 WHERE CategoryID=@ID", conn);
@@ -224,7 +224,7 @@ namespace SmartAuditERP.Form_WPF
 
             try
             {
-                using SqlConnection conn = new SqlConnection(connectionString);
+                using SqlConnection conn = MainClass.CreateSqlConnection(connectionString);
                 conn.Open();
 
                 int nextOrder = 1;
@@ -264,7 +264,7 @@ namespace SmartAuditERP.Form_WPF
 
             try
             {
-                using SqlConnection conn = new SqlConnection(connectionString);
+                using SqlConnection conn = MainClass.CreateSqlConnection(connectionString);
                 conn.Open();
                 using SqlCommand cmd = new SqlCommand(
                     "UPDATE OptionValues SET ValueName=@Name WHERE ValueID=@ID", conn);
@@ -292,7 +292,7 @@ namespace SmartAuditERP.Form_WPF
 
             try
             {
-                using SqlConnection conn = new SqlConnection(connectionString);
+                using SqlConnection conn = MainClass.CreateSqlConnection(connectionString);
                 conn.Open();
                 using SqlCommand cmd = new SqlCommand(
                     "UPDATE OptionValues SET IsActive=0 WHERE ValueID=@ID", conn);
@@ -316,7 +316,7 @@ namespace SmartAuditERP.Form_WPF
 
             try
             {
-                using SqlConnection conn = new SqlConnection(connectionString);
+                using SqlConnection conn = MainClass.CreateSqlConnection(connectionString);
                 conn.Open();
 
                 using (SqlCommand resetCmd = new SqlCommand(

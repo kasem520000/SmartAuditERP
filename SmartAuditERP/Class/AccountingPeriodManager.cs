@@ -20,7 +20,7 @@ namespace SmartAuditERP
 
 		public AccountingPeriod GetActivePeriod()
 		{
-			using (SqlConnection sqlConnection = new SqlConnection(this.connectionString))
+			using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(this.connectionString))
 			{
 				SqlCommand sqlCommand;
 				sqlCommand = new SqlCommand("SELECT TOP 1 * FROM AccountingPeriods WHERE IsActive = 1", sqlConnection);
@@ -48,7 +48,7 @@ namespace SmartAuditERP
 		{
 			try
 			{
-				using SqlConnection sqlConnection = new SqlConnection(this.connectionString);
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(this.connectionString);
 				if (this.CheckDateOverlap(period.StartDate, period.EndDate, 0))
 				{
 					throw new Exception("يوجد تداخل في التواريخ مع فترة محاسبية أخرى");
@@ -78,7 +78,7 @@ namespace SmartAuditERP
 		{
 			try
 			{
-				using SqlConnection sqlConnection = new SqlConnection(this.connectionString);
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(this.connectionString);
 				if (this.CheckDateOverlap(period.StartDate, period.EndDate, period.PeriodID))
 				{
 					throw new Exception("يوجد تداخل في التواريخ مع فترة محاسبية أخرى");
@@ -112,7 +112,7 @@ namespace SmartAuditERP
 		{
 			try
 			{
-				using SqlConnection sqlConnection = new SqlConnection(this.connectionString);
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(this.connectionString);
 				SqlCommand sqlCommand;
 				sqlCommand = new SqlCommand("UPDATE AccountingPeriods SET IsClosed = 1, ClosedBy = @User, ClosedDate = @Date, IsActive = 0 WHERE PeriodID = @ID", sqlConnection);
 				sqlCommand.Parameters.AddWithValue("@ID", periodID);
@@ -132,7 +132,7 @@ namespace SmartAuditERP
 		{
 			try
 			{
-				using SqlConnection sqlConnection = new SqlConnection(this.connectionString);
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(this.connectionString);
 				SqlCommand sqlCommand;
 				sqlCommand = new SqlCommand("UPDATE AccountingPeriods SET IsClosed = 0, ClosedBy = NULL, ClosedDate = NULL WHERE PeriodID = @ID", sqlConnection);
 				sqlCommand.Parameters.AddWithValue("@ID", periodID);
@@ -150,7 +150,7 @@ namespace SmartAuditERP
 		{
 			try
 			{
-				using SqlConnection sqlConnection = new SqlConnection(this.connectionString);
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(this.connectionString);
 				sqlConnection.Open();
 				SqlCommand sqlCommand;
 				sqlCommand = new SqlCommand("SELECT IsClosed FROM AccountingPeriods WHERE PeriodID = @ID", sqlConnection);
@@ -176,7 +176,7 @@ namespace SmartAuditERP
 		{
 			List<AccountingPeriod> list;
 			list = new List<AccountingPeriod>();
-			using (SqlConnection sqlConnection = new SqlConnection(this.connectionString))
+			using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(this.connectionString))
 			{
 				SqlCommand sqlCommand;
 				sqlCommand = new SqlCommand("SELECT * FROM AccountingPeriods ORDER BY StartDate DESC", sqlConnection);
@@ -205,7 +205,7 @@ namespace SmartAuditERP
 
 		private bool CheckDateOverlap(DateTime startDate, DateTime endDate, int excludePeriodID)
 		{
-			using SqlConnection sqlConnection = new SqlConnection(this.connectionString);
+			using SqlConnection sqlConnection = MainClass.CreateSqlConnection(this.connectionString);
 			SqlCommand sqlCommand;
 			sqlCommand = new SqlCommand("SELECT COUNT(*) FROM AccountingPeriods WHERE PeriodID <> @ExcludeID AND ((StartDate <= @End AND EndDate >= @Start))", sqlConnection);
 			sqlCommand.Parameters.AddWithValue("@ExcludeID", excludePeriodID);
@@ -238,7 +238,7 @@ namespace SmartAuditERP
 		{
 			try
 			{
-				using SqlConnection sqlConnection = new SqlConnection(this.connectionString);
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(this.connectionString);
 				SqlCommand sqlCommand;
 				sqlCommand = new SqlCommand("DELETE FROM AccountingPeriods WHERE PeriodID = @ID AND IsClosed = 0", sqlConnection);
 				sqlCommand.Parameters.AddWithValue("@ID", periodID);

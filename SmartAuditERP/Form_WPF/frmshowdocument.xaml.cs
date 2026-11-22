@@ -37,7 +37,7 @@ namespace SmartAuditERP.Form_WPF
         {
             InitializeComponent();
 
-            conn       = new SqlConnection(MainClass.connstr);
+            conn       = MainClass.CreateSqlConnection(MainClass.connstr);
             _documents = new ObservableCollection<DocumentItem>();
             DataGridView1.ItemsSource = _documents;
         }

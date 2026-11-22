@@ -907,7 +907,7 @@ namespace SmartAuditERP
 					try
 					{
 						SqlConnection sqlConnection;
-						sqlConnection = new SqlConnection(MainClass.connstr);
+						sqlConnection = MainClass.CreateSqlConnection(MainClass.connstr);
 						if (sqlConnection.State == ConnectionState.Open)
 						{
 							sqlConnection.Close();
@@ -943,7 +943,7 @@ namespace SmartAuditERP
 					try
 					{
 						SqlConnection sqlConnection2;
-						sqlConnection2 = new SqlConnection(MainClass.connstr);
+						sqlConnection2 = MainClass.CreateSqlConnection(MainClass.connstr);
 						if (sqlConnection2.State == ConnectionState.Open)
 						{
 							sqlConnection2.Close();

@@ -270,16 +270,16 @@ namespace SmartAuditERP.Form_WPF
                     string cs = $"server={MainClass.Server};database={txtDatabase};" +
                                 $"MultipleActiveResultSets=true;" +
                                 $"user id={MainClass.NetUserId}; pwd={MainClass.NetPwd}";
-                    conn = new SqlConnection(cs);
-                    conn1 = new SqlConnection(cs);
+                    conn = MainClass.CreateSqlConnection(cs);
+                    conn1 = MainClass.CreateSqlConnection(cs);
                     MainClass.connstr = cs;
                 }
                 else
                 {
                     string cs = $"server={MainClass.Server};database={txtDatabase};" +
                                 $"trusted_connection=true;MultipleActiveResultSets=true;";
-                    conn = new SqlConnection(cs);
-                    conn1 = new SqlConnection(cs);
+                    conn = MainClass.CreateSqlConnection(cs);
+                    conn1 = MainClass.CreateSqlConnection(cs);
                     MainClass.connstr = cs;
                 }
             }
@@ -288,8 +288,8 @@ namespace SmartAuditERP.Form_WPF
                 string cs = $"server={MainClass.Server};database={txtDatabase};" +
                             $"MultipleActiveResultSets=true;" +
                             $"user id={MainClass.NetUserId}; pwd={MainClass.NetPwd}";
-                conn = new SqlConnection(cs);
-                conn1 = new SqlConnection(cs);
+                conn = MainClass.CreateSqlConnection(cs);
+                conn1 = MainClass.CreateSqlConnection(cs);
                 MainClass.connstr = cs;
             }
         }
@@ -645,8 +645,8 @@ namespace SmartAuditERP.Form_WPF
                     btnQuick.IsEnabled = false;
 
                     conn = conn_type == 2
-                        ? new SqlConnection($"server={MainClass.Server};user id={NetUserid}; pwd={Netpwd}")
-                        : new SqlConnection($"server={MainClass.Server};trusted_connection=true;");
+                        ? MainClass.CreateSqlConnection($"server={MainClass.Server};user id={NetUserid}; pwd={Netpwd}")
+                        : MainClass.CreateSqlConnection($"server={MainClass.Server};trusted_connection=true;");
 
                     if (conn.State != ConnectionState.Open)
                         conn.Open();
@@ -727,17 +727,17 @@ namespace SmartAuditERP.Form_WPF
                     // مع UseServerAuth) لم يعد يُتجاهَل — يُبنى باعتماد SQL لا trusted.
                     if (conn_type == 2)
                     {
-                        conn = new SqlConnection($"server={MainClass.Server};database={txtDatabase};" +
+                        conn = MainClass.CreateSqlConnection($"server={MainClass.Server};database={txtDatabase};" +
                                             $"user id={NetUserid}; pwd={Netpwd}");
                     }
                     else if (MainClass.UseServerAuth)
                     {
-                        conn = new SqlConnection($"server={MainClass.Server};database={txtDatabase};" +
+                        conn = MainClass.CreateSqlConnection($"server={MainClass.Server};database={txtDatabase};" +
                                             $"user id={NetUserid}; pwd={Netpwd}");
                     }
                     else
                     {
-                        conn = new SqlConnection($"server={MainClass.Server};database={txtDatabase};" +
+                        conn = MainClass.CreateSqlConnection($"server={MainClass.Server};database={txtDatabase};" +
                                             $"trusted_connection=true;");
                     }
 
@@ -1041,19 +1041,19 @@ namespace SmartAuditERP.Form_WPF
                 {
                     if (conn_type == 2)
                     {
-                        conn = new SqlConnection(
+                        conn = MainClass.CreateSqlConnection(
                             $"server={MainClass.Server};database={dbName};" +
                             $"user id={MainClass.NetUserId}; pwd={MainClass.NetPwd}");
                     }
                     else if (MainClass.UseServerAuth)
                     {
-                        conn = new SqlConnection(
+                        conn = MainClass.CreateSqlConnection(
                             $"server={MainClass.Server};database={dbName};" +
                             $"user id={MainClass.NetUserId}; pwd={MainClass.NetPwd}");
                     }
                     else
                     {
-                        conn = new SqlConnection(
+                        conn = MainClass.CreateSqlConnection(
                             $"server={MainClass.Server};database={dbName};trusted_connection=true;");
                     }
                 }

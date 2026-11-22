@@ -57,14 +57,32 @@ namespace SmartAuditERP
         public static SqlConnection ConnObj()
         {
             // P2-012 fix: كل اتصال يمر بالسياسة المركزية عند تفعيلها.
-            var cs = connstr;
-            if (SqlEncrypt)
-            {
-                cs = cs.TrimEnd(';') + ";Encrypt=True;TrustServerCertificate=" +
-                     (SqlTrustServerCertificate ? "True" : "False") + ";";
-            }
-            conn = new SqlConnection(cs);
+            conn = CreateSqlConnection(connstr);
             return conn;
+        }
+
+        // P2-012 fix (الإكمال): مصنع اتصالات مركزي لكل منشآت SqlConnection
+        // المباشرة خارج ConnObj — نفس سياسة القناة المركزية (TLS/التحقق من
+        // هوية الخادم) تُطبَّق على السلاسل الخاصة في مواقع الدخول وتبديل
+        // السنوات والإدارة والنسخ الاحتياطي والمزامنة والتقارير وغيرها.
+        // الافتراضي بلا فرض (توافق النشر القائم)؛ عند SqlEncrypt=true
+        // تُلحَق سياسة القناة بنهاية السلسلة (آخر قيمة في السلسلة تفوز)
+        // فيعمّ التشفير كل الاتصالات لا ConnObj وحدها.
+        public static SqlConnection CreateSqlConnection(string connectionString)
+        {
+            return new SqlConnection(ApplySqlChannelPolicy(connectionString));
+        }
+
+        // P2-012 fix (الإكمال): تطبيق سياسة القناة المركزية على أي سلسلة اتصال.
+        // فارغة/بلا تفعيل = السلسلة كما هي حرفياً (سلوك متوافق).
+        public static string ApplySqlChannelPolicy(string connectionString)
+        {
+            if (string.IsNullOrEmpty(connectionString) || !SqlEncrypt)
+            {
+                return connectionString;
+            }
+            return connectionString.TrimEnd(';') + ";Encrypt=True;TrustServerCertificate=" +
+                   (SqlTrustServerCertificate ? "True" : "False") + ";";
         }
 
         #endregion

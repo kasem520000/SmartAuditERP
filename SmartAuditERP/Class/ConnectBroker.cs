@@ -18,7 +18,7 @@ namespace SmartAuditERP
 
                 public static string connString = "";
 
-                public static SqlConnection conn = new SqlConnection(ConnectBroker.connString);
+                public static SqlConnection conn = MainClass.CreateSqlConnection(ConnectBroker.connString);
 
                 public static string lastErrorMsg;
 

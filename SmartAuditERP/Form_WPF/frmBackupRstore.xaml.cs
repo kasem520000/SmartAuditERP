@@ -1,4 +1,4 @@
-﻿using DevExpress.Xpf.Core.Native;
+using DevExpress.Xpf.Core.Native;
 using Microsoft.Win32;
 using System;
 using System.Data;
@@ -414,7 +414,7 @@ namespace SmartAuditERP.Form_WPF
                 string logicalDataName = null;
                 string logicalLogName = null;
 
-                using (var conCheck = new SqlConnection(connectionString))
+                using (var conCheck = MainClass.CreateSqlConnection(connectionString))
                 {
                     conCheck.Open();
                     using (var cmdList = new SqlCommand(
@@ -444,7 +444,7 @@ namespace SmartAuditERP.Form_WPF
                 string defaultDataPath = null;
                 string defaultLogPath = null;
 
-                using (var conPath = new SqlConnection(connectionString))
+                using (var conPath = MainClass.CreateSqlConnection(connectionString))
                 {
                     conPath.Open();
                     using (var cmdPath = new SqlCommand(@"
@@ -464,7 +464,7 @@ namespace SmartAuditERP.Form_WPF
                 // في حال لم يرجع SQL Server المسار الافتراضي، نستخدم مسار قاعدة البيانات الحالية
                 if (string.IsNullOrEmpty(defaultDataPath) || string.IsNullOrEmpty(defaultLogPath))
                 {
-                    using (var conPath2 = new SqlConnection(connectionString))
+                    using (var conPath2 = MainClass.CreateSqlConnection(connectionString))
                     {
                         conPath2.Open();
                         using (var cmdPath2 = new SqlCommand($@"
@@ -504,7 +504,7 @@ namespace SmartAuditERP.Form_WPF
                  MOVE N'{logicalLogName}'  TO N'{newLogFile}',
                  STATS = 10";
 
-                using (var connection = new SqlConnection(connectionString))
+                using (var connection = MainClass.CreateSqlConnection(connectionString))
                 using (var command = new SqlCommand(restoreSql, connection))
                 {
                     command.CommandTimeout = 0; // بدون timeout
@@ -528,7 +528,7 @@ namespace SmartAuditERP.Form_WPF
             {
                 try
                 {
-                    using (var conFix = new SqlConnection(connectionString))
+                    using (var conFix = MainClass.CreateSqlConnection(connectionString))
                     {
                         conFix.Open();
                         new SqlCommand(
@@ -577,7 +577,7 @@ namespace SmartAuditERP.Form_WPF
 
             try
             {
-                using (var connection = new SqlConnection(connectionString))
+                using (var connection = MainClass.CreateSqlConnection(connectionString))
                 using (var command = new SqlCommand(
                     $"RESTORE DATABASE {MainClass.Database} FROM DISK = N'{txtRestore.Text}' WITH REPLACE",
                     connection))
@@ -610,7 +610,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void CloseAllOtherConnections(string conStr, string databaseName)
         {
-            using (var connection = new SqlConnection(conStr))
+            using (var connection = MainClass.CreateSqlConnection(conStr))
             {
                 SqlConnection.ClearAllPools();
                 connection.Open();

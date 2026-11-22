@@ -114,7 +114,7 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
-                using var sqlConn = new SqlConnection(MainClass.connstr);
+                using var sqlConn = MainClass.CreateSqlConnection(MainClass.connstr);
                 sqlConn.Open();
                 using var cmd = new SqlCommand(
                     "SELECT TOP 1 commonName,serialNumber,organizationIdentifier," +

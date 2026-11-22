@@ -22,7 +22,7 @@ namespace SmartAuditERP
 
 		public static string connString = "";
 
-		public static SqlConnection conn = new SqlConnection(ReceivedData.connString);
+		public static SqlConnection conn = MainClass.CreateSqlConnection(ReceivedData.connString);
 
 		public static string lastErrorMsg;
 
@@ -405,7 +405,7 @@ namespace SmartAuditERP
 		private static void InsertItems(List<ListItems> items)
 		{
 			ReceivedData.connString = ReceivedData.connString;
-			using (SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString))
+			using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString))
 			{
 				try
 				{
@@ -459,7 +459,7 @@ namespace SmartAuditERP
 
 		private static void InsertItemUnits(List<ListItemunit> units, string Connstring)
 		{
-			using (SqlConnection sqlConnection = new SqlConnection(Connstring))
+			using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(Connstring))
 			{
 				try
 				{
@@ -510,7 +510,7 @@ namespace SmartAuditERP
 		{
 			ReceivedData.connString = ReceivedData.connString;
 			new SqlCommand();
-			using SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString);
+			using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
 			try
 			{
 				sqlConnection.Open();
@@ -557,7 +557,7 @@ namespace SmartAuditERP
 			cmdText = "SELECT COUNT(*) FROM Items WHERE id = @id";
 			try
 			{
-				using SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString);
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
 				sqlConnection.Open();
 				using SqlCommand sqlCommand = new SqlCommand(cmdText, sqlConnection);
 				sqlCommand.Parameters.AddWithValue("@id", itemId);
@@ -578,7 +578,7 @@ namespace SmartAuditERP
 		{
 			ReceivedData.connString = ReceivedData.connString;
 			new SqlCommand();
-			using SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString);
+			using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
 			try
 			{
 				sqlConnection.Open();
@@ -611,7 +611,7 @@ namespace SmartAuditERP
 		{
 			ReceivedData.connString = ReceivedData.connString;
 			new SqlCommand();
-			using SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString);
+			using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
 			try
 			{
 				sqlConnection.Open();
@@ -641,7 +641,7 @@ namespace SmartAuditERP
 			ReceivedData.connString = ReceivedData.connString;
 			try
 			{
-				using SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString);
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
 				new SqlCommand();
 				sqlConnection.Open();
 				foreach (ListCustomers customer in customers)
@@ -692,7 +692,7 @@ namespace SmartAuditERP
 		{
 			new SqlCommand();
 			ReceivedData.connString = ReceivedData.connString;
-			using SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString);
+			using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
 			try
 			{
 				sqlConnection.Open();
@@ -764,7 +764,7 @@ namespace SmartAuditERP
 		public static void insertItemBarcode(List<listItemBarcode> ItemId)
 		{
 			ReceivedData.connString = ReceivedData.connString;
-			using SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString);
+			using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
 			try
 			{
 				sqlConnection.Open();
@@ -805,7 +805,7 @@ namespace SmartAuditERP
 			ReceivedData.connString = ReceivedData.connString;
 			try
 			{
-				using SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString);
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
 				sqlConnection.Open();
 				foreach (ListUnit unit in units)
 				{
@@ -859,7 +859,7 @@ namespace SmartAuditERP
 			try
 			{
 				new SqlCommand();
-				using SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString);
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
 				sqlConnection.Open();
 				foreach (ListAccounCust item in Account)
 				{
@@ -902,7 +902,7 @@ namespace SmartAuditERP
 			try
 			{
 				new SqlCommand();
-				using SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString);
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
 				sqlConnection.Open();
 				foreach (ListAccountIndex item in Account)
 				{
@@ -948,7 +948,7 @@ namespace SmartAuditERP
 			try
 			{
 				new SqlCommand();
-				using (SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString))
 				{
 					sqlConnection.Open();
 					foreach (ListEmployee employee in employees)
@@ -1008,7 +1008,7 @@ namespace SmartAuditERP
 			try
 			{
 				new SqlCommand();
-				using (SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString))
 				{
 					sqlConnection.Open();
 					foreach (ListUserPermission permissions in permissionsList)
@@ -1047,7 +1047,7 @@ namespace SmartAuditERP
 			try
 			{
 				new SqlCommand();
-				using (SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString))
 				{
 					sqlConnection.Open();
 					foreach (ListOperationPermission permissions in permissionsList)
@@ -1088,7 +1088,7 @@ namespace SmartAuditERP
 			try
 			{
 				new SqlCommand();
-				using SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString);
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
 				sqlConnection.Open();
 				foreach (ListUsers users in usersList)
 				{
@@ -1122,7 +1122,7 @@ namespace SmartAuditERP
 			try
 			{
 				new SqlCommand();
-				using (SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString))
 				{
 					sqlConnection.Open();
 					foreach (ListEmpBranch item in empBranch)
@@ -1163,7 +1163,7 @@ namespace SmartAuditERP
 			try
 			{
 				new SqlCommand();
-				using (SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString))
+				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString))
 				{
 					sqlConnection.Open();
 					foreach (ListInvoice invoice in invoices)
@@ -1252,7 +1252,7 @@ namespace SmartAuditERP
 			try
 			{
 				new SqlCommand();
-				using SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString);
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
 				sqlConnection.Open();
 				foreach (listInvSub invSub in invSubList)
 				{
@@ -1314,7 +1314,7 @@ namespace SmartAuditERP
 		{
 			try
 			{
-				using SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString);
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
 				sqlConnection.Open();
 				foreach (ListEntrySub entrySub in entrySubList)
 				{
@@ -1353,7 +1353,7 @@ namespace SmartAuditERP
 			try
 			{
 				new SqlCommand();
-				using SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString);
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
 				sqlConnection.Open();
 				foreach (ListEntry entry in entryList)
 				{
@@ -1391,7 +1391,7 @@ namespace SmartAuditERP
 			try
 			{
 				new SqlCommand();
-				using SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString);
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
 				sqlConnection.Open();
 				foreach (ListOffers offers in offersList)
 				{
@@ -1444,7 +1444,7 @@ namespace SmartAuditERP
 			try
 			{
 				new SqlCommand();
-				using SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString);
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
 				sqlConnection.Open();
 				foreach (ListOfferForClient offers in offersList)
 				{
@@ -1492,7 +1492,7 @@ namespace SmartAuditERP
 			try
 			{
 				new SqlCommand();
-				using SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString);
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
 				sqlConnection.Open();
 				foreach (ListOfferItem offerItems in offerItemsList)
 				{
@@ -1544,7 +1544,7 @@ namespace SmartAuditERP
 			new SqlCommand();
 			try
 			{
-				using SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString);
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
 				sqlConnection.Open();
 				foreach (ListRecipt receipts in receiptsList)
 				{
@@ -1611,7 +1611,7 @@ namespace SmartAuditERP
 		{
 			try
 			{
-				using SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString);
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
 				sqlConnection.Open();
 				foreach (ListSafes safes in safesList)
 				{
@@ -1654,7 +1654,7 @@ namespace SmartAuditERP
 		{
 			try
 			{
-				using SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString);
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
 				sqlConnection.Open();
 				foreach (ListSafeEmp safes in safesList)
 				{
@@ -1694,7 +1694,7 @@ namespace SmartAuditERP
 		{
 			try
 			{
-				using SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString);
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
 				sqlConnection.Open();
 				foreach (ListStock stocks in stocksList)
 				{
@@ -1739,7 +1739,7 @@ namespace SmartAuditERP
 		{
 			try
 			{
-				using SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString);
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
 				sqlConnection.Open();
 				foreach (ListStockEmp stockEmp in stockEmpList)
 				{
@@ -1780,7 +1780,7 @@ namespace SmartAuditERP
 			try
 			{
 				new SqlCommand();
-				using SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString);
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
 				sqlConnection.Open();
 				foreach (ListBranches branch in branchList)
 				{
@@ -1823,7 +1823,7 @@ namespace SmartAuditERP
 			try
 			{
 				new SqlCommand();
-				using SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString);
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
 				sqlConnection.Open();
 				foreach (ListBank bank in bankList)
 				{
@@ -1857,7 +1857,7 @@ namespace SmartAuditERP
 		{
 			try
 			{
-				using SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString);
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
 				sqlConnection.Open();
 				foreach (ListCasherClosed casher in casherList)
 				{
@@ -1887,7 +1887,7 @@ namespace SmartAuditERP
 		{
 			try
 			{
-				using SqlConnection sqlConnection = new SqlConnection(ReceivedData.connString);
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
 				sqlConnection.Open();
 				foreach (ListCasherClosedSub casherSub in casherSubList)
 				{

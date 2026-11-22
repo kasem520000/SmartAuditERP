@@ -61,7 +61,7 @@ namespace SmartAuditERP.Form_WPF
         public frmVATReturn()
         {
             InitializeComponent();
-            conn = new SqlConnection(MainClass.connstr);
+            conn = MainClass.CreateSqlConnection(MainClass.connstr);
             isInitializing = false;
             RptName = string.Empty;
             RptUrl = string.Empty;
