@@ -2015,7 +2015,11 @@ namespace SmartAuditERP
                                         goto end_IL_06aa;
                                 }
                         IL_23e6:
-                                if (MainSetting.ZatcaIntegerationActive && !InvoiceOper.IsTaxCustomer(inv.Customer) && source.Contains((int)inv.InvoiceType) && source2.Contains(inv.ProcType))
+                                // P6-002 fix: سياسة الإرسال اليدوي متسقة — المبسطة (!IsTaxCustomer) لا
+// تُرسل تلقائيًا عند تفعيل الوضع اليدوي (ZatcaSyncManual) بل من شاشة
+// المتابعة؛ القياسية تُرسل دائمًا عند التفعيل (نفس عقد التوأم
+// InvoiceOperContract: IsTaxCustomer || !ZatcaSyncManual).
+if (MainSetting.ZatcaIntegerationActive && !MainSetting.ZatcaSyncManual && !InvoiceOper.IsTaxCustomer(inv.Customer) && source.Contains((int)inv.InvoiceType) && source2.Contains(inv.ProcType))
                                 {
                                         SystemResponse<InvoiceReportingResponse> systemResponse2;
                                         systemResponse2 = this.SendZatca(inv);
@@ -2338,7 +2342,8 @@ namespace SmartAuditERP
                                 }
                                 sqlTransaction.Commit();
                                 // P5-015 fix: الحفظ نجح — يعود العقد true ليؤكد المستدعي الاستلام
-                                if (!MainSetting.ZatcaIntegerationActive || InvoiceOper.IsTaxCustomer(inv.Customer) || inv.InvoiceType != (InvoiceType)20 || !source.Contains((int)inv.InvoiceType) || !source2.Contains(inv.ProcType))
+                                // P6-002 fix: المبسطة لا تُرسل تلقائيًا في الوضع اليدوي (شاشة المتابعة)
+if (!MainSetting.ZatcaIntegerationActive || MainSetting.ZatcaSyncManual || InvoiceOper.IsTaxCustomer(inv.Customer) || inv.InvoiceType != (InvoiceType)20 || !source.Contains((int)inv.InvoiceType) || !source2.Contains(inv.ProcType))
                                 {
                                         return true;
                                 }

@@ -75,6 +75,19 @@ namespace SmartAuditERP
 			this.conn = MainClass.ConnObj();
 		}
 
+		// P6-001 fix: القاعدة الموحدة لرقم ضريبي صالح — نفس قاعدة حارس الحفظ
+		// (InvoiceOper.IsTaxCustomer) لتتفق بوابات الإرسال والمحول وشاشات
+		// المتابعة على تصنيف واحد (قياسية/مبسطة).
+		public static bool IsValidVatNumber(string vatNo)
+		{
+			string text = (vatNo ?? "").Trim();
+			return !string.IsNullOrEmpty(text)
+				&& Operators.CompareString(text, "0", TextCompare: false) != 0
+				&& text.Length == 15
+				&& text.StartsWith("3")
+				&& text.EndsWith("3");
+		}
+
 		public InvoiceReportingResponse IntegrateInvoice(ref global::AuditorAPI.Models.Invoice invoice, bool IsProduction, bool IsSimulation, bool isDebit)
 		{
 			InvoiceReportingResponse invoiceReportingResponse;
@@ -84,7 +97,12 @@ namespace SmartAuditERP
 			string value;
 			value = "388";
 			string name;
-			name = ((!((Operators.CompareString(customer.VATno, "", TextCompare: false) == 0) | (customer.VATno == null))) ? "0100000" : "0200000");
+			// P6-001 fix: توحيد قاعدة تصنيف الفاتورة مع حارس الحفظ (IsTaxCustomer) —
+			// القياسية (0100000) فقط لرقم ضريبي صالح (15 خانة تبدأ وتنتهي بـ3)؛
+			// كانت «غير فارغ» تكفي هنا فتتباعد البوابة والمحول: الحارس يقرر
+			// قياسية والمحول يبني مبسطة (أو العكس) فيذهب الطلب لمسار الإبلاغ/
+			// التخليص الخاطئ.
+			name = (ZatcaService.IsValidVatNumber(customer.VATno) ? "0100000" : "0200000");
 			if ((invoice.InvoiceType == InvoiceType.Sale) | (invoice.InvoiceType == InvoiceType.POS) | (invoice.InvoiceType == (InvoiceType)20))
 			{
 				value = ((invoice.ProcType != 2) ? "388" : "381");
@@ -243,7 +261,10 @@ namespace SmartAuditERP
 					foreach (InvoiceItem item in closure_0024__2_002D._0024VB_0024Local_itm.Where(closure_0024__2_002D._Lambda_0024__1).ToList())
 					{
 						decimal d;
-						d = new decimal(item.ItemTotalPrice / invoice.InvoiceItems.Sum((_Closure_0024__._0024I2_002D2 == null) ? (_Closure_0024__._0024I2_002D2 = [SpecialName] (InvoiceItem il) => il.ItemQuantity * il.ItemPrice - il.ItemDiscount) : _Closure_0024__._0024I2_002D2) * invoice.Discount);
+			// P6-004 fix: حراسة مقام توزيع خصم الفاتورة — فاتورة كل بنودها صفرية
+			// كانت تقسم على مجموع صفري (NaN/Infinity يفسد العشرية).
+			double lineTotalSum = invoice.InvoiceItems.Sum((_Closure_0024__._0024I2_002D2 == null) ? (_Closure_0024__._0024I2_002D2 = [SpecialName] (InvoiceItem il) => il.ItemQuantity * il.ItemPrice - il.ItemDiscount) : _Closure_0024__._0024I2_002D2);
+				d = ((lineTotalSum > 0.0) ? new decimal(item.ItemTotalPrice / lineTotalSum * invoice.Discount) : 0m);
 						AllowanceCharge allowanceCharge3;
 						allowanceCharge3 = ((item.ItemVatPerc == 0.0) ? allowanceCharge2 : allowanceCharge);
 						allowanceCharge3.Amount = decimal.Add(allowanceCharge3.Amount, d);
@@ -288,7 +309,9 @@ namespace SmartAuditERP
 				decimal num3;
 				if (invoice.PriceIncVAT)
 				{
-					invoiceLine.price.PriceAmount = new decimal(invoiceItem.ItemPrice / Convert.ToDouble(decimal.Add(1m, decimal.Divide(Convert.ToDecimal(invoiceItem.ItemVatPerc), 100m))));
+					// P6-004 fix: حراسة القاسم (1+النسبة/100) — نسبة -100 تنتج قاسمًا صفريًا
+						double vatDivisor = 1.0 + invoiceItem.ItemVatPerc / 100.0;
+						invoiceLine.price.PriceAmount = new decimal((vatDivisor > 0.0) ? (invoiceItem.ItemPrice / vatDivisor) : invoiceItem.ItemPrice);
 					invoiceLine.price.PriceAmount = Math.Round(invoiceLine.price.PriceAmount, 2);
 					num3 = Math.Round(invoiceLine.price.PriceAmount, 2);
 				}
@@ -335,7 +358,10 @@ namespace SmartAuditERP
 			{
 				decimal d4;
 				d4 = Math.Round(decimal.Subtract(decimal.Multiply(invoiceLine2.InvoiceQuantity, invoiceLine2.price.PriceAmount), invoiceLine2.price.allowanceCharge.Amount), 2);
-				num7 = decimal.Add(num7, Math.Round(decimal.Multiply(decimal.Subtract(d4, Math.Round(decimal.Multiply(decimal.Divide(d4, d3), num), 2)), decimal.Divide(invoiceLine2.taxTotal.TaxSubtotal.taxCategory.Percent, 100m)), 2));
+				// P6-004 fix: حراسة مقام الحصة النسبية من خصم الفاتورة (d3 قد يكون
+					// صفرًا لفاتورة كل بنودها صفرية) — الحصة صفر عندئذٍ.
+					decimal docDiscountShare = ((decimal.Compare(d3, 0m) > 0) ? Math.Round(decimal.Multiply(decimal.Divide(d4, d3), num), 2) : 0m);
+					num7 = decimal.Add(num7, Math.Round(decimal.Multiply(decimal.Subtract(d4, docDiscountShare), decimal.Divide(invoiceLine2.taxTotal.TaxSubtotal.taxCategory.Percent, 100m)), 2));
 			}
 			num7 = num7;
 			decimal invNet;
@@ -376,17 +402,15 @@ namespace SmartAuditERP
 					{
 						invoiceReportingResponse2 = apiRequestLogic.CallReportingAPI(GlobalVariables.ToBase64Encode(zatcaCredential.CSID), zatcaCredential.Secret, invoiceReportingRequest, IsProduction, IsSimulation, isSimplified: true);
 					}
-					bool flag;
-					flag = false;
-					if (invoiceReportingResponse2.ErrorMessage != null)
-					{
-						flag = true;
-					}
-					if (invoiceReportingResponse2.validationResults != null && invoiceReportingResponse2.validationResults.ErrorMessages.Count > 0)
-					{
-						flag = true;
-					}
-					if (!flag)
+					// P6-006 fix: النجاح يستلزم قبولًا صريحًا (حالة إبلاغ/تخليص أو فاتورة
+					// مخلية) لا مجرد غياب الأخطاء — كانت استجابة فارغة تمامًا (قطع اتصال
+					// بلا نص خطأ) تُعد نجاحًا.
+					bool hasError = invoiceReportingResponse2.ErrorMessage != null
+						|| (invoiceReportingResponse2.validationResults != null && invoiceReportingResponse2.validationResults.ErrorMessages.Count > 0);
+					bool hasAcceptance = !string.IsNullOrEmpty(invoiceReportingResponse2.ReportingStatus)
+						|| !string.IsNullOrEmpty(invoiceReportingResponse2.ClearanceStatus)
+						|| !string.IsNullOrEmpty(invoiceReportingResponse2.ClearedInvoice);
+					if (!hasError && hasAcceptance)
 					{
 						invoiceReportingResponse2.success = true;
 						invoiceReportingResponse.success = true;
@@ -395,6 +419,7 @@ namespace SmartAuditERP
 					else
 					{
 						invoiceReportingResponse.success = false;
+						invoice.ZatcaSent = false;
 					}
 					if (Operators.CompareString(invoice2.invoiceTypeCode.Name, "0100000", TextCompare: false) == 0)
 					{
@@ -402,11 +427,13 @@ namespace SmartAuditERP
 						invoiceReportingResponse.ClearedInvoice = invoiceReportingResponse2.ClearedInvoice;
 						invoiceReportingResponse.ErrorMessage = invoiceReportingResponse2.ErrorMessage;
 						invoiceReportingResponse.validationResults = invoiceReportingResponse2.validationResults;
+						invoiceReportingResponse.ReportingStatus = invoiceReportingResponse2.ReportingStatus;
 					}
 					else
 					{
+						// P6-006 fix: الاستجابة الفعلية تُنقل كما هي — كان نص الحالة
+						// يُلحق برسالة الخطأ حتى عند النجاح.
 						invoiceReportingResponse = invoiceReportingResponse2;
-						invoiceReportingResponse.ErrorMessage += invoiceReportingResponse2.ReportingStatus.ToString();
 					}
 					result2 = invoiceReportingResponse;
 				}
@@ -414,7 +441,11 @@ namespace SmartAuditERP
 				{
 					ProjectData.SetProjectError(ex);
 					Console.WriteLine(ex.Message);
-					result2 = new InvoiceReportingResponse();
+					// P6-006 fix: الإمساك يعيد الاستجابة الحاملة للفشل (success=false مع
+					// رسالة الخطأ) — كان يُنشئ استجابة جديدة فارغة تُفقد السياق كله.
+					invoiceReportingResponse.success = false;
+					invoiceReportingResponse.ErrorMessage = ex.Message;
+					result2 = invoiceReportingResponse;
 					ProjectData.ClearProjectError();
 				}
 			}
@@ -442,8 +473,12 @@ namespace SmartAuditERP
 				{
 					zatcaCredential.CSR = Conversions.ToString(dataTable.Rows[0]["CSR"]);
 					zatcaCredential.PrivateKey = Conversions.ToString(dataTable.Rows[0]["PrivateKey"]);
-					zatcaCredential.CSID = Conversions.ToString(dataTable.Rows[0]["P_CSID"]);
-					zatcaCredential.Secret = Conversions.ToString(dataTable.Rows[0]["P_Secret"]);
+					// P6-012 fix: ربط الأعمدة بالبيئة — كان القارئ يختار حقول الإنتاج
+					// (P_CSID/P_Secret) مهما كانت بيئة الطلب فتعمل بيانات الاختبار بشهادة
+					// الإنتاج (والعكس). عمودا CSID/Secret لغير الإنتاج.
+					bool useProduction = MainSetting.IsProductionZatca;
+					zatcaCredential.CSID = Conversions.ToString(dataTable.Rows[0][useProduction ? "P_CSID" : "CSID"]);
+					zatcaCredential.Secret = Conversions.ToString(dataTable.Rows[0][useProduction ? "P_Secret" : "Secret"]);
 				}
 				return zatcaCredential;
 			}

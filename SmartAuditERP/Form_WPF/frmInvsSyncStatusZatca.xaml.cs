@@ -294,13 +294,11 @@ namespace SmartAuditERP.Form_WPF
                 if (dt.Rows.Count > 0)
                 {
                     string taxNo = dt.Rows[0]["tax_no"].ToString();
-                    if (!string.IsNullOrWhiteSpace(taxNo))
-                    {
-                        if (double.TryParse(taxNo, out double val) && val > 0)
-                            return 2;
-                        if (!double.TryParse(taxNo, out _))
-                            return 2;
-                    }
+                    // P6-001 fix: القاعدة الموحدة (ZatcaService.IsValidVatNumber =
+                    // نفس قاعدة IsTaxCustomer) — كانت هذه الشاشة تصنف أي رقم
+                    // غير فارغ (حتى غير الرقمي أو القيم التالفة) كعميل ضريبي
+                    // فتخالف حارس الحفظ والمحول.
+                    return ZatcaService.IsValidVatNumber(taxNo) ? (short)2 : (short)1;
                 }
             }
             catch { }

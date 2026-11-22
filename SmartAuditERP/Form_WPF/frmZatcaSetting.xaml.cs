@@ -1129,6 +1129,10 @@ namespace SmartAuditERP.Form_WPF
                 {
                     new SqlCommand("UPDATE SettingZatca SET IsActive=1", conn)
                         .ExecuteNonQuery();
+                    // P6-002 fix: مفتاح الإيقاف/التشغيل يحدّث البوابة في الذاكرة
+                    // فورًا — كان يكتب القاعدة فقط فتبقى بوابات التنفيذ تعمل
+                    // بالإعداد القديم حتى إعادة التشغيل.
+                    MainSetting.ZatcaIntegerationActive = true;
                     DXMessageBox.Show("تم التشغيل بنجاح",
                         "", MessageBoxButton.OK, MessageBoxImage.Information);
                     BtnOnOff.Content = "⏸ إيقاف الربط";
@@ -1137,6 +1141,8 @@ namespace SmartAuditERP.Form_WPF
                 {
                     new SqlCommand("UPDATE SettingZatca SET IsActive=0", conn)
                         .ExecuteNonQuery();
+                    // P6-002 fix: نفس التحديث الفوري للإيقاف
+                    MainSetting.ZatcaIntegerationActive = false;
                     DXMessageBox.Show("تم الإيقاف بنجاح",
                         "", MessageBoxButton.OK, MessageBoxImage.Information);
                     BtnOnOff.Content = "▶ تشغيل";
