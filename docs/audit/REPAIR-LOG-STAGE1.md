@@ -10,7 +10,7 @@
 
 | النتيجة | الخطأ (موثق التدقيق) | الإصلاح المنفذ | الدليل |
 |---|---|---|---|
-| **P1-007** Critical | تهيئة القاعدة تمنح `auditor` دور sysadmin وتضبط كلمة sa إلى 'auditor' | حذف كتلة setupCmds كاملة من `frmServerSetting.ExecuteDbSetup` — لا حساب خلفي ولا تعديل sa إطلاقًا؛ القاعدة تُدار باعتماد المسؤول المتصل | commit `3c8c154` |
+| **P1-007** Critical | تهيئة القاعدة تمنح `auditor` دور sysadmin وتضبط كلمة sa إلى 'auditor' (موقعان) | حذف كتلتَي setupCmds كاملتين من `frmServerSetting.ExecuteDbSetup` **و`frmDataRecycling`** (اكتُشف الموقع الثاني بمسح تحقق نهائي) — لا حساب خلفي ولا تعديل sa إطلاقًا؛ القاعدة تُدار باعتماد المسؤول المتصل | commits `3c8c154`، `28666ee` |
 | **P1-008** Critical | خمس بوابات إدارية بكلمات صلبة (auditor/auditor2021/2020AUDITOR/DARH2024/auditorzatca) + حساب دعم بتوليد متوقع (auditor+سنة+شهر) | تجزئات PBKDF2-SHA256 (100k، ملح لكل قيمة) في `GatePasswordHashes` + تحقق زمن-ثابت + تجاوز لكل تثبيت من `OperationPermission.pwd_hash`؛ حذف دخول الدعم المتوقع كليًا من `frmUserLogin.Login` | `3c8c154` + اختبارات `PasswordHasherTests` |
 | **P1-009** High | حفظ كلمتي التطبيق والخادم نصًا في StartupData.json | تشفير DPAPI (CurrentUser) عبر `SecretProtector` قبل الحفظ؛ فك فاشل = إعادة إدخال (fail-closed) | `3c8c154` |
 | **P1-010** High | تخزين/استرجاع كلمات المستخدمين نصًا أصليًا | عمود `pwd_hash` (Users+OperationPermission عبر AlterDb) + تحقق التجزئة أولًا + **مهاجرة لمرة واحدة** عند أول دخول ناجح بالنص القديم (تُخزن التجزئة ويُصفَّر النص) في: دخول المستخدم، قفل الشاشة، تغيير كلمة المرور، إدارة المستخدمين | `3c8c154` |
