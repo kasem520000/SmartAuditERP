@@ -549,23 +549,22 @@ namespace SmartAuditERP
 
                 public static string ToArabicLetter(double givenNumber, Currency MyCurrency = Currency.SAR)
                 {
+                        // P7-034 fix: المبلغ يُسوى مرة واحدة بدقة العملة (خانتان)
+                        // وتُشتق الأجزاء من القيمة العشرية نفسها — كان الفصل
+                        // يعتمد التمثيل النصي للـdouble بالنقطة (يتكسر على محليات
+                        // إقليمية تستعمل الفاصلة العشرية فتضيع الكسور كلها)
+                        // ويبتر الكسر الثالث بدل تسويته
+                        decimal settled = Math.Round(Convert.ToDecimal(givenNumber), 2, MidpointRounding.AwayFromZero);
+                        decimal wholePart = decimal.Truncate(settled);
+                        decimal absForFraction = Math.Abs(settled);
+                        int fractionHundredths = (int)Math.Round((absForFraction - decimal.Truncate(absForFraction)) * 100m, 0, MidpointRounding.AwayFromZero);
                         string text;
                         text = " فقط لا غير";
-                        string[] array;
-                        array = Strings.Split(Conversions.ToString(givenNumber), ".");
                         string text2;
-                        text2 = InvoiceOper.NumberAsCurrency(Conversions.ToDouble(array[0]), MyCurrency);
-                        if (array.Length >= 2)
+                        text2 = InvoiceOper.NumberAsCurrency(Conversions.ToDouble(wholePart), MyCurrency);
+                        if (fractionHundredths > 0)
                         {
-                                if (array[1].Length.Equals(1))
-                                {
-                                        array[1] += "0";
-                                }
-                                else if (array[1].Length > 2)
-                                {
-                                        array[1] = array[1].Substring(0, 2);
-                                }
-                                text2 = text2 + " و" + InvoiceOper.FractionAsCurrency(Conversions.ToDouble(array[1]), MyCurrency);
+                                text2 = text2 + " و" + InvoiceOper.FractionAsCurrency(fractionHundredths, MyCurrency);
                         }
                         if ((Operators.CompareString(text2, null, TextCompare: false) != 0) & (Operators.CompareString(text2, "", TextCompare: false) != 0))
                         {
@@ -1097,6 +1096,39 @@ namespace SmartAuditERP
                                 num4 = givenNumber;
                                 text2 = ((num4 == 0.0) ? "ليرة سورية" : ((num4 == 1.0) ? "ليرة سورية" : ((num4 == 2.0) ? "ليرتان سوريتان" : ((!(num4 >= 3.0) || !(num4 <= 10.0)) ? "ليرة سورية" : "ليرات سورية"))));
                         }
+                        // P7-035 fix: العملات التي عرفها المسار الإنجليزي فقط كانت
+                        // تسقط هنا إلى «ريال» — الآن الرمز نفسه يعطي العملة
+                        // نفسها في التفقيطين
+                        else if (Operators.CompareString(left, Conversions.ToString(4), TextCompare: false) == 0)
+                        {
+                                double num6;
+                                num6 = givenNumber;
+                                text2 = ((num6 == 0.0) ? "" : ((num6 == 2.0) ? " درهمان" : ((!(num6 >= 3.0) || !(num6 <= 10.0)) ? "درهم" : " دراهم")));
+                        }
+                        else if (Operators.CompareString(left, Conversions.ToString(10), TextCompare: false) == 0)
+                        {
+                                double num7;
+                                num7 = givenNumber;
+                                text2 = ((num7 == 0.0) ? "" : ((num7 == 2.0) ? " يوروهان" : ((!(num7 >= 3.0) || !(num7 <= 10.0)) ? "يورو" : " يوروهات")));
+                        }
+                        else if (Operators.CompareString(left, Conversions.ToString(11), TextCompare: false) == 0)
+                        {
+                                double num8;
+                                num8 = givenNumber;
+                                text2 = ((num8 == 0.0) ? "" : ((num8 == 2.0) ? " ينّان" : ((!(num8 >= 3.0) || !(num8 <= 10.0)) ? "ين" : " ينّات")));
+                        }
+                        else if (Operators.CompareString(left, Conversions.ToString(9), TextCompare: false) == 0)
+                        {
+                                double num9;
+                                num9 = givenNumber;
+                                text2 = ((num9 == 0.0) ? "" : ((num9 == 2.0) ? " جنيهان إسترلينيان" : ((!(num9 >= 3.0) || !(num9 <= 10.0)) ? "جنيه إسترليني" : " جنيهات إسترلينية")));
+                        }
+                        else if (Operators.CompareString(left, Conversions.ToString(8), TextCompare: false) == 0)
+                        {
+                                double num10;
+                                num10 = givenNumber;
+                                text2 = ((num10 == 0.0) ? "" : ((num10 == 2.0) ? " ريالان قطريان" : ((!(num10 >= 3.0) || !(num10 <= 10.0)) ? "ريال قطري" : " ريالات قطرية")));
+                        }
                         else
                         {
                                 double num5;
@@ -1141,6 +1173,37 @@ namespace SmartAuditERP
                                 double num3;
                                 num3 = givenNumber;
                                 text2 = ((num3 == 0.0) ? "" : ((num3 == 2.0) ? " قرشان" : ((!(num3 >= 3.0) || !(num3 <= 10.0)) ? " قرشا" : " قروش")));
+                        }
+                        // P7-035 fix: كسور العملات التي عرفها المسار الإنجليزي فقط
+                        else if (Operators.CompareString(left, Conversions.ToString(4), TextCompare: false) == 0)
+                        {
+                                double num6;
+                                num6 = givenNumber;
+                                text2 = ((num6 == 0.0) ? "" : ((num6 == 2.0) ? " فلسان" : ((!(num6 >= 3.0) || !(num6 <= 10.0)) ? "فلس" : " فلوس")));
+                        }
+                        else if (Operators.CompareString(left, Conversions.ToString(10), TextCompare: false) == 0)
+                        {
+                                double num7;
+                                num7 = givenNumber;
+                                text2 = ((num7 == 0.0) ? "" : ((num7 == 2.0) ? " سنتان" : ((!(num7 >= 3.0) || !(num7 <= 10.0)) ? "سنت" : " سنتات")));
+                        }
+                        else if (Operators.CompareString(left, Conversions.ToString(11), TextCompare: false) == 0)
+                        {
+                                double num8;
+                                num8 = givenNumber;
+                                text2 = ((num8 == 0.0) ? "" : ((num8 == 2.0) ? " سينان" : ((!(num8 >= 3.0) || !(num8 <= 10.0)) ? "سين" : " سينات")));
+                        }
+                        else if (Operators.CompareString(left, Conversions.ToString(9), TextCompare: false) == 0)
+                        {
+                                double num9;
+                                num9 = givenNumber;
+                                text2 = ((num9 == 0.0) ? "" : ((num9 == 2.0) ? " بنسان" : ((!(num9 >= 3.0) || !(num9 <= 10.0)) ? "بنس" : " بنسات")));
+                        }
+                        else if (Operators.CompareString(left, Conversions.ToString(8), TextCompare: false) == 0)
+                        {
+                                double num10;
+                                num10 = givenNumber;
+                                text2 = ((num10 == 0.0) ? "" : ((num10 == 2.0) ? " هللتان" : ((!(num10 >= 3.0) || !(num10 <= 10.0)) ? "هللة" : " هللات")));
                         }
                         else
                         {
@@ -1228,6 +1291,30 @@ namespace SmartAuditERP
                                 right2 = "Riyals";
                                 right3 = "Halala";
                                 right4 = "Halalas";
+                        }
+                        // P7-035 fix: العملات التي عرفها المسار العربي فقط كانت
+                        // تسقط هنا إلى «Riyal» — الرمز نفسه = العملة نفسها في
+                        // التفقيطين
+                        else if (Operators.CompareString(left, Conversions.ToString(12), TextCompare: false) == 0)
+                        {
+                                right = "Egyptian Pound";
+                                right2 = "Egyptian Pounds";
+                                right3 = "Piastre";
+                                right4 = "Piastres";
+                        }
+                        else if (Operators.CompareString(left, Conversions.ToString(13), TextCompare: false) == 0)
+                        {
+                                right = "Sudanese Pound";
+                                right2 = "Sudanese Pounds";
+                                right3 = "Piastre";
+                                right4 = "Piastres";
+                        }
+                        else if (Operators.CompareString(left, Conversions.ToString(15), TextCompare: false) == 0)
+                        {
+                                right = "Syrian Pound";
+                                right2 = "Syrian Pounds";
+                                right3 = "Piastre";
+                                right4 = "Piastres";
                         }
                         else
                         {
@@ -1750,8 +1837,13 @@ namespace SmartAuditERP
                                 sqlCommand3.Parameters.Add("@TableNo", SqlDbType.NVarChar).Value = inv.TableNo;
                                 sqlCommand3.Parameters.Add("@Balance_previews", SqlDbType.Float).Value = inv.Balance_previews;
                                 sqlCommand3.ExecuteNonQuery();
+                                // P7-033 fix: رقم تسلسلي للسطر يُكتب في ItemIncrId
+                                // — كانت تفاصيل كل بنود الصنف النمطية كلها 1 فلا
+                                // تُميّز تفاصيل سطر عن آخر عند الطباعة
+                                int lineSeq = 0;
                                 foreach (InvoiceItem invoiceItem in inv.InvoiceItems)
                                 {
+                                        lineSeq = checked(lineSeq + 1);
                                         sqlCommand3 = new SqlCommand(StoredQueries.InsertInvSub, sqlConnection2, sqlTransaction);
                                         sqlCommand3.Parameters.Add("@InvGlobalID", SqlDbType.NVarChar).Value = inv.InvGlobalID;
                                         sqlCommand3.Parameters.Add("@proc_id", SqlDbType.Int).Value = inv.AutoIncrementID;
@@ -1807,7 +1899,8 @@ namespace SmartAuditERP
                                                 }
                                                 sqlCommand3 = new SqlCommand("INSERT into InvoiceItemDetail(ItemDetailId,ItemIncrId,InvGlobalID,ItemId,InvertoryImpact,ItemSerialNo,BatchNo,ItemProductionDate,ItemExpireDate,ItemHeight,ItemWidth,ItemColor,ItemSize,ItemProperty,FillValue,FillRatio,ItemQuantity,ItemBarcode) values(@ItemDetailId,@ItemIncrId,@InvGlobalID,@ItemId,@InvertoryImpact,@ItemSerialNo,@BatchNo,@ItemProductionDate,@ItemExpireDate,@ItemHeight,@ItemWidth,@ItemColor,@ItemSize,@ItemProperty,@FillValue,@FillRatio,@ItemQuantity,@ItemBarcode)", sqlConnection2, sqlTransaction);
                                                 sqlCommand3.Parameters.Add("@ItemDetailId", SqlDbType.Int).Value = 1;
-                                                sqlCommand3.Parameters.Add("@ItemIncrId", SqlDbType.Int).Value = 1;
+                                                // P7-033 fix: هوية السطر لا ثابت 1
+                                                sqlCommand3.Parameters.Add("@ItemIncrId", SqlDbType.Int).Value = lineSeq;
                                                 sqlCommand3.Parameters.Add("@InvGlobalID", SqlDbType.NVarChar).Value = inv.InvGlobalID;
                                                 sqlCommand3.Parameters.Add("@ItemId", SqlDbType.Int).Value = invoiceItemDetail.ItemId;
                                                 sqlCommand3.Parameters.Add("@InvertoryImpact", SqlDbType.Int).Value = invoiceItem.InvertoryImpact;

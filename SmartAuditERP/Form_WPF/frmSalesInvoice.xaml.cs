@@ -930,6 +930,10 @@ namespace SmartAuditERP.Form_WPF
 
                 bool saved = invoiceOper.SaveInvoice(inv, entry, ISNew);
 
+                // P7-029 fix: السيريالات تُكتب بعد نجاح الحفظ فقط (لا في المعاينة)
+                if (saved)
+                    PersistSerialNumbers(inv.InvGlobalID);
+
                 if (saved && IsPrinted && print.PrintNo > 0)
                     RptPrint(inv, 1);
 
@@ -1195,36 +1199,40 @@ namespace SmartAuditERP.Form_WPF
                 }
 
                 items.Add(item);
-
-                // Serial numbers
-                try
-                {
-                    if (dtSerialNo.Rows.Count > 0)
-                    {
-                        if (conn.State != ConnectionState.Open)
-                            conn.Open();
-
-                        new SqlCommand(
-                            "DELETE FROM ItemSerialNo WHERE ItemId=" +
-                            row.ItemId + " AND InvGlobalID=N'" +
-                            InvGlobalID + "'", conn).ExecuteNonQuery();
-
-                        foreach (DataRow sRow in dtSerialNo.Rows)
-                        {
-                            if (sRow["ItemId"].ToString() ==
-                                row.ItemId.ToString())
-                                SaveSerialNo(
-                                    Convert.ToInt32(sRow["ItemId"]),
-                                    sRow["SerialNo"].ToString(),
-                                    InvGlobalID);
-                        }
-                    }
-                }
-                catch { }
             }
 
             invoice.Items = items;
             return invoice;
+        }
+
+        // P7-029 fix: كتابة سجلات السيريال انتقلت من الرابط إلى مسار الحفظ —
+        // كانت المعاينة (btnView) وإعادة الطباعة (btnPrint) تمران عبر
+        // BindToInvoice فتحذف/تعيد إدراج سجلات ItemSerialNo للفاتورة
+        // بينما المستند نفسه لم يُحفظ (معاينة) — استبدال بيانات مثبتة من غير
+        // حفظ. الآن لا تُكتب السيريالات إلا بعد نجاح الحفظ الفعلي.
+        private void PersistSerialNumbers(string invGlobalId)
+        {
+            try
+            {
+                if (dtSerialNo == null || dtSerialNo.Rows.Count == 0) return;
+                if (conn.State != ConnectionState.Open) conn.Open();
+
+                using (var delCmd = new SqlCommand(
+                    "DELETE FROM ItemSerialNo WHERE InvGlobalID=@InvGlobalID", conn))
+                {
+                    delCmd.Parameters.Add("@InvGlobalID", SqlDbType.NVarChar).Value = invGlobalId;
+                    delCmd.ExecuteNonQuery();
+                }
+
+                foreach (DataRow sRow in dtSerialNo.Rows)
+                {
+                    SaveSerialNo(
+                        Convert.ToInt32(sRow["ItemId"]),
+                        sRow["SerialNo"].ToString(),
+                        invGlobalId);
+                }
+            }
+            catch { }
         }
 
         private void RptPrint(Invoice inv, int type)

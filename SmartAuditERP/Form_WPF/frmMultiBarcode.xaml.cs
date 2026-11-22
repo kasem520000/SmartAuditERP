@@ -79,10 +79,15 @@ namespace SmartAuditERP.Form_WPF
             double itemId = 0;
             double.TryParse(txtNo.Text, out itemId);
 
+            // P7-036 fix: اتحاد الطرفين بدل الضرب الديكارتي — كان الجدولان
+            // يُضربان (ItemUnits × Itembarcodes) فأي جدول فارغ يجعل نتيجة
+            // الضرب فارغة ويُفَوّت تكرار الطرف الآخر كاملاً
             SqlDataAdapter adapter = new SqlDataAdapter(
-                $"select ItemUnits.ItemId, Itembarcodes.ItemId from ItemUnits,Itembarcodes where " +
-                $"(ItemUnits.barcode=N'{barcode}' and ItemUnits.ItemId<>{(int)itemId}) or " +
-                $"(Itembarcodes.barcode=N'{barcode}' and Itembarcodes.ItemId<>{(int)itemId})", conn);
+                "select ItemId from ItemUnits where barcode=@barcode and ItemId<>@ItemId " +
+                "union all " +
+                "select ItemId from Itembarcodes where barcode=@barcode and ItemId<>@ItemId", conn);
+            adapter.SelectCommand.Parameters.AddWithValue("@barcode", barcode);
+            adapter.SelectCommand.Parameters.AddWithValue("@ItemId", (int)itemId);
             DataTable dt = new DataTable();
             adapter.Fill(dt);
 

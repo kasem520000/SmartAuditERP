@@ -226,13 +226,36 @@ namespace SmartAuditERP.Form_WPF
 
                 if (itemId > 0)
                 {
+                    // P7-037 fix: سعر وحدة الباركود الممسوح لا سعر الصنف
+                    // الأساسي — الباركود قد يكون لوحدة عبوة بسعر مختلف
+                    // (نفس عقد التوأم frmItemsBarcode الذي يقرأ ItemUnits.sale)
+                    double resolvedUnitPrice = 0;
+                    try
+                    {
+                        if (conn.State != ConnectionState.Open)
+                            conn.Open();
+                        using (var priceCmd = new SqlCommand(
+                            "SELECT ISNULL(IU.sale,0) FROM ItemUnits IU " +
+                            "WHERE IU.ItemId=@ItemId AND IU.unit=@Unit", conn))
+                        {
+                            priceCmd.Parameters.AddWithValue("@ItemId", itemId);
+                            priceCmd.Parameters.AddWithValue("@Unit", unitId);
+                            var priceVal = priceCmd.ExecuteScalar();
+                            if (priceVal != null && priceVal != DBNull.Value)
+                                resolvedUnitPrice = Convert.ToDouble(priceVal);
+                        }
+                    }
+                    catch { }
+
                     var item = new ItemDgv
                     {
                         RowIndex      = ItemList.Count + 1,
                         ItemCode      = Common.GetItemCode(itemId),
                         ItemName      = Common.GetItemName(itemId),
                         ItemBarcode   = barcode.Trim(),
-                        ItemSalePrice = Common.GetItemPrice(itemId),
+                        ItemSalePrice = resolvedUnitPrice > 0
+                            ? resolvedUnitPrice
+                            : Common.GetItemPrice(itemId),
                         ItemQty       = 1,
                         ItemProDate   = DateTime.Now.Date,
                         ItemExpDate   = DateTime.Now.Date
