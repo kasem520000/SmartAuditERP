@@ -1,0 +1,237 @@
+{
+  "schema_version": 1,
+  "kind": "R12-carried-open-questions-adjudicated-q-reader-year-provenance-branch-rehydration",
+  "tag": "07B39R12",
+  "assessment_reference_date_utc": "2026-11-22",
+  "raw_clocks_are_calendar_authority": false,
+  "application_execution_count": 0,
+  "base_published_head": "9a552b7",
+  "base_published_head_note": "R11 published on arena/94ae8414-smartauditerp",
+  "phase7C_started": true,
+  "questions_adjudicated": [
+    {
+      "question": "R7 Q-reader (unnumbered): reader closes then passes EmpId accessors in call parameters",
+      "adjudication": "confirmed root P7-173: frmSandQ.ReadData closes reader at line 716 then evaluates reader[\"EmpId\"] at 719 as LoadEditorName argument — closed-reader access per provider contract throws; Navigate catch shows error; editor name load and final SetStatus/TabControl lines skipped. Sibling receipt readers were explicitly fixed with local-before-close pattern and comments: frmSandQD (empIdObj local at 666, close at 688, 'now safe'), frmSandSD (empId local at 1073-1077, 'now safe for closing'), frmSandVAT (615 before 616), frmSandD reads fully while open (421-480) — frmSandQ is the only missed site",
+      "certainty": "confirmed (static ordering; provider exception behavior documented, not executed)"
+    },
+    {
+      "question": "R6C-YEAR-PROVENANCE: opening a previous-year row source after connection restore",
+      "adjudication": "confirmed root P7-176: frmAccountBalance/frmAccountsStatement btnShow_Click swap connstr to the year DB, load results, then IMMEDIATELY restore connstr and clear ReturnYearPreviews (frmAccountBalance 673-687, frmAccountsStatement 844-858). BtnShowDetail_Click (frmAccountsStatement 874-891, frmAccountBalance 784-792) then calls EntryOper.ShowEntrySource(globalId) with no year swap — ConnObj() targets the CURRENT year DB; previous-year Entry GlobalId not found; dispatcher returns silently at lines 1032-1033 with no user feedback. Cross-DB GlobalId collision would open a wrong document but GlobalIds are GUID-like making collision unlikely in practice",
+      "certainty": "confirmed (static control flow; P7-115 covers the restore pattern itself, this root covers the downstream entry-source consequence)"
+    },
+    {
+      "question": "R7 branch re-hydration: Initial reads details with session branch after global-key header",
+      "adjudication": "confirmed root P7-174: FrmIntialRestraiction dispatcher case 0 loads header by GlobalId with no branch filter (EntryOper 1160), then ReadDataFromReader loads Entry_sub lines with session-branch filter 'WHERE branch={MainClass.BranchNo} AND EntryGlobalId=...' (278-281) — a cross-branch initial entry opens with its true header and EMPTY lines grid. Sibling receiver FrmNewEntry (case 10) loads lines branch-free 'where EntryGlobalId=...' (FrmNewEntry 221-223) — the divergence isolates the defect to the Initial receiver. Invoice receivers load Inv_Sub by InvGlobalID with no branch filter (InvoiceOper.BindingInvoice 3366-3368) — also branch-free",
+      "certainty": "confirmed (static)"
+    }
+  ],
+  "additional_roots": [
+    {
+      "id": "P7-175",
+      "basis": "year-preview connection swap hardcodes trusted_connection=true discarding SQL-auth credentials at four sites: frmAccountBalance:676, frmAccountsStatement:846, frmInvSale:2739-2742, frmcontract:2079-2081. Login supports SQL auth (UseServerAuth / conn_type 2, frmUserLogin 921-931, 708-718). SQL-auth deployments lose authentication on year previews",
+      "certainty": "potential (deployment-auth-mode dependent; code divergence confirmed)"
+    },
+    {
+      "id": "P7-177",
+      "basis": "invoice receiver navigation buttons hardcode session branch after cross-branch open: frmInvPurch btnFirst/btnPrevious/btnNext/btnLast (504-546) filter by MainClass.BranchNo while the dispatcher may have opened a cross-branch invoice; pressing navigation silently re-anchors browsing to the session branch",
+      "certainty": "confirmed (static; intent-ambiguous design noted, silent context switch certain)"
+    }
+  ],
+  "bodies_read": {
+    "frmSandQ.Navigate": {
+      "file": "SmartAuditERP/Form_WPF/frmSandQ.xaml.cs",
+      "start": 624,
+      "end": 642,
+      "sha16": "a78f94e350a0c8dc"
+    },
+    "frmSandQ.ReadData": {
+      "file": "SmartAuditERP/Form_WPF/frmSandQ.xaml.cs",
+      "start": 644,
+      "end": 724,
+      "sha16": "65560c6d8a60d42e",
+      "close_line": 716,
+      "empid_access_line": 719,
+      "LoadEditorName_line": 726
+    },
+    "frmSandQD.ReadData": {
+      "file": "SmartAuditERP/Form_WPF/frmSandQD.xaml.cs",
+      "start": 630,
+      "end": 731,
+      "sha16": "166f5a528f633547",
+      "pattern": "empIdObj local at 666 before close at 688 with 'now safe' comment"
+    },
+    "frmSandSD.ReadData": {
+      "file": "SmartAuditERP/Form_WPF/frmSandSD.xaml.cs",
+      "start": 1040,
+      "end": 1114,
+      "sha16": "e2b72e25571ba930",
+      "pattern": "empId local at 1073-1077 before close at 1077 with 'now safe for closing' comment"
+    },
+    "frmSandVAT.ReadData": {
+      "file": "SmartAuditERP/Form_WPF/frmSandVAT.xaml.cs",
+      "start": 540,
+      "end": 621,
+      "sha16": "52337cbcae63523a",
+      "pattern": "empId read at 615 before close at 616"
+    },
+    "frmSandD.ReadData": {
+      "file": "SmartAuditERP/Form_WPF/frmSandD.xaml.cs",
+      "start": 421,
+      "end": 480,
+      "sha16": "ccf337ef7592c633",
+      "pattern": "all columns read while reader open; Navigate closes after ReadData returns"
+    },
+    "EntryOper.ShowEntrySource": {
+      "file": "SmartAuditERP/Class/EntryOper.cs",
+      "start": 1023,
+      "end": 1192,
+      "sha16": "20f4b949378f9ec4",
+      "entry_notfound_silent_return": "1032-1033"
+    },
+    "FrmIntialRestraiction.Navigate+ReadData": {
+      "file": "SmartAuditERP/Form_WPF/FrmIntialRestraiction.xaml.cs",
+      "start": 234,
+      "end": 309,
+      "sha16": "c8f159a24b204e0a",
+      "lines_query_branch_filter": "278-281"
+    },
+    "FrmNewEntry.ReadData": {
+      "file": "SmartAuditERP/Form_WPF/FrmNewEntry.xaml.cs",
+      "start": 168,
+      "end": 240,
+      "sha16": "755a864571e84cf0",
+      "lines_query_branch_free": "221-223",
+      "empid_read_while_open": true
+    },
+    "frmInvPurch.Navigate": {
+      "file": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 481,
+      "end": 502,
+      "sha16": "e182f077cbd65373"
+    },
+    "frmInvPurch.nav-buttons": {
+      "file": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+      "start": 504,
+      "end": 546,
+      "sha16": "fced54bda2b217bf",
+      "session_branch_filter": "MainClass.BranchNo in all four"
+    },
+    "frmAccountBalance.btnShow": {
+      "file": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs",
+      "start": 672,
+      "end": 688,
+      "sha16": "98edb11e6ad9d1c3",
+      "swap": -3,
+      "restore": -6
+    },
+    "frmAccountsStatement.btnShow": {
+      "file": "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs",
+      "start": 842,
+      "end": 860,
+      "sha16": "cc118e1e3d8f8831",
+      "swap": -4,
+      "restore": -7
+    },
+    "frmAccountsStatement.BtnShowDetail": {
+      "file": "SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs",
+      "start": 874,
+      "end": 891,
+      "sha16": "0b88b7b9ee568ba2",
+      "calls": "EntryOper.ShowEntrySource(genralNo) at 883 with no year swap"
+    },
+    "frmInvSale.InsertLinkedReturn": {
+      "file": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+      "start": 2734,
+      "end": 2770,
+      "sha16": "206b5a28ee098662",
+      "trusted_connection_hardcoded": "2739-2742"
+    },
+    "frmcontract.btnInsertLinkedInv": {
+      "file": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+      "start": 2072,
+      "end": 2090,
+      "sha16": "a2030b459367a84f",
+      "trusted_connection_hardcoded": "2079-2081"
+    },
+    "MainClass.ConnObj+fields": {
+      "file": "SmartAuditERP/Class/MainClass.cs",
+      "start": 28,
+      "end": 49,
+      "sha16": "810fe12a2b692b7f",
+      "connstr_static": 36,
+      "originalConnStr_captured_at_class_init": 39
+    },
+    "frmUserLogin.cmbDatabases": {
+      "file": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+      "start": 911,
+      "end": 955,
+      "sha16": "0f8c659887683970",
+      "note": "runtime DB switch updates MainClass.Database and local conn but not MainClass.connstr"
+    }
+  },
+  "covered_by_existing_roots_not_new": [
+    "P7-115 restore-to-current-DB pattern itself (btnShow restore blocks)",
+    "P7-161 missing navigation target / failed reader zeroing",
+    "P7-165 notify settings delete/insert transaction"
+  ],
+  "observations_not_rooted": [
+    "frmUserLogin.cmbDatabases_SelectionChangeCommitted (911-955) updates MainClass.Database and the form-local conn but does not update MainClass.connstr — runtime database switch via this combo leaves ConnObj() on the login database; carried as observation pending a caller-flow trace of this combo's population and post-switch usage",
+    "BindingInvoice Inv_Sub load by InvGlobalID string interpolation (InvoiceOper 3366-3368) — system GUID value, low-risk interpolation family with P1-011 later stages"
+  ],
+  "new_roots": [
+    {
+      "id": "P7-173",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-174",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "branch-isolation",
+      "status": "open-not-remediated",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-175",
+      "severity": "High",
+      "certainty": "potential",
+      "type": "connection",
+      "status": "open-not-remediated",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-176",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-177",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "branch-isolation",
+      "status": "open-not-remediated",
+      "next_phase": "8"
+    }
+  ],
+  "findings_csv": {
+    "rows_before": 344,
+    "rows_after": 349,
+    "bom": false,
+    "crlf_required": true
+  },
+  "not_certified": [
+    "SqlClient parameter binding",
+    "deployed schema",
+    "runtime execution",
+    "WPF lifecycle",
+    "provider exception types observed at runtime",
+    "deployment SQL-auth mode prevalence (P7-175)"
+  ]
+}

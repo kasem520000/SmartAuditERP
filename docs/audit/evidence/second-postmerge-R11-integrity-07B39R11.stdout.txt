@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "errors": [],
+  "fresh_selected_method_contexts": 27,
+  "selected_source_file_identities": 13,
+  "active_SaveReceipt2_literal_invocations": 4,
+  "nonnumbered_source_questions": 6,
+  "focused_dictionary_comparisons": 17,
+  "canonical_capabilities_preserved": 26,
+  "canonical_ancestry_rows_preserved": 37,
+  "open_families": 4,
+  "available_dictionary_rows": 339,
+  "new_numbered_findings": 0,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "capability_exit_certificates_issued": 0,
+  "four_family_exit_certificates_issued": 0,
+  "new_accepted_external_handoffs": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "lost_local_R10_578_recertified": false,
+  "limit": "Static audit consistency only; not reading, chronology, provider/runtime behavior, authorization or financial acceptance."
+}
