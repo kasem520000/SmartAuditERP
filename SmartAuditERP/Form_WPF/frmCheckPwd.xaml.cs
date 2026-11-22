@@ -3,7 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Windows;
 using System.Windows.Input;
-using SmartAuditERP.Form_WPF;
+using SmartAuditERP.Class.Security;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MessageBox = System.Windows.MessageBox;
 
@@ -63,6 +63,22 @@ namespace SmartAuditERP.Form_WPF
 
         #region ── Password Check ─────────────────────────────
 
+        // P1-008 fix: كلمات البوابات الإدارية لا تُخزن نصاً في المصدر ولا تُقارن نصاً.
+        // تُخزن تجزئات PBKDF2 فقط، وتُقارن عبر PasswordHasher.Verify (زمن-ثابت).
+        // أول من يتحقق: تجزئة مخصصة للتثبيت من قاعدة البيانات (تمكّن تغييرها لكل موقع)،
+        // ثم تجزئة المصنع الافتراضية.
+        // ملاحظة نشر موثقة في REPAIR-LOG-STAGE1: كلمات المصنع أصبحت علنية تاريخياً،
+        // فعلى كل تثبيت حساس تعيين كلمة بوابته الخاصة (جدول OperationPermission، عمود pwd_hash).
+        private static readonly System.Collections.Generic.Dictionary<int, string> GatePasswordHashes =
+            new System.Collections.Generic.Dictionary<int, string>
+            {
+                { 0,   "PBKDF2$100000$d6Z+r9QiurpjzYFkHYnmew==$nLEQh9ssYW56N0PoiTP+TM2hYEjMQ9QTHP8tHftteOM=" },
+                { 100, "PBKDF2$100000$gxvHLCFLack4mnPwRNs8FQ==$F6Inkol75w2jaXISjEx6I1CKA6wTNw+8jxO70y8yp28=" },
+                { 200, "PBKDF2$100000$ypAGVuOVyDeSevHMmMlD8g==$p9d18ZY3U4NTTyRrFy8fXxerxu4IT/xYf6GgOr795MA=" },
+                { 300, "PBKDF2$100000$+zycvKH0aMMyB2u+HCshuA==$FFxXoHLPF7h1cBFeTvcTK/nTO4w6g2XkUfjW7gMvEBg=" },
+                { 400, "PBKDF2$100000$nAo1ayqWdXxE38uv6DbmUA==$xOYNJR450sxmeq+KqssFXkYgsLDLkaBttyt0DJGolD4=" }
+            };
+
         private void CheckPassword()
         {
             try
@@ -88,23 +104,11 @@ namespace SmartAuditERP.Form_WPF
                         break;
 
                     case 0:
-                        ValidateFixedPassword(enteredPassword, "auditor");
-                        break;
-
                     case 100:
-                        ValidateFixedPassword(enteredPassword, "auditor2021");
-                        break;
-
                     case 200:
-                        ValidateFixedPassword(enteredPassword, "2020AUDITOR");
-                        break;
-
                     case 300:
-                        ValidateFixedPassword(enteredPassword, "DARH2024");
-                        break;
-
                     case 400:
-                        ValidateFixedPassword(enteredPassword, "auditorzatca");
+                        VerifyGatePassword(enteredPassword, CheckType);
                         break;
 
                     default:
@@ -126,51 +130,168 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
+        /// <summary>
+        /// P1-011 fix: الاستعلام بارامترات SqlCommand بدل حشر كلمة المرور في نص SQL.
+        /// P1-008/P1-010: التحقق من pwd_hash (PBKDF2) إن وُجد، وإلا السقوط الآمن إلى النص القديم
+        /// مرة واحدة فقط بهدف المهاجرة الفورية إلى التجزئة ثم تصفير النص القديم.
+        /// </summary>
         private void CheckDatabasePassword(string enteredPassword)
         {
-            SqlDataAdapter adapter = new SqlDataAdapter(
-                "SELECT id, lastChanged FROM OperationPermission " +
-                $"WHERE IS_Deleted = 0 " +
-                $"AND pwd = '{enteredPassword}' " +
-                $"AND OperNo = {operNo}",
-                conn);
+            // 1) مسار التجزئة المعتمد (العمود الجديد إن أُنشئ لهذا التثبيت)
+            const string hashedQuery =
+                "SELECT id, pwd_hash FROM OperationPermission " +
+                "WHERE IS_Deleted = 0 AND OperNo = @operNo";
 
-            DataTable dataTable = new DataTable();
-            adapter.Fill(dataTable);
-
-            if (dataTable.Rows.Count == 0)
+            using (SqlCommand cmd = new SqlCommand(hashedQuery, conn))
             {
-                MessageBox.Show(
-                    "برجاء ادخال كلمة المرور بشكل صحيح",
-                    "⚠️ خطأ",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-
-                txtPass.Clear();
-                txtPass.Focus();
+                cmd.Parameters.Add("@operNo", SqlDbType.Int).Value = operNo;
+                using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                {
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        string storedHash = row["pwd_hash"] as string;
+                        if (!string.IsNullOrEmpty(storedHash) &&
+                            PasswordHasher.Verify(enteredPassword, storedHash))
+                        {
+                            Iscorrect = true;
+                            Close();
+                            return;
+                        }
+                    }
+                }
             }
-            else
+
+            // 2) مسار المهاجرة: النص القديم (متوافق مع التثبيتات القائمة) — يُهاجَر فور نجاحه
+            const string legacyQuery =
+                "SELECT id, pwd FROM OperationPermission " +
+                "WHERE IS_Deleted = 0 AND OperNo = @operNo";
+
+            using (SqlCommand cmd = new SqlCommand(legacyQuery, conn))
             {
-                Iscorrect = true;
-                Close();
+                cmd.Parameters.Add("@operNo", SqlDbType.Int).Value = operNo;
+                using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                {
+                    DataTable dt = new DataTable();
+                    adapter.Fill(dt);
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        string legacyPwd = row["pwd"] as string;
+                        if (!string.IsNullOrEmpty(legacyPwd) &&
+                            string.Equals(enteredPassword, legacyPwd, StringComparison.Ordinal))
+                        {
+                            MigrateLegacyPasswordToHash(operNo, legacyPwd);
+                            Iscorrect = true;
+                            Close();
+                            return;
+                        }
+                    }
+                }
+            }
+
+            MessageBox.Show(
+                "برجاء ادخال كلمة المرور بشكل صحيح",
+                "⚠️ خطأ",
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
+
+            txtPass.Clear();
+            txtPass.Focus();
+        }
+
+        /// <summary>
+        /// P1-010 fix: بعد آخر دخول ناجح بالنص القديم تُخزن التجزئة ويُصفَّر النص.
+        /// فشل التحديث لا يمنع الدخول (تمت المصادقة فعلاً) ويُسجل أثراً فقط.
+        /// </summary>
+        private void MigrateLegacyPasswordToHash(int operationNo, string legacyPassword)
+        {
+            try
+            {
+                string hash = PasswordHasher.Hash(legacyPassword);
+                const string migrateSql =
+                    "UPDATE OperationPermission SET pwd_hash = @hash, pwd = N'' " +
+                    "WHERE IS_Deleted = 0 AND OperNo = @operNo";
+
+                using (SqlCommand cmd = new SqlCommand(migrateSql, conn))
+                {
+                    cmd.Parameters.Add("@hash", SqlDbType.NVarChar, 512).Value = hash;
+                    cmd.Parameters.Add("@operNo", SqlDbType.Int).Value = operationNo;
+                    if (conn.State != ConnectionState.Open) conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Trace.WriteLine("PWD-MIGRATE failed oper=" + operationNo + ": " + ex.Message);
             }
         }
 
-        private void ValidateFixedPassword(string enteredPassword, string correctPassword)
+        /// <summary>
+        /// P1-008 fix: البوابات الإدارية (CheckType 0/100/200/300/400) تتحقق عبر تجزئات
+        /// PBKDF2 لا نصوص صريحة. أولوية التحقق: كلمة مخصصة للتثبيت من القاعدة (pwd_hash
+        /// لـ OperNo المقابل) ثم تجزئة المصنع. مقارنة زمن-ثابت عبر PasswordHasher.Verify.
+        /// </summary>
+        private void VerifyGatePassword(string enteredPassword, int gateType)
         {
-            if (enteredPassword == correctPassword)
+            // 1) تجاوز لكل تثبيت: إن عُيّنت pwd_hash لهذه البوابة في القاعدة فهي الحاكمة
+            try
+            {
+                const string overrideQuery =
+                    "SELECT pwd_hash FROM OperationPermission " +
+                    "WHERE IS_Deleted = 0 AND OperNo = @operNo AND pwd_hash IS NOT NULL";
+
+                using (SqlCommand cmd = new SqlCommand(overrideQuery, conn))
+                {
+                    cmd.Parameters.Add("@operNo", SqlDbType.Int).Value = gateType;
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                    {
+                        DataTable dt = new DataTable();
+                        adapter.Fill(dt);
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            string storedHash = row["pwd_hash"] as string;
+                            if (!string.IsNullOrEmpty(storedHash))
+                            {
+                                if (PasswordHasher.Verify(enteredPassword, storedHash))
+                                {
+                                    Iscorrect = true;
+                                    Close();
+                                    return;
+                                }
+                                // وُجدت كلمة مخصصة ولا تطابق: البوابة مغلقة بها فقط
+                                ShowGateDenied();
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                // فشل الوصول للقاعدة: نسقط إلى تجزئة المصنع — لا نص صريح في أي مسار
+            }
+
+            // 2) تجزئة المصنع
+            string factoryHash;
+            if (GatePasswordHashes.TryGetValue(gateType, out factoryHash) &&
+                PasswordHasher.Verify(enteredPassword, factoryHash))
             {
                 Iscorrect = true;
                 Close();
+                return;
             }
-            else
-            {
-                MessageBox.Show(
-                    "ليس لديك صلاحية، أو أن كلمة المرور المدخلة غير صحيحة",
-                    "⚠️ خطأ",
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
-            }
+
+            ShowGateDenied();
+        }
+
+        private void ShowGateDenied()
+        {
+            MessageBox.Show(
+                "ليس لديك صلاحية، أو أن كلمة المرور المدخلة غير صحيحة",
+                "⚠️ خطأ",
+                MessageBoxButton.OK,
+                MessageBoxImage.Warning);
         }
 
         #endregion

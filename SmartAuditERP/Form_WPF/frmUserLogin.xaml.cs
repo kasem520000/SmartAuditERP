@@ -185,27 +185,11 @@ namespace SmartAuditERP.Form_WPF
                     BuildConnectionStrings();
                 }
 
-                // التحقق من دخول auditor الخاص
-                string CombinedPwd = "";
+                // P1-008 fix: أُزيل «دخول الدعم الخاص» باسم auditor وكلمة قابلة للتخمين
+                // (auditor+السنة+الشهر). لا مسار دخول خاص بعد الآن: كل مستخدم — بمن فيهم
+                // حساب دعم إن احتجه الموزّع — يُنشأ في جدول Users بكلمة مجزأة كبقية
+                // المستخدمين، ويُدار من شاشة المستخدمين.
                 bool SecureLogin = false;
-
-                if (txtUser.Text.Trim().Equals("auditor", StringComparison.OrdinalIgnoreCase)
-                    && type == 1)
-                {
-                    CombinedPwd = "auditor"
-                                + DateTime.Now.Year.ToString()
-                                + DateTime.Now.Month.ToString();
-
-                    if (txtPwd.Password.Trim() != CombinedPwd)
-                    {
-                        MessageBox.Show("دخول غير صحيح", "",
-                            MessageBoxButton.OK, MessageBoxImage.Information);
-                        txtPwd.Clear();
-                        frmSecurityPnl.Secured = false;
-                        return;
-                    }
-                    SecureLogin = true;
-                }
 
                 // اللغة
                 MainClass.Language = cmblanguages.SelectedIndex == 0 ? "ar" : "en-us";
@@ -360,6 +344,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void SaveStartupData()
         {
+            // P1-009 fix: كلمتا المرور (التطبيق والخادم) لا تُكتبان نصاً صريحاً أبداً —
+            // تُشفّران DPAPI (نطاق مستخدم ويندوز الحالي) قبل الحفظ.
+            // P1-019 fix: الحفظ في %APPDATA%/SmartAuditERP لا في مجلد البرنامج.
             var startupData = new StartupData
             {
                 Remember = chkRemember.IsChecked == true,
@@ -368,25 +355,24 @@ namespace SmartAuditERP.Form_WPF
                 DatabaseName = cmbDatabases.SelectedValue?.ToString() ?? "",
                 Branch = cmbBranches.SelectedValue?.ToString() ?? "",
                 UserName = txtUser.Text,
-                Password = txtPwd.Password,
+                Password = Class.Security.SecretProtector.Protect(txtPwd.Password),
                 Language = cmblanguages.SelectedIndex.ToString()
             };
 
             if (conn_type == 1 && MainClass.UseServerAuth)
             {
                 startupData.ServerUserName = MainClass.NetUserId;
-                startupData.ServerPassword = MainClass.NetPwd;
+                startupData.ServerPassword = Class.Security.SecretProtector.Protect(MainClass.NetPwd);
             }
             if (conn_type == 2)
             {
                 startupData.ServerUserName = MainClass.NetUserId;
-                startupData.ServerPassword = MainClass.NetPwd;
+                startupData.ServerPassword = Class.Security.SecretProtector.Protect(MainClass.NetPwd);
             }
 
             string json = JsonConvert.SerializeObject(startupData, Formatting.Indented);
-            File.WriteAllText(
-                Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "StartupData.json"),
-                json);
+            Directory.CreateDirectory(StartupDataDir);
+            File.WriteAllText(StartupDataPath, json);
         }
 
         #endregion
@@ -452,12 +438,69 @@ namespace SmartAuditERP.Form_WPF
 
                 if (Type == 1)
                 {
-                    string pwd = SecureLogin ? "auditor" : txtPwd.Password;
+                    // P1-010 fix: أُزيل الباب الخلفي SecureLogin?"auditor" — كلمة الدخول
+                    // هي ما أدخله المستخدم دائماً، ولا كلمة صلبة في أي مسار.
+                    string pwd = txtPwd.Password;
                     da = new SqlDataAdapter(
-                        "select * from Users where username=@Username and pwd=@Password and IS_Deleted=0",
+                        "select * from Users where username=@Username and IS_Deleted=0",
                         conn);
                     da.SelectCommand.Parameters.AddWithValue("@Username", txtUser.Text);
-                    da.SelectCommand.Parameters.AddWithValue("@Password", pwd);
+
+                    DataTable dtUser = new DataTable();
+                    da.Fill(dtUser);
+
+                    if (dtUser.Rows.Count == 0)
+                    {
+                        frmSecurityPnl.Secured = false;
+                        string msg = MainClass.Language == "ar" ? "دخول غير صحيح" : "Error login";
+                        MessageBox.Show(msg, "", MessageBoxButton.OK, MessageBoxImage.Information);
+                        txtPwd.Clear();
+                        txtUser.Focus();
+                        return false;
+                    }
+
+                    // P1-010 fix: تحقق التجزئة أولاً (pwd_hash) ثم مهاجرة النص القديم لمرة واحدة
+                    DataRow userRow = null;
+                    foreach (DataRow r in dtUser.Rows)
+                    {
+                        string storedHash = r["pwd_hash"] as string;
+                        if (!string.IsNullOrEmpty(storedHash) &&
+                            Class.Security.PasswordHasher.Verify(pwd, storedHash))
+                        {
+                            userRow = r;
+                            break;
+                        }
+                    }
+                    if (userRow == null)
+                    {
+                        foreach (DataRow r in dtUser.Rows)
+                        {
+                            string legacyPwd = r["pwd"] as string;
+                            if (!string.IsNullOrEmpty(legacyPwd) &&
+                                string.Equals(pwd, legacyPwd, StringComparison.Ordinal))
+                            {
+                                MigrateUserPasswordToHash(conn,
+                                    Convert.ToInt32(r["id"]), legacyPwd);
+                                userRow = r;
+                                break;
+                            }
+                        }
+                    }
+                    if (userRow == null)
+                    {
+                        frmSecurityPnl.Secured = false;
+                        string msg = MainClass.Language == "ar" ? "دخول غير صحيح" : "Error login";
+                        MessageBox.Show(msg, "", MessageBoxButton.OK, MessageBoxImage.Information);
+                        txtPwd.Clear();
+                        txtUser.Focus();
+                        return false;
+                    }
+
+                    // ابحث بصفتك المستخدم المتحقق منه (الاستعلام الأصلي بقي بمعامل واحد @emp)
+                    da = new SqlDataAdapter(
+                        "select * from Users where id=@Id and IS_Deleted=0",
+                        conn);
+                    da.SelectCommand.Parameters.AddWithValue("@Id", userRow["id"]);
                 }
                 else
                 {
@@ -538,16 +581,63 @@ namespace SmartAuditERP.Form_WPF
 
         #region Load Data
 
+        // P1-009/P1-019 fix: ملف بيانات الإقلاع ينتقل من مجلد البرنامج (قد يكون للقراءة
+        // فقط لمستخدم قياسي) إلى %APPDATA%/SmartAuditERP، وكلمات المرور تُخزن مشفرة
+        // DPAPI (نطاق المستخدم الحالي) لا نصاً صريحاً.
+        private static string StartupDataDir
+            => Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "SmartAuditERP");
+
+        private static string StartupDataPath
+            => Path.Combine(StartupDataDir, "StartupData.json");
+
+        private static string LegacyStartupDataPath
+            => Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "StartupData.json");
+
+        private void MigrateUserPasswordToHash(SqlConnection dbConn, int userId, string legacyPassword)
+        {
+            // P1-010 fix: مهاجرة كلمة المستخدم النصية إلى تجزئة PBKDF2 وتصفير النص.
+            try
+            {
+                string hash = Class.Security.PasswordHasher.Hash(legacyPassword);
+                using (var cmd = new SqlCommand(
+                    "UPDATE Users SET pwd_hash=@hash, pwd=N'' WHERE id=@id", dbConn))
+                {
+                    cmd.Parameters.Add("@hash", SqlDbType.NVarChar, 512).Value = hash;
+                    cmd.Parameters.Add("@id", SqlDbType.Int).Value = userId;
+                    if (dbConn.State != ConnectionState.Open) dbConn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Trace.WriteLine(
+                    "USER-PWD-MIGRATE failed id=" + userId + ": " + ex.Message);
+            }
+        }
+
         public void LoadData()
         {
             try
             {
-                string jsonPath = Path.Combine(
-                    AppDomain.CurrentDomain.BaseDirectory, "StartupData.json");
-
-                if (!File.Exists(jsonPath))
+                // P1-019 fix: التهجير من مسار مجلد البرنامج القديم إلى APPDATA إن وُجد
+                if (!File.Exists(StartupDataPath) && File.Exists(LegacyStartupDataPath))
                 {
-                    File.Create(jsonPath).Dispose();
+                    try
+                    {
+                        Directory.CreateDirectory(StartupDataDir);
+                        File.Copy(LegacyStartupDataPath, StartupDataPath, true);
+                        // مسح القديم بعد النسخ — لا تبقى نسخة نصية بمجلد البرنامج
+                        File.WriteAllText(LegacyStartupDataPath, "{}");
+                    }
+                    catch { /* مسار قديم للقراءة فقط: نستمر بالمسار الجديد */ }
+                }
+
+                if (!File.Exists(StartupDataPath))
+                {
+                    Directory.CreateDirectory(StartupDataDir);
+                    File.Create(StartupDataPath).Dispose();
                     btnQuick.IsEnabled = false;
 
                     conn = conn_type == 2
@@ -561,7 +651,7 @@ namespace SmartAuditERP.Form_WPF
                 }
                 else
                 {
-                    string json = File.ReadAllText(jsonPath);
+                    string json = File.ReadAllText(StartupDataPath);
                     var startupData = JsonConvert.DeserializeObject<StartupData>(json);
 
                     if (startupData != null)
@@ -583,25 +673,32 @@ namespace SmartAuditERP.Form_WPF
                         cmblanguages.SelectedIndex = langIdx;
                         ConvertLanguage();
 
+                        // P1-009 fix: فك تشفير DPAPI لكلمة الخادم؛ فشل الفك (مستخدم ويندوز
+                        // مختلف/تلف/قيمة نصية قديمة) = تعامل كغير موجودة وأعد الإدخال.
+                        string serverPwd = Class.Security.SecretProtector
+                            .Unprotect(startupData.ServerPassword ?? "") ?? "";
+
                         if (conn_type == 1 && MainClass.UseServerAuth)
                         {
                             MainClass.NetUserId = startupData.ServerUserName;
-                            MainClass.NetPwd = startupData.ServerPassword;
+                            MainClass.NetPwd = serverPwd;
                             NetUserid = startupData.ServerUserName;
-                            Netpwd = startupData.ServerPassword;
+                            Netpwd = serverPwd;
                         }
                         if (conn_type == 2)
                         {
                             MainClass.NetUserId = startupData.ServerUserName;
-                            MainClass.NetPwd = startupData.ServerPassword;
+                            MainClass.NetPwd = serverPwd;
                             NetUserid = startupData.ServerUserName;
-                            Netpwd = startupData.ServerPassword;
+                            Netpwd = serverPwd;
                         }
 
                         if (startupData.Remember)
                         {
                             chkRemember.IsChecked = true;
-                            txtPwd.Password = startupData.Password;
+                            // P1-009 fix: كلمة مرور التطبيق تُفك من DPAPI — لا نص صريح
+                            txtPwd.Password = Class.Security.SecretProtector
+                                .Unprotect(startupData.Password ?? "") ?? "";
                             btnLogin.Focus();
                         }
                         else
@@ -614,11 +711,23 @@ namespace SmartAuditERP.Form_WPF
                     }
 
                     // بناء الاتصال
-                    conn = conn_type == 2
-                        ? new SqlConnection($"server={MainClass.Server};database={txtDatabase};" +
-                                            $"user id={NetUserid}; pwd={Netpwd}")
-                        : new SqlConnection($"server={MainClass.Server};database={txtDatabase};" +
+                    // P1-018 fix: وضع SQL Authentication للاتصال المحلي (conn_type==1
+                    // مع UseServerAuth) لم يعد يُتجاهَل — يُبنى باعتماد SQL لا trusted.
+                    if (conn_type == 2)
+                    {
+                        conn = new SqlConnection($"server={MainClass.Server};database={txtDatabase};" +
+                                            $"user id={NetUserid}; pwd={Netpwd}");
+                    }
+                    else if (MainClass.UseServerAuth)
+                    {
+                        conn = new SqlConnection($"server={MainClass.Server};database={txtDatabase};" +
+                                            $"user id={NetUserid}; pwd={Netpwd}");
+                    }
+                    else
+                    {
+                        conn = new SqlConnection($"server={MainClass.Server};database={txtDatabase};" +
                                             $"trusted_connection=true;");
+                    }
 
                     if (conn.State != ConnectionState.Open)
                         conn.Open();

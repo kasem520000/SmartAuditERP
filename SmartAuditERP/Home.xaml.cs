@@ -404,7 +404,21 @@ namespace SmartAuditERP
 
                 if (!this.IsLogin)
                 {
-                    this.ISSecureLogin();
+                    // P1-016 fix: نتيجة المصادقة حاسمة — فشل ISSecureLogin يوقف التشغيل
+                    // (إغلاق آمن) بدل المتابعة بجلسة غير موثقة.
+                    if (!this.ISSecureLogin())
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            MessageBox.Show(
+                                "فشل تسجيل الدخول — سيتم إغلاق البرنامج.",
+                                "المصادقة",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Warning);
+                            Application.Current.Shutdown();
+                        });
+                        return;
+                    }
                 }
 
                 this.conn = MainClass.ConnObj();
@@ -1839,17 +1853,33 @@ namespace SmartAuditERP
                     if (MainClass.Conn_type == 1)
                     {
                         // ═══ تنفيذ سكريبتات التحديث ═══
-                        ExecuteDbUpdateScripts(sqlConn);
+                        // P1-027 fix: تسجيل الإصدار لا يتم إلا إذا نجحت كل الدفعات؛
+                        // أي فشل يترك الإصدار القديم مسجلاً فتُعاد المحاولة في التشغيل التالي.
+                        bool allBatchesSucceeded = ExecuteDbUpdateScripts(sqlConn);
 
-                        // ═══ تسجيل الإصدار الجديد ═══
-                        RegisterNewVersion(sqlConn, versionInfo);
+                        if (allBatchesSucceeded)
+                        {
+                            // ═══ تسجيل الإصدار الجديد ═══
+                            RegisterNewVersion(sqlConn, versionInfo);
+                        }
+                        else
+                        {
+                            Dispatcher.Invoke(() =>
+                                MessageBox.Show(
+                                    "تعذر إكمال ترقية قاعدة البيانات (فشلت دفعة أو أكثر).\n" +
+                                    "لم يُسجّل الإصدار الجديد وستُعاد المحاولة في التشغيل القادم.",
+                                    "ترقية قاعدة البيانات",
+                                    MessageBoxButton.OK,
+                                    MessageBoxImage.Warning));
+                        }
 
                         // إغلاق الاتصال
                         if (sqlConn.State == ConnectionState.Open)
                             sqlConn.Close();
 
                         // إعدادات إضافية
-                        Common.AddGediaSettins();
+                        if (allBatchesSucceeded)
+                            Common.AddGediaSettins();
                     }
                     else
                     {
@@ -1908,13 +1938,16 @@ namespace SmartAuditERP
 
         /// <summary>
         /// تنفيذ سكريبتات التحديث من AlterDb
+        /// P1-027 fix: تعيد false عند فشل أي دفعة (يمنع تسجيل الإصدار) وtrue فقط عند نجاح الكل.
         /// </summary>
-        private void ExecuteDbUpdateScripts(SqlConnection sqlConn)
+        private bool ExecuteDbUpdateScripts(SqlConnection sqlConn)
         {
-            // ✅ تقسيم السكريبتات على GO
-            string[] sqlScripts = Properties.Resources.AlterDb.Split(
-                new[] { "GO" },
-                StringSplitOptions.RemoveEmptyEntries);
+            // ✅ P1-029 fix: التقسيم على سطور GO حقيقية فقط (لا كل ظهور نصي للسلسلة "GO")
+            // عبر SqlBatchSplitter — يمنع كسر السكريبتات التي تحوي GO داخل كلمات أو نصوص.
+            var sqlScripts = Class.Security.SqlBatchSplitter.Split(
+                Properties.Resources.AlterDb);
+            // ملاحظة: الصنف SmartAuditERP.Class.Security.SqlBatchSplitter — المسار
+            // الكامل محسوم بمساحة اسم SmartAuditERP الحالية لهذا الملف.
 
             if (sqlConn.State == ConnectionState.Closed)
                 sqlConn.Open();
@@ -1984,11 +2017,13 @@ namespace SmartAuditERP
                     MessageBox.Show(
                         $"تم تنفيذ {successCount} أمر بنجاح.\n" +
                         $"فشل {errorCount} أمر.\n" +
-                        $"يرجى مراجعة سجل الأخطاء.",
+                        $"لم يُسجَّل الإصدار الجديد؛ ستُعاد المحاولة في التشغيل القادم.",
                         "تحديث قاعدة البيانات",
                         MessageBoxButton.OK,
                         MessageBoxImage.Warning));
             }
+
+            return errorCount == 0;
         }
 
         /// <summary>

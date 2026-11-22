@@ -86,19 +86,70 @@ namespace SmartAuditERP.Form_WPF
                 double numericCode = 0;
                 double.TryParse(passwordText, out numericCode);
 
+                // P1-011 fix: كلا الاستعلامين بارامترات — لا حشر نص في SQL.
+                // P1-010 fix: التحقق من كلمة المرور عبر التجزئة (pwd_hash) أولاً
+                // ثم النص القديم مع مهاجرة فورية إلى التجزئة.
                 SqlDataAdapter adapterSecure = new SqlDataAdapter(
-                    $"select * from Users where emp={MainClass.UserID} and SecureCode={(int)numericCode} and LoginSecode=1",
+                    "select * from Users where emp=@emp and SecureCode=@code and LoginSecode=1",
                     conn);
+                adapterSecure.SelectCommand.Parameters.Add("@emp", SqlDbType.Int).Value = MainClass.UserID;
+                adapterSecure.SelectCommand.Parameters.Add("@code", SqlDbType.Int).Value = (int)numericCode;
                 DataTable dtSecure = new DataTable();
                 adapterSecure.Fill(dtSecure);
 
-                SqlDataAdapter adapterPwd = new SqlDataAdapter(
-                    $"select * from Users where emp={MainClass.UserID} and pwd='{passwordText}'",
-                    conn);
-                DataTable dtPwd = new DataTable();
-                adapterPwd.Fill(dtPwd);
+                bool unlocked = dtSecure.Rows.Count == 1;
 
-                if (dtSecure.Rows.Count == 1 || dtPwd.Rows.Count > 0)
+                if (!unlocked)
+                {
+                    SqlDataAdapter adapterPwd = new SqlDataAdapter(
+                        "select id, pwd, pwd_hash from Users where emp=@emp",
+                        conn);
+                    adapterPwd.SelectCommand.Parameters.Add("@emp", SqlDbType.Int).Value = MainClass.UserID;
+                    DataTable dtPwd = new DataTable();
+                    adapterPwd.Fill(dtPwd);
+
+                    foreach (DataRow r in dtPwd.Rows)
+                    {
+                        string storedHash = r["pwd_hash"] as string;
+                        if (!string.IsNullOrEmpty(storedHash) &&
+                            Class.Security.PasswordHasher.Verify(passwordText, storedHash))
+                        {
+                            unlocked = true;
+                            break;
+                        }
+                    }
+
+                    if (!unlocked)
+                    {
+                        foreach (DataRow r in dtPwd.Rows)
+                        {
+                            string legacyPwd = r["pwd"] as string;
+                            if (!string.IsNullOrEmpty(legacyPwd) &&
+                                string.Equals(passwordText, legacyPwd, StringComparison.Ordinal))
+                            {
+                                // مهاجرة لمرة واحدة: خزّن التجزئة وصفّر النص
+                                try
+                                {
+                                    string hash = Class.Security.PasswordHasher.Hash(legacyPwd);
+                                    using (var upd = new SqlCommand(
+                                        "UPDATE Users SET pwd_hash=@hash, pwd=N'' WHERE id=@id",
+                                        conn))
+                                    {
+                                        upd.Parameters.Add("@hash", SqlDbType.NVarChar, 512).Value = hash;
+                                        upd.Parameters.Add("@id", SqlDbType.Int).Value = Convert.ToInt32(r["id"]);
+                                        if (conn.State != ConnectionState.Open) conn.Open();
+                                        upd.ExecuteNonQuery();
+                                    }
+                                }
+                                catch { /* فشل المهاجرة لا يمنع فتح القفل */ }
+                                unlocked = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (unlocked)
                 {
                     Iscorrect = true;
                     Close();

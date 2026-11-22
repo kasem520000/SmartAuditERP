@@ -47,9 +47,12 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
+                // P1-010 fix: كلمة المرور لا تُعرض نصاً في الواجهة أبداً — الاسم فقط.
+                // P1-011 fix: استعلام بارامترات.
                 SqlDataAdapter adapter = new SqlDataAdapter(
-                    $"SELECT username, pwd FROM users WHERE emp = {MainClass.UserID}",
+                    "SELECT username FROM users WHERE emp = @emp",
                     conn);
+                adapter.SelectCommand.Parameters.Add("@emp", SqlDbType.Int).Value = MainClass.UserID;
 
                 DataTable dataTable = new DataTable();
                 adapter.Fill(dataTable);
@@ -57,8 +60,8 @@ namespace SmartAuditERP.Form_WPF
                 if (dataTable.Rows.Count > 0)
                 {
                     txtUser.Text = dataTable.Rows[0]["username"]?.ToString() ?? string.Empty;
-                    txtPass.Password = dataTable.Rows[0]["pwd"]?.ToString() ?? string.Empty;
                 }
+                txtPass.Password = ""; // حقل إدخال لكلمة جديدة — لا يُملأ من القاعدة
             }
             catch
             {
@@ -86,13 +89,22 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
+                // P1-011 fix: تحديث بارامترات — لا حشر نص في SQL.
+                // P1-010 fix: تُخزن تجزئة PBKDF2 في pwd_hash ويُصفّر عمود النص القديم.
+                string newHash = Class.Security.PasswordHasher.Hash(txtPass.Password);
+
                 if (conn.State != ConnectionState.Open)
                     conn.Open();
 
-                new SqlCommand(
-                    $"UPDATE Users SET pwd = '{txtPass.Password}' " +
-                    $"WHERE emp = {MainClass.UserID}",
-                    conn).ExecuteNonQuery();
+                using (var cmd = new SqlCommand(
+                    "UPDATE Users SET pwd_hash = @hash, pwd = N'' " +
+                    "WHERE emp = @emp",
+                    conn))
+                {
+                    cmd.Parameters.Add("@hash", SqlDbType.NVarChar, 512).Value = newHash;
+                    cmd.Parameters.Add("@emp", SqlDbType.Int).Value = MainClass.UserID;
+                    cmd.ExecuteNonQuery();
+                }
 
                 MessageBox.Show("تم الحفظ بنجاح ✅",
                     "نجاح", MessageBoxButton.OK, MessageBoxImage.Information);

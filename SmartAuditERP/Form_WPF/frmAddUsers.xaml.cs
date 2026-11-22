@@ -193,12 +193,15 @@ namespace SmartAuditERP.Form_WPF
                 // التحقق من تكرار اسم المستخدم (تعديل)
                 if (Code != -1)
                 {
-                    var da3 = new SqlDataAdapter(
-                        "select id from Users where emp<>" + Code +
-                        " and username=N'" + txtUser.Text + "' and IS_Deleted=0", conn);
-                    var dt3 = new DataTable();
-                    da3.Fill(dt3);
-                    if (dt3.Rows.Count > 0)
+                    // P1-011 fix: بارامترات بدل حشر النص في SQL
+                    var da3b = new SqlDataAdapter(
+                        "select id from Users where emp<>@emp " +
+                        "and username=@username and IS_Deleted=0", conn);
+                    da3b.SelectCommand.Parameters.Add("@emp", SqlDbType.Int).Value = Code;
+                    da3b.SelectCommand.Parameters.Add("@username", SqlDbType.NVarChar, 100).Value = txtUser.Text;
+                    var dt3b = new DataTable();
+                    da3b.Fill(dt3b);
+                    if (dt3b.Rows.Count > 0)
                     {
                         MessageBox.Show("اسم المستخدم مدخل من قبل، ادخل اسم مستخدم آخر",
                             "", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -208,9 +211,10 @@ namespace SmartAuditERP.Form_WPF
                 }
 
                 // التحقق إذا كان الموظف لديه مستخدم مسبق
+                // P1-011 fix: بارامترات
                 var daCheck = new SqlDataAdapter(
-                    "select id from Users where emp=" +
-                    cmbEmp.SelectedValue, conn);
+                    "select id from Users where emp=@emp", conn);
+                daCheck.SelectCommand.Parameters.Add("@emp", SqlDbType.Int).Value = cmbEmp.SelectedValue;
                 var dtCheck = new DataTable();
                 daCheck.Fill(dtCheck);
                 if (dtCheck.Rows.Count > 0)
@@ -220,18 +224,23 @@ namespace SmartAuditERP.Form_WPF
 
                 double.TryParse(txtSecureCode.Text, out double secureCodeVal);
 
+                // P1-010 fix: كلمة المرور تُخزن تجزئة PBKDF2 في pwd_hash ويُصفّر النص.
+                // P1-011 fix: كل القيم بارامترات — لا حشر نص في SQL.
+                string pwdHash = Class.Security.PasswordHasher.Hash(txtPass.Password);
+
                 if (conn.State != ConnectionState.Open) conn.Open();
 
                 SqlCommand cmd;
                 if (Code == -1)
                 {
                     cmd = new SqlCommand(
-                        "insert into Users(emp,username,pwd,SecureCode,LoginSecode,IS_Deleted)" +
-                        " values(" + cmbEmp.SelectedValue +
-                        ",@username,@pwd," + (int)secureCodeVal +
-                        "," + loginSecode + ",0)", conn);
+                        "insert into Users(emp,username,pwd_hash,pwd,SecureCode,LoginSecode,IS_Deleted)" +
+                        " values(@emp,@username,@pwdHash,N'',@secureCode,@loginSecode,0)", conn);
+                    cmd.Parameters.Add("@emp", SqlDbType.Int).Value = cmbEmp.SelectedValue;
                     cmd.Parameters.Add("@username", SqlDbType.NVarChar).Value = txtUser.Text;
-                    cmd.Parameters.Add("@pwd", SqlDbType.NVarChar).Value = txtPass.Password;
+                    cmd.Parameters.Add("@pwdHash", SqlDbType.NVarChar, 512).Value = pwdHash;
+                    cmd.Parameters.Add("@secureCode", SqlDbType.Int).Value = (int)secureCodeVal;
+                    cmd.Parameters.Add("@loginSecode", SqlDbType.Int).Value = loginSecode;
                     cmd.ExecuteNonQuery();
                     CLR();
                     cmbEmp.Focus();
@@ -239,12 +248,15 @@ namespace SmartAuditERP.Form_WPF
                 else
                 {
                     cmd = new SqlCommand(
-                        "update Users set emp=" + cmbEmp.SelectedValue +
-                        ",username=@username,pwd=@pwd,SecureCode=" + (int)secureCodeVal +
-                        ",LoginSecode=" + loginSecode +
-                        ",IS_Deleted=0 where id=" + Code, conn);
+                        "update Users set emp=@emp,username=@username,pwd_hash=@pwdHash,pwd=N''" +
+                        ",SecureCode=@secureCode,LoginSecode=@loginSecode" +
+                        ",IS_Deleted=0 where id=@id", conn);
+                    cmd.Parameters.Add("@emp", SqlDbType.Int).Value = cmbEmp.SelectedValue;
                     cmd.Parameters.Add("@username", SqlDbType.NVarChar).Value = txtUser.Text;
-                    cmd.Parameters.Add("@pwd", SqlDbType.NVarChar).Value = txtPass.Password;
+                    cmd.Parameters.Add("@pwdHash", SqlDbType.NVarChar, 512).Value = pwdHash;
+                    cmd.Parameters.Add("@secureCode", SqlDbType.Int).Value = (int)secureCodeVal;
+                    cmd.Parameters.Add("@loginSecode", SqlDbType.Int).Value = loginSecode;
+                    cmd.Parameters.Add("@id", SqlDbType.Int).Value = Code;
                     cmd.ExecuteNonQuery();
                     cmbEmp.Focus();
                 }

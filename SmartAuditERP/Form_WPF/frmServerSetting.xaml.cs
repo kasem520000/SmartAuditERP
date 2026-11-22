@@ -191,14 +191,10 @@ namespace SmartAuditERP.Form_WPF
 
         private void UpdateLicenseEndDate()
         {
-            try
-            {
-                if (conn.State != ConnectionState.Open) conn.Open();
-                new SqlCommand(
-                    "UPDATE License SET LicenseExpire = DATEADD(YEAR, 1, LicenseExpire);",
-                    conn).ExecuteNonQuery();
-            }
-            catch { /* تجاهل */ }
+            // P1-032 fix: توسيع تاريخ الترخيص لا يتم إلا باستجابة موقعة من خادم الترخيص
+            // (تحقق التوقيع عبر ManifestSignatureVerifier عند توفر بنية الإصدار الموقعة).
+            // حتى تجهز البنية، الاستدعاء التلقائي عند مجرد الاتصال معطل — لا تمديد بلا تحقق استحقاق.
+            // TODO(إصدار لاحق): ربط التمديد بمن خدمة ترخيص موقعة ثم استدعاء التحقق هنا.
         }
 
         #endregion
@@ -236,23 +232,17 @@ namespace SmartAuditERP.Form_WPF
 
                 new SqlCommand(createSql, conn1).ExecuteNonQuery();
 
-                string[] setupCmds =
-                {
-                    "IF NOT EXISTS (SELECT * FROM sys.server_principals WHERE name=N'auditor') " +
-                    "CREATE LOGIN [auditor] WITH PASSWORD=N'auditor', DEFAULT_DATABASE=[master]",
-                    "ALTER SERVER ROLE [sysadmin] ADD MEMBER [auditor]",
-                    "If Not EXISTS(SELECT * FROM sys.database_principals WHERE name=N'auditor') " +
-                    "CREATE USER [auditor] FOR LOGIN [auditor] WITH DEFAULT_SCHEMA=[dbo]",
-                    "ALTER ROLE [db_owner] ADD MEMBER[auditor]",
-                    "ALTER LOGIN sa ENABLE",
-                    "ALTER LOGIN sa WITH PASSWORD='auditor'",
-                };
-
-                foreach (var cmd in setupCmds)
-                {
-                    try { new SqlCommand(cmd, conn1).ExecuteNonQuery(); }
-                    catch { /* تجاهل أخطاء غير حرجة */ }
-                }
+                // P1-007 fix (Critical/security): أُزيل نهائياً كل من:
+                //   1) إنشاء login ثابت 'auditor' بكلمة مرور ثابتة
+                //   2) منحه دور sysadmin على مستوى الخادم
+                //   3) ALTER LOGIN sa ENABLE / تغيير كلمة sa
+                // القاعدة الجديدة تُنشأ بصلاحيات المسؤول المتصل فعلياً (conn1)،
+                // ومن يديرها هو المستخدم الذي أداره المسؤول في الواجهة — لا حساب خلفي.
+                // ملاحظة توافق: التثبيتات القائمة التي كانت تعتمد على login الخلفي
+                // 'auditor' تستمر بالعمل عبر trusted_connection أو اعتماد SQL الذي
+                // يدخله المسؤول؛ لا يُنشأ حساب جديد ولا تُمس حسابات قائمة.
+                // التطبيق لا يحتاج الحساب الخلفي: BuildConnStr يعتمد على مدخلات
+                // الواجهة أو trusted_connection حصراً.
             }
             catch (Exception ex)
             {
