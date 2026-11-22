@@ -1,0 +1,568 @@
+{
+  "schema_version": 1,
+  "kind": "R11-item3-search-family-and-unit-qty-price-discount-vat-local-completion",
+  "tag": "07B39R11",
+  "assessment_reference_date_utc": "2026-11-22",
+  "raw_clocks_are_calendar_authority": false,
+  "application_execution_count": 0,
+  "base_published_head": "0f6559cf6853cc580b6fe3a2c63100e40f673453",
+  "phase7C_started": true,
+  "item3_status_after_this_slice": "SearchByID/ItemOper and merge/replace/unit/qty/price/discount/VAT local work read; remaining openers and capability allowed-sets carried separately",
+  "bodies_read": {
+    "ItemOper": {
+      "file": "SmartAuditERP/Class/ItemOper.cs",
+      "methods": {
+        "SearchForBarcode": {
+          "start": 1908,
+          "end": 2080,
+          "sha16": "5f050dda6d0538ab"
+        },
+        "GetItemByID": {
+          "start": 1047,
+          "end": 1188,
+          "sha16": "4b62103a3f9e1a99"
+        },
+        "LoadItemInf": {
+          "start": 497,
+          "end": 581,
+          "sha16": "4b033023a1e3aac9"
+        },
+        "LoadItemDetails": {
+          "start": 587,
+          "end": 709
+        },
+        "ItemExpire": {
+          "start": 711,
+          "end": 727
+        },
+        "LoadUnitInf": {
+          "start": 733,
+          "end": 917,
+          "sha16": "001ecc48657123b7"
+        },
+        "LoadCustomerPrice": {
+          "start": 983,
+          "end": 1041,
+          "sha16": "fa50ae0bb923f1f4"
+        },
+        "CheckForCategoryOffer": {
+          "start": 1194,
+          "end": 1249,
+          "sha16": "24388814862d04be"
+        },
+        "CheckForItemOffer": {
+          "start": 1251,
+          "end": 1339,
+          "sha16": "53b269cb9ba82ec6"
+        },
+        "AddItemOffer": {
+          "start": 1341,
+          "end": 1361
+        },
+        "CalcRows": {
+          "start": 1367,
+          "end": 1531,
+          "sha16": "107db4366cdde087"
+        },
+        "CalcTotal": {
+          "start": 1533,
+          "end": 1645,
+          "sha16": "8c6d683e662b852a"
+        },
+        "IsValidDiscount": {
+          "start": 1651,
+          "end": 1713,
+          "sha16": "f17eeb1a99353ba1"
+        },
+        "IsValidPrice": {
+          "start": 1715,
+          "end": 1779,
+          "sha16": "ee4768bea00ad7d1"
+        },
+        "checkQtyLimi": {
+          "start": 1781,
+          "end": 1827,
+          "sha16": "8cfd901111ee2ac4"
+        },
+        "ISvalidQuantity": {
+          "start": 1829,
+          "end": 1902,
+          "sha16": "5a8bf1329ed6e8be"
+        }
+      }
+    },
+    "editor_search_variants_read": {
+      "frmInvPurch.SearchByID": {
+        "start": 613,
+        "end": 623,
+        "sha16": "b61bb4075b70bf50",
+        "path": "ItemOper.GetItemByID"
+      },
+      "frmInvPurch.SearchByName": {
+        "start": 566,
+        "end": 600
+      },
+      "frmInvPurch.SearchByCode": {
+        "start": 598,
+        "end": 610
+      },
+      "frmInvPurch.ShowItemUnit": {
+        "start": 974,
+        "end": 1008,
+        "sha16": "83cdbbc9731288d1"
+      },
+      "frmInvSale.SearchByID": {
+        "start": 665,
+        "end": 682,
+        "sha16": "9a16fe7b6a34ef0d",
+        "path": "ItemOper.GetItemByID + ISvalidQuantity"
+      },
+      "frmInvSale.SearchByName": {
+        "start": 612,
+        "end": 641,
+        "sha16": "8f39efa9773e96a9"
+      },
+      "frmInvSale.SearchByCode": {
+        "start": 642,
+        "end": 663,
+        "sha16": "fa47b319a1587ab4"
+      },
+      "frmInvSale.ShowItemUnit": {
+        "start": 795,
+        "end": 825,
+        "path": "ItemOper.LoadUnitInf on unit change"
+      },
+      "frmSalesInvoice.SearchByID": {
+        "start": 1393,
+        "end": 1477,
+        "sha16": "275ecd44571162d9",
+        "path": "local dedup ItemId-only + MsgExistItem"
+      },
+      "frmPOS.SearchByID": {
+        "start": 867,
+        "end": 955,
+        "sha16": "74835464cb0c934b",
+        "path": "local dedup ItemId+unit, no dialog, no RepeatItem setting"
+      },
+      "frmPOS.ReadBarcode": {
+        "start": 2675,
+        "end": 2782,
+        "sha16": "550b541332118c8d"
+      },
+      "frmPOS.LoadItemInf": {
+        "start": 957,
+        "end": 989,
+        "sha16": "0aa1f0f86084136d"
+      },
+      "frmPOS.CalcVAT": {
+        "start": 753,
+        "end": 780
+      },
+      "frmInvPOS.SearchByID": {
+        "start": 936,
+        "end": 955,
+        "sha16": "7454d2d925f204bd",
+        "path": "ItemOper.GetItemByID + ISvalidQuantity"
+      },
+      "frmInvPOS.SearchByCode": {
+        "start": 915,
+        "end": 934,
+        "sha16": "39502f60e10357ac"
+      },
+      "frmcontract.SearchByID": {
+        "start": 1747,
+        "end": 1762,
+        "sha16": "1961ae178d9b538b",
+        "path": "ItemOpercontract.GetItemByIDcontract"
+      },
+      "frmcontract.SearchByCode": {
+        "start": 1764,
+        "end": 1776,
+        "sha16": "7271a38fd58322b6"
+      },
+      "frmSalePurch.SearchByID": {
+        "start": 436,
+        "end": 470,
+        "sha16": "a9cab04a0c98d267",
+        "path": "local dedup ItemId-only"
+      },
+      "frmPurchInv.SearchByID": {
+        "start": 548,
+        "end": 575,
+        "sha16": "cb8cd600239cf4ff",
+        "path": "local dedup ItemIdDgv-only"
+      },
+      "frmInvInOutput.SearchByID": {
+        "start": 912,
+        "end": 950,
+        "sha16": "b2a81183e7f7c6b0",
+        "path": "local dedup ItemId-only + MessageBox YesNoCancel"
+      },
+      "frmProductionOrder.SearchByID": {
+        "start": 1159,
+        "end": 1210,
+        "sha16": "d26c4e692ee3850d",
+        "path": "local dedup ItemId-only + MsgExistItem"
+      },
+      "frmOffers.SearchByID": {
+        "start": 837,
+        "end": 878,
+        "sha16": "11e6bb0beaddb148",
+        "path": "no duplicate check at all"
+      },
+      "frmInventoryTransfer.SearchByID": {
+        "start": 602,
+        "end": 615,
+        "sha16": "7d7b4d04f2e0c3e3",
+        "path": "ItemOper.GetItemByID"
+      },
+      "frmInvInputOutput.SearchByID": {
+        "start": 427,
+        "end": 440,
+        "sha16": "12e23eb8f505b1f4",
+        "path": "ItemOper.GetItemByID"
+      }
+    }
+  },
+  "string_interpolation_sites_item_search_family": {
+    "note": "user-controlled strings (scanner/typed barcode, item code, item name, serial, client name) concatenated into SQL with no SqlParameter and no Replace-escaping verified in these files",
+    "replacing_escape_verified_absent_in": [
+      "Form_WPF/frmSalesInvoice.xaml.cs",
+      "Form_WPF/frmPOS.xaml.cs",
+      "Form_WPF/frmInvSale.xaml.cs",
+      "Form_WPF/frmInvPurch.xaml.cs",
+      "Form_WPF/frmcontract.xaml.cs",
+      "Form_WPF/frmSalePurch.xaml.cs",
+      "Form_WPF/frmInvPOS.xaml.cs",
+      "Class/ItemOper.cs"
+    ],
+    "sites": [
+      {
+        "file": "SmartAuditERP/Class/ItemOper.cs",
+        "line": 1927,
+        "fragment": "ItemUnits.barcode=N'{barcode}'"
+      },
+      {
+        "file": "SmartAuditERP/Class/ItemOper.cs",
+        "line": 1947,
+        "fragment": "Itembarcodes.barcode=N'{barcode}'"
+      },
+      {
+        "file": "SmartAuditERP/Class/ItemOper.cs",
+        "line": 1976,
+        "fragment": "ItemUnits.barcode=N'{shortBarcode}'"
+      },
+      {
+        "file": "SmartAuditERP/Class/ItemOper.cs",
+        "line": 1977,
+        "fragment": "Items.barcode=N'{shortBarcode}'"
+      },
+      {
+        "file": "SmartAuditERP/Form_WPF/frmPOS.xaml.cs",
+        "line": 2687,
+        "fragment": "ItemUnits.barcode=N'{barcode}'"
+      },
+      {
+        "file": "SmartAuditERP/Form_WPF/frmPOS.xaml.cs",
+        "line": 2704,
+        "fragment": "Itembarcodes.barcode=N'{barcode}'"
+      },
+      {
+        "file": "SmartAuditERP/Form_WPF/frmPOS.xaml.cs",
+        "line": 2725,
+        "fragment": "ItemUnits.barcode=N'{prefix}' or Items.barcode=N'{prefix}'"
+      },
+      {
+        "file": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs",
+        "line": 1293,
+        "fragment": "ItemUnits.barcode=N'\" + barcode"
+      },
+      {
+        "file": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs",
+        "line": 1312,
+        "fragment": "Itembarcodes.barcode=N'\" + barcode + \"' OR Items.barcode=N'\" + barcode"
+      },
+      {
+        "file": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs",
+        "line": 1345,
+        "fragment": "name=N'\" + (item name input)"
+      },
+      {
+        "file": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs",
+        "line": 1374,
+        "fragment": "Code=N'\" + (item code input)"
+      },
+      {
+        "file": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+        "line": 623,
+        "fragment": "name=N'\" + text"
+      },
+      {
+        "file": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+        "line": 648,
+        "fragment": "Code=N'\" + itemCode"
+      },
+      {
+        "file": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+        "line": 745,
+        "fragment": "ItemSerialNo=N'\" + serialNo"
+      },
+      {
+        "file": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+        "line": 751,
+        "fragment": "ItemSerialNo=N'\" + serialNo"
+      },
+      {
+        "file": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+        "line": 573,
+        "fragment": "name=N'{itemName}'"
+      },
+      {
+        "file": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+        "line": 598,
+        "fragment": "Code=N'{itemCode}'"
+      },
+      {
+        "file": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+        "line": 1770,
+        "fragment": "Code=N'{itemCode}'"
+      },
+      {
+        "file": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+        "line": 921,
+        "fragment": "Code=N'\" + itemCode + \"'"
+      },
+      {
+        "file": "SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs",
+        "line": 390,
+        "fragment": "name=N'{SrchName}'"
+      },
+      {
+        "file": "SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs",
+        "line": 418,
+        "fragment": "Code=N'{code}'"
+      },
+      {
+        "file": "SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs",
+        "line": 945,
+        "fragment": "ItemUnits.barcode=N'{barcode}'"
+      }
+    ],
+    "not_covered_by": "P1-011 evidence (47 password-site list; ItemOper absent from it) and not part of its tabled 38 low-risk numeric/escaped sites",
+    "system_generated_lower_risk_site": {
+      "file": "SmartAuditERP/Class/ItemOper.cs",
+      "line": 1859,
+      "fragment": "InvGlobalID='{invo.InvGlobalID}' (GUID-like system value)"
+    }
+  },
+  "pos_scale_barcode_wrong_row": {
+    "wScale1_branch": {
+      "adds_row_via": "SearchByID(rowItemId, unitId2) with IsBarcode=true forces new row (found&&!IsBarcode at line 906)",
+      "then_writes": "_gridSource[0].QuantDgv = qty at line 2745",
+      "calc_row_index": 0
+    },
+    "wScale2_branch": {
+      "adds_row_via": "same",
+      "then_writes": "_gridSource[0].priceDgv = price at line 2761"
+    },
+    "RowIndex_set_to_new_row_inside_SearchByID": "frmPOS.xaml.cs line 936",
+    "effect_when_grid_empty": "row 0 == new row; works by accident",
+    "effect_when_grid_has_items": "first cart row's quantity (wScale1) or price (wScale2) silently overwritten; weighed row stays qty=1"
+  },
+  "pos_scale_wscale_other_silent_drop": {
+    "branch_structure": "if (dt3.Rows.Count > 0 && Wscale != DBNull) { if (wScale==1.0) {...} else if (wScale==2.0) {...} } — no else",
+    "effect": "Wscale==3 (price+qty, supported by ItemOper.SearchForBarcode lines 2023-2051) or any other value: item found, nothing added, no message",
+    "frmPOS_lines": "2730-2769"
+  },
+  "repeat_item_dedup_divergence": {
+    "ItemId_only_ignoring_unit": [
+      {
+        "form": "frmSalesInvoice",
+        "lines": "1420-1448",
+        "dialog": "MsgExistItem"
+      },
+      {
+        "form": "frmSalePurch",
+        "lines": "455-470",
+        "dialog": "not re-read in this slice; dedup key confirmed ItemId-only"
+      },
+      {
+        "form": "frmPurchInv",
+        "lines": "563-575",
+        "dialog": "per existing audit trail"
+      },
+      {
+        "form": "frmInvInOutput",
+        "lines": "930-950",
+        "dialog": "MessageBox YesNoCancel"
+      },
+      {
+        "form": "frmProductionOrder",
+        "lines": "1171-1190",
+        "dialog": "MsgExistItem"
+      }
+    ],
+    "no_dedup_at_all": [
+      {
+        "form": "frmOffers",
+        "lines": "837-878"
+      }
+    ],
+    "ItemId_plus_unit_no_dialog_ignores_RepeatItem_setting": [
+      {
+        "form": "frmPOS",
+        "lines": "895-913"
+      }
+    ],
+    "ItemId_plus_unit_plus_barcode_with_dialog_and_RepeatItem_setting": [
+      {
+        "form": "ItemOper.GetItemByID",
+        "lines": "1082-1136"
+      }
+    ],
+    "unit_dimension_exists_in": "frmSalesInvoice.SearchByID receives unitId param (line 1393) but dedup at 1426 compares ItemId only"
+  },
+  "unit_change_resets_quantity": {
+    "callers": [
+      {
+        "file": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+        "start": 974,
+        "end": 1008
+      },
+      {
+        "file": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+        "start": 795,
+        "end": 825
+      }
+    ],
+    "shared_effect": "ItemOper.LoadUnitInf sets ItemQuantity=1 unconditionally at lines 761 and 796 (both branches), overwriting the entered quantity of an existing row",
+    "no_confirmation_or_restore": true
+  },
+  "vat_rate_display_vs_calc_divergence": {
+    "display_uses_raw_item_tax": [
+      {
+        "file": "SmartAuditERP/Form_WPF/frmPOS.xaml.cs",
+        "line": 971,
+        "fragment": "row.VatPerDgv = dt.Rows[0][\"tax\"].ToString()"
+      }
+    ],
+    "calc_uses_invoice_default_for_any_nonzero_item_tax": [
+      {
+        "file": "SmartAuditERP/Form_WPF/frmPOS.xaml.cs",
+        "start": 753,
+        "end": 780,
+        "fragment": "CalcVAT: if tax==0 return 0; else use InvObj.VAT"
+      },
+      {
+        "file": "SmartAuditERP/Class/ItemOper.cs",
+        "start": 532,
+        "end": 535,
+        "fragment": "ItemVatPerc = invo.VATperc; if (tax==0) ItemVatPerc = tax"
+      },
+      {
+        "file": "SmartAuditERP/Class/ItemOpercontract.cs",
+        "start": 1220,
+        "end": 1223
+      },
+      {
+        "file": "SmartAuditERP/Class/ItemOpercontract.cs",
+        "start": 1287,
+        "end": 1290
+      }
+    ],
+    "divergence_condition": "item tax nonzero and different from invoice default VAT rate",
+    "certainty": "potential (data-dependent runtime impact; static divergence confirmed)"
+  },
+  "dead_linq_sort": {
+    "file": "SmartAuditERP/Class/ItemOper.cs",
+    "lines": "1184-1185",
+    "fragment": "invo.InvoiceItems.OrderByDescending(x => x.ItemRowIndex);",
+    "effect": "lazy LINQ result discarded; no ordering happens; suggests unimplemented newest-first intent for POS rows"
+  },
+  "covered_by_existing_roots_not_new": [
+    "P4-026 unit price early return before pricing policy",
+    "P4-028 IsPriceFromBarcode static state",
+    "P4-014 stock guard non-atomic",
+    "P7-136 scale qty/price ignored in InvSale/InvPurch/InvInputOutput editors",
+    "P7-137 scale prefix first-unit selection",
+    "P7-138 scale payload conversion fall-to-zero",
+    "P7-142 customer pricing replaces unit price",
+    "P7-143 MsgExistItem action reversal",
+    "P7-151/152 property dialog qty effects",
+    "P7-154 item edit unit price staleness",
+    "P4-003/P4-004/P4-005 CalcTotal/CalcRows accumulation semantics"
+  ],
+  "new_roots": [
+    {
+      "id": "P7-166",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "sql-injection",
+      "status": "open-not-remediated",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-167",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-168",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-169",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-170",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-171",
+      "severity": "Medium",
+      "certainty": "potential",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-172",
+      "severity": "Low",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "next_phase": "8"
+    }
+  ],
+  "findings_csv": {
+    "rows_before": 337,
+    "rows_after": 344,
+    "bom": false,
+    "crlf_required": true
+  },
+  "not_certified": [
+    "SqlClient parameter binding",
+    "deployed schema",
+    "runtime execution",
+    "WPF lifecycle",
+    "compiler binding",
+    "financial acceptance",
+    "runtime data state (item tax values, Wscale values)"
+  ]
+}

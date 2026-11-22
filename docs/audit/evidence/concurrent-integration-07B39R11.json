@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "kind": "actual-concurrent-normal-merge-preparation-resolution-and-postmerge-integrity-not-a-new-unittest-run",
+  "assessment_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "branch": "arena/94ae8414-smartauditerp",
+  "our_core_parent": "004e2e7b916d0f5c2124521c65114e99e8ecf805",
+  "explicit_remote_parent": "9a552b7accb322ed014c419e8ae8f51df203ec04",
+  "normal_merge_started": true,
+  "actual_merge_initial_exit": 1,
+  "actual_conflict_paths": [
+    "docs/audit/PHASE-07B39R11.md",
+    "docs/audit/SOURCE-REVIEW-07B39R11.md",
+    "docs/audit/VALIDATION-07B39R11.md",
+    "docs/audit/findings.csv"
+  ],
+  "actual_unmerged_index_stages_verbatim": "100644 85186c980392fa3c50f62c2cd49f1ea474702694 2\tdocs/audit/PHASE-07B39R11.md\n100644 711b0a1626aabc08a9d3335cff5eec7767c195f6 3\tdocs/audit/PHASE-07B39R11.md\n100644 49fa4fb157a710b600af61f0e3b903e4bc278bba 2\tdocs/audit/SOURCE-REVIEW-07B39R11.md\n100644 11bcd2a9d83026353bb9d8090d4520cc61617281 3\tdocs/audit/SOURCE-REVIEW-07B39R11.md\n100644 97c1d3f0b5da7d35174b284184ffae763c46952e 2\tdocs/audit/VALIDATION-07B39R11.md\n100644 b57bc085ebfc7dcb0f2b6ef54d47073f6cdd5d08 3\tdocs/audit/VALIDATION-07B39R11.md\n100644 1f033030c37f1516f919e2f63212120d34222a5c 1\tdocs/audit/findings.csv\n100644 4e7d8ed8b2745e785a7cb5ee6924994f01a210b5 2\tdocs/audit/findings.csv\n100644 3a9671ce9bcf9626c695334e2f83c975f811a299 3\tdocs/audit/findings.csv\n",
+  "conflicts_resolved_explicitly": true,
+  "resolution": "Keep exact our three R11 reports and original335 at four conflicts; retain unique remote JSON unchanged. Both parent histories are prepared for a normal two-parent commit. No strategy-ours, forced push, other branch or application edit.",
+  "remote_five_member_archive_checked": {
+    "path": "docs/audit/evidence/remote-9a552b7-frozen-07B39R11.tar.gz",
+    "bytes": 55393,
+    "sha256": "c2ef6fecdc61b796c6ef4f0ca54202278bb929a4753bf54e7e26d5efa8f768ce"
+  },
+  "remote_five_members_match": true,
+  "our_report_identities_verified": [
+    {
+      "path": "docs/audit/PHASE-07B39R11.md",
+      "bytes": 10231,
+      "sha256": "11811ced80123954cd0b700a5bd266db5e0f0b103633b32c847449fc45b8e199"
+    },
+    {
+      "path": "docs/audit/SOURCE-REVIEW-07B39R11.md",
+      "bytes": 13189,
+      "sha256": "6499984f1fa8978e9959868d783b8092dc7491c60758b8fd638c66623a0ff316"
+    },
+    {
+      "path": "docs/audit/VALIDATION-07B39R11.md",
+      "bytes": 7669,
+      "sha256": "d8a80600692efe7675a4db5da6d5a1338ad167818179a99257a8890c95bf4739"
+    }
+  ],
+  "unique_remote_json_preserved_identity": {
+    "path": "docs/audit/evidence/search-item-family-contract-07B39R11.json",
+    "bytes": 16997,
+    "sha256": "28ac430d637212e6963e9cea8b83c6e49a8eeefbb39d7cb46cb78705afa0c52c"
+  },
+  "unique_remote_json_independently_source_adjudicated": false,
+  "remote_344_adopted_as_current_findings": false,
+  "current_original335_identity": {
+    "path": "docs/audit/findings.csv",
+    "bytes": 222939,
+    "sha256": "ce8c8b823a9a683d446d73dc4ffe564039f1542b649aeda79acd4c7a6600c42a"
+  },
+  "available_dictionary_rows": 339,
+  "R1_four_dictionaries_unchanged": true,
+  "new_accepted_numbered_roots": 0,
+  "records": [
+    {
+      "id": "concurrent-normal-merge",
+      "command": [
+        "git",
+        "merge",
+        "--no-ff",
+        "--no-commit",
+        "9a552b7accb322ed014c419e8ae8f51df203ec04"
+      ],
+      "actual_exit": 1,
+      "expected_exit": 1,
+      "matched": true,
+      "stdout": {
+        "path": "docs/audit/evidence/concurrent-normal-merge-07B39R11.stdout.txt",
+        "bytes": 518,
+        "sha256": "4aadfefbb3ec3df3981cc5f4b1153c867f45ed2780cd79c8d2f5bde51e2de8c7"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/concurrent-normal-merge-07B39R11.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "concurrent-explicit-four-path-resolution",
+      "command": [
+        "git",
+        "restore",
+        "--source=004e2e7b916d0f5c2124521c65114e99e8ecf805",
+        "--staged",
+        "--worktree",
+        "--",
+        "docs/audit/PHASE-07B39R11.md",
+        "docs/audit/SOURCE-REVIEW-07B39R11.md",
+        "docs/audit/VALIDATION-07B39R11.md",
+        "docs/audit/findings.csv"
+      ],
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "matched": true,
+      "stdout": {
+        "path": "docs/audit/evidence/concurrent-explicit-four-path-resolution-07B39R11.stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/concurrent-explicit-four-path-resolution-07B39R11.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "postmerge-R11-integrity",
+      "command": [
+        "/usr/bin/python",
+        "-B",
+        "-W",
+        "error::ResourceWarning",
+        "docs/audit/tools/disposition07b/verify_reconciliation_07B39R11.py",
+        "--rederive"
+      ],
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "matched": true,
+      "stdout": {
+        "path": "docs/audit/evidence/postmerge-R11-integrity-07B39R11.stdout.txt",
+        "bytes": 870,
+        "sha256": "bc1ecb98132922976a004c39c1a8f793e0aaf25c1c1b1da1aa75b32249a6ac19"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/postmerge-R11-integrity-07B39R11.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "postmerge-R9-integrity",
+      "command": [
+        "/usr/bin/python",
+        "-B",
+        "-W",
+        "error::ResourceWarning",
+        "docs/audit/tools/disposition07b/verify_save_edit.py",
+        "--verify",
+        "--rederive"
+      ],
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "matched": true,
+      "stdout": {
+        "path": "docs/audit/evidence/postmerge-R9-integrity-07B39R11.stdout.txt",
+        "bytes": 679,
+        "sha256": "ee01cc4c6ac8698c31854267dad057daefa05b8db89dcf9752b3b07c5af89305"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/postmerge-R9-integrity-07B39R11.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "postmerge-R11-open-gate",
+      "command": [
+        "/usr/bin/python",
+        "-B",
+        "-W",
+        "error::ResourceWarning",
+        "docs/audit/tools/disposition07b/verify_reconciliation_07B39R11.py",
+        "--require-complete"
+      ],
+      "actual_exit": 2,
+      "expected_exit": 2,
+      "matched": true,
+      "stdout": {
+        "path": "docs/audit/evidence/postmerge-R11-open-gate-07B39R11.stdout.txt",
+        "bytes": 870,
+        "sha256": "bc1ecb98132922976a004c39c1a8f793e0aaf25c1c1b1da1aa75b32249a6ac19"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/postmerge-R11-open-gate-07B39R11.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "all_integrity_and_open_gate_expectations_matched": true,
+  "Python_tools_syntax_parsed_without_execution": 169,
+  "source_inventory_827_unchanged": true,
+  "source_inventory_bytes": 29128444,
+  "run02_inputs_changed_since_capture": [
+    "docs/audit/PLAN.md",
+    "docs/audit/README.md"
+  ],
+  "only_late_index_prefixes_differ_and_original_suffixes_preserved": true,
+  "tests_added_or_rerun_for_remote_claims": 0,
+  "late_rev02_and_merge_receipt_were_589_inputs": false,
+  "committed_merge_created_at_receipt_time": false,
+  "next_git_action": "Normal git commit of the prepared two-parent merge; the containing commit hash cannot be embedded in its own content. Verify parents, clean status and ordinary push externally after commit.",
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "capability_exit_certificates_issued": 0,
+  "four_family_exit_certificates_issued": 0,
+  "new_accepted_external_handoffs": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false
+}
