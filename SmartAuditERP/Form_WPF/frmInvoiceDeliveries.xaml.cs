@@ -722,7 +722,10 @@ namespace SmartAuditERP.Form_WPF
                             InvGlobalID = invoice.InvGlobalID,
                             ItemId = item.ItemId,
                             ItemUnitId = item.UnitID,
-                            ItemQuantity = (float)item.ItemQuantity,
+                            // P4-023: التسليم الكلي بوحدة الأساس (ItemPrimaryQnty
+                            // = val) — نفس أساس التسليم الجزئي؛ كان يسجّل وحدة
+                            // البيع (val1) فتختلط الوحدتان في حساب المتبقي
+                            ItemQuantity = (float)item.ItemPrimaryQnty,
                             BatchDeliveryDate = DateTime.Now,
                             InvertoryEmp = MainClass.EmpNo,
                             RecipientID = invoice.Customer,

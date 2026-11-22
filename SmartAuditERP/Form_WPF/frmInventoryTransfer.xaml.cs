@@ -794,7 +794,7 @@ namespace SmartAuditERP.Form_WPF
         //                        SAVE OPERATIONS
         #endregion
 
-        private void SaveReceive()
+        private async void SaveReceive()
         {
             try
             {
@@ -817,7 +817,10 @@ namespace SmartAuditERP.Form_WPF
                     return;
 
                 _invoic.IsPrinted = false;
-                SaveAndPrint();
+                // P4-019: عقد نجاح مشترك — اعتماد الاستلام لا يُنشأ إلا إذا نجح
+                // حفظ المسودة أولاً (كان الجانبان يحفظان بلا اطلاع على النتيجة)
+                bool draftSaved = await SaveAndPrint();
+                if (!draftSaved) return;
 
                 if (_conn.State != ConnectionState.Open)
                     _conn.Open();
@@ -828,9 +831,8 @@ namespace SmartAuditERP.Form_WPF
                         it.InvertoryImpact = 1;
                     _invoic.IsPrinted = false;
                     _invoic.InvoiceStatus = 3;
+                    await SaveAndPrint();
                 }
-
-                SaveAndPrint();
                 CLR();
             }
             catch (Exception ex)
@@ -844,7 +846,7 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
-        private void SaveSend()
+        private async void SaveSend()
         {
             try
             {
@@ -907,9 +909,12 @@ namespace SmartAuditERP.Form_WPF
                     _invoic.InvoiceStatus = 3;
                 }
 
-                SaveAndPrint();
+                // P4-019: عقد نجاح مشترك — جانب الاستلام (مسودة وجهة المناقلة)
+                // لا يُنشأ إلا إذا نجح حفظ جانب الإرسال فعلاً؛ كان يُنشأ بعد
+                // استدعاء بلا نتيجة فتوجد «مناقلة» مستلمة بلا مرسل عند فشل الإرسال
+                bool sendSaved = await SaveAndPrint();
 
-                if (approveResult == MessageBoxResult.Yes)
+                if (approveResult == MessageBoxResult.Yes && sendSaved)
                 {
                     foreach (var it in _invoic.InvoiceItems)
                     {
@@ -924,7 +929,7 @@ namespace SmartAuditERP.Form_WPF
                     _invoic.ReffNo = _invoic.InvGlobalID;
                     _invoic.InvoiceStatus = 1;
                     _invoic.InvNote = $"استلام مناقلة من {cmbSafeFrom.Text} إلى {cmbSafeTo.Text} برقم {txtNo.Text}";
-                    SaveAndPrint();
+                    await SaveAndPrint();
                 }
 
                 RecalculateCost();
@@ -963,7 +968,7 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
-        private async void SaveAndPrint()
+        private async Task<bool> SaveAndPrint()
         {
             try
             {
@@ -1020,10 +1025,13 @@ namespace SmartAuditERP.Form_WPF
                     else
                         SaveGlobalIDOffLine(_invoic.InvGlobalID, _invoic.EntryGlobalID);
                 }
+                // P4-019: عقد نجاح مشترك — يُرجع نتيجة الحفظ للمستدعي
+                return saved;
             }
             catch (Exception ex)
             {
                 ShowError("خطأ أثناء الحفظ والطباعة", ex);
+                return false;
             }
         }
 
@@ -1547,16 +1555,22 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
-        private void btnSavePrint_Click(object sender, RoutedEventArgs e)
+        private async void btnSavePrint_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                // P4-019: زر الحفظ-مع-الطباعة يسلك نفس تفريق زر الحفظ — كان
+                // يستدعي مسار الاستلام (SaveReceive) لمستند إرسال جديد فيُنشأ
+                // جانب الاستلام وحده بلا إرسال
                 if (_invoic.ISNew && _invoic.ProcType == 2)
-                    SaveReceive();
+                {
+                    _invoic.IsPrinted = true;
+                    SaveSend();
+                }
                 else if (TabControl1.SelectedIndex == 0)
                 {
                     _invoic.IsPrinted = true;
-                    SaveAndPrint();
+                    await SaveAndPrint();
                 }
             }
             catch (Exception ex)

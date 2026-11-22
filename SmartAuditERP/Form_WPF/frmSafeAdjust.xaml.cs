@@ -672,17 +672,19 @@ namespace SmartAuditERP.Form_WPF
                 }
             }
 
+            // P4-018: التأكيد قبل فتح المعاملة — كان «لا» يخرج من داخل
+            // معاملة مفتوحة فتبقى حية على الاتصال (زومبي)
+            string confirmMsg = "هل أنت متأكد من حفظ التسوية كمسودة؟";
+            if (DXMessageBox.Show(confirmMsg, "تأكيد",
+                MessageBoxButton.YesNo, MessageBoxImage.Question)
+                == MessageBoxResult.No)
+                return;
+
             if (conn.State != ConnectionState.Open) conn.Open();
             var tx = conn.BeginTransaction();
 
             try
             {
-                string confirmMsg = "هل أنت متأكد من حفظ التسوية كمسودة؟";
-                if (DXMessageBox.Show(confirmMsg, "تأكيد",
-                    MessageBoxButton.YesNo, MessageBoxImage.Question)
-                    == MessageBoxResult.No)
-                    return;
-
                 if (Code == -1)
                 {
                     LoadAdjustNo();
@@ -774,6 +776,14 @@ namespace SmartAuditERP.Form_WPF
             }
             finally
             {
+                // P4-018: تنظيف المعاملة الفعلية (conn) لا الاتصال الآخر فقط —
+                // كانت finally تغلق conn1 وتترك معاملة conn مفتوحة حية
+                try
+                {
+                    if (tx.Connection != null) tx.Rollback();
+                }
+                catch { }
+                tx.Dispose();
                 if (conn1.State != ConnectionState.Closed) conn1.Close();
                 CLR();
             }
@@ -913,6 +923,14 @@ namespace SmartAuditERP.Form_WPF
             if (!invoiceOper.SaveInvoice(invoice, null, IsNew: true))
                 return;
 
+            // P4-017: ختم الاعتماد بعد نجاح حفظ الحركة لا قبلها — كان الختم
+            // ينفذ داخل BindToInvoice على اتصال مستقل قبل الحفظ فتبقى التسوية
+            // «معتمدة» بلا حركة مخزنية إذا فشل الحفظ
+            new SqlCommand(
+                $"UPDATE SafesAdjust SET Is_Approved=1 " +
+                $"WHERE id={Convert.ToInt32(txtNo.Text)}", conn)
+                .ExecuteNonQuery();
+
             ThreadContext.Properties["EmpID"] = MainClass.EmpNo;
             Logger.Info(
                 $" تم حفظ تسوية جردية برقم {invoice.InvoiceNo} " +
@@ -966,10 +984,8 @@ namespace SmartAuditERP.Form_WPF
 
             string invGlobalID = entryGlobalID;
 
-            new SqlCommand(
-                $"UPDATE SafesAdjust SET Is_Approved=1 " +
-                $"WHERE id={Convert.ToInt32(txtNo.Text)}", conn)
-                .ExecuteNonQuery();
+            // P4-017: نُقل ختم Is_Approved إلى ما بعد نجاح SaveInvoice
+            // (كان هنا — قبل حفظ الحركة وعلى اتصال مستقل)
 
             foreach (var row in ItemsList)
             {
@@ -1419,15 +1435,16 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
+            // P4-018: التأكيد قبل فتح المعاملة — كان «لا» يخرج ومعاملة مفتوحة حية
+            if (DXMessageBox.Show("هل أنت متأكد من حذف التسوية؟", "تأكيد",
+                MessageBoxButton.YesNo, MessageBoxImage.Question)
+                == MessageBoxResult.No || Code == -1)
+                return;
+
             if (conn.State != ConnectionState.Open) conn.Open();
             var tx = conn.BeginTransaction();
             try
             {
-                if (DXMessageBox.Show("هل أنت متأكد من حذف التسوية؟", "تأكيد",
-                    MessageBoxButton.YesNo, MessageBoxImage.Question)
-                    == MessageBoxResult.No || Code == -1)
-                    return;
-
                 new SqlCommand(
                     $"UPDATE SafesAdjust SET Is_Deleted=1 WHERE id={Code}",
                     conn, tx).ExecuteNonQuery();
@@ -1463,19 +1480,30 @@ namespace SmartAuditERP.Form_WPF
                 DXMessageBox.Show($"خطأ:\n{ex.Message}", "خطأ",
                                 MessageBoxButton.OK, MessageBoxImage.Error);
             }
+            finally
+            {
+                // P4-018: تنظيف المعاملة في كل المسارات
+                try
+                {
+                    if (tx.Connection != null) tx.Rollback();
+                }
+                catch { }
+                tx.Dispose();
+            }
         }
 
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
+            // P4-018: التأكيد قبل فتح المعاملة — كان «لا» يخرج ومعاملة مفتوحة حية
+            if (DXMessageBox.Show("هل أنت متأكد من إلغاء اعتماد التسوية؟",
+                "تأكيد", MessageBoxButton.YesNo, MessageBoxImage.Question)
+                == MessageBoxResult.No || Code == -1)
+                return;
+
             if (conn.State != ConnectionState.Open) conn.Open();
             var tx = conn.BeginTransaction();
             try
             {
-                if (DXMessageBox.Show("هل أنت متأكد من إلغاء اعتماد التسوية؟",
-                    "تأكيد", MessageBoxButton.YesNo, MessageBoxImage.Question)
-                    == MessageBoxResult.No || Code == -1)
-                    return;
-
                 new SqlCommand(
                     $"UPDATE SafesAdjust SET Is_Approved=0 WHERE id={Code}",
                     conn, tx).ExecuteNonQuery();
@@ -1504,6 +1532,16 @@ namespace SmartAuditERP.Form_WPF
                 tx.Rollback();
                 DXMessageBox.Show($"خطأ:\n{ex.Message}", "خطأ",
                                 MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                // P4-018: تنظيف المعاملة في كل المسارات
+                try
+                {
+                    if (tx.Connection != null) tx.Rollback();
+                }
+                catch { }
+                tx.Dispose();
             }
         }
 

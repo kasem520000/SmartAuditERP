@@ -2214,16 +2214,46 @@ namespace SmartAuditERP
 
                 foreach (ItemBatchDelivery delivery in itemBatchDeliveries)
                 {
+                    // P4-023: متبقي السطر يُحفظ مع كل تسليم — كمية الأصل
+                    // (val بوحدات الأساس، نفس أساس التسليم الجزئي) ناقص
+                    // المسلّم كله شاملاً هذا السطر، داخل المعاملة نفسها
+                    double originalQty = 0.0;
+                    double deliveredQty = 0.0;
+                    using (SqlCommand origCmd = new SqlCommand(
+                        "select ISNULL(sum(val),0) from Inv_Sub " +
+                        "where InvGlobalID=@InvGlobalID and ItemId=@ItemId",
+                        conn, transaction))
+                    {
+                        origCmd.Parameters.Add("@InvGlobalID", SqlDbType.NVarChar)
+                            .Value = delivery.InvGlobalID;
+                        origCmd.Parameters.Add("@ItemId", SqlDbType.Int)
+                            .Value = delivery.ItemId;
+                        originalQty = Convert.ToDouble(origCmd.ExecuteScalar());
+                    }
+                    using (SqlCommand delCmd = new SqlCommand(
+                        "select ISNULL(sum(ItemQuantity),0) from ItemBatchDeliveries " +
+                        "where InvGlobalID=@InvGlobalID and ItemId=@ItemId",
+                        conn, transaction))
+                    {
+                        delCmd.Parameters.Add("@InvGlobalID", SqlDbType.NVarChar)
+                            .Value = delivery.InvGlobalID;
+                        delCmd.Parameters.Add("@ItemId", SqlDbType.Int)
+                            .Value = delivery.ItemId;
+                        deliveredQty = Convert.ToDouble(delCmd.ExecuteScalar());
+                    }
+                    double remainingQty = originalQty -
+                        (deliveredQty + Convert.ToDouble(delivery.ItemQuantity));
+
                     using (SqlCommand cmd = new SqlCommand(
                         "INSERT INTO [dbo].[ItemBatchDeliveries]" +
                         " ([BatchDelivIncId],[BatchDelivNo],[InvGlobalID]," +
                         " [ItemId],[ItemUnitId],[ItemQuantity]," +
                         " [BatchDeliveryDate],[InvertoryEmp]," +
-                        " [RecipientID],[Note])" +
+                        " [RecipientID],[Note],[RemainingQuantity])" +
                         " VALUES(@BatchDelivIncId,@BatchDelivNo,@InvGlobalID," +
                         " @ItemId,@ItemUnitId,@ItemQuantity," +
                         " @BatchDeliveryDate,@InvertoryEmp," +
-                        " @RecipientID,@Note)",
+                        " @RecipientID,@Note,@RemainingQuantity)",
                         conn, transaction))
                     {
                         cmd.Parameters.Add("@BatchDelivIncId", SqlDbType.Int)
@@ -2246,6 +2276,8 @@ namespace SmartAuditERP
                             .Value = delivery.RecipientID;
                         cmd.Parameters.Add("@Note", SqlDbType.NVarChar)
                             .Value = delivery.Note;
+                        cmd.Parameters.Add("@RemainingQuantity", SqlDbType.Float)
+                            .Value = remainingQty;
                         cmd.ExecuteNonQuery();
                         lastGlobalId = delivery.InvGlobalID;
                     }

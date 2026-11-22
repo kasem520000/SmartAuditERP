@@ -515,6 +515,36 @@ namespace SmartAuditERP.Form_WPF
                 if (cmbUnits.SelectedIndex <= -1) return;
                 if (cmbItems.SelectedValue == null) return;
 
+                // P4-022: عامل تحويل وحدة المنتج المختارة هو المصدر الوحيد
+                // لتحويل كمية المنتج — نفس المعامل في تغيير الوحدة والكمية
+                double perc = GetSelectedUnitPerc();
+                if (perc > 0)
+                {
+                    double.TryParse(txtQty.Text, out double qty);
+
+                    foreach (var row in _itemsSource)
+                    {
+                        row.Qty = Math.Round(perc * row.BaseQty * qty, 2);
+                        row.Total = Math.Round(row.Qty * row.Price, 2);
+                        row.ApplyColor();
+                    }
+                }
+
+                CalcTot();
+            }
+            catch { }
+        }
+
+        // P4-022: عامل تحويل وحدة المنتج من ItemUnits — كان تغيير الكمية
+        // يستعمل UnitEquality الخاصة بالمكوّن فتختلف كمية المكونات بين
+        // الحدثين لنفس الوحدة والكمية
+        private double GetSelectedUnitPerc()
+        {
+            try
+            {
+                if (cmbItems.SelectedValue == null || cmbUnits.SelectedValue == null)
+                    return 0;
+
                 int itemId = Convert.ToInt32(cmbItems.SelectedValue);
                 int unitId = Convert.ToInt32(cmbUnits.SelectedValue);
 
@@ -525,24 +555,12 @@ namespace SmartAuditERP.Form_WPF
                 {
                     var dt = new DataTable();
                     da.Fill(dt);
-
                     if (dt.Rows.Count > 0)
-                    {
-                        double.TryParse(dt.Rows[0]["perc"].ToString(), out double perc);
-                        double.TryParse(txtQty.Text, out double qty);
-
-                        foreach (var row in _itemsSource)
-                        {
-                            row.Qty = Math.Round(perc * row.BaseQty * qty, 2);
-                            row.Total = Math.Round(row.Qty * row.Price, 2);
-                            row.ApplyColor();
-                        }
-                    }
+                        return Convert.ToDouble(dt.Rows[0]["perc"]);
                 }
-
-                CalcTot();
             }
             catch { }
+            return 0;
         }
 
         #endregion
@@ -562,11 +580,17 @@ namespace SmartAuditERP.Form_WPF
                 if (!double.TryParse(txtQty.Text, out double qty) || qty <= 0)
                     return;
 
+                // P4-022: نفس عامل تحويل وحدة المنتج المختارة المستعمل عند
+                // تغيير الوحدة — كان يستعمل UnitEquality الخاصة بكل مكوّن
+                // فتختلف كمية المكونات بين الحدثين لنفس المدخلات
+                double perc = GetSelectedUnitPerc();
+                if (perc <= 0) return;
+
                 foreach (var row in _itemsSource)
                 {
                     if (!string.IsNullOrEmpty(row.ItemName) && row.BaseQty > 0)
                     {
-                        row.Qty = Math.Round(qty * row.BaseQty * row.UnitEquality, 2);
+                        row.Qty = Math.Round(perc * row.BaseQty * qty, 2);
                         row.Total = Math.Round(row.Qty * row.Price, 2);
                         row.ApplyColor();
                     }
@@ -1320,7 +1344,10 @@ namespace SmartAuditERP.Form_WPF
                 // ═══ تحديد إدراج أو تعديل ═══
                 if (_procCode != -1)
                 {
-                    InvoiceOper.GetInvoiceGlobalID(ref invGlobalID, ref _procCode);
+                    // P4-021: التعديل يستخدم هوية الأمر المحملة نفسها — كان
+                    // يستدعي GetInvoiceGlobalID فيولّد هوية جديدة فلا يجد
+                    // UpdateInv أي صف لتحديثه وتُدرج السطور بهوية يتيمة بلا رأس
+                    invGlobalID = _invGlobalID;
 
                     new SqlCommand(
                         $"DELETE FROM Inv_Sub WHERE InvGlobalID='{invGlobalID}'",
@@ -1420,6 +1447,11 @@ namespace SmartAuditERP.Form_WPF
                 cmd.Parameters.Add("@UUID", SqlDbType.NVarChar).Value = "";
                 cmd.Parameters.Add("@ZatcaSent", SqlDbType.Bit).Value = false;
                 cmd.Parameters.Add("@TableNo", SqlDbType.NVarChar).Value = "";
+                // P4-020: الاستعلامان المشتركان (InsertInv/UpdateInv) يتطلبان
+                // هذين المعاملين — غيابهما كان يُسقط حفظ الإنتاج بخطأ
+                // «يجب تعريف المتغير» قبل أي كتابة
+                cmd.Parameters.Add("@TotalWithholdingTax", SqlDbType.Float).Value = 0;
+                cmd.Parameters.Add("@Balance_previews", SqlDbType.Float).Value = 0;
                 cmd.ExecuteNonQuery();
 
                 // ═══ إدراج الصنف المنتج (proc_type=1) ═══
@@ -1455,6 +1487,12 @@ namespace SmartAuditERP.Form_WPF
                 subCmd.Parameters.Add("@ItemAddedCost", SqlDbType.Float).Value = 0;
                 subCmd.Parameters.Add("@ItemPriceWithoutVAT", SqlDbType.Float).Value = exchPrice;
                 subCmd.Parameters.Add("@ItemCostCenter", SqlDbType.NVarChar).Value = "";
+                // P4-020: InsertInvSub المشترك يتطلب معاملات الاستقطاع والضريبة
+                // الإضافية في كل سطر — كان سطر المنتج يُسقطها
+                subCmd.Parameters.Add("@WithholdingTax", SqlDbType.Float).Value = 0;
+                subCmd.Parameters.Add("@WithholdingTaxPerc", SqlDbType.Float).Value = 0;
+                subCmd.Parameters.Add("@ItemAdditionalTax", SqlDbType.Float).Value = 0;
+                subCmd.Parameters.Add("@ItemAdditionalTaxPerc", SqlDbType.Float).Value = 0;
                 subCmd.ExecuteNonQuery();
 
                 // ═══ إدراج مكونات الإنتاج (proc_type=2) ═══
@@ -1492,6 +1530,9 @@ namespace SmartAuditERP.Form_WPF
                     compCmd.Parameters.Add("@ItemCostCenter", SqlDbType.NVarChar).Value = "";
                     compCmd.Parameters.Add("@ItemAdditionalTax", SqlDbType.Int).Value = 0;
                     compCmd.Parameters.Add("@ItemAdditionalTaxPerc", SqlDbType.Int).Value = 0;
+                    // P4-020: معاملا الاستقطاع مطلوبان في سطور المكونات أيضاً
+                    compCmd.Parameters.Add("@WithholdingTax", SqlDbType.Float).Value = 0;
+                    compCmd.Parameters.Add("@WithholdingTaxPerc", SqlDbType.Float).Value = 0;
                     compCmd.ExecuteNonQuery();
                 }
 
