@@ -309,27 +309,10 @@ namespace SmartAuditERP.Form_WPF
                 {
                     new SqlCommand(createSql, masterConn).ExecuteNonQuery();
 
-                    // إعداد المستخدم auditor
-                    string[] setupCommands =
-                    {
-                        "IF NOT EXISTS (SELECT * FROM sys.server_principals WHERE name=N'auditor') " +
-                        "CREATE LOGIN [auditor] WITH PASSWORD=N'auditor', DEFAULT_DATABASE=[master]",
-                        "ALTER SERVER ROLE [sysadmin] ADD MEMBER [auditor]",
-                        "IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name=N'auditor') " +
-                        "CREATE USER [auditor] FOR LOGIN [auditor] WITH DEFAULT_SCHEMA=[dbo]",
-                        "ALTER ROLE [db_owner] ADD MEMBER [auditor]",
-                        "ALTER LOGIN sa ENABLE",
-                        "ALTER LOGIN sa WITH PASSWORD = 'auditor'"
-                    };
-
-                    foreach (string setupCmd in setupCommands)
-                    {
-                        try
-                        {
-                            new SqlCommand(setupCmd, masterConn).ExecuteNonQuery();
-                        }
-                        catch { /* ignore */ }
-                    }
+                    // P1-007 fix (الموقع الثاني): أُزيل إنشاء login الخلفي 'auditor'
+                    // بكلمة صلبة ومنح sysadmin وتمكين/تغيير كلمة sa كلياً — كما في
+                    // frmServerSetting.ExecuteDbSetup. القاعدة تُدار باعتماد المسؤول
+                    // المتصل (masterConn) ولا حساب خلفي بعد الآن.
                 }
                 catch (Exception ex)
                 {
@@ -351,8 +334,9 @@ namespace SmartAuditERP.Form_WPF
                     newDbConn.Open();
 
                 // تشغيل سكريبت الجداول
-                string[] scripts = Properties.Resources.CrystalLiteDB
-                    .Split(new[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
+                // P1-029 fix: تقسيم على سطور GO حقيقية لا كل ظهور نصي للسلسلة
+                var scripts = Class.Security.SqlBatchSplitter.Split(
+                    Properties.Resources.CrystalLiteDB);
 
                 foreach (string script in scripts)
                 {
