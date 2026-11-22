@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "kind": "R9-three-prefixes-preserve-original-R8-index-bytes-not-history-or-date-rewrite",
+  "assessment_reference_date_utc": "2026-11-16",
+  "session_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "capability_exit_certificates_issued": 0,
+  "four_family_exit_certificates_issued": 0,
+  "new_accepted_external_handoffs": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "R2_R3_files_recovered": false,
+  "prior196_tests_recertified": false,
+  "this_postcapture_publication_was_run01_input": false,
+  "indexes": [
+    {
+      "path": "docs/audit/README.md",
+      "prefix": {
+        "bytes": 2398,
+        "sha256": "97bb8e916759c974278eaf07d5485e8a88451dabbd03073a0eb3e4dc608745bb"
+      },
+      "preserved_suffix": {
+        "bytes": 89927,
+        "sha256": "1bfca5b25ad15c396fe62260188b0bf7f201be17ecaae6751d1caaf5f19a03e4"
+      },
+      "after": {
+        "bytes": 92325,
+        "sha256": "bfdef6911315e5f5e3fe61de9b564b0d3059ceeb3a304ae23a956033cee44e0f"
+      }
+    },
+    {
+      "path": "docs/audit/PLAN.md",
+      "prefix": {
+        "bytes": 2525,
+        "sha256": "231d88c058ef74a0b598876f765bf9cd8fbeb856495b5887513c3c1829575c5d"
+      },
+      "preserved_suffix": {
+        "bytes": 143595,
+        "sha256": "abc700184ea57036f07f40f4f6e132a18180e69ebfa0aed1586e1eb5bf35dc0e"
+      },
+      "after": {
+        "bytes": 146120,
+        "sha256": "9d796697d08b8f74ebd6397dc9a0d8523cafd6048201eb81b3867ef5e42bbbd2"
+      }
+    },
+    {
+      "path": "docs/audit/IMPROVEMENTS.md",
+      "prefix": {
+        "bytes": 2349,
+        "sha256": "d8fdd3adc686ceb814d88405e49d22c42d319ad849f70b0ad800674696cd85fd"
+      },
+      "preserved_suffix": {
+        "bytes": 273936,
+        "sha256": "601d076c81877d25ae34aecd24acad24c9ccdae4346456505a77f1a3f45b2ca5"
+      },
+      "after": {
+        "bytes": 276285,
+        "sha256": "7e430534ca8f3956e9c844cef11d1621090d5bd56f4f2d259950beabeccc92d4"
+      }
+    }
+  ]
+}

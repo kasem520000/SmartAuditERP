@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "kind": "R9-postcapture-publication-integrity-not-unittest-or-exit",
+  "assessment_reference_date_utc": "2026-11-16",
+  "session_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "capability_exit_certificates_issued": 0,
+  "four_family_exit_certificates_issued": 0,
+  "new_accepted_external_handoffs": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "R2_R3_files_recovered": false,
+  "prior196_tests_recertified": false,
+  "this_postcapture_publication_was_run01_input": false,
+  "errors": [],
+  "canonical_capabilities": 26,
+  "ancestry_rows": 37,
+  "independent_family_nonexit_decisions": 4,
+  "new_document_links_checked": 47,
+  "run01_tests": 519,
+  "all_suites_green": false,
+  "run01_receipt": {
+    "path": "docs/audit/evidence/validation-current-run01-receipt-07B39R9.json",
+    "bytes": 437897,
+    "sha256": "b655acda10d25f94ba8dbb323476eaee84be694074eb036674144de4e09641ea"
+  },
+  "postcapture_B38_check": {
+    "path": "docs/audit/evidence/postcapture-B38-check-07B39R9.json",
+    "bytes": 1990,
+    "sha256": "7f7ca4cdc2f26d88b103e466863fd3b1b3c8bb6902f81077a5952b3f9522a471"
+  },
+  "publication_tool": {
+    "path": "docs/audit/tools/disposition07b/publish_save_edit.py",
+    "bytes": 41736,
+    "sha256": "2be35bd9149ed4aa14aebd276d224d2d9be1fdf6d8de4a6461fe8d4d2f321ac6"
+  }
+}

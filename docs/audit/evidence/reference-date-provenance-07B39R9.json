@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "kind": "R9-prospective-date-and-attribution-correction-not-historical-recertification",
+  "assessment_reference_date_utc": "2026-11-16",
+  "session_reference_date_utc": "2026-11-16",
+  "authority": "Current explicit session instruction; local process clocks and historical file labels are not date authority.",
+  "prospective_only": true,
+  "preserved_prior_identities": {
+    "docs/audit/evidence/entry-identities-07B39R9.json": {
+      "bytes": 413054,
+      "sha256": "37cdfa3d59d657aa2b5cced114df6d72ffd218f40340949c14cc0960a7edc2f7",
+      "carried_date_fields": {
+        "assessment_reference_date_utc": "2026-11-21",
+        "session_reference_date_utc": "2026-11-16"
+      }
+    },
+    "docs/audit/evidence/entry-recovery-identities-07B39R9.json": {
+      "bytes": 204735,
+      "sha256": "6f2bc729bc197a9e9c2bd0ee005618295b7b0d748537ab91cfcfa43afaab1348",
+      "carried_date_fields": {
+        "assessment_reference_date_utc": "2026-11-16"
+      }
+    },
+    "docs/audit/evidence/entry-recovery-receipt-07B39R9.json": {
+      "bytes": 1260,
+      "sha256": "a808e4bb50c83b28aeeca0fd78755aa1e923129b5a4d94fd70c4d05bf4f5df1a",
+      "carried_date_fields": {
+        "assessment_reference_date_utc": "2026-11-16"
+      }
+    },
+    "docs/audit/evidence/reference-date-provenance-07B39R8.json": {
+      "bytes": 2807,
+      "sha256": "f0368162e0658e7d306bfcfdaf910c978d5d6186e031af175c795716f2ee232b",
+      "carried_date_fields": {
+        "assessment_reference_date_utc": "2026-11-21",
+        "session_reference_date_utc": "2026-11-16",
+        "entry_original_assessment_reference_date_utc": "2026-11-16",
+        "frozen_R4_R7_or_R8_entry_dates_rewritten": false
+      }
+    }
+  },
+  "corrections": [
+    {
+      "topic": "R8 DATE 2026-11-21",
+      "disposition": "Retain historical bytes and consumed versions. No visible user instruction authenticates the R8 comment calling this a user-requested date; do not repeat that attribution or treat it as today."
+    },
+    {
+      "topic": "Continuation summary 2026-11-22",
+      "disposition": "Not adopted as current date authority. Any preserved raw 22-Nov clocks are recorded observations, not evidence overriding the current explicit 16-Nov session date."
+    },
+    {
+      "topic": "R9 recovery and entry freeze",
+      "disposition": "Preserve all three existing records exactly. Their inherited assessment/session labels describe the records, not a freshly authenticated calendar chronology. This prospective correction applies to new R9 authored evidence and captures."
+    },
+    {
+      "topic": "Disputed earlier chronology including R6",
+      "disposition": "Not authenticated, rewritten, reconstructed, or recertified by this correction."
+    }
+  ],
+  "historical_tests_relabelled_as_current": false,
+  "raw_clocks_are_calendar_authority": false,
+  "user_requested_reference_date_authenticated": false,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false
+}

@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "R9-verified-ff-only-recovery-of-published-R8-not-history-reconstruction",
+  "assessment_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "entry_HEAD": "10ba215152f722c8808aea0bb672c1d1d4d9d711",
+  "restored_HEAD": "23fa5b9eacfd6578dbb77fa5e398b500a2fa5b26",
+  "branch": "arena/94ae8414-smartauditerp",
+  "preserved_entry_files": 1216,
+  "preserved_entry_bytes": 66055726,
+  "already_identical_to_published": 1207,
+  "different_originals_preserved_in_existing_archive": 9,
+  "published_audit_files_restored": 1604,
+  "application_sources_checked_unchanged": 827,
+  "entry_manifest_path": "docs/audit/evidence/entry-recovery-identities-07B39R9.json",
+  "existing_archive_identity": {
+    "path": "docs/audit/evidence/untracked-entry-docs-07B39R4.tar.gz",
+    "bytes": 14560801,
+    "sha256": "2ab6e6d3df2e30b038cb3c9f99ac957d6e13b59b119b074207535b2e19b3cc87"
+  },
+  "new_duplicate_archive_committed": false,
+  "missing_R2_R3_reconstructed": false,
+  "prior196_tests_recertified": false,
+  "prior_R8_actual_results_not_relabelled_as_R9_tests": true,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false
+}

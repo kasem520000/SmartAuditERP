@@ -1,0 +1,1631 @@
+{
+  "schema_version": 1,
+  "kind": "R9-authored-substantive-Save-edit-source-dispositions-not-capability-completion",
+  "assessment_reference_date_utc": "2026-11-16",
+  "session_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "capability_exit_certificates_issued": 0,
+  "four_family_exit_certificates_issued": 0,
+  "new_accepted_external_handoffs": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "prior196_tests_recertified": false,
+  "R2_R3_files_recovered": false,
+  "source_decisions": [
+    {
+      "id": "R9D-PERIOD",
+      "source_disposition": "The period validator always writes allowing returns, including empty/error; selected callers also differ in whether they invoke it. P3-001 remains open, not a new result.",
+      "counterevidence_and_limit": "Do not infer actual accounting-period acceptance from dead rejection UI, or call a Print route fully unvalidated when its own checks exist.",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Class/Common.cs",
+          "selector": "CheckProiedAcc",
+          "start": 1272,
+          "end": 1302,
+          "syntax_utf8_sha256": "429ca412cc336e1350f017881efc1cd9a9d1d06e67a15c4c487b06f8e8e04c33"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+          "selector": "btnSave_Click",
+          "start": 554,
+          "end": 578,
+          "syntax_utf8_sha256": "1e65964bda4de3a03a26b62d23f7074c273f635aef01be970daf8f33078b79e3"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+          "selector": "btnSavePrint_Click",
+          "start": 590,
+          "end": 601,
+          "syntax_utf8_sha256": "f0a04a7bc4c620a086d04c57ff51c6814fa3c0daead02178b460129e64e489e5"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+          "selector": "btnSave_Click",
+          "start": 1196,
+          "end": 1253,
+          "syntax_utf8_sha256": "df89985c48127452d0b00240f953b5e6f432c63cc9f230a2187cf1d179a809d9"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+          "selector": "btnSavePrint_Click",
+          "start": 1255,
+          "end": 1282,
+          "syntax_utf8_sha256": "7f3398d5e056b976a0adbadb30f20f5a981a1238edf2eb5e250e94cac6c73e01"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+          "selector": "btnSave_Click",
+          "start": 2537,
+          "end": 2548,
+          "syntax_utf8_sha256": "addabe199ed0deaa3bf9fe6d3a5d21e44b96d3b3423b27142739ca0c1b477cc6"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+          "selector": "btnSavePrint_Click",
+          "start": 2550,
+          "end": 2561,
+          "syntax_utf8_sha256": "9c3d33764f4a6a6632f64cb8d7f6cb2d0a9931d8e6b2e57a058ae062212b2dc5"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+          "selector": "btnSave_Click",
+          "start": 1980,
+          "end": 1992,
+          "syntax_utf8_sha256": "2438a343227aef34032fe6b083a1f83df283f60346d8b4ca2842d4bd5ae97909"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+          "selector": "btnSavePrint_Click",
+          "start": 1994,
+          "end": 1998,
+          "syntax_utf8_sha256": "c2102ccd9287b3c0af73f3cc902cb05f1d03dc82cdee8ed6d1a06da639db0a2f"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+          "selector": "btnSave_Click",
+          "start": 1526,
+          "end": 1545,
+          "syntax_utf8_sha256": "d992f32fb40c0687ef9de7f7300d0c772f48ab64f29cfcfca13edeb04229105c"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+          "selector": "btnSavePrint_Click",
+          "start": 1547,
+          "end": 1563,
+          "syntax_utf8_sha256": "ed6be85c5515e8d08b83fca31a64a842cb9bf59d246c0c003ea823b0d55f0305"
+        }
+      ],
+      "observed_in_ERP": false,
+      "is_capability_exit": false,
+      "root_remediated": false
+    },
+    {
+      "id": "R9D-PERMISSION",
+      "source_disposition": "Common.AllowEdit fail-open, default-allowed FormPermission and different button classifiers are distinct from a resource-aware command decision. Read all16 local allowEdit/electronic flag writes and their whole containing bodies; contract allowEdit only initializes true.",
+      "counterevidence_and_limit": "Electronic policy can independently block Contract; POS/Sale have status/ProcType exceptions; one Home POS opener tests IsEnabled. No blanket all-permissions-absent or deployed unauthorized-save assertion.",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Class/Common.cs",
+          "selector": "AllowEdit",
+          "start": 1247,
+          "end": 1270,
+          "syntax_utf8_sha256": "d108d00d4a4d50e20cc7047939e05b52b13a4528babdf650371389c6d7140ffb"
+        },
+        {
+          "path": "SmartAuditERP/Class/Common.cs",
+          "selector": "ApplyEditAddPermissionInternal",
+          "start": 1448,
+          "end": 1487,
+          "syntax_utf8_sha256": "f6262e2d1b525ae72476dba8e0b47f6fa6d4ff1b0c85dddb253d5d395e739e10"
+        },
+        {
+          "path": "SmartAuditERP/Class/FormPermission.cs",
+          "selector": "ctor:FormPermission",
+          "start": 36,
+          "end": 43,
+          "syntax_utf8_sha256": "713fbafe0da7d5b20539c9153f1d46fed42085646b4737cf9bcb3acd8c3a33ba"
+        },
+        {
+          "path": "SmartAuditERP/Class/FormPermission.cs",
+          "selector": "ApplyFrmPermissionInternal",
+          "start": 86,
+          "end": 155,
+          "syntax_utf8_sha256": "e27ca15dbbd781e1bef43855bdb6a912278b25fad4b6a1c2752f631ffec1b7c4"
+        },
+        {
+          "path": "SmartAuditERP/Class/FormPermission.cs",
+          "selector": "IsSavePermissionButton",
+          "start": 271,
+          "end": 278,
+          "syntax_utf8_sha256": "f3af14242a3fd725780c366134eb145baa7ef8c6533de4b2e36896ea86df5919"
+        },
+        {
+          "path": "SmartAuditERP/Class/MainClass.cs",
+          "selector": "ApplyPermissionToForm@System.Windows.Window",
+          "start": 353,
+          "end": 413,
+          "syntax_utf8_sha256": "bab4b5750974fd845b6a2d1dfd56bfd5aa15ce660f66296c83d08b4ef93f9f18"
+        },
+        {
+          "path": "SmartAuditERP/Class/MainClass.cs",
+          "selector": "ApplyWpfPermissions",
+          "start": 418,
+          "end": 457,
+          "syntax_utf8_sha256": "b6b14fd7d12b16b82033b7fa79b5243663113ce9cd63513ac85f5c1b4f613a92"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+          "selector": "ConfigurePermissions",
+          "start": 256,
+          "end": 286,
+          "syntax_utf8_sha256": "6f8d42c50c4a608360f08118c63b922a8582ef79038a435134d77bda7cb0283a"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+          "selector": "LoadFoundation",
+          "start": 288,
+          "end": 308,
+          "syntax_utf8_sha256": "b5667397e336d323669fba92df78390f1c4cb302ed14450af0418da6c25595f6"
+        },
+        {
+          "path": "SmartAuditERP/Home.xaml.cs",
+          "selector": "btnPOS2_Click",
+          "start": 3247,
+          "end": 3269,
+          "syntax_utf8_sha256": "ec42f1d4284db7db725c3d8a68a798257a892e3949d2f52d4cca1eda0959a1b8"
+        }
+      ],
+      "observed_in_ERP": false,
+      "is_capability_exit": false,
+      "root_remediated": false
+    },
+    {
+      "id": "R9D-IO",
+      "source_disposition": "Save checks period helper and parsed txtNet > 0 except InvType9. SavePrint instead checks previous return with the same key twice; public PayBill consumes PayInvoice bool. They do not share one validator. Explicit null skips EntryOper and the central null branch commits the invoice. Do not call that a failed BindToEntry here: no entry was requested in this parent. Inventory.UpdateItemStock runs before SaveInvoice and has no reversal on saved=false in this body. This is loaded ItemsStock DataTable cache mutation, not a SQL stock commit. Log, print and sync are saved-guarded, then false returns before cost/message/CLR. Sync bool is awaited but not tested; async void returns no save outcome to the entry command.",
+      "counterevidence_and_limit": "Public PayInvoice true is a payment-dialog result, not SaveInvoice success; no all-route safety or SQL stock-loss claim.",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+          "selector": "SaveAndPrint",
+          "start": 603,
+          "end": 660,
+          "syntax_utf8_sha256": "a0cd5195fa7989c0ca220b510bfcc2d08eef721093cbfda26301603400dacc2b"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+          "selector": "BindingControls",
+          "start": 332,
+          "end": 359,
+          "syntax_utf8_sha256": "da8c2a6c4c60350bf190c7bfaa34d52a0959ea152b1a703837b8813a36b317cc"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+          "selector": "Navigate",
+          "start": 483,
+          "end": 498,
+          "syntax_utf8_sha256": "6f7be5f340a9fccd0a286a04f91e19295a5be968be82cf2b1d4c7e29f4b70146"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "MappingInvoice",
+          "start": 4040,
+          "end": 4338,
+          "syntax_utf8_sha256": "55253779f3e2f0f550526f95cbbd5f53bd40907693ad38fc5de45f9f0f37d1bb"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "SaveInvoice",
+          "start": 1310,
+          "end": 1912,
+          "syntax_utf8_sha256": "5f55ab58de1d9cd1f1e84f3e2f7d9661f926362d94505439fbd91ea7945fd77b"
+        },
+        {
+          "path": "SmartAuditERP/Class/Inventory.cs",
+          "selector": "UpdateItemStock",
+          "start": 321,
+          "end": 348,
+          "syntax_utf8_sha256": "eaa3394ddbce41677dd3d3d1e555a052bc2b58c5e2ad63b0c1c15ad546933cff"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+          "selector": "btnSave_Click",
+          "start": 554,
+          "end": 578,
+          "syntax_utf8_sha256": "1e65964bda4de3a03a26b62d23f7074c273f635aef01be970daf8f33078b79e3"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+          "selector": "btnSavePrint_Click",
+          "start": 590,
+          "end": 601,
+          "syntax_utf8_sha256": "f0a04a7bc4c620a086d04c57ff51c6814fa3c0daead02178b460129e64e489e5"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+          "selector": "PayBill",
+          "start": 1996,
+          "end": 2000,
+          "syntax_utf8_sha256": "27f342a2f5c5350348997124c4869cb9d63efe44a28cdd4a635708a398e78cf6"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+          "selector": "OnKeyDown",
+          "start": 1957,
+          "end": 1972,
+          "syntax_utf8_sha256": "231ed732d03a756433eb70b9f944e638eaf2d5bb6a27b967598d751e61fc55ec"
+        }
+      ],
+      "observed_in_ERP": false,
+      "is_capability_exit": false,
+      "root_remediated": false
+    },
+    {
+      "id": "R9D-PURCHASE",
+      "source_disposition": "Ordinary Save uses CheckProiedAcc, reference warning, parsed positive net except type9, confirmation and supplier. SavePrint uses nonempty/nonzero parent net, positive quantities and supplier, but no same period/reference/confirmation branch (P4-031). Counterexample to blanket null acceptance: for ProcType1/2 and InvType1/22, BindToEntry null immediately returns before cache/save. Other types may intentionally pass null. Cache mutation is before local save even in this parent that checks null entry; saved=false does not undo that cache delta. Print sets Invoic.ISNew=false before awaited SyncInvoice, so the later sync receives that flag; wasNew is separately kept for message/log. Broker is saved-guarded, unlike transfer. No remote wrapper bool is consumed.",
+      "counterevidence_and_limit": "Purchase rejects null entry for selected financial variants, contrasting other editors. Print quantity guards are real. Neither makes separate transactions atomic.",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+          "selector": "SaveAndPrint",
+          "start": 1305,
+          "end": 1436,
+          "syntax_utf8_sha256": "a09abf9fa268b13e7775963c5edf0e207c9eeb5cb0089eb78fb04ab3645066fc"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+          "selector": "SetPayAmounts",
+          "start": 1284,
+          "end": 1303,
+          "syntax_utf8_sha256": "34b5450ed29586b9d37af00fe556b205e75fb85529210bd65408a68e4837268b"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+          "selector": "Navigate",
+          "start": 481,
+          "end": 502,
+          "syntax_utf8_sha256": "5afe24e048125815631015dd4807afce283e86ce63f4747d321d33353c5f7840"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "SaveInvoice",
+          "start": 1310,
+          "end": 1912,
+          "syntax_utf8_sha256": "5f55ab58de1d9cd1f1e84f3e2f7d9661f926362d94505439fbd91ea7945fd77b"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "BindToEntry",
+          "start": 2252,
+          "end": 2615,
+          "syntax_utf8_sha256": "d48b0eb2c1b444f1d9d11933bd85c8c668200c693a9ac1ca5a26f1967f32c07a"
+        },
+        {
+          "path": "SmartAuditERP/Class/Inventory.cs",
+          "selector": "UpdateItemStock",
+          "start": 321,
+          "end": 348,
+          "syntax_utf8_sha256": "eaa3394ddbce41677dd3d3d1e555a052bc2b58c5e2ad63b0c1c15ad546933cff"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+          "selector": "btnSave_Click",
+          "start": 1196,
+          "end": 1253,
+          "syntax_utf8_sha256": "df89985c48127452d0b00240f953b5e6f432c63cc9f230a2187cf1d179a809d9"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+          "selector": "btnSavePrint_Click",
+          "start": 1255,
+          "end": 1282,
+          "syntax_utf8_sha256": "7f3398d5e056b976a0adbadb30f20f5a981a1238edf2eb5e250e94cac6c73e01"
+        }
+      ],
+      "observed_in_ERP": false,
+      "is_capability_exit": false,
+      "root_remediated": false
+    },
+    {
+      "id": "R9D-POS",
+      "source_disposition": "F6 uses btnPay period/employee/customer/items/quantity and status-specific electronic/edit guards. Public PayBill checks a different edit/payment exception; F7 Hold checks items/slot but skips btnPay validation and sets ProcType3. Unlike the other editors, a false local save returns before UpdateItemStock; successful cache changes are limited to ProcType1/2. Independent entry transaction and optional cloud-first precede invoice completion; table/order helpers use separate local calls, catch and do not join the header transaction. updat_table/Insert_Table_Order/Update_Table_Order and RptPrint_Tables call occur before if(!saved)return; Hold publishes HoldList and button state after a void SaveAndPrint call. Empty BackgroundWorker1_DoWork is not a sync execution.",
+      "counterevidence_and_limit": "Status/ProcType guards and stock-after-false-return are counterexamples. Hold slot full produces no save. No exact async schedule or remote durability claim.",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+          "selector": "SaveAndPrint",
+          "start": 2167,
+          "end": 2360,
+          "syntax_utf8_sha256": "d1ddb5c9ba2acbff2701224d92199b285b9e9ed91b9e39e353a808585d93c749"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+          "selector": "btnPay_Click",
+          "start": 1901,
+          "end": 2010,
+          "syntax_utf8_sha256": "1581c4cf7fa394f71b7a44fcf230769f61f280b05c7073cf4be2d6f04421c4fa"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+          "selector": "PayBill",
+          "start": 2012,
+          "end": 2153,
+          "syntax_utf8_sha256": "e0ec624b379299e416a79715103d6a900a22cca47be48789b76696d97e775647"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+          "selector": "btnHoldOrd_Click",
+          "start": 2503,
+          "end": 2543,
+          "syntax_utf8_sha256": "1b396c26fbcc16720657b477a108144197c64cf0df6ecab743ba40a7872676f8"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+          "selector": "CheckEditable",
+          "start": 1458,
+          "end": 1476,
+          "syntax_utf8_sha256": "58dd0748ddb6789d5747220aa0b2bc3cac233e5ec383ed24de86ad414aebc0e8"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+          "selector": "BindingDGV",
+          "start": 981,
+          "end": 1007,
+          "syntax_utf8_sha256": "119fa920b8c826928e763f2868c4ec30d085eb7a56f00ce01a1159dad92b5a10"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "SaveInvoice",
+          "start": 1310,
+          "end": 1912,
+          "syntax_utf8_sha256": "5f55ab58de1d9cd1f1e84f3e2f7d9661f926362d94505439fbd91ea7945fd77b"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "SyncInvoice",
+          "start": 2647,
+          "end": 2741,
+          "syntax_utf8_sha256": "ec9e9fcd5da672c3f143690e0df5bd77f18a1235effb0d1ad9abc712786ef786"
+        },
+        {
+          "path": "SmartAuditERP/Class/Inventory.cs",
+          "selector": "UpdateItemStock",
+          "start": 321,
+          "end": 348,
+          "syntax_utf8_sha256": "eaa3394ddbce41677dd3d3d1e555a052bc2b58c5e2ad63b0c1c15ad546933cff"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+          "selector": "btnHoldOrd_Click",
+          "start": 2503,
+          "end": 2543,
+          "syntax_utf8_sha256": "1b396c26fbcc16720657b477a108144197c64cf0df6ecab743ba40a7872676f8"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+          "selector": "Window_KeyDown",
+          "start": 298,
+          "end": 375,
+          "syntax_utf8_sha256": "e521994a1b2676c1a6b97cea51be3442c6cb4ada302b126569333e203d76de9f"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+          "selector": "BackgroundWorker1_DoWork",
+          "start": 820,
+          "end": 825,
+          "syntax_utf8_sha256": "5419ebf1a81f0061ba231f6d0c9bde18d3dace53e8fbee6658a18755ead5eafa"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+          "selector": "updat_table",
+          "start": 2921,
+          "end": 2937,
+          "syntax_utf8_sha256": "0175c03676d17a123601d12ae5885fda8f991c9015979cf47f682489d6e97fbb"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+          "selector": "Insert_Table_Order",
+          "start": 2939,
+          "end": 2956,
+          "syntax_utf8_sha256": "06c326b9df8e830f388649ceb1a0ab46a7a64574cc0cc710ab6d055030afdfa2"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+          "selector": "Update_Table_Order",
+          "start": 2958,
+          "end": 2974,
+          "syntax_utf8_sha256": "5c6a1a9fa1d833431462e5590fd1338d77940af2dac19e2b4d5f4e3ceb1a7a19"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+          "selector": "RptPrint_Tables",
+          "start": 2437,
+          "end": 2445,
+          "syntax_utf8_sha256": "03131556cb0a3413a01ea71bffc68cd56cbdfafa5cfef6c9ed3df11c490b94bf"
+        }
+      ],
+      "observed_in_ERP": false,
+      "is_capability_exit": false,
+      "root_remediated": false
+    },
+    {
+      "id": "R9D-SALE",
+      "source_disposition": "Save and SavePrint call the period helper; F6 calls ValidateInvoice directly. Validator checks return linkage, items, quantities, required salesman, confirmation, trial, net and credit client; its body contains no period call. SaveAndPrint edit guard applies to nonnew ProcType1/2 only outside the payment-status/not-updated exception, then electronic/allowEdit flags. This is not a universal save or document ACL. Log/print/sync/message are saved-guarded; successful print path sets ISNew=false before SyncInvoice. Quotation restores ProcType1 and CLR after calling void ValidateInvoice, including a synchronous validation rejection.",
+      "counterevidence_and_limit": "P7-162 remains written event duplication; quotation void rejection/reset is a separate unnumbered question. No executed duplicate posting or CLR alias claim.",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+          "selector": "SaveAndPrint",
+          "start": 1858,
+          "end": 1978,
+          "syntax_utf8_sha256": "6a780034a4ecca9ea2d411d0359a81072a33b23f65053ea1f801a38998d220b1"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+          "selector": "ValidateInvoice",
+          "start": 1684,
+          "end": 1856,
+          "syntax_utf8_sha256": "381d5feee9ef92e8a1065f0fef989848b532ddb869e0ada135c20c49c3f528c5"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+          "selector": "PayBill",
+          "start": 1980,
+          "end": 1996,
+          "syntax_utf8_sha256": "9f260bd769d5c9155f78c684d8fb9c5ef61cd56e866795811588230df69e56eb"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+          "selector": "btnSaveQuotation_Click",
+          "start": 2866,
+          "end": 2886,
+          "syntax_utf8_sha256": "a8fa9fc8c3d15ecb83e9a92c83654f66ddd11f59adcef49df8d685a3dbd9e749"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+          "selector": "btnRepaid_Click",
+          "start": 2659,
+          "end": 2666,
+          "syntax_utf8_sha256": "b06ff02b77a0729ba6378ba9fa4d676fff423f2ca97d37f60691346299bad84e"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "SaveInvoice",
+          "start": 1310,
+          "end": 1912,
+          "syntax_utf8_sha256": "5f55ab58de1d9cd1f1e84f3e2f7d9661f926362d94505439fbd91ea7945fd77b"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "MappingInvoice",
+          "start": 4040,
+          "end": 4338,
+          "syntax_utf8_sha256": "55253779f3e2f0f550526f95cbbd5f53bd40907693ad38fc5de45f9f0f37d1bb"
+        },
+        {
+          "path": "SmartAuditERP/Class/Inventory.cs",
+          "selector": "UpdateItemStock",
+          "start": 321,
+          "end": 348,
+          "syntax_utf8_sha256": "eaa3394ddbce41677dd3d3d1e555a052bc2b58c5e2ad63b0c1c15ad546933cff"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+          "selector": "Window_KeyDown",
+          "start": 252,
+          "end": 317,
+          "syntax_utf8_sha256": "765dd9f8beb64c10dfbef692615274e90a59a7d15d1111145300a2999f82cf66"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+          "selector": "ctor:frmInvSale",
+          "start": 66,
+          "end": 94,
+          "syntax_utf8_sha256": "ab1852fec34b2495e09ab0dd237c25f85a3f819e8d2f5b9423ed0a323d6f8393"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+          "selector": "btnSave_Click",
+          "start": 2537,
+          "end": 2548,
+          "syntax_utf8_sha256": "addabe199ed0deaa3bf9fe6d3a5d21e44b96d3b3423b27142739ca0c1b477cc6"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+          "selector": "btnSavePrint_Click",
+          "start": 2550,
+          "end": 2561,
+          "syntax_utf8_sha256": "9c3d33764f4a6a6632f64cb8d7f6cb2d0a9931d8e6b2e57a058ae062212b2dc5"
+        }
+      ],
+      "observed_in_ERP": false,
+      "is_capability_exit": false,
+      "root_remediated": false
+    },
+    {
+      "id": "R9D-CONTRACT",
+      "source_disposition": "Save calls period helper; SavePrint skips it and calls ValidateInvoice with item/quantity/salesman/confirmation/trial/net/client checks. The latter still performs meaningful checks; not a no-validation route. Constructor initializes allowEditInvoice=true; selected full-file flag-write census finds no later local write, and ConfigurePermissions only adjusts date/delete UI. Electronic invoice policy is independently loaded and can still block edits. InvoiceOperContract.SaveInvoice writes InvContratct and contract lines. Header SQL bridge shows all four allegedly missing tax parameters ARE added before ExecuteNonQuery; reject that proposed defect. The saved/IsPrinted/PrintNo branch only sets ISNew=false: no RptPrint call exists in SaveAndPrint. Sync bool is ignored. Message and CLR remain saved-guarded; cache does not.",
+      "counterevidence_and_limit": "Four tax header parameters are present, refuting suggested omission. Guarded electronic edits still reject; print-call absence is not swallowed printer outcome.",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+          "selector": "SaveAndPrint",
+          "start": 2316,
+          "end": 2431,
+          "syntax_utf8_sha256": "3db6ae74dd13fede5bcec5b1ea35bb321636f791700174bad176d7208b1583bd"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+          "selector": "ConfigurePermissions",
+          "start": 256,
+          "end": 286,
+          "syntax_utf8_sha256": "6f8d42c50c4a608360f08118c63b922a8582ef79038a435134d77bda7cb0283a"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+          "selector": "LoadFoundation",
+          "start": 288,
+          "end": 308,
+          "syntax_utf8_sha256": "b5667397e336d323669fba92df78390f1c4cb302ed14450af0418da6c25595f6"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+          "selector": "ValidateInvoice",
+          "start": 2164,
+          "end": 2314,
+          "syntax_utf8_sha256": "fc3ad98f88d3501f60d6b0652193cb84bd11eb0690cec9ef9b246ab5cf9b5e3c"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOperContract.cs",
+          "selector": "SaveInvoice",
+          "start": 819,
+          "end": 1444,
+          "syntax_utf8_sha256": "1a6e783d3d0d2ac9f366e9e9dc8451a6a1b93b5204f27254eefec2710fffe23b"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOperContract.cs",
+          "selector": "MappingInvoicecontract",
+          "start": 26,
+          "end": 264,
+          "syntax_utf8_sha256": "98277efa39fc0854bce5c4296c41073fa189ce4a1854b83fff4a5555850bdfe0"
+        },
+        {
+          "path": "SmartAuditERP/Class/Inventory.cs",
+          "selector": "UpdateItemStock",
+          "start": 321,
+          "end": 348,
+          "syntax_utf8_sha256": "eaa3394ddbce41677dd3d3d1e555a052bc2b58c5e2ad63b0c1c15ad546933cff"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+          "selector": "btnSave_Click",
+          "start": 1980,
+          "end": 1992,
+          "syntax_utf8_sha256": "2438a343227aef34032fe6b083a1f83df283f60346d8b4ca2842d4bd5ae97909"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+          "selector": "btnSavePrint_Click",
+          "start": 1994,
+          "end": 1998,
+          "syntax_utf8_sha256": "c2102ccd9287b3c0af73f3cc902cb05f1d03dc82cdee8ed6d1a06da639db0a2f"
+        }
+      ],
+      "observed_in_ERP": false,
+      "is_capability_exit": false,
+      "root_remediated": false
+    },
+    {
+      "id": "R9D-TRANSFER",
+      "source_disposition": "Save applies period helper then ProcType1 Receive / ProcType2 Send. SavePrint dispatches new ProcType2 to Receive, otherwise tab0 directly calls SaveAndPrint without the ordinary period branch. SaveSend and SaveReceive each invoke async-void SaveAndPrint twice. Send mutates to incoming/new, recalculates cost and shows success without a returned bool from either call (P4-019). Cache changes before branch rewrite and local SaveInvoice; two parent invocations can each mutate the loaded cache. No SQL stock result is executed or certified. Log/print/sync are saved-guarded but broker/offline section only checks Home._is_active, not saved. Success dialog in Send cannot establish two durable saves.",
+      "counterevidence_and_limit": "Source-store branch calculation/fallback1 is not document authorization; two void calls may perform synchronous work before returning. No invented timing or persistent stock result.",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+          "selector": "SaveAndPrint",
+          "start": 966,
+          "end": 1028,
+          "syntax_utf8_sha256": "e979b9e5dbcf4c1afd6d1869af773e82168e1282cac064bdea179d7879c398f1"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+          "selector": "SaveSend",
+          "start": 847,
+          "end": 964,
+          "syntax_utf8_sha256": "8a6f252da77b556d59c58e4d537578edccdcd897556b4d624b7778b3343b07d5"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+          "selector": "SaveReceive",
+          "start": 797,
+          "end": 845,
+          "syntax_utf8_sha256": "ce17babc313665e7ffd131af0969f4e0e5f78747288f43feec2e52f907c1f10d"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+          "selector": "RecalculateCost",
+          "start": 1030,
+          "end": 1045,
+          "syntax_utf8_sha256": "4a6674194ed2acfd2106d7d53f30a5742a0a4183888af83d0f1db19ea7414551"
+        },
+        {
+          "path": "SmartAuditERP/Class/Common.cs",
+          "selector": "GetInventoryBranch",
+          "start": 750,
+          "end": 766,
+          "syntax_utf8_sha256": "d9e2a991f0f9ad4bf302041b10f212e34ddc438d91d4828a2502042a74207d34"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "SaveInvoice",
+          "start": 1310,
+          "end": 1912,
+          "syntax_utf8_sha256": "5f55ab58de1d9cd1f1e84f3e2f7d9661f926362d94505439fbd91ea7945fd77b"
+        },
+        {
+          "path": "SmartAuditERP/Class/Inventory.cs",
+          "selector": "UpdateItemStock",
+          "start": 321,
+          "end": 348,
+          "syntax_utf8_sha256": "eaa3394ddbce41677dd3d3d1e555a052bc2b58c5e2ad63b0c1c15ad546933cff"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+          "selector": "btnSave_Click",
+          "start": 1526,
+          "end": 1545,
+          "syntax_utf8_sha256": "d992f32fb40c0687ef9de7f7300d0c772f48ab64f29cfcfca13edeb04229105c"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+          "selector": "btnSavePrint_Click",
+          "start": 1547,
+          "end": 1563,
+          "syntax_utf8_sha256": "ed6be85c5515e8d08b83fca31a64a842cb9bf59d246c0c003ea823b0d55f0305"
+        }
+      ],
+      "observed_in_ERP": false,
+      "is_capability_exit": false,
+      "root_remediated": false
+    },
+    {
+      "id": "R9D-MAPPING",
+      "source_disposition": "Both mapping bodies mutate parent IDs/numbers, copy header/collection properties, build Items projection and invoke local composite writer; VerifyIsNewInvoice has no true assignment in the read body. These are local facts, not a missing-model substitute.",
+      "counterevidence_and_limit": "Property setter copy/reference behavior and model enum semantics are not established by assignment syntax. No universal cloning, financial-formula or deep-alias certification.",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "MappingInvoice",
+          "start": 4040,
+          "end": 4338,
+          "syntax_utf8_sha256": "55253779f3e2f0f550526f95cbbd5f53bd40907693ad38fc5de45f9f0f37d1bb"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "BindingCompositeItems",
+          "start": 4340,
+          "end": 4417,
+          "syntax_utf8_sha256": "5f724ba4f89027df67a3f787d0df746ae0cf4f5d40efac59871bc3b5dacce656"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "VerifyIsNewInvoice",
+          "start": 2810,
+          "end": 2870,
+          "syntax_utf8_sha256": "31eae4812c6093b954feda104a570c64447b569d9278864fb7857eeafb67ebab"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "GetInvoiceGlobalID",
+          "start": 2872,
+          "end": 2902,
+          "syntax_utf8_sha256": "c27bee9102e64770c8e4477c6751e7661b2dbff1b62c82ad1f9ab5f8ed808409"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOperContract.cs",
+          "selector": "MappingInvoicecontract",
+          "start": 26,
+          "end": 264,
+          "syntax_utf8_sha256": "98277efa39fc0854bce5c4296c41073fa189ce4a1854b83fff4a5555850bdfe0"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOperContract.cs",
+          "selector": "BindingCompositeItems",
+          "start": 389,
+          "end": 466,
+          "syntax_utf8_sha256": "5f724ba4f89027df67a3f787d0df746ae0cf4f5d40efac59871bc3b5dacce656"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOperContract.cs",
+          "selector": "GetInvoiceGlobalIDcontract",
+          "start": 336,
+          "end": 366,
+          "syntax_utf8_sha256": "f7170761de688036322d6bdc97a4ac99fed1bfaf598c3daade9c4b1cddad2504"
+        }
+      ],
+      "observed_in_ERP": false,
+      "is_capability_exit": false,
+      "root_remediated": false
+    },
+    {
+      "id": "R9D-ENTRY",
+      "source_disposition": "Both BindToEntry bodies catch to null; central writers permit Entr==null and otherwise call EntryOper.SaveEnty with a new connection/transaction before parent commit. Full SaveEnty has no local empty/balance/period check. P3-003/P3-002 qualified.",
+      "counterevidence_and_limit": "Purchase explicitly returns on null for its financial variants; IO/Transfer intentionally pass null. Do not conflate all nulls or certify model/accounting invariants from syntax.",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "BindToEntry",
+          "start": 2252,
+          "end": 2615,
+          "syntax_utf8_sha256": "d48b0eb2c1b444f1d9d11933bd85c8c668200c693a9ac1ca5a26f1967f32c07a"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "SaveInvoice",
+          "start": 1310,
+          "end": 1912,
+          "syntax_utf8_sha256": "5f55ab58de1d9cd1f1e84f3e2f7d9661f926362d94505439fbd91ea7945fd77b"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOperContract.cs",
+          "selector": "BindToEntry",
+          "start": 468,
+          "end": 817,
+          "syntax_utf8_sha256": "26f48b40356b95436c9d615933f924cbaaae569609aa8278a1428a1c1d53216f"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOperContract.cs",
+          "selector": "SaveInvoice",
+          "start": 819,
+          "end": 1444,
+          "syntax_utf8_sha256": "1a6e783d3d0d2ac9f366e9e9dc8451a6a1b93b5204f27254eefec2710fffe23b"
+        },
+        {
+          "path": "SmartAuditERP/Class/EntryOper.cs",
+          "selector": "SaveEnty",
+          "start": 850,
+          "end": 935,
+          "syntax_utf8_sha256": "57748dbdc839e489a4b65a7c07591ed051e6360a3882648ca084c402baec7865"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+          "selector": "SaveAndPrint",
+          "start": 1305,
+          "end": 1436,
+          "syntax_utf8_sha256": "a09abf9fa268b13e7775963c5edf0e207c9eeb5cb0089eb78fb04ab3645066fc"
+        }
+      ],
+      "observed_in_ERP": false,
+      "is_capability_exit": false,
+      "root_remediated": false
+    },
+    {
+      "id": "R9D-STOCK",
+      "source_disposition": "Read helper mutates loaded ItemsStock rows by ItemId first match, then store check and PrimaryQnty delta; catches write debug. IO/Purchase/Transfer pre-save, Sale/Contract outside saved, POS saved success ProcType1/2 only.",
+      "counterevidence_and_limit": "This is in-memory DataTable cache consistency, not a SQL persistent-stock update or observed business loss. No prior-edit reverse delta is in this body, but not all event/reload owners are closed.",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Class/Inventory.cs",
+          "selector": "UpdateItemStock",
+          "start": 321,
+          "end": 348,
+          "syntax_utf8_sha256": "eaa3394ddbce41677dd3d3d1e555a052bc2b58c5e2ad63b0c1c15ad546933cff"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+          "selector": "SaveAndPrint",
+          "start": 603,
+          "end": 660,
+          "syntax_utf8_sha256": "a0cd5195fa7989c0ca220b510bfcc2d08eef721093cbfda26301603400dacc2b"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+          "selector": "SaveAndPrint",
+          "start": 2167,
+          "end": 2360,
+          "syntax_utf8_sha256": "d1ddb5c9ba2acbff2701224d92199b285b9e9ed91b9e39e353a808585d93c749"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+          "selector": "SaveAndPrint",
+          "start": 1305,
+          "end": 1436,
+          "syntax_utf8_sha256": "a09abf9fa268b13e7775963c5edf0e207c9eeb5cb0089eb78fb04ab3645066fc"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+          "selector": "SaveAndPrint",
+          "start": 1858,
+          "end": 1978,
+          "syntax_utf8_sha256": "6a780034a4ecca9ea2d411d0359a81072a33b23f65053ea1f801a38998d220b1"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+          "selector": "SaveAndPrint",
+          "start": 2316,
+          "end": 2431,
+          "syntax_utf8_sha256": "3db6ae74dd13fede5bcec5b1ea35bb321636f791700174bad176d7208b1583bd"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+          "selector": "SaveAndPrint",
+          "start": 966,
+          "end": 1028,
+          "syntax_utf8_sha256": "e979b9e5dbcf4c1afd6d1869af773e82168e1282cac064bdea179d7879c398f1"
+        }
+      ],
+      "observed_in_ERP": false,
+      "is_capability_exit": false,
+      "root_remediated": false
+    },
+    {
+      "id": "R9D-PUBLICATION",
+      "source_disposition": "Print/sync/broker/table/cache/messages have different saved guards. Attachment helpers use File.Copy and separate connections; ordinary encoded helper owns a connection while contract encoded SQL is inside parent. Sync noncloud posts/marks then returns default false; contract noncloud marks ordinary Inv.",
+      "counterevidence_and_limit": "P6-007 same-root ordinary ordering; remaining broker/remote/provider/helper contracts are not run or all reviewed. No end-to-end health from bool, log, green UI or thread scheduling.",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "SaveInvoice",
+          "start": 1310,
+          "end": 1912,
+          "syntax_utf8_sha256": "5f55ab58de1d9cd1f1e84f3e2f7d9661f926362d94505439fbd91ea7945fd77b"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "SyncInvoice",
+          "start": 2647,
+          "end": 2741,
+          "syntax_utf8_sha256": "ec9e9fcd5da672c3f143690e0df5bd77f18a1235effb0d1ad9abc712786ef786"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "insertDocument",
+          "start": 5426,
+          "end": 5452,
+          "syntax_utf8_sha256": "c506971c25d4c7caa3b892a150df8cebd25c43d81acd32e67fe25c824c78c012"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "InsertZatcaEncodedInvoice",
+          "start": 1914,
+          "end": 1943,
+          "syntax_utf8_sha256": "8898982e0be5b3e2535a768bbf343718811046c56f26baeee1bb8afcdf25c0bb"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOperContract.cs",
+          "selector": "SaveInvoice",
+          "start": 819,
+          "end": 1444,
+          "syntax_utf8_sha256": "1a6e783d3d0d2ac9f366e9e9dc8451a6a1b93b5204f27254eefec2710fffe23b"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOperContract.cs",
+          "selector": "SyncInvoice",
+          "start": 1516,
+          "end": 1610,
+          "syntax_utf8_sha256": "aed951cd102c426b01ef25de82fd5f6709c1000ebe2601190122e7d8509b1cc0"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOperContract.cs",
+          "selector": "insertDocument",
+          "start": 1475,
+          "end": 1514,
+          "syntax_utf8_sha256": "854ecfa432434f1f1144bd32eb14b2b09b84107d8ab570c89bae9bf6304ecf99"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+          "selector": "SaveAndPrint",
+          "start": 966,
+          "end": 1028,
+          "syntax_utf8_sha256": "e979b9e5dbcf4c1afd6d1869af773e82168e1282cac064bdea179d7879c398f1"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+          "selector": "SaveAndPrint",
+          "start": 2167,
+          "end": 2360,
+          "syntax_utf8_sha256": "d1ddb5c9ba2acbff2701224d92199b285b9e9ed91b9e39e353a808585d93c749"
+        }
+      ],
+      "observed_in_ERP": false,
+      "is_capability_exit": false,
+      "root_remediated": false
+    },
+    {
+      "id": "R9D-WRITER-SCOPE",
+      "source_disposition": "Whole central writers check employee/store/treasury/payment/customer/trial and key header updates by InvGlobalID; they receive no period/form permission/original connection/allowed-set parameter. Payload Branch set/update is not branch ownership authorization. Contract normal and empty-line fallback targets differ.",
+      "counterevidence_and_limit": "No claim deployed constraints or grants are absent, global keys collide, or any user accessed a forbidden invoice. RptInventory global-key reopen is a counterexample to blanket local-id claim. Header parameters are present, not missing-four.",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "SaveInvoice",
+          "start": 1310,
+          "end": 1912,
+          "syntax_utf8_sha256": "5f55ab58de1d9cd1f1e84f3e2f7d9661f926362d94505439fbd91ea7945fd77b"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOperContract.cs",
+          "selector": "SaveInvoice",
+          "start": 819,
+          "end": 1444,
+          "syntax_utf8_sha256": "1a6e783d3d0d2ac9f366e9e9dc8451a6a1b93b5204f27254eefec2710fffe23b"
+        },
+        {
+          "path": "SmartAuditERP/Class/StoredQueries.cs",
+          "text_range_key": "ordinary-header-and-line-SQL",
+          "start": 6,
+          "end": 10,
+          "decoded_range_utf8_sha256": "87292ce8414ac38b88a51b6a2ba07ac33b07ecbbbb3d530ac6a63f284d090ece"
+        },
+        {
+          "path": "SmartAuditERP/Class/StoredQueries.cs",
+          "text_range_key": "contract-header-and-line-SQL",
+          "start": 46,
+          "end": 50,
+          "decoded_range_utf8_sha256": "da93d76677aa427f99b9259cf51e510b4fe41f6c4e222c5e3c3d100ec69a52e9"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs",
+          "selector": "OpenInventoryTransfer",
+          "start": 545,
+          "end": 567,
+          "syntax_utf8_sha256": "a940f40fbff844cf63df53f47d5a3582fcd29ffd04427a45091b32ca91ba54c7"
+        }
+      ],
+      "observed_in_ERP": false,
+      "is_capability_exit": false,
+      "root_remediated": false
+    },
+    {
+      "id": "R9D-ALTERNATE-OPENERS",
+      "source_disposition": "Individually assessed21 Home factories, GenerateInvoice, three RptInventory helpers and contract detail opener. Name/Tag/lookup timing and type/proc/entry configurations differ; global-key reopens differ from old local-id routes. Contract detail sets UI InvType2 while query row type23.",
+      "counterevidence_and_limit": "26 selected opener OWNERS and31 creation expressions are not26 capability assessments, not all repository factories, and not WPF Loaded schedule proof. Receiver guards remain; type/policy questions stay unnumbered.",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Home.xaml.cs",
+          "selector": "stripTransfer_Click",
+          "start": 2764,
+          "end": 2775,
+          "syntax_utf8_sha256": "4d8781c3bf7d4a4c0429cdfd46e7c04e6551f704e49a55840831ecdfefcbbaee"
+        },
+        {
+          "path": "SmartAuditERP/Home.xaml.cs",
+          "selector": "stripFirstStock_Click",
+          "start": 2777,
+          "end": 2791,
+          "syntax_utf8_sha256": "c5eab52b051dbf02d9d0d6b007b716eb7fc3b85763b3901a52c0aa7b4478b4cd"
+        },
+        {
+          "path": "SmartAuditERP/Home.xaml.cs",
+          "selector": "stripInputInv_Click",
+          "start": 2793,
+          "end": 2804,
+          "syntax_utf8_sha256": "bb23f4171f1eb5be032bba92ea2a7f382c889f12cda0dbee9eaa70ddd6c24d48"
+        },
+        {
+          "path": "SmartAuditERP/Home.xaml.cs",
+          "selector": "stripOutputInv_Click",
+          "start": 2806,
+          "end": 2817,
+          "syntax_utf8_sha256": "11d3d91082365a08cf2780d1696c120ba02090c2688f44416ed58fc4c8b3cc38"
+        },
+        {
+          "path": "SmartAuditERP/Home.xaml.cs",
+          "selector": "stripInvertoryOrderInv_Click",
+          "start": 2833,
+          "end": 2844,
+          "syntax_utf8_sha256": "c11df761a26811d448ba613e8d4e4df54389a53243d180b756bf7138a6ada081"
+        },
+        {
+          "path": "SmartAuditERP/Home.xaml.cs",
+          "selector": "stripPurchInv_Click",
+          "start": 2981,
+          "end": 3003,
+          "syntax_utf8_sha256": "e0ab3288cc130894426adc3da01e41267d24e22e05e1bd436f5421cb51c92950"
+        },
+        {
+          "path": "SmartAuditERP/Home.xaml.cs",
+          "selector": "stripPurchReturn_Click",
+          "start": 3005,
+          "end": 3026,
+          "syntax_utf8_sha256": "91090309d9b9985f5058de55e592292ccf39d57826be36679c90de4201d58086"
+        },
+        {
+          "path": "SmartAuditERP/Home.xaml.cs",
+          "selector": "ToolStripNotficDeptPurch_Click",
+          "start": 3052,
+          "end": 3076,
+          "syntax_utf8_sha256": "75cac870cdff8b00019a0d3c03742ef8f69221907fe3bdd88ae6b3a72cb85aa5"
+        },
+        {
+          "path": "SmartAuditERP/Home.xaml.cs",
+          "selector": "ToolStripNotficCreditPurch_Click",
+          "start": 3078,
+          "end": 3102,
+          "syntax_utf8_sha256": "27629165c8a28d8b754b6d6e68cc7c3e3277460173d71948b9ebad7852bb834c"
+        },
+        {
+          "path": "SmartAuditERP/Home.xaml.cs",
+          "selector": "stripPOS_Click",
+          "start": 3235,
+          "end": 3245,
+          "syntax_utf8_sha256": "4b4307a0717c02ff5102029b19e31f60bb2159a959d9b864e646387aa2a5f78b"
+        },
+        {
+          "path": "SmartAuditERP/Home.xaml.cs",
+          "selector": "btnPOS2_Click",
+          "start": 3247,
+          "end": 3269,
+          "syntax_utf8_sha256": "ec42f1d4284db7db725c3d8a68a798257a892e3949d2f52d4cca1eda0959a1b8"
+        },
+        {
+          "path": "SmartAuditERP/Home.xaml.cs",
+          "selector": "stripSaleInv_Click",
+          "start": 3271,
+          "end": 3283,
+          "syntax_utf8_sha256": "9cf32cedd89f49c3f8c2cc6d760261c3ca2d06a84cb4b2a7fa3823b9645945ed"
+        },
+        {
+          "path": "SmartAuditERP/Home.xaml.cs",
+          "selector": "stripSaleRetu_Click",
+          "start": 3285,
+          "end": 3298,
+          "syntax_utf8_sha256": "e2faedfb5eb4316a76439265540ecbb7b51a5c020e3b20771fb498dad2fb7462"
+        },
+        {
+          "path": "SmartAuditERP/Home.xaml.cs",
+          "selector": "stripShowPrice_Click",
+          "start": 3300,
+          "end": 3312,
+          "syntax_utf8_sha256": "3b4683c83209d010bd27f55812b16bba9494fd133b067a4802fc81d8dfdb6e26"
+        },
+        {
+          "path": "SmartAuditERP/Home.xaml.cs",
+          "selector": "ToolstripNotficCreditSale_Click",
+          "start": 3384,
+          "end": 3403,
+          "syntax_utf8_sha256": "3e3b95e0d6406ea20cd24b6b09a1e87a9c517f2133a018b340fd0546e705b393"
+        },
+        {
+          "path": "SmartAuditERP/Home.xaml.cs",
+          "selector": "ToolstripNotficDeptsal_Click",
+          "start": 3405,
+          "end": 3424,
+          "syntax_utf8_sha256": "b1cf31f89d2e7c6430e4488c4c9b7fe2a7cbecbff61de7c7284c16e58ae09dd9"
+        },
+        {
+          "path": "SmartAuditERP/Home.xaml.cs",
+          "selector": "stripinvcontract_Click",
+          "start": 3434,
+          "end": 3453,
+          "syntax_utf8_sha256": "c360624734d0ca18fa5220c11348ee5693955c5094354a33aa51de56db7cb815"
+        },
+        {
+          "path": "SmartAuditERP/Home.xaml.cs",
+          "selector": "stripinvcontractreturn_Click",
+          "start": 3455,
+          "end": 3476,
+          "syntax_utf8_sha256": "683c726d1488b9d48308e3e510985b5a3bb82e7055b1498cf3e9c285e202c092"
+        },
+        {
+          "path": "SmartAuditERP/Home.xaml.cs",
+          "selector": "BtnSales_Click",
+          "start": 3892,
+          "end": 3904,
+          "syntax_utf8_sha256": "75d35939249a9afc5cca781a9355699a1dbbfa180829ef9f94a052a934d0ba4a"
+        },
+        {
+          "path": "SmartAuditERP/Home.xaml.cs",
+          "selector": "BtnPurches_Click",
+          "start": 3906,
+          "end": 3928,
+          "syntax_utf8_sha256": "98bc284dae1327a9a14b072603e144edbcc5a7c1fb86cb49d698dfcaa8454290"
+        },
+        {
+          "path": "SmartAuditERP/Home.xaml.cs",
+          "selector": "BtnQutation_Click",
+          "start": 3930,
+          "end": 3942,
+          "syntax_utf8_sha256": "4f6885df1290f5ae1d2c45c2db6966b341c7829b5399b2658cc2806b72de0a7c"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmSelectInv.xaml.cs",
+          "selector": "GenerateInvoice",
+          "start": 59,
+          "end": 248,
+          "syntax_utf8_sha256": "1e8ada5fc9a2723892f1f6893cff2db817812748259777cc47d6466a9c9ea3ea"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs",
+          "selector": "OpenInventoryTransfer",
+          "start": 545,
+          "end": 567,
+          "syntax_utf8_sha256": "a940f40fbff844cf63df53f47d5a3582fcd29ffd04427a45091b32ca91ba54c7"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs",
+          "selector": "OpenBeginningInventory",
+          "start": 569,
+          "end": 589,
+          "syntax_utf8_sha256": "79eae1ecd74f1fb9ff710fcf2f534e80001c04d59465730f364b0d9571dc25bb"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs",
+          "selector": "OpenInputOutput",
+          "start": 591,
+          "end": 610,
+          "syntax_utf8_sha256": "73422b0680550560fbbade7627a8b9db22414089132e99dfc21913dd8f0ee0a3"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvSalContactDetails.xaml.cs",
+          "selector": "BtnShowInv_Click",
+          "start": 854,
+          "end": 890,
+          "syntax_utf8_sha256": "6198587491f440aeb8a79cd71fe8049f05e0db9c6d7819e1d8d1a30e91ab8c3c"
+        }
+      ],
+      "observed_in_ERP": false,
+      "is_capability_exit": false,
+      "root_remediated": false
+    },
+    {
+      "id": "R9D-IMPORTS",
+      "source_disposition": "Four whole public imports call void SearchByID, then overwrite first matching ItemId price/quantity and recalculate/bind. GenerateInvoice can import into first open POS without a new window. No explicit inserted/merged/cancelled result is consumed.",
+      "counterevidence_and_limit": "P7-144 is contract/last-match and not automatically the same root. SearchByID/ItemOper and itemList producers remain readable-local obligations; no null/deep-copy/unit/financial-outcome assumptions.",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+          "selector": "ImportInventoryItems",
+          "start": 1978,
+          "end": 1994,
+          "syntax_utf8_sha256": "2e0009b10e4550bedd4038a8d752c8184c34fd4f3763095d072f4e9d7454a2c9"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+          "selector": "ImportInventoryItems",
+          "start": 2984,
+          "end": 3003,
+          "syntax_utf8_sha256": "16d37f8f5cb410c3a7b7994a18595f6d1c29a487f1e7f5fd0a2534f1895169a8"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+          "selector": "ImportInventoryItems",
+          "start": 2680,
+          "end": 2696,
+          "syntax_utf8_sha256": "f8e005b4a14d9a6df7fb341c13b1e2b66bd6a0e0d19ad9e56389b35ab2f31860"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+          "selector": "ImportInventoryItems",
+          "start": 2394,
+          "end": 2410,
+          "syntax_utf8_sha256": "2e9d276dc2c21e82f222c3c6217ca07b160e9dd1d3533ae57d49f2af9a2bb4d1"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmSelectInv.xaml.cs",
+          "selector": "GenerateInvoice",
+          "start": 59,
+          "end": 248,
+          "syntax_utf8_sha256": "1e8ada5fc9a2723892f1f6893cff2db817812748259777cc47d6466a9c9ea3ea"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmSelectInv.xaml.cs",
+          "selector": "FindOpenedWindow",
+          "start": 48,
+          "end": 53,
+          "syntax_utf8_sha256": "3597aa8e4f75938b78117ca245d0181b095815baf2200918a46879515cd20f12"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmSelectInv.xaml.cs",
+          "selector": "ShowWindowAndCloseCurrent",
+          "start": 37,
+          "end": 46,
+          "syntax_utf8_sha256": "5f843867e137dd1a998f5a88e01d8a73e01f0c2f1071d7a928e91ebf52d50f45"
+        }
+      ],
+      "observed_in_ERP": false,
+      "is_capability_exit": false,
+      "root_remediated": false
+    }
+  ],
+  "capabilities": {
+    "CAP7B38-D08": {
+      "canonical_capability_row": {
+        "id": "CAP7B38-D08",
+        "capability": "المخزون والحركة والصلاحية",
+        "entry_point": "آباء R1 الأربعة وLastProcess وفتح مستند/صنف",
+        "source_contract": "Inv/Inv_Sub/UDF/Opening ودفعة/مستودع/فرع/تاريخ",
+        "output_boundary": "InventoryData وReport/CSV وطفل مستند",
+        "related_part_numbers": "2;14;16;19",
+        "related_finding_ids": "P7-054;P7-055;P7-056;P7-057;P7-058;P7-059;P7-060;P7-061;P7-121;P7-129;P7-130",
+        "current_handoff_ids": "H7B38-01;H7B38-02;H7B38-03;H7B38-04",
+        "assessment_status": "historical-and-selected-current-source-assessment-boundaries-open",
+        "assessment_basis": "historical-FE-lineage-plus-explicit-current-source-scope-not-all-source-rereview",
+        "excluded_from_claim": "اكتمال body تاريخياً لا يغلق الأسرة؛ potential014/108/132 تبقى.",
+        "owner_role": "مالك المنتج والتقرير بالتنسيق مع مالك السياسة والمصدر",
+        "required_redacted_input": "راجع H7B38 ذات الصلة: قاموس/عقد/manifest منقح فقط؛ لا أسرار أو بيانات أعمال.",
+        "absence_impact": "يبقى هذا الحد غير محسوم؛ الإحالة لا تعني الموافقة أو غياب القدرة أو إغلاق الأسرة.",
+        "next_action": "لكل بقية R1: وحدة/حبيبة/كلفة/as-of/expiry ومعيار وهوية ومخرج ودليل أو استبعاد مسند/إحالة صريحة.",
+        "static_exit_criterion": "لكل بقية R1: وحدة/حبيبة/كلفة/as-of/expiry ومعيار وهوية ومخرج ودليل أو استبعاد مسند/إحالة صريحة.",
+        "local_semantic_obligations_complete": "false",
+        "whole_capability_certified": "false",
+        "runtime_status": "not-executed"
+      },
+      "whole_capability_certified": false,
+      "local_semantic_obligations_complete": false,
+      "readable_local_externalized": false,
+      "remaining_readable_local": "Cache-vs-persistent stock and transfer Save outcome traced, but remaining ItemOper stock/cost/reload owners, branch-status variants and every inventory/report/expiry obligation remain local and open.",
+      "source_decision_ids": [
+        "R9D-ALTERNATE-OPENERS",
+        "R9D-CONTRACT",
+        "R9D-ENTRY",
+        "R9D-IMPORTS",
+        "R9D-IO",
+        "R9D-MAPPING",
+        "R9D-PERIOD",
+        "R9D-PERMISSION",
+        "R9D-POS",
+        "R9D-PUBLICATION",
+        "R9D-PURCHASE",
+        "R9D-SALE",
+        "R9D-STOCK",
+        "R9D-TRANSFER",
+        "R9D-WRITER-SCOPE"
+      ],
+      "fresh_whole_capability_assessment": false
+    },
+    "CAP7B38-D17": {
+      "canonical_capability_row": {
+        "id": "CAP7B38-D17",
+        "capability": "هوية المستند والتنقل وفتح الأطفال",
+        "entry_point": "document opener/ShowEntrySource/LastProcess وTableRow→child",
+        "source_contract": "GlobalID/type/branch/year/source مقابل رقم محلي/اسم عرض",
+        "output_boundary": "NavigationRequest/LoadOutcome وحد نشر حالة الأب",
+        "related_part_numbers": "11;14;16;17;19;27;28;31",
+        "related_finding_ids": "P7-061;P7-115;P7-130;P7-155;P7-156;P7-157;P7-158;P7-161",
+        "current_handoff_ids": "H7B38-03;H7B38-04;H7B38-05",
+        "assessment_status": "historical-and-selected-current-source-assessment-boundaries-open",
+        "assessment_basis": "historical-FE-lineage-plus-explicit-current-source-scope-not-all-source-rereview",
+        "excluded_from_claim": "لا حمل branch/year/ACL من مجرد تمرير id.",
+        "owner_role": "مالك المنتج والتقرير بالتنسيق مع مالك السياسة والمصدر",
+        "required_redacted_input": "راجع H7B38 ذات الصلة: قاموس/عقد/manifest منقح فقط؛ لا أسرار أو بيانات أعمال.",
+        "absence_impact": "يبقى هذا الحد غير محسوم؛ الإحالة لا تعني الموافقة أو غياب القدرة أو إغلاق الأسرة.",
+        "next_action": "كل route له DocumentRef/allowed-set وscope وFound/Empty/Failed/Partial لا void/اسم عرض؛ فرز paths غير المحسومة.",
+        "static_exit_criterion": "كل route له DocumentRef/allowed-set وscope وFound/Empty/Failed/Partial لا void/اسم عرض؛ فرز paths غير المحسومة.",
+        "local_semantic_obligations_complete": "false",
+        "whole_capability_certified": "false",
+        "runtime_status": "not-executed"
+      },
+      "whole_capability_certified": false,
+      "local_semantic_obligations_complete": false,
+      "readable_local_externalized": false,
+      "remaining_readable_local": "Selected command boundaries/26 opener owners traced; remaining direct factories/row producers/reader and search/navigation SQL, alias/reflection ingress, branch/year/allowed-document origins and healthy outcomes not complete.",
+      "source_decision_ids": [
+        "R9D-ALTERNATE-OPENERS",
+        "R9D-CONTRACT",
+        "R9D-ENTRY",
+        "R9D-IMPORTS",
+        "R9D-IO",
+        "R9D-MAPPING",
+        "R9D-PERIOD",
+        "R9D-PERMISSION",
+        "R9D-POS",
+        "R9D-PUBLICATION",
+        "R9D-PURCHASE",
+        "R9D-SALE",
+        "R9D-STOCK",
+        "R9D-TRANSFER",
+        "R9D-WRITER-SCOPE"
+      ],
+      "fresh_whole_capability_assessment": false
+    },
+    "CAP7B38-D19": {
+      "canonical_capability_row": {
+        "id": "CAP7B38-D19",
+        "capability": "استيراد البنود والتحضير والدمج/الاستبدال",
+        "entry_point": "InsertFromInv/frmInvoiceItems وAddOrUpdate وseed/line ingress",
+        "source_contract": "InvoiceItems وLineRef/OwnedSeed/CopyIntent ومصدر القيم",
+        "output_boundary": "AcceptedLines/Cancelled/Failed ثم publish واحد مشروط",
+        "related_part_numbers": "22;23;24;30;35",
+        "related_finding_ids": "P7-144;P7-146;P7-147;P7-149;P7-150;P7-151;P7-159;P7-160",
+        "current_handoff_ids": "H7B38-01;H7B38-03;H7B38-05",
+        "assessment_status": "historical-and-selected-current-source-assessment-boundaries-open",
+        "assessment_basis": "historical-FE-lineage-plus-explicit-current-source-scope-not-all-source-rereview",
+        "excluded_from_claim": "لا DTO defaults أو rollback/hydration أو مخزون وحفظ ناجح.",
+        "owner_role": "مالك المنتج والتقرير بالتنسيق مع مالك السياسة والمصدر",
+        "required_redacted_input": "راجع H7B38 ذات الصلة: قاموس/عقد/manifest منقح فقط؛ لا أسرار أو بيانات أعمال.",
+        "absence_impact": "يبقى هذا الحد غير محسوم؛ الإحالة لا تعني الموافقة أو غياب القدرة أو إغلاق الأسرة.",
+        "next_action": "كل حد كمية/سعر/خصم/VAT له lineage ونتيجة إدراج مستقلة عن القبول وترك الأصل؛ معاملة ref/alias لا تفترض من الرموز.",
+        "static_exit_criterion": "كل حد كمية/سعر/خصم/VAT له lineage ونتيجة إدراج مستقلة عن القبول وترك الأصل؛ معاملة ref/alias لا تفترض من الرموز.",
+        "local_semantic_obligations_complete": "false",
+        "whole_capability_certified": "false",
+        "runtime_status": "not-executed"
+      },
+      "whole_capability_certified": false,
+      "local_semantic_obligations_complete": false,
+      "readable_local_externalized": false,
+      "remaining_readable_local": "Four ImportInventoryItems first-match writers and central/composite mapping are now read; whole SearchByID/ItemOper duplicate/insert/cancel/unit/serial and other copy/merge/VAT/discount/row producers remain local.",
+      "source_decision_ids": [
+        "R9D-ALTERNATE-OPENERS",
+        "R9D-CONTRACT",
+        "R9D-ENTRY",
+        "R9D-IMPORTS",
+        "R9D-IO",
+        "R9D-MAPPING",
+        "R9D-PERIOD",
+        "R9D-PERMISSION",
+        "R9D-POS",
+        "R9D-PUBLICATION",
+        "R9D-PURCHASE",
+        "R9D-SALE",
+        "R9D-STOCK",
+        "R9D-TRANSFER",
+        "R9D-WRITER-SCOPE"
+      ],
+      "fresh_whole_capability_assessment": false
+    },
+    "CAP7B38-D22": {
+      "canonical_capability_row": {
+        "id": "CAP7B38-D22",
+        "capability": "ترك المسودة والجديد والتنقل والإغلاق",
+        "entry_point": "new/open/first/next/last/close/Loaded/F6 في المحررات المختارة",
+        "source_contract": "ISNew/IsUpdated وsetters/dirty وقرارSave/Discard/Stay",
+        "output_boundary": "طلب انتقال منفصل عن LoadOutcome ثم commit واحد",
+        "related_part_numbers": "29;30;31;32;35;37",
+        "related_finding_ids": "P7-159;P7-160;P7-161;P7-162",
+        "current_handoff_ids": "H7B38-03;H7B38-05",
+        "assessment_status": "historical-and-selected-current-source-assessment-boundaries-open",
+        "assessment_basis": "historical-FE-lineage-plus-explicit-current-source-scope-not-all-source-rereview",
+        "excluded_from_claim": "لا أحداث إطار أو غياب dirty من عدم وجود setter محلي.",
+        "owner_role": "مالك المنتج والتقرير بالتنسيق مع مالك السياسة والمصدر",
+        "required_redacted_input": "راجع H7B38 ذات الصلة: قاموس/عقد/manifest منقح فقط؛ لا أسرار أو بيانات أعمال.",
+        "absence_impact": "يبقى هذا الحد غير محسوم؛ الإحالة لا تعني الموافقة أو غياب القدرة أو إغلاق الأسرة.",
+        "next_action": "كل أول كتابة محلية لها قرار ترك مستقل، وكل طلب إغلاق له مالك واحد مع تمييز catch-return/nonreturn.",
+        "static_exit_criterion": "كل أول كتابة محلية لها قرار ترك مستقل، وكل طلب إغلاق له مالك واحد مع تمييز catch-return/nonreturn.",
+        "local_semantic_obligations_complete": "false",
+        "whole_capability_certified": "false",
+        "runtime_status": "not-executed"
+      },
+      "whole_capability_certified": false,
+      "local_semantic_obligations_complete": false,
+      "readable_local_externalized": false,
+      "remaining_readable_local": "Quotation CLR/HoldList/two transfer saves and six async-void publication boundaries assessed; remaining CheckBeforeClear, draft/new/open/normal/chrome/Escape/failure and shared-year owners remain local.",
+      "source_decision_ids": [
+        "R9D-ALTERNATE-OPENERS",
+        "R9D-CONTRACT",
+        "R9D-ENTRY",
+        "R9D-IMPORTS",
+        "R9D-IO",
+        "R9D-MAPPING",
+        "R9D-PERIOD",
+        "R9D-PERMISSION",
+        "R9D-POS",
+        "R9D-PUBLICATION",
+        "R9D-PURCHASE",
+        "R9D-SALE",
+        "R9D-STOCK",
+        "R9D-TRANSFER",
+        "R9D-WRITER-SCOPE"
+      ],
+      "fresh_whole_capability_assessment": false
+    },
+    "CAP7B38-D25": {
+      "canonical_capability_row": {
+        "id": "CAP7B38-D25",
+        "capability": "المخطط والمنح وهوية الفرع والتفرد",
+        "entry_point": "resource DDL/queries/permissions وأوامر التقرير/الطفل",
+        "source_contract": "schema/constraints/grants وid/BranchId/Code وdocument keys",
+        "output_boundary": "سياسة roles×commands×resource/branch/store محددة",
+        "related_part_numbers": "14;15;16;17;26;27",
+        "related_finding_ids": "P7-020;P7-021;P4-014",
+        "current_handoff_ids": "H7B38-04",
+        "assessment_status": "historical-and-selected-current-source-assessment-boundaries-open",
+        "assessment_basis": "historical-FE-lineage-plus-explicit-current-source-scope-not-all-source-rereview",
+        "excluded_from_claim": "لا SQL/schema deployment أو إذن من enabled/disabled وحده.",
+        "owner_role": "DBA ومالك الأمان",
+        "required_redacted_input": "راجع H7B38 ذات الصلة: قاموس/عقد/manifest منقح فقط؛ لا أسرار أو بيانات أعمال.",
+        "absence_impact": "يبقى هذا الحد غير محسوم؛ الإحالة لا تعني الموافقة أو غياب القدرة أو إغلاق الأسرة.",
+        "next_action": "تثبيت مصدر منقح للمخطط والمنح والمفاتيح والـbranch mapping؛ مورد IFNOTEXISTS ليس شهادة نشر أو ACL.",
+        "static_exit_criterion": "تثبيت مصدر منقح للمخطط والمنح والمفاتيح والـbranch mapping؛ مورد IFNOTEXISTS ليس شهادة نشر أو ACL.",
+        "local_semantic_obligations_complete": "false",
+        "whole_capability_certified": "false",
+        "runtime_status": "not-executed"
+      },
+      "whole_capability_certified": false,
+      "local_semantic_obligations_complete": false,
+      "readable_local_externalized": false,
+      "remaining_readable_local": "Central update key/branch fallback/UI role defaults are traced; no deployed schema/grant attestation. Remaining all local authorization lookup/query/ownership/uniqueness consumers must be exhausted before individually evidenced policy handoffs.",
+      "source_decision_ids": [
+        "R9D-ALTERNATE-OPENERS",
+        "R9D-CONTRACT",
+        "R9D-ENTRY",
+        "R9D-IMPORTS",
+        "R9D-IO",
+        "R9D-MAPPING",
+        "R9D-PERIOD",
+        "R9D-PERMISSION",
+        "R9D-POS",
+        "R9D-PUBLICATION",
+        "R9D-PURCHASE",
+        "R9D-SALE",
+        "R9D-STOCK",
+        "R9D-TRANSFER",
+        "R9D-WRITER-SCOPE"
+      ],
+      "fresh_whole_capability_assessment": false
+    }
+  },
+  "unavailable_contracts_not_accepted_as_handoffs": [
+    {
+      "id": "R9BOUND-MODEL-OWNERSHIP",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/SmartAuditERP.csproj",
+          "text_range_key": "external-AuditorAPI-reference",
+          "start": 25,
+          "end": 32,
+          "decoded_range_utf8_sha256": "f43faa7ce14da14a4690c205a3a8183cf6c3e8fa1cab0af0780d1af049121cf2"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "MappingInvoice",
+          "start": 4040,
+          "end": 4338,
+          "syntax_utf8_sha256": "55253779f3e2f0f550526f95cbbd5f53bd40907693ad38fc5de45f9f0f37d1bb"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOperContract.cs",
+          "selector": "MappingInvoicecontract",
+          "start": 26,
+          "end": 264,
+          "syntax_utf8_sha256": "98277efa39fc0854bce5c4296c41073fa189ce4a1854b83fff4a5555850bdfe0"
+        }
+      ],
+      "owner_role": "Owner of externally referenced AuditorAPI model package",
+      "required_redacted_input": "Versioned Invoice/InvoiceDGV/Invoicecontract/InvoiceItem/Entry setter, constructor, enum and collection ownership contract or redacted source; no credentials or business data.",
+      "absence_impact": "Property sharing/deep copy/default enum and invariant behavior cannot be certified by local assignment syntax.",
+      "next_action": "After readable local writers/consumers are exhausted, request the precise ownership/invariant contract by package version.",
+      "static_disposition": "Blocked contract clarification, NOT an accepted completion handoff and not evidence all missing model behavior is defective.",
+      "readable_local_not_delegated": "Mapping, composite, cache and four import bodies have been read; remaining SearchByID/ItemOper and all other consumers stay in local worklist.",
+      "accepted_external_handoff": false
+    },
+    {
+      "id": "R9BOUND-POLICY-GRANTS",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Class/Common.cs",
+          "selector": "AllowEdit",
+          "start": 1247,
+          "end": 1270,
+          "syntax_utf8_sha256": "d108d00d4a4d50e20cc7047939e05b52b13a4528babdf650371389c6d7140ffb"
+        },
+        {
+          "path": "SmartAuditERP/Class/FormPermission.cs",
+          "selector": "LoadPermissionData",
+          "start": 161,
+          "end": 179,
+          "syntax_utf8_sha256": "bc7550b63f662e50a42d96e61d0b36659c7a041da9372bce2e0b1449385491b4"
+        },
+        {
+          "path": "SmartAuditERP/Class/MainClass.cs",
+          "selector": "ApplyPermissionToForm@System.Windows.Window",
+          "start": 353,
+          "end": 413,
+          "syntax_utf8_sha256": "bab4b5750974fd845b6a2d1dfd56bfd5aa15ce660f66296c83d08b4ef93f9f18"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "SaveInvoice",
+          "start": 1310,
+          "end": 1912,
+          "syntax_utf8_sha256": "5f55ab58de1d9cd1f1e84f3e2f7d9661f926362d94505439fbd91ea7945fd77b"
+        }
+      ],
+      "owner_role": "Product/security policy and SQL grant owner",
+      "required_redacted_input": "Authoritative form Name/Tag/role-to-command and document/branch/year allowed-set contract, plus redacted grant/schema manifest, not live identities or databases.",
+      "absence_impact": "UI flags and writer SQL cannot certify a deployed allowed-set or deny rules. This bounded read does not establish absence of all policy documents elsewhere.",
+      "next_action": "Finish remaining local lookup/query/reader/variant consumers, then request only the independently identified unresolved policy boundary.",
+      "static_disposition": "No deployed authorization certification and no accepted handoff while local command/ingress ownership remains.",
+      "readable_local_not_delegated": "All remaining local factories, query producers, reader and policy-key consumers remain locally owned.",
+      "accepted_external_handoff": false
+    },
+    {
+      "id": "R9BOUND-REMOTE-RESULT",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "SyncInvoice",
+          "start": 2647,
+          "end": 2741,
+          "syntax_utf8_sha256": "ec9e9fcd5da672c3f143690e0df5bd77f18a1235effb0d1ad9abc712786ef786"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "SaveInvoice",
+          "start": 1310,
+          "end": 1912,
+          "syntax_utf8_sha256": "5f55ab58de1d9cd1f1e84f3e2f7d9661f926362d94505439fbd91ea7945fd77b"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOperContract.cs",
+          "selector": "SyncInvoice",
+          "start": 1516,
+          "end": 1610,
+          "syntax_utf8_sha256": "aed951cd102c426b01ef25de82fd5f6709c1000ebe2601190122e7d8509b1cc0"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOperContract.cs",
+          "selector": "SaveInvoice",
+          "start": 819,
+          "end": 1444,
+          "syntax_utf8_sha256": "1a6e783d3d0d2ac9f366e9e9dc8451a6a1b93b5204f27254eefec2710fffe23b"
+        }
+      ],
+      "owner_role": "Versioned cloud/tax integration contract owner",
+      "required_redacted_input": "Redacted request/response, idempotency, remote commit/reject/partial/timeout and retry contract for called service version; no endpoint secrets, payload business data or live invocation.",
+      "absence_impact": "Local Task<bool>/flags cannot attest remote durability or cross-transaction atomicity; locally supplied service/helper bodies are not declared absent.",
+      "next_action": "Read remaining local service/queue/broker/response consumers before accepting any individual unavailable-contract disposition.",
+      "static_disposition": "Static publication mismatch/source order only; no remote run, financial acceptance or completion handoff.",
+      "readable_local_not_delegated": "SendData, offline queue, selected service dependencies and all remaining consumer logic stay in local worklist.",
+      "accepted_external_handoff": false
+    }
+  ],
+  "new_numbered_findings": [],
+  "all26_capabilities_freshly_semantically_reviewed": false,
+  "historical339_dictionaries_preserved_not_recertified": true,
+  "R8_historical_21Nov_label_or_user_date_attribution_authenticated": false,
+  "reference_date_disposition": "New R9 uses current16-Nov session reference prospectively; frozen21-Nov labels, contradictory condensed-summary22-Nov assertions and raw clocks are not adopted as authority or retroactive chronology proof.",
+  "pinned_inputs": [
+    {
+      "path": "docs/audit/evidence/entry-identities-07B39R9.json",
+      "bytes": 413054,
+      "sha256": "37cdfa3d59d657aa2b5cced114df6d72ffd218f40340949c14cc0960a7edc2f7"
+    },
+    {
+      "path": "docs/audit/evidence/reference-date-provenance-07B39R9.json",
+      "bytes": 3051,
+      "sha256": "1efa861872e4ad73affa7fd867c4777da2258598f89c11f36eca69ef7f93e822"
+    },
+    {
+      "path": "docs/audit/evidence/save-edit-source-facts-07B39R9.json",
+      "bytes": 3101994,
+      "sha256": "f275e4dc4977d809209bd008b78896edccea71e96fc6b6219c8ce5eaa6e731d0"
+    },
+    {
+      "path": "docs/audit/evidence/save-edit-source-display-ranges-07B39R9.json",
+      "bytes": 44645,
+      "sha256": "63791f00fc5d3b775b8d4c7644e69b02cb7f79cdb8cb9fd32a0bb860801478b8"
+    },
+    {
+      "path": "docs/audit/evidence/save-edit-source-review-log-07B39R9.json",
+      "bytes": 82587,
+      "sha256": "02aeade62741e981ca6a246b5c32bea010c5d8a5c09301a4a67a5deff55e3336"
+    },
+    {
+      "path": "docs/audit/evidence/save-edit-command-matrix-07B39R9.json",
+      "bytes": 262895,
+      "sha256": "cd9a651ec3f8b7d4f8f0dfc8f00e473f1344db4c8cdb02cb12a6aa097faf8292"
+    },
+    {
+      "path": "docs/audit/evidence/save-edit-root-adjudication-07B39R9.json",
+      "bytes": 354423,
+      "sha256": "e208884e7fd70a2fefa93b27fad2041cd1bfb23d4435a201003cc1a31c364d7a"
+    },
+    {
+      "path": "docs/audit/evidence/save-edit-local-worklist-07B39R9.json",
+      "bytes": 56504,
+      "sha256": "6bbd324b88004e92f628f5a545e8ef35f27a093e9451f96de0cf3aefa79dcd94"
+    },
+    {
+      "path": "docs/audit/evidence/capability-register-07B38.csv",
+      "bytes": 33915,
+      "sha256": "2e071fbad8546aeb26b2dd66854d17c58ad570e7b36525e823e9567b7466b3c5"
+    },
+    {
+      "path": "docs/audit/evidence/capability-reconciliation-07B39R8.json",
+      "bytes": 297464,
+      "sha256": "26765a1151ee127f57f5deb9cd6e59e4290e4593adca2c0906a5d28dd1c0d603"
+    }
+  ]
+}

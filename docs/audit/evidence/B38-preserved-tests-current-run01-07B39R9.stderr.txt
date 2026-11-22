@@ -1,0 +1,56 @@
+test_approval_string_and_bare_boolean_rejected (test_7b_completion.ClosurePolicyTests.test_approval_string_and_bare_boolean_rejected) ... ok
+test_current_whole7B_remains_open (test_7b_completion.ClosurePolicyTests.test_current_whole7B_remains_open) ... ok
+test_each_capability_local_obligation_must_be_complete (test_7b_completion.ClosurePolicyTests.test_each_capability_local_obligation_must_be_complete) ... ok
+test_each_capability_must_have_a_decision (test_7b_completion.ClosurePolicyTests.test_each_capability_must_have_a_decision) ... ok
+test_empty_register_cannot_vacuously_complete (test_7b_completion.ClosurePolicyTests.test_empty_register_cannot_vacuously_complete) ... ok
+test_external_handoff_is_not_whole_family_approval (test_7b_completion.ClosurePolicyTests.test_external_handoff_is_not_whole_family_approval) ... ok
+test_integrity_and_large_counts_never_close_scope (test_7b_completion.ClosurePolicyTests.test_integrity_and_large_counts_never_close_scope) ... ok
+test_open_candidate_dispositions_block_completion (test_7b_completion.ClosurePolicyTests.test_open_candidate_dispositions_block_completion) ... ok
+test_phase7C_and8_are_not_silently_started (test_7b_completion.ClosurePolicyTests.test_phase7C_and8_are_not_silently_started) ... ok
+test_policy_is_not_permanently_hardcoded_to_open (test_7b_completion.ClosurePolicyTests.test_policy_is_not_permanently_hardcoded_to_open) ... ok
+test_repair_execution_cannot_be_called_audit_only (test_7b_completion.ClosurePolicyTests.test_repair_execution_cannot_be_called_audit_only) ... ok
+test_scope_approval_cannot_excuse_local_omissions (test_7b_completion.ClosurePolicyTests.test_scope_approval_cannot_excuse_local_omissions) ... ok
+test_truthy_string_is_not_proof (test_7b_completion.ClosurePolicyTests.test_truthy_string_is_not_proof) ... ok
+test_unadjudicated_source_observations_block_completion (test_7b_completion.ClosurePolicyTests.test_unadjudicated_source_observations_block_completion) ... ok
+test_all797_rows_reconcile_exactly (test_7b_completion.LineageTests.test_all797_rows_reconcile_exactly) ... ok
+test_changed_dictionary_with_old_row_hash_fails (test_7b_completion.LineageTests.test_changed_dictionary_with_old_row_hash_fails) ... ok
+test_changed_upstream_file_hash_fails (test_7b_completion.LineageTests.test_changed_upstream_file_hash_fails) ... ok
+test_dictionary_hash_is_key_order_independent (test_7b_completion.LineageTests.test_dictionary_hash_is_key_order_independent) ... ok
+test_duplicate_identity_fails (test_7b_completion.LineageTests.test_duplicate_identity_fails) ... ok
+test_evidence_and_acceptance_not_retyped (test_7b_completion.LineageTests.test_evidence_and_acceptance_not_retyped) ... ok
+test_omitted_last_row_fails (test_7b_completion.LineageTests.test_omitted_last_row_fails) ... ok
+test_reordered_rows_fail_even_if_set_is_same (test_7b_completion.LineageTests.test_reordered_rows_fail_even_if_set_is_same) ... ok
+test_direct_dialog_counts_and_owner_reuse (test_7b_completion.RepositoryIntegrationTests.test_direct_dialog_counts_and_owner_reuse) ... ok
+test_existing_snapshot_cannot_be_overwritten_by_builder (test_7b_completion.RepositoryIntegrationTests.test_existing_snapshot_cannot_be_overwritten_by_builder) ... ok
+test_generated_csharp_is_not_source_parse_denominator (test_7b_completion.RepositoryIntegrationTests.test_generated_csharp_is_not_source_parse_denominator) ... ok
+test_integrity_pass_is_distinct_from_closure (test_7b_completion.RepositoryIntegrationTests.test_integrity_pass_is_distinct_from_closure) ... ok
+test_legacy_top139_and_new_recursive_tools_are_explicit (test_7b_completion.RepositoryIntegrationTests.test_legacy_top139_and_new_recursive_tools_are_explicit) ... FAIL
+test_many_Show_homonyms_are_not_certified_report_calls (test_7b_completion.RepositoryIntegrationTests.test_many_Show_homonyms_are_not_certified_report_calls) ... ok
+test_no_ERP_or_repair_or_phase_permission_from_documentary_success (test_7b_completion.RepositoryIntegrationTests.test_no_ERP_or_repair_or_phase_permission_from_documentary_success) ... ok
+test_purchinv_key_difference_stays_unadjudicated (test_7b_completion.RepositoryIntegrationTests.test_purchinv_key_difference_stays_unadjudicated) ... ok
+test_require_complete_cli_returns2_not_false_success (test_7b_completion.RepositoryIntegrationTests.test_require_complete_cli_returns2_not_false_success) ... ok
+test_selected_nonaccept_paths_are_not_equated (test_7b_completion.RepositoryIntegrationTests.test_selected_nonaccept_paths_are_not_equated) ... ok
+test_source_reference_supports_singleton (test_7b_completion.RepositoryIntegrationTests.test_source_reference_supports_singleton) ... ok
+test_comments_do_not_create_xaml_events (test_7b_completion.SpanAndDiscoveryTests.test_comments_do_not_create_xaml_events) ... ok
+test_invalid_ranges_rejected (test_7b_completion.SpanAndDiscoveryTests.test_invalid_ranges_rejected) ... ok
+test_malformed_xml_remains_explicit (test_7b_completion.SpanAndDiscoveryTests.test_malformed_xml_remains_explicit) ... ok
+test_mixed_inclusive_range_formats (test_7b_completion.SpanAndDiscoveryTests.test_mixed_inclusive_range_formats) ... ok
+test_range_compaction_round_trip (test_7b_completion.SpanAndDiscoveryTests.test_range_compaction_round_trip) ... ok
+test_singleton_range_is_not_discarded (test_7b_completion.SpanAndDiscoveryTests.test_singleton_range_is_not_discarded) ... ok
+test_utf16_bom_is_not_a_compiler_claim (test_7b_completion.SpanAndDiscoveryTests.test_utf16_bom_is_not_a_compiler_claim) ... ok
+test_utf8_bom_and_cp1256_are_read_only (test_7b_completion.SpanAndDiscoveryTests.test_utf8_bom_and_cp1256_are_read_only) ... ok
+test_xaml_click_is_only_possible_entry (test_7b_completion.SpanAndDiscoveryTests.test_xaml_click_is_only_possible_entry) ... ok
+test_xaml_command_binding_is_not_resolved_as_handler (test_7b_completion.SpanAndDiscoveryTests.test_xaml_command_binding_is_not_resolved_as_handler) ... ok
+
+======================================================================
+FAIL: test_legacy_top139_and_new_recursive_tools_are_explicit (test_7b_completion.RepositoryIntegrationTests.test_legacy_top139_and_new_recursive_tools_are_explicit)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/user/SmartAuditERP/docs/audit/tools/census07b/test_7b_completion.py", line 270, in test_legacy_top139_and_new_recursive_tools_are_explicit
+    self.assertEqual(self.report['counts']['all_recursive_audit_python_tools'], 142)
+AssertionError: 162 != 142
+
+----------------------------------------------------------------------
+Ran 43 tests in 2.617s
+
+FAILED (failures=1)

@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "kind": "R9-postcapture-B38-only-run-after-adding-versioned-publication-tool-not-part-of519",
+  "assessment_reference_date_utc": "2026-11-16",
+  "session_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "capability_exit_certificates_issued": 0,
+  "four_family_exit_certificates_issued": 0,
+  "new_accepted_external_handoffs": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "R2_R3_files_recovered": false,
+  "prior196_tests_recertified": false,
+  "this_postcapture_publication_was_run01_input": false,
+  "command": [
+    "/usr/bin/python",
+    "-B",
+    "-W",
+    "error::ResourceWarning",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "docs/audit/tools/census07b",
+    "-p",
+    "test_7b_completion.py",
+    "-v"
+  ],
+  "exit_code": 1,
+  "raw_started_clock_verbatim": "2026-11-22T05:53:13.887048+00:00",
+  "raw_finished_clock_verbatim": "2026-11-22T05:53:17.085853+00:00",
+  "wall_seconds": 3.198808,
+  "reported_tests": 43,
+  "reported_unittest_seconds": 3.078,
+  "actual_verbose_case_lines": 43,
+  "actual_case_status_counts": {
+    "ok": 42,
+    "FAIL": 1
+  },
+  "assertion_lines_verbatim": [
+    "AssertionError: 163 != 142"
+  ],
+  "stdout": {
+    "path": "docs/audit/evidence/B38-postcapture-publication-07B39R9.stdout.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "docs/audit/evidence/B38-postcapture-publication-07B39R9.stderr.txt",
+    "bytes": 6640,
+    "sha256": "4936af2f99882f048d95decfa22250b96b468a4f692b4f878f81c22f0c691641"
+  },
+  "unchanged_legacy_expected142_not_rewritten": true,
+  "new_publication_tool": {
+    "path": "docs/audit/tools/disposition07b/publish_save_edit.py",
+    "bytes": 41736,
+    "sha256": "2be35bd9149ed4aa14aebd276d224d2d9be1fdf6d8de4a6461fe8d4d2f321ac6"
+  },
+  "all_suites_green": false
+}

@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "R9-development-fixture-string-occurrence-authorship-check-not-unittest-or-ERP-result",
+  "assessment_reference_date_utc": "2026-11-16",
+  "session_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "unittest_run_occurred": false,
+  "actual_test_failures_reported_by_this_check": null,
+  "observations_transcribed_from_development_tool_output_not_raw_captured_stream": true,
+  "five_expected_vs_actual_occurrence_mismatches": [
+    {
+      "fixture": "sale_loaded_return_permission_key",
+      "initial_expected": 1,
+      "actual_count_in_original_method": 2
+    },
+    {
+      "fixture": "POS_table_write_call",
+      "initial_expected": 1,
+      "actual_count_in_original_method": 2
+    },
+    {
+      "fixture": "mapping_VerifyIsNew_never_true",
+      "initial_expected": 3,
+      "actual_count_in_original_method": 2
+    },
+    {
+      "fixture": "ordinary_tax_send",
+      "initial_expected": 1,
+      "actual_count_in_original_method": 2
+    },
+    {
+      "fixture": "contract_UUID_parameter_present",
+      "initial_expected": 1,
+      "actual_count_in_original_method": 2
+    }
+  ],
+  "initial_test_file": {
+    "path": "docs/audit/tools/disposition07b/test_save_edit.py",
+    "bytes": 30794,
+    "sha256": "973eabf1e361eccc1a2f026a37812a2de8b1670f43f7bcadc3141451dc2188b7"
+  },
+  "initial_test_version_preserved_archive": {
+    "path": "docs/audit/evidence/fixture-authorship-initial-test-07B39R9.tar.gz",
+    "bytes": 9045,
+    "sha256": "70674ac12507285d1bfd497a849302edde9d0254afe1c397867dbd76e41b3cb9",
+    "members": 1
+  },
+  "corrected_test_file": {
+    "path": "docs/audit/tools/disposition07b/test_save_edit.py",
+    "bytes": 30806,
+    "sha256": "7a6cfb937601475ff1c33b0bc531faf9fb0f26894a2ab00e88cc9923e2a3b4f7"
+  },
+  "disposition": "Correct fixture occurrence expectations before first unittest capture. Replacement mutates all matching occurrences within the selected complete original method; no application source or prior test expectations changed. No failed tests are being relabelled as passed.",
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false
+}

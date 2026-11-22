@@ -1,0 +1,327 @@
+{
+  "schema_version": 1,
+  "kind": "R9-postcapture-five-root-reason-semantic-correction-not-consumed519-input",
+  "assessment_reference_date_utc": "2026-11-16",
+  "session_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "capability_exit_certificates_issued": 0,
+  "four_family_exit_certificates_issued": 0,
+  "new_accepted_external_handoffs": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "R2_R3_files_recovered": false,
+  "prior196_tests_recertified": false,
+  "this_postcapture_publication_was_run01_input": false,
+  "initial_consumed_root_packet": {
+    "path": "docs/audit/evidence/save-edit-root-adjudication-07B39R9.json",
+    "bytes": 354423,
+    "sha256": "e208884e7fd70a2fefa93b27fad2041cd1bfb23d4435a201003cc1a31c364d7a"
+  },
+  "initial_consumed_source_review": {
+    "path": "docs/audit/SOURCE-REVIEW-07B39R9.md",
+    "bytes": 18443,
+    "sha256": "cc1a1dae4603164e2e9d04442ef54386a91e0205d28e155029d6ca6598b82ddd"
+  },
+  "initial_publication_ledger": {
+    "path": "docs/audit/evidence/capability-reconciliation-07B39R9.json",
+    "bytes": 370630,
+    "sha256": "eecc0a40e58966336b99ce83d3c776dbddb46d77be352c9312304c149d46f008"
+  },
+  "initial_publication_finalization": {
+    "path": "docs/audit/evidence/finalization-before-commit-07B39R9.json",
+    "bytes": 14730,
+    "sha256": "bde6ab5c2826874aa810c28c1339b724760a04ccd16890372d6ca33972c9865b"
+  },
+  "corrections": [
+    {
+      "root_id": "P1-013",
+      "canonical_prior_row": {
+        "id": "P1-013",
+        "severity": "High",
+        "certainty": "potential",
+        "type": "authorization",
+        "status": "open-not-remediated",
+        "title": "تطبيق صلاحيات WPF على الشجرة المرئية قبل عرض النوافذ",
+        "evidence": "SmartAuditERP/Class/MainClass.cs:418-455;SmartAuditERP/Home.xaml.cs:2490-2495;SmartAuditERP/Home.xaml.cs:2752-2757;SmartAuditERP/Home.xaml.cs:3641-3646;SmartAuditERP/Home.xaml.cs:3750-3756;SmartAuditERP/Form_WPF/frmRptSalary.xaml.cs:145-160;SmartAuditERP/Home.xaml.cs:3604-3612;SmartAuditERP/Class/MainClass.cs:418-455;SmartAuditERP/Form_WPF/frmRptSalesInPeriod.xaml:545-560;SmartAuditERP/Home.xaml.cs:2951-2965;SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs:201-213;SmartAuditERP/Home.xaml.cs:2963-2979;SmartAuditERP/Home.xaml.cs:3540-3540;SmartAuditERP/Home.xaml.cs:3613-3613;SmartAuditERP/Home.xaml.cs:3631-3632;SmartAuditERP/Home.xaml.cs:3725-3725;SmartAuditERP/Home.xaml.cs:2898-2903;SmartAuditERP/Home.xaml.cs:3104-3111;SmartAuditERP/Home.xaml.cs:3126-3152;SmartAuditERP/Home.xaml.cs:3543-3543;SmartAuditERP/Home.xaml:382-382;SmartAuditERP/Home.xaml.cs:3496-3520;SmartAuditERP/Home.xaml.cs:3529-3537;SmartAuditERP/Home.xaml.cs:3627-3633;SmartAuditERP/Form_WPF/frmRptInvSalesDetails.xaml.cs:1010-1080;SmartAuditERP/Form_WPF/frmRptInvSalesDetailsPos.xaml.cs:777-845;SmartAuditERP/Form_WPF/frmRptInvSalesDetailsPosAndroid.xaml.cs:882-934;SmartAuditERP/Home.xaml.cs:2906-2913;SmartAuditERP/Home.xaml.cs:3627-3633;SmartAuditERP/Form_WPF/frmNkdFoundRpt.xaml.cs:19-46;SmartAuditERP/Form_WPF/frmItemsalesdetailsPos.xaml.cs:373-409;SmartAuditERP/Home.xaml.cs:2642-2647;SmartAuditERP/Home.xaml.cs:3541-3541;SmartAuditERP/Home.xaml.cs:3766-3766;SmartAuditERP/Form_WPF/frmInvsProfit.xaml.cs:605-627;SmartAuditERP/Home.xaml.cs:2592-2597;SmartAuditERP/Home.xaml.cs:2922-2927;SmartAuditERP/Home.xaml.cs:3648-3648;SmartAuditERP/Form_WPF/frmSummaryD.xaml.cs:316-340;SmartAuditERP/Home.xaml:330-333;SmartAuditERP/Home.xaml:383-386;SmartAuditERP/Home.xaml:530-533;SmartAuditERP/Home.xaml.cs:3037-3043;SmartAuditERP/Home.xaml.cs:3369-3375;SmartAuditERP/Home.xaml.cs:3645-3646;SmartAuditERP/Form_WPF/frmSummaryQ.xaml.cs:424-451;SmartAuditERP/Form_WPF/frmRptSalary.xaml.cs:129-155;SmartAuditERP/Form_WPF/frmRptReseved.xaml.cs:155-168;SmartAuditERP/Home.xaml:414-416;SmartAuditERP/Home.xaml:461-463;SmartAuditERP/Home.xaml:525-531;SmartAuditERP/Home.xaml.cs:3542-3544;SmartAuditERP/Home.xaml.cs:3604-3611;SmartAuditERP/Home.xaml:482-490;SmartAuditERP/Form_WPF/frmSalesMen.xaml.cs:269-280;SmartAuditERP/Form_WPF/frmRptItemsProfit.xaml.cs:652-665;SmartAuditERP/Form_WPF/frmInvBySalesMen.xaml.cs:517-570;SmartAuditERP/Class/MainClass.cs:418-455;SmartAuditERP/Home.xaml.cs:2582-2615;SmartAuditERP/Home.xaml:329-340;SmartAuditERP/Class/MainClass.cs:418-455;SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs:784-792;SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs:873-891;SmartAuditERP/Form_WPF/frmRptEntries.xaml.cs:490-552;SmartAuditERP/Home.xaml.cs:2669-2704;SmartAuditERP/Home.xaml:335-345;SmartAuditERP/Class/MainClass.cs:349-455;SmartAuditERP/Form_WPF/IncomeStatementForm.xaml:649-672;SmartAuditERP/Form_WPF/frmMezanyaArba7.xaml.cs:417-433;SmartAuditERP/Home.xaml.cs:2616-2667;SmartAuditERP/Home.xaml:335-340;SmartAuditERP/Class/MainClass.cs:349-455;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml:315-325;SmartAuditERP/Form_WPF/frmRptKhzna.xaml:530-559;SmartAuditERP/Form_WPF/frmMezanMorg3a.xaml.cs:582-595;SmartAuditERP/Form_WPF/frmRptBalances.xaml.cs:455-470;SmartAuditERP/Form_WPF/frmRptCostCenter.xaml.cs:652-661;SmartAuditERP/Home.xaml.cs:2872-2888;SmartAuditERP/Home.xaml.cs:2949-2962;SmartAuditERP/Home.xaml:379-389;SmartAuditERP/Form_WPF/frmRptInventory.xaml.cs:471-630;SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs:1164-1192;SmartAuditERP/Class/MainClass.cs:349-455;SmartAuditERP/Home.xaml.cs:239-243;SmartAuditERP/Home.xaml.cs:2706-2713;SmartAuditERP/Home.xaml.cs:3643-3645;SmartAuditERP/Home.xaml:345-345;SmartAuditERP/Form_WPF/FrmReseved.xaml:500-526;SmartAuditERP/Class/MainClass.cs:349-455;SmartAuditERP/Form_WPF/frmTaxRptPeriod.xaml.cs:847-887;SmartAuditERP/Form_WPF/frmVATReturn.xaml.cs:676-715;SmartAuditERP/Form_WPF/frmTaxInvDetails.xaml.cs:778-878;SmartAuditERP/Class/MainClass.cs:349-455;SmartAuditERP/Form_WPF/frmVATReturn.xaml:339-375",
+        "next_phase": "7;8"
+      },
+      "initial_consumed_R9_reason_verbatim": "UI permission-context comparison, not proof these Save commands implement the same original root. Need exact Name/Tag/form row semantics; do not merge a document ACL question by title.",
+      "replacement_classification": "potential-visual-tree-before-show-not-document-key-root",
+      "replacement_reason": "The original potential root is WPF visual-tree permission application before a window is shown. It is NOT primarily the new Name/Tag/document-key question. GetTargetButtons traverses visual children, and selected Home handlers apply UI permission before Show. This supports keeping the lifecycle concern open, not certifying an absent rendered tree or a runtime bypass.",
+      "counterevidence_and_local_remainder": "Written Show order does not establish Loaded/template/event timing; preserve potential. Remaining visual-tree helper owners and all opener lifecycle routes are still local. Name/Tag policy identities remain a separate unnumbered question.",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Class/FormPermission.cs",
+          "selector": "GetTargetButtons",
+          "start": 201,
+          "end": 215,
+          "syntax_utf8_sha256": "842aa8393cf590aa49983d022903ae5d4aa668ed8446859543537fdee21c898c"
+        },
+        {
+          "path": "SmartAuditERP/Class/FormPermission.cs",
+          "selector": "ApplyFrmPermissionInternal",
+          "start": 86,
+          "end": 155,
+          "syntax_utf8_sha256": "e27ca15dbbd781e1bef43855bdb6a912278b25fad4b6a1c2752f631ffec1b7c4"
+        },
+        {
+          "path": "SmartAuditERP/Home.xaml.cs",
+          "selector": "stripInputInv_Click",
+          "start": 2793,
+          "end": 2804,
+          "syntax_utf8_sha256": "bb23f4171f1eb5be032bba92ea2a7f382c889f12cda0dbee9eaa70ddd6c24d48"
+        },
+        {
+          "path": "SmartAuditERP/Home.xaml.cs",
+          "selector": "stripTransfer_Click",
+          "start": 2764,
+          "end": 2775,
+          "syntax_utf8_sha256": "4d8781c3bf7d4a4c0429cdfd46e7c04e6551f704e49a55840831ecdfefcbbaee"
+        },
+        {
+          "path": "SmartAuditERP/Class/MainClass.cs",
+          "selector": "ApplyPermissionToForm@System.Windows.Window",
+          "start": 353,
+          "end": 413,
+          "syntax_utf8_sha256": "bab4b5750974fd845b6a2d1dfd56bfd5aa15ce660f66296c83d08b4ef93f9f18"
+        },
+        {
+          "path": "SmartAuditERP/Class/MainClass.cs",
+          "selector": "ApplyWpfPermissions",
+          "start": 418,
+          "end": 457,
+          "syntax_utf8_sha256": "b6b14fd7d12b16b82033b7fa79b5243663113ce9cd63513ac85f5c1b4f613a92"
+        }
+      ],
+      "original_severity_certainty_status_changed": false,
+      "novelty_certified": false,
+      "accepted_external_handoff": false,
+      "fresh_whole_original_root_source_audit_claimed": false
+    },
+    {
+      "root_id": "P2-006",
+      "canonical_prior_row": {
+        "id": "P2-006",
+        "severity": "High",
+        "certainty": "confirmed",
+        "type": "permission-contract",
+        "status": "open-not-remediated",
+        "title": "عقد صلاحيات الإنشاء والتعديل غير متسق بين المحرر والمنفذ",
+        "evidence": "SmartAuditERP/Form_WPF/frmUsersPermissions.xaml.cs:189-198;SmartAuditERP/Form_WPF/frmUsersPermissions.xaml.cs:471-494;SmartAuditERP/Class/MainClass.cs:386-407;SmartAuditERP/Class/MainClass.cs:434-436;SmartAuditERP/Form_WPF/frmTreasury.xaml.cs:192-245",
+        "next_phase": "8"
+      },
+      "initial_consumed_R9_reason_verbatim": "Grant/SQL trust context is adjacent. Local absence of a document-set check is not an independently proven deployed SQL authorization defect or remediation closure.",
+      "replacement_classification": "create-edit-permission-contract-not-SQL-grant-root",
+      "replacement_reason": "The original confirmed root is inconsistency in the create/edit permission contract between permission editor and enforcing consumer, NOT a SQL-grant/trust root. R9 FormPermission reads IS_New/IS_Save, derives Addable/Editable by visited buttons, and Common.ApplyEditAddPermissionInternal consumes those flags against IsNew; Common.AllowEdit separately reads IS_Edit. These are relevant consumer-side distinctions, not proof of a deployed grant defect.",
+      "counterevidence_and_local_remainder": "The original frmUsersPermissions and frmTreasury bodies are cited by their unchanged dictionary, not newly wholly reread in this supplement. Complete the permission-editor-to-consumer mapping and lookup variants locally before deciding exact extension/equivalence of the command question; no new root or remediation.",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Class/FormPermission.cs",
+          "selector": "ApplyFrmPermissionInternal",
+          "start": 86,
+          "end": 155,
+          "syntax_utf8_sha256": "e27ca15dbbd781e1bef43855bdb6a912278b25fad4b6a1c2752f631ffec1b7c4"
+        },
+        {
+          "path": "SmartAuditERP/Class/FormPermission.cs",
+          "selector": "ctor:FormPermission",
+          "start": 36,
+          "end": 43,
+          "syntax_utf8_sha256": "713fbafe0da7d5b20539c9153f1d46fed42085646b4737cf9bcb3acd8c3a33ba"
+        },
+        {
+          "path": "SmartAuditERP/Class/Common.cs",
+          "selector": "AllowEdit",
+          "start": 1247,
+          "end": 1270,
+          "syntax_utf8_sha256": "d108d00d4a4d50e20cc7047939e05b52b13a4528babdf650371389c6d7140ffb"
+        },
+        {
+          "path": "SmartAuditERP/Class/Common.cs",
+          "selector": "ApplyEditAddPermissionInternal",
+          "start": 1448,
+          "end": 1487,
+          "syntax_utf8_sha256": "f6262e2d1b525ae72476dba8e0b47f6fa6d4ff1b0c85dddb253d5d395e739e10"
+        },
+        {
+          "path": "SmartAuditERP/Class/MainClass.cs",
+          "selector": "ApplyWpfPermissions",
+          "start": 418,
+          "end": 457,
+          "syntax_utf8_sha256": "b6b14fd7d12b16b82033b7fa79b5243663113ce9cd63513ac85f5c1b4f613a92"
+        }
+      ],
+      "original_severity_certainty_status_changed": false,
+      "novelty_certified": false,
+      "accepted_external_handoff": false,
+      "fresh_whole_original_root_source_audit_claimed": false
+    },
+    {
+      "root_id": "P3-025",
+      "canonical_prior_row": {
+        "id": "P3-025",
+        "severity": "Medium",
+        "certainty": "confirmed",
+        "type": "note-header-ledger-date",
+        "status": "open-not-remediated",
+        "title": "تعديل تاريخ الإشعار يبقي تاريخ رأسه القديم ويغير تاريخ قيده",
+        "evidence": "SmartAuditERP/Form_WPF/frmCreditNote.xaml.cs:557-578;SmartAuditERP/Form_WPF/frmCreditNote.xaml.cs:601-606;SmartAuditERP/Form_WPF/frmDebtNote.xaml.cs:682-704;SmartAuditERP/Form_WPF/frmDebtNote.xaml.cs:763-770;SmartAuditERP/Form_WPF/frmCreditNote.xaml:248-260;SmartAuditERP/Form_WPF/frmDebtNote.xaml:280-284",
+        "next_phase": "8"
+      },
+      "initial_consumed_R9_reason_verbatim": "Invoice-entry mapping/rounding context is adjacent, not automatic equivalence for null BindToEntry or header/cache publication. No claim all formulas or accounts reviewed.",
+      "replacement_classification": "notice-header-versus-entry-date-not-rounding-root",
+      "replacement_reason": "The original confirmed root is editing a credit/debt note date while keeping the old note-header date and changing its journal-entry date. It is NOT an invoice rounding root or generic independent-transaction/null-entry problem. The six-editor R9 mapping/SaveEnty review does not by itself extend that notice-date defect.",
+      "counterevidence_and_local_remainder": "The prior R7 local note-writer followthrough and original frmCreditNote/frmDebtNote references remain carried evidence, not a fresh complete R9 note-writer review. Keep P3-003 transaction separation, P3-002 entry invariants and unnumbered null-entry/cache questions separate from P3-025; no date/fiscal execution or root-status change.",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Class/EntryOper.cs",
+          "selector": "SaveEnty",
+          "start": 850,
+          "end": 935,
+          "syntax_utf8_sha256": "57748dbdc839e489a4b65a7c07591ed051e6360a3882648ca084c402baec7865"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "MappingInvoice",
+          "start": 4040,
+          "end": 4338,
+          "syntax_utf8_sha256": "55253779f3e2f0f550526f95cbbd5f53bd40907693ad38fc5de45f9f0f37d1bb"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "BindToEntry",
+          "start": 2252,
+          "end": 2615,
+          "syntax_utf8_sha256": "d48b0eb2c1b444f1d9d11933bd85c8c668200c693a9ac1ca5a26f1967f32c07a"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "SaveInvoice",
+          "start": 1310,
+          "end": 1912,
+          "syntax_utf8_sha256": "5f55ab58de1d9cd1f1e84f3e2f7d9661f926362d94505439fbd91ea7945fd77b"
+        }
+      ],
+      "original_severity_certainty_status_changed": false,
+      "novelty_certified": false,
+      "accepted_external_handoff": false,
+      "fresh_whole_original_root_source_audit_claimed": false
+    },
+    {
+      "root_id": "P4-014",
+      "canonical_prior_row": {
+        "id": "P4-014",
+        "severity": "High",
+        "certainty": "potential",
+        "type": "stock-availability-save-race",
+        "status": "open-not-remediated",
+        "title": "حارس المخزون يعتمد رصيداً محملاً ولا يعيد التحقق الذري عند الحفظ",
+        "evidence": "SmartAuditERP/Class/ItemOper.cs:1829-1902;SmartAuditERP/Class/InvoiceOper.cs:1310-1380;SmartAuditERP/Class/InvoiceOper.cs:1502-1503;SmartAuditERP/Class/InvoiceOper.cs:1580-1628;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2394-2407;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:3259-3282",
+        "next_phase": "8"
+      },
+      "initial_consumed_R9_reason_verbatim": "Retain original potential certainty. Local SaveEnty independent commit and no balance guard do not authenticate historical potential mechanisms as observed failures.",
+      "replacement_classification": "potential-loaded-stock-versus-atomic-save-not-entry-invariant-root",
+      "replacement_reason": "The original potential root is a stock-availability guard relying on previously loaded stock without atomic revalidation at save. It is NOT the independent EntryOper transaction or entry-balance question. Full R9 central SaveInvoice/cache bodies provide bounded writer/cache context, but DataTable cache mutation order does not prove a concurrency race or persistent stock loss.",
+      "counterevidence_and_local_remainder": "Keep potential. Complete remaining ItemOper.ISvalidQuantity and stock/reload/line/transaction owners before assessing the race claim. No deployed locks/isolation/stock provider result or interleaving is executed or certified.",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Class/Inventory.cs",
+          "selector": "UpdateItemStock",
+          "start": 321,
+          "end": 348,
+          "syntax_utf8_sha256": "eaa3394ddbce41677dd3d3d1e555a052bc2b58c5e2ad63b0c1c15ad546933cff"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "SaveInvoice",
+          "start": 1310,
+          "end": 1912,
+          "syntax_utf8_sha256": "5f55ab58de1d9cd1f1e84f3e2f7d9661f926362d94505439fbd91ea7945fd77b"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOperContract.cs",
+          "selector": "SaveInvoice",
+          "start": 819,
+          "end": 1444,
+          "syntax_utf8_sha256": "1a6e783d3d0d2ac9f366e9e9dc8451a6a1b93b5204f27254eefec2710fffe23b"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+          "selector": "SaveAndPrint",
+          "start": 2167,
+          "end": 2360,
+          "syntax_utf8_sha256": "d1ddb5c9ba2acbff2701224d92199b285b9e9ed91b9e39e353a808585d93c749"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+          "selector": "SaveAndPrint",
+          "start": 1305,
+          "end": 1436,
+          "syntax_utf8_sha256": "a09abf9fa268b13e7775963c5edf0e207c9eeb5cb0089eb78fb04ab3645066fc"
+        }
+      ],
+      "original_severity_certainty_status_changed": false,
+      "novelty_certified": false,
+      "accepted_external_handoff": false,
+      "fresh_whole_original_root_source_audit_claimed": false
+    },
+    {
+      "root_id": "P6-001",
+      "canonical_prior_row": {
+        "id": "P6-001",
+        "severity": "High",
+        "certainty": "confirmed",
+        "type": "zatca-inconsistent-invoice-classification",
+        "status": "open-not-remediated",
+        "title": "تصنيف الفاتورة الضريبية يختلف بين حارس الحفظ ومحول ZATCA",
+        "evidence": "SmartAuditERP/Class/ZatcaService.cs:78-124;SmartAuditERP/Class/InvoiceOper.cs:1473-1495;SmartAuditERP/Class/InvoiceOper.cs:1854-1884;SmartAuditERP/Class/InvoiceOper.cs:5211-5243;SmartAuditERP/Form_WPF/frmInvsSyncStatusZatca.xaml.cs:285-307",
+        "next_phase": "8"
+      },
+      "initial_consumed_R9_reason_verbatim": "General tax integration context is not sufficient for a novel contract transaction/status root. Static source order and independent connection are recorded, not remote acceptance.",
+      "replacement_classification": "invoice-tax-classification-not-remote-commit-order-root",
+      "replacement_reason": "The original confirmed root is inconsistent invoice-tax classification between save guard and ZATCA conversion. It is NOT simply tax integration or remote/local commit ordering. R9 read the save-side type/customer guards and IsTaxCustomer; ordering evidence belongs primarily to P6-007 and cannot alone recertify the P6-001 converter comparison.",
+      "counterevidence_and_local_remainder": "Original ZatcaService and sync-status references are retained, not claimed as complete newly read converter bodies in this supplement. Finish exact type/customer/code classification mapping locally; no remote classification/acceptance run or forced root merge.",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "SaveInvoice",
+          "start": 1310,
+          "end": 1912,
+          "syntax_utf8_sha256": "5f55ab58de1d9cd1f1e84f3e2f7d9661f926362d94505439fbd91ea7945fd77b"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "IsTaxCustomer",
+          "start": 5211,
+          "end": 5244,
+          "syntax_utf8_sha256": "ba4b9fb5be1ddee98d08fc8f453d137f232f06eb67943bc373bf1f7a2ef726c6"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOperContract.cs",
+          "selector": "SaveInvoice",
+          "start": 819,
+          "end": 1444,
+          "syntax_utf8_sha256": "1a6e783d3d0d2ac9f366e9e9dc8451a6a1b93b5204f27254eefec2710fffe23b"
+        }
+      ],
+      "original_severity_certainty_status_changed": false,
+      "novelty_certified": false,
+      "accepted_external_handoff": false,
+      "fresh_whole_original_root_source_audit_claimed": false
+    }
+  ],
+  "reason_for_prospective_correction": "Initial reasons were partly generic/mischaracterized (notably P2-006 SQL grant and P3-025 rounding). Preserve the inaccurate authored bytes and replace their interpretation explicitly, not by silently rewriting consumed evidence.",
+  "initial_consumed_reason_strings_remain_historical_not_current_interpretation": true,
+  "initial_run01_recaptured_or_relabelled": false,
+  "this_semantic_supplement_was_run01_input": false,
+  "new_unittest_case_count": 0,
+  "new_source_body_count_claimed": 0,
+  "no_all339_or_missing345_semantic_recertification": true,
+  "preserved_R7_notice_followthrough": {
+    "path": "docs/audit/evidence/entry-source-local-followthrough-decisions-07B39R7.json",
+    "bytes": 127734,
+    "sha256": "4e896695453eb901123f076c0b06733b21727bd0faedf0ae0fd1a4f8667ba436"
+  }
+}
