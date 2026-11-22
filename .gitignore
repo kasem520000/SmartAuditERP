@@ -1,0 +1,51 @@
+# P1-006 fix: مخرجات البناء وملفات المستخدم لا تُتتبع في المستودع
+# .NET build output
+bin/
+obj/
+out/
+*.user
+*.suo
+.vs/
+*.userosscache
+*.suo
+
+# User-specific files
+*.rsuser
+*.sln.docstates
+
+# Build results
+[DD]ebug/
+[RR]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio cache/options
+.vs/
+*.ide/
+.ipynb_checkpoints
+
+# NuGet
+*.nupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+
+# Test results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# Runtime data files written next to the app (see P1-019: now in %APPDATA%)
+StartupData.json
+
+# OS artifacts
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store

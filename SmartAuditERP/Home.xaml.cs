@@ -72,184 +72,904 @@ namespace SmartAuditERP
         // تعريف جميع الواجهات الفرعية (static instances)
         // ══════════════════════════════════════════
         private static frmAccountsTree _frmAccountsTree;
-        public static frmAccountsTree frmAccountsTree => _frmAccountsTree ?? (_frmAccountsTree = new frmAccountsTree());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmAccountsTree frmAccountsTree
+        {
+            get
+            {
+                if (_frmAccountsTree == null)
+                {
+                    _frmAccountsTree = new frmAccountsTree();
+                    _frmAccountsTree.Closed += (s, e) => { if (ReferenceEquals(_frmAccountsTree, s)) _frmAccountsTree = null; };
+                }
+                return _frmAccountsTree;
+            }
+        }
 
         private static frmTreasury _frmTreasury;
-        public static frmTreasury frmTreasury => _frmTreasury ?? (_frmTreasury = new frmTreasury());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmTreasury frmTreasury
+        {
+            get
+            {
+                if (_frmTreasury == null)
+                {
+                    _frmTreasury = new frmTreasury();
+                    _frmTreasury.Closed += (s, e) => { if (ReferenceEquals(_frmTreasury, s)) _frmTreasury = null; };
+                }
+                return _frmTreasury;
+            }
+        }
 
         private static frmBanks _frmBanks;
-        public static frmBanks frmBanks => _frmBanks ?? (_frmBanks = new frmBanks());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmBanks frmBanks
+        {
+            get
+            {
+                if (_frmBanks == null)
+                {
+                    _frmBanks = new frmBanks();
+                    _frmBanks.Closed += (s, e) => { if (ReferenceEquals(_frmBanks, s)) _frmBanks = null; };
+                }
+                return _frmBanks;
+            }
+        }
 
         private static frmTaxGroups _frmTaxGroups;
-        public static frmTaxGroups frmTaxGroups => _frmTaxGroups ?? (_frmTaxGroups = new frmTaxGroups());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmTaxGroups frmTaxGroups
+        {
+            get
+            {
+                if (_frmTaxGroups == null)
+                {
+                    _frmTaxGroups = new frmTaxGroups();
+                    _frmTaxGroups.Closed += (s, e) => { if (ReferenceEquals(_frmTaxGroups, s)) _frmTaxGroups = null; };
+                }
+                return _frmTaxGroups;
+            }
+        }
 
         private static frmRptEntries _frmRptEntries;
-        public static frmRptEntries frmRptEntries => _frmRptEntries ?? (_frmRptEntries = new frmRptEntries());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmRptEntries frmRptEntries
+        {
+            get
+            {
+                if (_frmRptEntries == null)
+                {
+                    _frmRptEntries = new frmRptEntries();
+                    _frmRptEntries.Closed += (s, e) => { if (ReferenceEquals(_frmRptEntries, s)) _frmRptEntries = null; };
+                }
+                return _frmRptEntries;
+            }
+        }
 
         private static FrmIntialRestraiction _FrmIntialRestraiction;
-        public static FrmIntialRestraiction FrmIntialRestraiction => _FrmIntialRestraiction ?? (_FrmIntialRestraiction = new FrmIntialRestraiction());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static FrmIntialRestraiction FrmIntialRestraiction
+        {
+            get
+            {
+                if (_FrmIntialRestraiction == null)
+                {
+                    _FrmIntialRestraiction = new FrmIntialRestraiction();
+                    _FrmIntialRestraiction.Closed += (s, e) => { if (ReferenceEquals(_FrmIntialRestraiction, s)) _FrmIntialRestraiction = null; };
+                }
+                return _FrmIntialRestraiction;
+            }
+        }
 
         private static frmSummaryD _frmSummaryD;
-        public static frmSummaryD frmSummaryD => _frmSummaryD ?? (_frmSummaryD = new frmSummaryD());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmSummaryD frmSummaryD
+        {
+            get
+            {
+                if (_frmSummaryD == null)
+                {
+                    _frmSummaryD = new frmSummaryD();
+                    _frmSummaryD.Closed += (s, e) => { if (ReferenceEquals(_frmSummaryD, s)) _frmSummaryD = null; };
+                }
+                return _frmSummaryD;
+            }
+        }
 
         private static frmRptKhzna _frmRptKhzna;
-        public static frmRptKhzna frmRptKhzna => _frmRptKhzna ?? (_frmRptKhzna = new frmRptKhzna());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmRptKhzna frmRptKhzna
+        {
+            get
+            {
+                if (_frmRptKhzna == null)
+                {
+                    _frmRptKhzna = new frmRptKhzna();
+                    _frmRptKhzna.Closed += (s, e) => { if (ReferenceEquals(_frmRptKhzna, s)) _frmRptKhzna = null; };
+                }
+                return _frmRptKhzna;
+            }
+        }
 
         private static frmRptDailyProcess _frmRptDailyProcess;
-        public static frmRptDailyProcess frmRptDailyProcess => _frmRptDailyProcess ?? (_frmRptDailyProcess = new frmRptDailyProcess());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmRptDailyProcess frmRptDailyProcess
+        {
+            get
+            {
+                if (_frmRptDailyProcess == null)
+                {
+                    _frmRptDailyProcess = new frmRptDailyProcess();
+                    _frmRptDailyProcess.Closed += (s, e) => { if (ReferenceEquals(_frmRptDailyProcess, s)) _frmRptDailyProcess = null; };
+                }
+                return _frmRptDailyProcess;
+            }
+        }
 
         private static frmSafes _frmSafes;
-        public static frmSafes frmSafes => _frmSafes ?? (_frmSafes = new frmSafes());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmSafes frmSafes
+        {
+            get
+            {
+                if (_frmSafes == null)
+                {
+                    _frmSafes = new frmSafes();
+                    _frmSafes.Closed += (s, e) => { if (ReferenceEquals(_frmSafes, s)) _frmSafes = null; };
+                }
+                return _frmSafes;
+            }
+        }
 
         private static frmItemCategory _frmItemCategory;
-        public static frmItemCategory frmItemCategory => _frmItemCategory ?? (_frmItemCategory = new frmItemCategory());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmItemCategory frmItemCategory
+        {
+            get
+            {
+                if (_frmItemCategory == null)
+                {
+                    _frmItemCategory = new frmItemCategory();
+                    _frmItemCategory.Closed += (s, e) => { if (ReferenceEquals(_frmItemCategory, s)) _frmItemCategory = null; };
+                }
+                return _frmItemCategory;
+            }
+        }
 
         private static frmUnits _frmUnits;
-        public static frmUnits frmUnits => _frmUnits ?? (_frmUnits = new frmUnits());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmUnits frmUnits
+        {
+            get
+            {
+                if (_frmUnits == null)
+                {
+                    _frmUnits = new frmUnits();
+                    _frmUnits.Closed += (s, e) => { if (ReferenceEquals(_frmUnits, s)) _frmUnits = null; };
+                }
+                return _frmUnits;
+            }
+        }
 
         private static frmItems _frmItems;
-        public static frmItems frmItems => _frmItems ?? (_frmItems = new frmItems());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmItems frmItems
+        {
+            get
+            {
+                if (_frmItems == null)
+                {
+                    _frmItems = new frmItems();
+                    _frmItems.Closed += (s, e) => { if (ReferenceEquals(_frmItems, s)) _frmItems = null; };
+                }
+                return _frmItems;
+            }
+        }
 
         private static frmSafeGrd _frmSafeGrd;
-        public static frmSafeGrd frmSafeGrd => _frmSafeGrd ?? (_frmSafeGrd = new frmSafeGrd());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmSafeGrd frmSafeGrd
+        {
+            get
+            {
+                if (_frmSafeGrd == null)
+                {
+                    _frmSafeGrd = new frmSafeGrd();
+                    _frmSafeGrd.Closed += (s, e) => { if (ReferenceEquals(_frmSafeGrd, s)) _frmSafeGrd = null; };
+                }
+                return _frmSafeGrd;
+            }
+        }
 
         private static frmSafeGrdToDate _frmSafeGrdToDate;
-        public static frmSafeGrdToDate frmSafeGrdToDate => _frmSafeGrdToDate ?? (_frmSafeGrdToDate = new frmSafeGrdToDate());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmSafeGrdToDate frmSafeGrdToDate
+        {
+            get
+            {
+                if (_frmSafeGrdToDate == null)
+                {
+                    _frmSafeGrdToDate = new frmSafeGrdToDate();
+                    _frmSafeGrdToDate.Closed += (s, e) => { if (ReferenceEquals(_frmSafeGrdToDate, s)) _frmSafeGrdToDate = null; };
+                }
+                return _frmSafeGrdToDate;
+            }
+        }
 
         private static frmItemsExpire _frmItemsExpire;
-        public static frmItemsExpire frmItemsExpire => _frmItemsExpire ?? (_frmItemsExpire = new frmItemsExpire());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmItemsExpire frmItemsExpire
+        {
+            get
+            {
+                if (_frmItemsExpire == null)
+                {
+                    _frmItemsExpire = new frmItemsExpire();
+                    _frmItemsExpire.Closed += (s, e) => { if (ReferenceEquals(_frmItemsExpire, s)) _frmItemsExpire = null; };
+                }
+                return _frmItemsExpire;
+            }
+        }
 
         private static frmDecisionHelp _frmDecisionHelp;
-        public static frmDecisionHelp frmDecisionHelp => _frmDecisionHelp ?? (_frmDecisionHelp = new frmDecisionHelp());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmDecisionHelp frmDecisionHelp
+        {
+            get
+            {
+                if (_frmDecisionHelp == null)
+                {
+                    _frmDecisionHelp = new frmDecisionHelp();
+                    _frmDecisionHelp.Closed += (s, e) => { if (ReferenceEquals(_frmDecisionHelp, s)) _frmDecisionHelp = null; };
+                }
+                return _frmDecisionHelp;
+            }
+        }
 
         private static frmSummaryQ _frmSummaryQ;
-        public static frmSummaryQ frmSummaryQ => _frmSummaryQ ?? (_frmSummaryQ = new frmSummaryQ());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmSummaryQ frmSummaryQ
+        {
+            get
+            {
+                if (_frmSummaryQ == null)
+                {
+                    _frmSummaryQ = new frmSummaryQ();
+                    _frmSummaryQ.Closed += (s, e) => { if (ReferenceEquals(_frmSummaryQ, s)) _frmSummaryQ = null; };
+                }
+                return _frmSummaryQ;
+            }
+        }
 
         private static frmInvSumByClient _frmInvSumByClient;
-        public static frmInvSumByClient frmInvSumByClient => _frmInvSumByClient ?? (_frmInvSumByClient = new frmInvSumByClient());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmInvSumByClient frmInvSumByClient
+        {
+            get
+            {
+                if (_frmInvSumByClient == null)
+                {
+                    _frmInvSumByClient = new frmInvSumByClient();
+                    _frmInvSumByClient.Closed += (s, e) => { if (ReferenceEquals(_frmInvSumByClient, s)) _frmInvSumByClient = null; };
+                }
+                return _frmInvSumByClient;
+            }
+        }
 
         private static frmInvSumByType _frmInvSumByType;
-        public static frmInvSumByType frmInvSumByType => _frmInvSumByType ?? (_frmInvSumByType = new frmInvSumByType());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmInvSumByType frmInvSumByType
+        {
+            get
+            {
+                if (_frmInvSumByType == null)
+                {
+                    _frmInvSumByType = new frmInvSumByType();
+                    _frmInvSumByType.Closed += (s, e) => { if (ReferenceEquals(_frmInvSumByType, s)) _frmInvSumByType = null; };
+                }
+                return _frmInvSumByType;
+            }
+        }
 
         private static frmRptInvAnalysis _frmRptInvAnalysis;
-        public static frmRptInvAnalysis frmRptInvAnalysis => _frmRptInvAnalysis ?? (_frmRptInvAnalysis = new frmRptInvAnalysis());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmRptInvAnalysis frmRptInvAnalysis
+        {
+            get
+            {
+                if (_frmRptInvAnalysis == null)
+                {
+                    _frmRptInvAnalysis = new frmRptInvAnalysis();
+                    _frmRptInvAnalysis.Closed += (s, e) => { if (ReferenceEquals(_frmRptInvAnalysis, s)) _frmRptInvAnalysis = null; };
+                }
+                return _frmRptInvAnalysis;
+            }
+        }
 
         private static frmNkdTotSalePurch _frmNkdTotSalePurch;
-        public static frmNkdTotSalePurch frmNkdTotSalePurch => _frmNkdTotSalePurch ?? (_frmNkdTotSalePurch = new frmNkdTotSalePurch());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmNkdTotSalePurch frmNkdTotSalePurch
+        {
+            get
+            {
+                if (_frmNkdTotSalePurch == null)
+                {
+                    _frmNkdTotSalePurch = new frmNkdTotSalePurch();
+                    _frmNkdTotSalePurch.Closed += (s, e) => { if (ReferenceEquals(_frmNkdTotSalePurch, s)) _frmNkdTotSalePurch = null; };
+                }
+                return _frmNkdTotSalePurch;
+            }
+        }
 
         private static frmNetsales _frmNetsales;
-        public static frmNetsales frmNetsales => _frmNetsales ?? (_frmNetsales = new frmNetsales());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmNetsales frmNetsales
+        {
+            get
+            {
+                if (_frmNetsales == null)
+                {
+                    _frmNetsales = new frmNetsales();
+                    _frmNetsales.Closed += (s, e) => { if (ReferenceEquals(_frmNetsales, s)) _frmNetsales = null; };
+                }
+                return _frmNetsales;
+            }
+        }
 
         private static frmGroupM _frmGroupM;
-        public static frmGroupM frmGroupM => _frmGroupM ?? (_frmGroupM = new frmGroupM());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmGroupM frmGroupM
+        {
+            get
+            {
+                if (_frmGroupM == null)
+                {
+                    _frmGroupM = new frmGroupM();
+                    _frmGroupM.Closed += (s, e) => { if (ReferenceEquals(_frmGroupM, s)) _frmGroupM = null; };
+                }
+                return _frmGroupM;
+            }
+        }
 
         private static frmItemM _frmItemM;
-        public static frmItemM frmItemM => _frmItemM ?? (_frmItemM = new frmItemM());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmItemM frmItemM
+        {
+            get
+            {
+                if (_frmItemM == null)
+                {
+                    _frmItemM = new frmItemM();
+                    _frmItemM.Closed += (s, e) => { if (ReferenceEquals(_frmItemM, s)) _frmItemM = null; };
+                }
+                return _frmItemM;
+            }
+        }
 
         private static frmQueueM _frmQueueM;
-        public static frmQueueM frmQueueM => _frmQueueM ?? (_frmQueueM = new frmQueueM());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmQueueM frmQueueM
+        {
+            get
+            {
+                if (_frmQueueM == null)
+                {
+                    _frmQueueM = new frmQueueM();
+                    _frmQueueM.Closed += (s, e) => { if (ReferenceEquals(_frmQueueM, s)) _frmQueueM = null; };
+                }
+                return _frmQueueM;
+            }
+        }
 
         private static frmAttendM _frmAttendM;
-        public static frmAttendM frmAttendM => _frmAttendM ?? (_frmAttendM = new frmAttendM());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmAttendM frmAttendM
+        {
+            get
+            {
+                if (_frmAttendM == null)
+                {
+                    _frmAttendM = new frmAttendM();
+                    _frmAttendM.Closed += (s, e) => { if (ReferenceEquals(_frmAttendM, s)) _frmAttendM = null; };
+                }
+                return _frmAttendM;
+            }
+        }
 
         private static frmViolationM _frmViolationM;
-        public static frmViolationM frmViolationM => _frmViolationM ?? (_frmViolationM = new frmViolationM());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmViolationM frmViolationM
+        {
+            get
+            {
+                if (_frmViolationM == null)
+                {
+                    _frmViolationM = new frmViolationM();
+                    _frmViolationM.Closed += (s, e) => { if (ReferenceEquals(_frmViolationM, s)) _frmViolationM = null; };
+                }
+                return _frmViolationM;
+            }
+        }
 
         private static frmBookingM _frmBookingM;
-        public static frmBookingM frmBookingM => _frmBookingM ?? (_frmBookingM = new frmBookingM());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmBookingM frmBookingM
+        {
+            get
+            {
+                if (_frmBookingM == null)
+                {
+                    _frmBookingM = new frmBookingM();
+                    _frmBookingM.Closed += (s, e) => { if (ReferenceEquals(_frmBookingM, s)) _frmBookingM = null; };
+                }
+                return _frmBookingM;
+            }
+        }
 
         private static frmHoldM _frmHoldM;
-        public static frmHoldM frmHoldM => _frmHoldM ?? (_frmHoldM = new frmHoldM());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmHoldM frmHoldM
+        {
+            get
+            {
+                if (_frmHoldM == null)
+                {
+                    _frmHoldM = new frmHoldM();
+                    _frmHoldM.Closed += (s, e) => { if (ReferenceEquals(_frmHoldM, s)) _frmHoldM = null; };
+                }
+                return _frmHoldM;
+            }
+        }
 
         private static frmFPSSetting _frmFPSSetting;
-        public static frmFPSSetting frmFPSSetting => _frmFPSSetting ?? (_frmFPSSetting = new frmFPSSetting());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmFPSSetting frmFPSSetting
+        {
+            get
+            {
+                if (_frmFPSSetting == null)
+                {
+                    _frmFPSSetting = new frmFPSSetting();
+                    _frmFPSSetting.Closed += (s, e) => { if (ReferenceEquals(_frmFPSSetting, s)) _frmFPSSetting = null; };
+                }
+                return _frmFPSSetting;
+            }
+        }
 
         private static frmManagement _frmManagement;
-        public static frmManagement frmManagement => _frmManagement ?? (_frmManagement = new frmManagement());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmManagement frmManagement
+        {
+            get
+            {
+                if (_frmManagement == null)
+                {
+                    _frmManagement = new frmManagement();
+                    _frmManagement.Closed += (s, e) => { if (ReferenceEquals(_frmManagement, s)) _frmManagement = null; };
+                }
+                return _frmManagement;
+            }
+        }
 
         private static frmEmployees _frmEmployees;
-        public static frmEmployees frmEmployees => _frmEmployees ?? (_frmEmployees = new frmEmployees());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmEmployees frmEmployees
+        {
+            get
+            {
+                if (_frmEmployees == null)
+                {
+                    _frmEmployees = new frmEmployees();
+                    _frmEmployees.Closed += (s, e) => { if (ReferenceEquals(_frmEmployees, s)) _frmEmployees = null; };
+                }
+                return _frmEmployees;
+            }
+        }
 
         private static frmDepartments _frmDepartments;
-        public static frmDepartments frmDepartments => _frmDepartments ?? (_frmDepartments = new frmDepartments());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmDepartments frmDepartments
+        {
+            get
+            {
+                if (_frmDepartments == null)
+                {
+                    _frmDepartments = new frmDepartments();
+                    _frmDepartments.Closed += (s, e) => { if (ReferenceEquals(_frmDepartments, s)) _frmDepartments = null; };
+                }
+                return _frmDepartments;
+            }
+        }
 
         private static frmRptSalary _frmRptSalary;
-        public static frmRptSalary frmRptSalary => _frmRptSalary ?? (_frmRptSalary = new frmRptSalary());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmRptSalary frmRptSalary
+        {
+            get
+            {
+                if (_frmRptSalary == null)
+                {
+                    _frmRptSalary = new frmRptSalary();
+                    _frmRptSalary.Closed += (s, e) => { if (ReferenceEquals(_frmRptSalary, s)) _frmRptSalary = null; };
+                }
+                return _frmRptSalary;
+            }
+        }
 
         private static frmEmpSalaryAddSub _frmEmpSalaryAddSub;
-        public static frmEmpSalaryAddSub frmEmpSalaryAddSub => _frmEmpSalaryAddSub ?? (_frmEmpSalaryAddSub = new frmEmpSalaryAddSub());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmEmpSalaryAddSub frmEmpSalaryAddSub
+        {
+            get
+            {
+                if (_frmEmpSalaryAddSub == null)
+                {
+                    _frmEmpSalaryAddSub = new frmEmpSalaryAddSub();
+                    _frmEmpSalaryAddSub.Closed += (s, e) => { if (ReferenceEquals(_frmEmpSalaryAddSub, s)) _frmEmpSalaryAddSub = null; };
+                }
+                return _frmEmpSalaryAddSub;
+            }
+        }
 
         private static frmBuyApp _frmBuyApp;
-        public static frmBuyApp frmBuyApp => _frmBuyApp ?? (_frmBuyApp = new frmBuyApp());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmBuyApp frmBuyApp
+        {
+            get
+            {
+                if (_frmBuyApp == null)
+                {
+                    _frmBuyApp = new frmBuyApp();
+                    _frmBuyApp.Closed += (s, e) => { if (ReferenceEquals(_frmBuyApp, s)) _frmBuyApp = null; };
+                }
+                return _frmBuyApp;
+            }
+        }
 
         private static frmSerial _frmSerial;
-        public static frmSerial frmSerial => _frmSerial ?? (_frmSerial = new frmSerial());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmSerial frmSerial
+        {
+            get
+            {
+                if (_frmSerial == null)
+                {
+                    _frmSerial = new frmSerial();
+                    _frmSerial.Closed += (s, e) => { if (ReferenceEquals(_frmSerial, s)) _frmSerial = null; };
+                }
+                return _frmSerial;
+            }
+        }
 
         private static frmAbout _frmAbout;
-        public static frmAbout frmAbout => _frmAbout ?? (_frmAbout = new frmAbout());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmAbout frmAbout
+        {
+            get
+            {
+                if (_frmAbout == null)
+                {
+                    _frmAbout = new frmAbout();
+                    _frmAbout.Closed += (s, e) => { if (ReferenceEquals(_frmAbout, s)) _frmAbout = null; };
+                }
+                return _frmAbout;
+            }
+        }
 
         private static frmBackupRstore _frmBackupRstore;
-        public static frmBackupRstore frmBackupRstore => _frmBackupRstore ?? (_frmBackupRstore = new frmBackupRstore());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmBackupRstore frmBackupRstore
+        {
+            get
+            {
+                if (_frmBackupRstore == null)
+                {
+                    _frmBackupRstore = new frmBackupRstore();
+                    _frmBackupRstore.Closed += (s, e) => { if (ReferenceEquals(_frmBackupRstore, s)) _frmBackupRstore = null; };
+                }
+                return _frmBackupRstore;
+            }
+        }
 
         private static frmInvRptType _frmInvRptType;
-        public static frmInvRptType frmInvRptType => _frmInvRptType ?? (_frmInvRptType = new frmInvRptType());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmInvRptType frmInvRptType
+        {
+            get
+            {
+                if (_frmInvRptType == null)
+                {
+                    _frmInvRptType = new frmInvRptType();
+                    _frmInvRptType.Closed += (s, e) => { if (ReferenceEquals(_frmInvRptType, s)) _frmInvRptType = null; };
+                }
+                return _frmInvRptType;
+            }
+        }
 
         private static dfh _dfh;
-        public static dfh dfh => _dfh ?? (_dfh = new dfh());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static dfh dfh
+        {
+            get
+            {
+                if (_dfh == null)
+                {
+                    _dfh = new dfh();
+                    _dfh.Closed += (s, e) => { if (ReferenceEquals(_dfh, s)) _dfh = null; };
+                }
+                return _dfh;
+            }
+        }
 
         private static frmAddUsers _frmAddUsers;
-        public static frmAddUsers frmAddUsers => _frmAddUsers ?? (_frmAddUsers = new frmAddUsers());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmAddUsers frmAddUsers
+        {
+            get
+            {
+                if (_frmAddUsers == null)
+                {
+                    _frmAddUsers = new frmAddUsers();
+                    _frmAddUsers.Closed += (s, e) => { if (ReferenceEquals(_frmAddUsers, s)) _frmAddUsers = null; };
+                }
+                return _frmAddUsers;
+            }
+        }
 
         private static frmUsersPermissions _frmUsersPermissions;
-        public static frmUsersPermissions frmUsersPermissions => _frmUsersPermissions ?? (_frmUsersPermissions = new frmUsersPermissions());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmUsersPermissions frmUsersPermissions
+        {
+            get
+            {
+                if (_frmUsersPermissions == null)
+                {
+                    _frmUsersPermissions = new frmUsersPermissions();
+                    _frmUsersPermissions.Closed += (s, e) => { if (ReferenceEquals(_frmUsersPermissions, s)) _frmUsersPermissions = null; };
+                }
+                return _frmUsersPermissions;
+            }
+        }
 
         private static frmChangePwd _frmChangePwd;
-        public static frmChangePwd frmChangePwd => _frmChangePwd ?? (_frmChangePwd = new frmChangePwd());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmChangePwd frmChangePwd
+        {
+            get
+            {
+                if (_frmChangePwd == null)
+                {
+                    _frmChangePwd = new frmChangePwd();
+                    _frmChangePwd.Closed += (s, e) => { if (ReferenceEquals(_frmChangePwd, s)) _frmChangePwd = null; };
+                }
+                return _frmChangePwd;
+            }
+        }
 
         private static frmSettings _frmSettings;
-        public static frmSettings frmSettings => _frmSettings ?? (_frmSettings = new frmSettings());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmSettings frmSettings
+        {
+            get
+            {
+                if (_frmSettings == null)
+                {
+                    _frmSettings = new frmSettings();
+                    _frmSettings.Closed += (s, e) => { if (ReferenceEquals(_frmSettings, s)) _frmSettings = null; };
+                }
+                return _frmSettings;
+            }
+        }
 
         private static frmFonudation _frmFonudation;
-        public static frmFonudation frmFonudation => _frmFonudation ?? (_frmFonudation = new frmFonudation());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmFonudation frmFonudation
+        {
+            get
+            {
+                if (_frmFonudation == null)
+                {
+                    _frmFonudation = new frmFonudation();
+                    _frmFonudation.Closed += (s, e) => { if (ReferenceEquals(_frmFonudation, s)) _frmFonudation = null; };
+                }
+                return _frmFonudation;
+            }
+        }
 
         private static frmBranches _frmBranches;
-        public static frmBranches frmBranches => _frmBranches ?? (_frmBranches = new frmBranches());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmBranches frmBranches
+        {
+            get
+            {
+                if (_frmBranches == null)
+                {
+                    _frmBranches = new frmBranches();
+                    _frmBranches.Closed += (s, e) => { if (ReferenceEquals(_frmBranches, s)) _frmBranches = null; };
+                }
+                return _frmBranches;
+            }
+        }
 
         private static frmCostCenter _frmCostCenter;
-        public static frmCostCenter frmCostCenter => _frmCostCenter ?? (_frmCostCenter = new frmCostCenter());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmCostCenter frmCostCenter
+        {
+            get
+            {
+                if (_frmCostCenter == null)
+                {
+                    _frmCostCenter = new frmCostCenter();
+                    _frmCostCenter.Closed += (s, e) => { if (ReferenceEquals(_frmCostCenter, s)) _frmCostCenter = null; };
+                }
+                return _frmCostCenter;
+            }
+        }
 
         private static frmUserLogin _frmUserLogin;
-        public static frmUserLogin frmUserLogin => _frmUserLogin ?? (_frmUserLogin = new frmUserLogin());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmUserLogin frmUserLogin
+        {
+            get
+            {
+                if (_frmUserLogin == null)
+                {
+                    _frmUserLogin = new frmUserLogin();
+                    _frmUserLogin.Closed += (s, e) => { if (ReferenceEquals(_frmUserLogin, s)) _frmUserLogin = null; };
+                }
+                return _frmUserLogin;
+            }
+        }
 
         private static frmSecurityPnl _frmSecurityPnl;
-        public static frmSecurityPnl frmSecurityPnl => _frmSecurityPnl ?? (_frmSecurityPnl = new frmSecurityPnl());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmSecurityPnl frmSecurityPnl
+        {
+            get
+            {
+                if (_frmSecurityPnl == null)
+                {
+                    _frmSecurityPnl = new frmSecurityPnl();
+                    _frmSecurityPnl.Closed += (s, e) => { if (ReferenceEquals(_frmSecurityPnl, s)) _frmSecurityPnl = null; };
+                }
+                return _frmSecurityPnl;
+            }
+        }
 
         private static frmLogOut _frmLogOut;
-        public static frmLogOut frmLogOut => _frmLogOut ?? (_frmLogOut = new frmLogOut());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmLogOut frmLogOut
+        {
+            get
+            {
+                if (_frmLogOut == null)
+                {
+                    _frmLogOut = new frmLogOut();
+                    _frmLogOut.Closed += (s, e) => { if (ReferenceEquals(_frmLogOut, s)) _frmLogOut = null; };
+                }
+                return _frmLogOut;
+            }
+        }
 
         private static frmSalaryPay _frmSalaryPay;
-        public static frmSalaryPay frmSalaryPay => _frmSalaryPay ?? (_frmSalaryPay = new frmSalaryPay());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmSalaryPay frmSalaryPay
+        {
+            get
+            {
+                if (_frmSalaryPay == null)
+                {
+                    _frmSalaryPay = new frmSalaryPay();
+                    _frmSalaryPay.Closed += (s, e) => { if (ReferenceEquals(_frmSalaryPay, s)) _frmSalaryPay = null; };
+                }
+                return _frmSalaryPay;
+            }
+        }
 
         private static ClosShiftAndroid _ClosShiftAndroid;
-        public static ClosShiftAndroid ClosShiftAndroid => _ClosShiftAndroid ?? (_ClosShiftAndroid = new ClosShiftAndroid());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static ClosShiftAndroid ClosShiftAndroid
+        {
+            get
+            {
+                if (_ClosShiftAndroid == null)
+                {
+                    _ClosShiftAndroid = new ClosShiftAndroid();
+                    _ClosShiftAndroid.Closed += (s, e) => { if (ReferenceEquals(_ClosShiftAndroid, s)) _ClosShiftAndroid = null; };
+                }
+                return _ClosShiftAndroid;
+            }
+        }
 
         private static frmRptInvSalesDetailsPosAndroid _frmRptInvSalesDetailsPosAndroid;
-        public static frmRptInvSalesDetailsPosAndroid frmRptInvSalesDetailsPosAndroid => _frmRptInvSalesDetailsPosAndroid ?? (_frmRptInvSalesDetailsPosAndroid = new frmRptInvSalesDetailsPosAndroid());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmRptInvSalesDetailsPosAndroid frmRptInvSalesDetailsPosAndroid
+        {
+            get
+            {
+                if (_frmRptInvSalesDetailsPosAndroid == null)
+                {
+                    _frmRptInvSalesDetailsPosAndroid = new frmRptInvSalesDetailsPosAndroid();
+                    _frmRptInvSalesDetailsPosAndroid.Closed += (s, e) => { if (ReferenceEquals(_frmRptInvSalesDetailsPosAndroid, s)) _frmRptInvSalesDetailsPosAndroid = null; };
+                }
+                return _frmRptInvSalesDetailsPosAndroid;
+            }
+        }
 
         private static FrmReseved _FrmReseved;
-        public static FrmReseved FrmReseved => _FrmReseved ?? (_FrmReseved = new FrmReseved());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static FrmReseved FrmReseved
+        {
+            get
+            {
+                if (_FrmReseved == null)
+                {
+                    _FrmReseved = new FrmReseved();
+                    _FrmReseved.Closed += (s, e) => { if (ReferenceEquals(_FrmReseved, s)) _FrmReseved = null; };
+                }
+                return _FrmReseved;
+            }
+        }
 
         private static frmRptReseved _frmRptReseved;
-        public static frmRptReseved frmRptReseved => _frmRptReseved ?? (_frmRptReseved = new frmRptReseved());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmRptReseved frmRptReseved
+        {
+            get
+            {
+                if (_frmRptReseved == null)
+                {
+                    _frmRptReseved = new frmRptReseved();
+                    _frmRptReseved.Closed += (s, e) => { if (ReferenceEquals(_frmRptReseved, s)) _frmRptReseved = null; };
+                }
+                return _frmRptReseved;
+            }
+        }
 
         private static frmEmpAccountGet _frmEmpAccountGet;
-        public static frmEmpAccountGet frmEmpAccountGet => _frmEmpAccountGet ?? (_frmEmpAccountGet = new frmEmpAccountGet());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmEmpAccountGet frmEmpAccountGet
+        {
+            get
+            {
+                if (_frmEmpAccountGet == null)
+                {
+                    _frmEmpAccountGet = new frmEmpAccountGet();
+                    _frmEmpAccountGet.Closed += (s, e) => { if (ReferenceEquals(_frmEmpAccountGet, s)) _frmEmpAccountGet = null; };
+                }
+                return _frmEmpAccountGet;
+            }
+        }
 
         private static FrmSyncMQtt _FrmSyncMQtt;
-        public static FrmSyncMQtt FrmSyncMQtt => _FrmSyncMQtt ?? (_FrmSyncMQtt = new FrmSyncMQtt());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static FrmSyncMQtt FrmSyncMQtt
+        {
+            get
+            {
+                if (_FrmSyncMQtt == null)
+                {
+                    _FrmSyncMQtt = new FrmSyncMQtt();
+                    _FrmSyncMQtt.Closed += (s, e) => { if (ReferenceEquals(_FrmSyncMQtt, s)) _FrmSyncMQtt = null; };
+                }
+                return _FrmSyncMQtt;
+            }
+        }
 
         private static FormCreateTicket _FormCreateTicket;
-        public static FormCreateTicket FormCreateTicket => _FormCreateTicket ?? (_FormCreateTicket = new FormCreateTicket());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static FormCreateTicket FormCreateTicket
+        {
+            get
+            {
+                if (_FormCreateTicket == null)
+                {
+                    _FormCreateTicket = new FormCreateTicket();
+                    _FormCreateTicket.Closed += (s, e) => { if (ReferenceEquals(_FormCreateTicket, s)) _FormCreateTicket = null; };
+                }
+                return _FormCreateTicket;
+            }
+        }
 
      //   private static FrmWebhooksetting _FrmWebhooksetting;
      //   public static FrmWebhooksetting FrmWebhooksetting => _FrmWebhooksetting ?? (_FrmWebhooksetting = new FrmWebhooksetting());
@@ -261,16 +981,52 @@ namespace SmartAuditERP
     //    public static FrmOrderSalla FrmOrderSalla => _FrmOrderSalla ?? (_FrmOrderSalla = new FrmOrderSalla());
 
         private static FrmAccountingPeriods _FrmAccountingPeriods;
-        public static FrmAccountingPeriods FrmAccountingPeriods => _FrmAccountingPeriods ?? (_FrmAccountingPeriods = new FrmAccountingPeriods());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static FrmAccountingPeriods FrmAccountingPeriods
+        {
+            get
+            {
+                if (_FrmAccountingPeriods == null)
+                {
+                    _FrmAccountingPeriods = new FrmAccountingPeriods();
+                    _FrmAccountingPeriods.Closed += (s, e) => { if (ReferenceEquals(_FrmAccountingPeriods, s)) _FrmAccountingPeriods = null; };
+                }
+                return _FrmAccountingPeriods;
+            }
+        }
 
    //     private static FrmRestorData _FrmRestorData;
    //     public static FrmRestorData FrmRestorData => _FrmRestorData ?? (_FrmRestorData = new FrmRestorData());
 
         private static frmDevicesAndroid _frmDevicesAndroid;
-        public static frmDevicesAndroid frmDevicesAndroid => _frmDevicesAndroid ?? (_frmDevicesAndroid = new frmDevicesAndroid());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmDevicesAndroid frmDevicesAndroid
+        {
+            get
+            {
+                if (_frmDevicesAndroid == null)
+                {
+                    _frmDevicesAndroid = new frmDevicesAndroid();
+                    _frmDevicesAndroid.Closed += (s, e) => { if (ReferenceEquals(_frmDevicesAndroid, s)) _frmDevicesAndroid = null; };
+                }
+                return _frmDevicesAndroid;
+            }
+        }
 
         private static frmInvSalContactDetails _frmInvSalContactDetails;
-        public static frmInvSalContactDetails frmInvSalContactDetails => _frmInvSalContactDetails ?? (_frmInvSalContactDetails = new frmInvSalContactDetails());
+        // P1-030 fix: the reference is nulled when the window closes (no re-show of a closed window)
+        public static frmInvSalContactDetails frmInvSalContactDetails
+        {
+            get
+            {
+                if (_frmInvSalContactDetails == null)
+                {
+                    _frmInvSalContactDetails = new frmInvSalContactDetails();
+                    _frmInvSalContactDetails.Closed += (s, e) => { if (ReferenceEquals(_frmInvSalContactDetails, s)) _frmInvSalContactDetails = null; };
+                }
+                return _frmInvSalContactDetails;
+            }
+        }
 
         #endregion
 
