@@ -906,25 +906,13 @@ public class EntityOperations
         sqlTransaction = sqlConnection.BeginTransaction();
         try
         {
-            new SqlCommand();
-            if (sqlConnection.State != ConnectionState.Open)
-            {
-                sqlConnection.Open();
-            }
-            if (Sync.ActiveSync & (Sync.BranchType == 4))
-            {
-                new SqlCommand("delete from ProductStocks", sqlConnection, sqlTransaction).ExecuteNonQuery();
-            }
+            // P5-023 fix: عقد اللقطة = استبدال — حذف الكل ثم إدراج اللقطة، في
+            // كل الأوضاع. كان الوضع النشط غير السحابي يراكم الصفوف بلا حذف
+            // (كل دورة مزامنة تضاعف الكميات)، واللقطة الفارغة لم تكن تعرّف
+            // تفريغًا في غير وضع السحابة.
+            new SqlCommand("delete from ProductStocks", sqlConnection, sqlTransaction).ExecuteNonQuery();
             foreach (ProductStock stock in stocks)
             {
-                if (sqlConnection.State != ConnectionState.Open)
-                {
-                    sqlConnection.Open();
-                }
-                if (!Sync.ActiveSync & (Sync.BranchType != 4))
-                {
-                    new SqlCommand(("delete from ProductStocks where ProductId= " + Conversions.ToString(stock.ProductId) + " and InventoryID= " + Conversions.ToString(stock.InventoryId) + " and branchId= " + Conversions.ToString(stock.BranchId)) ?? "", sqlConnection, sqlTransaction).ExecuteNonQuery();
-                }
                 SqlCommand sqlCommand;
                 sqlCommand = new SqlCommand("Insert into ProductStocks(ProductId,InventoryID,branchId,UnitId,Quantity,AvrgCost,LastUpdate) values(@ProductId,@InventoryID,@branchId,@UnitId,@Quantity,@AvrgCost,@LastUpdate)", sqlConnection, sqlTransaction);
                 sqlCommand.Parameters.Add("@ProductId", SqlDbType.NVarChar).Value = stock.ProductId;
@@ -941,6 +929,15 @@ public class EntityOperations
         catch (Exception projectError)
         {
             ProjectData.SetProjectError(projectError);
+            // P5-023 fix: تراجع المعاملة عند الفشل (كانت تُترك معلقة على
+            // الاتصال المشترك فتفشل العمليات التالية عليه)
+            try
+            {
+                sqlTransaction.Rollback();
+            }
+            catch
+            {
+            }
             ProjectData.ClearProjectError();
         }
     }
@@ -964,7 +961,7 @@ public class EntityOperations
                     goto IL_0b02;
                 }
                 SqlCommand sqlCommand;
-                sqlCommand = ((Convert.ToDouble(Operators.ConcatenateObject("", new SqlCommand("Select COUNT(*) from Customers where id= " + customer.CustomerID, sqlConnection).ExecuteScalar())) != 0.0) ? new SqlCommand("update Customers set name=@name,country=@country,city=@city,area=@area,act=@act,national_id=@national_id,tel=@tel,mobile=@mobile,fax=@fax,email=@email,notes=@notes,type=@type,tax_no=@tax_no,AccountCode=@AccountCode,IdScan=@IdScan,Branch=@Branch,ISCredit=@ISCredit,PlotIdentification=@PlotIdentification,BuildingNumber = @BuildingNumber, StreetName=@StreetName, AdditionalStreetName=@AdditionalStreetName, District=@District,PostalZone=@PostalZone,CrNo=@CrNo,maxdepit=@maxdepit,area2=@area2,city2=@city2 where id=" + customer.CustomerID, sqlConnection) : new SqlCommand("SET IDENTITY_INSERT [dbo].[Customers] ON insert into Customers(id,name,country,city,area,act,national_id,tel,mobile,fax,email,notes,type,tax_no,IS_Deleted,AccountCode,IdScan,Branch,ISCredit,PlotIdentification,BuildingNumber,StreetName,AdditionalStreetName,District,PostalZone,CrNo,maxdepit,area2,city2) values (@id,@name,@country,@city,@area,@act,@national_id,@tel,@mobile,@fax,@email,@notes,@type,@tax_no,@IS_Deleted,@AccountCode,@IdScan,@Branch,@ISCredit,@PlotIdentification,@BuildingNumber,@StreetName,@AdditionalStreetName,@District,@PostalZone,@CrNo,@maxdepit,@area2,@city2) SET IDENTITY_INSERT [dbo].[Customers] off", sqlConnection));
+                sqlCommand = ((Convert.ToDouble(Operators.ConcatenateObject("", new SqlCommand("Select COUNT(*) from Customers where id= " + customer.CustomerID, sqlConnection).ExecuteScalar())) != 0.0) ? new SqlCommand("update Customers set name=@name,country=@country,city=@city,area=@area,act=@act,national_id=@national_id,tel=@tel,mobile=@mobile,fax=@fax,email=@email,notes=@notes,type=@type,tax_no=@tax_no,AccountCode=@AccountCode,IdScan=@IdScan,Branch=@Branch,ISCredit=@ISCredit,PlotIdentification=@PlotIdentification,BuildingNumber = @BuildingNumber, StreetName=@StreetName, AdditionalStreetName=@AdditionalStreetName, District=@District,PostalZone=@PostalZone,CrNo=@CrNo,maxdepit=@maxdepit,area2=@area2,city2=@city2,IS_Deleted=@IS_Deleted where id=" + customer.CustomerID, sqlConnection) : new SqlCommand("SET IDENTITY_INSERT [dbo].[Customers] ON insert into Customers(id,name,country,city,area,act,national_id,tel,mobile,fax,email,notes,type,tax_no,IS_Deleted,AccountCode,IdScan,Branch,ISCredit,PlotIdentification,BuildingNumber,StreetName,AdditionalStreetName,District,PostalZone,CrNo,maxdepit,area2,city2) values (@id,@name,@country,@city,@area,@act,@national_id,@tel,@mobile,@fax,@email,@notes,@type,@tax_no,@IS_Deleted,@AccountCode,@IdScan,@Branch,@ISCredit,@PlotIdentification,@BuildingNumber,@StreetName,@AdditionalStreetName,@District,@PostalZone,@CrNo,@maxdepit,@area2,@city2) SET IDENTITY_INSERT [dbo].[Customers] off", sqlConnection));
                 sqlCommand.Parameters.Add("@Id", SqlDbType.Int).Value = customer.CustomerID;
                 sqlCommand.Parameters.Add("@name", SqlDbType.NVarChar).Value = customer.Name;
                 if (((double)customer.Country != Conversions.ToDouble("-1")) & (customer.Country.ToString() != null) & ((object)customer.Country.ToString() != DBNull.Value))
@@ -1178,10 +1175,14 @@ public class EntityOperations
                 }
                 goto end_IL_0009;
             IL_0b02:
-                if (Sync.ActiveSync & (Sync.SyncType > 0))
-                {
-                    new CustomerCRUD(Sync.APIUrl).AddCustomer(customers);
-                }
+                ;
+            }
+            // P5-022 fix: إعادة رفع الدفعة كانت تُنفَّذ داخل حلقة الصفوف (مرة
+            // لكل عميل في الدفعة) وفي وضع التنزيل نفسه — الآن مرة واحدة بعد
+            // الحفظ وفقط للإضافة المحلية (ما نُزّل من السحابة لا يُعاد إليها).
+            if (AddedLocally & Sync.ActiveSync & (Sync.SyncType > 0))
+            {
+                new CustomerCRUD(Sync.APIUrl).AddCustomer(customers);
             }
             result = true;
         end_IL_0009:;
@@ -1309,9 +1310,14 @@ public class EntityOperations
                 sqlCommand.Parameters.Add("@IS_Deleted", SqlDbType.Bit).Value = Convert.ToInt16(treasury.IsDeleted);
                 sqlCommand.Parameters.Add("@status", SqlDbType.Bit).Value = Convert.ToInt16(treasury.IsActive);
                 sqlCommand.ExecuteNonQuery();
-                foreach (TreasuryEmployee employee in treasury.Employees)
+                // P5-020 fix: حماية null — الحفظ كان يفشل بالكامل (يُبتلع) لخزينة
+                // بلا موظفين فتتوقف بقية الدفعة (لا يتأثر إنشاء حساب الخزينة)
+                if (treasury.Employees != null)
                 {
-                    new SqlCommand("insert into Stock_Emps(stock_id,emp_id)values(" + Conversions.ToString(employee.TreasuryId) + "," + employee.EmployeeId + ")", sqlConnection).ExecuteNonQuery();
+                    foreach (TreasuryEmployee employee in treasury.Employees)
+                    {
+                        new SqlCommand("insert into Stock_Emps(stock_id,emp_id)values(" + Conversions.ToString(employee.TreasuryId) + "," + employee.EmployeeId + ")", sqlConnection).ExecuteNonQuery();
+                    }
                 }
                 if (!AddedLocally)
                 {
@@ -1758,12 +1764,20 @@ public class EntityOperations
                 {
                     sqlCommand = new SqlCommand("SET IDENTITY_INSERT [dbo].[Employees] ON insert into Employees(id,name,manag,dep,state,job,birth_date,insurance_no,work_date,marital_state,nationality,sex,tel,mobile,email,address,notes,image,salary_basic,house,travel,food,medical,salary_add,salary_other,IS_Deleted,AccCode,CardNo,BankNo,BankName) values (@id,@name,@manag,@dep,@state,@job,@birth_date,@insurance_no,@work_date,@marital_state,@nationality,@sex,@tel,@mobile,@email,@address,@notes,@image,@salary_basic,@house,@travel,@food,@medical,@salary_add,@salary_other,@IS_Deleted,@AccCode,@CardNo,@BankNo,@BankName)  SET IDENTITY_INSERT [dbo].[Employees] off", sqlConnection);
                 }
-                else if (AddedLocally)
+                else
                 {
+                    // P5-019 fix: الموظف الموجود في وضع التنزيل (AddedLocally=false) كان
+                    // يبقى على أمر SELECT (لا يُسند إليه INSERT/UPDATE) فيُنفَّذ SELECT
+                    // كـ NonQuery بلا أي أثر — بيانات الموظف وتعييناته لا تتحدث أبدًا.
+                    // الآن: UPDATE للموظف + مزامنة عضوياته في EmpBranches (حذف ثم إدراج
+                    // المنزّلة لهذا الموظف فقط) — نفس عقد الفرع المحلي.
                     new SqlCommand("delete from EmpBranches where emp=" + Conversions.ToString(employee.EmpId), sqlConnection).ExecuteNonQuery();
                     foreach (BranchEmployee EmbBranch in EmbBranches)
                     {
-                        new SqlCommand("insert into EmpBranches(emp,branch)values(" + EmbBranch.EmployeeId + "," + Conversions.ToString(EmbBranch.BranchId) + ")", sqlConnection).ExecuteNonQuery();
+                        if (Conversions.ToInteger(EmbBranch.EmployeeId) == employee.EmpId)
+                        {
+                            new SqlCommand("insert into EmpBranches(emp,branch)values(" + EmbBranch.EmployeeId + "," + Conversions.ToString(EmbBranch.BranchId) + ")", sqlConnection).ExecuteNonQuery();
+                        }
                     }
                     sqlCommand = new SqlCommand("update Employees set name=@name ,manag=@manag ,dep=@dep ,state=@state ,job=@job  ,birth_date=@birth_date ,insurance_no=@insurance_no ,work_date=@work_date ,marital_state=@marital_state ,nationality=@nationality ,sex=@sex ,tel=@tel ,mobile=@mobile ,email=@email ,address=@address ,notes=@notes ,image=@image ,salary_basic=@salary_basic ,house=@house, travel=@travel, food=@food, medical=@medical, salary_add=@salary_add ,salary_other=@salary_other ,IS_Deleted=@IS_Deleted ,AccCode=@AccCode , CardNo=@CardNo , BankNo=@BankNo , BankName=@BankName where id=" + Conversions.ToString(employee.EmpId), sqlConnection);
                 }

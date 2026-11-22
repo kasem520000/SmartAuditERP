@@ -158,6 +158,10 @@ namespace SmartAuditERP
 		{
 			if (Sync.ValidAPIUrl)
 			{
+				// P5-018 fix: مؤشر التعاريف لا يتقدم إلا إذا نجح كل الحفظ المحلي
+				// (كان يتقدم بوقت الجهاز دائمًا فتُفقد التعاريف التي فشل حفظها
+				// إلى الأبد لأن الاستعلام التالي يبدأ بعده).
+				bool allApplied = true;
 				SqlConnection sqlConnection;
 				sqlConnection = MainClass.ConnObj();
 				EntityOperations entityOperations;
@@ -169,7 +173,7 @@ namespace SmartAuditERP
 				list = (List<Branch>)(await branchCRUD.GetBranches(Sync.ClientCode, Sync.BranchId, Sync.BranchType, Sync.CardsLastSync));
 				if (list.Count > 0)
 				{
-					entityOperations.SaveBranch(list);
+					allApplied &= entityOperations.SaveBranch(list);
 				}
 				InvertoryCRUD invertoryCRUD;
 				invertoryCRUD = new InvertoryCRUD(Sync.APIUrl);
@@ -178,7 +182,7 @@ namespace SmartAuditERP
 				list2 = (List<Invertory>)(await invertoryCRUD.GetInvertories(Sync.ClientCode, Sync.BranchId, Sync.BranchType, Sync.CardsLastSync));
 				if (list2.Count > 0)
 				{
-					entityOperations.SaveInvertory(list2, Addlocally: false);
+					allApplied &= entityOperations.SaveInvertory(list2, Addlocally: false);
 				}
 				EmployeeCRUD employeeCRUD;
 				employeeCRUD = new EmployeeCRUD(Sync.APIUrl);
@@ -190,7 +194,7 @@ namespace SmartAuditERP
 				embBranches = (List<BranchEmployee>)(await branchCRUD.GetBranchEmployee(Sync.ClientCode));
 				if (list3.Count > 0)
 				{
-					entityOperations.SaveEmployee(list3, AddedLocally: false, embBranches);
+					allApplied &= entityOperations.SaveEmployee(list3, AddedLocally: false, embBranches);
 				}
 				CustomerCRUD customerCRUD;
 				customerCRUD = new CustomerCRUD(Sync.APIUrl);
@@ -199,7 +203,7 @@ namespace SmartAuditERP
 				list4 = (List<global::AuditorAPI.Models.Customer>)(await customerCRUD.GetCustomers(Sync.ClientCode, Sync.BranchId, Sync.BranchType, Sync.CardsLastSync));
 				if (list4.Count > 0)
 				{
-					entityOperations.SaveCustomer(list4, AddedLocally: false);
+					allApplied &= entityOperations.SaveCustomer(list4, AddedLocally: false);
 				}
 				AccountCRUD accountCRUD;
 				accountCRUD = new AccountCRUD(Sync.APIUrl);
@@ -208,7 +212,7 @@ namespace SmartAuditERP
 				list5 = (List<TreeAccount>)(await accountCRUD.GetTreeAccounts(Sync.ClientCode, Sync.BranchId, Sync.BranchType, Sync.CardsLastSync));
 				if (list5.Count > 0)
 				{
-					entityOperations.SaveAccounts(list5);
+					allApplied &= entityOperations.SaveAccounts(list5);
 				}
 				TreasuryCRUD treasuryCRUD;
 				treasuryCRUD = new TreasuryCRUD(Sync.APIUrl);
@@ -217,7 +221,7 @@ namespace SmartAuditERP
 				list6 = (List<global::AuditorAPI.Models.Treasury>)(await treasuryCRUD.GetTreasurys(Sync.ClientCode, Sync.BranchId, Sync.BranchType, Sync.CardsLastSync));
 				if (list6.Count > 0)
 				{
-					entityOperations.SaveTreasuries(list6, AddedLocally: false);
+					allApplied &= entityOperations.SaveTreasuries(list6, AddedLocally: false);
 				}
 				BankCRUD bankCRUD;
 				bankCRUD = new BankCRUD(Sync.APIUrl);
@@ -226,29 +230,35 @@ namespace SmartAuditERP
 				list7 = (List<global::AuditorAPI.Models.Bank>)(await bankCRUD.GetBanks(Sync.ClientCode, Sync.BranchId, Sync.BranchType, Sync.CardsLastSync));
 				if (list7.Count > 0)
 				{
-					entityOperations.SaveBanks(list7, AddedLocally: false);
+					allApplied &= entityOperations.SaveBanks(list7, AddedLocally: false);
 				}
 				ProductCRUD productCRUD;
 				productCRUD = new ProductCRUD(Sync.APIUrl);
 				new List<Product>();
 				List<Product> products;
 				products = (List<Product>)(await productCRUD.GetProducts(Sync.ClientCode, Sync.BranchId, Sync.BranchType, Sync.CardsLastSync));
-				new EntityOperations().SaveProducts(products);
+				allApplied &= new EntityOperations().SaveProducts(products);
 				if (sqlConnection.State != ConnectionState.Open)
 				{
 					sqlConnection.Open();
 				}
-				try
+				if (allApplied)
 				{
-					new SqlCommand();
-					new SqlCommand("update SettingSync set CardsLastSync=N'" + Conversions.ToString(DateTime.Now) + "'", sqlConnection).ExecuteNonQuery();
+					try
+					{
+						new SqlCommand();
+						// P5-018 fix: التقدم بمعامل بدل الدمج النصي
+						SqlCommand cardsCursorCmd = new SqlCommand("update SettingSync set CardsLastSync=@CardsLastSync", sqlConnection);
+						cardsCursorCmd.Parameters.Add("@CardsLastSync", SqlDbType.DateTime).Value = DateTime.Now;
+						cardsCursorCmd.ExecuteNonQuery();
+					}
+					catch (Exception projectError)
+					{
+						ProjectData.SetProjectError(projectError);
+						ProjectData.ClearProjectError();
+					}
+					Sync.CardsLastSync = DateTime.Now;
 				}
-				catch (Exception projectError)
-				{
-					ProjectData.SetProjectError(projectError);
-					ProjectData.ClearProjectError();
-				}
-				Sync.CardsLastSync = DateTime.Now;
 			}
 		}
 

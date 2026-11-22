@@ -1128,7 +1128,9 @@ namespace SmartAuditERP
 
         #region ReadEntryOnline
 
-        public void ReadEntyOnline(Entry entry)
+        // P5-015 fix: العقد يعيد نتيجة الحفظ المحلي — دورة API لا تؤكد
+        // الاستلام إلا عند نجاح الحفظ فعليًا.
+        public bool ReadEntyOnline(Entry entry)
         {
             using SqlConnection conn = MainClass.ConnObj();
 
@@ -1192,6 +1194,8 @@ namespace SmartAuditERP
                 }
 
                 transaction.Commit();
+            // P5-015 fix: الحفظ نجح
+            return true;
             }
             catch (Exception ex)
             {
@@ -1203,6 +1207,8 @@ namespace SmartAuditERP
                     "خطأ",
                     MessageBoxButton.OK,
                     MessageBoxImage.Error);
+                // P5-015 fix: فشل الحفظ — عقد الإرجاع
+                return false;
             }
         }
 

@@ -2105,7 +2105,9 @@ namespace SmartAuditERP
                         }
                 }
 
-                public void ReadInvoiceOnline(Invoice inv)
+                // P5-015 fix: العقد يعيد نتيجة الحفظ المحلي — دورة API لا تؤكد الاستلام
+                // (ولا تحذف عميل أندرويد) إلا عند نجاح الحفظ فعليًا.
+                public bool ReadInvoiceOnline(Invoice inv)
                 {
                         int[] source;
                         source = new int[1] { 20 };
@@ -2118,7 +2120,7 @@ namespace SmartAuditERP
                                 if (!systemResponse.IsSuccess)
                                 {
                                         MessageBox.Show(systemResponse.Message, "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                                        return;
+                                        return false;
                                 }
                                 ZatcaResponse zatcaResponse;
                                 zatcaResponse = new ZatcaResponse();
@@ -2282,10 +2284,17 @@ namespace SmartAuditERP
                                         new Entry();
                                         InvoiceOper invoiceOper;
                                         invoiceOper = new InvoiceOper();
-                                        if (Convert.ToDouble(Operators.ConcatenateObject("", new SqlCommand(("Select COUNT(*) from Entry where type=20 and doc_no=" + Conversions.ToString(inv.InvoiceNo)) ?? "", sqlConnection, sqlTransaction).ExecuteScalar())) > 0.0)
+                                        // P5-016 fix: البحث عن القيد المرتبط بالرقم المحلي صار مقيدًا بفرع الفاتورة
+                                        // (الرقم المحلي قد يتكرر بين الفروع فكان الاستيراد يربط بقيد فرع آخر) وبمعاملات.
+                                        SqlCommand entryCountCmd = new SqlCommand("Select COUNT(*) from Entry where type=20 and doc_no=@doc_no and branch=@branch", sqlConnection, sqlTransaction);
+                                        entryCountCmd.Parameters.Add("@doc_no", SqlDbType.Int).Value = inv.InvoiceNo;
+                                        entryCountCmd.Parameters.Add("@branch", SqlDbType.Int).Value = inv.Branch;
+                                        if (Convert.ToDouble(Operators.ConcatenateObject("", entryCountCmd.ExecuteScalar())) > 0.0)
                                         {
-                                                SqlDataReader sqlDataReader;
-                                                sqlDataReader = new SqlCommand(("Select GlobalID from Entry where type=20 and doc_no=" + Conversions.ToString(inv.InvoiceNo)) ?? "", sqlConnection, sqlTransaction).ExecuteReader();
+                                                SqlCommand entryReadCmd = new SqlCommand("Select GlobalID from Entry where type=20 and doc_no=@doc_no and branch=@branch", sqlConnection, sqlTransaction);
+                                                entryReadCmd.Parameters.Add("@doc_no", SqlDbType.Int).Value = inv.InvoiceNo;
+                                                entryReadCmd.Parameters.Add("@branch", SqlDbType.Int).Value = inv.Branch;
+                                                SqlDataReader sqlDataReader = entryReadCmd.ExecuteReader();
                                                 sqlDataReader.Read();
                                                 if (sqlDataReader.HasRows)
                                                 {
@@ -2315,13 +2324,23 @@ namespace SmartAuditERP
                                                 MessageBox.Show(text, "", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                                                 // P3-003 fix: الخروج بعد التراجع — كان التنفيذ يواصل إلى
                                                 // Commit على معاملة مراجَعة فيرمي استثناء
-                                                return;
+                                                return false;
+                                        }
+                                        // P5-016 fix: كتابة رابط القيد في رأس الفاتورة داخل المعاملة نفسها —
+                                        // كان الرأس يُحفظ برابط فارغ (EntryID=0) ويبقى القيد المولد يتيمًا.
+                                        if (entryAllocatedFresh)
+                                        {
+                                                SqlCommand linkEntryCmd = new SqlCommand("update Inv set EntryID=@EntryID where InvGlobalID=@InvGlobalID", sqlConnection, sqlTransaction);
+                                                linkEntryCmd.Parameters.Add("@EntryID", SqlDbType.Int).Value = EntryNo;
+                                                linkEntryCmd.Parameters.Add("@InvGlobalID", SqlDbType.NVarChar).Value = inv.InvGlobalID;
+                                                linkEntryCmd.ExecuteNonQuery();
                                         }
                                 }
                                 sqlTransaction.Commit();
+                                // P5-015 fix: الحفظ نجح — يعود العقد true ليؤكد المستدعي الاستلام
                                 if (!MainSetting.ZatcaIntegerationActive || InvoiceOper.IsTaxCustomer(inv.Customer) || inv.InvoiceType != (InvoiceType)20 || !source.Contains((int)inv.InvoiceType) || !source2.Contains(inv.ProcType))
                                 {
-                                        return;
+                                        return true;
                                 }
                                 SystemResponse<InvoiceReportingResponse> systemResponse2;
                                 systemResponse2 = this.SendZatca(inv);
@@ -2350,6 +2369,8 @@ namespace SmartAuditERP
                                 zatcaResponse2.Status = systemResponse2.ResponseObject.ReportingStatus;
                                 zatcaResponse2.Message = systemResponse2.Message;
                                 InvoiceOper.InsertZatcaResponse(zatcaResponse2);
+                                // P5-015 fix: نهاية مسار النجاح — عقد الإرجاع
+                                return true;
                         }
                         catch (Exception ex)
                         {
@@ -2365,6 +2386,7 @@ namespace SmartAuditERP
                                 }
                                 MessageBox.Show((Operators.CompareString(MainClass.Language, "ar", TextCompare: false) != 0) ? (text2 + Environment.NewLine + "Error details: " + ex2.Message) : (text2 + Environment.NewLine + "تفاصيل الخطأ: " + ex2.Message), "", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                                 ProjectData.ClearProjectError();
+                                return false;
                         }
                         finally
                         {
@@ -2881,9 +2903,15 @@ namespace SmartAuditERP
                                 {
                                         if (item2 != null)
                                         {
-                                                new SqlCommand("update Inv set Sync=1 where InvGlobalID=N'" + item2.InvGlobalID + "'", sqlConnection).ExecuteNonQuery();
+                                                // P5-029 fix: تثبيت الحالة بمعامل بدل الدمج النصي
+                                                SqlCommand markSyncCmd = new SqlCommand("update Inv set Sync=1 where InvGlobalID=@InvGlobalID", sqlConnection);
+                                                markSyncCmd.Parameters.Add("@InvGlobalID", SqlDbType.NVarChar).Value = item2.InvGlobalID;
+                                                markSyncCmd.ExecuteNonQuery();
                                         }
                                 }
+                                // P5-029 fix: الإرسال الدوري الناجح (نُشر ووُسم) يعيد true — كان
+                                // المسار يعيد false دائمًا بعد إرسال ناجح.
+                                result = true;
                         }
                         entryOper.SyncEntry(Eny, IsNew);
                         return result;

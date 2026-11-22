@@ -336,7 +336,13 @@ namespace SmartAuditERP
                             }
                         }
 
-                        invoiceOper.ReadInvoiceOnline(invoice);
+                        // P5-015 fix: الإقرار بالاستلام مرهون بنجاح الحفظ المحلي — كان
+                        // يُقر ويُحذف عميل أندرويد مهما كانت نتيجة الحفظ (الذي يبتلع فشله
+                        // داخليًا) فتضيع الفاتورة من الطرفين.
+                        if (!invoiceOper.ReadInvoiceOnline(invoice))
+                        {
+                            continue;
+                        }
 
                         if (BranchType == 3)
                         {
@@ -385,7 +391,11 @@ namespace SmartAuditERP
 
                     try
                     {
-                        entryOper.ReadEntyOnline(entry);
+                        // P5-015 fix: نفس عقد الفاتورة — الإقرار مرهون بالحفظ
+                        if (!entryOper.ReadEntyOnline(entry))
+                        {
+                            continue;
+                        }
 
                         if (BranchType == 3)
                         {
@@ -434,7 +444,11 @@ namespace SmartAuditERP
                                 receipt.DebitAcc = accCode.ToString();
                         }
 
-                        receiptOper.ReadReceiptOnline(receipt);
+                        // P5-015 fix: نفس عقد الفاتورة — الإقرار مرهون بالحفظ
+                        if (!receiptOper.ReadReceiptOnline(receipt))
+                        {
+                            continue;
+                        }
 
                         if (BranchType == 3)
                         {
@@ -481,9 +495,12 @@ namespace SmartAuditERP
                 }
 
                 // ── مزامنة البيانات الرئيسية ───────────────────────
-                // ✅ إصلاح: مطابق للأصل في المقارنة (AddHours(2) >= Now)
+                // P5-017 fix: الشرط كان معكوسًا — «آخر مزامنة + ساعتان >= الآن»
+                // يتحقق فقط خلال ساعتين بعد المزامنة ثم يتوقف إلى الأبد مهما
+                // تأخر الجهاز؛ الصحيح: تُحدَّث التعاريف عندما مضى ساعتان أو
+                // أكثر منذ آخر مزامنة.
                 if (DateTime.Compare(
-                        CardsLastSync.AddHours(2.0), DateTime.Now) >= 0)
+                        CardsLastSync.AddHours(2.0), DateTime.Now) <= 0)
                 {
                     var syncOp = new SyncOperation();
                     new Thread(() => syncOp.ReadCardsDataOnline()).Start();
@@ -800,11 +817,13 @@ namespace SmartAuditERP
                     JsonConvert.SerializeObject(payload),
                     Encoding.UTF8, "application/json");
 
-                await httpClient.PostAsync(
+                HttpResponseMessage response = await httpClient.PostAsync(
                     $"{APIUrl}/api/Customers/set-last-customers",
                     content);
 
-                return true;
+                // P5-029 fix: العقد يتحقق من حالة HTTP قبل إعلان النجاح —
+                // كان يعيد true لأي رد (خطأ/غير موجود) بلا فحص.
+                return response.IsSuccessStatusCode;
             }
             catch (Exception ex)
             {

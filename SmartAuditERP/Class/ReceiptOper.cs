@@ -572,7 +572,9 @@ namespace SmartAuditERP
                         }
                 }
 
-                public void ReadReceiptOnline(Receipt Receipt)
+                // P5-015 fix: العقد يعيد نتيجة الحفظ المحلي — دورة API لا تؤكد
+                // الاستلام إلا عند نجاح الحفظ فعليًا.
+                public bool ReadReceiptOnline(Receipt Receipt)
                 {
                         SqlConnection sqlConnection;
                         sqlConnection = MainClass.ConnObj();
@@ -640,10 +642,18 @@ namespace SmartAuditERP
                                                 new Entry();
                                                 ReceiptOper receiptOper;
                                                 receiptOper = new ReceiptOper();
-                                                if (Convert.ToDouble(Operators.ConcatenateObject("", new SqlCommand(("Select COUNT(*) from Entry where type=5 and doc_no=" + Conversions.ToString(Receipt.ReceiptNo)) ?? "", sqlConnection, sqlTransaction).ExecuteScalar())) > 0.0)
+                                                // P5-016 fix: البحث عن القيد المرتبط بالرقم المحلي صار مقيدًا بفرع
+                                                // السند (الرقم المحلي قد يتكرر بين الفروع فكان الاستيراد يربط بقيد
+                                                // فرع آخر) وبمعاملات.
+                                                SqlCommand entryCountCmd = new SqlCommand("Select COUNT(*) from Entry where type=5 and doc_no=@doc_no and branch=@branch", sqlConnection, sqlTransaction);
+                                                entryCountCmd.Parameters.Add("@doc_no", SqlDbType.Int).Value = (Receipt.ReceiptNo.HasValue ? ((object)Receipt.ReceiptNo.GetValueOrDefault()) : DBNull.Value);
+                                                entryCountCmd.Parameters.Add("@branch", SqlDbType.Int).Value = (Receipt.BranchID.HasValue ? ((object)Receipt.BranchID.GetValueOrDefault()) : DBNull.Value);
+                                                if (Convert.ToDouble(Operators.ConcatenateObject("", entryCountCmd.ExecuteScalar())) > 0.0)
                                                 {
-                                                        SqlDataReader sqlDataReader;
-                                                        sqlDataReader = new SqlCommand(("Select GlobalID from Entry where type=5 and doc_no=" + Conversions.ToString(Receipt.ReceiptNo)) ?? "", sqlConnection, sqlTransaction).ExecuteReader();
+                                                        SqlCommand entryReadCmd = new SqlCommand("Select GlobalID from Entry where type=5 and doc_no=@doc_no and branch=@branch", sqlConnection, sqlTransaction);
+                                                        entryReadCmd.Parameters.Add("@doc_no", SqlDbType.Int).Value = (Receipt.ReceiptNo.HasValue ? ((object)Receipt.ReceiptNo.GetValueOrDefault()) : DBNull.Value);
+                                                        entryReadCmd.Parameters.Add("@branch", SqlDbType.Int).Value = (Receipt.BranchID.HasValue ? ((object)Receipt.BranchID.GetValueOrDefault()) : DBNull.Value);
+                                                        SqlDataReader sqlDataReader = entryReadCmd.ExecuteReader();
                                                         sqlDataReader.Read();
                                                         if (sqlDataReader.HasRows)
                                                         {
@@ -668,10 +678,22 @@ namespace SmartAuditERP
                                                                 text = "error in saving";
                                                         }
                                                         MessageBox.Show(text, "", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                                                        // P5-015 fix: الخروج بعد التراجع — كان التنفيذ يواصل إلى Commit على
+                                                        // معاملة مراجَعة فيرمي استثناء (يُبتلع في الإمساك الخارجي)
+                                                        return false;
                                                 }
+                                                // P5-016 fix: كتابة رابط القيد في رأس السند داخل المعاملة نفسها — كان
+                                                // الرأس يُحفظ برابط فارغًا (المعامل أُرسل بالقيمة قبل توليدها) ويبقى
+                                                // القيد المولد يتيمًا.
+                                                SqlCommand linkEntryCmd = new SqlCommand("update Receipts set EntryGlobalID=@EntryGlobalID where GlobalID=@GlobalID", sqlConnection, sqlTransaction);
+                                                linkEntryCmd.Parameters.Add("@EntryGlobalID", SqlDbType.NVarChar).Value = Receipt.EntryGlobalID;
+                                                linkEntryCmd.Parameters.Add("@GlobalID", SqlDbType.NVarChar).Value = Receipt.GlobalID;
+                                                linkEntryCmd.ExecuteNonQuery();
                                         }
                                 }
                                 sqlTransaction.Commit();
+                        // P5-015 fix: الحفظ نجح
+                        return true;
                         }
                         catch (Exception ex)
                         {
@@ -687,6 +709,7 @@ namespace SmartAuditERP
                                 }
                                 MessageBox.Show((Operators.CompareString(MainClass.Language, "ar", TextCompare: false) != 0) ? (text2 + Environment.NewLine + "Error details: " + ex2.Message) : (text2 + Environment.NewLine + "تفاصيل الخطأ: " + ex2.Message), "", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                                 ProjectData.ClearProjectError();
+                                return false;
                         }
                         finally
                         {
