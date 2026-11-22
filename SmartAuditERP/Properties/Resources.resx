@@ -47174,14 +47174,19 @@ WHERE TABLE_NAME='PM_RequirementSub')
 BEGIN 
 CREATE TABLE [dbo].[PM_RequirementSub](
 	[RequirNo] [int] NOT NULL,
-	[TermPk] [int] NULL,
+	-- P7-021 fix: مفتاح مركب (طلب+بند) وتعدد بنود صريح — كان RequirNo وحده
+	-- المفتاح فلا يقبل التطبيق أكثر من سطر للطلب، وعمود IsDeleted مطلوب
+	-- لمسار الحذف المنطقي الذي تقرأه الشاشات
+	[TermPk] [int] NOT NULL,
 	[Quntity] [int] NULL,
 	[price] [float] NULL,
 	[Reff_No] [int] NULL,
 	[status] [bit] NULL,
+	[IsDeleted] [bit] NOT NULL CONSTRAINT [DF_PM_RequirementSub_IsDeleted] DEFAULT ((0)),
  CONSTRAINT [PK_PM_RequirementSub] PRIMARY KEY CLUSTERED 
 (
-	[RequirNo] ASC
+	[RequirNo] ASC,
+	[TermPk] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 END
@@ -51358,6 +51363,34 @@ GO
 -- إعادة قراءة دفعة من سجل الجهاز (فشل المسح أو انقطاع بين الالتزام
 -- والمسح) كانت تدرج الحدث مرتين. الإجراء الجديد يرفض إدراج
 -- الحدث نفسه مرة ثانية (حدث معرف بمواصفات ثلاث عشرة كاملة).
+-- P7-021 fix: مطابقة جدول بنود طلب الاحتياج لعقد التطبيق: مفتاح مركب
+-- (RequirNo, TermPk) يسمح بتعدد البنود، وعمود IsDeleted للحذف المنطقي
+-- الذي تفترضه قراءة الشاشات — كان المفتاح RequirNo وحده فيرفض الإدراج
+-- متعدد البنود من أول سطر ثانٍ.
+IF COL_LENGTH('dbo.PM_RequirementSub', 'IsDeleted') IS NULL
+BEGIN
+ALTER TABLE PM_RequirementSub ADD IsDeleted bit NOT NULL DEFAULT 0
+END
+GO
+IF EXISTS (SELECT 1 FROM PM_RequirementSub WHERE TermPk IS NULL)
+BEGIN
+UPDATE PM_RequirementSub SET TermPk = RequirNo WHERE TermPk IS NULL
+END
+GO
+IF NOT EXISTS (SELECT 1 FROM PM_RequirementSub WHERE TermPk IS NULL)
+BEGIN
+IF EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'PK_PM_RequirementSub')
+BEGIN
+EXEC('ALTER TABLE PM_RequirementSub DROP CONSTRAINT PK_PM_RequirementSub')
+END
+IF NOT EXISTS (SELECT 1 FROM sys.indexes WHERE name = 'PK_PM_RequirementSub')
+BEGIN
+EXEC('ALTER TABLE PM_RequirementSub ALTER COLUMN TermPk int NOT NULL')
+EXEC('ALTER TABLE PM_RequirementSub ADD CONSTRAINT PK_PM_RequirementSub PRIMARY KEY CLUSTERED (RequirNo, TermPk)')
+END
+END
+GO
+
 IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND OBJECT_ID = OBJECT_ID('dbo.[AddGdata]'))
 BEGIN
 exec('ALTER PROCEDURE [dbo].[AddGdata]

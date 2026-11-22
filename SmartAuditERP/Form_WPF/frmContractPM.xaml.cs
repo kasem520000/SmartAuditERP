@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using AuditorAPI.Models;
 using SmartAuditERP.Form_WPF;
 using Button = System.Windows.Controls.Button;
 using ComboBox = System.Windows.Controls.ComboBox;
@@ -22,6 +23,7 @@ namespace SmartAuditERP.Form_WPF
         private bool _priceIncludesVAT;
         private double _defaultVAT;
         private int _currentCode;
+        private int _currentContrId;
         private int _processType;
         private int _restrictionNumber;
         private DispatcherTimer _clockTimer;
@@ -45,6 +47,7 @@ namespace SmartAuditERP.Form_WPF
             _priceIncludesVAT = false;
             _defaultVAT = 0.0;
             _currentCode = -1;
+            _currentContrId = -1;
             _processType = 1;
             _restrictionNumber = -1;
 
@@ -119,6 +122,7 @@ namespace SmartAuditERP.Form_WPF
             TermRows.Clear();
             SearchRows.Clear();
             _currentCode = -1;
+            _currentContrId = -1;
 
             LoadContractNumber();
             cmbType.SelectedIndex = 1;
@@ -460,6 +464,9 @@ namespace SmartAuditERP.Form_WPF
                 ClearForm();
 
                 _currentCode = Convert.ToInt32(reader["ContrNo"]);
+                // P7-010 fix: مفتاح السطر (Contr_id) يُتتبع منفصلاً عن الرقم التجاري
+                // (ContrNo) — كان المحدّث يمرر الرقم التجاري إلى معامل المفتاح
+                _currentContrId = Convert.ToInt32(reader["Contr_id"]);
                 _restrictionNumber = Convert.ToInt32(reader["RestractionPk"]);
 
                 txtNo.Text = _currentCode.ToString();
@@ -487,8 +494,14 @@ namespace SmartAuditERP.Form_WPF
                 reader.Close();
 
                 // Load sub items
+                // P7-013 fix: تحميل البنود يستعيد تكلفة القالب (PM_Terms.cost)
+                // ويعيد بناء الصافي بضرب الكمية — كان الصافي يُبنى بلا كمية
+                // والتكلفة تضيع فيبقى صفراً عند إعادة الحفظ فيفسد مشروع البند
                 var adapter = new SqlDataAdapter(
-                    $"SELECT * FROM PM_ContractInvSub WHERE ContrNo={_currentCode}",
+                    $@"SELECT PM_ContractInvSub.*, ISNULL(PM_Terms.cost,0) AS TermCost " +
+                    $@"FROM PM_ContractInvSub " +
+                    $@"LEFT JOIN PM_Terms ON PM_ContractInvSub.TermPk=PM_Terms.Code " +
+                    $@"WHERE PM_ContractInvSub.ContrNo={_currentCode}",
                     _connection);
                 var dataTable = new DataTable();
                 adapter.Fill(dataTable);
@@ -498,6 +511,7 @@ namespace SmartAuditERP.Form_WPF
                     double price = Convert.ToDouble(row["price"]);
                     double quantity = Convert.ToDouble(row["Quntity"]);
                     double vat = Convert.ToDouble(row["VAT"]);
+                    double cost = Convert.ToDouble(row["TermCost"]);
 
                     TermRows.Add(new ContractTermRow
                     {
@@ -505,9 +519,12 @@ namespace SmartAuditERP.Form_WPF
                         ProjectName = row["notes"]?.ToString(),
                         Quantity = quantity,
                         Price = price,
+                        Cost = cost,
                         Total = price * quantity,
                         VAT = vat,
-                        NetValue = price + vat,
+                        // P7-013 fix: نفس حساب المحرر — صافي البند = سعر×كمية + ضريبة
+                        NetValue = price * quantity + vat,
+                        NetCost = cost * quantity,
                         StatusName = GetStatusName(Convert.ToInt32(row["status"]))
                     });
                 }
@@ -620,29 +637,28 @@ namespace SmartAuditERP.Form_WPF
                     bankAccCode = GetBankAccountCode(bankId);
                 }
 
-                string branchCondition = MainClass.BranchNo != -1
-                    ? $" WHERE branch={MainClass.BranchNo}"
-                    : "";
-
-                // Entry number
+                // Entry number + GlobalID
+                // P7-014 fix: القيد على عقد المخطط الموحد (Entry.GlobalID + Entry_sub)
+                // عبر نواة EntryOper.SaveEnty داخل معاملة العقد — الكتابة
+                // اليدوية القديمة كانت تستهدف Restrictions_Sub (الاسم قبل
+                // الترحيل) وأعمدة ناقصة فتفشل على القواعد المهاجرة أصلاً
                 int entryNumber = 0;
+                string entryGlobalId = null;
                 double netValue = ParseDouble(txtNetVal.Text);
 
                 if (netValue != 0)
                 {
-                    if (_currentCode == -1)
+                    // P7-014 fix: السجل القديم بلا قيد (RestractionPk<=0) يرمم بقيد جديد
+                    bool entryIsNew = _currentCode == -1 || _restrictionNumber <= 0;
+                    if (entryIsNew)
                     {
-                        using var maxCmd = new SqlCommand(
-                            $"SELECT MAX(id) FROM Entry{branchCondition}",
-                            _connection, transaction);
-                        entryNumber = (int)(ParseDouble(maxCmd.ExecuteScalar()?.ToString()) + 1);
+                        EntryOper.GetEntryGlobalID(ref entryGlobalId, ref entryNumber);
                     }
                     else
                     {
                         entryNumber = _restrictionNumber;
-                        new SqlCommand(
-                            $"DELETE FROM Entry_sub WHERE Res_id={entryNumber}",
-                            _connection, transaction).ExecuteNonQuery();
+                        EntryOper.GenerateEntryGlobalIDByEntryNo(
+                            ref entryGlobalId, entryNumber, MainClass.BranchNo);
                     }
                 }
 
@@ -652,8 +668,28 @@ namespace SmartAuditERP.Form_WPF
                     mainCommand = new SqlCommand(StoredQueries.InsertContractInv, _connection, transaction);
                 else
                 {
+                    // P7-010 fix: التعديل يستهدف مفتاح السطر Contr_id لا الرقم
+                    // التجاري ContrNo — كان الرقم التجاري يمرر إلى معامل
+                    // المفتاح فيصيب السطر الخطأ أو لا سطر
+                    int targetContrId = _currentContrId;
+                    if (targetContrId <= 0)
+                    {
+                        using var findCmd = new SqlCommand(
+                            "SELECT Contr_id FROM PM_ContractInv WHERE ContrNo=@ContrNo",
+                            _connection, transaction);
+                        findCmd.Parameters.Add("@ContrNo", SqlDbType.Int).Value = _currentCode;
+                        var found = findCmd.ExecuteScalar();
+                        if (found == null || found == DBNull.Value)
+                        {
+                            MessageBox.Show("العقد المطلوب تعديله غير موجود", "خطأ",
+                                MessageBoxButton.OK, MessageBoxImage.Error);
+                            transaction.Rollback();
+                            return;
+                        }
+                        targetContrId = Convert.ToInt32(found);
+                    }
                     mainCommand = new SqlCommand(StoredQueries.UpdateContractInv, _connection, transaction);
-                    mainCommand.Parameters.Add("@Contr_id", SqlDbType.Int).Value = _currentCode;
+                    mainCommand.Parameters.Add("@Contr_id", SqlDbType.Int).Value = targetContrId;
                 }
 
                 mainCommand.Parameters.Add("@ContrType", SqlDbType.Int).Value = 1;
@@ -675,7 +711,9 @@ namespace SmartAuditERP.Form_WPF
                 mainCommand.Parameters.Add("@RestractionPk", SqlDbType.Int).Value = entryNumber;
                 mainCommand.Parameters.Add("@BranchPK", SqlDbType.Int).Value = MainClass.BranchNo;
                 mainCommand.Parameters.Add("@TotVal", SqlDbType.Float).Value = ParseDouble(txtTotPrice.Text);
-                mainCommand.Parameters.Add("@VATval", SqlDbType.Float).Value = 0;
+                // P7-012 fix: ضريبة الرأس تُحفظ كما حُسبت من البنود — كانت تجبر
+                // صفراً بينما القيد يستخدمها وتقرير العقد يعرضها
+                mainCommand.Parameters.Add("@VATval", SqlDbType.Float).Value = ParseDouble(txtNetVAT.Text);
                 mainCommand.Parameters.Add("@discount", SqlDbType.Float).Value = 0;
                 mainCommand.Parameters.Add("@NetCost", SqlDbType.Float).Value = netValue;
                 mainCommand.Parameters.Add("@Salesman", SqlDbType.Int).Value = salesmanId;
@@ -691,57 +729,36 @@ namespace SmartAuditERP.Form_WPF
                         _connection, transaction).ExecuteNonQuery();
                 }
 
-                // Insert sub items
+                // Insert sub items + reconcile projects
                 int contractNo = (int)ParseDouble(txtNo.Text);
                 foreach (var termRow in TermRows)
                 {
                     InsertContractSubItem(_connection, transaction, contractNo, termRow);
-                    InsertProject(_connection, transaction, contractNo, termRow);
+                    // P7-011 fix: مصالحة المشروعات بدل إنشاء جديد عند كل إعادة حفظ
+                    UpsertProject(_connection, transaction, contractNo, termRow, _currentCode != -1);
                 }
 
-                // Journal entries
-                string invoiceNote = $"فاتورة عقد {cmbType.Text} رقم:{_currentCode} خاصة العميل:{cmbClient.Text}";
-
-                if (_processType == 1 && netValue != 0)
+                // P7-011 fix: مشروعات البنود المحذوفة من التحرير تُقعد (soft delete)
+                // — كانت تبقى حية بلا بند يمثلها
+                if (_currentCode != -1)
                 {
-                    if (_currentCode == -1)
-                        InsertJournalEntry(_connection, transaction, entryNumber, 14, invoiceNote);
-
-                    InsertJournalSubLine(_connection, transaction, entryNumber, 0,
-                        ParseDouble(txtTotPrice.Text), 4200003, invoiceNote);
-
-                    if (ParseDouble(txtNetVAT.Text) > 0)
-                        InsertJournalSubLine(_connection, transaction, entryNumber, 0,
-                            ParseDouble(txtNetVAT.Text), 2222001,
-                            $"ض. القيمة المضافة {invoiceNote}");
-
-                    InsertJournalSubLine(_connection, transaction, entryNumber,
-                        netValue, 0, clientAccountCode, invoiceNote);
-
-                    if (paymentTypeId == 1) // Cash
-                    {
-                        InsertJournalSubLine(_connection, transaction, entryNumber,
-                            netValue, 0, treasuryAccCode, invoiceNote);
-                        InsertJournalSubLine(_connection, transaction, entryNumber,
-                            0, netValue, clientAccountCode, invoiceNote);
-                    }
-                    else if (paymentTypeId == 2) // Bank
-                    {
-                        InsertJournalSubLine(_connection, transaction, entryNumber,
-                            netValue, 0, bankAccCode, invoiceNote);
-                        InsertJournalSubLine(_connection, transaction, entryNumber,
-                            0, netValue, clientAccountCode, invoiceNote);
-                    }
+                    RetireAbsentProjects(_connection, transaction, contractNo, TermRows);
                 }
 
-                if (_processType == 2 && netValue != 0)
+                // P7-014 fix: القيد الموحد عبر EntryOper.SaveEnty داخل معاملة العقد
+                // (GlobalID + Entry_sub + حراس الهوية والتوازن والترقيم)
+                if (netValue != 0)
                 {
-                    string returnNote = $"فاتورة مرتجع عقد {cmbType.Text} رقم:{_currentCode} خاصة العميل:{cmbClient.Text}";
-                    InsertJournalEntry(_connection, transaction, entryNumber, 24, returnNote);
-                    InsertJournalSubLine(_connection, transaction, entryNumber,
-                        0, netValue, clientAccountCode, returnNote);
-                    InsertJournalSubLine(_connection, transaction, entryNumber,
-                        netValue, 0, 4100002, returnNote);
+                    Entry pmEntry = BuildContractEntry(
+                        entryGlobalId, entryNumber, clientAccountCode,
+                        treasuryAccCode, bankAccCode, paymentTypeId, netValue);
+                    bool entryIsNew = _currentCode == -1 || _restrictionNumber <= 0;
+
+                    if (!new EntryOper().SaveEnty(pmEntry, _connection, transaction, entryIsNew))
+                    {
+                        try { transaction.Rollback(); } catch { }
+                        return;
+                    }
                 }
 
                 transaction.Commit();
@@ -775,41 +792,119 @@ namespace SmartAuditERP.Form_WPF
 
         #region Journal Entry Helpers
 
-        private void InsertJournalEntry(
-            SqlConnection conn, SqlTransaction trans,
-            int entryId, int entryType, string notes)
+        // P7-014 fix: بناء قيد العقد على نموذج القيود الموحد (Entry) — نفس
+        // بنود المحاسبة القديمة (مدين إيرات/ضريبة، دائن العميل، وتسوية النقدي/البنكي)
+        // لكن عبر SaveEnty بعقد GlobalID وEntry_sub الكاملين
+        private Entry BuildContractEntry(
+            string entryGlobalId, int entryNumber, int clientAccountCode,
+            int treasuryAccCode, int bankAccCode, int paymentTypeId, double netValue)
         {
-            var cmd = new SqlCommand(
-                @"INSERT INTO Entry(id,date,doc_no,type,state,notes,branch,IS_Deleted)
-                  VALUES(@id,@date,@doc_no,@type,@state,@notes,@branch,@IS_Deleted)",
-                conn, trans);
-            cmd.Parameters.Add("@id", SqlDbType.Int).Value = entryId;
-            cmd.Parameters.Add("@date", SqlDbType.DateTime).Value = txtDate.SelectedDate ?? DateTime.Now;
-            cmd.Parameters.Add("@doc_no", SqlDbType.Int).Value = _currentCode;
-            cmd.Parameters.Add("@type", SqlDbType.Int).Value = entryType;
-            cmd.Parameters.Add("@state", SqlDbType.Int).Value = 1;
-            cmd.Parameters.Add("@notes", SqlDbType.NVarChar).Value = notes;
-            cmd.Parameters.Add("@branch", SqlDbType.Int).Value = MainClass.BranchNo;
-            cmd.Parameters.Add("@IS_Deleted", SqlDbType.Bit).Value = 0;
-            cmd.ExecuteNonQuery();
-        }
+            string invoiceNote = $"فاتورة عقد {cmbType.Text} رقم:{txtNo.Text} خاصة العميل:{cmbClient.Text}";
 
-        private static void InsertJournalSubLine(
-            SqlConnection conn, SqlTransaction trans,
-            int entryId, double debit, double credit,
-            int accountCode, string notes)
-        {
-            var cmd = new SqlCommand(
-                @"INSERT INTO Restrictions_Sub(res_id,dept,credit,acc_no,notes,branch)
-                  VALUES(@res_id,@dept,@credit,@acc_no,@notes,@branch)",
-                conn, trans);
-            cmd.Parameters.Add("@res_id", SqlDbType.Int).Value = entryId;
-            cmd.Parameters.Add("@dept", SqlDbType.Float).Value = debit;
-            cmd.Parameters.Add("@credit", SqlDbType.Float).Value = credit;
-            cmd.Parameters.Add("@acc_no", SqlDbType.Int).Value = accountCode;
-            cmd.Parameters.Add("@notes", SqlDbType.NVarChar).Value = notes;
-            cmd.Parameters.Add("@branch", SqlDbType.Int).Value = MainClass.BranchNo;
-            cmd.ExecuteNonQuery();
+            var entry = new Entry
+            {
+                EntryGlobalID = entryGlobalId,
+                ClientCode = Sync.ClientCode,
+                EntryNo = entryNumber,
+                EntryDate = txtDate.SelectedDate ?? DateTime.Now,
+                ReffNo = txtNo.Text,
+                RefDate = txtDate.SelectedDate ?? DateTime.Now,
+                Type = (EntryType)(_processType == 1 ? 14 : 24),
+                State = 1,
+                Note = invoiceNote,
+                Branch = MainClass.BranchNo,
+                EmpID = MainClass.EmpNo,
+                DistBranch = Sync.DistBranch,
+                BranchType = Sync.BranchType
+            };
+
+            var accounts = new System.Collections.Generic.List<Account>();
+
+            if (_processType == 1)
+            {
+                accounts.Add(new Account
+                {
+                    EntryGlobalID = entryGlobalId, EntryNo = entryNumber,
+                    Name = "4200003", Code = "4200003",
+                    Debt = ParseDouble(txtTotPrice.Text), Credit = 0.0,
+                    Note = invoiceNote, CCcode = "-1"
+                });
+
+                if (ParseDouble(txtNetVAT.Text) > 0)
+                    accounts.Add(new Account
+                    {
+                        EntryGlobalID = entryGlobalId, EntryNo = entryNumber,
+                        Name = "الضريبة المضافة", Code = "2222001",
+                        Debt = ParseDouble(txtNetVAT.Text), Credit = 0.0,
+                        Note = $"ض. القيمة المضافة {invoiceNote}", CCcode = "-1"
+                    });
+
+                accounts.Add(new Account
+                {
+                    EntryGlobalID = entryGlobalId, EntryNo = entryNumber,
+                    Name = cmbClient.Text, Code = clientAccountCode.ToString(),
+                    Debt = 0.0, Credit = netValue,
+                    Note = invoiceNote, CCcode = "-1"
+                });
+
+                if (paymentTypeId == 1) // Cash
+                {
+                    accounts.Add(new Account
+                    {
+                        EntryGlobalID = entryGlobalId, EntryNo = entryNumber,
+                        Name = cmbTreasury.Text, Code = treasuryAccCode.ToString(),
+                        Debt = netValue, Credit = 0.0,
+                        Note = invoiceNote, CCcode = "-1"
+                    });
+                    accounts.Add(new Account
+                    {
+                        EntryGlobalID = entryGlobalId, EntryNo = entryNumber,
+                        Name = cmbClient.Text, Code = clientAccountCode.ToString(),
+                        Debt = 0.0, Credit = netValue,
+                        Note = invoiceNote, CCcode = "-1"
+                    });
+                }
+                else if (paymentTypeId == 2) // Bank
+                {
+                    accounts.Add(new Account
+                    {
+                        EntryGlobalID = entryGlobalId, EntryNo = entryNumber,
+                        Name = cmbBanks.Text, Code = bankAccCode.ToString(),
+                        Debt = netValue, Credit = 0.0,
+                        Note = invoiceNote, CCcode = "-1"
+                    });
+                    accounts.Add(new Account
+                    {
+                        EntryGlobalID = entryGlobalId, EntryNo = entryNumber,
+                        Name = cmbClient.Text, Code = clientAccountCode.ToString(),
+                        Debt = 0.0, Credit = netValue,
+                        Note = invoiceNote, CCcode = "-1"
+                    });
+                }
+            }
+            else // Return contract (24)
+            {
+                string returnNote = $"فاتورة مرتجع عقد {cmbType.Text} رقم:{txtNo.Text} خاصة العميل:{cmbClient.Text}";
+                entry.Note = returnNote;
+
+                accounts.Add(new Account
+                {
+                    EntryGlobalID = entryGlobalId, EntryNo = entryNumber,
+                    Name = cmbClient.Text, Code = clientAccountCode.ToString(),
+                    Debt = 0.0, Credit = netValue,
+                    Note = returnNote, CCcode = "-1"
+                });
+                accounts.Add(new Account
+                {
+                    EntryGlobalID = entryGlobalId, EntryNo = entryNumber,
+                    Name = "4100002", Code = "4100002",
+                    Debt = netValue, Credit = 0.0,
+                    Note = returnNote, CCcode = "-1"
+                });
+            }
+
+            entry.Accounts = accounts;
+            return entry;
         }
 
         private static void InsertContractSubItem(
@@ -832,34 +927,97 @@ namespace SmartAuditERP.Form_WPF
             cmd.ExecuteNonQuery();
         }
 
-        private void InsertProject(
+        // P7-011 fix: المصالحة — عند التحرير يُحدّث مشروع البند الموجود
+        // (بنفس العقد والبند) بدل إنشاء سطر جديد فيتضاعف المشروعات مع كل
+        // إعادة حفظ؛ عند الإنشاء يُدرج جديد كالسابق
+        private void UpsertProject(
             SqlConnection conn, SqlTransaction trans,
-            int contractNo, ContractTermRow row)
+            int contractNo, ContractTermRow row, bool isEdit)
         {
-            int newProjectId;
-            using (var maxCmd = new SqlCommand(
-                "SELECT MAX(id) FROM PM_Projects", conn, trans))
+            int existingProjectId = -1;
+
+            if (isEdit)
             {
-                newProjectId = (int)(ParseDouble(maxCmd.ExecuteScalar()?.ToString()) + 1);
+                using (var findCmd = new SqlCommand(
+                    "SELECT TOP 1 id FROM PM_Projects WITH (UPDLOCK, HOLDLOCK) " +
+                    "WHERE ContractPk=@ContractPk AND TermPk=@TermPk AND IS_Deleted=0",
+                    conn, trans))
+                {
+                    findCmd.Parameters.Add("@ContractPk", SqlDbType.Int).Value = contractNo;
+                    findCmd.Parameters.Add("@TermPk", SqlDbType.Int).Value = row.TermPk;
+                    var found = findCmd.ExecuteScalar();
+                    if (found != null && found != DBNull.Value)
+                        existingProjectId = Convert.ToInt32(found);
+                }
             }
 
+            if (existingProjectId != -1)
+            {
+                var cmd = new SqlCommand(
+                    @"UPDATE PM_Projects SET
+                      name=@name, TermPk=@TermPk, statusPk=@statusPk,
+                      RegsDate=@RegsDate, price=@price, cost=@cost,
+                      Quantity=@Quantity, VAT=@VAT, IS_Deleted=0
+                      WHERE id=@id",
+                    conn, trans);
+                cmd.Parameters.Add("@id", SqlDbType.Int).Value = existingProjectId;
+                cmd.Parameters.Add("@name", SqlDbType.NVarChar).Value = row.ProjectName ?? "";
+                cmd.Parameters.Add("@TermPK", SqlDbType.Int).Value = row.TermPk;
+                cmd.Parameters.Add("@Quantity", SqlDbType.Int).Value = (int)row.Quantity;
+                cmd.Parameters.Add("@statusPK", SqlDbType.Int).Value = cmbStatus.SelectedValue ?? DBNull.Value;
+                cmd.Parameters.Add("@Price", SqlDbType.Float).Value = row.NetValue;
+                cmd.Parameters.Add("@cost", SqlDbType.Float).Value = row.NetCost;
+                cmd.Parameters.Add("@VAT", SqlDbType.Float).Value = row.VAT;
+                cmd.Parameters.Add("@RegsDate", SqlDbType.DateTime).Value = txtDate.SelectedDate ?? DateTime.Now;
+                cmd.ExecuteNonQuery();
+            }
+            else
+            {
+                int newProjectId;
+                using (var maxCmd = new SqlCommand(
+                    "SELECT MAX(id) FROM PM_Projects", conn, trans))
+                {
+                    newProjectId = (int)(ParseDouble(maxCmd.ExecuteScalar()?.ToString()) + 1);
+                }
+
+                var cmd = new SqlCommand(
+                    @"INSERT INTO PM_Projects
+                      (id,name,TermPk,ContractPk,statusPk,RegsDate,price,cost,Quantity,VAT,IS_Deleted)
+                      VALUES(@id,@name,@TermPk,@ContractPk,@statusPk,@RegsDate,
+                             @price,@cost,@Quantity,@VAT,@IS_Deleted)",
+                    conn, trans);
+                cmd.Parameters.Add("@id", SqlDbType.Int).Value = newProjectId;
+                cmd.Parameters.Add("@ContractPk", SqlDbType.Int).Value = contractNo;
+                cmd.Parameters.Add("@name", SqlDbType.NVarChar).Value = row.ProjectName ?? "";
+                cmd.Parameters.Add("@TermPK", SqlDbType.Int).Value = row.TermPk;
+                cmd.Parameters.Add("@Quantity", SqlDbType.Int).Value = (int)row.Quantity;
+                cmd.Parameters.Add("@statusPK", SqlDbType.Int).Value = cmbStatus.SelectedValue ?? DBNull.Value;
+                cmd.Parameters.Add("@Price", SqlDbType.Float).Value = row.NetValue;
+                cmd.Parameters.Add("@cost", SqlDbType.Float).Value = row.NetCost;
+                cmd.Parameters.Add("@VAT", SqlDbType.Float).Value = row.VAT;
+                cmd.Parameters.Add("@IS_Deleted", SqlDbType.Bit).Value = 0;
+                cmd.Parameters.Add("@RegsDate", SqlDbType.DateTime).Value = txtDate.SelectedDate ?? DateTime.Now;
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        // P7-011 fix: مشروعات العقد التي لم يبق لها بند في التحرير تُقعد منطقياً
+        private static void RetireAbsentProjects(
+            SqlConnection conn, SqlTransaction trans,
+            int contractNo, ObservableCollection<ContractTermRow> rows)
+        {
+            var termIds = new System.Collections.Generic.List<int>();
+            foreach (var row in rows)
+                termIds.Add(row.TermPk);
+
+            if (termIds.Count == 0) return;
+
+            string inList = string.Join(",", termIds);
             var cmd = new SqlCommand(
-                @"INSERT INTO PM_Projects
-                  (id,name,TermPk,ContractPk,statusPk,RegsDate,price,cost,Quantity,VAT,IS_Deleted)
-                  VALUES(@id,@name,@TermPk,@ContractPk,@statusPk,@RegsDate,
-                         @price,@cost,@Quantity,@VAT,@IS_Deleted)",
+                "UPDATE PM_Projects SET IS_Deleted=1 " +
+                $"WHERE ContractPk=@ContractPk AND IS_Deleted=0 AND TermPk NOT IN ({inList})",
                 conn, trans);
-            cmd.Parameters.Add("@id", SqlDbType.Int).Value = newProjectId;
             cmd.Parameters.Add("@ContractPk", SqlDbType.Int).Value = contractNo;
-            cmd.Parameters.Add("@name", SqlDbType.NVarChar).Value = row.ProjectName ?? "";
-            cmd.Parameters.Add("@TermPK", SqlDbType.Int).Value = row.TermPk;
-            cmd.Parameters.Add("@Quantity", SqlDbType.Int).Value = (int)row.Quantity;
-            cmd.Parameters.Add("@statusPK", SqlDbType.Int).Value = cmbStatus.SelectedValue ?? DBNull.Value;
-            cmd.Parameters.Add("@Price", SqlDbType.Float).Value = row.NetValue;
-            cmd.Parameters.Add("@cost", SqlDbType.Float).Value = row.NetCost;
-            cmd.Parameters.Add("@VAT", SqlDbType.Float).Value = row.VAT;
-            cmd.Parameters.Add("@IS_Deleted", SqlDbType.Bit).Value = 0;
-            cmd.Parameters.Add("@RegsDate", SqlDbType.DateTime).Value = txtDate.SelectedDate ?? DateTime.Now;
             cmd.ExecuteNonQuery();
         }
 

@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using AuditorAPI.Models;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MessageBox = System.Windows.MessageBox;
 
@@ -846,20 +847,29 @@ namespace SmartAuditERP.Form_WPF
 
             try
             {
-                // Update project status to accredited (3)
+                // P7-020 fix: حجز انتقال الحالة ذرياً من قاعدة البيانات — الشرط
+                // (statusPk جديد/إنتظار فقط) داخل أمر التحديث نفسه؛ صفر صفوف
+                // متأثرة = المشروع معمّد/مغلق مسبقاً — لم يعد الحارس يعتمد حالة
+                // الواجهة القديمة (cmbStatus1) التي قد تكون محمّلة قبل تعميد
+                // متزامن من مستخدم آخر
+                int projectId = Convert.ToInt32(txtProjectNo.Text);
+                int casAffected;
                 using (SqlCommand command = new SqlCommand(
-                    $"UPDATE PM_Projects SET statusPk=@statusPk WHERE id={Convert.ToInt32(txtProjectNo.Text)}",
+                    "UPDATE PM_Projects WITH (UPDLOCK, HOLDLOCK) SET statusPk=@statusPk " +
+                    "WHERE id=@id AND IS_Deleted=0 AND (statusPk IS NULL OR statusPk<=2)",
                     _dbConnection, transaction))
                 {
                     command.Parameters.AddWithValue("@statusPk", 3);
-                    command.ExecuteNonQuery();
+                    command.Parameters.AddWithValue("@id", projectId);
+                    casAffected = command.ExecuteNonQuery();
                 }
 
-                // Branch condition
-                string branchCondition = "";
-                if (MainClass.BranchNo != -1)
+                if (casAffected != 1)
                 {
-                    branchCondition = $" WHERE branch={MainClass.BranchNo}";
+                    transaction.Rollback();
+                    MessageBox.Show("المشروع تم تعميده أو إغلاقه سابقاً ⚠️", "تنبيه",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
                 }
 
                 // Get contractor account
@@ -877,67 +887,63 @@ namespace SmartAuditERP.Form_WPF
                     }
                 }
 
-                // Get next entry ID
-                int entryId = 0;
-                using (SqlCommand command = new SqlCommand(
-                    $"SELECT MAX(id) FROM Entry {branchCondition}", _dbConnection, transaction))
-                {
-                    object result2 = command.ExecuteScalar();
-                    entryId = (result2 == null || result2 == DBNull.Value) ? 1 : Convert.ToInt32(result2) + 1;
-                }
-
                 double totalCost = Convert.ToDouble(string.IsNullOrEmpty(txtTotCost.Text) ? "0" : txtTotCost.Text);
 
                 if (totalCost != 0)
                 {
-                    // Insert Entry Header
-                    using (SqlCommand command = new SqlCommand(
-                        "INSERT INTO Entry(id, date, doc_no, type, state, notes, branch, IS_Deleted) " +
-                        "VALUES(@id, @date, @doc_no, @type, @state, @notes, @branch, @IS_Deleted)",
-                        _dbConnection, transaction))
-                    {
-                        command.Parameters.AddWithValue("@id", entryId);
-                        command.Parameters.AddWithValue("@date", txtDate.SelectedDate ?? DateTime.Now);
-                        command.Parameters.AddWithValue("@doc_no", _currentContractCode);
-                        command.Parameters.AddWithValue("@type", 15);
-                        command.Parameters.AddWithValue("@state", 1);
-                        command.Parameters.AddWithValue("@notes",
-                            $"قيد تنفيذ رقم:{_currentContractCode} خاصة المقاول:{cmbContractor.Text}");
-                        command.Parameters.AddWithValue("@branch", MainClass.BranchNo);
-                        command.Parameters.AddWithValue("@IS_Deleted", 0);
-                        command.ExecuteNonQuery();
-                    }
+                    // P7-014 fix: قيد التنفيذ (النوع 15) عبر نواة القيود الموحدة
+                    // SaveEnty داخل معاملة التعميد — عقد GlobalID وEntry_sub
+                    // كاملين بدل الكتابة اليدوية بأعمدة ناقصة؛ وحجز الحالة أعلاه
+                    // (CAS) يضمن عدم تكرار القيد منطقياً مهما كُرر الضغط
+                    int entryNumber = 0;
+                    string entryGlobalId = null;
+                    EntryOper.GetEntryGlobalID(ref entryGlobalId, ref entryNumber);
 
-                    // Debit Entry (Projects Under Construction)
-                    using (SqlCommand command = new SqlCommand(
-                        "INSERT INTO Entry_sub(res_id, dept, credit, acc_no, notes, branch) " +
-                        "VALUES(@res_id, @dept, @credit, @acc_no, @notes, @branch)",
-                        _dbConnection, transaction))
-                    {
-                        command.Parameters.AddWithValue("@res_id", entryId);
-                        command.Parameters.AddWithValue("@dept", totalCost);
-                        command.Parameters.AddWithValue("@credit", 0);
-                        command.Parameters.AddWithValue("@acc_no", 3140001); // Projects under construction account
-                        command.Parameters.AddWithValue("@notes",
-                            $"قيد تنفيذ رقم:{_currentContractCode} خاصة المقاول:{cmbContractor.Text}");
-                        command.Parameters.AddWithValue("@branch", MainClass.BranchNo);
-                        command.ExecuteNonQuery();
-                    }
+                    string execNote = $"قيد تنفيذ رقم:{_currentContractCode} خاصة المقاول:{cmbContractor.Text}";
 
-                    // Credit Entry (Contractor Account)
-                    using (SqlCommand command = new SqlCommand(
-                        "INSERT INTO Entry_sub(res_id, dept, credit, acc_no, notes, branch) " +
-                        "VALUES(@res_id, @dept, @credit, @acc_no, @notes, @branch)",
-                        _dbConnection, transaction))
+                    var pmEntry = new Entry
                     {
-                        command.Parameters.AddWithValue("@res_id", entryId);
-                        command.Parameters.AddWithValue("@dept", 0);
-                        command.Parameters.AddWithValue("@credit", totalCost);
-                        command.Parameters.AddWithValue("@acc_no", contractorAccount);
-                        command.Parameters.AddWithValue("@notes",
-                            $"قيد تنفيذ رقم:{_currentContractCode} خاصة المقاول:{cmbContractor.Text}");
-                        command.Parameters.AddWithValue("@branch", MainClass.BranchNo);
-                        command.ExecuteNonQuery();
+                        EntryGlobalID = entryGlobalId,
+                        ClientCode = Sync.ClientCode,
+                        EntryNo = entryNumber,
+                        EntryDate = txtDate.SelectedDate ?? DateTime.Now,
+                        ReffNo = _currentContractCode.ToString(),
+                        RefDate = txtDate.SelectedDate ?? DateTime.Now,
+                        Type = (EntryType)15,
+                        State = 1,
+                        Note = execNote,
+                        Branch = MainClass.BranchNo,
+                        EmpID = MainClass.EmpNo,
+                        DistBranch = Sync.DistBranch,
+                        BranchType = Sync.BranchType
+                    };
+
+                    var accounts = new System.Collections.Generic.List<Account>
+                    {
+                        // مدين: مشروعات تحت التنفيذ
+                        new Account
+                        {
+                            EntryGlobalID = entryGlobalId, EntryNo = entryNumber,
+                            Name = "3140001", Code = "3140001",
+                            Debt = totalCost, Credit = 0.0,
+                            Note = execNote, CCcode = "-1"
+                        },
+                        // دائن: حساب المقاول
+                        new Account
+                        {
+                            EntryGlobalID = entryGlobalId, EntryNo = entryNumber,
+                            Name = cmbContractor.Text, Code = contractorAccount.ToString(),
+                            Debt = 0.0, Credit = totalCost,
+                            Note = execNote, CCcode = "-1"
+                        }
+                    };
+
+                    pmEntry.Accounts = accounts;
+
+                    if (!new EntryOper().SaveEnty(pmEntry, _dbConnection, transaction, true))
+                    {
+                        try { transaction.Rollback(); } catch { }
+                        return;
                     }
                 }
 

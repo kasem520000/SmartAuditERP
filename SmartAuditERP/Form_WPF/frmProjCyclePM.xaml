@@ -347,32 +347,9 @@
                 Padding="8,6">
             <ScrollViewer HorizontalScrollBarVisibility="Auto"
                           VerticalScrollBarVisibility="Disabled">
-                <WrapPanel x:Name="StagesPanel" Orientation="Horizontal">
-                    <Button x:Name="btnStage1" Content="المرحلة 1"
-                            Style="{StaticResource StageBtn}"
-                            Visibility="Collapsed"
-                            Click="btnStage1_Click"/>
-                    <Button x:Name="btnStage2" Content="المرحلة 2"
-                            Style="{StaticResource StageBtn}"
-                            Visibility="Collapsed"
-                            Click="btnStage2_Click"/>
-                    <Button x:Name="btnStage3" Content="المرحلة 3"
-                            Style="{StaticResource StageBtn}"
-                            Visibility="Collapsed"
-                            Click="btnStage3_Click"/>
-                    <Button x:Name="btnStage4" Content="المرحلة 4"
-                            Style="{StaticResource StageBtn}"
-                            Visibility="Collapsed"
-                            Click="btnStage4_Click"/>
-                    <Button x:Name="btnStage5" Content="المرحلة 5"
-                            Style="{StaticResource StageBtn}"
-                            Visibility="Collapsed"
-                            Click="btnStage5_Click"/>
-                    <Button x:Name="btnStage6" Content="المرحلة 6"
-                            Style="{StaticResource StageBtn}"
-                            Visibility="Collapsed"
-                            Click="btnStage6_Click"/>
-                </WrapPanel>
+                <!-- P7-017 fix: أزرار المراحل تُبنى ديناميكياً في الكود بعدد
+                     مراحل خطة المشروع (لا حد الستة أزرار الثابتة) -->
+                <WrapPanel x:Name="StagesPanel" Orientation="Horizontal"/>
             </ScrollViewer>
         </Border>
 

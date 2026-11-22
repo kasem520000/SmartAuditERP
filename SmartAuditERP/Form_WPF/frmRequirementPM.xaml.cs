@@ -383,6 +383,20 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
+                // P7-021 fix: البند (TermPk) مفتاح هوية السطر مع الطلب — لا
+                // يتكرر داخل الطلب الواحد (بعد مطابقة المخطط بمفتاح مركب)
+                var seenTermIds = new System.Collections.Generic.HashSet<int>();
+                foreach (var row in _termsSource)
+                {
+                    if (!seenTermIds.Add(row.TermCode))
+                    {
+                        DXMessageBox.Show(
+                            $"البند رقم {row.TermCode} مكرر في الطلب — لكل بند سطر واحد",
+                            "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+                }
+
                 EnsureOpen(_conn);
                 EnsureOpen(_conn1);
                 transaction = _conn.BeginTransaction();
@@ -419,24 +433,54 @@ namespace SmartAuditERP.Form_WPF
                         cmd.Parameters.Add("@IS_Deleted", SqlDbType.Bit).Value      = 0;
                         cmd.ExecuteNonQuery();
                     }
-
-                    // إدراج البنود
-                    double.TryParse(txtNo.Text, out double reqNoSub);
-                    foreach (var row in _termsSource)
+                }
+                else
+                {
+                    // P7-021 fix: مسار التحرير كان معدوماً — الحفظ عند التحرير
+                    // كان يلتزم بلا كتابة ثم يعرض «تم الحفظ»
+                    using (var cmd = new SqlCommand(
+                        "UPDATE PM_Requirement SET Country=@Country, City=@City, " +
+                        "Address=@Address, Population=@Population, RegsDate=@RegsDate, " +
+                        "IS_Deleted=0 WHERE RequirNo=@RequirNo",
+                        _conn, transaction))
                     {
-                        using (var subCmd = new SqlCommand(
-                            "INSERT INTO PM_RequirementSub(RequirNo,TermPk,Quntity,price,status,Reff_No) " +
-                            "VALUES(@RequirNo,@TermPk,@Quntity,@price,@status,@Reff_No)",
-                            _conn, transaction))
-                        {
-                            subCmd.Parameters.Add("@RequirNo", SqlDbType.Int).Value      = (int)reqNoSub;
-                            subCmd.Parameters.Add("@TermPK",   SqlDbType.Int).Value      = row.TermCode;
-                            subCmd.Parameters.Add("@Quntity",  SqlDbType.Int).Value      = row.Qty;
-                            subCmd.Parameters.Add("@price",    SqlDbType.Float).Value    = row.Price;
-                            subCmd.Parameters.Add("@Reff_No",  SqlDbType.Int).Value      = row.RefNo;
-                            subCmd.Parameters.Add("@status",   SqlDbType.Bit).Value      = row.Status;
-                            subCmd.ExecuteNonQuery();
-                        }
+                        cmd.Parameters.Add("@RequirNo",   SqlDbType.Int).Value      = _code;
+                        cmd.Parameters.Add("@Country",    SqlDbType.Int).Value      = cmbCountry.SelectedValue ?? DBNull.Value;
+                        cmd.Parameters.Add("@City",       SqlDbType.Int).Value      = cmbCities.SelectedValue  ?? DBNull.Value;
+                        cmd.Parameters.Add("@Address",    SqlDbType.NVarChar).Value = txtLocation.Text;
+                        cmd.Parameters.Add("@Population", SqlDbType.Decimal).Value  = double.TryParse(txtPopulation.Text, out double pop) ? pop : 0;
+                        cmd.Parameters.Add("@RegsDate",   SqlDbType.DateTime).Value = txtDate.DateTime;
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // استبدال بنود الطلب داخل المعاملة نفسها
+                    using (var delCmd = new SqlCommand(
+                        "DELETE FROM PM_RequirementSub WHERE RequirNo=@RequirNo",
+                        _conn, transaction))
+                    {
+                        delCmd.Parameters.Add("@RequirNo", SqlDbType.Int).Value = _code;
+                        delCmd.ExecuteNonQuery();
+                    }
+                }
+
+                // إدراج البنود (جديداً وتحريراً)
+                // P7-021 fix: IsDeleted يُثبت صفراً صراحةً — عمود القياس الجديد
+                double.TryParse(txtNo.Text, out double reqNoSub);
+                int targetReqNo = _code == -1 ? (int)reqNoSub : _code;
+                foreach (var row in _termsSource)
+                {
+                    using (var subCmd = new SqlCommand(
+                        "INSERT INTO PM_RequirementSub(RequirNo,TermPk,Quntity,price,status,Reff_No,IsDeleted) " +
+                        "VALUES(@RequirNo,@TermPk,@Quntity,@price,@status,@Reff_No,0)",
+                        _conn, transaction))
+                    {
+                        subCmd.Parameters.Add("@RequirNo", SqlDbType.Int).Value      = targetReqNo;
+                        subCmd.Parameters.Add("@TermPK",   SqlDbType.Int).Value      = row.TermCode;
+                        subCmd.Parameters.Add("@Quntity",  SqlDbType.Int).Value      = row.Qty;
+                        subCmd.Parameters.Add("@price",    SqlDbType.Float).Value    = row.Price;
+                        subCmd.Parameters.Add("@Reff_No",  SqlDbType.Int).Value      = row.RefNo;
+                        subCmd.Parameters.Add("@status",   SqlDbType.Bit).Value      = row.Status;
+                        subCmd.ExecuteNonQuery();
                     }
                 }
 

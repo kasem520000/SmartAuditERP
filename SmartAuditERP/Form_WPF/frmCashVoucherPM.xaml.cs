@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Windows;
 using System.Windows.Input;
+using AuditorAPI.Models;
 using SmartAuditERP.Form_WPF;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MessageBox = System.Windows.MessageBox;
@@ -452,24 +453,24 @@ namespace SmartAuditERP.Form_WPF
 
                 int responsibleEmployeeId = MainClass.EmpNo;
 
-                string branchCondition = MainClass.BranchNo != -1
-                    ? $"WHERE branch = {MainClass.BranchNo}"
-                    : string.Empty;
-
-                int entryMaxId = Convert.ToInt32(
-                    new SqlCommand(
-                        $"SELECT ISNULL(MAX(id), 0) FROM Entry {branchCondition}",
-                        conn, transaction).ExecuteScalar()) + 1;
-
-                if (_currentCode != -1)
+                // P7-014 fix: القيد عبر نواة القيود الموحدة (Entry.GlobalID +
+                // Entry_sub الكامل) داخل معاملة السند — الكتابة اليدوية
+                // القديمة كانت تعتمد ترقيماً غير محروس وأعمدة ناقصة
+                int entryMaxId;
+                string entryGlobalId;
+                bool entryIsNew = _currentCode == -1 || _entryCode <= 0;
+                if (entryIsNew)
+                {
+                    entryMaxId = 0;
+                    entryGlobalId = null;
+                    EntryOper.GetEntryGlobalID(ref entryGlobalId, ref entryMaxId);
+                }
+                else
                 {
                     entryMaxId = _entryCode;
-                    new SqlCommand(
-                        $"DELETE FROM Entry WHERE id = {entryMaxId}",
-                        conn, transaction).ExecuteNonQuery();
-                    new SqlCommand(
-                        $"DELETE FROM Entry_sub WHERE res_id = {entryMaxId}",
-                        conn, transaction).ExecuteNonQuery();
+                    entryGlobalId = null;
+                    EntryOper.GenerateEntryGlobalIDByEntryNo(
+                        ref entryGlobalId, entryMaxId, MainClass.BranchNo);
                 }
 
                 SqlCommand voucherCommand;
@@ -554,8 +555,16 @@ namespace SmartAuditERP.Form_WPF
                 int customerAccountCode = GetAccountCode(cmbAccounts.Text);
                 int depositAccountCode = GetAccountCode(cmbEda3.Text);
 
-                InsertJournalEntry(transaction, entryMaxId, customerAccountCode,
-                    depositAccountCode);
+                // P7-014 fix: قيد السند (النوع 7 سند قبض) عبر SaveEnty داخل
+                // معاملة السند — حذف/تحديث القيد القائم بعقد GlobalID
+                var voucherEntry = BuildVoucherEntry(
+                    entryGlobalId, entryMaxId, customerAccountCode, depositAccountCode);
+
+                if (!new EntryOper().SaveEnty(voucherEntry, conn, transaction, entryIsNew))
+                {
+                    try { transaction.Rollback(); } catch { }
+                    return;
+                }
 
                 transaction.Commit();
 
@@ -599,59 +608,53 @@ namespace SmartAuditERP.Form_WPF
                 : 0;
         }
 
-        private void InsertJournalEntry(
-            SqlTransaction transaction,
-            int entryId,
-            int customerAccountCode,
-            int depositAccountCode)
+        // P7-014 fix: بناء قيد سند القبض على نموذج القيود الموحد — مدين
+        // حساب الصندوق/البنك ودائن حساب العميل بنفس قيمة السند
+        private Entry BuildVoucherEntry(
+            string entryGlobalId, int entryId,
+            int customerAccountCode, int depositAccountCode)
         {
             string voucherNote =
                 $"سند قبض من عميل رقم: {_currentCode} - تحصيل من حساب: {cmbAccounts.Text}";
 
-            SqlCommand entryCommand = new SqlCommand(
-                "INSERT INTO Entry(id,date,doc_no,type,state,notes,branch,IS_Deleted) " +
-                "VALUES(@id,@date,@doc_no,@type,@state,@notes,@branch,@IS_Deleted)",
-                conn, transaction);
-
-            entryCommand.Parameters.Add("@id", SqlDbType.Int).Value = entryId;
-            entryCommand.Parameters.Add("@date", SqlDbType.DateTime).Value =
-                txtDate.SelectedDate ?? DateTime.Today;
-            entryCommand.Parameters.Add("@doc_no", SqlDbType.Int).Value = _currentCode;
-            entryCommand.Parameters.Add("@type", SqlDbType.Int).Value = 7;
-            entryCommand.Parameters.Add("@state", SqlDbType.Int).Value = 1;
-            entryCommand.Parameters.Add("@notes", SqlDbType.NVarChar).Value = voucherNote;
-            entryCommand.Parameters.Add("@branch", SqlDbType.Int).Value = MainClass.BranchNo;
-            entryCommand.Parameters.Add("@IS_Deleted", SqlDbType.Bit).Value = 0;
-            entryCommand.ExecuteNonQuery();
-
             double amount = Convert.ToDouble(txtVal.Text);
 
-            InsertJournalEntryLine(transaction, entryId, amount, 0,
-                depositAccountCode, voucherNote);
-            InsertJournalEntryLine(transaction, entryId, 0, amount,
-                customerAccountCode, voucherNote);
-        }
+            var entry = new Entry
+            {
+                EntryGlobalID = entryGlobalId,
+                ClientCode = Sync.ClientCode,
+                EntryNo = entryId,
+                EntryDate = txtDate.SelectedDate ?? DateTime.Today,
+                ReffNo = _currentCode.ToString(),
+                RefDate = txtDate.SelectedDate ?? DateTime.Today,
+                Type = (EntryType)7,
+                State = 1,
+                Note = voucherNote,
+                Branch = MainClass.BranchNo,
+                EmpID = MainClass.EmpNo,
+                DistBranch = Sync.DistBranch,
+                BranchType = Sync.BranchType
+            };
 
-        private void InsertJournalEntryLine(
-            SqlTransaction transaction,
-            int entryId,
-            double debit,
-            double credit,
-            int accountCode,
-            string notes)
-        {
-            SqlCommand subCommand = new SqlCommand(
-                "INSERT INTO Entry_sub(res_id,dept,credit,acc_no,notes,branch) " +
-                "VALUES(@res_id,@dept,@credit,@acc_no,@notes,@branch)",
-                conn, transaction);
+            entry.Accounts = new List<Account>
+            {
+                new Account
+                {
+                    EntryGlobalID = entryGlobalId, EntryNo = entryId,
+                    Name = cmbEda3.Text, Code = depositAccountCode.ToString(),
+                    Debt = amount, Credit = 0.0,
+                    Note = voucherNote, CCcode = "-1"
+                },
+                new Account
+                {
+                    EntryGlobalID = entryGlobalId, EntryNo = entryId,
+                    Name = cmbAccounts.Text, Code = customerAccountCode.ToString(),
+                    Debt = 0.0, Credit = amount,
+                    Note = voucherNote, CCcode = "-1"
+                }
+            };
 
-            subCommand.Parameters.Add("@res_id", SqlDbType.Int).Value = entryId;
-            subCommand.Parameters.Add("@dept", SqlDbType.Float).Value = debit;
-            subCommand.Parameters.Add("@credit", SqlDbType.Float).Value = credit;
-            subCommand.Parameters.Add("@acc_no", SqlDbType.Int).Value = accountCode;
-            subCommand.Parameters.Add("@notes", SqlDbType.NVarChar).Value = notes;
-            subCommand.Parameters.Add("@branch", SqlDbType.Int).Value = MainClass.BranchNo;
-            subCommand.ExecuteNonQuery();
+            return entry;
         }
 
         #endregion

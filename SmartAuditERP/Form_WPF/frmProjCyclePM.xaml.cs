@@ -198,6 +198,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void LoadParentStages(int code)
         {
+            SqlTransaction copyTransaction = null;
             try
             {
                 var adapter = new SqlDataAdapter(
@@ -215,16 +216,21 @@ namespace SmartAuditERP.Form_WPF
                 if (dt.Rows.Count > 0)
                 {
                     if (conn.State != ConnectionState.Open) conn.Open();
+                    // P7-018 fix: نسخ خطة مراحل المجموعة إلى المشروع داخل
+                    // معاملة واحدة — كان الإدراج سطراً سطراً بلا معاملة ففشل
+                    // وسط القائمة يترك المشروع بخطة جزئية
+                    copyTransaction = conn.BeginTransaction();
                     foreach (DataRow r in dt.Rows)
                     {
                         var cmd = new SqlCommand(
                             "insert into PM_ProjStages(StageId,ProjID,StageOrder,IsAccredit,IS_Deleted) " +
-                            "values(@StageId,@ProjID,@StageOrder,0,0)", conn);
+                            "values(@StageId,@ProjID,@StageOrder,0,0)", conn, copyTransaction);
                         cmd.Parameters.Add("@StageId",    SqlDbType.Int).Value = r["StageID"];
                         cmd.Parameters.Add("@ProjID",     SqlDbType.Int).Value = ProjNo;
                         cmd.Parameters.Add("@StageOrder", SqlDbType.Int).Value = r["StageOrder"];
                         cmd.ExecuteNonQuery();
                     }
+                    copyTransaction.Commit();
                     LoadProjectStage(code);
                 }
                 else
@@ -236,7 +242,10 @@ namespace SmartAuditERP.Form_WPF
                         LoadParentStages(parent);
                 }
             }
-            catch { }
+            catch
+            {
+                try { copyTransaction?.Rollback(); } catch { }
+            }
             finally
             {
                 if (conn.State != ConnectionState.Closed) conn.Close();
@@ -278,35 +287,34 @@ namespace SmartAuditERP.Form_WPF
                         });
                     }
 
-                    // إخفاء كل الأزرار أولاً
-                    foreach (UIElement child in StagesPanel.Children)
-                    {
-                        if (child is Button btn)
-                        {
-                            btn.Content    = "";
-                            btn.Visibility = Visibility.Collapsed;
-                            btn.Background = Brushes.White;
-                        }
-                    }
-
                     // تفعيل أزرار المراحل
-                    var stageBtns = new List<Button>();
-                    foreach (UIElement child in StagesPanel.Children)
-                    {
-                        if (child is Button b) stageBtns.Add(b);
-                    }
+                    // P7-017 fix: بناء الأزرار ديناميكياً بعدد مراحل المشروع —
+                    // كانت الواجهة تحجز ستة أزرار فقط بينما تكوين المجموعة
+                    // يسمح بأي عدد من المراحل فتُقطع المراحل السابعة وما بعدها
+                    StagesPanel.Children.Clear();
 
+                    // P7-015 fix: الحالة الرابعة هي المغلقة وفق بذور PM_Status
+                    // (3=تحت التنفيذ) — كانت الحالة 3 تعامل كمغلقة فيمنع الملفات
+                    // أثناء التنفيذ نفسه
                     bool isClosed = cmbStatus.SelectedValue != null &&
-                                    Convert.ToInt32(cmbStatus.SelectedValue) == 3;
+                                    Convert.ToInt32(cmbStatus.SelectedValue) == 4;
 
-                    for (int i = 0; i < Stageslist.Count && i < stageBtns.Count; i++)
+                    var stageBtnStyle = TryFindResource("StageBtn") as Style;
+                    for (int i = 0; i < Stageslist.Count; i++)
                     {
-                        stageBtns[i].Content    = Stageslist[i].Name;
-                        stageBtns[i].Visibility = Visibility.Visible;
-                        lastStage               = i + 1;
+                        var stageBtn = new Button
+                        {
+                            Content    = Stageslist[i].Name,
+                            Style      = stageBtnStyle,
+                            Tag        = i,
+                            Visibility = Visibility.Visible
+                        };
+                        stageBtn.Click += StageButton_Click;
+                        StagesPanel.Children.Add(stageBtn);
+                        lastStage = i + 1;
 
                         if (isClosed)
-                            stageBtns[i].Background = Brushes.LightGreen;
+                            stageBtn.Background = Brushes.LightGreen;
                     }
                 }
                 else
@@ -358,21 +366,65 @@ namespace SmartAuditERP.Form_WPF
                 clickedBtn.Background = Brushes.LightGreen;
         }
 
+        // P7-016 fix: حارس اعتماد المرحلة يفحص كل المراحل السابقة بالترتيب لا
+        // ملفات المرحلة الحالية فقط — الرسالة كانت تعد بفحص «كل مرحلة سابقة»
+        // والاستعلام يفحص الحالية وحدها
         private bool CheckPreviousStage()
         {
-            var adapter = new SqlDataAdapter(
-                $"select * from PM_ProjectFiles where Proj_ID={ProjNo} and StageNo={StageID}",
-                conn);
-            var dt = new DataTable();
-            adapter.Fill(dt);
+            try
+            {
+                // SqlDataAdapter الف.auto-open لا يشمل ExecuteScalar — يضمن فتحه
+                if (conn.State == ConnectionState.Closed) conn.Open();
 
-            if (dt.Rows.Count > 0) return true;
-            DXMessageBox.Show("يجب إرفاق على الأقل ملف لكل مرحلة سابقة");
-            return false;
+                // ترتيب المرحلة الحالية من خطة المشروع
+                int currentOrder;
+                using (var ordCmd = new SqlCommand(
+                    "SELECT ISNULL(StageOrder,0) FROM PM_ProjStages WHERE ProjID=@ProjID AND StageId=@StageId",
+                    conn))
+                {
+                    ordCmd.Parameters.Add("@ProjID", SqlDbType.Int).Value = ProjNo;
+                    ordCmd.Parameters.Add("@StageId", SqlDbType.Int).Value = StageID;
+                    currentOrder = Convert.ToInt32(ordCmd.ExecuteScalar());
+                }
+
+                // المراحل السابقة (بترتيب أقل) التي لا ملف لها
+                int missing;
+                using (var missCmd = new SqlCommand(
+                    "SELECT COUNT(*) FROM PM_ProjStages ps WHERE ps.ProjID=@ProjID " +
+                    "AND ps.StageOrder < @CurOrder " +
+                    "AND NOT EXISTS (SELECT 1 FROM PM_ProjectFiles f " +
+                    "WHERE f.Proj_ID=@ProjID AND f.StageNo=ps.StageId)",
+                    conn))
+                {
+                    missCmd.Parameters.Add("@ProjID", SqlDbType.Int).Value = ProjNo;
+                    missCmd.Parameters.Add("@CurOrder", SqlDbType.Int).Value = currentOrder;
+                    missing = Convert.ToInt32(missCmd.ExecuteScalar());
+                }
+
+                if (missing > 0)
+                {
+                    DXMessageBox.Show($"يجب إرفاق على الأقل ملف لكل مرحلة سابقة — {missing} مرحلة سابقة بلا ملفات");
+                    return false;
+                }
+                return true;
+            }
+            catch
+            {
+                DXMessageBox.Show("تعذر التحقق من ملفات المراحل السابقة");
+                return false;
+            }
         }
 
         private bool CheckAccreditatedStages()
         {
+            // P7-016 fix: قائمة مراحل فارغة = لا خطة للمشروع — لا يُقبل إغلاقه
+            // (الحلقة القديمة كانت تمر فارغة فيقبل الإغلاق بلا مراحل)
+            if (Stageslist.Count == 0)
+            {
+                DXMessageBox.Show("لا توجد خطة مراحل لهذا المشروع — لا يمكن إغلاقه قبل استكمال خطة المراحل واعتمادها");
+                return false;
+            }
+
             foreach (var stage in Stageslist)
             {
                 var adapter = new SqlDataAdapter(
@@ -395,8 +447,10 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
+                // P7-015 fix: المغلق هو الحالة 4 — الحالة 3 (تحت التنفيذ) هي وقت
+                // إرفاق ملفات المراحل بطبيعة الدورة
                 if (cmbStatus.SelectedValue != null &&
-                    Convert.ToInt32(cmbStatus.SelectedValue) == 3)
+                    Convert.ToInt32(cmbStatus.SelectedValue) == 4)
                 {
                     DXMessageBox.Show("المشروع مغلق، لا يسمح بإضافة ملف جديد",
                         "", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -428,8 +482,9 @@ namespace SmartAuditERP.Form_WPF
                 if (row.FileNo == 0)
                 {
                     // إضافة جديدة
+                    // P7-015 fix: المغلق هو الحالة 4
                     if (cmbStatus.SelectedValue != null &&
-                        Convert.ToInt32(cmbStatus.SelectedValue) == 3)
+                        Convert.ToInt32(cmbStatus.SelectedValue) == 4)
                     {
                         DXMessageBox.Show("المشروع مغلق، لا يسمح بإضافة ملف جديد",
                             "", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -461,15 +516,18 @@ namespace SmartAuditERP.Form_WPF
 
                     int mainFile = row.IsMain ? 1 : 0;
 
-                    var sb = new StringBuilder();
-                    sb.AppendLine("Declare @Ufile As VARBINARY(MAX)");
-                    sb.AppendLine($"Select @Ufile = CAST(bulkcolumn As VARBINARY(MAX)) " +
-                                  $"FROM OPENROWSET(BULK N'{row.FilePath}', SINGLE_BLOB) AS Document");
-                    sb.AppendLine("INSERT INTO PM_ProjectFiles (FileId,UploadedFile,Fname,Ftype," +
-                                  "Proj_ID,StageNo,UploadDate,MainFile) " +
-                                  "SELECT NEWID(),@Ufile,@Fname,@Ftype,@Proj_ID,@StageNo,@UploadDate,@MainFile");
+                    // P7-019 fix: الملف يُقرأ من جهاز المستخدم ويُرسل بايتات
+                    // مُعلمة (VARBINARY) — كان مسار العميل يُدمج نصاً في
+                    // OPENROWSET ينفذ على خادم SQL فلا يعمل إلا إذا رأى
+                    // الخادم مجلد العميل نفسه، ويكشف المسار المحلي للخادم
+                    byte[] fileBytes = File.ReadAllBytes(row.FilePath);
 
-                    var cmd = new SqlCommand(sb.ToString(), conn);
+                    var cmd = new SqlCommand(
+                        "INSERT INTO PM_ProjectFiles (FileId,UploadedFile,Fname,Ftype," +
+                        "Proj_ID,StageNo,UploadDate,MainFile) " +
+                        "VALUES (NEWID(),@Ufile,@Fname,@Ftype,@Proj_ID,@StageNo,@UploadDate,@MainFile)",
+                        conn);
+                    cmd.Parameters.Add("@Ufile", SqlDbType.VarBinary, -1).Value = fileBytes;
                     cmd.Parameters.Add("@Fname",      SqlDbType.NVarChar).Value  = fileName;
                     cmd.Parameters.Add("@Ftype",      SqlDbType.Int).Value       = row.FileTypeId;
                     cmd.Parameters.Add("@Proj_ID",    SqlDbType.Int).Value       = ProjNo;
@@ -707,46 +765,12 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
-        private void btnStage1_Click(object sender, RoutedEventArgs e)
+        private void StageButton_Click(object sender, RoutedEventArgs e)
         {
             _filesSource.Clear();
             ChangeBtnColor(sender as Button);
-            LoadStageFile(0);
-        }
-
-        private void btnStage2_Click(object sender, RoutedEventArgs e)
-        {
-            _filesSource.Clear();
-            ChangeBtnColor(sender as Button);
-            LoadStageFile(1);
-        }
-
-        private void btnStage3_Click(object sender, RoutedEventArgs e)
-        {
-            _filesSource.Clear();
-            ChangeBtnColor(sender as Button);
-            LoadStageFile(2);
-        }
-
-        private void btnStage4_Click(object sender, RoutedEventArgs e)
-        {
-            _filesSource.Clear();
-            ChangeBtnColor(sender as Button);
-            LoadStageFile(3);
-        }
-
-        private void btnStage5_Click(object sender, RoutedEventArgs e)
-        {
-            _filesSource.Clear();
-            ChangeBtnColor(sender as Button);
-            LoadStageFile(4);
-        }
-
-        private void btnStage6_Click(object sender, RoutedEventArgs e)
-        {
-            _filesSource.Clear();
-            ChangeBtnColor(sender as Button);
-            LoadStageFile(5);
+            if (sender is Button b && b.Tag is int stageIndex)
+                LoadStageFile(stageIndex);
         }
 
         private void btnAccreditateStage_Click(object sender, RoutedEventArgs e)
@@ -800,7 +824,9 @@ namespace SmartAuditERP.Form_WPF
                 var cmd = new SqlCommand(
                     $"UPDATE PM_Projects SET statusPk=@statusPk, EndDate=@EndDate " +
                     $"WHERE id={txtProjectNo.Text}", conn);
-                cmd.Parameters.Add("@statusPK", SqlDbType.Int).Value      = 3;
+                // P7-015 fix: الإغلاق هو الحالة 4 (المغلقة) — كانت 3 (تحت
+                // التنفيذ) فكان الإغلاق يُختم كتنفيذ
+                cmd.Parameters.Add("@statusPK", SqlDbType.Int).Value      = 4;
                 cmd.Parameters.Add("@EndDate",  SqlDbType.DateTime).Value = DateTime.Now.ToShortDateString();
                 cmd.ExecuteNonQuery();
 
@@ -819,7 +845,9 @@ namespace SmartAuditERP.Form_WPF
             {
                 if (conn.State == ConnectionState.Closed) conn.Open();
 
-                string cond = $"ContractPK={txtContrNo.Text} and statusPK<3 and ";
+                // P7-015 fix: المفتوح هو كل ما ليس مغلقاً (4) — كانت الفحص
+                // statusPK<3 فيمر المشروع تحت التنفيذ (3) نفسه كمغلق
+                string cond = $"ContractPK={txtContrNo.Text} and statusPK<>4 and ";
 
                 var adapter = new SqlDataAdapter(
                     $"select id from PM_Projects where {cond} IS_Deleted=0", conn);
@@ -835,7 +863,8 @@ namespace SmartAuditERP.Form_WPF
                 var cmd = new SqlCommand(
                     $"UPDATE PM_ContractInv SET statusPk=@statusPk, EndDate=@EndDate " +
                     $"WHERE ContrNo={txtContrNo.Text}", conn);
-                cmd.Parameters.Add("@statusPK", SqlDbType.Int).Value      = 3;
+                // P7-015 fix: الإغلاق = الحالة 4
+                cmd.Parameters.Add("@statusPK", SqlDbType.Int).Value      = 4;
                 cmd.Parameters.Add("@EndDate",  SqlDbType.DateTime).Value = DateTime.Now.ToShortDateString();
                 cmd.ExecuteNonQuery();
 

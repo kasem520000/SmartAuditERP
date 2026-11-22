@@ -438,22 +438,36 @@ namespace SmartAuditERP.Form_WPF
                 EnsureOpen(_conn);
                 int groupCode = Convert.ToInt32(cmbGroup.SelectedValue);
 
-                using (var delCmd = new SqlCommand(
-                    $"DELETE FROM PM_GroupStages WHERE ProjGropID={groupCode} AND IS_Deleted=0",
-                    _conn))
-                    delCmd.ExecuteNonQuery();
-
-                foreach (var row in _grpStagesSource)
+                // P7-018 fix: استبدال قالب المراحل (حذف ثم إدراج) داخل معاملة
+                // واحدة — كان الحذف يتم أولًا والإدراج سطراً سطراً بلا معاملة،
+                // ففشل وسط القائمة يترك القالب محذوفاً جزئياً وينسخ المشروع
+                // التالي خطة ناقصة
+                SqlTransaction tx = _conn.BeginTransaction();
+                try
                 {
-                    using (var insCmd = new SqlCommand(
-                        "INSERT INTO PM_GroupStages(StageId,ProjGropID,StageOrder,IS_Deleted) " +
-                        "VALUES(@StageId,@ProjGropID,@StageOrder,0)", _conn))
+                    using (var delCmd = new SqlCommand(
+                        $"DELETE FROM PM_GroupStages WHERE ProjGropID={groupCode} AND IS_Deleted=0",
+                        _conn, tx))
+                        delCmd.ExecuteNonQuery();
+
+                    foreach (var row in _grpStagesSource)
                     {
-                        insCmd.Parameters.Add("@StageId",    SqlDbType.NVarChar).Value = row.StageID;
-                        insCmd.Parameters.Add("@ProjGropID", SqlDbType.NVarChar).Value = groupCode;
-                        insCmd.Parameters.Add("@StageOrder", SqlDbType.Int).Value      = row.StageOrder;
-                        insCmd.ExecuteNonQuery();
+                        using (var insCmd = new SqlCommand(
+                            "INSERT INTO PM_GroupStages(StageId,ProjGropID,StageOrder,IS_Deleted) " +
+                            "VALUES(@StageId,@ProjGropID,@StageOrder,0)", _conn, tx))
+                        {
+                            insCmd.Parameters.Add("@StageId",    SqlDbType.NVarChar).Value = row.StageID;
+                            insCmd.Parameters.Add("@ProjGropID", SqlDbType.NVarChar).Value = groupCode;
+                            insCmd.Parameters.Add("@StageOrder", SqlDbType.Int).Value      = row.StageOrder;
+                            insCmd.ExecuteNonQuery();
+                        }
                     }
+                    tx.Commit();
+                }
+                catch
+                {
+                    try { tx.Rollback(); } catch { }
+                    throw;
                 }
 
                 IsDone = true;
