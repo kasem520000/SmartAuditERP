@@ -364,14 +364,44 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnClose_Click(object sender, RoutedEventArgs e) => this.Close();
 
-        private void btnPrint_Click(object sender, RoutedEventArgs e) { }
+        private void btnPrint_Click(object sender, RoutedEventArgs e)
+        {
+            // P1-033 fix: زر غير منفذ في هذا الإصدار — إشعار صريح بدل الصمت
+            MessageBox.Show("هذه الوظيفة غير متاحة في هذا الإصدار", "غير متاح",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
 
-        private void btnFirst_Click(object sender, RoutedEventArgs e) { }
-        private void btnPrevious_Click(object sender, RoutedEventArgs e) { }
-        private void btnNext_Click(object sender, RoutedEventArgs e) { }
-        private void btnLast_Click(object sender, RoutedEventArgs e) { }
+        private void btnFirst_Click(object sender, RoutedEventArgs e)
+        {
+            // P1-033 fix: زر غير منفذ في هذا الإصدار — إشعار صريح بدل الصمت
+            MessageBox.Show("هذه الوظيفة غير متاحة في هذا الإصدار", "غير متاح",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        private void btnPrevious_Click(object sender, RoutedEventArgs e)
+        {
+            // P1-033 fix: زر غير منفذ في هذا الإصدار — إشعار صريح بدل الصمت
+            MessageBox.Show("هذه الوظيفة غير متاحة في هذا الإصدار", "غير متاح",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        private void btnNext_Click(object sender, RoutedEventArgs e)
+        {
+            // P1-033 fix: زر غير منفذ في هذا الإصدار — إشعار صريح بدل الصمت
+            MessageBox.Show("هذه الوظيفة غير متاحة في هذا الإصدار", "غير متاح",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        private void btnLast_Click(object sender, RoutedEventArgs e)
+        {
+            // P1-033 fix: زر غير منفذ في هذا الإصدار — إشعار صريح بدل الصمت
+            MessageBox.Show("هذه الوظيفة غير متاحة في هذا الإصدار", "غير متاح",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
 
-        private void btnDelete_Click(object sender, RoutedEventArgs e) { }
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            // P1-033 fix: زر غير منفذ في هذا الإصدار — إشعار صريح بدل الصمت
+            MessageBox.Show("هذه الوظيفة غير متاحة في هذا الإصدار", "غير متاح",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
 
         private void btnAddstage_Click(object sender, RoutedEventArgs e)
         {

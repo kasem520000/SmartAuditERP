@@ -2510,7 +2510,12 @@ namespace SmartAuditERP.Form_WPF
             this.priceEdit();
         }
 
-        private void btnQuantity_Click(object sender, RoutedEventArgs e) { }
+        private void btnQuantity_Click(object sender, RoutedEventArgs e)
+        {
+            // P1-033 fix: زر غير منفذ في هذا الإصدار — إشعار صريح بدل الصمت
+            MessageBox.Show("هذه الوظيفة غير متاحة في هذا الإصدار", "غير متاح",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
 
         private void btnAddItem_Click(object sender, RoutedEventArgs e)
         {

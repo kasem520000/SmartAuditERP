@@ -329,7 +329,12 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnClose_Click(object sender, RoutedEventArgs e) => this.Close();
 
-        private void btnPrint_Click(object sender, RoutedEventArgs e) { }
+        private void btnPrint_Click(object sender, RoutedEventArgs e)
+        {
+            // P1-033 fix: زر غير منفذ في هذا الإصدار — إشعار صريح بدل الصمت
+            MessageBox.Show("هذه الوظيفة غير متاحة في هذا الإصدار", "غير متاح",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
 
         #endregion
 

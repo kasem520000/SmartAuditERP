@@ -2913,8 +2913,18 @@ namespace SmartAuditERP.Form_WPF
             MainClass.DoApplyUserSett(frm);
             frm.ShowDialog();
         }
-        private void StripClientLastItem_Click(object sender, RoutedEventArgs e) { }
-        private void StripLastItem_Click(object sender, RoutedEventArgs e) { }
+        private void StripClientLastItem_Click(object sender, RoutedEventArgs e)
+        {
+            // P1-033 fix: زر غير منفذ في هذا الإصدار — إشعار صريح بدل الصمت
+            MessageBox.Show("هذه الوظيفة غير متاحة في هذا الإصدار", "غير متاح",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        private void StripLastItem_Click(object sender, RoutedEventArgs e)
+        {
+            // P1-033 fix: زر غير منفذ في هذا الإصدار — إشعار صريح بدل الصمت
+            MessageBox.Show("هذه الوظيفة غير متاحة في هذا الإصدار", "غير متاح",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
         private void StripItemAvrgCost_Click(object sender, RoutedEventArgs e)
         {
             int.TryParse(GetFocusedRowCellValue("ItemIdDgv")?.ToString(), out int id);
@@ -2931,9 +2941,24 @@ namespace SmartAuditERP.Form_WPF
             frm.ShowDialog();
             if (frm.ISDone) LoadDGvSetting();
         }
-        private void stripImport_Click(object sender, RoutedEventArgs e) { }
-        private void stripExport_Click(object sender, RoutedEventArgs e) { }
-        private void btnInvProfit_Click(object sender, RoutedEventArgs e) { }
+        private void stripImport_Click(object sender, RoutedEventArgs e)
+        {
+            // P1-033 fix: زر غير منفذ في هذا الإصدار — إشعار صريح بدل الصمت
+            MessageBox.Show("هذه الوظيفة غير متاحة في هذا الإصدار", "غير متاح",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        private void stripExport_Click(object sender, RoutedEventArgs e)
+        {
+            // P1-033 fix: زر غير منفذ في هذا الإصدار — إشعار صريح بدل الصمت
+            MessageBox.Show("هذه الوظيفة غير متاحة في هذا الإصدار", "غير متاح",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        private void btnInvProfit_Click(object sender, RoutedEventArgs e)
+        {
+            // P1-033 fix: زر غير منفذ في هذا الإصدار — إشعار صريح بدل الصمت
+            MessageBox.Show("هذه الوظيفة غير متاحة في هذا الإصدار", "غير متاح",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
         private void stripDesignInvoice_Click(object sender, RoutedEventArgs e)
             => new frm_ReportDesign().ShowDialog();
         private void btnQuotationInvs_Click(object sender, RoutedEventArgs e)

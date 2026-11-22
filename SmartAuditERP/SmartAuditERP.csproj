@@ -30,6 +30,17 @@
     <ProjectReference Include="..\SmartAuditUpdater\SmartAuditUpdater.csproj" />
   </ItemGroup>
 
+  <!-- P1-004 fix: ملفات التشغيل المطلوبة وقت التنفيذ تُرفق بالمخرجات —
+       كانت تُطلب (File.Exists) دون أن ترافق النشر فيفشل السجل/الإصدار بصمت. -->
+  <ItemGroup>
+    <None Update="Version.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="log4net.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <ItemGroup>
     <Reference Include="AuditorAPI">
       <HintPath>..\..\المكاتب\AuditorAPI.exe</HintPath>

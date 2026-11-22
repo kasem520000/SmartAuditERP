@@ -2053,7 +2053,12 @@ namespace SmartAuditERP.Form_WPF
             frm.ShowDialog();
         }
 
-        private void btnInsertLinkedInv_Click(object sender, RoutedEventArgs e) { }
+        private void btnInsertLinkedInv_Click(object sender, RoutedEventArgs e)
+        {
+            // P1-033 fix: زر غير منفذ في هذا الإصدار — إشعار صريح بدل الصمت
+            MessageBox.Show("هذه الوظيفة غير متاحة في هذا الإصدار", "غير متاح",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
 
         private void cmbAddSalesMen_Click(object sender, RoutedEventArgs e)
         {
@@ -2083,9 +2088,24 @@ namespace SmartAuditERP.Form_WPF
                 btn.ContextMenu.IsOpen = true;
         }
 
-        private void stripImport_Click(object sender, RoutedEventArgs e) { }
-        private void stripExport_Click(object sender, RoutedEventArgs e) { }
-        private void btnCustomizeDisplay_Click(object sender, RoutedEventArgs e) { }
+        private void stripImport_Click(object sender, RoutedEventArgs e)
+        {
+            // P1-033 fix: زر غير منفذ في هذا الإصدار — إشعار صريح بدل الصمت
+            MessageBox.Show("هذه الوظيفة غير متاحة في هذا الإصدار", "غير متاح",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        private void stripExport_Click(object sender, RoutedEventArgs e)
+        {
+            // P1-033 fix: زر غير منفذ في هذا الإصدار — إشعار صريح بدل الصمت
+            MessageBox.Show("هذه الوظيفة غير متاحة في هذا الإصدار", "غير متاح",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+        private void btnCustomizeDisplay_Click(object sender, RoutedEventArgs e)
+        {
+            // P1-033 fix: زر غير منفذ في هذا الإصدار — إشعار صريح بدل الصمت
+            MessageBox.Show("هذه الوظيفة غير متاحة في هذا الإصدار", "غير متاح",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
         private void btnAddRow_Click(object sender, RoutedEventArgs e)
         {
             _gridSource.Add(new PurchInvRow { No = (_gridSource.Count + 1).ToString() });

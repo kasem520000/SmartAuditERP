@@ -384,7 +384,12 @@ namespace SmartAuditERP.Form_WPF
         private void btnLast_Click(object sender, RoutedEventArgs e)
             => Navigate($"SELECT TOP 1 * FROM SandSD WHERE {GetBranchCondition()} IS_Deleted=0 ORDER BY id DESC");
 
-        private void btnPrint_Click(object sender, RoutedEventArgs e) { }
+        private void btnPrint_Click(object sender, RoutedEventArgs e)
+        {
+            // P1-033 fix: زر غير منفذ في هذا الإصدار — إشعار صريح بدل الصمت
+            MessageBox.Show("هذه الوظيفة غير متاحة في هذا الإصدار", "غير متاح",
+                MessageBoxButton.OK, MessageBoxImage.Information);
+        }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
