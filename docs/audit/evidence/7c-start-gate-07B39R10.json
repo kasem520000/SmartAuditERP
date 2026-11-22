@@ -1,0 +1,108 @@
+{
+ "schema_version": 1,
+ "kind": "7C-formal-start-and-two-root-adjudications",
+ "tag": "07B39R10",
+ "assessment_reference_date_utc": "2026-11-22",
+ "raw_clocks_are_calendar_authority": false,
+ "application_execution_count": 0,
+ "base_published_head": "dbf2760a6e7d2961736283b5faebc769e062a115",
+ "owner_authorization": {
+  "directed_in_session": true,
+  "directives": [
+   "complete stage-7 audit",
+   "start stage-8",
+   "execute stage-1 fixes and push each completed step"
+  ],
+  "evidence_of_stage1_execution": "fix/stage1-p1-security branch from dbf2760 with REPAIR-LOG-STAGE1.md (33/33 P1 addressed: 29 complete + 4 partial) and owner-provided report templates (93 files) shipped under SmartAuditERP/Reports/"
+ },
+ "phase7C_started": true,
+ "phase7C_started_in_this_slice": true,
+ "phase8_audit_side_authorized": false,
+ "phase8_remediation_running_on_separate_branch_by_owner_directive": true,
+ "worklist_7C_items": [
+  {
+   "item": 1,
+   "scope": "19 LastProcess helpers",
+   "status": "read in R8 with original flags carried",
+   "evidence": "PHASE-07B39R8.md"
+  },
+  {
+   "item": 2,
+   "scope": "11 linked-insert identities incl. 3 remaining bodies",
+   "status": "read in R8 with original flags carried",
+   "evidence": "PHASE-07B39R8.md"
+  },
+  {
+   "item": 3,
+   "scope": "remaining helpers/writers",
+   "status": "partial: R9 read save/edit chains of six editors; remaining local obligations carried",
+   "evidence": "PHASE-07B39R9.md"
+  },
+  {
+   "item": 4,
+   "scope": "FormPermission fully (incl. 216-334)",
+   "status": "read in R7",
+   "evidence": "PHASE-07B39R7.md"
+  },
+  {
+   "item": 5,
+   "scope": "SaveReceipt2 @Recipient",
+   "status": "adjudicated in R10: new root P7-164 confirmed (28 of 29 parameters; Recipient absent while v1 and sync site add it and read the model property)",
+   "evidence": "recipient-notify-contract-07B39R10.json"
+  },
+  {
+   "item": 6,
+   "scope": "notification save/delete + branch scope",
+   "status": "read in R10: new root P7-165 confirmed (delete-then-insert without transaction; delete scoped by DB only while insert writes BranchId; first-row reader without branch filter)",
+   "evidence": "recipient-notify-contract-07B39R10.json"
+  },
+  {
+   "item": 7,
+   "scope": "local recovery helpers (5 RestorePreviousReceipt bodies)",
+   "status": "read in R7",
+   "evidence": "PHASE-07B39R7.md"
+  }
+ ],
+ "new_roots": [
+  {
+   "id": "P7-164",
+   "severity": "High",
+   "certainty": "confirmed",
+   "type": "implementation-defect",
+   "status": "open-not-remediated",
+   "next_phase": "8"
+  },
+  {
+   "id": "P7-165",
+   "severity": "Medium",
+   "certainty": "confirmed",
+   "type": "implementation-defect",
+   "status": "open-not-remediated",
+   "next_phase": "8"
+  }
+ ],
+ "findings_csv": {
+  "rows_before": 335,
+  "rows_after": 337,
+  "bytes_after": 223808,
+  "bom": false,
+  "crlf_count": 338,
+  "lf_only": 0
+ },
+ "capability_exits_granted_in_this_slice": 0,
+ "capability_rows_total": 26,
+ "carried_open_questions": [
+  "per-document allowed-set / branch / year for capability exits (D05/D06 and 24 others)",
+  "reader/database-year provenance questions from R7",
+  "SearchByID/ItemOper and merge/replace/unit/qty/price/discount/VAT local work from R9",
+  "B38 preserved failure 162/163 != 142 not modified"
+ ],
+ "not_certified": [
+  "SqlClient parameter binding",
+  "deployed schema",
+  "runtime execution",
+  "WPF lifecycle",
+  "compiler binding",
+  "financial acceptance"
+ ]
+}
