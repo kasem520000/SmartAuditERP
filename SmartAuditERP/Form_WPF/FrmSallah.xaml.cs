@@ -1,4 +1,5 @@
 using DevExpress.Xpf.Core;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -43,8 +44,11 @@ namespace SmartAuditERP.Form_WPF
             try
             {
                 var result = await productsManager.GetProducts();
-                int count  = result["data"].ToObject<List<object>>().Count;
-                DXMessageBox.Show($"تم جلب {count} منتج.", "نجح",
+                // P6-030 fix: العدد من بيانات ترقيم الخدمة (pagination.total) لا من
+                // عدّ عناصر الصفحة الأولى — كان العرض يقول «X منتج» وX عدد صفحة
+                // واحدة فقط.
+                int count = ExtractTotalCount(result, fallback: result["data"].ToObject<List<object>>().Count);
+                DXMessageBox.Show($"إجمالي المنتجات (وفق ترقيم سلة): {count}.", "نجح",
                                 MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
@@ -59,8 +63,9 @@ namespace SmartAuditERP.Form_WPF
             try
             {
                 var result = await ordersManager.GetOrders();
-                int count  = result["data"].ToObject<List<object>>().Count;
-                DXMessageBox.Show($"تم جلب {count} طلب.", "نجح",
+                // P6-030 fix: نفس عقد العدد من الترقيم الكلي لا من الصفحة الأولى
+                int count = ExtractTotalCount(result, fallback: result["data"].ToObject<List<object>>().Count);
+                DXMessageBox.Show($"إجمالي الطلبات (وفق ترقيم سلة): {count}.", "نجح",
                                 MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
@@ -70,10 +75,39 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
+        // P6-030 fix: استخراج الإجمالي من كائن pagination في رد سلة (total)،
+        // وإلا فعدد العناصر المعاد كخطة بديلة.
+        private static int ExtractTotalCount(JObject result, int fallback)
+        {
+            try
+            {
+                JToken total = result?["pagination"]?["total"];
+                if (total != null)
+                {
+                    return (int)total;
+                }
+            }
+            catch
+            {
+            }
+            return fallback;
+        }
+
         private async void btnAddProduct_Click(object sender, RoutedEventArgs e)
         {
             try
             {
+                // P6-030 fix: الزر كان يُنشئ منتجًا ثابتًا (اسم/سعر/كمية صلبة) في
+                // المتجر الحقيقي بمجرد نقرة — تأكيد صريح بأن هذا إنشاء عينة
+                // فعلية في المتجر قبل التنفيذ.
+                if (DXMessageBox.Show(
+                        "سيُنشأ منتج عينة بالبيانات الثابتة في متجر سلة الفعلي — متابعة؟",
+                        "تأكيد إنشاء عينة", MessageBoxButton.YesNo, MessageBoxImage.Question)
+                    != MessageBoxResult.Yes)
+                {
+                    return;
+                }
+
                 var productData = new
                 {
                     name        = "اسم المنتج",

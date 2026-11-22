@@ -23,30 +23,24 @@ namespace SmartAuditERP
 		{
 			try
 			{
-				Process[] processesByName;
-				processesByName = Process.GetProcessesByName("chrome");
-				foreach (Process process in processesByName)
-				{
-					try
-					{
-						process.Kill();
-					}
-					catch (Exception projectError)
-					{
-						ProjectData.SetProjectError(projectError);
-						ProjectData.ClearProjectError();
-					}
-				}
+				// P6-031 fix: لا قتل لكل عمليات Chrome في الجهاز — كان المُنشئ يقتل كل
+				// نوافذ متصفح المستخدم (جلسات عمل خارج ERP تُدمّر لفتح جلستنا)،
+				// والمبرر الوحيد (قفل ملف البروفايل) زال لأن البروفايل صار مخصصًا
+				// لتثبيت ERP نفسه.
 				string driverPath;
 				driverPath = Path.Combine(Application.StartupPath, "chromedriver-win64");
+				// P6-031 fix: بروفايل مرتبط بسياق ERP — داخل مجلد تثبيت البرنامج نفسه
+				// (كان مسارًا ثابتًا مشتركًا LocalAppData\\MyApp\\chrome-profile لا
+				// يرتبط بالتثبيت/العميل ويشترك فيه أي تطبيق آخر بالاسم نفسه).
 				string text;
-				text = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "MyApp", "chrome-profile");
+				text = Path.Combine(Application.StartupPath, "wa-chrome-profile");
 				ChromeOptions chromeOptions;
 				chromeOptions = new ChromeOptions();
 				chromeOptions.AddArgument("--start-maximized");
 				chromeOptions.AddArgument("--disable-notifications");
 				chromeOptions.AddArgument("--user-data-dir=" + text);
-				chromeOptions.AddArgument("--no-sandbox");
+				// P6-031 fix: بلا --no-sandbox — على ويندوز يعمل الصندوق الآمن
+				// (كان الطلب المسبق لتعطيله خفضًا أمنيًا بلا مبرر محلي).
 				chromeOptions.AddArgument("--disable-dev-shm-usage");
 				chromeOptions.AddArgument("--disable-gpu");
 				ChromeDriverService chromeDriverService;
@@ -108,9 +102,23 @@ namespace SmartAuditERP
 		{
 			try
 			{
+				// P6-033 fix: فحص الملف قبل أي إرسال — كان النص يُرسل أولًا ثم يُكتشف
+				// فقد الملف فتصل رسالة نصية بلا مستند وتُعاد الدالة false كأن شيئًا
+				// لم يُرسل (خلط الإرسال الجزئي بالفشل الكلي).
+				if (string.IsNullOrWhiteSpace(invoiceFilePath) || !File.Exists(invoiceFilePath))
+				{
+					MessageBox.Show("❌ لم يتم العثور على الملف: " + invoiceFilePath, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					return false;
+				}
 				string text;
 				text = customerPhone.Trim();
-				if (!text.StartsWith("966"))
+				// P6-032 fix: الرقم الدولي الصريح (يبدأ بـ+) يُستعمل كما هو — كان 966
+				// تُضافة لكل رقم لا يبدأ بها فيفسد الدولي (+44... يصبح 96644...).
+				if (text.StartsWith("+"))
+				{
+					text = text.TrimStart('+');
+				}
+				else if (!text.StartsWith("966"))
 				{
 					text = "966" + text.TrimStart('0');
 				}
@@ -142,26 +150,18 @@ namespace SmartAuditERP
 					MessageBox.Show("❌ الرقم غير مرتبط بحساب WhatsApp أو لم يتم تحميل المحادثة.", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 					return false;
 				}
-				if (!string.IsNullOrWhiteSpace(message))
-				{
-					message = this.RemoveNonBmpCharacters(message);
-					IWebElement webElement;
-					webElement = this.wait.Until([SpecialName] (IWebDriver d) => d.FindElement(By.CssSelector("div[contenteditable='true'][data-tab='10']")));
-					webElement.Click();
-					webElement.SendKeys(message);
-					await Task.Delay(500);
-					webElement.SendKeys(global::OpenQA.Selenium.Keys.Enter);
-					await Task.Delay(1000);
-				}
-				IWebElement webElement2;
-				webElement2 = null;
+				// P6-033 fix: التأكد من توفر زر الإرفاق قبل إرسال النص — إن تعذر
+				// الإرفاق (زر غير موجود) نُوقف قبل النص فلا يصل العميل نص بلا مستند.
+				IWebElement attachButton;
+				attachButton = null;
+				DateTime t;
 				t = DateTime.Now.AddSeconds(15.0);
 				while (DateTime.Compare(DateTime.Now, t) < 0)
 				{
 					try
 					{
-						webElement2 = this.driver.FindElement(By.XPath("//button[@data-tab='10']"));
-						if (webElement2 != null)
+						attachButton = this.driver.FindElement(By.XPath("//button[@data-tab='10']"));
+						if (attachButton != null)
 						{
 							break;
 						}
@@ -173,18 +173,28 @@ namespace SmartAuditERP
 					}
 					await Task.Delay(1000);
 				}
-				if (webElement2 == null)
+				if (attachButton == null)
 				{
-					MessageBox.Show("❌ لم يتم العثور على زر الإرفاق (\ud83d\udcce).", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+					MessageBox.Show("❌ لم يتم العثور على زر الإرفاق.", "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
 					return false;
 				}
+				if (!string.IsNullOrWhiteSpace(message))
+				{
+					message = this.RemoveNonBmpCharacters(message);
+					IWebElement webElement;
+					webElement = this.wait.Until([SpecialName] (IWebDriver d) => d.FindElement(By.CssSelector("div[contenteditable='true'][data-tab='10']")));
+					webElement.Click();
+					webElement.SendKeys(message);
+					await Task.Delay(500);
+					webElement.SendKeys(global::OpenQA.Selenium.Keys.Enter);
+					await Task.Delay(1000);
+				}
+				// P6-033 fix: زر الإرفاق جاهز من الفحص المسبق أعلاه — النص لا يُرسل
+				// إلا بعد تأكيد إمكان الإرفاق ووجود الملف.
+				IWebElement webElement2;
+				webElement2 = attachButton;
 				((IJavaScriptExecutor)this.driver).ExecuteScript("arguments[0].click();", webElement2);
 				await Task.Delay(2000);
-				if (!File.Exists(invoiceFilePath))
-				{
-					MessageBox.Show("❌ لم يتم العثور على الملف: " + invoiceFilePath, "خطأ", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-					return false;
-				}
 				this.wait.Until([SpecialName] (IWebDriver d) => d.FindElement(By.CssSelector("input[type='file']"))).SendKeys(invoiceFilePath);
 				await Task.Delay(4000);
 				IWebElement webElement3;

@@ -1734,25 +1734,34 @@ namespace SmartAuditERP.Form_WPF
                 if (Operators.CompareString(this.defPrinter, "", TextCompare: false) != 0)
                 {
                     xtraReport.PrinterName = this.defPrinter;
-                    switch (Type)
+                    if (Type == 3)
                     {
-                        case 1:
-                            {
-                                int printNo = this.PrintNo;
-                                for (int i = 1; i <= printNo; i = checked(i + 1))
-                                {
-                                    xtraReport.Print();
-                                }
-                                break;
-                            }
-                        case 2:
-                            xtraReport.ShowPreviewDialog();
-                            break;
-                        case 3:
-                            this.SendEmail(xtraReport);
-                            break;
+                        // P6-035 fix: كان الإرسال يُستدعى مرتين لـ Type=3 مع طابعة
+                        // محددة (case 3 ثم الاستدعاء غير المشروط بعده) — بريدان
+                        // لنفس الإغلاق. الآن: وضع البريد = إرسال واحد فقط، وبقية
+                        // الأوضاع = طباعة/معاينة ثم الإرسال التلقائي (ActiveAuto)
+                        // كعقد توأم frmCloseShift.
+                        this.SendEmail(xtraReport);
                     }
-                    this.SendEmail(xtraReport);
+                    else
+                    {
+                        switch (Type)
+                        {
+                            case 1:
+                                {
+                                    int printNo = this.PrintNo;
+                                    for (int i = 1; i <= printNo; i = checked(i + 1))
+                                    {
+                                        xtraReport.Print();
+                                    }
+                                    break;
+                                }
+                            case 2:
+                                xtraReport.ShowPreviewDialog();
+                                break;
+                        }
+                        this.SendEmail(xtraReport);
+                    }
                 }
                 else
                 {

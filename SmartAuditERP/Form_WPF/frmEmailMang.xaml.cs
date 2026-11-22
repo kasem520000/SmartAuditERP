@@ -19,18 +19,25 @@ namespace SmartAuditERP.Form_WPF
         private int _smtpPort;
         private string _smtpServer;
         private string[] _attachmentPaths;
+        // P6-034 fix: مسار إرفاق وردية اليوم الصريح (من مستدعي إغلاق الوردية)
+        // — بديل التقاط آخر ملف ثابت بالاسم من مجلد البرنامج.
+        private string _defaultAttachmentPath;
 
         #endregion
 
         #region Constructor
 
-        public frmEmailMang()
+        public frmEmailMang(string closeReportPath = null)
         {
             InitializeComponent();
 
             _conn = MainClass.ConnObj();
             _smtpPort = 587;
             _smtpServer = "smtp.gmail.com";
+            // P6-034 fix: الإرفاق الافتراضي يُربط بمسار صريح من وردية اليوم عند
+            // توفيره (تصدير إغلاق اليوم) — انظر LoadEmailSettings لسياسة الملف
+            // القديم.
+            _defaultAttachmentPath = closeReportPath;
 
             Loaded += FrmEmailMang_Loaded;
         }
@@ -103,8 +110,33 @@ namespace SmartAuditERP.Form_WPF
                     $"المرسل: {userName}{Environment.NewLine}" +
                     $"مع خالص التحايا...";
 
-                // Default Attachment
-                lblAttachments.Text = "📎 إغلاق_الوردية.pdf";
+                // Default Attachment — P6-034 fix: لا التقاط أعمى لآخر ملف ثابت:
+                // إما المسار الصريح من مستدعي إغلاق وردية اليوم، أو ملف اليوم فقط
+                // (كُتب بتاريخ اليوم) وبعرض توق كتابته — كان الملف القديم من وردية
+                // سابقة/موظف آخر يُرفق تلقائيًا وكأنه إغلاق الوردية الحالية.
+                if (string.IsNullOrEmpty(_defaultAttachmentPath))
+                {
+                    string candidate = Path.Combine(
+                        AppDomain.CurrentDomain.BaseDirectory,
+                        "إغلاق_الوردية.pdf");
+                    if (File.Exists(candidate)
+                        && File.GetLastWriteTime(candidate).Date == DateTime.Today)
+                    {
+                        _defaultAttachmentPath = candidate;
+                    }
+                }
+                if (!string.IsNullOrEmpty(_defaultAttachmentPath)
+                    && File.Exists(_defaultAttachmentPath))
+                {
+                    lblAttachments.Text =
+                        $"📎 {Path.GetFileName(_defaultAttachmentPath)} " +
+                        $"({File.GetLastWriteTime(_defaultAttachmentPath):yyyy-MM-dd HH:mm})";
+                }
+                else
+                {
+                    lblAttachments.Text =
+                        "لا يوجد إرفاق إغلاق حديث لهذا اليوم — أرفق الملف يدويًا";
+                }
             }
             catch (Exception ex)
             {
@@ -142,14 +174,12 @@ namespace SmartAuditERP.Form_WPF
                 mailMessage.Body = txtBody.Text;
                 mailMessage.IsBodyHtml = false;
 
-                // إرفاق ملف pdf افتراضي
-                string defaultAttachment =
-                    Path.Combine(
-                        AppDomain.CurrentDomain.BaseDirectory,
-                        "إغلاق_الوردية.pdf");
-
-                if (File.Exists(defaultAttachment))
-                    mailMessage.Attachments.Add(new Attachment(defaultAttachment));
+                // إرفاق إغلاق الوردية — P6-034 fix: المسار المربوط بالوردية الحالية
+                // (الصريح أو ملف اليوم) فقط — لا الملف الثابت أياً كان عمره.
+                if (!string.IsNullOrEmpty(_defaultAttachmentPath)
+                    && File.Exists(_defaultAttachmentPath))
+                    mailMessage.Attachments.Add(
+                        new Attachment(_defaultAttachmentPath));
 
                 // إرفاق ملفات مختارة يدوياً
                 if (_attachmentPaths != null)
