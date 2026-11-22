@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "kind": "preserved-second-postcapture-path-helper-authorship-error-not-ERP-unittest-or-missing-source",
+  "assessment_reference_date_utc": "2026-11-21",
+  "session_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "application_execution_count": 0,
+  "observed_process_exit_code": 1,
+  "observed_tool_error_verbatim": "FileNotFoundError: [Errno 2] No such file or directory: '/home/user/SmartAuditERP/docs/audit/evidence/SmartAuditUpdater/App.xaml'",
+  "cause": "The first resume recognized SmartAuditERP prefix but the original827-source inventory also contains SmartAuditUpdater paths. Finalization again stopped before writing a completion receipt. The actual original files and R8/R7 source guards were intact.",
+  "before_after_raw_stderr_telemetry_claimed": false,
+  "initial_error_note": {
+    "path": "docs/audit/evidence/publication-finalization-authorship-note-07B39R8.json",
+    "bytes": 2614,
+    "sha256": "9550e930a90d848afb453162f2751cb9ef45249db3f3a30edfa81e6bb631e04b"
+  },
+  "failed_resume_snapshot": {
+    "path": "docs/audit/evidence/publication-finalization-resume-path-snapshot-07B39R8.tar.gz",
+    "bytes": 4409,
+    "sha256": "5a28ac36079055aab7875cdb6f42a01b6f0fcaa4bd4c4677d36bb865e80c468e",
+    "members": 1,
+    "original_script_sha256": "51d8e58b40fc8ce82deafa0daf5ca3985df73835b97e2e5d9ec2997b4ad4f98b"
+  },
+  "correction": "Separate repository-relative paths from evidence basenames syntactically (any forward slash or root solution extension), rather than guessing a particular project prefix. Preflight every captured path resolution before resuming finalization only.",
+  "source_author_capture_prefix_or_guard_steps_rerun": false,
+  "finalization_completed_in_this_failed_attempt": false,
+  "new_unittest_cases": 0,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false
+}

@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "kind": "preserved-postcapture-finalizer-path-resolution-authorship-error-not-ERP-or-unittest",
+  "assessment_reference_date_utc": "2026-11-21",
+  "session_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "application_execution_count": 0,
+  "observed_process_exit_code": 1,
+  "observed_tool_error_verbatim": "FileNotFoundError: [Errno 2] No such file or directory: '/home/user/SmartAuditERP/docs/audit/evidence/SmartAuditERP/App.config'",
+  "cause": "Postcapture one-shot finalizer helper eid treated non-docs paths as evidence basenames. During its full2381 captured-input check it incorrectly prefixed an existing application source path. This is not an absent App.config or an application/provider failure.",
+  "full_before_after_pre_error_telemetry_or_raw_stderr_file_claimed": false,
+  "failed_one_shot_script_snapshot": {
+    "path": "docs/audit/evidence/publication-finalization-authorship-snapshot-07B39R8.tar.gz",
+    "bytes": 9290,
+    "sha256": "9e9a9af5891f9a57bc5523ab8be0ebb09946dc3bd4ae9cb6b45f020c7fcd20ef",
+    "members": 1,
+    "original_script_bytes": 25131,
+    "original_script_sha256": "849be7878dc278ada414afbc16eaf438f77bc3944f73528b860442638138a1be"
+  },
+  "already_written_and_not_to_rerun": [
+    {
+      "path": "docs/audit/evidence/capability-reconciliation-07B39R8.json",
+      "bytes": 297464,
+      "sha256": "26765a1151ee127f57f5deb9cd6e59e4290e4593adca2c0906a5d28dd1c0d603"
+    },
+    {
+      "path": "docs/audit/evidence/validation-status-supplement-07B39R8.json",
+      "bytes": 6209,
+      "sha256": "5db3221934f7f56063d86d49690970a18385091241d3cb41e12712a12ef636f4"
+    },
+    {
+      "path": "docs/audit/evidence/index-prefix-supplement-07B39R8.json",
+      "bytes": 10640,
+      "sha256": "f1034c4b05fc28ae33a30888a5140028efac6c20d5e96291ef8bfb8ea71cb14d"
+    },
+    {
+      "path": "docs/audit/evidence/publication-check-receipt-07B39R8.json",
+      "bytes": 8679,
+      "sha256": "b2c9725d6864d31eaf79dc2b404f2e5d833768ab87c78410662f25c5b5b6345c"
+    }
+  ],
+  "successful_postpublication_guard_exits": [
+    0,
+    2,
+    0
+  ],
+  "initial_finalization_completed": false,
+  "next_action": "Resume ONLY finalization with correct repository-root handling of SmartAuditERP paths. Do not rerun author/capture/exclusive publication or prepend indexes again. Preserve all run01 inputs/streams, prior published objects and this failed one-shot snapshot.",
+  "new_unittest_cases": 0,
+  "run01_rewritten": false,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false
+}

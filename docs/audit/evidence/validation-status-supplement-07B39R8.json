@@ -1,0 +1,163 @@
+{
+  "schema_version": 1,
+  "kind": "R8-postcapture-validation-status-supplement-not-input-to390-or-new-test-suite",
+  "assessment_reference_date_utc": "2026-11-21",
+  "session_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "requested_reference_label_is_claim_about_today": false,
+  "base_HEAD": "b642fe80dfb4bca3a6b218faf82d07ec42dd3d8c",
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "capability_exit_certificates_issued": 0,
+  "four_family_exit_certificates_issued": 0,
+  "new_accepted_external_handoffs": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "prior196_tests_recertified": false,
+  "R2_R3_files_recovered": false,
+  "actual_validation": {
+    "receipt": {
+      "path": "docs/audit/evidence/validation-current-run01-receipt-07B39R8.json",
+      "bytes": 422818,
+      "sha256": "ddc8a839f2a10fe47305e968bceec5faff7b201242a6ecfdea13ce00c3a9be5b"
+    },
+    "combined_tests": 390,
+    "combined_passed": 390,
+    "combined_seconds": 49.866,
+    "partition": {
+      "test_recovery_exit": 42,
+      "test_document_receiver": 50,
+      "test_production_adjustment": 57,
+      "test_session_year": 62,
+      "test_entry_source": 86,
+      "test_linked_activity": 93
+    },
+    "new93_inside390_not_added_again": true,
+    "B38_tests": 43,
+    "B38_passed": 42,
+    "B38_failed": 1,
+    "B38_seconds": 1.698,
+    "B38_failure_verbatim": [
+      "AssertionError: 158 != 142"
+    ],
+    "all_suites_green": false,
+    "seven_integrities_exit0": true,
+    "six_completion_gates_exit2_open": true,
+    "wrapper_exit_code": 1,
+    "stable_inputs_during_run": 2381,
+    "consumed_authored_versions_archived": 16,
+    "preflight_failed_fixture_run_not_relabelled": true
+  },
+  "receipt": {
+    "path": "docs/audit/evidence/validation-current-run01-receipt-07B39R8.json",
+    "bytes": 422818,
+    "sha256": "ddc8a839f2a10fe47305e968bceec5faff7b201242a6ecfdea13ce00c3a9be5b"
+  },
+  "journal": {
+    "path": "docs/audit/evidence/validation-current-run01-journal-07B39R8.jsonl",
+    "bytes": 14103,
+    "sha256": "5ca0a26bedae95671c3090e6a6eefb65a669f60c5208dc32ca1667b9ea2e32ac"
+  },
+  "archive": {
+    "path": "docs/audit/evidence/validation-consumed-inputs-run01-07B39R8.tar.gz",
+    "bytes": 879551,
+    "sha256": "c1cfdbfe0015d610a05641c489bf518b47a8584c363b9a0489f7b8be17d0443a"
+  },
+  "consumed_authored_member_identities": [
+    {
+      "path": "docs/audit/SOURCE-REVIEW-07B39R8.md",
+      "bytes": 18718,
+      "sha256": "5c6a477f5ae0f55a018480308a34ce05512aec04f5b83305ba6f00aed6d7e085"
+    },
+    {
+      "path": "docs/audit/evidence/entry-identities-07B39R8.json",
+      "bytes": 400309,
+      "sha256": "e1d5b8a033dc221082e3ce7d63e40f05c1802b6449bffe07df46985dc166fc59"
+    },
+    {
+      "path": "docs/audit/evidence/linked-activity-call-matrix-07B39R8.json",
+      "bytes": 266462,
+      "sha256": "bb259c19bedc23171de323a087e68d7aa3e0db539cfa1b901c08c03e6c0c7a9e"
+    },
+    {
+      "path": "docs/audit/evidence/linked-activity-dispositions-07B39R8.json",
+      "bytes": 59293,
+      "sha256": "ba398fe20af2375df6f60c983c8e68a3e24ceefed96ea8e4f45dc05704275a1d"
+    },
+    {
+      "path": "docs/audit/evidence/linked-activity-local-worklist-07B39R8.json",
+      "bytes": 63706,
+      "sha256": "a8574c88c4175593f7467361f9917b74858049b172663cb698add9577787e734"
+    },
+    {
+      "path": "docs/audit/evidence/linked-activity-root-adjudication-07B39R8.json",
+      "bytes": 316567,
+      "sha256": "b1acb21502fbed49748a893eaf08aaf39eb417176abdd8e608d2f06dae4dcc63"
+    },
+    {
+      "path": "docs/audit/evidence/linked-activity-source-facts-07B39R8.json",
+      "bytes": 2400258,
+      "sha256": "9b86d9fd60b6b585ae63b803472b6073a707409bdd5fc04bd69c8d96770b9de9"
+    },
+    {
+      "path": "docs/audit/evidence/linked-activity-source-review-log-07B39R8.json",
+      "bytes": 54426,
+      "sha256": "5ccc663613fd8bba9e233a25ed0499e4c6f9fc0128ca0f0b8550f6fe6eaa3b12"
+    },
+    {
+      "path": "docs/audit/evidence/preflight-authored-snapshot-07B39R8.tar.gz",
+      "bytes": 432377,
+      "sha256": "91db5dd233955b8de649b4550e5f13e5c48dc9a2bc4b74a9bea3360d723223dd"
+    },
+    {
+      "path": "docs/audit/evidence/preflight-authorship-07B39R8.stderr.txt",
+      "bytes": 17472,
+      "sha256": "dbd8ba5f748d177197aa8b2c6b08d8adf0a1100eb90bf1b05c15dea46363eeb3"
+    },
+    {
+      "path": "docs/audit/evidence/preflight-authorship-07B39R8.stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "docs/audit/evidence/preflight-authorship-receipt-07B39R8.json",
+      "bytes": 3113,
+      "sha256": "3ea4cba503ecf6291215a0cacfa4dea702cf6850d95476d60d626c9644b6c68c"
+    },
+    {
+      "path": "docs/audit/evidence/reference-date-provenance-07B39R8.json",
+      "bytes": 2807,
+      "sha256": "f0368162e0658e7d306bfcfdaf910c978d5d6186e031af175c795716f2ee232b"
+    },
+    {
+      "path": "docs/audit/tools/disposition07b/capture_linked_activity.py",
+      "bytes": 11114,
+      "sha256": "b08fc5345d2d332965214799211013615b6986e96a1ea36bdce5b593330e69ac"
+    },
+    {
+      "path": "docs/audit/tools/disposition07b/test_linked_activity.py",
+      "bytes": 28833,
+      "sha256": "d508941aac348599dbc448c0ce6e609520cb5fbb181a69fe33b355ec9baaa2f1"
+    },
+    {
+      "path": "docs/audit/tools/disposition07b/verify_linked_activity.py",
+      "bytes": 51251,
+      "sha256": "e00c4ed2230666423e9fd185fafb946d581d123cda94f0e5d107d4569760384d"
+    }
+  ],
+  "actual_stream_pairs": 15,
+  "source_assertions_are_not_independent_reading_or_calendar_or_runtime_or_financial_acceptance": true,
+  "own_preflight_failure": {
+    "path": "docs/audit/evidence/preflight-authorship-receipt-07B39R8.json",
+    "bytes": 3113,
+    "sha256": "3ea4cba503ecf6291215a0cacfa4dea702cf6850d95476d60d626c9644b6c68c"
+  },
+  "prior_R5_run01_failure_preserved": true,
+  "prior_R7_run01_receipt": {
+    "path": "docs/audit/evidence/validation-current-run01-receipt-07B39R7.json",
+    "bytes": 408162,
+    "sha256": "89903a18cd15ad283f068e74e33ce2fb1a20f81876ac80ac194646563ddbc29f"
+  },
+  "new_postcapture_unittest_cases": 0,
+  "whole_7B_exit_issued": false
+}

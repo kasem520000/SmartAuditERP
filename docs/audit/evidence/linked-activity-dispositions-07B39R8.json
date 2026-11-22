@@ -1,0 +1,1153 @@
+{
+  "schema_version": 1,
+  "kind": "R8-authored-bounded-source-assessment-not-read-count-or-whole-capability-exit",
+  "assessment_reference_date_utc": "2026-11-21",
+  "raw_clocks_are_calendar_authority": false,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "capability_exit_certificates_issued": 0,
+  "four_family_exit_certificates_issued": 0,
+  "new_accepted_external_handoffs": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "prior196_tests_recertified": false,
+  "R2_R3_files_recovered": false,
+  "source_decisions": [
+    {
+      "id": "R8D-LAST-INPUTS",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+          "selector": "LastProcess",
+          "start": 209,
+          "end": 232,
+          "syntax_utf8_sha256": "d772dd4beda439b3e5537d98aff80b2bdb5a053529cb864396b745925b2a8ca3"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs",
+          "selector": "GetFocusedRowIndex",
+          "start": 321,
+          "end": 326,
+          "syntax_utf8_sha256": "78a64796593efc42f8649ccdbac307f1457f5d96b5757a6a9bcb2c4a0bce1871"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs",
+          "selector": "GetRowCellValue",
+          "start": 307,
+          "end": 312,
+          "syntax_utf8_sha256": "2e741a2b2bad15b50c42e36ca3f89b00deae31cff83c09be7f390c7544bbf72d"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs",
+          "selector": "ReadData",
+          "start": 880,
+          "end": 1023,
+          "syntax_utf8_sha256": "6bcf2bcb30276bc194058fa2028314cac2c1b5f14e8192b7697fe4ea065b1624"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs",
+          "selector": "FillRowFromDt",
+          "start": 608,
+          "end": 622,
+          "syntax_utf8_sha256": "d0c56f27bb9ab2094003b52038bec5e417904649153730ea8e5b59601cfc327c"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvInOutput.xaml.cs",
+          "selector": "ReadData",
+          "start": 1945,
+          "end": 2085,
+          "syntax_utf8_sha256": "377fb885998abfdb3470789abc913f4ae9979f4819b05b833a337a86017a0e4b"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs",
+          "selector": "LoadInvSubItems",
+          "start": 1132,
+          "end": 1207,
+          "syntax_utf8_sha256": "1725e4ea652f6b2214f9142938918ce95a6bd279703ac46c467faf57dfb0f33e"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs",
+          "selector": "ReadData",
+          "start": 496,
+          "end": 655,
+          "syntax_utf8_sha256": "3f3bd23e46946fa57da1fe630c3ec7ccc3fcefc470a6f1c52cb718f2e6738e50"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+          "selector": "GetGridCellInt",
+          "start": 2636,
+          "end": 2640,
+          "syntax_utf8_sha256": "6a261700dd24d0861921dbf9103371ab46e270cd80722f9dd73043e21d76e6f7"
+        }
+      ],
+      "source_disposition": "Each of19 carried call identities now has an individual selected-row/producer→item/store/party/type decision. Local legacy row models are readable source, not missing external contracts; modern models are treated only through visible bindings/writes. Zero/failure conversions and missing selection can create no query or a party-only query. XAML identifies legacy customer action as008, not007.",
+      "counterevidence_and_limit": "Bounds/type checks differ from positive id and actual clicked-row identity. DevExpress selection/focus scheduling, external DTO setters/deep copy and alternate line-ingress paths are not certified.",
+      "related_existing_root_ids": [
+        "P7-129",
+        "P7-130",
+        "P7-149",
+        "P7-150"
+      ],
+      "observed_in_ERP": false,
+      "is_capability_exit": false,
+      "accepted_external_handoff": false
+    },
+    {
+      "id": "R8D-LAST-FILTERS",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+          "selector": "LastProcess",
+          "start": 209,
+          "end": 232,
+          "syntax_utf8_sha256": "d772dd4beda439b3e5537d98aff80b2bdb5a053529cb864396b745925b2a8ca3"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+          "selector": "ShowResult",
+          "start": 240,
+          "end": 413,
+          "syntax_utf8_sha256": "41a7c4089387223af560a45defc97c8d88695685a01cc739694b01c2a7a71e3f"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+          "selector": "loadclients",
+          "start": 171,
+          "end": 188,
+          "syntax_utf8_sha256": "e614fc7872212d0afecafedc43a76799e21d048dd89050659bec0cf4b1b9940a"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+          "selector": "LoadCustomers",
+          "start": 253,
+          "end": 286,
+          "syntax_utf8_sha256": "f6d8039ec409aea5a7516e8a46bfdcdc67987bb4410257476ef6a3bca847d334"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+          "selector": "LoadCustomers",
+          "start": 231,
+          "end": 261,
+          "syntax_utf8_sha256": "e9bbd6a1bb37c87e1fd6afe999943f5c5cf4585d6b696594a1871a263e0760c8"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs",
+          "selector": "LoadCustomers",
+          "start": 215,
+          "end": 242,
+          "syntax_utf8_sha256": "b264ee9649d675175bd20afa0838040becb81a860b8f32e756e1e4b43c0f7933"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs",
+          "selector": "LoadCustomers",
+          "start": 275,
+          "end": 316,
+          "syntax_utf8_sha256": "575509cb5bb8336671286e53b1bc29d5efb3712ac685262dfd6a3b86530e8862"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs",
+          "selector": "LoadCustomers",
+          "start": 296,
+          "end": 326,
+          "syntax_utf8_sha256": "66563c97931eb88b072043091a95264f0d9df009d8e40a17ddf2a80790d4d084"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+          "selector": "LoadCustomers",
+          "start": 424,
+          "end": 448,
+          "syntax_utf8_sha256": "27c46b041790863974b6e6dc8e862517a652f841c27a68118efa50e491f4f388"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+          "selector": "btnPostPon_Click",
+          "start": 2660,
+          "end": 2682,
+          "syntax_utf8_sha256": "b47dc02cfb104740ed09bf73250f318add02c2b06f65a342510eaf6ecfc6931c"
+        }
+      ],
+      "source_disposition": "Store assignment does not clear all-stores; party type is judged against the actual loader, not method names. IO has conditional2-versus1 mismatch, POS2 differs from accepted picker1, legacy purchase/sale-purchase supplier2 is sent1. Modern purchase2, normal sale1 and contract23→1 are counterexamples. Party predicate additionally requires an actual selected client and !allClients.",
+      "counterevidence_and_limit": "Type3 shared catalog rows and positive-only setters mean mismatched literals do not prove every ID yields wrong rows. No metadata/business rows or UI events were executed.",
+      "related_existing_root_ids": [
+        "P7-122",
+        "P7-129",
+        "P7-130"
+      ],
+      "observed_in_ERP": false,
+      "is_capability_exit": false,
+      "accepted_external_handoff": false
+    },
+    {
+      "id": "R8D-LAST-ORDER",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+          "selector": "LastProcess",
+          "start": 209,
+          "end": 232,
+          "syntax_utf8_sha256": "d772dd4beda439b3e5537d98aff80b2bdb5a053529cb864396b745925b2a8ca3"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+          "selector": "ShowResult",
+          "start": 240,
+          "end": 413,
+          "syntax_utf8_sha256": "41a7c4089387223af560a45defc97c8d88695685a01cc739694b01c2a7a71e3f"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+          "selector": "BuildProcTypeCondition",
+          "start": 418,
+          "end": 460,
+          "syntax_utf8_sha256": "bb72eebfc8f390e908eaab463e33539f10e2b5aa9af8a95eacde19a02743af3c"
+        }
+      ],
+      "source_disposition": "Last mode writes TOP(1), retains inv.date ASC and bypasses the date-range predicate. Query join uses global id but output loses it; metadata lookup/IsInput skips can turn a selected SQL row into empty display. Existing earliest-order root retained.",
+      "counterevidence_and_limit": "This is SQL text/control flow, not a query run or financial correctness/grain/as-of inventory certification. Header-versus-subprocess direction remains separately rooted P7-060.",
+      "related_existing_root_ids": [
+        "P7-059",
+        "P7-060"
+      ],
+      "observed_in_ERP": false,
+      "is_capability_exit": false,
+      "accepted_external_handoff": false
+    },
+    {
+      "id": "R8D-REOPEN",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+          "selector": "ShowResult",
+          "start": 240,
+          "end": 413,
+          "syntax_utf8_sha256": "41a7c4089387223af560a45defc97c8d88695685a01cc739694b01c2a7a71e3f"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+          "selector": "btnOpenInvoice_Click",
+          "start": 1011,
+          "end": 1032,
+          "syntax_utf8_sha256": "dfa73b8a60f341bdffbbf754671ca10ce49b89b300b7d64222efe071f14f6d17"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+          "selector": "OpenInvoiceByType",
+          "start": 1034,
+          "end": 1164,
+          "syntax_utf8_sha256": "4d02c7a740d83cecab25c26ccf27aa2f8fe72ce0aaf322aff576e47e139da71b"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+          "selector": "OpenForm",
+          "start": 1167,
+          "end": 1175,
+          "syntax_utf8_sha256": "ad1ea4ab56a05a8615c585efc5393b1195fc3bef1c1392dea814402bb5844dbc"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+          "selector": "OpenWindow",
+          "start": 1177,
+          "end": 1192,
+          "syntax_utf8_sha256": "095089bb9270369d2f509d38b5f370512c86f11eb2e8257a16761e2da4c6d0c7"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+          "selector": "Navigate",
+          "start": 483,
+          "end": 498,
+          "syntax_utf8_sha256": "6f7be5f340a9fccd0a286a04f91e19295a5be968be82cf2b1d4c7e29f4b70146"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+          "selector": "Window_Loaded",
+          "start": 94,
+          "end": 129,
+          "syntax_utf8_sha256": "f53cb013a52c438ccfd224bb21680a53ca6896178439c552912ca4cb7e47c97e"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+          "selector": "Navigate",
+          "start": 402,
+          "end": 452,
+          "syntax_utf8_sha256": "a66fdfe9969777ec5154f4af1d9f812eeaca869674f1593f1037b734840c6099"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+          "selector": "Window_Loaded",
+          "start": 126,
+          "end": 165,
+          "syntax_utf8_sha256": "05209d0a07f67a031ca9203dbec55b0e95a7de4fdcc0a0f0139f6df751cc0f8b"
+        }
+      ],
+      "source_disposition": "Local activity result class/Tag carries display type and local number; fourteen Navigate sites span sixteen literal case labels/seven types, including adjacent alias labels. Queries omit branch/global/origin database. OpenForm/OpenWindow configure before Show; IO/Transfer core/reset and shared binders freshly read, other core evidence explicitly carried.",
+      "counterevidence_and_limit": "No deployed uniqueness collision/wrong-document observation. Real Loaded/reset writers plus statement order do not establish WPF event order. P7-132 stays potential; full Save/edit and every receiver helper remain local obligations.",
+      "related_existing_root_ids": [
+        "P7-061",
+        "P7-132",
+        "P7-161"
+      ],
+      "observed_in_ERP": false,
+      "is_capability_exit": false,
+      "accepted_external_handoff": false
+    },
+    {
+      "id": "R8D-SCOPE",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Class/MainClass.cs",
+          "selector": "ConnObj",
+          "start": 45,
+          "end": 49,
+          "syntax_utf8_sha256": "59b79ff794ac09db6608f40f45f4b9df7e5210e85a92695ad465f62795bd24c5"
+        },
+        {
+          "path": "SmartAuditERP/Class/MainClass.cs",
+          "selector": "ApplyPermissionToForm@System.Windows.Window",
+          "start": 353,
+          "end": 413,
+          "syntax_utf8_sha256": "bab4b5750974fd845b6a2d1dfd56bfd5aa15ce660f66296c83d08b4ef93f9f18"
+        },
+        {
+          "path": "SmartAuditERP/Class/MainClass.cs",
+          "selector": "ApplyWpfPermissions",
+          "start": 418,
+          "end": 457,
+          "syntax_utf8_sha256": "b6b14fd7d12b16b82033b7fa79b5243663113ce9cd63513ac85f5c1b4f613a92"
+        },
+        {
+          "path": "SmartAuditERP/Class/MainClass.cs",
+          "selector": "DoApplyUserSett@System.Windows.Window",
+          "start": 331,
+          "end": 334,
+          "syntax_utf8_sha256": "02feac158745bd6dd72c8dfc69d379e4952fa53885fbf54d620d7b9c12530afb"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+          "selector": "ctor:frmRptItemsActivityDetailed",
+          "start": 55,
+          "end": 77,
+          "syntax_utf8_sha256": "b19511311f36c12553065f96ff1cf4b09f9ce32b611ec7d5591d482eee2f4f46"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+          "selector": "LoadBranches",
+          "start": 115,
+          "end": 135,
+          "syntax_utf8_sha256": "5571b4e6c345c0bfcd67ee196b779dae0b5d925fed0866f7667c6453fbd963ce"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+          "selector": "ShowResult",
+          "start": 240,
+          "end": 413,
+          "syntax_utf8_sha256": "41a7c4089387223af560a45defc97c8d88695685a01cc739694b01c2a7a71e3f"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+          "selector": "BuildLoadQuery",
+          "start": 336,
+          "end": 408,
+          "syntax_utf8_sha256": "8fef29202dbe23f76d73c3f9dd5a429c900d1dfc8a9e03e91f949f29b53e3640"
+        }
+      ],
+      "source_disposition": "Fresh receiver/helper connections follow mutable global connstr rather than the caller cached connection. Branch/year/allowed-set is not part of LastProcess request or report row. Report and picker use their written UI/current-branch conditions; shared binder consumes caller query. MainClass WPF permission traversal returns on missing row and disables selected buttons, not data-row scope.",
+      "counterevidence_and_limit": "Origin loss/UI permission is not an observed unauthorized access or evidence deployment lacks database grants. Other command, Save/edit, role and document allowed-set checks are still local/source+policy work.",
+      "related_existing_root_ids": [
+        "P1-012",
+        "P7-061",
+        "P7-122"
+      ],
+      "observed_in_ERP": false,
+      "is_capability_exit": false,
+      "accepted_external_handoff": false
+    },
+    {
+      "id": "R8D-LINKED-CANCEL",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "InsertFromInv",
+          "start": 3941,
+          "end": 4013,
+          "syntax_utf8_sha256": "15fa4c250466a7625b9551f1415da630c1f31abd2997071518b4db7ab5878a06"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOperContract.cs",
+          "selector": "InsertFromInv",
+          "start": 2166,
+          "end": 2243,
+          "syntax_utf8_sha256": "71aab9da8f15cd6815902f0586e24935f2f878a3372379224610cf97a2d2f76c"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs",
+          "selector": "CloseWithoutResult",
+          "start": 351,
+          "end": 364,
+          "syntax_utf8_sha256": "3aa0c9113254c70d24d741614538fd519eaffa71c1cfab9f204e37f1cc89e128"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs",
+          "selector": "InsertSelectedItems",
+          "start": 299,
+          "end": 338,
+          "syntax_utf8_sha256": "17c6fc2707e14a6b3efca80f4d676b9eb3f07cc30a5252ad490e22194ba573d4"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+          "selector": "btnInsertLinkedInv_Click",
+          "start": 1816,
+          "end": 1840,
+          "syntax_utf8_sha256": "3371d72e80b317b721484868986a6b387d76d0aa64267dc512699eb680bd8298"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+          "selector": "InsertFromInv",
+          "start": 2627,
+          "end": 2654,
+          "syntax_utf8_sha256": "f48859e79b4225a1a7f06d95c2835b5cf90f1e6a27a5132d211736f2bd6ee062"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+          "selector": "btnInsertLinkedInv_Click",
+          "start": 2173,
+          "end": 2205,
+          "syntax_utf8_sha256": "183048f4d6d6baf42fce35c6f2cf2a78b9381e4de0d5e258ee97fd2e435ebf93"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+          "selector": "InsertLinkedReturn",
+          "start": 2734,
+          "end": 2768,
+          "syntax_utf8_sha256": "3961165432c760a3aab15b797c1cc8519680f6f00277cd4ae00f1ba3db378397"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+          "selector": "btnInsertLinkedInv_Click",
+          "start": 2072,
+          "end": 2123,
+          "syntax_utf8_sha256": "0d99be43329d9ef976cbef76276728cf77340eac808e5fe4188c1d5a84ac18e9"
+        }
+      ],
+      "source_disposition": "First picker has an early ISDone/key guard, but accepted first picker invokes BindingInvoice(ref parent) before second dialog. Second cancel replaces only the child field; no detached owned seed/snapshot rollback appears. All eleven parent sites call a void helper and perform branch-specific postwrites without an accepted result. Cancellation categories documented per site.",
+      "counterevidence_and_limit": "No inference that assigning child.inv necessarily proves external object alias/deep-copy/default behavior; earlier by-ref binder/parent writes are independently visible. Existing P7-160 supported in parallel routes, not rewritten or considered remediated.",
+      "related_existing_root_ids": [
+        "P7-160"
+      ],
+      "observed_in_ERP": false,
+      "is_capability_exit": false,
+      "accepted_external_handoff": false
+    },
+    {
+      "id": "R8D-LINKED-GUARD",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+          "selector": "btnNew_Click",
+          "start": 1589,
+          "end": 1593,
+          "syntax_utf8_sha256": "434852b08bb7d2927a288760aaeb7fc81806a7f69638acbddeceb36d15e7e379"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+          "selector": "CheckBeforeClear",
+          "start": 1571,
+          "end": 1587,
+          "syntax_utf8_sha256": "bf29742abf8bfcad47caea4156f1abf670b9f380b6125db685966331bb2b6af0"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+          "selector": "btnInsertLinkedInv_Click",
+          "start": 2173,
+          "end": 2205,
+          "syntax_utf8_sha256": "183048f4d6d6baf42fce35c6f2cf2a78b9381e4de0d5e258ee97fd2e435ebf93"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+          "selector": "RetSales_Click",
+          "start": 2594,
+          "end": 2625,
+          "syntax_utf8_sha256": "44357486f259b669a9e5b34af66aa2c670de0e2bc5b97d6ebd705ee1b157fe66"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+          "selector": "CheckBeforeClear",
+          "start": 690,
+          "end": 706,
+          "syntax_utf8_sha256": "3f6205455e75722f309a0a3ec2cea132cca9778d83bbcf582b31e60bdfa78bde"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+          "selector": "btnInsertLinkedInv_Click",
+          "start": 1816,
+          "end": 1840,
+          "syntax_utf8_sha256": "3371d72e80b317b721484868986a6b387d76d0aa64267dc512699eb680bd8298"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvSale.xaml.cs",
+          "selector": "btnInsertLinkedInv_Click",
+          "start": 2721,
+          "end": 2732,
+          "syntax_utf8_sha256": "2267495ef0d74b88945e2e0ae12f4b1e40e8e66f40cb976c2cabd9c83dacf8df"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+          "selector": "CheckBeforeClear",
+          "start": 2129,
+          "end": 2146,
+          "syntax_utf8_sha256": "08caed245b71260a620bd36dc3853f4eff193478d4629b7e48b314cbe974036d"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+          "selector": "btnInsertLinkedInv_Click",
+          "start": 2072,
+          "end": 2123,
+          "syntax_utf8_sha256": "0d99be43329d9ef976cbef76276728cf77340eac808e5fe4188c1d5a84ac18e9"
+        }
+      ],
+      "source_disposition": "Purchase CheckBeforeClear No can stop void btnNew, but its outer linked caller always resumes into its branch; no guard result propagation. POS unsaved No returns before CLR, whereas password failure returns after CLR. IO/sale/contract linked paths have their actual preclear/guards described individually; contract guard existing elsewhere is not called by linked handler.",
+      "counterevidence_and_limit": "Purchase refusal question is adjacent to P7-159, not declared same root or new numbered finding. No external dirty/setter/default proof and no complete D22 command exit.",
+      "related_existing_root_ids": [
+        "P7-159",
+        "P7-160"
+      ],
+      "observed_in_ERP": false,
+      "is_capability_exit": false,
+      "accepted_external_handoff": false
+    },
+    {
+      "id": "R8D-LINKED-HEALTH",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "BindingInvoice",
+          "start": 3219,
+          "end": 3508,
+          "syntax_utf8_sha256": "b51d6c65d47eebbaa98b7e8fba52e370669ef8e128d8fb3671a66c90c803305f"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOperContract.cs",
+          "selector": "BindingInvoice",
+          "start": 1633,
+          "end": 1923,
+          "syntax_utf8_sha256": "6c24edcdf9653055d49897a27e8dc03ac4c39ad6cfb168fb5b7fba04125f8ae6"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "InsertFromInv",
+          "start": 3941,
+          "end": 4013,
+          "syntax_utf8_sha256": "15fa4c250466a7625b9551f1415da630c1f31abd2997071518b4db7ab5878a06"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOperContract.cs",
+          "selector": "InsertFromInv",
+          "start": 2166,
+          "end": 2243,
+          "syntax_utf8_sha256": "71aab9da8f15cd6815902f0586e24935f2f878a3372379224610cf97a2d2f76c"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs",
+          "selector": "InsertFromInv",
+          "start": 2627,
+          "end": 2654,
+          "syntax_utf8_sha256": "f48859e79b4225a1a7f06d95c2835b5cf90f1e6a27a5132d211736f2bd6ee062"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs",
+          "selector": "PrepareReturnInvoice",
+          "start": 2207,
+          "end": 2232,
+          "syntax_utf8_sha256": "d3546da1f61ceaa683fedc7c6b2f651beb6910bcc36cbc671e87a5f710463062"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+          "selector": "btnInsertLinkedInv_Click",
+          "start": 1816,
+          "end": 1840,
+          "syntax_utf8_sha256": "3371d72e80b317b721484868986a6b387d76d0aa64267dc512699eb680bd8298"
+        }
+      ],
+      "source_disposition": "Central binders mutate headers and add lines on the ref target; they can assign null on no row/outer failure and catch individual line errors. No clear-before-add or typed complete-hydration result. Helper catch can swallow dereference failure after binder and parent then resumes; null-check/Show/ISDone does not imply healthy complete load.",
+      "counterevidence_and_limit": "The audit never executed SQL, reader, external setters or financial calculations. No provider failure, transaction atomicity, successful save or actual partial business invoice is certified.",
+      "related_existing_root_ids": [
+        "P7-161"
+      ],
+      "observed_in_ERP": false,
+      "is_capability_exit": false,
+      "accepted_external_handoff": false
+    },
+    {
+      "id": "R8D-CONTRACT-TARGET",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Class/InvoiceOperContract.cs",
+          "selector": "InsertFromInv",
+          "start": 2166,
+          "end": 2243,
+          "syntax_utf8_sha256": "71aab9da8f15cd6815902f0586e24935f2f878a3372379224610cf97a2d2f76c"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOperContract.cs",
+          "selector": "BindingInvoice",
+          "start": 1633,
+          "end": 1923,
+          "syntax_utf8_sha256": "6c24edcdf9653055d49897a27e8dc03ac4c39ad6cfb168fb5b7fba04125f8ae6"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs",
+          "selector": "ctor:frmInvoiceItems",
+          "start": 49,
+          "end": 66,
+          "syntax_utf8_sha256": "3cfa8029b7de84570e62c18416e303e2a30c2bd08e3eb87aa237e07d72f2e31c"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs",
+          "selector": "BuildLoadQuery",
+          "start": 231,
+          "end": 287,
+          "syntax_utf8_sha256": "fd24da9b635d4aefa03072964a98c86f4ec6e40463b36ebb72aee2ce8a8bdd65"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs",
+          "selector": "InsertSelectedItems",
+          "start": 299,
+          "end": 338,
+          "syntax_utf8_sha256": "17c6fc2707e14a6b3efca80f4d676b9eb3f07cc30a5252ad490e22194ba573d4"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs",
+          "selector": "RemoveNonSelectedItems",
+          "start": 340,
+          "end": 349,
+          "syntax_utf8_sha256": "9e4e844055ec1f2ed40ff4676f8898dd8d285613d74a8dc57e3876a545afd210"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs",
+          "selector": "CloseWithoutResult",
+          "start": 351,
+          "end": 364,
+          "syntax_utf8_sha256": "3aa0c9113254c70d24d741614538fd519eaffa71c1cfab9f204e37f1cc89e128"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+          "selector": "btnInsertLinkedInv_Click",
+          "start": 2072,
+          "end": 2123,
+          "syntax_utf8_sha256": "0d99be43329d9ef976cbef76276728cf77340eac808e5fe4188c1d5a84ac18e9"
+        }
+      ],
+      "source_disposition": "Contract helper supplies child.invcontract after ref-binding InvContratct. Child InvType23 SQL branch exists, but selected writer/remover still operates inv.InvoiceItems. Helper ends with empty !ISDone branch and no contract result transfer; contract caller continues regardless. This refines carried R6C-CONTRACT-RESULT, not the last-row import P7-144 root.",
+      "counterevidence_and_limit": "External model constructors/collections/alias behavior remain unproved; selected writer mismatch is visible without claiming exact runtime exception or financial loss. Further local contract Save/line ingress are not delegated to model owner.",
+      "related_existing_root_ids": [],
+      "observed_in_ERP": false,
+      "is_capability_exit": false,
+      "accepted_external_handoff": false
+    },
+    {
+      "id": "R8D-LINE-IDENTITY",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs",
+          "selector": "BuildLoadQuery",
+          "start": 231,
+          "end": 287,
+          "syntax_utf8_sha256": "fd24da9b635d4aefa03072964a98c86f4ec6e40463b36ebb72aee2ce8a8bdd65"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs",
+          "selector": "LoadData",
+          "start": 188,
+          "end": 229,
+          "syntax_utf8_sha256": "c944a617d26cfb1c39ea2e5bc850de6445e854df966e7f75bf9bddf6528ff0a2"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs",
+          "selector": "InsertSelectedItems",
+          "start": 299,
+          "end": 338,
+          "syntax_utf8_sha256": "17c6fc2707e14a6b3efca80f4d676b9eb3f07cc30a5252ad490e22194ba573d4"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs",
+          "selector": "RemoveNonSelectedItems",
+          "start": 340,
+          "end": 349,
+          "syntax_utf8_sha256": "9e4e844055ec1f2ed40ff4676f8898dd8d285613d74a8dc57e3876a545afd210"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs",
+          "selector": "btnAddall_Click",
+          "start": 105,
+          "end": 116,
+          "syntax_utf8_sha256": "39526fff511121d0ca317a6265a33a484779894860fe0c9321f6662fae045db0"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs",
+          "selector": "SearchByID",
+          "start": 548,
+          "end": 606,
+          "syntax_utf8_sha256": "ec6dffe499deff549db7c3dcf30b68db017037575b13213462d1646264b76aea"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs",
+          "selector": "FillRowFromDt",
+          "start": 608,
+          "end": 622,
+          "syntax_utf8_sha256": "d0c56f27bb9ab2094003b52038bec5e417904649153730ea8e5b59601cfc327c"
+        }
+      ],
+      "source_disposition": "Extended selected rows are mapped to every parent line by ItemId only; quantity/discount overwritten for each match, and removal uses ItemId set. RowNo, unit/store and source line identity are not used by selected-line writer. All-button bypasses selected-line rewriting. Legacy last-row import/duplicate roots are separately compared, not merged merely for shared ItemId.",
+      "counterevidence_and_limit": "No new finding/novelty certificate with six original dictionaries missing. Remaining local unit/quantity/price/discount/VAT copy/merge intent and writers require separate decisions, not financial arithmetic executed in Python.",
+      "related_existing_root_ids": [],
+      "observed_in_ERP": false,
+      "is_capability_exit": false,
+      "accepted_external_handoff": false
+    },
+    {
+      "id": "R8D-SEARCH-ELIGIBILITY",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+          "selector": "BuildLoadQuery",
+          "start": 336,
+          "end": 408,
+          "syntax_utf8_sha256": "8fef29202dbe23f76d73c3f9dd5a429c900d1dfc8a9e03e91f949f29b53e3640"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+          "selector": "BuildFilterExpression",
+          "start": 510,
+          "end": 565,
+          "syntax_utf8_sha256": "471475a6debe2e723147024dd1870e0b53e088173d975dae80e197fb6f95facc"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+          "selector": "cmbProcType_SelectionChanged",
+          "start": 138,
+          "end": 141,
+          "syntax_utf8_sha256": "e4d6953b431a6447d77d480a90f718f645e0a2dacd7f1579846e8946cfaf235e"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+          "selector": "txtFromDate_SelectedDateChanged",
+          "start": 188,
+          "end": 196,
+          "syntax_utf8_sha256": "c0b5bd46cf225dc6cec4453446cb02591d0a72f9d71b5a361256853c1809bb73"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+          "selector": "txtToDate_SelectedDateChanged",
+          "start": 198,
+          "end": 206,
+          "syntax_utf8_sha256": "d377860316f3af0fb97e6a4a49a2e7963d8423651aef8d995b3e5a62abade700"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+          "selector": "btnClear_Click",
+          "start": 236,
+          "end": 254,
+          "syntax_utf8_sha256": "f6bdce65a25ee2fbcddf53910585dee7d2b0c335a30132343b149f7d340ea466"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+          "selector": "BtnReturn_Click",
+          "start": 286,
+          "end": 303,
+          "syntax_utf8_sha256": "c0d1a119bea7ab9fe8301b50c4001eaa52a4a06d00e4679c952f41cbc9d23763"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+          "selector": "dgvItems_MouseDoubleClick",
+          "start": 266,
+          "end": 284,
+          "syntax_utf8_sha256": "73736a9058189ad1c86c9185c29a76ae927360c91f86971487d16349fb85cbb7"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+          "selector": "Window_KeyDown",
+          "start": 88,
+          "end": 116,
+          "syntax_utf8_sha256": "a29f17b3742df999aa850b242341b53bbf150815160f7360dd201d8b1a31599f"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+          "selector": "IsPreviousReturned",
+          "start": 603,
+          "end": 619,
+          "syntax_utf8_sha256": "3fc88f2748e6fc545c136321be95f118537e41582eff240643106ea864193d26"
+        }
+      ],
+      "source_disposition": "Reread picker maintains current-branch/type/process SQL and in-memory filter paths, including type20 OR purchase and original proc restriction. Return-button checks IsPreviousReturned; double-click/Enter have their own acceptance paths. Date/clear Cond rewrite remains existing P7-156. Eleven linked helper sites are not all direct picker callers.",
+      "counterevidence_and_limit": "Raw key/ISDone is not full immutable DocumentRef/eligibility/allowed-set/healthy result. Enum support, deployed reference uniqueness, modal/chrome scheduling and remaining direct callers stay open.",
+      "related_existing_root_ids": [
+        "P7-155",
+        "P7-156",
+        "P7-157",
+        "P7-158"
+      ],
+      "observed_in_ERP": false,
+      "is_capability_exit": false,
+      "accepted_external_handoff": false
+    }
+  ],
+  "capabilities": {
+    "CAP7B38-D08": {
+      "canonical_capability_row": {
+        "id": "CAP7B38-D08",
+        "capability": "المخزون والحركة والصلاحية",
+        "entry_point": "آباء R1 الأربعة وLastProcess وفتح مستند/صنف",
+        "source_contract": "Inv/Inv_Sub/UDF/Opening ودفعة/مستودع/فرع/تاريخ",
+        "output_boundary": "InventoryData وReport/CSV وطفل مستند",
+        "related_part_numbers": "2;14;16;19",
+        "related_finding_ids": "P7-054;P7-055;P7-056;P7-057;P7-058;P7-059;P7-060;P7-061;P7-121;P7-129;P7-130",
+        "current_handoff_ids": "H7B38-01;H7B38-02;H7B38-03;H7B38-04",
+        "assessment_status": "historical-and-selected-current-source-assessment-boundaries-open",
+        "assessment_basis": "historical-FE-lineage-plus-explicit-current-source-scope-not-all-source-rereview",
+        "excluded_from_claim": "اكتمال body تاريخياً لا يغلق الأسرة؛ potential014/108/132 تبقى.",
+        "owner_role": "مالك المنتج والتقرير بالتنسيق مع مالك السياسة والمصدر",
+        "required_redacted_input": "راجع H7B38 ذات الصلة: قاموس/عقد/manifest منقح فقط؛ لا أسرار أو بيانات أعمال.",
+        "absence_impact": "يبقى هذا الحد غير محسوم؛ الإحالة لا تعني الموافقة أو غياب القدرة أو إغلاق الأسرة.",
+        "next_action": "لكل بقية R1: وحدة/حبيبة/كلفة/as-of/expiry ومعيار وهوية ومخرج ودليل أو استبعاد مسند/إحالة صريحة.",
+        "static_exit_criterion": "لكل بقية R1: وحدة/حبيبة/كلفة/as-of/expiry ومعيار وهوية ومخرج ودليل أو استبعاد مسند/إحالة صريحة.",
+        "local_semantic_obligations_complete": "false",
+        "whole_capability_certified": "false",
+        "runtime_status": "not-executed"
+      },
+      "bounded_source_assessment": "LastProcess item/store/party filters, earliest order, source row identity and14 reopen sites now individually traced within this slice.",
+      "remaining_readable_local": "Other inventory reports: grain/unit/cost/as-of/expiry/source/output and allowed-set obligations are not completed by last-activity navigation.",
+      "whole_capability_certified": false,
+      "local_semantic_obligations_complete": false,
+      "readable_local_externalized": false
+    },
+    "CAP7B38-D17": {
+      "canonical_capability_row": {
+        "id": "CAP7B38-D17",
+        "capability": "هوية المستند والتنقل وفتح الأطفال",
+        "entry_point": "document opener/ShowEntrySource/LastProcess وTableRow→child",
+        "source_contract": "GlobalID/type/branch/year/source مقابل رقم محلي/اسم عرض",
+        "output_boundary": "NavigationRequest/LoadOutcome وحد نشر حالة الأب",
+        "related_part_numbers": "11;14;16;17;19;27;28;31",
+        "related_finding_ids": "P7-061;P7-115;P7-130;P7-155;P7-156;P7-157;P7-158;P7-161",
+        "current_handoff_ids": "H7B38-03;H7B38-04;H7B38-05",
+        "assessment_status": "historical-and-selected-current-source-assessment-boundaries-open",
+        "assessment_basis": "historical-FE-lineage-plus-explicit-current-source-scope-not-all-source-rereview",
+        "excluded_from_claim": "لا حمل branch/year/ACL من مجرد تمرير id.",
+        "owner_role": "مالك المنتج والتقرير بالتنسيق مع مالك السياسة والمصدر",
+        "required_redacted_input": "راجع H7B38 ذات الصلة: قاموس/عقد/manifest منقح فقط؛ لا أسرار أو بيانات أعمال.",
+        "absence_impact": "يبقى هذا الحد غير محسوم؛ الإحالة لا تعني الموافقة أو غياب القدرة أو إغلاق الأسرة.",
+        "next_action": "كل route له DocumentRef/allowed-set وscope وFound/Empty/Failed/Partial لا void/اسم عرض؛ فرز paths غير المحسومة.",
+        "static_exit_criterion": "كل route له DocumentRef/allowed-set وscope وFound/Empty/Failed/Partial لا void/اسم عرض؛ فرز paths غير المحسومة.",
+        "local_semantic_obligations_complete": "false",
+        "whole_capability_certified": "false",
+        "runtime_status": "not-executed"
+      },
+      "bounded_source_assessment": "Original19 LastProcess+11 linked identities have full containing body, bounded dependency/argument/cancel/scope/health decisions;14 reopen query sites linked to core evidence.",
+      "remaining_readable_local": "Remaining navigation/direct picker/alias/reflection/open-item families, each Save/allowed-edit/document set and health outcome; original37 is not all D17.",
+      "whole_capability_certified": false,
+      "local_semantic_obligations_complete": false,
+      "readable_local_externalized": false
+    },
+    "CAP7B38-D19": {
+      "canonical_capability_row": {
+        "id": "CAP7B38-D19",
+        "capability": "استيراد البنود والتحضير والدمج/الاستبدال",
+        "entry_point": "InsertFromInv/frmInvoiceItems وAddOrUpdate وseed/line ingress",
+        "source_contract": "InvoiceItems وLineRef/OwnedSeed/CopyIntent ومصدر القيم",
+        "output_boundary": "AcceptedLines/Cancelled/Failed ثم publish واحد مشروط",
+        "related_part_numbers": "22;23;24;30;35",
+        "related_finding_ids": "P7-144;P7-146;P7-147;P7-149;P7-150;P7-151;P7-159;P7-160",
+        "current_handoff_ids": "H7B38-01;H7B38-03;H7B38-05",
+        "assessment_status": "historical-and-selected-current-source-assessment-boundaries-open",
+        "assessment_basis": "historical-FE-lineage-plus-explicit-current-source-scope-not-all-source-rereview",
+        "excluded_from_claim": "لا DTO defaults أو rollback/hydration أو مخزون وحفظ ناجح.",
+        "owner_role": "مالك المنتج والتقرير بالتنسيق مع مالك السياسة والمصدر",
+        "required_redacted_input": "راجع H7B38 ذات الصلة: قاموس/عقد/manifest منقح فقط؛ لا أسرار أو بيانات أعمال.",
+        "absence_impact": "يبقى هذا الحد غير محسوم؛ الإحالة لا تعني الموافقة أو غياب القدرة أو إغلاق الأسرة.",
+        "next_action": "كل حد كمية/سعر/خصم/VAT له lineage ونتيجة إدراج مستقلة عن القبول وترك الأصل؛ معاملة ref/alias لا تفترض من الرموز.",
+        "static_exit_criterion": "كل حد كمية/سعر/خصم/VAT له lineage ونتيجة إدراج مستقلة عن القبول وترك الأصل؛ معاملة ref/alias لا تفترض من الرموز.",
+        "local_semantic_obligations_complete": "false",
+        "whole_capability_certified": "false",
+        "runtime_status": "not-executed"
+      },
+      "bounded_source_assessment": "By-ref pre-item binding, contract writer target and ItemId-only selected/removal semantics assessed with per-parent postpublication.",
+      "remaining_readable_local": "Other import/add/merge/duplicate/unit/quantity/price/discount/VAT lineage and owner-result paths, external DTO contracts only after local obligations.",
+      "whole_capability_certified": false,
+      "local_semantic_obligations_complete": false,
+      "readable_local_externalized": false
+    },
+    "CAP7B38-D21": {
+      "canonical_capability_row": {
+        "id": "CAP7B38-D21",
+        "capability": "منتقي الفاتورة والرجوع والأهلية وجميع المتصلين المباشرين",
+        "entry_point": "16 new frmInvoiceSrch، Enter/double-click/Return وCond/filters",
+        "source_contract": "Inv/InvContratct وProcType/type1/2/20/23/branch/status وkey",
+        "output_boundary": "ISDone/InvGlobalID/ProcType/PayType ثم reader/child",
+        "related_part_numbers": "27;28;35;36;37",
+        "related_finding_ids": "P7-155;P7-156;P7-157;P7-158;P7-159;P7-160",
+        "current_handoff_ids": "H7B38-03;H7B38-04;H7B38-05",
+        "assessment_status": "historical-and-selected-current-source-assessment-boundaries-open",
+        "assessment_basis": "historical-FE-lineage-plus-explicit-current-source-scope-not-all-source-rereview",
+        "excluded_from_claim": "لا السنة السابقة أو modal/chrome schedule أو دعم enum من الاسم.",
+        "owner_role": "مالك المنتج والتقرير بالتنسيق مع مالك السياسة والمصدر",
+        "required_redacted_input": "راجع H7B38 ذات الصلة: قاموس/عقد/manifest منقح فقط؛ لا أسرار أو بيانات أعمال.",
+        "absence_impact": "يبقى هذا الحد غير محسوم؛ الإحالة لا تعني الموافقة أو غياب القدرة أو إغلاق الأسرة.",
+        "next_action": "عقد request/result واحد ذو هوية وأهلية؛ مراجعة Return وReff_No وcaller PurchInv بدل إسقاط حكم16علىكلcaller.",
+        "static_exit_criterion": "عقد request/result واحد ذو هوية وأهلية؛ مراجعة Return وReff_No وcaller PurchInv بدل إسقاط حكم16علىكلcaller.",
+        "local_semantic_obligations_complete": "false",
+        "whole_capability_certified": "false",
+        "runtime_status": "not-executed"
+      },
+      "bounded_source_assessment": "Shared search request/filter/type20/Return-versus-double-click/Enter and helper ownership read; no outcome inferred from ShowDialog.",
+      "remaining_readable_local": "All direct picker callers and changing Cond/eligibility/type/branch/reference/year/acceptance contracts remain independently open.",
+      "whole_capability_certified": false,
+      "local_semantic_obligations_complete": false,
+      "readable_local_externalized": false
+    },
+    "CAP7B38-D22": {
+      "canonical_capability_row": {
+        "id": "CAP7B38-D22",
+        "capability": "ترك المسودة والجديد والتنقل والإغلاق",
+        "entry_point": "new/open/first/next/last/close/Loaded/F6 في المحررات المختارة",
+        "source_contract": "ISNew/IsUpdated وsetters/dirty وقرارSave/Discard/Stay",
+        "output_boundary": "طلب انتقال منفصل عن LoadOutcome ثم commit واحد",
+        "related_part_numbers": "29;30;31;32;35;37",
+        "related_finding_ids": "P7-159;P7-160;P7-161;P7-162",
+        "current_handoff_ids": "H7B38-03;H7B38-05",
+        "assessment_status": "historical-and-selected-current-source-assessment-boundaries-open",
+        "assessment_basis": "historical-FE-lineage-plus-explicit-current-source-scope-not-all-source-rereview",
+        "excluded_from_claim": "لا أحداث إطار أو غياب dirty من عدم وجود setter محلي.",
+        "owner_role": "مالك المنتج والتقرير بالتنسيق مع مالك السياسة والمصدر",
+        "required_redacted_input": "راجع H7B38 ذات الصلة: قاموس/عقد/manifest منقح فقط؛ لا أسرار أو بيانات أعمال.",
+        "absence_impact": "يبقى هذا الحد غير محسوم؛ الإحالة لا تعني الموافقة أو غياب القدرة أو إغلاق الأسرة.",
+        "next_action": "كل أول كتابة محلية لها قرار ترك مستقل، وكل طلب إغلاق له مالك واحد مع تمييز catch-return/nonreturn.",
+        "static_exit_criterion": "كل أول كتابة محلية لها قرار ترك مستقل، وكل طلب إغلاق له مالك واحد مع تمييز catch-return/nonreturn.",
+        "local_semantic_obligations_complete": "false",
+        "whole_capability_certified": "false",
+        "runtime_status": "not-executed"
+      },
+      "bounded_source_assessment": "Individual clear/new/ref binder/cancel transitions; purchase void guard propagation and POS pre-password clear explicitly adjudicated.",
+      "remaining_readable_local": "All other new/open/navigation/close/Save/Discard/Stay commands and dirty propagation/allowed-edit, not just linked paths.",
+      "whole_capability_certified": false,
+      "local_semantic_obligations_complete": false,
+      "readable_local_externalized": false
+    },
+    "CAP7B38-D25": {
+      "canonical_capability_row": {
+        "id": "CAP7B38-D25",
+        "capability": "المخطط والمنح وهوية الفرع والتفرد",
+        "entry_point": "resource DDL/queries/permissions وأوامر التقرير/الطفل",
+        "source_contract": "schema/constraints/grants وid/BranchId/Code وdocument keys",
+        "output_boundary": "سياسة roles×commands×resource/branch/store محددة",
+        "related_part_numbers": "14;15;16;17;26;27",
+        "related_finding_ids": "P7-020;P7-021;P4-014",
+        "current_handoff_ids": "H7B38-04",
+        "assessment_status": "historical-and-selected-current-source-assessment-boundaries-open",
+        "assessment_basis": "historical-FE-lineage-plus-explicit-current-source-scope-not-all-source-rereview",
+        "excluded_from_claim": "لا SQL/schema deployment أو إذن من enabled/disabled وحده.",
+        "owner_role": "DBA ومالك الأمان",
+        "required_redacted_input": "راجع H7B38 ذات الصلة: قاموس/عقد/manifest منقح فقط؛ لا أسرار أو بيانات أعمال.",
+        "absence_impact": "يبقى هذا الحد غير محسوم؛ الإحالة لا تعني الموافقة أو غياب القدرة أو إغلاق الأسرة.",
+        "next_action": "تثبيت مصدر منقح للمخطط والمنح والمفاتيح والـbranch mapping؛ مورد IFNOTEXISTS ليس شهادة نشر أو ACL.",
+        "static_exit_criterion": "تثبيت مصدر منقح للمخطط والمنح والمفاتيح والـbranch mapping؛ مورد IFNOTEXISTS ليس شهادة نشر أو ACL.",
+        "local_semantic_obligations_complete": "false",
+        "whole_capability_certified": "false",
+        "runtime_status": "not-executed"
+      },
+      "bounded_source_assessment": "Actual UI/current-branch predicates and generic WPF permission writer distinguished from row allowed-set; no inherited branch/year supplied to report reopen.",
+      "remaining_readable_local": "Remaining local query/Save/edit checks and policy/schema/grant manifests; no deployed ACL/uniqueness proof or SQL execution.",
+      "whole_capability_certified": false,
+      "local_semantic_obligations_complete": false,
+      "readable_local_externalized": false
+    }
+  },
+  "unavailable_contracts_not_accepted_as_handoffs": [
+    {
+      "id": "R8UNAVAILABLE-MODEL",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "BindingInvoice",
+          "start": 3219,
+          "end": 3508,
+          "syntax_utf8_sha256": "b51d6c65d47eebbaa98b7e8fba52e370669ef8e128d8fb3671a66c90c803305f"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOperContract.cs",
+          "selector": "BindingInvoice",
+          "start": 1633,
+          "end": 1923,
+          "syntax_utf8_sha256": "6c24edcdf9653055d49897a27e8dc03ac4c39ad6cfb168fb5b7fba04125f8ae6"
+        },
+        {
+          "path": "SmartAuditERP/Class/InvoiceOper.cs",
+          "selector": "InsertFromInv",
+          "start": 3941,
+          "end": 4013,
+          "syntax_utf8_sha256": "15fa4c250466a7625b9551f1415da630c1f31abd2997071518b4db7ab5878a06"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvoiceItems.xaml.cs",
+          "selector": "ctor:frmInvoiceItems",
+          "start": 49,
+          "end": 66,
+          "syntax_utf8_sha256": "3cfa8029b7de84570e62c18416e303e2a30c2bd08e3eb87aa237e07d72f2e31c"
+        },
+        {
+          "text_range_key": "external-AuditorAPI-reference",
+          "path": "SmartAuditERP/SmartAuditERP.csproj",
+          "start": 25,
+          "end": 32,
+          "decoded_range_utf8_sha256": "f43faa7ce14da14a4690c205a3a8183cf6c3e8fa1cab0af0780d1af049121cf2"
+        }
+      ],
+      "owner_role": "AuditorAPI model maintainer / application contract owner",
+      "required_redacted_input": "Versioned source/API declaration for InvoiceDGV/Invoicecontract/InvoiceItem constructors, setters, collection ownership/defaults, copy/alias/dirty contracts and enum map; contract-only, no binaries executed/secrets/business data.",
+      "absence_impact": "Cannot certify model default collection initialization, alias/deep-copy behavior, setter side effects, dirty or financial support. Does not erase visible local ref mutation or writer-target mismatch.",
+      "next_action": "Complete remaining local row/Save/edit/dirty/copy writers first, then request only unresolved model contract declarations with exact version/source manifest.",
+      "readable_local_not_delegated": "ItemOper/ItemOpercontract, local row models/producers, parent transformations, CheckBeforeClear and shared helper control flow are local; not offloaded.",
+      "static_disposition": "Unavailable contract recorded; NOT an accepted capability/family completion handoff.",
+      "accepted_external_handoff": false
+    },
+    {
+      "id": "R8UNAVAILABLE-POLICY",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Class/MainClass.cs",
+          "selector": "ApplyPermissionToForm@System.Windows.Window",
+          "start": 353,
+          "end": 413,
+          "syntax_utf8_sha256": "bab4b5750974fd845b6a2d1dfd56bfd5aa15ce660f66296c83d08b4ef93f9f18"
+        },
+        {
+          "path": "SmartAuditERP/Class/MainClass.cs",
+          "selector": "ApplyWpfPermissions",
+          "start": 418,
+          "end": 457,
+          "syntax_utf8_sha256": "b6b14fd7d12b16b82033b7fa79b5243663113ce9cd63513ac85f5c1b4f613a92"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+          "selector": "ShowResult",
+          "start": 240,
+          "end": 413,
+          "syntax_utf8_sha256": "41a7c4089387223af560a45defc97c8d88695685a01cc739694b01c2a7a71e3f"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs",
+          "selector": "BuildLoadQuery",
+          "start": 336,
+          "end": 408,
+          "syntax_utf8_sha256": "8fef29202dbe23f76d73c3f9dd5a429c900d1dfc8a9e03e91f949f29b53e3640"
+        }
+      ],
+      "owner_role": "Security/policy owner with DBA and document workflow owner",
+      "required_redacted_input": "Versioned roles×commands×resource/branch/store/year allowed-set and approval policy, redacted schema/grant/key manifest; no user identities or data/credentials.",
+      "absence_impact": "UI permission helper/query predicates alone cannot certify allowed documents or deployed row ACL/grants and uniqueness.",
+      "next_action": "First finish local command/query/Save/edit guards and request field propagation; then reconcile exact unresolved policy/manifest contracts individually.",
+      "readable_local_not_delegated": "Remaining Save/allowed-edit/document queries and button/dirty writers stay local obligations.",
+      "static_disposition": "Boundary only; not accepted as static completion/handoff and no unauthorized-access observation.",
+      "accepted_external_handoff": false
+    },
+    {
+      "id": "R8UNAVAILABLE-LIFECYCLE",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+          "selector": "OpenForm",
+          "start": 1167,
+          "end": 1175,
+          "syntax_utf8_sha256": "ad1ea4ab56a05a8615c585efc5393b1195fc3bef1c1392dea814402bb5844dbc"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmRptItemsActivityDetailed.xaml.cs",
+          "selector": "OpenWindow",
+          "start": 1177,
+          "end": 1192,
+          "syntax_utf8_sha256": "095089bb9270369d2f509d38b5f370512c86f11eb2e8257a16761e2da4c6d0c7"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInvInputOutput.xaml.cs",
+          "selector": "Window_Loaded",
+          "start": 94,
+          "end": 129,
+          "syntax_utf8_sha256": "f53cb013a52c438ccfd224bb21680a53ca6896178439c552912ca4cb7e47c97e"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmInventoryTransfer.xaml.cs",
+          "selector": "Window_Loaded",
+          "start": 126,
+          "end": 165,
+          "syntax_utf8_sha256": "05209d0a07f67a031ca9203dbec55b0e95a7de4fdcc0a0f0139f6df751cc0f8b"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmcontract.xaml.cs",
+          "selector": "SetupGridEvents",
+          "start": 165,
+          "end": 171,
+          "syntax_utf8_sha256": "78e801370690651eb4db17dfb71b520b31d8fad5e968607bcd61f987e92278f7"
+        }
+      ],
+      "owner_role": "WPF/DevExpress integration and delivery manifest maintainer",
+      "required_redacted_input": "Versioned declaration/contract for actual WPF/DevExpress build, selection/focus/Loaded/modal close scheduling and event wiring, contract-only; no runtime/business data.",
+      "absence_impact": "Cannot certify synchronous Loaded completion, clicked-row focus, close schedule or a runtime overwrite from source statement order.",
+      "next_action": "Continue remaining local event subscriptions/reset/close writers first. Preserve potential132 and do not run WPF/providers to fill this static boundary.",
+      "readable_local_not_delegated": "Readable event setup/menu bridges, reset and close source paths remain within local audit; CS170 contract subscription was actually found/read.",
+      "static_disposition": "Unavailable lifecycle contract is not accepted as completion and does not promote potential to confirmed.",
+      "accepted_external_handoff": false
+    }
+  ],
+  "new_numbered_finding_ids": [],
+  "all339_semantically_reread_in_R8": false,
+  "formal_prior_boundary_registers_replaced": false,
+  "not_certified": [
+    "all26 capability exits or four-family exit",
+    "all D17/direct picker/Save/allowed-edit/document sets",
+    "runtime/financial/operational correctness/remediation",
+    "WPF scheduling or source-read/calendar chronology authentication",
+    "external model constructors/setters/collection aliases/enum contracts",
+    "deployed schema/grants/unique keys",
+    "missing R2/R3 files/196 tests/345 dictionary ledger/49 boundary register"
+  ],
+  "pinned_inputs": [
+    {
+      "path": "docs/audit/evidence/reference-date-provenance-07B39R8.json",
+      "bytes": 2807,
+      "sha256": "f0368162e0658e7d306bfcfdaf910c978d5d6186e031af175c795716f2ee232b"
+    },
+    {
+      "path": "docs/audit/evidence/linked-activity-source-facts-07B39R8.json",
+      "bytes": 2400258,
+      "sha256": "9b86d9fd60b6b585ae63b803472b6073a707409bdd5fc04bd69c8d96770b9de9"
+    },
+    {
+      "path": "docs/audit/evidence/linked-activity-source-review-log-07B39R8.json",
+      "bytes": 54426,
+      "sha256": "5ccc663613fd8bba9e233a25ed0499e4c6f9fc0128ca0f0b8550f6fe6eaa3b12"
+    },
+    {
+      "path": "docs/audit/evidence/linked-activity-call-matrix-07B39R8.json",
+      "bytes": 266462,
+      "sha256": "bb259c19bedc23171de323a087e68d7aa3e0db539cfa1b901c08c03e6c0c7a9e"
+    },
+    {
+      "path": "docs/audit/evidence/linked-activity-root-adjudication-07B39R8.json",
+      "bytes": 316567,
+      "sha256": "b1acb21502fbed49748a893eaf08aaf39eb417176abdd8e608d2f06dae4dcc63"
+    },
+    {
+      "path": "docs/audit/evidence/linked-activity-local-worklist-07B39R8.json",
+      "bytes": 63706,
+      "sha256": "a8574c88c4175593f7467361f9917b74858049b172663cb698add9577787e734"
+    },
+    {
+      "path": "docs/audit/evidence/capability-register-07B38.csv",
+      "bytes": 33915,
+      "sha256": "2e071fbad8546aeb26b2dd66854d17c58ad570e7b36525e823e9567b7466b3c5"
+    },
+    {
+      "path": "docs/audit/evidence/capability-reconciliation-07B39R7.json",
+      "bytes": 649347,
+      "sha256": "44d30dc8d4a27c7bef7ce5f9a9633c2f2353b70c8ba2f032f330427e51597bb1"
+    }
+  ]
+}

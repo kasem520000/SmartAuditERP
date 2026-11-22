@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "errors": [],
+  "selected_complete_method_contexts": 209,
+  "source_identities": 32,
+  "original_LastProcess_calls": 19,
+  "original_linked_insert_calls": 11,
+  "original_pending_linked_bodies_read": 3,
+  "report_reopen_query_sites": 14,
+  "source_decisions": 11,
+  "capability_exit_certificates_issued": 0,
+  "four_family_exit_certificates_issued": 0,
+  "new_accepted_external_handoffs": 0,
+  "whole_7B_static_assessment_complete": false,
+  "application_execution_count": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "limit": "Recorded source/evidence/coverage guards, not actual reading, calendar, WPF timing, DTO behavior, all Save/allowed-edit/document sets, runtime, financial or whole-capability acceptance."
+}

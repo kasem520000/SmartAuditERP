@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "kind": "prospective-requested-reference-label-with-original-date-provenance-not-calendar-proof",
+  "assessment_reference_date_utc": "2026-11-21",
+  "raw_clocks_are_calendar_authority": false,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "capability_exit_certificates_issued": 0,
+  "four_family_exit_certificates_issued": 0,
+  "new_accepted_external_handoffs": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "prior196_tests_recertified": false,
+  "R2_R3_files_recovered": false,
+  "requested_prospective_assessment_label_utc": "2026-11-21",
+  "session_reference_date_utc": "2026-11-16",
+  "entry_original_assessment_reference_date_utc": "2026-11-16",
+  "requested_label_is_claim_about_today": false,
+  "frozen_R4_R7_or_R8_entry_dates_rewritten": false,
+  "past_calendar_or_display_chronology_authenticated": false,
+  "disposition": "Use the requested 2026-11-21 label prospectively for this assessment packet only. The session reference is 2026-11-16; these are different labels, not an assertion that today is November 21. R4-R7 frozen labels, captures, tool constants, raw clocks and the R8 entry remain verbatim. Equality/hash checks do not authenticate a calendar or R6 display chronology.",
+  "no_retroactive_R6_read_authentication": true,
+  "individual_display_timestamps_invented": false,
+  "dependency_policy": "New R8 documents/evidence point to this note. Prior version pins remain unchanged; the later capture archives exact consumed new versions.",
+  "pinned_inputs": [
+    {
+      "path": "docs/audit/evidence/entry-identities-07B39R8.json",
+      "bytes": 400309,
+      "sha256": "e1d5b8a033dc221082e3ce7d63e40f05c1802b6449bffe07df46985dc166fc59"
+    },
+    {
+      "path": "docs/audit/PHASE-07B39R4.md",
+      "bytes": 8897,
+      "sha256": "b406db618091ea870ebfd48949a5de04e9b55affd7a121fcb290c0df46e98d65"
+    },
+    {
+      "path": "docs/audit/PHASE-07B39R5.md",
+      "bytes": 8280,
+      "sha256": "f507848f9d604f0712b982bb15767201e7b84a79597c42a26dbbd63362132c60"
+    },
+    {
+      "path": "docs/audit/PHASE-07B39R6.md",
+      "bytes": 8389,
+      "sha256": "dc8bb72a10a5734120ddc4b5a00b24150d2c253225a3339fabcedaa438670f96"
+    },
+    {
+      "path": "docs/audit/PHASE-07B39R7.md",
+      "bytes": 13061,
+      "sha256": "241030579305b16d9d331537abd99b5b6025f6b439c779dd9b10f11ac3d09c58"
+    },
+    {
+      "path": "docs/audit/evidence/source-display-attribution-note-07B39R7.json",
+      "bytes": 5185,
+      "sha256": "7fe40304b00de86c653ec78032193ec57b005930db19bc08e6e74d7509c52bb7"
+    },
+    {
+      "path": "docs/audit/evidence/validation-current-run01-receipt-07B39R7.json",
+      "bytes": 408162,
+      "sha256": "89903a18cd15ad283f068e74e33ce2fb1a20f81876ac80ac194646563ddbc29f"
+    }
+  ]
+}

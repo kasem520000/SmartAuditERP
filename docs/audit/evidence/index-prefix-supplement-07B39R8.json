@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "kind": "R8-new-current-index-prefixes-with-verbatim-prior-suffixes-not-run01-input",
+  "assessment_reference_date_utc": "2026-11-21",
+  "session_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "requested_reference_label_is_claim_about_today": false,
+  "base_HEAD": "b642fe80dfb4bca3a6b218faf82d07ec42dd3d8c",
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "capability_exit_certificates_issued": 0,
+  "four_family_exit_certificates_issued": 0,
+  "new_accepted_external_handoffs": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "prior196_tests_recertified": false,
+  "R2_R3_files_recovered": false,
+  "indexes": [
+    {
+      "path": "docs/audit/README.md",
+      "prefix_utf8_text": "# الحالة الحالية — 07B39R8: آخر حركة والإدراج المرتبط بأحكام فردية\n\n**7B مفتوحة؛ صفر شهادة قدرة/أسرة وصفر إحالة إكمال جديدة مقبولة.** أُنجزت الأجسام الثلاثة المتبقية للإدراج وتقييم هويات LastProcess19 وlinked11 كلٌّ بمصدر وسائطه ونطاقه وإلغائه/نشره. لا يوقف رفض void btnNew المتصل الخارجي، وref-binding يسبق قبول البنود، وكاتب العقد المختار يستعمل inv لا invcontract. لا تعميم لخلل نوع الطرف: المشتريات الحديثة والعقد الافتراضي شاهدان مضادان. دعم جذور قائمة وأسئلة غير مرقمة، لا معالجة أو خروج من العدّ.\n\n**run01:390/390 في49.866ثانية** =42+50+57+62+86+93، والجديدة93 ضمن390. **B38:42نجاحًا وفشل1/43 (`158 != 142`)**؛ سبعة فحوص سلامة0 وست بوابات إكمال2/open والغلاف1. فشل R5run01 وفشل تهيئة R8 الأول محفوظان؛ ليست جميع المجموعات خضراء.\n\n[التسليم الحالي](PHASE-07B39R8.md) · [المصدر المستهلك](SOURCE-REVIEW-07B39R8.md) · [مصفوفة30](evidence/linked-activity-call-matrix-07B39R8.json) · [التحقق](VALIDATION-07B39R8.md) · [سجل القدرات26](evidence/capability-reconciliation-07B39R8.json) · [المتبقي المحلي](evidence/linked-activity-local-worklist-07B39R8.json) · [توضيح المرجع](evidence/reference-date-provenance-07B39R8.json)\n\n827مصدر تطبيق دون تغيير أو تشغيل؛339قاموسًا متاحًا لا إعادة تصديق345/196/49الغائبة. التالي Save/allowed-edit ومجموعات المستندات المسموحة وبقية الكتّاب/المتصلين/السنة. المرجع المطلوب21نوفمبر2026 استشرافي وليس تاريخ اليوم أو توثيق قراءة؛ تاريخ الجلسة16نوفمبر منفصل والأصول مجمدة. 7Cلمتبدأ و8غيرمأذونة. النص التالي محفوظ ببايتاته كتسليم R7 وما قبله لا الحالة الحالية.\n\n## أرشيف R7 وما قبله — النص التالي محفوظ كاملًا\n\n",
+      "prefix_bytes": 2380,
+      "prefix_sha256": "b9d4e83a6b4a6879fc4f78167ebd7e7d360db35ebc979a3c1580587a6cde3088",
+      "preserved_old_suffix": {
+        "bytes": 87547,
+        "sha256": "6c936c8843b8f8dd1a2d93d2bfe6947f3d987e3b691685140f94a127e330632d"
+      },
+      "after": {
+        "path": "docs/audit/README.md",
+        "bytes": 89927,
+        "sha256": "1bfca5b25ad15c396fe62260188b0bf7f201be17ecaae6751d1caaf5f19a03e4"
+      },
+      "original_suffix_preserved_verbatim": true,
+      "prefix_was_run01_input": false,
+      "prior_text_is_archive_not_current_status": true
+    },
+    {
+      "path": "docs/audit/PLAN.md",
+      "prefix_utf8_text": "# خطة المتابعة — 07B39R8 ضمن القدرات26 المعتمدة\n\nأُنجزت الأجسام الثلاثة المحددة للإدراج وهويات LastProcess19/linked11 مع عقود المصدر/الاختيار/المرشحات والإلغاء والنشر وأصل الاتصال. لا تُطلب الأجسام المنجزة مجددًا لمجرد زيادة عدّ؛ رايات R6 الأصلية محفوظة إلى جانب تقييم R8 لا معاد كتابتها. التقدم جزئي في D08/D17/D19/D21/D22/D25، لا خروج لأي قدرة أو أسرة.\n\n**التالي:** Save/allowed-edit ومجموعات المستندات المسموحة في المحررات المختارة، ثم بقية كتّاب السطر/copy/merge وكمية/وحدة/سعر/خصم/VAT، وبقية متصلي المنتقي المباشرين وCond/Return والهوية والنتيجة وملاك السنة/الإغلاق. يبقى @Recipient وسائر أسئلة R7/R5/R6 المحمولة مفتوحة. لا يُحال المصدر المحلي إلى عقد DTO/SDK غير متاح، ولا قبول إحالة إكمال قبل استيفائه.\n\n[قائمة العمل الحالية](evidence/linked-activity-local-worklist-07B39R8.json) · [مصفوفة النداءات30](evidence/linked-activity-call-matrix-07B39R8.json) · [التسليم](PHASE-07B39R8.md) · [المصدر](SOURCE-REVIEW-07B39R8.md) · [سجل26](evidence/capability-reconciliation-07B39R8.json) · [التحقق](VALIDATION-07B39R8.md)\n\n390/390 ناجحة، لكن B38فاشلة `158 != 142` وست بوابات2/open. لا تعديل تطبيق أو اختبار تاريخي/توقع142 ولا قبول مالي/تشغيلي أو خروج7B/بدء7C/تفويض8. المرجع المطلوب21نوفمبر استشرافي مع بقاء تاريخ الجلسة16نوفمبر منفصلًا؛ لا توثيق تقويم أو عرض رجعي. النص التالي محفوظ حرفيًا كتسليم R7 وما قبله.\n\n## أرشيف R7 وما قبله — النص التالي محفوظ كاملًا\n\n",
+      "prefix_bytes": 2118,
+      "prefix_sha256": "b03f3d42c80283bf50d373ae887694ae775ad473d4ff975dae5c1e08c7ac7b9f",
+      "preserved_old_suffix": {
+        "bytes": 141477,
+        "sha256": "47795f247f7d5bfb6952269f18bc050a75652e609b41d36ea864724f84a720c0"
+      },
+      "after": {
+        "path": "docs/audit/PLAN.md",
+        "bytes": 143595,
+        "sha256": "abc700184ea57036f07f40f4f6e132a18180e69ebfa0aed1586e1eb5bf35dc0e"
+      },
+      "original_suffix_preserved_verbatim": true,
+      "prefix_was_run01_input": false,
+      "prior_text_is_archive_not_current_status": true
+    },
+    {
+      "path": "docs/audit/IMPROVEMENTS.md",
+      "prefix_utf8_text": "# متابعة 07B39R8 — قرارات مصدر لا إصلاح أو إغلاق\n\nثُبتت فروق المتصلين19 لا حكم mismatch شامل: المشتريات الحديثة2 والعقد23→1 يطابقان loader، وبعض المسارات القديمة/POS/IO لا يحافظ على نوع الطرف. XAML يثبت أن008 هو أمر العميل القديم الذي يرسل-1. all-stores وTOP1 ASC وإعادة الفتح برقم محلي/اسم عرض تدعم P7-122/059/061/129/130 القائمة؛ P7-132 تبقىpotential ولا تُحسم بترتيب Show.\n\nفي الإدراج11، ref-binding يسبق قبول البنود، والأب يتابع بعد void بلا accepted result؛ دعم P7-160/161. رفض btnNew غير المنقول يبقى سؤالًا غير مرقم لا دمجًا قسريًا مع159؛ invcontract مقابل inv وItemId-only ليسا تلقائيًا جذر آخر صف144. لا defaults/alias/SQL/فشل مالي أو قبول تشغيل مفترض، ولا أرقام جديدة مع الست المفقودة.\n\n[المصدر](SOURCE-REVIEW-07B39R8.md) · [أحكام المصدر](evidence/linked-activity-dispositions-07B39R8.json) · [الجذور](evidence/linked-activity-root-adjudication-07B39R8.json) · [التحقق](VALIDATION-07B39R8.md) · [التسليم](PHASE-07B39R8.md):390/390ناجحًا، لكن B38فشل1/43 (`158 != 142`)، وست بوابات إكمال2/open والغلاف1. فشلا تهيئة R8 الأول وفشلR5run01 محفوظان لا مخفيان.\n\n827مصدر تطبيق وسجل335/raw336CRLF وملحقR1 محفوظة؛339متاحة لا تصديق345/196/49. لا معالجة أو قبول مالي/تشغيلي؛7Bمفتوحة،7Cلمتبدأ و8غيرمأذونة. المرجع المطلوب21نوفمبر استشرافي لا تاريخ اليوم؛ تاريخ الجلسة16نوفمبر منفصل والأصول محفوظة. النص التالي كامل ببايتاته كتسليم R7 وما قبله.\n\n## أرشيف R7 وما قبله — النص التالي محفوظ كاملًا\n\n",
+      "prefix_bytes": 2111,
+      "prefix_sha256": "8816d5e8e090968891b1e6ae9415cdffd36ef5bf9903fc504d04fc3a45356111",
+      "preserved_old_suffix": {
+        "bytes": 271825,
+        "sha256": "c708c91f3196b80ada4cfc955d11aa027cb55f7ef096908ad0a8e336e50bb745"
+      },
+      "after": {
+        "path": "docs/audit/IMPROVEMENTS.md",
+        "bytes": 273936,
+        "sha256": "601d076c81877d25ae34aecd24acad24c9ccdae4346456505a77f1a3f45b2ca5"
+      },
+      "original_suffix_preserved_verbatim": true,
+      "prefix_was_run01_input": false,
+      "prior_text_is_archive_not_current_status": true
+    }
+  ],
+  "prior_current_sections_not_deleted_or_relabelled_as_R8": true,
+  "canonical_capability_ledger": {
+    "path": "docs/audit/evidence/capability-reconciliation-07B39R8.json",
+    "bytes": 297464,
+    "sha256": "26765a1151ee127f57f5deb9cd6e59e4290e4593adca2c0906a5d28dd1c0d603"
+  },
+  "validation_status_supplement": {
+    "path": "docs/audit/evidence/validation-status-supplement-07B39R8.json",
+    "bytes": 6209,
+    "sha256": "5db3221934f7f56063d86d49690970a18385091241d3cb41e12712a12ef636f4"
+  },
+  "current_phase": {
+    "path": "docs/audit/PHASE-07B39R8.md",
+    "bytes": 11957,
+    "sha256": "c357112729f69e34d581b5ec72ff4845acef59d065289313dc3a955ffa723d91"
+  },
+  "current_validation": {
+    "path": "docs/audit/VALIDATION-07B39R8.md",
+    "bytes": 9652,
+    "sha256": "da5ba30988ba1d79ae86f5edda744ec826d68a51e25663179acec6df01dd7247"
+  },
+  "current_source_review": {
+    "path": "docs/audit/SOURCE-REVIEW-07B39R8.md",
+    "bytes": 18718,
+    "sha256": "5c6a477f5ae0f55a018480308a34ce05512aec04f5b83305ba6f00aed6d7e085"
+  },
+  "reference_date_note": {
+    "path": "docs/audit/evidence/reference-date-provenance-07B39R8.json",
+    "bytes": 2807,
+    "sha256": "f0368162e0658e7d306bfcfdaf910c978d5d6186e031af175c795716f2ee232b"
+  }
+}

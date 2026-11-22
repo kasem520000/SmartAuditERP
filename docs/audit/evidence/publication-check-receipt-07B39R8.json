@@ -1,0 +1,211 @@
+{
+  "schema_version": 1,
+  "kind": "actual-postpublication-R8-guards-not-unittest-or-run01-recapture",
+  "assessment_reference_date_utc": "2026-11-21",
+  "session_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "requested_reference_label_is_claim_about_today": false,
+  "base_HEAD": "b642fe80dfb4bca3a6b218faf82d07ec42dd3d8c",
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "capability_exit_certificates_issued": 0,
+  "four_family_exit_certificates_issued": 0,
+  "new_accepted_external_handoffs": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "prior196_tests_recertified": false,
+  "R2_R3_files_recovered": false,
+  "records": [
+    {
+      "id": "R8-integrity",
+      "argv": [
+        "/usr/bin/python",
+        "-B",
+        "-W",
+        "error::ResourceWarning",
+        "docs/audit/tools/disposition07b/verify_linked_activity.py",
+        "--verify",
+        "--rederive"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "expected_exit_matched": true,
+      "wall_seconds": 6.422585,
+      "stdout": {
+        "path": "docs/audit/evidence/publication-check-R8-integrity-07B39R8.stdout.txt",
+        "bytes": 762,
+        "sha256": "a187ab6ce33770ab9328d65c18c08c91801c803cde9424a87fc279c2b61f663e"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/publication-check-R8-integrity-07B39R8.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "parsed_stdout": {
+        "schema_version": 1,
+        "errors": [],
+        "selected_complete_method_contexts": 209,
+        "source_identities": 32,
+        "original_LastProcess_calls": 19,
+        "original_linked_insert_calls": 11,
+        "original_pending_linked_bodies_read": 3,
+        "report_reopen_query_sites": 14,
+        "source_decisions": 11,
+        "capability_exit_certificates_issued": 0,
+        "four_family_exit_certificates_issued": 0,
+        "new_accepted_external_handoffs": 0,
+        "whole_7B_static_assessment_complete": false,
+        "application_execution_count": 0,
+        "phase7C_started": false,
+        "phase8_authorized": false,
+        "limit": "Recorded source/evidence/coverage guards, not actual reading, calendar, WPF timing, DTO behavior, all Save/allowed-edit/document sets, runtime, financial or whole-capability acceptance."
+      },
+      "is_unittest_suite": false,
+      "new_ERP_or_SQL_execution": false
+    },
+    {
+      "id": "R8-open-gate",
+      "argv": [
+        "/usr/bin/python",
+        "-B",
+        "-W",
+        "error::ResourceWarning",
+        "docs/audit/tools/disposition07b/verify_linked_activity.py",
+        "--verify",
+        "--require-complete",
+        "--rederive"
+      ],
+      "cwd": ".",
+      "exit_code": 2,
+      "expected_exit": 2,
+      "expected_exit_matched": true,
+      "wall_seconds": 6.246745,
+      "stdout": {
+        "path": "docs/audit/evidence/publication-check-R8-open-gate-07B39R8.stdout.txt",
+        "bytes": 762,
+        "sha256": "a187ab6ce33770ab9328d65c18c08c91801c803cde9424a87fc279c2b61f663e"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/publication-check-R8-open-gate-07B39R8.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "parsed_stdout": {
+        "schema_version": 1,
+        "errors": [],
+        "selected_complete_method_contexts": 209,
+        "source_identities": 32,
+        "original_LastProcess_calls": 19,
+        "original_linked_insert_calls": 11,
+        "original_pending_linked_bodies_read": 3,
+        "report_reopen_query_sites": 14,
+        "source_decisions": 11,
+        "capability_exit_certificates_issued": 0,
+        "four_family_exit_certificates_issued": 0,
+        "new_accepted_external_handoffs": 0,
+        "whole_7B_static_assessment_complete": false,
+        "application_execution_count": 0,
+        "phase7C_started": false,
+        "phase8_authorized": false,
+        "limit": "Recorded source/evidence/coverage guards, not actual reading, calendar, WPF timing, DTO behavior, all Save/allowed-edit/document sets, runtime, financial or whole-capability acceptance."
+      },
+      "is_unittest_suite": false,
+      "new_ERP_or_SQL_execution": false
+    },
+    {
+      "id": "B38-integrity",
+      "argv": [
+        "/usr/bin/python",
+        "-B",
+        "-W",
+        "error::ResourceWarning",
+        "docs/audit/tools/census07b/validate_7b_completion.py",
+        "--reparse"
+      ],
+      "cwd": ".",
+      "exit_code": 0,
+      "expected_exit": 0,
+      "expected_exit_matched": true,
+      "wall_seconds": 4.883253,
+      "stdout": {
+        "path": "docs/audit/evidence/publication-check-B38-integrity-07B39R8.stdout.txt",
+        "bytes": 2909,
+        "sha256": "8dc180b782c9433babf7361ee8e88b3509406513e2142627a6c2a2f77399d016"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/publication-check-B38-integrity-07B39R8.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "parsed_stdout": {
+        "audit_reference_date_utc": "2026-11-16",
+        "application_baseline": "10ba215152f722c8808aea0bb672c1d1d4d9d711",
+        "integrity_errors": [],
+        "integrity_check_groups": [
+          "827-originals/335-registry/1226-protected/139-legacy-tools",
+          "syntax-discovery-is-not-semantic-review",
+          "26-proposed-semantic-workstreams-and6-unapproved-handoffs",
+          "all797-FE-file-row-provenance-not797-unique-capabilities",
+          "55-historical-seeds-and-inclusive-singleton-range-union",
+          "49-direct-modal-sites-in47-manually-reviewed-owner-contexts",
+          "RS14/SP3-full-ancestry-inputs-contracts-and-open-dispositions",
+          "integrity-success-is-separate-from-fail-closed-completion-gate"
+        ],
+        "integrity_ok": true,
+        "closure": {
+          "whole_7B_complete": false,
+          "blockers": [
+            "scope_approval-not-approved",
+            "external_handoff_acceptance-not-approved",
+            "whole_family_approval-not-approved",
+            "all_local_semantic_obligations_complete-not-proven",
+            "all_required_candidates_dispositioned-not-proven",
+            "all_open_observations_adjudicated-not-proven",
+            "capability-local-obligations-open",
+            "whole-capability-decisions-open"
+          ],
+          "meaning": "Static-audit closure only; never ERP, financial, repair or deployment acceptance."
+        },
+        "counts": {
+          "originals": 827,
+          "findings_unchanged": 335,
+          "protected_consumed_artifacts": 1226,
+          "legacy_top_level_python_tools_unchanged": 139,
+          "all_recursive_audit_python_tools": 158,
+          "historical_FE_rows": 797,
+          "proposed_semantic_workstreams_not_agreed": 26,
+          "source_CSharp_syntax_files": 477,
+          "source_XAML_XML_files": 277,
+          "discovery_candidates_not_semantically_dispositioned": 4409,
+          "historical_seed_screens_not_denominator": 55,
+          "direct_modal_sites_reviewed": 49,
+          "distinct_modal_owner_contexts": 47,
+          "current_review_scope_paths": 43
+        },
+        "fresh_full_in_memory_reparse_compared": true,
+        "new_checker_source_sha256": {
+          "tools/census07b/build_7b_census.py": "c9aad76050aee0feaec45f82b062e1cb8a97fc7d1bd445cf615d8ba8409638a9",
+          "tools/census07b/test_7b_completion.py": "56a6fffdbd2375c0d8a98067c2ce3d54b5ddd5c53441221a88774c340ab00bc6",
+          "tools/census07b/validate_7b_completion.py": "3622ef297cf334bb3896e04ff66c19c9ba0ced725e20a876a831b0c3d848500e"
+        },
+        "legacy_dispatcher_modified": false,
+        "ERP_or_SQL_runtime_tests_executed": 0,
+        "application_remediation_performed": false,
+        "phase_7C_started": false,
+        "phase_8_authorized": false,
+        "limits": [
+          "All797 rows have exact lineage, not797 distinct capabilities or fresh source reviews.",
+          "Syntax discovery, name matching and historical range union do not prove semantic completeness.",
+          "Readily reviewable local work remains local; external contracts do not excuse local omissions.",
+          "No complete7B/7, runtime, repair synchronization, financial, SDK/template or deployment acceptance."
+        ]
+      },
+      "is_unittest_suite": false,
+      "new_ERP_or_SQL_execution": false
+    }
+  ],
+  "new_unittest_cases": 0,
+  "run01_rewritten": false,
+  "all_expected_guard_exits_matched": true
+}

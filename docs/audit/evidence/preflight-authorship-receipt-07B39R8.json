@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "kind": "preserved-own-pre-capture-authorship-preflight-failure-not-ERP-failure",
+  "assessment_reference_date_utc": "2026-11-21",
+  "raw_clocks_are_calendar_authority": false,
+  "application_execution_count": 0,
+  "command": [
+    "python",
+    "-B",
+    "-W",
+    "error::ResourceWarning",
+    "-m",
+    "unittest",
+    "-v",
+    "test_linked_activity"
+  ],
+  "actual_exit_code": 1,
+  "reported_tests": 93,
+  "reported_unittest_seconds": 14.286,
+  "status_counts": {
+    "ok": 91,
+    "FAIL": 2,
+    "ERROR": 0
+  },
+  "raw_per_command_clocks_not_captured": true,
+  "individual_clock_values_invented": false,
+  "failure_assertions_verbatim": [
+    "AssertionError: 'conflicts' not found in 'Literal1 contradicts this actual fixed2 supplier loader. Root P7-129; not generalized to modern purchase017.'",
+    "AssertionError: 0 != 1 : Mutate actual selected source, not a synthetic ERP implementation"
+  ],
+  "stdout": {
+    "path": "docs/audit/evidence/preflight-authorship-07B39R8.stdout.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "stderr": {
+    "path": "docs/audit/evidence/preflight-authorship-07B39R8.stderr.txt",
+    "bytes": 17472,
+    "sha256": "dbd8ba5f748d177197aa8b2c6b08d8adf0a1100eb90bf1b05c15dea46363eeb3"
+  },
+  "pre_correction_authored_snapshot": {
+    "path": "docs/audit/evidence/preflight-authored-snapshot-07B39R8.tar.gz",
+    "bytes": 432377,
+    "sha256": "91db5dd233955b8de649b4550e5f13e5c48dc9a2bc4b74a9bea3360d723223dd",
+    "members": 10,
+    "member_paths": [
+      "docs/audit/evidence/entry-identities-07B39R8.json",
+      "docs/audit/evidence/linked-activity-call-matrix-07B39R8.json",
+      "docs/audit/evidence/linked-activity-dispositions-07B39R8.json",
+      "docs/audit/evidence/linked-activity-local-worklist-07B39R8.json",
+      "docs/audit/evidence/linked-activity-root-adjudication-07B39R8.json",
+      "docs/audit/evidence/linked-activity-source-facts-07B39R8.json",
+      "docs/audit/evidence/linked-activity-source-review-log-07B39R8.json",
+      "docs/audit/evidence/reference-date-provenance-07B39R8.json",
+      "docs/audit/tools/disposition07b/test_linked_activity.py",
+      "docs/audit/tools/disposition07b/verify_linked_activity.py"
+    ]
+  },
+  "snapshot_is_full_preflight_before_after_input_telemetry": false,
+  "cause": "Two newly authored R8 fixture assertions: wording expected conflicts while authored disposition says contradicts; constructor mutation needle missed actual aligned whitespace. Neither is an ERP/application failure, a historical suite change, nor discarded evidence.",
+  "next_changes": "Correct those two new fixture needles without changing case count or application sources; strengthen the already-passing configure/show mutation to move one actual call rather than duplicate Show. Frozen R1/R4/R5/R6/R7/B38 tools/suites/streams remain untouched. Later runNN has its own exact capture.",
+  "future_green_relabels_this_preflight": false,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false
+}

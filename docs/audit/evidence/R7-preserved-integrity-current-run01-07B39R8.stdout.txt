@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "errors": [],
+  "selected_complete_method_contexts": 177,
+  "selected_source_identities": 48,
+  "original_entry_calls_disposed": 7,
+  "five_original_pending_bodies_read": 5,
+  "dispatcher_navigate_sites": 17,
+  "distinct_receiver_types": 14,
+  "capability_exit_certificates_issued": 0,
+  "four_family_exit_certificates_issued": 0,
+  "whole_7B_static_assessment_complete": false,
+  "application_execution_count": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "limit": "Recorded source assertions/identity/coverage only; not reading, calendar, WPF order, all local helpers, deployed schema, authorization, runtime, financial or whole-capability acceptance."
+}
