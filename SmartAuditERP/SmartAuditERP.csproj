@@ -9,6 +9,9 @@
          الصريح يوثق الاعتماد ويضمن توفر الأنواع بدل الاعتماد الضمني. -->
     <UseWindowsForms>true</UseWindowsForms>
     <Platforms>AnyCPU;x86</Platforms>
+    <!-- P1-001 fix: مسار مكتبات الأطراف الخارجية قابل للتهيئة (افتراضي كما كان)؛
+         ضع ExternalLibsDir=... عند البناء أو عبر مجلد libs/ لاحقاً. -->
+    <ExternalLibsDir Condition="'$(ExternalLibsDir)' == ''">..\..\المكاتب</ExternalLibsDir>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,6 +27,8 @@
     <PackageReference Include="Nancy" Version="2.0.0" />
     <PackageReference Include="System.Management" Version="10.0.7" />
     <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
+    <!-- P1-001 fix: كان مرجعاً مطلقاً لمسار مستخدم محلي — الآن حزمة معلنة -->
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,130 +48,127 @@
 
   <ItemGroup>
     <Reference Include="AuditorAPI">
-      <HintPath>..\..\المكاتب\AuditorAPI.exe</HintPath>
+      <HintPath>$(ExternalLibsDir)\AuditorAPI.exe</HintPath>
     </Reference>
     <Reference Include="BouncyCastle.Crypto">
-      <HintPath>..\..\المكاتب\BouncyCastle.Crypto.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
     <Reference Include="drHamiedNotify">
-      <HintPath>..\..\المكاتب\drHamiedNotify.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\drHamiedNotify.dll</HintPath>
     </Reference>
     <Reference Include="EASendMail">
-      <HintPath>..\..\المكاتب\EASendMail.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\EASendMail.dll</HintPath>
     </Reference>
     <Reference Include="ECRPaymentsAPI">
-      <HintPath>..\..\المكاتب\ECRPaymentsAPI.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\ECRPaymentsAPI.dll</HintPath>
     </Reference>
     <Reference Include="ETA_Invoice">
-      <HintPath>..\..\المكاتب\ETA_Invoice.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\ETA_Invoice.dll</HintPath>
     </Reference>
     <Reference Include="ExcelDataReader">
-      <HintPath>..\..\المكاتب\ExcelDataReader.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\ExcelDataReader.dll</HintPath>
     </Reference>
     <Reference Include="ExcelDataReader.DataSet">
-      <HintPath>..\..\المكاتب\ExcelDataReader.DataSet.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\ExcelDataReader.DataSet.dll</HintPath>
     </Reference>
     <Reference Include="FastMember">
-      <HintPath>..\..\المكاتب\FastMember.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\FastMember.dll</HintPath>
     </Reference>
     <Reference Include="FontAwesome.Sharp">
-      <HintPath>..\..\المكاتب\FontAwesome.Sharp.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\FontAwesome.Sharp.dll</HintPath>
     </Reference>
     <Reference Include="GenCode128">
-      <HintPath>..\..\المكاتب\GenCode128.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\GenCode128.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>..\..\المكاتب\ICSharpCode.SharpZipLib.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\ICSharpCode.SharpZipLib.dll</HintPath>
     </Reference>
     <Reference Include="itextsharp">
-      <HintPath>..\..\المكاتب\itextsharp.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\itextsharp.dll</HintPath>
     </Reference>
     <Reference Include="JWT">
-      <HintPath>..\..\المكاتب\JWT.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\JWT.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\..\المكاتب\log4net.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\log4net.dll</HintPath>
     </Reference>
     <Reference Include="M2Mqtt.Net">
-      <HintPath>..\..\المكاتب\M2Mqtt.Net.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\M2Mqtt.Net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AspNet.SignalR.Client">
-      <HintPath>..\..\المكاتب\Microsoft.AspNet.SignalR.Client.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\Microsoft.AspNet.SignalR.Client.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.SqlServer.ConnectionInfo">
-      <HintPath>..\..\المكاتب\Microsoft.SqlServer.ConnectionInfo.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\Microsoft.SqlServer.ConnectionInfo.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.SqlServer.ConnectionInfoExtended">
-      <HintPath>..\..\المكاتب\Microsoft.SqlServer.ConnectionInfoExtended.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\Microsoft.SqlServer.ConnectionInfoExtended.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic.PowerPacks.Vs">
-      <HintPath>..\..\المكاتب\Microsoft.VisualBasic.PowerPacks.Vs.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\Microsoft.VisualBasic.PowerPacks.Vs.dll</HintPath>
     </Reference>
     <Reference Include="neoleapconnector">
-      <HintPath>..\..\المكاتب\neoleapconnector.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\neoleapconnector.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\المكاتب\Newtonsoft.Json.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PdfSharp">
-      <HintPath>..\..\المكاتب\PdfSharp.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\PdfSharp.dll</HintPath>
     </Reference>
     <Reference Include="PdfSharp.Charting">
-      <HintPath>..\..\المكاتب\PdfSharp.Charting.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\PdfSharp.Charting.dll</HintPath>
     </Reference>
     <Reference Include="Pkcs11Interop">
-      <HintPath>..\..\المكاتب\Pkcs11Interop.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\Pkcs11Interop.dll</HintPath>
     </Reference>
     <Reference Include="QLicense">
-      <HintPath>..\..\المكاتب\QLicense.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\QLicense.dll</HintPath>
     </Reference>
     <Reference Include="QRCoder">
-      <HintPath>..\..\المكاتب\QRCoder.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\QRCoder.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp">
-      <HintPath>..\..\المكاتب\RestSharp.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="saxon-he-10.8">
-      <HintPath>..\..\المكاتب\saxon-he-10.8.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\saxon-he-10.8.dll</HintPath>
     </Reference>
     <Reference Include="saxon-he-api-10.8">
-      <HintPath>..\..\المكاتب\saxon-he-api-10.8.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Data.SqlClient">
-      <HintPath>C:\Users\Al-Bara Qasem\.nuget\packages\system.data.sqlclient\4.8.6\ref\netcoreapp2.1\System.Data.SqlClient.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\saxon-he-api-10.8.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.Extensions">
-      <HintPath>..\..\المكاتب\System.Net.Http.Extensions.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\System.Net.Http.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.Formatting">
-      <HintPath>..\..\المكاتب\System.Net.Http.Formatting.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http.Primitives">
-      <HintPath>..\..\المكاتب\System.Net.Http.Primitives.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\System.Net.Http.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="Twilio">
-      <HintPath>..\..\المكاتب\Twilio.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\Twilio.dll</HintPath>
     </Reference>
     <Reference Include="UtilitiesProj">
-      <HintPath>..\..\المكاتب\UtilitiesProj.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\UtilitiesProj.dll</HintPath>
     </Reference>
     <Reference Include="WebDriver">
-      <HintPath>..\..\المكاتب\WebDriver.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\WebDriver.dll</HintPath>
     </Reference>
     <Reference Include="WebDriver.Support">
-      <HintPath>..\..\المكاتب\WebDriver.Support.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\WebDriver.Support.dll</HintPath>
     </Reference>
     <Reference Include="websocket-sharp">
-      <HintPath>..\..\المكاتب\websocket-sharp.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\websocket-sharp.dll</HintPath>
     </Reference>
     <Reference Include="WhatsAppApi">
-      <HintPath>..\..\المكاتب\WhatsAppApi.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\WhatsAppApi.dll</HintPath>
     </Reference>
     <Reference Include="Ws_Auditor">
-      <HintPath>..\..\المكاتب\Ws_Auditor.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\Ws_Auditor.dll</HintPath>
     </Reference>
     <Reference Include="ZatcaIntegrationSDK">
-      <HintPath>..\..\المكاتب\ZatcaIntegrationSDK.dll</HintPath>
+      <HintPath>$(ExternalLibsDir)\ZatcaIntegrationSDK.dll</HintPath>
     </Reference>
   </ItemGroup>
 
