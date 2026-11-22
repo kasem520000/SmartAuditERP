@@ -55,6 +55,24 @@ namespace SmartAuditERP
             }
         }
 
+        // P3-012 fix: الحسابات ذات الرصيد الطبيعي الدائن (الضريبة المستحقة/
+        // الإضافات/التأمين): زيادتها دائن ونقصها مدين — عقد التوأم أندرويد
+        // المعتمد (ClosShiftAndroid 1350-1433/1416/1446). كان المكتبي يبنيها
+        // عبر SetDebtCredit فيضع زيادتها في الجانب المدين — عكساً كاملاً
+        private static void SetCreditDebt(Account account, double amount)
+        {
+            if (amount > 0.0)
+            {
+                account.Credit = FormatAmount(amount);
+                account.Debt = 0.0;
+            }
+            else if (amount < 0.0)
+            {
+                account.Credit = 0.0;
+                account.Debt = FormatAmount(-1.0 * amount);
+            }
+        }
+
         #endregion
 
         #region BindInvoiceToEntry
@@ -542,7 +560,11 @@ namespace SmartAuditERP
                         }
                         else
                         {
-                            madaTotal += detail.Mada;
+                            // P3-013 fix: مرتجع الشبكة يُطرد من إجمالي الشبكة
+                            // لا يُضاف إليه — كان يُجمع مع المبيعات فيتضخم
+                            // سطر الشبكة في قيد الإغلاق (نفس نمط البنوك أعلاه:
+                            // bankEntry.Amount -= detail.Mada)
+                            madaTotal -= detail.Mada;
                         }
 
                         vatTotal -= (decimal)vatAmount;
@@ -587,6 +609,22 @@ namespace SmartAuditERP
                         Note = note
                     };
                     SetDebtCredit(acc, amount);
+                    list.Add(acc);
+                }
+
+                // P3-012 fix: دالة الحسابات الدائنة الطبيعية — زيادتها دائن
+                void AddLiabilityAccount(string code, string name, double amount, string note, string cc)
+                {
+                    Account acc = new Account
+                    {
+                        EntryGlobalID = entry.EntryGlobalID,
+                        EntryNo = entry.EntryNo,
+                        Name = name,
+                        Code = code,
+                        CCcode = cc,
+                        Note = note
+                    };
+                    SetCreditDebt(acc, amount);
                     list.Add(acc);
                 }
 
@@ -677,7 +715,8 @@ namespace SmartAuditERP
                 if (extraVAT != 0m)
                 {
                     string evName = Common.GetAccountName(int.Parse("2222002"));
-                    AddAccount("2222002", evName,
+                    // P3-012 fix: زيادتها دائن (كانت تُبنى مديناً)
+                    AddLiabilityAccount("2222002", evName,
                         Convert.ToDouble(extraVAT),
                         $"الضريبة الإنتقائية{employeeName}{noteEmp}",
                         (-1).ToString());
@@ -688,7 +727,8 @@ namespace SmartAuditERP
                 {
                     double vatVal = Convert.ToDouble(vatTotal - extraVAT);
                     string vatName = Common.GetAccountName(int.Parse("2222001"));
-                    AddAccount("2222001", vatName, vatVal,
+                    // P3-012 fix: زيادتها دائن (كانت تُبنى مديناً)
+                    AddLiabilityAccount("2222001", vatName, vatVal,
                         $" الضريبة المضافة {employeeName}{noteEmp}",
                         (-1).ToString());
                 }
@@ -697,7 +737,8 @@ namespace SmartAuditERP
                 if (additions != 0m)
                 {
                     string addName = Common.GetAccountName(int.Parse("4200002"));
-                    AddAccount("4200002", addName,
+                    // P3-012 fix: زيادتها دائن (كانت تُبنى مديناً)
+                    AddLiabilityAccount("4200002", addName,
                         Convert.ToDouble(additions),
                         $" إضافات {employeeName}{noteEmp}",
                         (-1).ToString());
@@ -707,7 +748,8 @@ namespace SmartAuditERP
                 if (insurance != 0m)
                 {
                     string insName = Common.GetAccountName(int.Parse("22210001"));
-                    AddAccount("22210001", insName,
+                    // P3-012 fix: زيادتها دائن (كانت تُبنى مديناً)
+                    AddLiabilityAccount("22210001", insName,
                         Convert.ToDouble(insurance),
                         $" تأمين {employeeName}{noteEmp}",
                         (-1).ToString());

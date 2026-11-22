@@ -1091,7 +1091,9 @@ namespace SmartAuditERP.Form_WPF
                             }
                             else
                             {
-                                totalNetworkSales = decimal.Add(totalNetworkSales, closeShiftDetail.Mada);
+                                // P3-013 fix: مرتجع الشبكة يُطرح من إجمالي الشبكة لا
+                                // يُضاف — نفس نمط البنوك في الفرع أعلاه
+                                totalNetworkSales = decimal.Subtract(totalNetworkSales, closeShiftDetail.Mada);
                             }
 
                             totalVAT = new decimal(Convert.ToDouble(totalVAT) - calculatedVAT);

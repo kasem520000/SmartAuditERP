@@ -1916,6 +1916,22 @@ namespace SmartAuditERP.Form_WPF
                 if (cashMinusReturn -
                     Convert.ToDouble(closeData.CasherValue) > 0.0)
                 {
+                    // P3-016 fix (1): الاستقطاع يُنسب لصاحب الوردية لا لمنفذ
+                    // إعادة الإغلاق (كان MainClass.EmpNo = المنفذ/المدير)
+                    // P3-016 fix (2): هوية الإغلاق في الملاحظة + حذف استقطاع
+                    // الإغلاق نفسه قبل الإدراج = كل إعادة إغلاق تترك استقطاعاً
+                    // واحداً محدثاً لا تكدساً (كانت تضيف صفاً جديداً كل مرة)
+                    string deficitNote =
+                        "عجز اغلاق الوردية " + reCloseData.GlobalID;
+
+                    SqlCommand delOldDeficit = new SqlCommand(
+                        "DELETE FROM EmpSalaryAddSub " +
+                        "WHERE type = 3 AND notes = @notes",
+                        conn, transaction);
+                    delOldDeficit.Parameters.AddWithValue(
+                        "@notes", deficitNote);
+                    delOldDeficit.ExecuteNonQuery();
+
                     SqlCommand salaryCmd = new SqlCommand(
                         "INSERT INTO EmpSalaryAddSub " +
                         "(emp, type, date, val, notes, user_id, IS_Deleted) " +
@@ -1923,13 +1939,13 @@ namespace SmartAuditERP.Form_WPF
                         conn, transaction);
 
                     salaryCmd.Parameters.AddWithValue(
-                        "@emp", MainClass.EmpNo);
+                        "@emp", reCloseData.EmpId);
                     salaryCmd.Parameters.AddWithValue(
                         "@date", DateTime.Now);
                     salaryCmd.Parameters.AddWithValue("@val",
                         $"{cashMinusReturn - Convert.ToDouble(closeData.CasherValue):0.#,##.##}");
                     salaryCmd.Parameters.AddWithValue(
-                        "@notes", "عجز اغلاق الوردية");
+                        "@notes", deficitNote);
                     salaryCmd.ExecuteNonQuery();
                 }
 
@@ -2128,8 +2144,34 @@ namespace SmartAuditERP.Form_WPF
                             Convert.ToDateTime(dataTable.Rows[0]["date1"]);
                 }
 
-                LoadCloseShiftSetting();
-                return true;
+                // P3-014 fix: القرار الفعلي بعدد الفواتير الجديدة بعد آخر إغلاق —
+                // كانت الدالة تعيد true دائماً فتقرر كل مسارات الإغلاق اليومي
+                // «لا فواتير» ولا يكتمل الحفظ أبداً من Home وPOS والمحررات
+                string countQuery = closeType == 1
+                    ? "SELECT COUNT(*) FROM Inv WHERE " +
+                      (MainClass.BranchNo != -1
+                          ? "inv.branch = @Branch AND " : "") +
+                      "inv.sales_emp = @Emp AND inv.inv_type = 3 AND " +
+                      "inv.pay_type <> -1 AND inv.pay_type <> 5 AND " +
+                      "Inv.IS_Deleted = 0 AND Inv.date > @LastClose AND Inv.date <= @Now"
+                    : "SELECT COUNT(*) FROM RentInvoice WHERE IS_Deleted = 0 " +
+                      "AND sales_emp = @Emp AND date > @LastClose AND date <= @Now";
+
+                using (SqlCommand countCmd = new SqlCommand(countQuery, conn))
+                {
+                    countCmd.Parameters.AddWithValue("@Emp", MainClass.EmpNo);
+                    if (MainClass.BranchNo != -1)
+                        countCmd.Parameters.AddWithValue("@Branch", MainClass.BranchNo);
+                    countCmd.Parameters.AddWithValue("@LastClose",
+                        MainClass.lastCashercloseDate);
+                    countCmd.Parameters.AddWithValue("@Now", DateTime.Now);
+                    int newInvoices = Convert.ToInt32(countCmd.ExecuteScalar());
+
+                    LoadCloseShiftSetting();
+                    // لا فواتير جديدة = true (منع الإغلاق الفارغ)؛ وجدت فواتير
+                    // بعد آخر إغلاق = false (نفّذ الإغلاق)
+                    return newInvoices == 0;
+                }
             }
             catch
             {
@@ -2214,7 +2256,8 @@ namespace SmartAuditERP.Form_WPF
                 closeShift.Net = 0m;
                 closeShift.VATNet = 0m;
 
-                string sqlQuery = BuildGetCloseDataQuery(closeType, empId);
+                string sqlQuery = BuildGetCloseDataQuery(
+                    closeType, empId, fromDate, toDate);
 
                 SqlDataAdapter adapter =
                     new SqlDataAdapter(sqlQuery, conn1);
@@ -2247,18 +2290,46 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
-        private string BuildGetCloseDataQuery(int closeType, int empId)
+        private string BuildGetCloseDataQuery(
+            int closeType,
+            int empId,
+            DateTime fromDate,
+            DateTime toDate)
         {
             if (closeType == 1)
             {
                 EnsureConnectionOpen(conn1);
 
-                new SqlCommand(
-                    $"UPDATE [Inv] SET cash = tot_net " +
-                    $"WHERE cash > tot_net AND " +
-                    $"(Inv_type = 2 OR Inv_type = 3) AND " +
-                    $"sales_emp = {empId}",
-                    conn1).ExecuteNonQuery();
+                // P3-015 fix: تسوية نقدية الفواتير كانت UPDATE سابحة بلا فرع
+                // ولا مدى ولا معاملة — تعدّل فواتير الموظف في كل الفروع وكل
+                // التواريخ عند كل احتساب إغلاق/إعادة إغلاق؛ الآن مقيّدة
+                // بفرع الجلسة ونطاق الإغلاق وموظف الوردية، معلْمَة، ومع
+                // استبعاد المحذوف، وتُنفذ في معاملة قصيرة مستقلة
+                SqlTransaction clampTx = conn1.BeginTransaction();
+                try
+                {
+                    using SqlCommand clampCmd = new SqlCommand(
+                        "UPDATE [Inv] SET cash = tot_net " +
+                        "WHERE cash > tot_net AND " +
+                        "(Inv_type = 2 OR Inv_type = 3) AND " +
+                        (MainClass.BranchNo != -1 ? "branch = @Branch AND " : "") +
+                        "sales_emp = @Emp AND " +
+                        "Inv.date >= @Date1 AND Inv.date <= @Date2 AND " +
+                        "Inv.IS_Deleted = 0",
+                        conn1, clampTx);
+                    clampCmd.Parameters.AddWithValue("@Emp", empId);
+                    if (MainClass.BranchNo != -1)
+                        clampCmd.Parameters.AddWithValue("@Branch", MainClass.BranchNo);
+                    clampCmd.Parameters.AddWithValue("@Date1", fromDate);
+                    clampCmd.Parameters.AddWithValue("@Date2", toDate);
+                    clampCmd.ExecuteNonQuery();
+                    clampTx.Commit();
+                }
+                catch
+                {
+                    clampTx.Rollback();
+                    throw;
+                }
 
                 return "SELECT Inv.inv_type AS InvType, Inv.proc_type AS ProcType, " +
                        "pay_type AS Paytype, inv.VATPercent, 1 AS PaymentStatus, " +
