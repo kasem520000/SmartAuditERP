@@ -1142,6 +1142,21 @@ namespace SmartAuditERP.Form_WPF
                     ConnectBroker._passcode = Home._passcode;
                     ConnectBroker.connString = MainClass.connstr;
                     ConnectBroker._IpServer = row["IpServer"].ToString();
+                    // P1-014 fix: تحميل إعدادات أمان الوسيط إن وُجدت (أعمدة اختيارية بأمان)
+                    if (row.Table.Columns.Contains("MqttPort"))
+                    {
+                        int.TryParse(row["MqttPort"]?.ToString(), out int mqttPort);
+                        if (mqttPort > 0) ConnectBroker._mqttPort = mqttPort;
+                    }
+                    if (row.Table.Columns.Contains("MqttUseTls"))
+                    {
+                        bool.TryParse(row["MqttUseTls"]?.ToString(), out bool mqttTls);
+                        ConnectBroker._mqttUseTls = mqttTls;
+                    }
+                    if (row.Table.Columns.Contains("MqttUser"))
+                        ConnectBroker._mqttUser = row["MqttUser"]?.ToString() ?? "";
+                    if (row.Table.Columns.Contains("MqttPass"))
+                        ConnectBroker._mqttPass = row["MqttPass"]?.ToString() ?? "";
                     ConnectBroker._syncItems = Convert.ToBoolean(row["syncItems"]);
                     ConnectBroker._syncOper = Convert.ToBoolean(row["syncOper"]);
                     ConnectBroker._syncDefinitions = Convert.ToBoolean(row["syncDefinitions"]);

@@ -699,16 +699,58 @@ namespace SmartAuditERP.Form_WPF
             if (!File.Exists(localFile))
                 return;
 
+            // P1-015 fix: أُزيل خادم FTP الثابت واعتماده الصلب المنشوران في المصدر
+            // (173.212.208.114 / backup_user / PASSWORD). الرفع معطل حتى يُهيأ الخادم
+            // والاعتماد في إعدادات المستخدم (BackupFtpHost/User/PassEnc) — كلمة المرور
+            // مخزنة DPAPI. فشل التهيئة أو فشل التفاوض يسجل ولا يبتلع.
             try
             {
+                string host = Properties.Settings.Default.BackupFtpHost;
+                string user = Properties.Settings.Default.BackupFtpUser;
+                string passEnc = Properties.Settings.Default.BackupFtpPassEnc;
+                bool useTls = Properties.Settings.Default.BackupFtpUseTls;
+
+                if (string.IsNullOrWhiteSpace(host) ||
+                    string.IsNullOrWhiteSpace(user) ||
+                    string.IsNullOrWhiteSpace(passEnc))
+                {
+                    // غير مُهيأ — لا رفع (fail-closed). لا نستخدم أي اعتماد مضمن.
+                    System.Diagnostics.Trace.WriteLine(
+                        "BACKUP-FTP skipped: not configured (host/user/password).");
+                    return;
+                }
+
+                string password = Class.Security.SecretProtector.Unprotect(passEnc);
+                if (string.IsNullOrEmpty(password))
+                {
+                    System.Diagnostics.Trace.WriteLine(
+                        "BACKUP-FTP skipped: stored password unreadable (DPAPI).");
+                    return;
+                }
+
+                if (!host.StartsWith("ftp://", StringComparison.OrdinalIgnoreCase) &&
+                    !host.StartsWith("ftps://", StringComparison.OrdinalIgnoreCase))
+                {
+                    host = "ftp://" + host;
+                }
+
                 FtpWebRequest request = (FtpWebRequest)WebRequest.Create(
-                    $"ftp://173.212.208.114/Client_{MainClass.Database}/{System.IO.Path.GetFileName(localFile)}");
+                    $"{host}/Client_{MainClass.Database}/{System.IO.Path.GetFileName(localFile)}");
 
                 request.Method = WebRequestMethods.Ftp.UploadFile;
-                request.Credentials = new NetworkCredential("backup_user", "PASSWORD");
+                request.Credentials = new NetworkCredential(user, password);
                 request.UseBinary = true;
                 request.UsePassive = true;
                 request.KeepAlive = false;
+
+                // P1-015 fix: طلب TLS (FTPS) — الافتراضي مفعل ويمكن تعطيله صراحة
+                // للخوادم القديمة مع تسجيل التحذير.
+                request.EnableSsl = useTls;
+                if (!useTls)
+                {
+                    System.Diagnostics.Trace.WriteLine(
+                        "BACKUP-FTP WARNING: TLS disabled by setting — credentials sent in clear.");
+                }
 
                 byte[] fileContents = File.ReadAllBytes(localFile);
                 request.ContentLength = fileContents.Length;
@@ -718,7 +760,12 @@ namespace SmartAuditERP.Form_WPF
                     requestStream.Write(fileContents, 0, fileContents.Length);
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // P1-015 fix: لا ابتلاع صامت لفشل رفع نسخة احتياطية
+                System.Diagnostics.Trace.WriteLine(
+                    "BACKUP-FTP failed: " + ex.Message);
+            }
         }
 
         #endregion

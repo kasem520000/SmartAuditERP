@@ -1,4 +1,4 @@
-﻿﻿﻿<?xml version="1.0" encoding="utf-8"?>
+﻿﻿﻿﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -51263,6 +51263,31 @@ If Not EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
 WHERE TABLE_NAME ='Users' AND COLUMN_NAME='pwd_hash')
 BEGIN 
 ALTER TABLE Users Add pwd_hash nvarchar(512) null
+End
+GO
+
+If Not EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME ='SettingSync' AND COLUMN_NAME='MqttPort')
+BEGIN 
+ALTER TABLE SettingSync Add MqttPort int null
+End
+GO
+If Not EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME ='SettingSync' AND COLUMN_NAME='MqttUseTls')
+BEGIN 
+ALTER TABLE SettingSync Add MqttUseTls bit null
+End
+GO
+If Not EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME ='SettingSync' AND COLUMN_NAME='MqttUser')
+BEGIN 
+ALTER TABLE SettingSync Add MqttUser nvarchar(100) null
+End
+GO
+If Not EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME ='SettingSync' AND COLUMN_NAME='MqttPass')
+BEGIN 
+ALTER TABLE SettingSync Add MqttPass nvarchar(512) null
 End
 GO
 </value></data>

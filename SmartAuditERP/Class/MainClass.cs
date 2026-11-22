@@ -349,9 +349,28 @@ namespace SmartAuditERP
 
         /// <summary>
         /// تطبيق الصلاحيات على نافذة WPF
+        /// P1-012 fix: fail-closed — غياب صف الصلاحية أو فشل الاستعلام = منع كل الأزرار
+        /// التشغيلية (لا «العودة دون تطبيق» كما كان).
+        /// P1-013 fix: إن لم تكن الشجرة المرئية مبنية بعد (قبل Show)، يُؤجّل التطبيق
+        /// إلى حدث Loaded حتى يجد المرور البصري الأزرار فعلاً.
         /// </summary>
         public static void ApplyPermissionToForm(System.Windows.Window window)
         {
+            if (window == null) return;
+
+            // P1-013 fix: تأجيل التطبيق حتى بناء الشجرة المرئية
+            if (!window.IsLoaded)
+            {
+                RoutedEventHandler deferred = null;
+                deferred = (s, e) =>
+                {
+                    window.Loaded -= deferred;
+                    ApplyPermissionToForm(window);
+                };
+                window.Loaded += deferred;
+                return;
+            }
+
             try
             {
                 string formName = window.GetType().Name;
@@ -379,35 +398,62 @@ namespace SmartAuditERP
                     StringComparison.OrdinalIgnoreCase))
                     formName = "frmcurrency";
 
-                // جلب الصلاحيات من قاعدة البيانات
+                // جلب الصلاحيات من قاعدة البيانات — P1-011/P1-012 fix: بارامترات
                 using var localConn = ConnObj();
                 localConn.Open();
 
                 var adapter = new SqlDataAdapter(
-                    $"SELECT IS_New, IS_Save, IS_Delete, IS_Search, IS_Print, Forms.id " +
-                    $"FROM User_Permissions, Forms " +
-                    $"WHERE User_Permissions.Form_id=Forms.id " +
-                    $"AND Forms.FormName='{formName.Trim()}' " +
-                    $"AND user_id={UserID}", localConn);
+                    "SELECT IS_New, IS_Save, IS_Delete, IS_Search, IS_Print, Forms.id " +
+                    "FROM User_Permissions, Forms " +
+                    "WHERE User_Permissions.Form_id=Forms.id " +
+                    "AND Forms.FormName=@formName " +
+                    "AND user_id=@userId", localConn);
+                adapter.SelectCommand.Parameters.Add(
+                    "@formName", SqlDbType.NVarChar, 200).Value = formName.Trim();
+                adapter.SelectCommand.Parameters.Add(
+                    "@userId", SqlDbType.Int).Value = UserID;
 
                 var dt = new DataTable();
                 adapter.Fill(dt);
 
-                if (dt.Rows.Count == 0) return;
+                bool canNew, canSave, canDelete, canSearch, canPrint;
 
-                DataRow perm = dt.Rows[0];
+                // P1-012 fix: القرار عبر البوابة المغلقة — كل شك = منع
+                var decision = Class.Security.PermissionGate.Decide(
+                    querySucceeded: dt.Rows.Count > 0,
+                    permissionRowExists: dt.Rows.Count > 0,
+                    permissionValue: true);
 
-                bool canNew = Convert.ToBoolean(perm["IS_New"]);
-                bool canSave = Convert.ToBoolean(perm["IS_Save"]);
-                bool canDelete = Convert.ToBoolean(perm["IS_Delete"]);
-                bool canSearch = Convert.ToBoolean(perm["IS_Search"]);
-                bool canPrint = Convert.ToBoolean(perm["IS_Print"]);
+                if (decision == Class.Security.PermissionGate.Decision.Allow)
+                {
+                    DataRow perm = dt.Rows[0];
+                    canNew = Convert.ToBoolean(perm["IS_New"]);
+                    canSave = Convert.ToBoolean(perm["IS_Save"]);
+                    canDelete = Convert.ToBoolean(perm["IS_Delete"]);
+                    canSearch = Convert.ToBoolean(perm["IS_Search"]);
+                    canPrint = Convert.ToBoolean(perm["IS_Print"]);
+                }
+                else
+                {
+                    Class.Security.PermissionGate.LogDeny(
+                        UserName, formName,
+                        dt.Rows.Count == 0 ? "no-permission-row" : "permission-query-failed");
+                    canNew = canSave = canDelete = canSearch = canPrint = false;
+                }
 
                 // تطبيق الصلاحيات على أزرار WPF
                 ApplyWpfPermissions(window, canNew, canSave, canDelete, canSearch, canPrint);
             }
             catch (Exception ex)
             {
+                // P1-012 fix: الاستثناء = منع كامل لا استمرار مفتوحاً
+                Class.Security.PermissionGate.LogDeny(
+                    UserName, window.GetType().Name, "exception:" + ex.Message);
+                try
+                {
+                    ApplyWpfPermissions(window, false, false, false, false, false);
+                }
+                catch { }
                 System.Diagnostics.Debug.WriteLine($"خطأ في تطبيق الصلاحيات: {ex.Message}");
             }
         }
@@ -458,6 +504,7 @@ namespace SmartAuditERP
 
         /// <summary>
         /// تطبيق الصلاحيات على نموذج WinForms القديم (للتوافق)
+        /// P1-012 fix: fail-closed هنا أيضاً.
         /// </summary>
         public static void ApplyPermissionToForm(System.Windows.Forms.Form frm)
         {
@@ -491,23 +538,36 @@ namespace SmartAuditERP
                 localConn.Open();
 
                 var adapter = new SqlDataAdapter(
-                    $"SELECT IS_New, IS_Save, IS_Delete, IS_Search, IS_Print, Forms.id " +
-                    $"FROM User_Permissions, Forms " +
-                    $"WHERE User_Permissions.Form_id=Forms.id " +
-                    $"AND Forms.FormName='{formName.Trim()}' " +
-                    $"AND user_id={UserID}", localConn);
+                    "SELECT IS_New, IS_Save, IS_Delete, IS_Search, IS_Print, Forms.id " +
+                    "FROM User_Permissions, Forms " +
+                    "WHERE User_Permissions.Form_id=Forms.id " +
+                    "AND Forms.FormName=@formName " +
+                    "AND user_id=@userId", localConn);
+                adapter.SelectCommand.Parameters.Add(
+                    "@formName", SqlDbType.NVarChar, 200).Value = formName.Trim();
+                adapter.SelectCommand.Parameters.Add(
+                    "@userId", SqlDbType.Int).Value = UserID;
 
                 var dt = new DataTable();
                 adapter.Fill(dt);
 
-                if (dt.Rows.Count == 0) return;
-
-                DataRow perm = dt.Rows[0];
-                bool canNew = Convert.ToBoolean(perm["IS_New"]);
-                bool canSave = Convert.ToBoolean(perm["IS_Save"]);
-                bool canDelete = Convert.ToBoolean(perm["IS_Delete"]);
-                bool canSearch = Convert.ToBoolean(perm["IS_Search"]);
-                bool canPrint = Convert.ToBoolean(perm["IS_Print"]);
+                bool canNew, canSave, canDelete, canSearch, canPrint;
+                if (dt.Rows.Count > 0)
+                {
+                    DataRow perm = dt.Rows[0];
+                    canNew = Convert.ToBoolean(perm["IS_New"]);
+                    canSave = Convert.ToBoolean(perm["IS_Save"]);
+                    canDelete = Convert.ToBoolean(perm["IS_Delete"]);
+                    canSearch = Convert.ToBoolean(perm["IS_Search"]);
+                    canPrint = Convert.ToBoolean(perm["IS_Print"]);
+                }
+                else
+                {
+                    // P1-012 fix: لا صف = منع كامل
+                    Class.Security.PermissionGate.LogDeny(
+                        UserName, formName, "no-permission-row");
+                    canNew = canSave = canDelete = canSearch = canPrint = false;
+                }
 
                 // البحث عن لوحة الأزرار
                 var pnlControls = frm.Controls
