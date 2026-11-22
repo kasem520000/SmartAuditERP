@@ -755,17 +755,41 @@ namespace SmartAuditERP.Form_WPF
                 var transaction = conn1.BeginTransaction();
                 try
                 {
+                    // P3-009 fix: الهوية العالمية الإلزامية للسند الجديد (نمط
+                    // التطبيق) — كانت INSERT بلا GlobalID
+                    if (isNew)
+                    {
+                        var autoCmd = new SqlCommand(
+                            "SELECT ISNULL(MAX(AutoID), 0) + 1 FROM Receipts WHERE BranchID = @BranchID",
+                            conn1, transaction);
+                        autoCmd.Parameters.AddWithValue("@BranchID", MainClass.BranchNo);
+                        GlobalID = $"{MainClass.BranchNo}-" +
+                                   Convert.ToInt32(autoCmd.ExecuteScalar());
+                    }
+
+                    // P3-011 fix: الترقيم لكل (نوع، فرع) — التعديل يستهدف
+                    // الهوية العالمية، والاحتياطي مقيّد بالنوع
                     string upsertSql = isNew
                         ? @"INSERT INTO Receipts
-                            (ReceiptNo,BranchID,ReceiptType,State,Payment,VAT,NetVal,
-                             ReceiptDate,ReffNo,Reffdate,ISDeleted,Notes,EmpId,
-                             CreditAcc,DebitAcc,TreasuryID,SalesManID,PaymentType,
-                             CheckNo,CheckDate,Checkbank,CheckState,CCcode,ClientID)
+                            (GlobalID, ReceiptNo, BranchID, ReceiptType, State, Payment, VAT, NetVal,
+                             ReceiptDate, ReffNo, Reffdate, ISDeleted, Notes, EmpId,
+                             CreditAcc, DebitAcc, TreasuryID, SalesManID, PaymentType,
+                             CheckNo, CheckDate, Checkbank, CheckState, CCcode, ClientID)
                             VALUES
-                            (@ReceiptNo,@BranchID,@ReceiptType,1,@Payment,@VAT,@NetVal,
-                             @ReceiptDate,@ReffNo,@Reffdate,0,@Notes,@EmpId,
-                             @CreditAcc,@DebitAcc,@TreasuryID,@SalesManID,@PaymentType,
-                             @CheckNo,@CheckDate,@Checkbank,@CheckState,@CCcode,@ClientID)"
+                            (@GlobalID, @ReceiptNo, @BranchID, @ReceiptType, 1, @Payment, @VAT, @NetVal,
+                             @ReceiptDate, @ReffNo, @Reffdate, 0, @Notes, @EmpId,
+                             @CreditAcc, @DebitAcc, @TreasuryID, @SalesManID, @PaymentType,
+                             @CheckNo, @CheckDate, @Checkbank, @CheckState, @CCcode, @ClientID)"
+                        : (GlobalID.Length > 0
+                        ? @"UPDATE Receipts SET
+                            Payment=@Payment,VAT=@VAT,NetVal=@NetVal,
+                            ReceiptDate=@ReceiptDate,ReffNo=@ReffNo,Reffdate=@Reffdate,
+                            Notes=@Notes,CreditAcc=@CreditAcc,DebitAcc=@DebitAcc,
+                            TreasuryID=@TreasuryID,SalesManID=@SalesManID,
+                            PaymentType=@PaymentType,CheckNo=@CheckNo,CheckDate=@CheckDate,
+                            Checkbank=@Checkbank,CheckState=@CheckState,CCcode=@CCcode,
+                            ClientID=@ClientID
+                            WHERE GlobalID=@GlobalID"
                         : @"UPDATE Receipts SET
                             Payment=@Payment,VAT=@VAT,NetVal=@NetVal,
                             ReceiptDate=@ReceiptDate,ReffNo=@ReffNo,Reffdate=@Reffdate,
@@ -774,9 +798,11 @@ namespace SmartAuditERP.Form_WPF
                             PaymentType=@PaymentType,CheckNo=@CheckNo,CheckDate=@CheckDate,
                             Checkbank=@Checkbank,CheckState=@CheckState,CCcode=@CCcode,
                             ClientID=@ClientID
-                            WHERE ReceiptNo=@ReceiptNo AND BranchID=@BranchID";
+                            WHERE ReceiptNo=@ReceiptNo AND BranchID=@BranchID AND ReceiptType=@ReceiptType");
 
                     var cmd = new SqlCommand(upsertSql, conn1, transaction);
+                    cmd.Parameters.AddWithValue("@GlobalID",
+                        string.IsNullOrEmpty(GlobalID) ? (object)DBNull.Value : GlobalID);
                     cmd.Parameters.AddWithValue("@ReceiptNo", Code);
                     cmd.Parameters.AddWithValue("@BranchID", MainClass.BranchNo);
                     cmd.Parameters.AddWithValue("@ReceiptType", ReceiptType);
@@ -818,6 +844,16 @@ namespace SmartAuditERP.Form_WPF
                     }
 
                     cmd.ExecuteNonQuery();
+
+                    // P3-010 fix: تعديل السند يُحدّث القيد المرتبط معه داخل
+                    // معاملة الحفظ ذاتها (سطر مدين الدفع + مدين الضريبة +
+                    // دائن الخزنة — النمط العقدي لـ BindReceiptToEntry للنوع 9)
+                    if (!isNew && !string.IsNullOrWhiteSpace(EntryGlobalID) &&
+                        EntryGlobalID != "-1")
+                    {
+                        SyncLinkedEntryLines(transaction, payVal, vatVal, netVal, receiptDate);
+                    }
+
                     transaction.Commit();
 
                     SetStatus(isNew ? $"تم حفظ سند ضريبي رقم {Code}" : $"تم تعديل سند ضريبي رقم {Code}");
@@ -843,6 +879,126 @@ namespace SmartAuditERP.Form_WPF
             finally { EnsureClose(conn1); }
         }
 
+        // P3-010 fix: مزامنة سطور القيد المرتبط بالمبالغ الجديدة داخل معاملة
+        // الحفظ — النمط العقدي للنوع 9: مدين الدفع (حساب المصروف) + مدين
+        // الضريبة (VATCode من الإعدادات) + دائن الخزنة (صافي القيمة)؛
+        // الحسابات نفسها التي بُني عليها القيد، والتاريخ يتبع السند
+        private void SyncLinkedEntryLines(SqlTransaction transaction,
+            double payment, double vat, double netVal, DateTime receiptDate)
+        {
+            int entryNo = 0;
+            int.TryParse(EntryGlobalID.Substring(EntryGlobalID.LastIndexOf('-') + 1),
+                out entryNo);
+
+            // كود حساب الخزنة من العمود المخزن مباشرة (لا بحث بالاسم)
+            string treasuryAcc = "";
+            var treasuryCmd = new SqlCommand(
+                "SELECT ISNULL(Acc_Code, '') FROM Stocks WHERE id = @tid",
+                conn1, transaction);
+            treasuryCmd.Parameters.AddWithValue("@tid",
+                cmbDepositfrom.SelectedValue ?? (object)(-1));
+            object tRes = treasuryCmd.ExecuteScalar();
+            if (tRes != null && tRes != DBNull.Value)
+                treasuryAcc = tRes.ToString();
+
+            // حساب الدفع: قيمة الصندوق مباشرة (SelectedValuePath=Code)
+            object debitAccObj = cmbAccounts.SelectedValue;
+            string debitAcc = debitAccObj?.ToString() ?? "";
+
+            // كود حساب الضريبة من الإعدادات (مصدر VATCode المعتمد في التطبيق)
+            string vatAcc = "";
+            if (vat > 0)
+            {
+                var vatCmd = new SqlCommand(
+                    "SELECT TOP 1 VATCode FROM SettingGeneral", conn1, transaction);
+                object vRes = vatCmd.ExecuteScalar();
+                if (vRes != null && vRes != DBNull.Value)
+                    vatAcc = vRes.ToString();
+            }
+
+            if (string.IsNullOrWhiteSpace(treasuryAcc) ||
+                string.IsNullOrWhiteSpace(debitAcc) ||
+                (vat > 0 && string.IsNullOrWhiteSpace(vatAcc)))
+            {
+                throw new Exception(
+                    "لا يمكن مزامنة القيد المرتبط: كود حساب الخزنة أو المصروف أو الضريبة غير محدد");
+            }
+
+            int costCenterCode = -1;
+            if (cmbCostCenter.SelectedValue != null)
+                int.TryParse(cmbCostCenter.SelectedValue.ToString(), out costCenterCode);
+
+            int salesManId = -1;
+            if (cmbSalesMan.SelectedValue != null)
+                int.TryParse(cmbSalesMan.SelectedValue.ToString(), out salesManId);
+
+            string notes = txtNotes.Text ?? "";
+
+            // تاريخ رأس القيد يتبع السند المعدَّل
+            var headerCmd = new SqlCommand(
+                "UPDATE Entry SET Date = @Date, Notes = @Notes WHERE GlobalID = @eg",
+                conn1, transaction);
+            headerCmd.Parameters.AddWithValue("@Date", receiptDate);
+            headerCmd.Parameters.AddWithValue("@Notes", notes);
+            headerCmd.Parameters.AddWithValue("@eg", EntryGlobalID);
+            headerCmd.ExecuteNonQuery();
+
+            // إعادة بناء السطور بالمبالغ الجديدة
+            var delCmd = new SqlCommand(
+                "DELETE FROM Entry_Sub WHERE EntryGlobalID = @eg",
+                conn1, transaction);
+            delCmd.Parameters.AddWithValue("@eg", EntryGlobalID);
+            delCmd.ExecuteNonQuery();
+
+            // سطر مدين: الدفع على حساب المصروف/الطرف (النوع 9 يحمل مركز التكلفة)
+            var debitCmd = new SqlCommand(
+                @"INSERT INTO Entry_Sub
+                  (EntryGlobalID, res_id, dept, credit, acc_no, notes, branch, CCcode, salesman)
+                  VALUES (@eg, @res, @dept, 0, @acc, @notes, @branch, @cc, @sm)",
+                conn1, transaction);
+            debitCmd.Parameters.AddWithValue("@eg", EntryGlobalID);
+            debitCmd.Parameters.AddWithValue("@res", entryNo);
+            debitCmd.Parameters.AddWithValue("@dept", payment);
+            debitCmd.Parameters.AddWithValue("@acc", int.Parse(debitAcc));
+            debitCmd.Parameters.AddWithValue("@notes", notes);
+            debitCmd.Parameters.AddWithValue("@branch", MainClass.BranchNo);
+            debitCmd.Parameters.AddWithValue("@cc", costCenterCode);
+            debitCmd.Parameters.AddWithValue("@sm", salesManId);
+            debitCmd.ExecuteNonQuery();
+
+            // سطر مدين: الضريبة (إن وجدت)
+            if (vat > 0)
+            {
+                var vatLineCmd = new SqlCommand(
+                    @"INSERT INTO Entry_Sub
+                      (EntryGlobalID, res_id, dept, credit, acc_no, notes, branch, CCcode, salesman)
+                      VALUES (@eg, @res, @dept, 0, @acc, @notes, @branch, -1, -1)",
+                    conn1, transaction);
+                vatLineCmd.Parameters.AddWithValue("@eg", EntryGlobalID);
+                vatLineCmd.Parameters.AddWithValue("@res", entryNo);
+                vatLineCmd.Parameters.AddWithValue("@dept", vat);
+                vatLineCmd.Parameters.AddWithValue("@acc", int.Parse(vatAcc));
+                vatLineCmd.Parameters.AddWithValue("@notes", notes);
+                vatLineCmd.Parameters.AddWithValue("@branch", MainClass.BranchNo);
+                vatLineCmd.ExecuteNonQuery();
+            }
+
+            // سطر دائن: الخزنة بصافي القيمة
+            var creditCmd = new SqlCommand(
+                @"INSERT INTO Entry_Sub
+                  (EntryGlobalID, res_id, dept, credit, acc_no, notes, branch, CCcode, salesman)
+                  VALUES (@eg, @res, 0, @credit, @acc, @notes, @branch, -1, @sm)",
+                conn1, transaction);
+            creditCmd.Parameters.AddWithValue("@eg", EntryGlobalID);
+            creditCmd.Parameters.AddWithValue("@res", entryNo);
+            creditCmd.Parameters.AddWithValue("@credit", netVal);
+            creditCmd.Parameters.AddWithValue("@acc", int.Parse(treasuryAcc));
+            creditCmd.Parameters.AddWithValue("@notes", notes);
+            creditCmd.Parameters.AddWithValue("@branch", MainClass.BranchNo);
+            creditCmd.Parameters.AddWithValue("@sm", salesManId);
+            creditCmd.ExecuteNonQuery();
+        }
+
         private void btnDelete_Click(object sender, RoutedEventArgs e)
         {
             if (Code == -1)
@@ -858,17 +1014,63 @@ namespace SmartAuditERP.Form_WPF
             try
             {
                 EnsureOpen(conn);
-                int affected = new SqlCommand(
-                    $"UPDATE Receipts SET ISDeleted=1 WHERE ReceiptNo={Code} AND BranchID={MainClass.BranchNo}",
-                    conn).ExecuteNonQuery();
-
-                if (affected > 0)
+                // P3-010/P3-011 fix: الحذف معاملة واحدة تُبطل السند والقيد
+                // المرتبط معاً؛ الاستهداف بالهوية العالمية أو مقيّداً بالنوع —
+                // كان الرقم+الفرع فقط بلا نوع وبلا إبطال القيد
+                var transaction = conn.BeginTransaction();
+                try
                 {
-                    DXMessageBox.Show("تم الحذف بنجاح", "", MessageBoxButton.OK, MessageBoxImage.Information);
-                    _searchItems.Clear(); CLR();
+                    int affected;
+                    if (!string.IsNullOrEmpty(GlobalID))
+                    {
+                        var cmd = new SqlCommand(
+                            "UPDATE Receipts SET ISDeleted = 1 " +
+                            "WHERE GlobalID = @gid AND BranchID = @bid",
+                            conn, transaction);
+                        cmd.Parameters.AddWithValue("@gid", GlobalID);
+                        cmd.Parameters.AddWithValue("@bid", MainClass.BranchNo);
+                        affected = cmd.ExecuteNonQuery();
+                    }
+                    else
+                    {
+                        var cmd = new SqlCommand(
+                            "UPDATE Receipts SET ISDeleted = 1 " +
+                            "WHERE ReceiptNo = @no AND BranchID = @bid AND ReceiptType = @type",
+                            conn, transaction);
+                        cmd.Parameters.AddWithValue("@no", Code);
+                        cmd.Parameters.AddWithValue("@bid", MainClass.BranchNo);
+                        cmd.Parameters.AddWithValue("@type", ReceiptType);
+                        affected = cmd.ExecuteNonQuery();
+                    }
+
+                    // P3-010 fix: إبطال القيد المرتبط (عقد ReceiptOper.DeleteReceipt)
+                    if (affected > 0 && !string.IsNullOrWhiteSpace(EntryGlobalID) &&
+                        EntryGlobalID != "-1")
+                    {
+                        var entryCmd = new SqlCommand(
+                            "UPDATE Entry SET state = 2, IS_Deleted = 1 " +
+                            "WHERE GlobalID = @eg AND branch = @bid",
+                            conn, transaction);
+                        entryCmd.Parameters.AddWithValue("@eg", EntryGlobalID);
+                        entryCmd.Parameters.AddWithValue("@bid", MainClass.BranchNo);
+                        entryCmd.ExecuteNonQuery();
+                    }
+
+                    transaction.Commit();
+
+                    if (affected > 0)
+                    {
+                        DXMessageBox.Show("تم الحذف بنجاح", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                        _searchItems.Clear(); CLR();
+                    }
+                    else
+                        DXMessageBox.Show("خطأ أثناء الحذف", "", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-                else
-                    DXMessageBox.Show("خطأ أثناء الحذف", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
             }
             catch (Exception ex)
             {
