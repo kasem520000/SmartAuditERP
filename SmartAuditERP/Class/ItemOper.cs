@@ -2155,7 +2155,9 @@ namespace SmartAuditERP
             }
         }
 
-        public void SaveInvoiceItemDeliveries(
+        // P4-024 fix: القيمة المرجعة تخبر المستدعي بالنجاح/الفشل فعلياً —
+        // كانت void تبتلع الفشل (بعد رسالة الخطأ) فتعلن الواجهة نجاحها فوقه
+        public bool SaveInvoiceItemDeliveries(
             List<ItemBatchDelivery> itemBatchDeliveries,
             bool isDeliveriedAll)
         {
@@ -2222,6 +2224,8 @@ namespace SmartAuditERP
 
                 MessageBox.Show("تم تسليم الكميات بنجاح",
                     "نجاح", MessageBoxButton.OK, MessageBoxImage.Information);
+                // P4-024 fix: نجاح مُبلَّغ للمستدعي
+                return true;
             }
             catch (Exception ex)
             {
@@ -2237,6 +2241,8 @@ namespace SmartAuditERP
 
                 MessageBox.Show(errMsg, "خطأ",
                     MessageBoxButton.OK, MessageBoxImage.Error);
+                // P4-024 fix: فشل مُبلَّغ للمستدعي — لا نجاح زائف بعده
+                return false;
             }
             finally
             {

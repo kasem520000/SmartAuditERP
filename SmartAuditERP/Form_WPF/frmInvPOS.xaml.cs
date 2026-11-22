@@ -2057,22 +2057,29 @@ namespace SmartAuditERP.Form_WPF
             // مرتجع بدون نموذج دفع
             if (!InvObj.ShowPayfrmReturn && Invoic.ProcType == 2)
             {
+                // P4-016 fix: كان المسار يسجل دفعة كاملة عبر
+                // PayInvoiceWithoutShowPayFrm ثم يصفر مبالغ الرأس بعدها فتخالف
+                // الدفعة المسجلة (InvoicePayments) رأس الفاتورة المحفوظ —
+                // الآن الحالان متسقان: مرتجع نقدي = دفعة كاملة والرأس يطابقها
+                // (المدفوع/النقدي = الصافي — وعمود cash للفاتورة يجعل إغلاق
+                // الوردية يطرح المسترد فعلاً)؛ مرتجع آجل (-1) = لا دفعة
+                // والرأس أصفار (كان يسجل دفعة نقدية حتى لنوع الآجل)
                 if (Invoic.PayType == -1)
                 {
                     Invoic.PayType = -1;
                     Invoic.Treasury = -1;
+                    Invoic.PaymentStatus = PaymentStatus.Paid;
+                    Invoic.Paid = 0;
+                    Invoic.Remainder = 0;
+                    Invoic.Paycash = 0;
+                    Invoic.PayATM = 0;
                 }
                 else
                 {
                     Invoic.PayType = 1;
+                    Invoic.PaymentStatus = PaymentStatus.Paid;
+                    InvoiceOper.PayInvoiceWithoutShowPayFrm(ref Invoic, InvObj);
                 }
-
-                Invoic.PaymentStatus = PaymentStatus.Paid;
-                InvoiceOper.PayInvoiceWithoutShowPayFrm(ref Invoic, InvObj);
-                Invoic.Paid = 0;
-                Invoic.Remainder = 0;
-                Invoic.Paycash = 0;
-                Invoic.PayATM = 0;
                 Invoic.IsPrinted = true;
                 SaveAndPrint();
                 return;

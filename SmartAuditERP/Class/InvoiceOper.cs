@@ -4685,6 +4685,18 @@ namespace SmartAuditERP
                         bool result;
                         try
                         {
+                                // P4-015 fix: لقطة الحالة قبل أي طفرة — كان فتح
+                                // الدفع يطفّر حالة الفاتورة (مدفوعة→غير مدفوعة/
+                                // المتبقي/المدفوع/صفوف الدفع) قبل تأكيد المستخدم
+                                // ولا يعيدها عند إلغاء الحوار فتبقى الفاتورة
+                                // المحملة بحالة معطوبة في الذاكرة (وتُحفظ كذلك)
+                                bool snapIsPrinted = Invoic.IsPrinted;
+                                PaymentStatus snapPaymentStatus = Invoic.PaymentStatus;
+                                double snapRemainder = Invoic.Remainder;
+                                double snapPaid = Invoic.Paid;
+                                double snapPaycash = Invoic.Paycash;
+                                double snapPayATM = Invoic.PayATM;
+                                int snapPaymentsCount = Invoic.InvoicePayments.Count;
                                 if (Invoic.Net > 0.0)
                                 {
                                         if (!Invoic.ISNew)
@@ -4806,6 +4818,22 @@ namespace SmartAuditERP
                                 }
                                 else
                                 {
+                                        // P4-015 fix: الإلغاء يعيد لقطة الحالة كاملة —
+                                        // الحوار والمسار قبله كانا يتركان الطفرات
+                                        Invoic.IsPrinted = snapIsPrinted;
+                                        Invoic.PaymentStatus = snapPaymentStatus;
+                                        Invoic.Remainder = snapRemainder;
+                                        Invoic.Paid = snapPaid;
+                                        Invoic.Paycash = snapPaycash;
+                                        Invoic.PayATM = snapPayATM;
+                                        if (snapPaymentsCount < Invoic.InvoicePayments.Count)
+                                        {
+                                                while (snapPaymentsCount < Invoic.InvoicePayments.Count)
+                                                {
+                                                        Invoic.InvoicePayments.RemoveAt(
+                                                                Invoic.InvoicePayments.Count - 1);
+                                                }
+                                        }
                                         result = false;
                                 }
                         end_IL_0001:;

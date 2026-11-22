@@ -730,7 +730,9 @@ namespace SmartAuditERP.Form_WPF
                         });
                     }
 
-                    new ItemOper().SaveInvoiceItemDeliveries(deliveryList, true);
+                    // P4-024 fix: النجاح يُعلَن فقط عند نجاح الحفظ فعلاً
+                    if (!new ItemOper().SaveInvoiceItemDeliveries(deliveryList, true))
+                        return;
 
                     DXMessageBox.Show(
                         "تم التسليم الكلي بنجاح ✅",

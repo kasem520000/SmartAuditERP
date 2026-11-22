@@ -1254,6 +1254,33 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnSavePrint_Click(object sender, RoutedEventArgs e)
         {
+            // P4-031 fix: زرا الحفظ وحفظ-مع-الطباعة يفرضان الشروط نفسها —
+            // كان هذا الزر يتجاوز حراسة الفترة المحاسبية وفحص تكرار رقم
+            // المرجع وفحص الصافي وكلها مفروضة في مسار الحفظ المجرد
+            if (!Common.CheckProiedAcc(GetDateEditValue(this.txtDate)))
+            {
+                MessageBox.Show("لا يمكن أن يكون التاريخ خارج الفترة المحاسبية",
+                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            int invNo = this.Invoic.ISNew ? 0 : this.Invoic.InvoiceNo;
+            if (Common.CheckReffNo(
+                    this.txtRefNo.Text,
+                    GetSelectedId(this.cmbClient), invNo) &&
+                MessageBox.Show(
+                    "عفوآ رقم المرجع موجود مسبقآ هل تريد الاستمرار ؟",
+                    "تحذير", MessageBoxButton.YesNo,
+                    MessageBoxImage.Exclamation) == MessageBoxResult.No)
+                return;
+
+            if (!double.TryParse(this.txtNet.Text, out double netVal) ||
+                (netVal <= 0.0 && this.InvType != 9))
+            {
+                MessageBox.Show("يجب أن يكون الصافي اكبر من الصفر");
+                return;
+            }
+
             if (_invoiceItems.Count == 0 || this.Invoic.Net == 0.0)
             {
                 MessageBox.Show("لا يمكن حفظ الفاتورة بدون أصناف");

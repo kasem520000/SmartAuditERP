@@ -285,7 +285,10 @@ namespace SmartAuditERP.Form_WPF
                     deliveryList.Add(delivery);
                 }
 
-                new ItemOper().SaveInvoiceItemDeliveries(deliveryList, isDeliveredAll);
+                // P4-024 fix: النجاح يُعلَن فقط عند نجاح الحفظ فعلاً —
+                // كان الكاتب يبتلع الفشل (void) فتعلن الواجهة النجاح فوق رسالة الخطأ
+                if (!new ItemOper().SaveInvoiceItemDeliveries(deliveryList, isDeliveredAll))
+                    return;
 
                 ISDone = true;
 
