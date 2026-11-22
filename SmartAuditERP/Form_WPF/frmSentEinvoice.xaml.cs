@@ -64,7 +64,9 @@ namespace SmartAuditERP.Form_WPF
             }
             else
             {
-                baseUrl = "https://api.preprod.invoicing.eta.gov.eg";
+                // P6-019 fix: مضيف API الموثق لغير الإنتاج — كان يشير إلى مسار غير
+                // الموثق (api.preprod.invoicing) بينما المضيف المعتمد api.preprod.
+                baseUrl = "https://api.preprod.eta.gov.eg";
                 etaAPIToken.TokenAPIUrl = "https://id.preprod.eta.gov.eg/connect/token";
             }
 
