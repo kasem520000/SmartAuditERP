@@ -1822,6 +1822,21 @@ namespace SmartAuditERP
                 var frmLock = new frmlock();
                 MainClass.DoApplyUserSett(frmLock);
                 frmLock.ShowDialog();
+
+                // P2-002 fix: فتح القفل لا يُقبل إلا بمصادقة ناجحة — إما كلمة
+                // فتح القفل (Iscorrect عبر Check) أو دخول كامل عبر «الدخول
+                // المتقدم» (يعلّم Iscorrect عند تغير LoginDate داخل frmlock).
+                // إغلاق الحوار بلا مصادقة = إنهاء الجلسة (fail-closed)
+                // على نمط إصلاح P1-016 نفسه.
+                if (!frmLock.Iscorrect)
+                {
+                    MessageBox.Show(
+                        MainClass.Language == "en"
+                            ? "Screen lock was dismissed without authentication. The session will end."
+                            : "أُغلق قفل الشاشة دون مصادقة ناجحة. ستنتهي الجلسة.",
+                        "", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    System.Windows.Application.Current.Shutdown();
+                }
             }
             catch { }
         }

@@ -1715,13 +1715,18 @@ namespace SmartAuditERP.Form_WPF
                 docForm.type = 4;
                 docForm.GlobalIdDoc = _code.ToString();
 
-                var documentItems = new System.Collections.ObjectModel.ObservableCollection<DocumentDisplayItem>();
+                // P2-013/P2-014 fix: كان النوع DocumentDisplayItem (بخاصية
+                // RowNumber لا RowNo) فلا يعرض العارض الترقيم ولا يتعرف على
+                // صفوفه عند الفتح/الحذف — الآن عقد DocumentItem الموحد
+                // مع معرف صف Documents للحذف الدقيق.
+                var documentItems = new System.Collections.ObjectModel.ObservableCollection<DocumentItem>();
 
                 for (int rowIndex = 0; rowIndex < docTable.Rows.Count; rowIndex++)
                 {
-                    documentItems.Add(new DocumentDisplayItem
+                    documentItems.Add(new DocumentItem
                     {
-                        RowNumber = rowIndex + 1,
+                        DocId = Convert.ToInt32(docTable.Rows[rowIndex]["Id"]),
+                        RowNo = rowIndex + 1,
                         FileName = docTable.Rows[rowIndex]["FileName"]?.ToString() ?? string.Empty,
                         FileUrl = docTable.Rows[rowIndex]["FileUrl"]?.ToString() ?? string.Empty
                     });

@@ -3096,20 +3096,24 @@ namespace SmartAuditERP.Form_WPF
             {
                 var docDlg = new Frmshowdocument();
 
-                var displayTable = new DataTable();
-                displayTable.Columns.Add("RowNo", typeof(int));
-                displayTable.Columns.Add("FileName", typeof(string));
-                displayTable.Columns.Add("FileUrl", typeof(string));
-
+                // P2-013/P2-014 fix: كانت شبكة العرض DataTable (DataRowView)
+                // فلا يتعرف عارض الوثائق على صفوفها (is DocumentItem يفشل)
+                // فيصمت الفتح والحذف — الآن نفس عقد DocumentItem الموحد
+                // مع تمرير معرف صف Documents للحذف الدقيق.
+                var displayItems = new System.Collections.ObjectModel
+                    .ObservableCollection<DocumentItem>();
                 for (int i = 0; i < dtt.Rows.Count; i++)
                 {
-                    displayTable.Rows.Add(
-                        i + 1,
-                        dtt.Rows[i]["FileName"]?.ToString() ?? "",
-                        dtt.Rows[i]["FileUrl"]?.ToString() ?? "");
+                    displayItems.Add(new DocumentItem
+                    {
+                        DocId = Convert.ToInt32(dtt.Rows[i]["Id"]),
+                        RowNo = i + 1,
+                        FileName = dtt.Rows[i]["FileName"]?.ToString() ?? "",
+                        FileUrl = dtt.Rows[i]["FileUrl"]?.ToString() ?? ""
+                    });
                 }
 
-                docDlg.DataGridView1.ItemsSource = displayTable.DefaultView;
+                docDlg.DataGridView1.ItemsSource = displayItems;
                 docDlg.type = 2;
                 docDlg.GlobalIdDoc = Invoic.InvGlobalID;
                 docDlg.Show();

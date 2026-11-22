@@ -186,10 +186,16 @@ namespace SmartAuditERP.Form_WPF
                     {
                         node.Tag = "Child";
 
+                        // P2-006 fix: كانت العلامات مُزاحة — IS_New_Visible يُنتج
+                        // فرعاً باسم «حفظ/Save» وIS_Save_Visible فرعاً باسم
+                        // «تعديل/Edit»، فيُخزن الأول في IS_New+IS_Save معاً
+                        // والثاني في IS_Edit، خلاف عقد المنفّذ الذي يفرّق
+                        // btnNew (IS_New) عن btnSave (IS_Save).
+                        // الآن: كل قدرة تُسمّى باسمها وتُخزّن في عمودها.
                         if (Convert.ToBoolean(row["IS_New_Visible"]))
-                            node.Children.Add(new PermissionTreeNode("", isEn ? "Save" : "حفظ"));
+                            node.Children.Add(new PermissionTreeNode("", isEn ? "new" : "جديد"));
                         if (Convert.ToBoolean(row["IS_Save_Visible"]))
-                            node.Children.Add(new PermissionTreeNode("", isEn ? "Edit" : "تعديل"));
+                            node.Children.Add(new PermissionTreeNode("", isEn ? "save" : "حفظ"));
                         if (Convert.ToBoolean(row["IS_Delete_Visible"]))
                             node.Children.Add(new PermissionTreeNode("", isEn ? "delete" : "حذف"));
                         if (Convert.ToBoolean(row["IS_Search_Visible"]))
@@ -212,7 +218,15 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
-                Code = int.TryParse(cmbEmp.SelectedValue?.ToString(), out int c) ? c : -1;
+                // P2-007 fix: أُزيل تعيين Code من قيمة cmbEmp (معرف موظف) —
+                // Code في هذه الشاشة يعني معرف سجل Users (يُضبطه مسار التحميل
+                // في cmbEmp_SelectionChanged من استعلام Users.id)، وكان
+                // خلط الفضاءين يجعل الحقل يعني أشياء مختلفة حسب المسار.
+
+                // P2-004 fix: مسح اختيارات الموظف السابق قبل تحميل صلاحيات
+                // الموظف المختار — كانت تتراكم فتعرض اتحاد صلاحيات كل من عُرض،
+                // ويحفظه الحفظ لاحقاً كصلاحيات فعلية للموظف الأخير.
+                ClearTreeCheckboxes(treeView1.Items);
 
                 var adapter = new SqlDataAdapter(
                     $"SELECT * FROM User_Permissions WHERE user_id={cmbEmp.SelectedValue}",
@@ -229,11 +243,13 @@ namespace SmartAuditERP.Form_WPF
                     foreach (var child in node.Children)
                     {
                         string txt = child.Name.ToLower();
+                        // P2-006 fix: التحميل يطابق التسميات المصححة:
+                        // «جديد/new» ← IS_New و«حفظ/save» ← IS_Save.
+                        if ((txt == "جديد" || txt == "new") &&
+                            Convert.ToBoolean(row["IS_New"]))
+                            child.IsChecked = true;
                         if ((txt == "حفظ" || txt == "save") &&
                             Convert.ToBoolean(row["IS_Save"]))
-                            child.IsChecked = true;
-                        if ((txt == "تعديل" || txt == "edit") &&
-                            Convert.ToBoolean(row["IS_Edit"]))
                             child.IsChecked = true;
                         if ((txt == "حذف" || txt == "delete") &&
                             Convert.ToBoolean(row["IS_Delete"]))
@@ -357,6 +373,13 @@ namespace SmartAuditERP.Form_WPF
                 MaxDicount.Text        = "0";
                 MaxDicountParcent.Text = "0";
 
+                // P2-004 fix: المسح يحدث دائماً — حتى لو لم يكن للموظف المختار
+                // سجل مستخدم، فلا يرث عرض شاشته صلاحيات الموظف المعروض قبله.
+                ClearTreeCheckboxes(treeView1.Items);
+                if (operCheckBoxes != null)
+                    foreach (var cb in operCheckBoxes)
+                        cb.IsChecked = false;
+
                 if (cmbEmp.SelectedValue == null) return;
 
                 var adapter = new SqlDataAdapter(
@@ -441,7 +464,8 @@ namespace SmartAuditERP.Form_WPF
                     SaveTreeNodes(root, transaction);
 
                 transaction.Commit();
-                Code = int.TryParse(cmbEmp.SelectedValue?.ToString(), out int c) ? c : -1;
+                // P2-007 fix: أُزيل إعادة تعيين Code من معرف الموظف —
+                // يبقى بمعنى واحد: معرف سجل Users من مسار التحميل.
                 DXMessageBox.Show("تم الحفظ", "", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
@@ -468,15 +492,18 @@ namespace SmartAuditERP.Form_WPF
                 {
                     if (!node.IsChecked) continue;
 
-                    int isSave = 0, isEdit = 0, isDel = 0, isSearch = 0, isPrint = 0;
+                    // P2-006 fix: فصل صلاحية الإنشاء (btnNew ← IS_New) عن
+                    // صلاحية الحفظ (btnSave/btnSavePrint ← IS_Save) — كانا
+                    // يُكتبان من فرع واحد فلا يمكن منح أحدهما دون الآخر.
+                    int isNew = 0, isSave = 0, isDel = 0, isSearch = 0, isPrint = 0;
 
                     foreach (var child in node.Children)
                     {
                         string txt = child.Name.ToLower();
-                        if ((txt == "حفظ" || txt == "new" || txt == "save") && child.IsChecked)
+                        if ((txt == "جديد" || txt == "new") && child.IsChecked)
+                            isNew = 1;
+                        if ((txt == "حفظ" || txt == "save") && child.IsChecked)
                             isSave = 1;
-                        if ((txt == "تعديل" || txt == "edit") && child.IsChecked)
-                            isEdit = 1;
                         if ((txt == "حذف" || txt == "delete") && child.IsChecked)
                             isDel = 1;
                         if ((txt == "بحث" || txt == "search") && child.IsChecked)
@@ -489,7 +516,7 @@ namespace SmartAuditERP.Form_WPF
                         "INSERT INTO User_Permissions" +
                         "(user_id,Form_id,IS_New,IS_Save,IS_Delete,IS_Search,IS_Print,IS_Edit)" +
                         $"VALUES({cmbEmp.SelectedValue},{node.Id}," +
-                        $"{isSave},{isSave},{isDel},{isSearch},{isPrint},{isEdit})",
+                        $"{isNew},{isSave},{isDel},{isSearch},{isPrint},{isSave})",
                         conn, tr);
                     cmd.ExecuteNonQuery();
                 }

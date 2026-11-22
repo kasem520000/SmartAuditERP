@@ -173,12 +173,30 @@ namespace SmartAuditERP.Form_WPF
                     }
                 }
 
-                // التحقق من تكرار الرقم السري (إضافة جديدة)
-                if (Code == -1 && !string.IsNullOrWhiteSpace(txtSecureCode.Text))
+                // التحقق من صحة الرقم السريع وتفرّده (جديدًا وتعديلًا)
+                // P2-008 fix: ثلاث علل كانت هنا —
+                //  ١) لا فحص تكرار إطلاقًا عند التعديل
+                //  ٢) الفحص كان بالنص الخام بينما الكتابة بالقيمة المحوّلة
+                //     (double→int) فيفوت تعارضات مثل «12.9» مقابل 12
+                //  ٣) فشل التحويل كان يكتب 0 بصمت فيتساوى الجميع
+                int secureCodeVal;
+                bool hasSecureCode = int.TryParse(txtSecureCode.Text.Trim(), out secureCodeVal);
+                if (!string.IsNullOrWhiteSpace(txtSecureCode.Text) && !hasSecureCode)
                 {
+                    MessageBox.Show("الرقم السريع يجب أن يكون عددًا صحيحًا", "",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    txtSecureCode.Focus();
+                    return;
+                }
+                if (hasSecureCode && !string.IsNullOrWhiteSpace(txtSecureCode.Text))
+                {
+                    string excludeCurrent = Code == -1 ? "" : " and id<>@id ";
                     var da2 = new SqlDataAdapter(
-                        "select id from Users where SecureCode=N'" +
-                        txtSecureCode.Text + "' and IS_Deleted=0", conn);
+                        "select id from Users where SecureCode=@secureCode" +
+                        excludeCurrent + "and IS_Deleted=0", conn);
+                    da2.SelectCommand.Parameters.Add("@secureCode", SqlDbType.Int).Value = secureCodeVal;
+                    if (Code != -1)
+                        da2.SelectCommand.Parameters.Add("@id", SqlDbType.Int).Value = Code;
                     var dt2 = new DataTable();
                     da2.Fill(dt2);
                     if (dt2.Rows.Count > 0)
@@ -194,10 +212,14 @@ namespace SmartAuditERP.Form_WPF
                 if (Code != -1)
                 {
                     // P1-011 fix: بارامترات بدل حشر النص في SQL
+                    // P2-007 fix: كانت المقارنة emp<>@emp حيث @emp=Code أي
+                    // معرف موظف يقارَن بمعرف سجل Users (فضاءان مختلفان)
+                    // فيفوت تعارضات أسماء حقيقية؛ الاستبعاد الصحيح هو
+                    // سجل المستخدم نفسه: id<>@id.
                     var da3b = new SqlDataAdapter(
-                        "select id from Users where emp<>@emp " +
+                        "select id from Users where id<>@id " +
                         "and username=@username and IS_Deleted=0", conn);
-                    da3b.SelectCommand.Parameters.Add("@emp", SqlDbType.Int).Value = Code;
+                    da3b.SelectCommand.Parameters.Add("@id", SqlDbType.Int).Value = Code;
                     da3b.SelectCommand.Parameters.Add("@username", SqlDbType.NVarChar, 100).Value = txtUser.Text;
                     var dt3b = new DataTable();
                     da3b.Fill(dt3b);
@@ -222,7 +244,8 @@ namespace SmartAuditERP.Form_WPF
 
                 int loginSecode = (ckLoginSecode.IsChecked == true) ? 1 : 0;
 
-                double.TryParse(txtSecureCode.Text, out double secureCodeVal);
+                // secureCodeVal: من فحص P2-008 أعلاه — عدد صحيح مُتحقق منه
+                // أو صفر عند الفراغ (SecureCode اختياري).
 
                 // P1-010 fix: كلمة المرور تُخزن تجزئة PBKDF2 في pwd_hash ويُصفّر النص.
                 // P1-011 fix: كل القيم بارامترات — لا حشر نص في SQL.
@@ -239,7 +262,7 @@ namespace SmartAuditERP.Form_WPF
                     cmd.Parameters.Add("@emp", SqlDbType.Int).Value = cmbEmp.SelectedValue;
                     cmd.Parameters.Add("@username", SqlDbType.NVarChar).Value = txtUser.Text;
                     cmd.Parameters.Add("@pwdHash", SqlDbType.NVarChar, 512).Value = pwdHash;
-                    cmd.Parameters.Add("@secureCode", SqlDbType.Int).Value = (int)secureCodeVal;
+                    cmd.Parameters.Add("@secureCode", SqlDbType.Int).Value = secureCodeVal;
                     cmd.Parameters.Add("@loginSecode", SqlDbType.Int).Value = loginSecode;
                     cmd.ExecuteNonQuery();
                     CLR();
@@ -254,7 +277,7 @@ namespace SmartAuditERP.Form_WPF
                     cmd.Parameters.Add("@emp", SqlDbType.Int).Value = cmbEmp.SelectedValue;
                     cmd.Parameters.Add("@username", SqlDbType.NVarChar).Value = txtUser.Text;
                     cmd.Parameters.Add("@pwdHash", SqlDbType.NVarChar, 512).Value = pwdHash;
-                    cmd.Parameters.Add("@secureCode", SqlDbType.Int).Value = (int)secureCodeVal;
+                    cmd.Parameters.Add("@secureCode", SqlDbType.Int).Value = secureCodeVal;
                     cmd.Parameters.Add("@loginSecode", SqlDbType.Int).Value = loginSecode;
                     cmd.Parameters.Add("@id", SqlDbType.Int).Value = Code;
                     cmd.ExecuteNonQuery();
@@ -320,53 +343,13 @@ namespace SmartAuditERP.Form_WPF
 
                 if (conn.State != ConnectionState.Open) conn.Open();
 
-                // الحصول على رقم الموظف
-                var da = new SqlDataAdapter(
-                    "select emp from Users where id=" + Code + " and IS_Deleted=0", conn);
-                var dt = new DataTable();
-                da.Fill(dt);
-
-                if (dt.Rows.Count == 0) return;
-
-                int empId = Convert.ToInt32(dt.Rows[0]["emp"]);
-
-                // التحقق من الفواتير
-                using (var cmdCheck = new SqlCommand(
-                    "IF EXISTS(SELECT 1 FROM inv where sales_emp=@emp and IS_Deleted=0)" +
-                    " SELECT 1 ELSE SELECT 0", conn))
-                {
-                    cmdCheck.Parameters.Add("@emp", SqlDbType.Int).Value = empId;
-                    int hasInv = Convert.ToInt32(cmdCheck.ExecuteScalar());
-                    if (hasInv == 1)
-                    {
-                        MessageBox.Show(
-                            string.Equals(MainClass.Language, "ar",
-                                StringComparison.OrdinalIgnoreCase)
-                                ? "لا يمكن حذف موظف مرتبط بفواتير"
-                                : "Cannot delete an employee associated with invoices",
-                            "", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        return;
-                    }
-                }
-
-                // التحقق من القيود
-                using (var cmdCheck2 = new SqlCommand(
-                    "IF EXISTS(SELECT 1 FROM Entry where EmpID=@emp and IS_Deleted=0)" +
-                    " SELECT 1 ELSE SELECT 0", conn))
-                {
-                    cmdCheck2.Parameters.Add("@emp", SqlDbType.Int).Value = empId;
-                    int hasEntry = Convert.ToInt32(cmdCheck2.ExecuteScalar());
-                    if (hasEntry == 1)
-                    {
-                        MessageBox.Show(
-                            string.Equals(MainClass.Language, "ar",
-                                StringComparison.OrdinalIgnoreCase)
-                                ? "لا يمكن حذف موظف مرتبط بقيود"
-                                : "Cannot delete an employee associated with entries",
-                            "", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        return;
-                    }
-                }
+                // P2-009 fix: كان تعطيل حساب المستخدم (IS_Deleted=1) محجوباً
+                // إذا كان للموظف فواتير أو قيود — حاجزان يحرسان الكيان الخطأ:
+                // التعطيل لا يمس سجل الموظف ولا التاريخ المالي إطلاقاً
+                // (المستندات تشير لمعرف الموظف الباقي)، فبقي كل من سجّل يوماً
+                // حركةً بحسابه نشطاً للأبد — عجز حقيقي في سحب الصلاحيات.
+                // حذف الموظف نفسه (شاشة الموظفين) يبقى محروساً بتلك الفحوص.
+                // (استعلام معرف الموظف حُذف أيضاً: لم يكن يخدم سوى الحاجزَين.)
 
                 new SqlCommand(
                     "update Users set IS_Deleted=1 where id=" + Code, conn)
@@ -475,11 +458,27 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
+                // P2-001 fix: زر الشبكة مسار بديل لفتح شاشة صلاحيات المستخدمين —
+                // يخضع لنفس بوابة الرؤية التي تضبط مدخل «صلاحيات المستخدمين»
+                // في قائمة الشاشة الرئيسية (stripUserPerm)، لا يتجاوزها.
+                var home = System.Windows.Application.Current.Windows
+                    .OfType<Home>().FirstOrDefault();
+                // P2-001 fix + fail-closed: لا نافذة رئيسية = لا يمكن التحقق
+                // من البوابة = منع. — P2-007 fix: يُمرر معرف الموظف (empid)
+                // لا معرف سجل Users، فقائمة الموظفين مفاتيحها معرفات الموظفين.
+                if (home == null || home.stripUserPerm.Visibility != Visibility.Visible)
+                {
+                    MessageBox.Show(
+                        "غير مسموح: لا تملك صلاحية إدارة صلاحيات المستخدمين", "",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
                 if (sender is Button btn && btn.Tag is UserRowModel row)
                 {
                     var frm = new frmUsersPermissions();
                     frm.Show();
-                    frm.cmbEmp.SelectedValue = row.userid;
+                    frm.cmbEmp.SelectedValue = row.empid;
                 }
             }
             catch { }
@@ -543,7 +542,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void txtPass_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            // P2-001 fix: مسار Enter البديل يحترم تعطيل btnSave بالصلاحيات —
+            // كان يستدعي الحفظ مباشرة حتى والزر معطّل.
+            if (e.Key == Key.Return && btnSave.IsEnabled)
                 btnSave_Click(null, null);
         }
 

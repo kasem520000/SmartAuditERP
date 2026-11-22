@@ -919,6 +919,9 @@ namespace SmartAuditERP.Form_WPF
                 {
                     docItems.Add(new DocumentItem
                     {
+                        // P2-013/P2-014 fix: تمرير معرف صف Documents الفعلي
+                        // ليحذف العارض المرفق المحدد حصراً لا كل المرفقات.
+                        DocId = Convert.ToInt32(dt.Rows[i]["Id"]),
                         RowNo = i + 1,
                         FileName = dt.Rows[i]["FileName"].ToString(),
                         FileUrl = dt.Rows[i]["FileUrl"].ToString()

@@ -256,10 +256,20 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
+                // P2-002 fix: «الدخول المتقدم» لا يُخفي نافذة القفل إلا إذا تم
+                // دخول كامل ناجح فعلاً — نكشف ذلك بتغير MainClass.LoginDate
+                // (يُضبط عند كل دخول ناجح في frmUserLogin.Login).
+                // الإلغاء يعيد المستخدم إلى شاشة القفل نفسها، لا إلى التطبيق.
+                var beforeLogin = MainClass.LoginDate;
                 var frmUserLogin = new frmUserLogin();
                 Topmost = false;
                 frmUserLogin.ShowDialog();
-                Hide();
+
+                if (MainClass.LoginDate != beforeLogin)
+                {
+                    Iscorrect = true; // دخول كامل ناجح عبر المسار المتقدم
+                    Hide();
+                }
             }
             catch { }
         }

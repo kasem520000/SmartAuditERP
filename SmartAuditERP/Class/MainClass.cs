@@ -37,6 +37,18 @@ namespace SmartAuditERP
             $"server={Server};database={Database};trusted_connection=true";
 
         public static string originalConnStr = connstr;
+
+        // P2-012 fix: سياسة قناة SQL Server (TLS والتحقق من هوية الخادم)
+        // قابلة للتهيئة لكل تثبيت وتُطبّق مركزياً في ConnObj() أدناه.
+        // قرار توافق موثق (على نمط P1-014/P1-020): الافتراضي يبقي سلوك
+        // النشر القائم (بلا فرض تشفير) كي لا تتعطل التثبيتات ذات الشهادات
+        // الذاتية غير المهيأة؛ التثبيتات الحساسة تضبط في StartupData.json:
+        //   "SqlEncrypt": true
+        //   "SqlTrustServerCertificate": false   ← مع شهادة صحيحة على الخادم
+        // (الغياب = الافتراضي المتوافق؛ أي قيمة تُطبّق عند كل اتصال جديد).
+        public static bool SqlEncrypt { get; set; } = false;
+        public static bool SqlTrustServerCertificate { get; set; } = true;
+
         // في MainClass.cs أضف هذا الحقل
         public static DateTime LoginDate { get; set; } = DateTime.Now;
         /// <summary>
@@ -44,7 +56,14 @@ namespace SmartAuditERP
         /// </summary>
         public static SqlConnection ConnObj()
         {
-            conn = new SqlConnection(connstr);
+            // P2-012 fix: كل اتصال يمر بالسياسة المركزية عند تفعيلها.
+            var cs = connstr;
+            if (SqlEncrypt)
+            {
+                cs = cs.TrimEnd(';') + ";Encrypt=True;TrustServerCertificate=" +
+                     (SqlTrustServerCertificate ? "True" : "False") + ";";
+            }
+            conn = new SqlConnection(cs);
             return conn;
         }
 

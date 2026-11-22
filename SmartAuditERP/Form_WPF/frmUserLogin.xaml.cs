@@ -669,6 +669,14 @@ namespace SmartAuditERP.Form_WPF
 
                         MainClass.UseServerAuth = !string.IsNullOrEmpty(startupData.ServerUserName);
 
+                        // P2-012 fix: قراءة سياسة قناة SQL الاختيارية من ملف
+                        // الإقلاع — الغياب يبقي الافتراضي المتوافق.
+                        if (startupData.SqlEncrypt.HasValue)
+                            MainClass.SqlEncrypt = startupData.SqlEncrypt.Value;
+                        if (startupData.SqlTrustServerCertificate.HasValue)
+                            MainClass.SqlTrustServerCertificate =
+                                startupData.SqlTrustServerCertificate.Value;
+
                         branchId = Convert.ToInt32(startupData.Branch);
                         txtUser.Text = startupData.UserName;
 

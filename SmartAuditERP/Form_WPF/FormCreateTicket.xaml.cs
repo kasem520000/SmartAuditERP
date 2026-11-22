@@ -57,6 +57,10 @@ namespace SmartAuditERP.Form_WPF
             TextBoxName.Text = Common.FoundationInfoDT.Rows[0]["nameA"]?.ToString();
             TextBoxEmail.Text = Common.FoundationInfoDT.Rows[0]["Email"]?.ToString();
             TextBoxPhone.Text = Common.FoundationInfoDT.Rows[0]["Mobile"]?.ToString();
+
+            // P2-015 fix: كل فتح للنافذة يبدأ بمرفقات نظيفة — الحقل static
+            // كان يحمل مرفقات جلسة سابقة بعد إغلاق النافذة وفتحها مجدداً.
+            filePathDocument = null;
         }
 
         #endregion
@@ -139,6 +143,11 @@ namespace SmartAuditERP.Form_WPF
             TextBoxDescription.Clear();
             ComboBoxPriority.SelectedIndex = 1;
             ComboBoxCategory.SelectedIndex = 0;
+
+            // P2-015 fix: مسح المرفقات المختارة مع النموذج — كانت المصفوفة
+            // static تبقى بعد النجاح/المسح/إعادة الفتح فتُرفق صور التذكرة
+            // السابقة بالتذكرة التالية دون علم المستخدم.
+            filePathDocument = null;
         }
 
         #endregion
