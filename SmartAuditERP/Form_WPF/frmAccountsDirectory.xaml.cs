@@ -262,7 +262,11 @@ namespace SmartAuditERP.Form_WPF
                     filter = $" ParentCode LIKE '{_selectedCode}%' AND ";
                 }
 
-                string query = $"SELECT Code, AName, ParentCode, Acc_branch FROM Accounts_Index WHERE {filter} type=2";
+                // P2-010 fix: عزل فروع الحسابات يطبق هنا أيضاً — نفس آلية
+                // Accounting.BranchCondition المعتمدة في ميزان المراجعة
+                // (فرع الجلسة أو الحساب المشترك acc_branch is null؛ والصلاحية 17
+                // تفرغ الشرط لعرض كل الفروع لحاملها).
+                string query = $"SELECT Code, AName, ParentCode, Acc_branch FROM Accounts_Index WHERE {filter} type=2{Accounting.BranchCondition}";
 
                 using (SqlDataAdapter adapter = new SqlDataAdapter(query, _connection))
                 {
@@ -838,7 +842,8 @@ namespace SmartAuditERP.Form_WPF
 
                 using (SqlConnection conn = MainClass.ConnObj())
                 {
-                    string query = "SELECT Code, AName, ParentCode, type FROM Accounts_Index";
+                    // P2-010 fix: شجرة الدليل تخضع لعزل الفروع نفسه (BranchCondition)
+                    string query = "SELECT Code, AName, ParentCode, type FROM Accounts_Index WHERE 1=1" + Accounting.BranchCondition;
                     SqlDataAdapter adapter = new SqlDataAdapter(query, conn);
                     DataTable dt = new DataTable();
                     adapter.Fill(dt);

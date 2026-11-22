@@ -244,9 +244,14 @@ namespace SmartAuditERP.Form_WPF
                 if (chkAll.IsChecked != true)
                     dateFilter += " and Entry.date>=@date1 and Entry.date<@date2 ";
 
-                string typeFilter = chkSecondery.IsChecked == true ? " where type = 2 order by ParentCode" : "";
+                string typeFilter = chkSecondery.IsChecked == true ? " where type = 2" : "";
 
-                SqlDataAdapter adapter = new SqlDataAdapter($"select Code,AName,ParentCode,type from Accounts_Index {typeFilter}", conn);
+                // P2-010 fix: شجرة حسابات الميزان تخضع لعزل الفروع نفسه
+                // (Accounting.BranchCondition: فرع الجلسة أو الحساب المشترك؛
+                // والصلاحية 17 تفرغه لعرض كل الفروع لحاملها).
+                string orderClause = chkSecondery.IsChecked == true ? " order by ParentCode" : "";
+                SqlDataAdapter adapter = new SqlDataAdapter(
+                    $"select Code,AName,ParentCode,type from Accounts_Index{typeFilter}{Accounting.BranchCondition}{orderClause}", conn);
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
 

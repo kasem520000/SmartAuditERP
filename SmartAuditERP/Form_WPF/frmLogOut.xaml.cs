@@ -86,6 +86,28 @@ namespace SmartAuditERP.Form_WPF
                 try { form.Close(); } catch { }
             }
 
+            // P2-003 fix: إغلاق نوافذ WPF المفتوحة من الجلسة السابقة أيضاً —
+            // الكود أعلاه كان يغلق نماذج WinForms فقط فتبقى نوافذ WPF (المحررات
+            // والتقارير) مفتوحة ببيانات وصلاحيات المستخدم السابق. مرجع كل نافذة
+            // static في Home يُصفَّر تلقائياً عند إغلاقها (نمط P1-030) فتُنشأ
+            // نسخة جديدة للجلسة الجديدة. تُستثنى Home ونافذتا الدخول/التبديل.
+            var wpfWindowsToClose = new List<System.Windows.Window>();
+            foreach (System.Windows.Window window in System.Windows.Application.Current.Windows)
+            {
+                if (window is Home || window is frmLogOut || window is frmUserLogin)
+                    continue;
+                wpfWindowsToClose.Add(window);
+            }
+            foreach (var window in wpfWindowsToClose)
+            {
+                try { window.Close(); } catch { }
+            }
+
+            // P2-003 fix: تصفير سياق السحابة من الجلسة السابقة — CurrentCloudUser
+            // كان يبقى محملاً بعد التبديل فتستخدمه مسارات المزامنة/السحابة بهوية
+            // المستخدم السابق. الدخول الجديد يعيد تعيينه عند نجاحه.
+            User.CurrentCloudUser = null;
+
             ThreadContext.Properties["EmpID"] = MainClass.EmpNo;
             Logger.Info($"تم تسجيل الخروج للمستخدم {MainClass.UserName}");
 

@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+    xmlns:local="clr-namespace:SmartAuditERP"
     Title="صلاحيات المستخدمين"
     Width="660" Height="520"
     WindowStartupLocation="CenterScreen"
@@ -231,6 +232,26 @@
                                   FontSize="12"
                                   FontFamily="Cairo, Tahoma"
                                   SelectedItemChanged="treeView1_SelectedItemChanged">
+                            <TreeView.Resources>
+                                <!-- P2-005 fix: القالب الهرمي المفقود — بدونه لا
+                                     تُعرض أطفال النموذج (القدرات: جديد/حفظ/حذف/
+                                     بحث/طباعة) ولا يرتبط أي مربع تحديد بخاصية
+                                     IsChecked في النموذج، فتظهر الشجرة نصوصاً
+                                     بلا تحديد. الآن: الأطفال من Children والتحديد
+                                     ثنائي الاتجاه مع النموذج الذي يقرؤه الحفظ
+                                     ويكتبه التحميل. -->
+                                <HierarchicalDataTemplate DataType="{x:Type local:PermissionTreeNode}"
+                                                          ItemsSource="{Binding Children}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <CheckBox IsChecked="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  VerticalAlignment="Center"
+                                                  Margin="0,0,6,0"
+                                                  Focusable="False"/>
+                                        <TextBlock Text="{Binding Name}"
+                                                   VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </HierarchicalDataTemplate>
+                            </TreeView.Resources>
                             <TreeView.ItemContainerStyle>
                                 <Style TargetType="TreeViewItem">
                                     <Setter Property="IsExpanded" Value="False"/>

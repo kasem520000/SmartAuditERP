@@ -199,8 +199,14 @@ namespace SmartAuditERP.Form_WPF
 
         public void LoadEmps(int branch)
         {
+            // P2-010 fix: المعامل branch كان يُتجاهل — الآن يقاطع الموظفين مع
+            // فروعهم (EmpBranches هو جدول ربط الموظف/الفرع المستخدم في الدخول).
+            // branch <= 0 (كل الفروع/إداري) = بلا مرشح.
+            string branchFilter = branch > 0
+                ? " AND EXISTS (SELECT 1 FROM EmpBranches eb WHERE eb.emp=Employees.id AND eb.branch=" + branch + ")"
+                : "";
             var adapter = new SqlDataAdapter(
-                "SELECT id, name FROM Employees WHERE IS_Deleted=0 ORDER BY id",
+                "SELECT id, name FROM Employees WHERE IS_Deleted=0" + branchFilter + " ORDER BY id",
                 conn1);
             var dt = new DataTable();
             adapter.Fill(dt);
@@ -213,8 +219,12 @@ namespace SmartAuditERP.Form_WPF
 
         public void LoadEmpSrch()
         {
+            // P2-010 fix: بحث الموظفين يحترم فرع الجلسة أيضاً (نفس الاصطلاح).
+            string branchFilter = MainClass.BranchNo > 0
+                ? " AND EXISTS (SELECT 1 FROM EmpBranches eb WHERE eb.emp=Employees.id AND eb.branch=" + MainClass.BranchNo + ")"
+                : "";
             var adapter = new SqlDataAdapter(
-                "SELECT id, name FROM Employees WHERE IS_Deleted=0 ORDER BY id",
+                "SELECT id, name FROM Employees WHERE IS_Deleted=0" + branchFilter + " ORDER BY id",
                 conn);
             var dt = new DataTable();
             adapter.Fill(dt);

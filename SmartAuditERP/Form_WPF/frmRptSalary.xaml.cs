@@ -72,6 +72,11 @@ namespace SmartAuditERP.Form_WPF
                     }
                 }
 
+                // P2-010 fix: تقرير الراتب يحترم عزل الفروع — فرع الجلسة عند
+                // تحديده يقيد النتائج (نفس اصطلاح GetBranchCondition؛ -1 = كل الفروع).
+                if (MainClass.BranchNo != -1)
+                    condWhere += $" AND SalaryPay.branch={MainClass.BranchNo}";
+
                 string sql =
                     "SELECT SalaryPay.[id], SalaryPay.[date], " +
                     "SalaryPay.[month], SalaryPay.[year], " +
