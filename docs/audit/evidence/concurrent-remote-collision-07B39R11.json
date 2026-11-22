@@ -1,0 +1,299 @@
+{
+  "schema_version": 1,
+  "kind": "R11-concurrent-remote-collision-preserved-before-normal-merge-not-scope-adoption",
+  "assessment_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "local_HEAD": "0f6559cf6853cc580b6fe3a2c63100e40f673453",
+  "concurrent_remote_HEAD": "9a552b7accb322ed014c419e8ae8f51df203ec04",
+  "branch": "arena/94ae8414-smartauditerp",
+  "raw_commit_metadata": "commit 9a552b7accb322ed014c419e8ae8f51df203ec04\nAuthor:     kasem520000 <kasem520000@users.noreply.github.com>\nAuthorDate: Sun Nov 22 14:46:14 2026 +0000\nCommit:     kasem520000 <kasem520000@users.noreply.github.com>\nCommitDate: Sun Nov 22 14:46:14 2026 +0000\n\n    audit: complete 7C item 3 - item-search family + unit/qty/price/discount/VAT local read, 7 new roots P7-166..P7-172 (R11)\n",
+  "changed_paths": [
+    "docs/audit/PHASE-07B39R11.md",
+    "docs/audit/SOURCE-REVIEW-07B39R11.md",
+    "docs/audit/VALIDATION-07B39R11.md",
+    "docs/audit/evidence/search-item-family-contract-07B39R11.json",
+    "docs/audit/findings.csv"
+  ],
+  "application_or_old_test_changes_in_remote_delta": [],
+  "remote_frozen_archive": {
+    "path": "docs/audit/evidence/remote-9a552b7-frozen-07B39R11.tar.gz",
+    "bytes": 55393,
+    "sha256": "c2ef6fecdc61b796c6ef4f0ca54202278bb929a4753bf54e7e26d5efa8f768ce"
+  },
+  "remote_frozen_members": [
+    {
+      "path": "docs/audit/PHASE-07B39R11.md",
+      "bytes": 8350,
+      "sha256": "d4938037d9cd808b4e66a3293a4121f77e0161597de4d6caf5b9e0680b0d33fe",
+      "git_blob_id": "711b0a1626aabc08a9d3335cff5eec7767c195f6"
+    },
+    {
+      "path": "docs/audit/SOURCE-REVIEW-07B39R11.md",
+      "bytes": 7951,
+      "sha256": "5a985544d9d14cf7b8a95f08055f939ed9cd155ca943a5a75e48bf8d93e70137",
+      "git_blob_id": "11bcd2a9d83026353bb9d8090d4520cc61617281"
+    },
+    {
+      "path": "docs/audit/VALIDATION-07B39R11.md",
+      "bytes": 3072,
+      "sha256": "bff4c98e4cf770e725c4cd3889acf20691f9538eae8c5d861df802351d8f65a8",
+      "git_blob_id": "b57bc085ebfc7dcb0f2b6ef54d47073f6cdd5d08"
+    },
+    {
+      "path": "docs/audit/evidence/search-item-family-contract-07B39R11.json",
+      "bytes": 16997,
+      "sha256": "28ac430d637212e6963e9cea8b83c6e49a8eeefbb39d7cb46cb78705afa0c52c",
+      "git_blob_id": "ea2e52c25e846b4b9e98362a8865f6492dd71b0a"
+    },
+    {
+      "path": "docs/audit/findings.csv",
+      "bytes": 227241,
+      "sha256": "edfe93ff8e6dae98e2484c8ddf098304b23e550ec34639c99b672388efa4111c",
+      "git_blob_id": "3a9671ce9bcf9626c695334e2f83c975f811a299"
+    }
+  ],
+  "earlier_postpublication_index_versions_preserved": {
+    "archive": {
+      "path": "docs/audit/evidence/pre-concurrent-remote-local-07B39R11.tar.gz",
+      "bytes": 67845,
+      "sha256": "54bce84cea93c377277124b2108ce6090d87469047bff81f18cc615345ee2008"
+    },
+    "members": [
+      {
+        "path": "docs/audit/README.md",
+        "bytes": 96707,
+        "sha256": "0d196b8852fc9654359489940e5297e93ebb32519c4259630bb76181b8be6eec"
+      },
+      {
+        "path": "docs/audit/PLAN.md",
+        "bytes": 150502,
+        "sha256": "493ef7c40d8be9129c2f9eb0bde94d677934884d3678015f91c24a5dd174a361"
+      },
+      {
+        "path": "docs/audit/evidence/index-prefixes-07B39R11.json",
+        "bytes": 1503,
+        "sha256": "2fa049dffd7292d6c97862353e0fa9a858799870d0036e81b5ebb46a44d2f438"
+      },
+      {
+        "path": "docs/audit/evidence/publication-integrity-07B39R11.json",
+        "bytes": 7612,
+        "sha256": "029a5596d6613578c6199f3c9ed07b92a4df426f6e8d23d7967a3049e71b7f33"
+      }
+    ]
+  },
+  "our_three_R11_report_versions_to_keep": [
+    {
+      "path": "docs/audit/PHASE-07B39R11.md",
+      "bytes": 10231,
+      "sha256": "11811ced80123954cd0b700a5bd266db5e0f0b103633b32c847449fc45b8e199"
+    },
+    {
+      "path": "docs/audit/SOURCE-REVIEW-07B39R11.md",
+      "bytes": 13189,
+      "sha256": "6499984f1fa8978e9959868d783b8092dc7491c60758b8fd638c66623a0ff316"
+    },
+    {
+      "path": "docs/audit/VALIDATION-07B39R11.md",
+      "bytes": 7669,
+      "sha256": "d8a80600692efe7675a4db5da6d5a1338ad167818179a99257a8890c95bf4739"
+    }
+  ],
+  "remote_344_rows_include_original335_unchanged": true,
+  "remote_nine_rows_preserved_not_accepted": [
+    {
+      "id": "P7-164",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "title": "حفظ سندات الاستعادة القديمة SaveReceipt2 يسقط معامل Recipient المطلوب فيفشل كل تنفيذ بالاستثناء ويمنع حذف الصف القديم المشروط",
+      "evidence": "SmartAuditERP/Class/ReceiptOper.cs:300-343;SmartAuditERP/Class/StoredQueries.cs:30;SmartAuditERP/Form_WPF/frmSandD.xaml.cs:637;SmartAuditERP/Form_WPF/frmSandSD.xaml.cs:484",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-165",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "title": "حفظ إعدادات إشعارات MQTT يحذف صف القاعدة ثم يدرج بلا معاملة وبنطاق DB بلا فرع والقارئ يأخذ أول صف بلا مرشح فرع",
+      "evidence": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs:3882-3951;SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:983-1022;SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:847",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-166",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "sql-injection",
+      "status": "open-not-remediated",
+      "title": "عائلة بحث الصنف والباركود والكود والاسم والسيريال تبني SQL بدمج نصي مباشر بلا معاملات عبر تسعة مواضع ومحررات",
+      "evidence": "SmartAuditERP/Class/ItemOper.cs:1908-1977;SmartAuditERP/Form_WPF/frmPOS.xaml.cs:2683-2725;SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:1290-1375;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:623-751;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:573-598;SmartAuditERP/Form_WPF/frmcontract.xaml.cs:1770;SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs:921;SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs:390-945",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-167",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "title": "باركود الميزان في POS يضيف سطرا جديدا ثم يكتب الوزن أو السعر في السطر الأول للشبكة فيفسد كميته أو سعره عند وجود بنود سابقة",
+      "evidence": "SmartAuditERP/Form_WPF/frmPOS.xaml.cs:2737-2768;SmartAuditERP/Form_WPF/frmPOS.xaml.cs:906-939;SmartAuditERP/Form_WPF/frmPOS.xaml.cs:2745;SmartAuditERP/Form_WPF/frmPOS.xaml.cs:2761",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-168",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "title": "فرع وزن غير 1 أو 2 في باركود ميزان POS يسقط بصمت بلا إضافة ولا رسالة رغم العثور على الصنف بينما SearchForBarcode يدعم الوزن 3",
+      "evidence": "SmartAuditERP/Form_WPF/frmPOS.xaml.cs:2730-2769;SmartAuditERP/Class/ItemOper.cs:2023-2051",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-169",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "title": "مطابقة الصنف المكرر تختلف بين المحررات: خمسة تقارن الصنف بلا وحدة وOffers لا تفحص أصلا بينما POS تقارن الوحدة وItemOper تقارن الوحدة والباركود",
+      "evidence": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:1420-1448;SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs:455-470;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:563-575;SmartAuditERP/Form_WPF/frmInvInOutput.xaml.cs:930-950;SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:1171-1190;SmartAuditERP/Form_WPF/frmOffers.xaml.cs:837-878;SmartAuditERP/Form_WPF/frmPOS.xaml.cs:895-913;SmartAuditERP/Class/ItemOper.cs:1082-1136",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-170",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "title": "تغيير وحدة بند قائم في محرري البيع والشراء يعيد تحميل معلومات الوحدة فتعيد ضبط الكمية إلى 1 وتفقد الكمية المدخلة بصمت",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:974-1008;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:795-825;SmartAuditERP/Class/ItemOper.cs:761;SmartAuditERP/Class/ItemOper.cs:796",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-171",
+      "severity": "Medium",
+      "certainty": "potential",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "title": "عرض نسبة ضريبة الصنف الخام في POS يفترق عن الحساب بضريبة الفاتورة الافتراضية لأي ضريبة صنف غير صفرية",
+      "evidence": "SmartAuditERP/Form_WPF/frmPOS.xaml.cs:971;SmartAuditERP/Form_WPF/frmPOS.xaml.cs:753-780;SmartAuditERP/Class/ItemOper.cs:532-535;SmartAuditERP/Class/ItemOpercontract.cs:1220-1223;SmartAuditERP/Class/ItemOpercontract.cs:1287-1290",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-172",
+      "severity": "Low",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "title": "استدعاء OrderByDescending بلا استقبال نتيجة عند إضافة صنف POS لا يرتب شيئا فالنية المرئية للأحدث أولا غير منفذة",
+      "evidence": "SmartAuditERP/Class/ItemOper.cs:1184-1185",
+      "next_phase": "8"
+    }
+  ],
+  "existing_R1_identifier_collisions": [
+    {
+      "id": "P7-164",
+      "existing_R1_dictionary": {
+        "id": "P7-164",
+        "severity": "High",
+        "certainty": "confirmed",
+        "type": "invoice-global-key-numeric-proc-identity-contract",
+        "status": "open-not-remediated",
+        "title": "بحث فاتورة المشتريات يحوّل GlobalID النصي إلى double ثم يستعمله كهوية proc_id مستقلة",
+        "evidence": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2036-2047;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:871-878;SmartAuditERP/Form_WPF/frmPurchInv.xaml:361-369;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:570-596;SmartAuditERP/Class/InvoiceOper.cs:2872-2902;SmartAuditERP/Properties/Resources.resx:954-962",
+        "next_phase": "8"
+      },
+      "concurrent_remote_dictionary": {
+        "id": "P7-164",
+        "severity": "High",
+        "certainty": "confirmed",
+        "type": "implementation-defect",
+        "status": "open-not-remediated",
+        "title": "حفظ سندات الاستعادة القديمة SaveReceipt2 يسقط معامل Recipient المطلوب فيفشل كل تنفيذ بالاستثناء ويمنع حذف الصف القديم المشروط",
+        "evidence": "SmartAuditERP/Class/ReceiptOper.cs:300-343;SmartAuditERP/Class/StoredQueries.cs:30;SmartAuditERP/Form_WPF/frmSandD.xaml.cs:637;SmartAuditERP/Form_WPF/frmSandSD.xaml.cs:484",
+        "next_phase": "8"
+      }
+    },
+    {
+      "id": "P7-165",
+      "existing_R1_dictionary": {
+        "id": "P7-165",
+        "severity": "High",
+        "certainty": "confirmed",
+        "type": "return-precheck-unquoted-reference-failure-as-absent",
+        "status": "open-not-remediated",
+        "title": "فحص الرجوع يركّب GlobalID دون اقتباس في Reff_No ويعيد false عند فشل الفحص ثم ينشر القبول",
+        "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:286-303;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:603-619;SmartAuditERP/Class/InvoiceOper.cs:798-810;SmartAuditERP/Class/InvoiceOper.cs:2872-2902;SmartAuditERP/Properties/Resources.resx:954-977;SmartAuditERP/Properties/Resources.resx:47206-47210",
+        "next_phase": "8"
+      },
+      "concurrent_remote_dictionary": {
+        "id": "P7-165",
+        "severity": "Medium",
+        "certainty": "confirmed",
+        "type": "implementation-defect",
+        "status": "open-not-remediated",
+        "title": "حفظ إعدادات إشعارات MQTT يحذف صف القاعدة ثم يدرج بلا معاملة وبنطاق DB بلا فرع والقارئ يأخذ أول صف بلا مرشح فرع",
+        "evidence": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs:3882-3951;SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:983-1022;SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:847",
+        "next_phase": "8"
+      }
+    },
+    {
+      "id": "P7-166",
+      "existing_R1_dictionary": {
+        "id": "P7-166",
+        "severity": "Medium",
+        "certainty": "confirmed",
+        "type": "export-success-without-local-export-request",
+        "status": "open-not-remediated",
+        "title": "أربعة مسارات تعلن حفظ أو تصدير الملف بعد الحوار دون طلب كتابة بيانات محلي",
+        "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2370-2400;SmartAuditERP/Form_WPF/frmCloseShift.xaml.cs:1708-1730;SmartAuditERP/Form_WPF/frmEmpInvs.xaml.cs:594-630;SmartAuditERP/Form_WPF/frmAccountsDirectory.xaml.cs:736-783;SmartAuditERP/Form_WPF/frmEmpInvs.xaml.cs:91-99",
+        "next_phase": "8"
+      },
+      "concurrent_remote_dictionary": {
+        "id": "P7-166",
+        "severity": "High",
+        "certainty": "confirmed",
+        "type": "sql-injection",
+        "status": "open-not-remediated",
+        "title": "عائلة بحث الصنف والباركود والكود والاسم والسيريال تبني SQL بدمج نصي مباشر بلا معاملات عبر تسعة مواضع ومحررات",
+        "evidence": "SmartAuditERP/Class/ItemOper.cs:1908-1977;SmartAuditERP/Form_WPF/frmPOS.xaml.cs:2683-2725;SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:1290-1375;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:623-751;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:573-598;SmartAuditERP/Form_WPF/frmcontract.xaml.cs:1770;SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs:921;SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs:390-945",
+        "next_phase": "8"
+      }
+    },
+    {
+      "id": "P7-167",
+      "existing_R1_dictionary": {
+        "id": "P7-167",
+        "severity": "High",
+        "certainty": "confirmed",
+        "type": "sync-report-projection-local-empty-collection",
+        "status": "open-not-remediated",
+        "title": "بناء بيانات تقريري المزامنة يمرر قائمتين فارغتين للمحوّل رغم حارس صفوف العرض",
+        "evidence": "SmartAuditERP/Form_WPF/frmEntriesSyncStatus.xaml.cs:572-593;SmartAuditERP/Form_WPF/frmEntriesSyncStatus.xaml.cs:684-724;SmartAuditERP/Form_WPF/frmReceiptsSyncStatus.xaml.cs:545-551;SmartAuditERP/Form_WPF/frmReceiptsSyncStatus.xaml.cs:553-585",
+        "next_phase": "8"
+      },
+      "concurrent_remote_dictionary": {
+        "id": "P7-167",
+        "severity": "High",
+        "certainty": "confirmed",
+        "type": "implementation-defect",
+        "status": "open-not-remediated",
+        "title": "باركود الميزان في POS يضيف سطرا جديدا ثم يكتب الوزن أو السعر في السطر الأول للشبكة فيفسد كميته أو سعره عند وجود بنود سابقة",
+        "evidence": "SmartAuditERP/Form_WPF/frmPOS.xaml.cs:2737-2768;SmartAuditERP/Form_WPF/frmPOS.xaml.cs:906-939;SmartAuditERP/Form_WPF/frmPOS.xaml.cs:2745;SmartAuditERP/Form_WPF/frmPOS.xaml.cs:2761",
+        "next_phase": "8"
+      }
+    }
+  ],
+  "remote_new_search_item_contract_path": "docs/audit/evidence/search-item-family-contract-07B39R11.json",
+  "remote_new_search_item_contract_disposition": "Preserve byte-identically as historical remote evidence in the normal merge; not independently source-adjudicated here, not current authorization, root acceptance, or capability closure. All seven new questions remain readable-local followthrough.",
+  "proposed_normal_merge_resolution": "Commit our R11 first, then normal no-ff merge the explicit remote SHA. Keep our exact three R11 report versions and original335 findings at the four conflicting paths; retain the remote unique search-item JSON unchanged. Preserve both parent histories and both remote archives. No forced push, other branch, application repair/execution or7C/8 adoption.",
+  "resolution_actually_executed_yet": false,
+  "run02_589_or_other_tests_repeated_for_remote_item_claims": false,
+  "remote_344_adopted_as_current_findings": false,
+  "new_accepted_numbered_roots": 0,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false
+}

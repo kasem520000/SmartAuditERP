@@ -1,0 +1,385 @@
+{
+  "schema_version": 1,
+  "kind": "second-concurrent-remote-preservation-normal-merge-resolution-and-postmerge-integrity",
+  "assessment_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "branch": "arena/94ae8414-smartauditerp",
+  "our_first_normal_merge_parent": "197194c9746dbcb4c77bda86c0f87ea27912d3be",
+  "remote_previously_preserved": "9a552b7accb322ed014c419e8ae8f51df203ec04",
+  "second_remote_parent": "32c185297cb9779ff7d428351a4ae4d14041cc68",
+  "first_push_rejection": {
+    "command": [
+      "git",
+      "push",
+      "origin",
+      "arena/94ae8414-smartauditerp"
+    ],
+    "actual_exit_observed": 1,
+    "verbatim_relevant_tool_output": "! [rejected] arena/94ae8414-smartauditerp -> arena/94ae8414-smartauditerp (fetch first)",
+    "independently_preserved_raw_streams": false,
+    "provenance": "Transcribed from the actual bash tool result; not an invented stdout/stderr file."
+  },
+  "remote_delta_paths": [
+    "docs/audit/PHASE-07B39R12.md",
+    "docs/audit/SOURCE-REVIEW-07B39R12.md",
+    "docs/audit/VALIDATION-07B39R12.md",
+    "docs/audit/evidence/q-reader-year-branch-contract-07B39R12.json",
+    "docs/audit/findings.csv"
+  ],
+  "remote_five_blobs_archive": {
+    "path": "docs/audit/evidence/remote-32c1852-frozen-07B39R11.tar.gz",
+    "bytes": 53222,
+    "sha256": "fac9f52fb02b6256c71a750a5e35bfdd39fd831b6289f60aceebc7c444ebb676"
+  },
+  "remote_members": [
+    {
+      "path": "docs/audit/PHASE-07B39R12.md",
+      "bytes": 6522,
+      "sha256": "1419cf90504a5d1215ebe2d0ea290f3bb97dc8141a75bfd8811d0f2711f3cf25",
+      "git_blob_id": "1ad068aae16b767fd9ec9ab775e9ab2ac1373675"
+    },
+    {
+      "path": "docs/audit/SOURCE-REVIEW-07B39R12.md",
+      "bytes": 5734,
+      "sha256": "14f37585baff58f01f480804c0a3cff70b830d50d22c22982459a655592f20b0",
+      "git_blob_id": "e82c5b1fa3e515db3a37e4b10c3bc8254b3582eb"
+    },
+    {
+      "path": "docs/audit/VALIDATION-07B39R12.md",
+      "bytes": 2856,
+      "sha256": "056982a7f8e9363b6384726ebb31025165d936e2dad330a32514f86981335f4c",
+      "git_blob_id": "123292b3010196f0447b837bc35667f2d21ca923"
+    },
+    {
+      "path": "docs/audit/evidence/q-reader-year-branch-contract-07B39R12.json",
+      "bytes": 10448,
+      "sha256": "0079805df03e227a24f007fe885a2f9a6cfbf3b566c9169301a310eec965383a",
+      "git_blob_id": "8727aec8cf9b8248af1d2a9076fefb8f2c5c549b"
+    },
+    {
+      "path": "docs/audit/findings.csv",
+      "bytes": 229713,
+      "sha256": "0361f1a10047afb47b0563b8e0802a4240cf30ac5ecc4a46a3154ca26e7d0554",
+      "git_blob_id": "f26087c9cf25f86fa602a991b31229434af4f979"
+    }
+  ],
+  "remote_register_rows": 349,
+  "remote_register_original335_rows_value_identical": true,
+  "remote_extra_rows_preserved_not_accepted": [
+    {
+      "id": "P7-164",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "title": "حفظ سندات الاستعادة القديمة SaveReceipt2 يسقط معامل Recipient المطلوب فيفشل كل تنفيذ بالاستثناء ويمنع حذف الصف القديم المشروط",
+      "evidence": "SmartAuditERP/Class/ReceiptOper.cs:300-343;SmartAuditERP/Class/StoredQueries.cs:30;SmartAuditERP/Form_WPF/frmSandD.xaml.cs:637;SmartAuditERP/Form_WPF/frmSandSD.xaml.cs:484",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-165",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "title": "حفظ إعدادات إشعارات MQTT يحذف صف القاعدة ثم يدرج بلا معاملة وبنطاق DB بلا فرع والقارئ يأخذ أول صف بلا مرشح فرع",
+      "evidence": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs:3882-3951;SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:983-1022;SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:847",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-166",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "sql-injection",
+      "status": "open-not-remediated",
+      "title": "عائلة بحث الصنف والباركود والكود والاسم والسيريال تبني SQL بدمج نصي مباشر بلا معاملات عبر تسعة مواضع ومحررات",
+      "evidence": "SmartAuditERP/Class/ItemOper.cs:1908-1977;SmartAuditERP/Form_WPF/frmPOS.xaml.cs:2683-2725;SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:1290-1375;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:623-751;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:573-598;SmartAuditERP/Form_WPF/frmcontract.xaml.cs:1770;SmartAuditERP/Form_WPF/frmInvPOS.xaml.cs:921;SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs:390-945",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-167",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "title": "باركود الميزان في POS يضيف سطرا جديدا ثم يكتب الوزن أو السعر في السطر الأول للشبكة فيفسد كميته أو سعره عند وجود بنود سابقة",
+      "evidence": "SmartAuditERP/Form_WPF/frmPOS.xaml.cs:2737-2768;SmartAuditERP/Form_WPF/frmPOS.xaml.cs:906-939;SmartAuditERP/Form_WPF/frmPOS.xaml.cs:2745;SmartAuditERP/Form_WPF/frmPOS.xaml.cs:2761",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-168",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "title": "فرع وزن غير 1 أو 2 في باركود ميزان POS يسقط بصمت بلا إضافة ولا رسالة رغم العثور على الصنف بينما SearchForBarcode يدعم الوزن 3",
+      "evidence": "SmartAuditERP/Form_WPF/frmPOS.xaml.cs:2730-2769;SmartAuditERP/Class/ItemOper.cs:2023-2051",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-169",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "title": "مطابقة الصنف المكرر تختلف بين المحررات: خمسة تقارن الصنف بلا وحدة وOffers لا تفحص أصلا بينما POS تقارن الوحدة وItemOper تقارن الوحدة والباركود",
+      "evidence": "SmartAuditERP/Form_WPF/frmSalesInvoice.xaml.cs:1420-1448;SmartAuditERP/Form_WPF/frmSalePurch.xaml.cs:455-470;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:563-575;SmartAuditERP/Form_WPF/frmInvInOutput.xaml.cs:930-950;SmartAuditERP/Form_WPF/frmProductionOrder.xaml.cs:1171-1190;SmartAuditERP/Form_WPF/frmOffers.xaml.cs:837-878;SmartAuditERP/Form_WPF/frmPOS.xaml.cs:895-913;SmartAuditERP/Class/ItemOper.cs:1082-1136",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-170",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "title": "تغيير وحدة بند قائم في محرري البيع والشراء يعيد تحميل معلومات الوحدة فتعيد ضبط الكمية إلى 1 وتفقد الكمية المدخلة بصمت",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:974-1008;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:795-825;SmartAuditERP/Class/ItemOper.cs:761;SmartAuditERP/Class/ItemOper.cs:796",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-171",
+      "severity": "Medium",
+      "certainty": "potential",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "title": "عرض نسبة ضريبة الصنف الخام في POS يفترق عن الحساب بضريبة الفاتورة الافتراضية لأي ضريبة صنف غير صفرية",
+      "evidence": "SmartAuditERP/Form_WPF/frmPOS.xaml.cs:971;SmartAuditERP/Form_WPF/frmPOS.xaml.cs:753-780;SmartAuditERP/Class/ItemOper.cs:532-535;SmartAuditERP/Class/ItemOpercontract.cs:1220-1223;SmartAuditERP/Class/ItemOpercontract.cs:1287-1290",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-172",
+      "severity": "Low",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "title": "استدعاء OrderByDescending بلا استقبال نتيجة عند إضافة صنف POS لا يرتب شيئا فالنية المرئية للأحدث أولا غير منفذة",
+      "evidence": "SmartAuditERP/Class/ItemOper.cs:1184-1185",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-173",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "title": "قارئ سند القبض يغلق القارئ ثم يقرأ EmpId منه فيفشل كل تنقل للسند ويحرم تحميل اسم المحرر والحالة النهائية",
+      "evidence": "SmartAuditERP/Form_WPF/frmSandQ.xaml.cs:716;SmartAuditERP/Form_WPF/frmSandQ.xaml.cs:719;SmartAuditERP/Form_WPF/frmSandQ.xaml.cs:644-724;SmartAuditERP/Form_WPF/frmSandQD.xaml.cs:666-688;SmartAuditERP/Form_WPF/frmSandSD.xaml.cs:1073-1077;SmartAuditERP/Form_WPF/frmSandVAT.xaml.cs:615-616",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-174",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "branch-isolation",
+      "status": "open-not-remediated",
+      "title": "مستقبل القيد الافتتاحي يحمل الرأس بمفتاح عالمي بلا فرع ثم البنود بفرع الجلسة فيفتح القيد العابر للفروع ببنود فارغة",
+      "evidence": "SmartAuditERP/Form_WPF/FrmIntialRestraiction.xaml.cs:278-281;SmartAuditERP/Class/EntryOper.cs:1160;SmartAuditERP/Form_WPF/FrmNewEntry.xaml.cs:221-223;SmartAuditERP/Class/InvoiceOper.cs:3366-3368",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-175",
+      "severity": "High",
+      "certainty": "potential",
+      "type": "connection",
+      "status": "open-not-remediated",
+      "title": "تبديل اتصال سنوات المعاينة السابقة يفرض trusted_connection متجاهلا اعتماد SQL فيفقد النشرات ذات المصادقة وصولها للسنة السابقة",
+      "evidence": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs:676;SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs:846;SmartAuditERP/Form_WPF/frmInvSale.xaml.cs:2739-2742;SmartAuditERP/Form_WPF/frmcontract.xaml.cs:2079-2081;SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:921-931",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-176",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "title": "فتح مصدر صف سنة سابقة من الميزان أو كشف الحساب بعد استرجاع الاتصال الفوري يستعلم القاعدة الحالية فيعود بصمت بلا فتح ولا رسالة",
+      "evidence": "SmartAuditERP/Form_WPF/frmAccountBalance.xaml.cs:673-687;SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs:844-858;SmartAuditERP/Form_WPF/frmAccountsStatement.xaml.cs:874-891;SmartAuditERP/Class/EntryOper.cs:1032-1033",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-177",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "branch-isolation",
+      "status": "open-not-remediated",
+      "title": "أزرار التنقل الأول والسابق والتالي والأخير في مستقبل الفواتير تقيد بفرع الجلسة فيعيد ربط التصفح لفرع آخر بصمت بعد فتح فاتورة عابرة للفروع",
+      "evidence": "SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:504-546;SmartAuditERP/Class/EntryOper.cs:1040-1054",
+      "next_phase": "8"
+    }
+  ],
+  "conflicts_resolved": [
+    "docs/audit/findings.csv"
+  ],
+  "current_findings": {
+    "path": "docs/audit/findings.csv",
+    "bytes": 222939,
+    "sha256": "ce8c8b823a9a683d446d73dc4ffe564039f1542b649aeda79acd4c7a6600c42a"
+  },
+  "available_dictionary_rows": 339,
+  "new_accepted_numbered_roots": 0,
+  "remote_R12_four_unique_files_kept_byte_identical": true,
+  "remote_R12_source_claims_independently_adjudicated": false,
+  "source_inventory_827_unchanged": true,
+  "source_inventory_bytes": 29128444,
+  "records": [
+    {
+      "id": "second-concurrent-normal-merge",
+      "command": [
+        "git",
+        "merge",
+        "--no-ff",
+        "--no-commit",
+        "32c185297cb9779ff7d428351a4ae4d14041cc68"
+      ],
+      "actual_exit": 1,
+      "expected_exit": 1,
+      "stdout": {
+        "path": "docs/audit/evidence/second-concurrent-normal-merge-07B39R11.stdout.txt",
+        "bytes": 165,
+        "sha256": "d3726249b42a91c8977a433ddf58f13619463767d4989044f410c896b117b797"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/second-concurrent-normal-merge-07B39R11.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "second-concurrent-explicit-CSV-resolution",
+      "command": [
+        "git",
+        "restore",
+        "--source=197194c9746dbcb4c77bda86c0f87ea27912d3be",
+        "--staged",
+        "--worktree",
+        "--",
+        "docs/audit/findings.csv"
+      ],
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "stdout": {
+        "path": "docs/audit/evidence/second-concurrent-explicit-CSV-resolution-07B39R11.stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/second-concurrent-explicit-CSV-resolution-07B39R11.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "second-postmerge-R11-integrity",
+      "command": [
+        "/usr/bin/python",
+        "-B",
+        "-W",
+        "error::ResourceWarning",
+        "docs/audit/tools/disposition07b/verify_reconciliation_07B39R11.py",
+        "--rederive"
+      ],
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "stdout": {
+        "path": "docs/audit/evidence/second-postmerge-R11-integrity-07B39R11.stdout.txt",
+        "bytes": 870,
+        "sha256": "bc1ecb98132922976a004c39c1a8f793e0aaf25c1c1b1da1aa75b32249a6ac19"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/second-postmerge-R11-integrity-07B39R11.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "second-postmerge-R9-integrity",
+      "command": [
+        "/usr/bin/python",
+        "-B",
+        "-W",
+        "error::ResourceWarning",
+        "docs/audit/tools/disposition07b/verify_save_edit.py",
+        "--verify",
+        "--rederive"
+      ],
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "stdout": {
+        "path": "docs/audit/evidence/second-postmerge-R9-integrity-07B39R11.stdout.txt",
+        "bytes": 679,
+        "sha256": "ee01cc4c6ac8698c31854267dad057daefa05b8db89dcf9752b3b07c5af89305"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/second-postmerge-R9-integrity-07B39R11.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "second-postmerge-R11-open-gate",
+      "command": [
+        "/usr/bin/python",
+        "-B",
+        "-W",
+        "error::ResourceWarning",
+        "docs/audit/tools/disposition07b/verify_reconciliation_07B39R11.py",
+        "--require-complete"
+      ],
+      "actual_exit": 2,
+      "expected_exit": 2,
+      "stdout": {
+        "path": "docs/audit/evidence/second-postmerge-R11-open-gate-07B39R11.stdout.txt",
+        "bytes": 870,
+        "sha256": "bc1ecb98132922976a004c39c1a8f793e0aaf25c1c1b1da1aa75b32249a6ac19"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/second-postmerge-R11-open-gate-07B39R11.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "second-concurrent-resolved-default-diffcheck",
+      "command": [
+        "git",
+        "diff",
+        "--cached",
+        "--check"
+      ],
+      "actual_exit": 0,
+      "expected_exit": null,
+      "stdout": {
+        "path": "docs/audit/evidence/second-concurrent-resolved-default-diffcheck-07B39R11.stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/second-concurrent-resolved-default-diffcheck-07B39R11.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "initial_R11_report_versions_unchanged": true,
+  "current_rev02_report_before_append": {
+    "path": "docs/audit/PHASE-07B39R11-rev02.md",
+    "bytes": 6796,
+    "sha256": "e06194091bd67668e78c419acf9a61c778a94645ae727e8baadcb9d4175dc24c"
+  },
+  "previous_rev02_report_recoverable_at_parent": "197194c9746dbcb4c77bda86c0f87ea27912d3be",
+  "current_rev02_report_after_append": {
+    "path": "docs/audit/PHASE-07B39R11-rev02.md",
+    "bytes": 8202,
+    "sha256": "ac2764f330124434aff247adf0e84f22514284a83d108a20259ebcda0d856a62"
+  },
+  "rev02_report_or_merge_work_was_589_input": false,
+  "additional_unittest_cases": 0,
+  "source_application_or_old_tests_modified": false,
+  "normal_two_parent_merge_prepared": true,
+  "merge_commit_created_at_receipt_time": false,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "default_all_staged_whitespace_check_actual_exit": 0
+}

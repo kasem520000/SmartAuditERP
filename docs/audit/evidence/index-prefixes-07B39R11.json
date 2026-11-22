@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "kind": "postcapture-R11-prospective-index-prefix-with-original-bytes-preserved",
+  "assessment_reference_date_utc": "2026-11-16",
+  "records": [
+    {
+      "path": "docs/audit/README.md",
+      "original_published_identity": {
+        "path": "docs/audit/README.md",
+        "bytes": 94497,
+        "sha256": "0cd21d422e6b10e98e416ebd6f33628f57f0fc1c8a61a0735d7365f00b1572aa"
+      },
+      "added_prefix": {
+        "bytes": 2210,
+        "sha256": "8cef286406f92f83f2f3dbba0391f8ba3a9ea466a9445d6ff0c18ad0725ecb25"
+      },
+      "after": {
+        "path": "docs/audit/README.md",
+        "bytes": 96707,
+        "sha256": "0d196b8852fc9654359489940e5297e93ebb32519c4259630bb76181b8be6eec"
+      },
+      "old_suffix_verbatim": true
+    },
+    {
+      "path": "docs/audit/PLAN.md",
+      "original_published_identity": {
+        "path": "docs/audit/PLAN.md",
+        "bytes": 148292,
+        "sha256": "af72932901d4686764ea38d9193eb007cb4aab5644942c994b23ff6d81f7d31a"
+      },
+      "added_prefix": {
+        "bytes": 2210,
+        "sha256": "8cef286406f92f83f2f3dbba0391f8ba3a9ea466a9445d6ff0c18ad0725ecb25"
+      },
+      "after": {
+        "path": "docs/audit/PLAN.md",
+        "bytes": 150502,
+        "sha256": "493ef7c40d8be9129c2f9eb0bde94d677934884d3678015f91c24a5dd174a361"
+      },
+      "old_suffix_verbatim": true
+    }
+  ],
+  "prefixes_were_run02_inputs": false,
+  "application_execution_count": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false
+}

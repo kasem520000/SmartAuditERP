@@ -1,0 +1,832 @@
+{
+  "schema_version": 1,
+  "kind": "R11-prospective-independent-source-adjudication-superseding-remote-scope-and-two-colliding-root-claims",
+  "assessment_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "capability_exit_certificates_issued": 0,
+  "four_family_exit_certificates_issued": 0,
+  "new_accepted_external_handoffs": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "pinned_inputs": [
+    {
+      "path": "docs/audit/evidence/reconciliation-source-facts-07B39R11.json",
+      "bytes": 645470,
+      "sha256": "a0f09abc998489c39f4c1af72bb1d78fd19444ef55e4bceb6e55664cc5e201ac"
+    },
+    {
+      "path": "docs/audit/evidence/reconciliation-source-review-07B39R11.json",
+      "bytes": 22189,
+      "sha256": "e6a38882ce847fe871b72399ec25035d2c9379b239562a6f5880760b5248e99b"
+    },
+    {
+      "path": "docs/audit/evidence/reconciliation-entry-07B39R11.json",
+      "bytes": 297487,
+      "sha256": "489c18cbb2ad0a9c2ef2723d3993c34300f6cdd738d68c647a4a1c716b62f30c"
+    },
+    {
+      "path": "docs/audit/evidence/canonical-register-restoration-07B39R11.json",
+      "bytes": 2788,
+      "sha256": "6d4aed53e2ad61b19adde86fd31a45af0f8781c9769dac54deb1b4809f82cb34"
+    },
+    {
+      "path": "docs/audit/evidence/reference-date-provenance-07B39R11.json",
+      "bytes": 1704,
+      "sha256": "c9c0b53066efa3c8b97fecfc04cb456601518abdabe84d93ba9256d7395c6284"
+    }
+  ],
+  "remote_scope_claims_adopted_as_authorization": false,
+  "remote_R10_verifier_executed": false,
+  "all339_semantically_reread": false,
+  "all345_roots_screened": false,
+  "new_finding_ids": [],
+  "lost_local_R10_578_recertified": false,
+  "R2_R3_missing196_345_49_reconstructed": false,
+  "source_questions": [
+    {
+      "id": "R11Q-RECIPIENT",
+      "new_numbered_finding_id": null,
+      "novelty_certified": false,
+      "observed_provider_or_financial_failure": false,
+      "accepted_external_handoff": false,
+      "source_disposition": "SUPPORTED bounded source-contract mismatch: InsertReceipt names 29 placeholders; SaveReceipt2 supplies 28, with Recipient alone missing under a casefold-only text comparison. SaveReceipt2 selects INSERT, not UPDATE.",
+      "counterevidence_and_limits": "SaveReceipt and ReadReceiptOnline supply Recipient. Case differences BankId/BankID and State/state are preserved, not certified by a SqlClient test. Open/BeginTransaction occur before try; result=true and caught result=false are written branches, not observed execution. Model property uses do not establish external setter/default contract. Reject the remote every-call-false/always-throws/never-delete/no-data-loss certainty.",
+      "remaining_readable_local": "Follow model-required/default fields and four restore variant outcomes locally before any individually qualified contract request; do not automatically number a new root or claim novelty across absent six dictionaries.",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Class/StoredQueries.cs",
+          "query": "InsertReceipt",
+          "start": 30,
+          "end": 30,
+          "syntax_utf8_sha256": "6b43c27fbda7aaa6b0ab4fbb0f53b099930038ff2a0d3d5c2eced0e8565f1523"
+        },
+        {
+          "path": "SmartAuditERP/Class/StoredQueries.cs",
+          "query": "UpdateReceipt",
+          "start": 32,
+          "end": 32,
+          "syntax_utf8_sha256": "bf3d364333083238e7ef06561cc4dc44f4ba09dc3090141ec5ba8d72456e2de4"
+        },
+        {
+          "path": "SmartAuditERP/Class/ReceiptOper.cs",
+          "selector": "SaveReceipt2",
+          "start": 299,
+          "end": 371,
+          "syntax_utf8_sha256": "24d25a1ae115a831bf5db00374c4ebbfb9b05798ba36062d000f3e0cec3373b2"
+        },
+        {
+          "path": "SmartAuditERP/Class/ReceiptOper.cs",
+          "selector": "SaveReceipt",
+          "start": 159,
+          "end": 297,
+          "syntax_utf8_sha256": "ab4b304c87c2bca407ed8a54220826865939cb349bea357fb48ab8b830a7a414"
+        },
+        {
+          "path": "SmartAuditERP/Class/ReceiptOper.cs",
+          "selector": "ReadReceiptOnline",
+          "start": 569,
+          "end": 692,
+          "syntax_utf8_sha256": "333b8c6b11f6062349c8bb31d2fd8cab5f7d5a7a3612dd34ae0fdfa52d0a0e63"
+        },
+        {
+          "path": "SmartAuditERP/Properties/Resources.resx",
+          "text_range_key": "receipt-recipient-guarded-alter",
+          "start": 50887,
+          "end": 50892,
+          "decoded_range_utf8_sha256": "daa64ae7a509717553d5bf80b444a3638515dcd7c56079c9de5d4c4264e72830"
+        }
+      ],
+      "compared_existing_root_ids": [
+        "P3-003",
+        "P3-004",
+        "P3-009",
+        "P3-010",
+        "P7-164"
+      ]
+    },
+    {
+      "id": "R11Q-RESTORE-IDENTITY",
+      "new_numbered_finding_id": null,
+      "novelty_certified": false,
+      "observed_provider_or_financial_failure": false,
+      "accepted_external_handoff": false,
+      "source_disposition": "Four ACTIVE literal calls are in the four RestorePreviousReceipt bodies. A fifth spelling at frmSandQD:404 is only a comment. All four SELECT by branch; DELETE is by id alone and is conditionally guarded by the bool save result.",
+      "counterevidence_and_limits": "SandSD/SandQD explicitly generate GlobalID using MAX(AutoID)+1 and map more fields; SandD/SandQAndroid have partial initializers. The external Receipt type/defaults are not supplied here. ConnObj creates a new connection; the old-row DELETE does not visibly share SaveReceipt2 transaction. This supports bounded identity/atomicity questions, not an observed deletion or equivalence to an existing root.",
+      "remaining_readable_local": "Trace required fields, entry linkage, variant-specific old-table keys, caller result/error consumption, scope and retry/idempotency against local producers and existing P3 dictionaries; no financial execution.",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Form_WPF/frmSandD.xaml.cs",
+          "selector": "RestorePreviousReceipt",
+          "start": 605,
+          "end": 654,
+          "syntax_utf8_sha256": "2b68bba934ee93eef34418fff7352636a2c61c500bfddcc5129d3acb3fc56ddd"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmSandSD.xaml.cs",
+          "selector": "RestorePreviousReceipt",
+          "start": 414,
+          "end": 508,
+          "syntax_utf8_sha256": "5919c9555187aa2356a97d49c80a94b6bd07c119e58c47f19c7decf5fdbcb885"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmSandQD.xaml.cs",
+          "selector": "RestorePreviousReceipt",
+          "start": 405,
+          "end": 491,
+          "syntax_utf8_sha256": "a08daed2033cca1886cc32f8f4b28c9f39bff92bfe0ecedd69c575f2c92cf273"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmSandQAndroid.xaml.cs",
+          "selector": "RestorePreviousReceipt",
+          "start": 317,
+          "end": 364,
+          "syntax_utf8_sha256": "3d2134a624da1584461c3d0fd620b7d218708d75b80a19f4a1ac2df4fa2742ea"
+        },
+        {
+          "path": "SmartAuditERP/Class/MainClass.cs",
+          "selector": "ConnObj",
+          "start": 45,
+          "end": 49,
+          "syntax_utf8_sha256": "59b79ff794ac09db6608f40f45f4b9df7e5210e85a92695ad465f62795bd24c5"
+        },
+        {
+          "path": "SmartAuditERP/Properties/Resources.resx",
+          "text_range_key": "receipt-base-create",
+          "start": 1496,
+          "end": 1531,
+          "decoded_range_utf8_sha256": "378f66299eead9f8e6de7a985a24f20bd3b79bc9f6eb88f53a81a8e6e21e2d1c"
+        },
+        {
+          "path": "SmartAuditERP/Properties/Resources.resx",
+          "text_range_key": "receipt-guarded-create",
+          "start": 47874,
+          "end": 47912,
+          "decoded_range_utf8_sha256": "4d2c80eaa6523863f4b9afe05f30f393a6b25109f35c6ffd2ad82d1993d3c553"
+        }
+      ],
+      "compared_existing_root_ids": [
+        "P3-003",
+        "P3-004",
+        "P3-005",
+        "P3-009",
+        "P3-010",
+        "P3-011",
+        "P5-015",
+        "P5-016"
+      ]
+    },
+    {
+      "id": "R11Q-NOTIFY-REPLACE",
+      "new_numbered_finding_id": null,
+      "novelty_certified": false,
+      "observed_provider_or_financial_failure": false,
+      "accepted_external_handoff": false,
+      "source_disposition": "SUPPORTED local non-atomic replacement pattern: existing DB rows are checked, conditionally deleted by DB, then 22 columns/22 insert AddWithValue calls are executed on conn with no explicit local BeginTransaction/transaction argument or rollback. Total adds=24 includes check/delete; bracket counting=16 is NOT the column total; report 23 is also wrong.",
+      "counterevidence_and_limits": "Only a successful delete followed by an unsuccessful insert under the relevant transaction environment creates the proposed missing-target-row state. No provider execution or ambient transaction proof; no assertion the whole table becomes empty, that the state is permanent, or that retry cannot restore settings. Local schemas exist.",
+      "remaining_readable_local": "Follow caller/connection/session ownership and remaining DB/year-change and maintenance consumers; keep runtime/deployment questions separate and unaccepted.",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs",
+          "selector": "insert_SettingNotify",
+          "start": 3881,
+          "end": 3951,
+          "syntax_utf8_sha256": "0af1f1940b2b5a32f3d5fb738726a5ca1dbc69357628ba8c3cc2ef0b728e4525"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs",
+          "selector": "EnsureConnectionOpen",
+          "start": 634,
+          "end": 640,
+          "syntax_utf8_sha256": "f975ac024135d4ef46a4c2e0204a95f0001e220642c41625474709a1ad35d7ce"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs",
+          "selector": "ctor:frmSettings",
+          "start": 64,
+          "end": 105,
+          "syntax_utf8_sha256": "ca852985b7c099aee7416e87053b83643719ca34abf0562d795f4a0de552ee1f"
+        },
+        {
+          "path": "SmartAuditERP/Class/MainClass.cs",
+          "selector": "ConnObj",
+          "start": 45,
+          "end": 49,
+          "syntax_utf8_sha256": "59b79ff794ac09db6608f40f45f4b9df7e5210e85a92695ad465f62795bd24c5"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmRecyclingData.xaml.cs",
+          "selector": "CopySettingsTablesAsync",
+          "start": 440,
+          "end": 472,
+          "syntax_utf8_sha256": "67fd0daf7144b19ec0f116b546935330e6600e2232ade0bd7bcdd614c2b9dc30"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmRecyclingData.xaml.cs",
+          "selector": "ExecuteSqlAsync",
+          "start": 574,
+          "end": 587,
+          "syntax_utf8_sha256": "e8c7e203f4aec8923be3b75ad3947888f1bd113402e7ffdb77c7fbaf16cb5cf6"
+        },
+        {
+          "path": "SmartAuditERP/Properties/Resources.resx",
+          "text_range_key": "mqtt-base-create",
+          "start": 4809,
+          "end": 4837,
+          "decoded_range_utf8_sha256": "aefad75e39ee0644eb94ef86d3cc2979e24c34620f6bd7cc67dae25b5d9ff593"
+        },
+        {
+          "path": "SmartAuditERP/Properties/Resources.resx",
+          "text_range_key": "mqtt-guarded-create",
+          "start": 50501,
+          "end": 50529,
+          "decoded_range_utf8_sha256": "e5ee71ed2b05e34f49627bf86353286ac19995a614f75a9b218826424f220fdb"
+        }
+      ],
+      "compared_existing_root_ids": [
+        "P3-003",
+        "P5-004",
+        "P5-012",
+        "P7-165"
+      ]
+    },
+    {
+      "id": "R11Q-NOTIFY-BRANCH",
+      "new_numbered_finding_id": null,
+      "novelty_certified": false,
+      "observed_provider_or_financial_failure": false,
+      "accepted_external_handoff": false,
+      "source_disposition": "SUPPORTED differing written identities: check/delete use DB only, insert writes selected BranchId; settings loader and ConnectMQTList consume one unfiltered/unordered MQTT row; LoadBranches tests ANY active row but takes BranchId from the first unfiltered MQTT row.",
+      "counterevidence_and_limits": "DB columns are target settings stored in the current connection, not proof every database/branch shares a global table. Local PK is id, not DB/Branch uniqueness; different DB keys or maintenance copy do not establish a singleton. No authorized cardinality policy, observed wrong branch, ACL bypass or deterministic row order is certified.",
+      "remaining_readable_local": "Finish local session/DB/year rehydration and broker/producer consumers; then request only precise unresolved cardinality/policy/grant contracts, with no live identities or data.",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs",
+          "selector": "LoadSettingNotify",
+          "start": 646,
+          "end": 739,
+          "syntax_utf8_sha256": "0bee2da132f5df11abe93bc83a10681d47db33e83bd88c32ce88d223e9d62426"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs",
+          "selector": "insert_SettingNotify",
+          "start": 3881,
+          "end": 3951,
+          "syntax_utf8_sha256": "0af1f1940b2b5a32f3d5fb738726a5ca1dbc69357628ba8c3cc2ef0b728e4525"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+          "selector": "ConnectMQTList",
+          "start": 983,
+          "end": 1066,
+          "syntax_utf8_sha256": "ad31c669063c5c23ace6f94e9e817b080c7a06b6dc49ef742847cebcb7404190"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+          "selector": "CheckMqttStat",
+          "start": 1068,
+          "end": 1090,
+          "syntax_utf8_sha256": "c469ee25a64e48019402f161f08fdd75bc27c3d22062dfffbb10912f8d2a023d"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+          "selector": "LoadBranches",
+          "start": 665,
+          "end": 765,
+          "syntax_utf8_sha256": "12740e012cc23dfa7192b8c38db937e8c4dd79fb9664f63a7edf26be41c6a75c"
+        },
+        {
+          "path": "SmartAuditERP/Properties/Resources.resx",
+          "text_range_key": "mqtt-base-create",
+          "start": 4809,
+          "end": 4837,
+          "decoded_range_utf8_sha256": "aefad75e39ee0644eb94ef86d3cc2979e24c34620f6bd7cc67dae25b5d9ff593"
+        },
+        {
+          "path": "SmartAuditERP/Properties/Resources.resx",
+          "text_range_key": "mqtt-guarded-create",
+          "start": 50501,
+          "end": 50529,
+          "decoded_range_utf8_sha256": "e5ee71ed2b05e34f49627bf86353286ac19995a614f75a9b218826424f220fdb"
+        },
+        {
+          "path": "SmartAuditERP/Properties/Resources.resx",
+          "text_range_key": "mqtt-ip-guarded-alter",
+          "start": 50601,
+          "end": 50606,
+          "decoded_range_utf8_sha256": "08ab22b4498b3785861ca98964793eca33151607b4d4fcccdd641ba5bc3ffa1f"
+        },
+        {
+          "path": "SmartAuditERP/Properties/Resources.resx",
+          "text_range_key": "mqtt-flags-guarded-alters",
+          "start": 50680,
+          "end": 50698,
+          "decoded_range_utf8_sha256": "64c0f9246cc96187f39839ea1cc3daaea335fafebab289e4b18738ae3a81ae91"
+        }
+      ],
+      "compared_existing_root_ids": [
+        "P5-030",
+        "P7-165"
+      ]
+    },
+    {
+      "id": "R11Q-NOTIFY-RESULT",
+      "new_numbered_finding_id": null,
+      "novelty_certified": false,
+      "observed_provider_or_financial_failure": false,
+      "accepted_external_handoff": false,
+      "source_disposition": "SUPPORTED selected caller/result gap: insert_SettingNotify is void and catches errors; BtnConnect_Click continues with success text/panel state after that call, then tries ReceivedData.LoadReceived. RegisterEvents hooks the button.",
+      "counterevidence_and_limits": "The save body sets success after its own Execute only, but the outer caller has no result guard. A normal return after a caught error can reach outer success; finally/connection errors could still escape. No broker/persistence/WPF scheduling outcome observed. This is not the same body/contract as SaveReceipt null-entry or every P5 UI indicator.",
+      "remaining_readable_local": "Trace downstream broker/receive setup, current Home instance and DB/session changes against P5-030/P1-017 and all local callers; do not label it a new equivalent root just by the word success.",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs",
+          "selector": "RegisterEvents",
+          "start": 111,
+          "end": 232,
+          "syntax_utf8_sha256": "69a4707f6ce8152c806256a0cc6163bb3e05a5c3dab59c29abcbfbfeacbacfd2"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs",
+          "selector": "BtnConnect_Click",
+          "start": 3820,
+          "end": 3879,
+          "syntax_utf8_sha256": "9a8c8bbc73fda659beb13e09e3df16793689f2b5a246f44ce602e66403aae485"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs",
+          "selector": "insert_SettingNotify",
+          "start": 3881,
+          "end": 3951,
+          "syntax_utf8_sha256": "0af1f1940b2b5a32f3d5fb738726a5ca1dbc69357628ba8c3cc2ef0b728e4525"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+          "selector": "ConnectMQTList",
+          "start": 983,
+          "end": 1066,
+          "syntax_utf8_sha256": "ad31c669063c5c23ace6f94e9e817b080c7a06b6dc49ef742847cebcb7404190"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+          "selector": "Login",
+          "start": 142,
+          "end": 277,
+          "syntax_utf8_sha256": "7f0bd530b52a39ae2a8f018a97bb89b1547ac0578c6cb0b4d3821b372fb66115"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmSettings.xaml",
+          "text_range_key": "notify-button-element",
+          "start": 1949,
+          "end": 1955,
+          "decoded_range_utf8_sha256": "eea557bd855e97ec0fe3a978e74871f850e3b7e566f1f9bc3d02233082b2a0c2"
+        }
+      ],
+      "compared_existing_root_ids": [
+        "P1-017",
+        "P3-004",
+        "P5-030"
+      ]
+    },
+    {
+      "id": "R11Q-NOTIFY-SECRETS",
+      "new_numbered_finding_id": null,
+      "novelty_certified": false,
+      "observed_provider_or_financial_failure": false,
+      "accepted_external_handoff": false,
+      "source_disposition": "Selected insert writes pwd/passcode/privatekey from UI text and readers load those columns. No encryption call is present on these selected value expressions.",
+      "counterevidence_and_limits": "This is source-level storage handling, not an assertion of captured secret values, deployed database encryption or MQTT TLS/authentication. Remote references to repairs/optional DPAPI columns on another branch were not inspected or adopted. P1-014 transport security is NOT a storage-encryption root.",
+      "remaining_readable_local": "Complete local value/protection and broker consumers against original secrets/transport dictionaries before any novelty or remediation disposition; request no credentials or business payloads.",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs",
+          "selector": "insert_SettingNotify",
+          "start": 3881,
+          "end": 3951,
+          "syntax_utf8_sha256": "0af1f1940b2b5a32f3d5fb738726a5ca1dbc69357628ba8c3cc2ef0b728e4525"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs",
+          "selector": "LoadSettingNotify",
+          "start": 646,
+          "end": 739,
+          "syntax_utf8_sha256": "0bee2da132f5df11abe93bc83a10681d47db33e83bd88c32ce88d223e9d62426"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+          "selector": "ConnectMQTList",
+          "start": 983,
+          "end": 1066,
+          "syntax_utf8_sha256": "ad31c669063c5c23ace6f94e9e817b080c7a06b6dc49ef742847cebcb7404190"
+        },
+        {
+          "path": "SmartAuditERP/Properties/Resources.resx",
+          "text_range_key": "mqtt-base-create",
+          "start": 4809,
+          "end": 4837,
+          "decoded_range_utf8_sha256": "aefad75e39ee0644eb94ef86d3cc2979e24c34620f6bd7cc67dae25b5d9ff593"
+        }
+      ],
+      "compared_existing_root_ids": [
+        "P1-009",
+        "P1-014"
+      ]
+    }
+  ],
+  "focused_root_comparisons": [
+    {
+      "id": "P1-009",
+      "canonical_dictionary_verbatim": {
+        "id": "P1-009",
+        "severity": "High",
+        "certainty": "confirmed",
+        "type": "secrets",
+        "status": "open-not-remediated",
+        "title": "حفظ كلمات مرور التطبيق وقاعدة البيانات نصيا رغم عدم التذكر",
+        "evidence": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:361-389;SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:601-610",
+        "next_phase": "8"
+      },
+      "comparison_reason": "Original secrets row is application/DB password startup persistence in frmUserLogin. Notify pwd/passcode text values are an adjacent storage question, not proof this original dictionary already owns the full new table contract; no root rewrite or encryption closure.",
+      "canonical_fields_rewritten": false,
+      "automatic_equivalence_or_novelty": false
+    },
+    {
+      "id": "P1-014",
+      "canonical_dictionary_verbatim": {
+        "id": "P1-014",
+        "severity": "High",
+        "certainty": "confirmed",
+        "type": "transport-security",
+        "status": "open-not-remediated",
+        "title": "اتصال MQTT بدون TLS أو بيانات مصادقة في المسار المفحوص",
+        "evidence": "SmartAuditERP/Class/ConnectBroker.cs:41-50;SmartAuditERP/Class/SendData.cs:889-919;SmartAuditERP/Class/ReceivedData.cs:263-303;SmartAuditERP/Class/ReceivedData.cs:1086-1106;SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:1027-1038;SmartAuditERP/Class/ReceivedData.cs:51-113",
+        "next_phase": "8"
+      },
+      "comparison_reason": "Original MQTT transport-without-TLS/authentication dictionary is distinct from cleartext Settingmqtt storage. The selected SQL/UI values do not establish transport behavior or validate the remotely asserted separate-branch DPAPI repair.",
+      "canonical_fields_rewritten": false,
+      "automatic_equivalence_or_novelty": false
+    },
+    {
+      "id": "P1-017",
+      "canonical_dictionary_verbatim": {
+        "id": "P1-017",
+        "severity": "Medium",
+        "certainty": "confirmed",
+        "type": "window-state",
+        "status": "open-not-remediated",
+        "title": "تحديث حالة الدخول والنوافذ على نسخ جديدة غير المعروضة",
+        "evidence": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:146-147;SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:254-255;SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:328;SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:450;SmartAuditERP/Form_WPF/frmSecurityPnl.xaml.cs:73-83;SmartAuditERP/Form_WPF/FrmSyncMQtt.xaml.cs:40-48;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1362-1399;SmartAuditERP/Form_WPF/frmEntriesSyncStatus.xaml.cs:909-916;SmartAuditERP/Class/InvoiceOper.cs:4433-4455;SmartAuditERP/Form_WPF/frmEmailMang.xaml.cs:92-104;SmartAuditERP/Form_WPF/frmFPSSetting.xaml.cs:31-40",
+        "next_phase": "7;8"
+      },
+      "comparison_reason": "Original new-Home-instance/window-state root is contextually relevant to local new Home in Login/ConnectMQTList. Construction is written here, but displayed instance and runtime update effects are not resolved by source syntax.",
+      "canonical_fields_rewritten": false,
+      "automatic_equivalence_or_novelty": false
+    },
+    {
+      "id": "P3-003",
+      "canonical_dictionary_verbatim": {
+        "id": "P3-003",
+        "severity": "High",
+        "certainty": "confirmed",
+        "type": "financial-atomicity",
+        "status": "open-not-remediated",
+        "title": "المستندات والقيود المرتبطة تعتمد بمعاملات مستقلة قابلة للافتراق",
+        "evidence": "SmartAuditERP/Class/ReceiptOper.cs:195-293;SmartAuditERP/Class/EntryOper.cs:850-921;SmartAuditERP/Form_WPF/frmCreditNote.xaml.cs:543-670;SmartAuditERP/Form_WPF/frmDebtNote.xaml.cs:667-734;SmartAuditERP/Form_WPF/frmCloseShift.xaml.cs:1850-1905;SmartAuditERP/Form_WPF/frmCloseShift.xaml.cs:1983-1989;SmartAuditERP/Form_WPF/ClosShiftAndroid.xaml.cs:292-314;SmartAuditERP/Form_WPF/ClosShiftAndroid.xaml.cs:364-365;SmartAuditERP/Form_WPF/ClosShiftAndroid.xaml.cs:423-450;SmartAuditERP/Class/InvoiceOper.cs:1496-1503;SmartAuditERP/Class/InvoiceOper.cs:1833-1843;SmartAuditERP/Class/InvoiceOper.cs:1968-1975;SmartAuditERP/Class/InvoiceOper.cs:2137-2152;SmartAuditERP/Class/ReceiptOper.cs:652-668;SmartAuditERP/Class/InvoiceOperContract.cs:1395-1405;SmartAuditERP/Class/Reseved.cs:155-250;SmartAuditERP/Form_WPF/FrmReseved.xaml.cs:381-421;SmartAuditERP/Form_WPF/frmEmpSalaryAddSub.xaml.cs:796-845;SmartAuditERP/Form_WPF/frmEmployees.xaml.cs:589-624;SmartAuditERP/Form_WPF/frmHoldM.xaml.cs:390-420;SmartAuditERP/Form_WPF/frmHoldM.xaml.cs:470-500;SmartAuditERP/Form_WPF/frmRptInvSalesDetails.xaml.cs:1125-1145;SmartAuditERP/Form_WPF/frmRptInvSalesDetails.xaml.cs:1183-1201;SmartAuditERP/Form_WPF/frmRptInvSalesDetails.xaml.cs:1300-1322;SmartAuditERP/Form_WPF/frmRptInvSalesDetails.xaml.cs:1406-1458;SmartAuditERP/Class/EntryOper.cs:850-937;SmartAuditERP/Form_WPF/FrmReseved.xaml.cs:374-429;SmartAuditERP/Form_WPF/FrmReseved.xaml.cs:446-494;SmartAuditERP/Class/Reseved.cs:131-267;SmartAuditERP/Class/EntryOper.cs:850-935",
+        "next_phase": "8"
+      },
+      "comparison_reason": "Original document-versus-entry independent-transaction root differs from missing Recipient and from configuration delete/insert. New-connection/old-row cleanup boundaries are related atomicity questions, not automatic equivalence or proof of a financial partial commit.",
+      "canonical_fields_rewritten": false,
+      "automatic_equivalence_or_novelty": false
+    },
+    {
+      "id": "P3-004",
+      "canonical_dictionary_verbatim": {
+        "id": "P3-004",
+        "severity": "Medium",
+        "certainty": "confirmed",
+        "type": "false-save-success",
+        "status": "open-not-remediated",
+        "title": "حفظ السند بقيد null يعيد النجاح دون اعتماد معاملة السند",
+        "evidence": "SmartAuditERP/Class/ReceiptOper.cs:236-296;SmartAuditERP/Class/ReceiptOper.cs:141-157;SmartAuditERP/Form_WPF/frmSandSD.xaml.cs:755-778",
+        "next_phase": "8"
+      },
+      "comparison_reason": "Original null-entry SaveReceipt true-without-commit branch is visible in the comparator, not the same as SaveReceipt2 (which writes Commit before true). It also does not own every void settings caller that paints success.",
+      "canonical_fields_rewritten": false,
+      "automatic_equivalence_or_novelty": false
+    },
+    {
+      "id": "P3-005",
+      "canonical_dictionary_verbatim": {
+        "id": "P3-005",
+        "severity": "High",
+        "certainty": "potential",
+        "type": "document-numbering",
+        "status": "open-not-remediated",
+        "title": "تخصيص MAX+1 غير محجوز وقد يتحول تصادم معرف القيد إلى استبدال",
+        "evidence": "SmartAuditERP/Class/EntryOper.cs:1264-1322;SmartAuditERP/Class/EntryOper.cs:861-895;SmartAuditERP/Class/ReceiptOper.cs:453-463;SmartAuditERP/Form_WPF/frmSandQD.xaml.cs:872-884;SmartAuditERP/Properties/Resources.resx:1496-1555;SmartAuditERP/Class/InvoiceOper.cs:2872-2901;SmartAuditERP/Class/InvoiceOper.cs:1914-1937;SmartAuditERP/Class/InvoiceOperContract.cs:1372-1383;SmartAuditERP/Form_WPF/FrmReseved.xaml.cs:375-378;SmartAuditERP/Form_WPF/FrmReseved.xaml.cs:833-853;SmartAuditERP/Form_WPF/frmSalaryPay.xaml.cs:125-138;SmartAuditERP/Form_WPF/frmSalaryPay.xaml.cs:497-507;SmartAuditERP/Form_WPF/frmAssignProjectPM.xaml.cs:879-887;SmartAuditERP/Form_WPF/frmContractPM.xaml.cs:174-190;SmartAuditERP/Form_WPF/frmContractPM.xaml.cs:835-844;SmartAuditERP/Form_WPF/FrmReseved.xaml.cs:110-129;SmartAuditERP/Form_WPF/FrmReseved.xaml.cs:355-385;SmartAuditERP/Form_WPF/FrmReseved.xaml.cs:819-835;SmartAuditERP/Class/EntryOper.cs:1264-1289;SmartAuditERP/Class/Reseved.cs:150-183",
+        "next_phase": "8"
+      },
+      "comparison_reason": "Original potential MAX+1 numbering/replace contract is relevant to explicit MAX(AutoID)+1 GlobalID in SandSD/SandQD. It does not prove an actual duplicate, deployed uniqueness, or mandatory defaults in the two partial restore initializers; certainty remains potential.",
+      "canonical_fields_rewritten": false,
+      "automatic_equivalence_or_novelty": false
+    },
+    {
+      "id": "P3-009",
+      "canonical_dictionary_verbatim": {
+        "id": "P3-009",
+        "severity": "High",
+        "certainty": "confirmed",
+        "type": "receipt-insert-contract",
+        "status": "open-not-remediated",
+        "title": "إنشاء سند قبض العميل والسند الضريبي يهمل GlobalID الإلزامي",
+        "evidence": "SmartAuditERP/Form_WPF/frmSandQ.xaml.cs:850-917;SmartAuditERP/Form_WPF/frmSandVAT.xaml.cs:709-782;SmartAuditERP/Properties/Resources.resx:1496-1530;SmartAuditERP/Properties/Resources.resx:47877-47911;SmartAuditERP/Home.xaml.cs:2571-2578;SmartAuditERP/Home.xaml.cs:3359-3367",
+        "next_phase": "8"
+      },
+      "comparison_reason": "Original missing mandatory GlobalID in customer/VAT receipt creation is a different producer set and field from SaveReceipt2 Recipient omission. Partial SandD/SandQAndroid initializers are a followthrough question; no absent model default is fabricated.",
+      "canonical_fields_rewritten": false,
+      "automatic_equivalence_or_novelty": false
+    },
+    {
+      "id": "P3-010",
+      "canonical_dictionary_verbatim": {
+        "id": "P3-010",
+        "severity": "High",
+        "certainty": "confirmed",
+        "type": "receipt-ledger-lifecycle",
+        "status": "open-not-remediated",
+        "title": "تعديل وحذف سند العميل والضريبة لا يحدثان القيد المرتبط",
+        "evidence": "SmartAuditERP/Form_WPF/frmSandQ.xaml.cs:887-1038;SmartAuditERP/Form_WPF/frmSandVAT.xaml.cs:755-879;SmartAuditERP/Class/ReceiptOper.cs:373-414;SmartAuditERP/Class/Common.cs:702-715;SmartAuditERP/Form_WPF/frmEmpSalaryAddSub.xaml.cs:432-466",
+        "next_phase": "7;8"
+      },
+      "comparison_reason": "Original edit/delete lifecycle failing to update linked Entry concerns different mutation paths. Conditional old-table cleanup after SaveReceipt2 is not demonstrated equivalent; entry-link followthrough remains local.",
+      "canonical_fields_rewritten": false,
+      "automatic_equivalence_or_novelty": false
+    },
+    {
+      "id": "P3-011",
+      "canonical_dictionary_verbatim": {
+        "id": "P3-011",
+        "severity": "High",
+        "certainty": "confirmed",
+        "type": "receipt-identity-scope",
+        "status": "open-not-remediated",
+        "title": "تعديل وحذف سند بنوع معين يستهدفان الرقم والفرع دون نوع السند أو GlobalID",
+        "evidence": "SmartAuditERP/Form_WPF/frmSandQ.xaml.cs:155-168;SmartAuditERP/Form_WPF/frmSandQ.xaml.cs:902-915;SmartAuditERP/Form_WPF/frmSandQ.xaml.cs:1008-1014;SmartAuditERP/Form_WPF/frmSandVAT.xaml.cs:769-782;SmartAuditERP/Form_WPF/frmSandVAT.xaml.cs:858-865;SmartAuditERP/Class/ReceiptOper.cs:453-463",
+        "next_phase": "8"
+      },
+      "comparison_reason": "Original receipt number+branch operations lacking type/GlobalID differ from old-table DELETE-by-id alone after branch-filtered reads. Related identity-scope risk requires old-table schema/caller comparison; do not silently broaden the original root.",
+      "canonical_fields_rewritten": false,
+      "automatic_equivalence_or_novelty": false
+    },
+    {
+      "id": "P5-004",
+      "canonical_dictionary_verbatim": {
+        "id": "P5-004",
+        "severity": "High",
+        "certainty": "potential",
+        "type": "offline-outbox-atomicity-and-file-race",
+        "status": "open-not-remediated",
+        "title": "طابور MQTT يكتب بإعادة كتابة ملف كامل خارج معاملة المستند ودون تنسيق ظاهر",
+        "evidence": "SmartAuditERP/Form_WPF/frmItems.xaml.cs:1123-1143;SmartAuditERP/Form_WPF/frmItems.xaml.cs:2142-2155;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:1355-1399;SmartAuditERP/Form_WPF/frmInvPurch.xaml.cs:2713-2732;SmartAuditERP/Form_WPF/frmSafeAdjust.xaml.cs:1064-1088;SmartAuditERP/Class/SendData.cs:706-778",
+        "next_phase": "8"
+      },
+      "comparison_reason": "Original potential file outbox rewrite/transaction/race contract is not Settingmqtt SQL row replacement. Generic non-atomicity does not merge separate owners or raise potential certainty.",
+      "canonical_fields_rewritten": false,
+      "automatic_equivalence_or_novelty": false
+    },
+    {
+      "id": "P5-012",
+      "canonical_dictionary_verbatim": {
+        "id": "P5-012",
+        "severity": "High",
+        "certainty": "confirmed",
+        "type": "mqtt-aggregate-detail-commit-boundary",
+        "status": "open-not-remediated",
+        "title": "استقبال تفاصيل MQTT يستبدلها بكتابات مستقلة ولا يعرّف تفريغ مجموعة فارغة",
+        "evidence": "SmartAuditERP/Class/SendData.cs:738-776;SmartAuditERP/Class/ReceivedData.cs:169-221;SmartAuditERP/Class/ReceivedData.cs:1250-1311;SmartAuditERP/Class/ReceivedData.cs:1313-1350;SmartAuditERP/Class/ReceivedData.cs:1542-1608",
+        "next_phase": "8"
+      },
+      "comparison_reason": "Original MQTT aggregate/detail independent writes and empty-list semantics are not notify-settings table replacement. No MQTT message or aggregate execution took place; only a thematic transaction relation exists.",
+      "canonical_fields_rewritten": false,
+      "automatic_equivalence_or_novelty": false
+    },
+    {
+      "id": "P5-015",
+      "canonical_dictionary_verbatim": {
+        "id": "P5-015",
+        "severity": "High",
+        "certainty": "confirmed",
+        "type": "http-received-ack-without-local-save-result",
+        "status": "open-not-remediated",
+        "title": "دورة API تؤكد الاستلام وتحذف عميل Android دون نتيجة اعتماد محلية",
+        "evidence": "SmartAuditERP/Class/Sync.cs:315-368;SmartAuditERP/Class/Sync.cs:386-460;SmartAuditERP/Class/InvoiceOper.cs:1945-1959;SmartAuditERP/Class/InvoiceOper.cs:2185-2206;SmartAuditERP/Class/EntryOper.cs:1004-1017;SmartAuditERP/Class/ReceiptOper.cs:668-691",
+        "next_phase": "8"
+      },
+      "comparison_reason": "Original API acknowledgement/Android deletion without local result is distinct from the FOUR bool-guarded restore cleanup calls, which are counterevidence to an unconditional-delete summary. Other error/connection paths remain unclosed.",
+      "canonical_fields_rewritten": false,
+      "automatic_equivalence_or_novelty": false
+    },
+    {
+      "id": "P5-016",
+      "canonical_dictionary_verbatim": {
+        "id": "P5-016",
+        "severity": "High",
+        "certainty": "confirmed",
+        "type": "android-generated-ledger-document-link",
+        "status": "open-not-remediated",
+        "title": "القيد المولد عند الاستيراد يبحث بالرقم المحلي بعد حفظ رابط رأس فارغ",
+        "evidence": "SmartAuditERP/Class/InvoiceOper.cs:1995-2001;SmartAuditERP/Class/InvoiceOper.cs:2020-2023;SmartAuditERP/Class/InvoiceOper.cs:2058-2059;SmartAuditERP/Class/InvoiceOper.cs:2105-2152;SmartAuditERP/Class/ReceiptOper.cs:611-619;SmartAuditERP/Class/ReceiptOper.cs:620-668;SmartAuditERP/Class/StoredQueries.cs:6-8;SmartAuditERP/Class/EntryOper.cs:861-875",
+        "next_phase": "8"
+      },
+      "comparison_reason": "Original Android generated-ledger link queried after saving a blank header is context for the online comparator. It is neither the missing Recipient mismatch nor a guarantee of restore link correctness.",
+      "canonical_fields_rewritten": false,
+      "automatic_equivalence_or_novelty": false
+    },
+    {
+      "id": "P5-030",
+      "canonical_dictionary_verbatim": {
+        "id": "P5-030",
+        "severity": "Medium",
+        "certainty": "confirmed",
+        "type": "sync-ui-green-not-commit-health",
+        "status": "open-not-remediated",
+        "title": "مؤشرات النجاح تعرض المزامنة نشطة دون جمع نتائج الحفظ والإرسال",
+        "evidence": "SmartAuditERP/Home.xaml.cs:1705-1791;SmartAuditERP/Class/Sync.cs:265-280;SmartAuditERP/Form_WPF/frmmanagementSync.xaml.cs:314-366;SmartAuditERP/Class/SyncOperation.cs:123-155",
+        "next_phase": "7;8"
+      },
+      "comparison_reason": "Original green-status-versus-commit-health dictionary has named Home/Sync/management consumers, not the newly selected settings button body. Outer unconditional success after caught void save supports a bounded result-propagation question, not automatically the same root or observed persisted failure.",
+      "canonical_fields_rewritten": false,
+      "automatic_equivalence_or_novelty": false
+    },
+    {
+      "id": "P5-031",
+      "canonical_dictionary_verbatim": {
+        "id": "P5-031",
+        "severity": "Medium",
+        "certainty": "confirmed",
+        "type": "sync-mode-schedule-read-interval-contract",
+        "status": "open-not-remediated",
+        "title": "نمطا نهاية اليوم والوردية يدخلان المزامنة الفورية والمؤقت مثل النمط الدوري",
+        "evidence": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs:2319-2358;SmartAuditERP/Home.xaml.cs:1672-1756;SmartAuditERP/Class/Sync.cs:111-138;SmartAuditERP/Class/Sync.cs:540-585",
+        "next_phase": "7;8"
+      },
+      "comparison_reason": "Original sync mode/end-of-day/shift interval classification is not settings DB/Branch row selection or storage atomicity. Reading LoadBranches/CheckMqttStat supplies no new scheduling certification.",
+      "canonical_fields_rewritten": false,
+      "automatic_equivalence_or_novelty": false
+    },
+    {
+      "id": "P7-164",
+      "canonical_dictionary_verbatim": {
+        "id": "P7-164",
+        "severity": "High",
+        "certainty": "confirmed",
+        "type": "invoice-global-key-numeric-proc-identity-contract",
+        "status": "open-not-remediated",
+        "title": "بحث فاتورة المشتريات يحوّل GlobalID النصي إلى double ثم يستعمله كهوية proc_id مستقلة",
+        "evidence": "SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:2036-2047;SmartAuditERP/Form_WPF/frmPurchInv.xaml.cs:871-878;SmartAuditERP/Form_WPF/frmPurchInv.xaml:361-369;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:267-284;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:570-596;SmartAuditERP/Class/InvoiceOper.cs:2872-2902;SmartAuditERP/Properties/Resources.resx:954-962",
+        "next_phase": "8"
+      },
+      "comparison_reason": "R1 already owns this identifier for purchase text GlobalID-to-double/proc_id confusion. The remote Receipt Recipient dictionary is unequal in title/type/evidence; it cannot occupy this identifier even if its bounded source question is supported.",
+      "canonical_fields_rewritten": false,
+      "automatic_equivalence_or_novelty": false
+    },
+    {
+      "id": "P7-165",
+      "canonical_dictionary_verbatim": {
+        "id": "P7-165",
+        "severity": "High",
+        "certainty": "confirmed",
+        "type": "return-precheck-unquoted-reference-failure-as-absent",
+        "status": "open-not-remediated",
+        "title": "فحص الرجوع يركّب GlobalID دون اقتباس في Reff_No ويعيد false عند فشل الفحص ثم ينشر القبول",
+        "evidence": "SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:286-303;SmartAuditERP/Form_WPF/frmInvoiceSrch.xaml.cs:603-619;SmartAuditERP/Class/InvoiceOper.cs:798-810;SmartAuditERP/Class/InvoiceOper.cs:2872-2902;SmartAuditERP/Properties/Resources.resx:954-977;SmartAuditERP/Properties/Resources.resx:47206-47210",
+        "next_phase": "8"
+      },
+      "comparison_reason": "R1 already owns this identifier for unquoted Reff_No return-precheck false-as-absent. Remote MQTT settings replacement is a different dictionary and cannot be adopted under this identifier. Rejecting the collision does not reject its source question.",
+      "canonical_fields_rewritten": false,
+      "automatic_equivalence_or_novelty": false
+    }
+  ],
+  "dictionary_screen": {
+    "available_rows": 339,
+    "automated_only": true,
+    "needles": [
+      "SaveReceipt2",
+      "Recipient",
+      "Settingmqtt"
+    ],
+    "literal_matches": [],
+    "literal_absence_is_novelty": false,
+    "focused_semantic_comparisons": 17,
+    "missing_six_dictionaries_reconstructed": false
+  },
+  "remote_claim_dispositions": [
+    {
+      "claim": "7C started / owner authorized8 / separate repair branch and completed Stage1",
+      "disposition": "NOT ADOPTED: repository report assertions are not authorization in this conversation; this work remains approved26-capability7B. No other branch inspected/created/switched/pushed and no repair/financial acceptance."
+    },
+    {
+      "claim": "No renumbering; P7-164/P7-165 follow P7-163",
+      "disposition": "REJECTED as a current register claim: R1 already owns164/165 and166/167. Remote337 is preserved byte-for-byte; current original335 restored explicitly plus the four separate R1 dictionaries =339 available, zero newly numbered roots."
+    },
+    {
+      "claim": "Every SaveReceipt2 execution fails / old delete never runs / no data loss",
+      "disposition": "QUALIFIED: missing-parameter source mismatch supported; universal provider/control-flow/outcome assertions not certified. Source has success and error paths and pre-try connection work; conditional delete is recorded without runtime theorem."
+    },
+    {
+      "claim": "Notify insert16 or23columns / table practically singleton / failed insert permanently removes all settings",
+      "disposition": "CORRECTED:22columns22insert adds24method adds; sixteen bracketed columns is not total. DB-only replacement/first-row consumers and local id PK do not ensure singleton or prove permanent whole-table loss."
+    },
+    {
+      "claim": "827 application sources",
+      "disposition": "PRESERVATION UNIT CLARIFIED:827 inventoried application paths/29128444bytes, including tracked binary/generated artifacts;491paths end.cs. They are not827 freshly read C# sources."
+    },
+    {
+      "claim": "Historical local R10 578 tests /97contexts /59new tests recovered",
+      "disposition": "NOT RECOVERED: actual local objects/files are unavailable; exact-SHA fetch failure is a transcribed tool observation, not preserved raw streams. New R11 facts/tests are a different authored capture, never a reconstruction."
+    }
+  ],
+  "unavailable_contracts_not_accepted_as_handoffs": [
+    {
+      "id": "R11BOUND-MODEL",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/SmartAuditERP.csproj",
+          "text_range_key": "external-model-reference",
+          "start": 28,
+          "end": 36,
+          "decoded_range_utf8_sha256": "b1887030cabf7c6b091bd20ef0db89be65e407f8444cf08b07ba05da9dd84bc2"
+        },
+        {
+          "path": "SmartAuditERP/Class/ReceiptOper.cs",
+          "text_range_key": "receipt-model-namespace",
+          "start": 1,
+          "end": 12,
+          "decoded_range_utf8_sha256": "90cfb7d8ab1cb21f8bbfc40ccc32f4b19e86bf6b875119d743c51df7cca9a3b0"
+        },
+        {
+          "path": "SmartAuditERP/Class/ReceiptOper.cs",
+          "selector": "SaveReceipt2",
+          "start": 299,
+          "end": 371,
+          "syntax_utf8_sha256": "24d25a1ae115a831bf5db00374c4ebbfb9b05798ba36062d000f3e0cec3373b2"
+        }
+      ],
+      "owner_role": "Owner of the versioned externally referenced AuditorAPI.Models assembly",
+      "required_redacted_input": "Only after local producer/consumer completion: versioned Receipt property/default/nullable/constructor/collection contract or redacted source matching the referenced assembly; no credentials or business data.",
+      "absence_impact": "Property-use syntax and the no-class-spelling search cannot establish defaults/setters or whether partial initializers satisfy model invariants.",
+      "next_action": "First finish all local restore producers, required-field uses and outcome consumers; then ask for the exact unresolved versioned type boundary, without executing/loading the binary.",
+      "static_disposition": "Unresolved model contract; NOT an accepted static completion handoff, no finding that the entire model is defective.",
+      "readable_local_not_delegated": "Local receipt writers, four restore variants, query/DDL and linkage/result consumers remain owned by this static audit.",
+      "accepted_external_handoff": false
+    },
+    {
+      "id": "R11BOUND-POLICY-DEPLOYMENT",
+      "source_basis": [
+        {
+          "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+          "selector": "LoadBranches",
+          "start": 665,
+          "end": 765,
+          "syntax_utf8_sha256": "12740e012cc23dfa7192b8c38db937e8c4dd79fb9664f63a7edf26be41c6a75c"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+          "selector": "ConnectMQTList",
+          "start": 983,
+          "end": 1066,
+          "syntax_utf8_sha256": "ad31c669063c5c23ace6f94e9e817b080c7a06b6dc49ef742847cebcb7404190"
+        },
+        {
+          "path": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs",
+          "selector": "insert_SettingNotify",
+          "start": 3881,
+          "end": 3951,
+          "syntax_utf8_sha256": "0af1f1940b2b5a32f3d5fb738726a5ca1dbc69357628ba8c3cc2ef0b728e4525"
+        },
+        {
+          "path": "SmartAuditERP/Properties/Resources.resx",
+          "text_range_key": "mqtt-base-create",
+          "start": 4809,
+          "end": 4837,
+          "decoded_range_utf8_sha256": "aefad75e39ee0644eb94ef86d3cc2979e24c34620f6bd7cc67dae25b5d9ff593"
+        },
+        {
+          "path": "SmartAuditERP/Properties/Resources.resx",
+          "text_range_key": "mqtt-guarded-create",
+          "start": 50501,
+          "end": 50529,
+          "decoded_range_utf8_sha256": "e5ee71ed2b05e34f49627bf86353286ac19995a614f75a9b218826424f220fdb"
+        }
+      ],
+      "owner_role": "Product/security cardinality-policy owner and deployed-schema/grant owner",
+      "required_redacted_input": "After local completion: authoritative single/multi DB/Branch settings policy, document/branch/year allowed-set and versioned redacted deployment/uniqueness/grants manifest; no live database or account data.",
+      "absence_impact": "Local schemas and UI parameters cannot certify deployed cardinality, isolation, grants or authorized row selection. This is not an assertion that local CREATE/ALTER definitions are missing.",
+      "next_action": "Complete local DB/session/year/broker consumers and compare policy keys first, then dispose each precisely identified unavailable policy/deployment contract separately.",
+      "static_disposition": "No deployed authorization/singleton certification and no accepted completion handoff while readable local work remains.",
+      "readable_local_not_delegated": "Available Resources.resx DDL, connection constructors, settings/login consumers, maintenance copy and remaining sender/receiver/session ownership cannot be externalized.",
+      "accepted_external_handoff": false
+    }
+  ]
+}

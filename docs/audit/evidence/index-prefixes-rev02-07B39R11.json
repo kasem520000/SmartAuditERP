@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "kind": "postcapture-prospective-concurrent-remote-current-pointer-keeping-all-prior-index-bytes",
+  "assessment_reference_date_utc": "2026-11-16",
+  "records": [
+    {
+      "path": "docs/audit/README.md",
+      "previous_version_in_preserved_archive": {
+        "path": "docs/audit/evidence/pre-concurrent-remote-local-07B39R11.tar.gz",
+        "member": "docs/audit/README.md",
+        "identity": {
+          "path": "docs/audit/README.md",
+          "bytes": 96707,
+          "sha256": "0d196b8852fc9654359489940e5297e93ebb32519c4259630bb76181b8be6eec"
+        }
+      },
+      "added_prefix": {
+        "bytes": 1846,
+        "sha256": "e8ff46afb0f72d104b99d9d915ec76befb5ad472bece4da3fb10ad92a00cf173"
+      },
+      "after": {
+        "path": "docs/audit/README.md",
+        "bytes": 98553,
+        "sha256": "59705a20b725c3e30b79afeefe711dad91661976897e42981655f25f31cf6d11"
+      },
+      "whole_previous_file_is_verbatim_suffix": true,
+      "published_0f_original_suffix_preserved": true
+    },
+    {
+      "path": "docs/audit/PLAN.md",
+      "previous_version_in_preserved_archive": {
+        "path": "docs/audit/evidence/pre-concurrent-remote-local-07B39R11.tar.gz",
+        "member": "docs/audit/PLAN.md",
+        "identity": {
+          "path": "docs/audit/PLAN.md",
+          "bytes": 150502,
+          "sha256": "493ef7c40d8be9129c2f9eb0bde94d677934884d3678015f91c24a5dd174a361"
+        }
+      },
+      "added_prefix": {
+        "bytes": 1846,
+        "sha256": "e8ff46afb0f72d104b99d9d915ec76befb5ad472bece4da3fb10ad92a00cf173"
+      },
+      "after": {
+        "path": "docs/audit/PLAN.md",
+        "bytes": 152348,
+        "sha256": "5c92a9c7d6cc53c01586bdd2e1625111411fb34fb778d0e245d0d35e0710b1ce"
+      },
+      "whole_previous_file_is_verbatim_suffix": true,
+      "published_0f_original_suffix_preserved": true
+    }
+  ],
+  "run02_input": false,
+  "application_execution_count": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false
+}

@@ -1,0 +1,33 @@
+{
+  "kind": "actual-source-derivation-not-a-unittest-run",
+  "command": [
+    "/usr/bin/python",
+    "-B",
+    "-W",
+    "error::ResourceWarning",
+    "docs/audit/tools/disposition07b/verify_reconciliation_07B39R11.py",
+    "--derive"
+  ],
+  "exit_code": 1,
+  "tool_consumed": {
+    "path": "docs/audit/tools/disposition07b/verify_reconciliation_07B39R11.py",
+    "bytes": 36929,
+    "sha256": "f14e796c3fae9ae28ea125ef814e6896ff085d42765059f1525be7309f40bd62"
+  },
+  "archive": {
+    "path": "docs/audit/evidence/reconciliation-derivation-run01-consumed-07B39R11.tar.gz",
+    "bytes": 11406,
+    "sha256": "ff62c9dfb6b5b2a874015d6e21ad78264074fedd7e7b4356b842cfc26e216d89"
+  },
+  "stdout": {
+    "path": "docs/audit/evidence/reconciliation-derivation-run01-07B39R11.stdout.txt",
+    "bytes": 118,
+    "sha256": "83a032c221a6f996effee63ed1a23995e7aced0d55dd891137eb062560e2c178"
+  },
+  "stderr": {
+    "path": "docs/audit/evidence/reconciliation-derivation-run01-07B39R11.stderr.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "source_application_executions": 0
+}
