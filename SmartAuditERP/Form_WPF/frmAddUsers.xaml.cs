@@ -159,9 +159,10 @@ namespace SmartAuditERP.Form_WPF
                 // التحقق من تكرار اسم المستخدم (إضافة جديدة)
                 if (Code == -1)
                 {
+                    // FIX P1-011: استخدام معامل SQL بدل الإدراج النصي
                     var da = new SqlDataAdapter(
-                        "select emp from Users where username=N'" +
-                        txtUser.Text + "' and IS_Deleted=0", conn);
+                        "select emp from Users where username=@username and IS_Deleted=0", conn);
+                    da.SelectCommand.Parameters.Add("@username", SqlDbType.NVarChar).Value = txtUser.Text;
                     var dt = new DataTable();
                     da.Fill(dt);
                     if (dt.Rows.Count > 0)
@@ -176,9 +177,10 @@ namespace SmartAuditERP.Form_WPF
                 // التحقق من تكرار الرقم السري (إضافة جديدة)
                 if (Code == -1 && !string.IsNullOrWhiteSpace(txtSecureCode.Text))
                 {
+                    // FIX P1-011: استخدام معامل SQL بدل الإدراج النصي
                     var da2 = new SqlDataAdapter(
-                        "select id from Users where SecureCode=N'" +
-                        txtSecureCode.Text + "' and IS_Deleted=0", conn);
+                        "select id from Users where SecureCode=@code and IS_Deleted=0", conn);
+                    da2.SelectCommand.Parameters.Add("@code", SqlDbType.NVarChar).Value = txtSecureCode.Text;
                     var dt2 = new DataTable();
                     da2.Fill(dt2);
                     if (dt2.Rows.Count > 0)
@@ -193,9 +195,12 @@ namespace SmartAuditERP.Form_WPF
                 // التحقق من تكرار اسم المستخدم (تعديل)
                 if (Code != -1)
                 {
+                    // FIX P1-011: استخدام معامل SQL بدل الإدراج النصي
                     var da3 = new SqlDataAdapter(
-                        "select id from Users where emp<>" + Code +
-                        " and username=N'" + txtUser.Text + "' and IS_Deleted=0", conn);
+                        "select id from Users where emp<>@emp " +
+                        "and username=@username and IS_Deleted=0", conn);
+                    da3.SelectCommand.Parameters.Add("@emp", SqlDbType.Int).Value = Code;
+                    da3.SelectCommand.Parameters.Add("@username", SqlDbType.NVarChar).Value = txtUser.Text;
                     var dt3 = new DataTable();
                     da3.Fill(dt3);
                     if (dt3.Rows.Count > 0)
@@ -209,8 +214,8 @@ namespace SmartAuditERP.Form_WPF
 
                 // التحقق إذا كان الموظف لديه مستخدم مسبق
                 var daCheck = new SqlDataAdapter(
-                    "select id from Users where emp=" +
-                    cmbEmp.SelectedValue, conn);
+                    "select id from Users where emp=@emp", conn);
+                daCheck.SelectCommand.Parameters.Add("@emp", SqlDbType.Int).Value = Convert.ToInt32(cmbEmp.SelectedValue);
                 var dtCheck = new DataTable();
                 daCheck.Fill(dtCheck);
                 if (dtCheck.Rows.Count > 0)
@@ -225,13 +230,15 @@ namespace SmartAuditERP.Form_WPF
                 SqlCommand cmd;
                 if (Code == -1)
                 {
+                    // FIX P1-011: استخدام معامل SQL لقيمة emp
                     cmd = new SqlCommand(
                         "insert into Users(emp,username,pwd,SecureCode,LoginSecode,IS_Deleted)" +
-                        " values(" + cmbEmp.SelectedValue +
-                        ",@username,@pwd," + (int)secureCodeVal +
-                        "," + loginSecode + ",0)", conn);
+                        " values(@emp,@username,@pwd,@SecureCode,@LoginSecode,0)", conn);
+                    cmd.Parameters.Add("@emp", SqlDbType.Int).Value = Convert.ToInt32(cmbEmp.SelectedValue);
                     cmd.Parameters.Add("@username", SqlDbType.NVarChar).Value = txtUser.Text;
                     cmd.Parameters.Add("@pwd", SqlDbType.NVarChar).Value = txtPass.Password;
+                    cmd.Parameters.Add("@SecureCode", SqlDbType.Int).Value = (int)secureCodeVal;
+                    cmd.Parameters.Add("@LoginSecode", SqlDbType.Int).Value = loginSecode;
                     cmd.ExecuteNonQuery();
                     CLR();
                     cmbEmp.Focus();
@@ -239,12 +246,15 @@ namespace SmartAuditERP.Form_WPF
                 else
                 {
                     cmd = new SqlCommand(
-                        "update Users set emp=" + cmbEmp.SelectedValue +
-                        ",username=@username,pwd=@pwd,SecureCode=" + (int)secureCodeVal +
-                        ",LoginSecode=" + loginSecode +
-                        ",IS_Deleted=0 where id=" + Code, conn);
+                        "update Users set emp=@emp,username=@username,pwd=@pwd," +
+                        "SecureCode=@SecureCode,LoginSecode=@LoginSecode," +
+                        "IS_Deleted=0 where id=@id", conn);
+                    cmd.Parameters.Add("@emp", SqlDbType.Int).Value = Convert.ToInt32(cmbEmp.SelectedValue);
                     cmd.Parameters.Add("@username", SqlDbType.NVarChar).Value = txtUser.Text;
                     cmd.Parameters.Add("@pwd", SqlDbType.NVarChar).Value = txtPass.Password;
+                    cmd.Parameters.Add("@SecureCode", SqlDbType.Int).Value = (int)secureCodeVal;
+                    cmd.Parameters.Add("@LoginSecode", SqlDbType.Int).Value = loginSecode;
+                    cmd.Parameters.Add("@id", SqlDbType.Int).Value = Code;
                     cmd.ExecuteNonQuery();
                     cmbEmp.Focus();
                 }

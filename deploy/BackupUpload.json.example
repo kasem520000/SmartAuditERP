@@ -1,0 +1,7 @@
+{
+  "_تعليمات": "انسخ هذا الملف بجوار SmartAuditERP.exe باسم BackupUpload.json. بدون الملف لا تُرفع النسخ الاحتياطية (تبقى محلية). يُنصح بـ EnableSsl=true مع خادم FTPS.",
+  "Host": "ftp.example.com",
+  "Username": "backup-user",
+  "Password": "CHANGE-ME",
+  "EnableSsl": true
+}

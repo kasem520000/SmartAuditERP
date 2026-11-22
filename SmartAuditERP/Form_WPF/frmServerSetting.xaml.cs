@@ -236,23 +236,11 @@ namespace SmartAuditERP.Form_WPF
 
                 new SqlCommand(createSql, conn1).ExecuteNonQuery();
 
-                string[] setupCmds =
-                {
-                    "IF NOT EXISTS (SELECT * FROM sys.server_principals WHERE name=N'auditor') " +
-                    "CREATE LOGIN [auditor] WITH PASSWORD=N'auditor', DEFAULT_DATABASE=[master]",
-                    "ALTER SERVER ROLE [sysadmin] ADD MEMBER [auditor]",
-                    "If Not EXISTS(SELECT * FROM sys.database_principals WHERE name=N'auditor') " +
-                    "CREATE USER [auditor] FOR LOGIN [auditor] WITH DEFAULT_SCHEMA=[dbo]",
-                    "ALTER ROLE [db_owner] ADD MEMBER[auditor]",
-                    "ALTER LOGIN sa ENABLE",
-                    "ALTER LOGIN sa WITH PASSWORD='auditor'",
-                };
-
-                foreach (var cmd in setupCmds)
-                {
-                    try { new SqlCommand(cmd, conn1).ExecuteNonQuery(); }
-                    catch { /* تجاهل أخطاء غير حرجة */ }
-                }
+                // FIX P1-007 (حرج): أزيلت أوامر التهيئة الخلفية التي كانت:
+                //  1) تنشئ حساب auditor بكلمة مرور auditor
+                //  2) تضيفه إلى دور sysadmin على مستوى السيرفر و db_owner
+                //  3) تفعّل حساب sa وتغيّر كلمته إلى 'auditor'
+                // لا يجوز إنشاء حسابات إدارية ثابتة أو تعديل حساب sa من التطبيق.
             }
             catch (Exception ex)
             {
@@ -530,9 +518,11 @@ namespace SmartAuditERP.Form_WPF
                 localConn.Open();
 
                 // التحقق من التكرار
+                // FIX P1-011: استخدام معامل SQL بدل الإدراج النصي لاسم القاعدة
                 var checkAdp = new SqlDataAdapter(
-                    $"SELECT * FROM master.dbo.DatabasesManagment WHERE Dbname='{txtDbName.Text.Trim()}'",
+                    "SELECT * FROM master.dbo.DatabasesManagment WHERE Dbname=@Dbname",
                     localConn);
+                checkAdp.SelectCommand.Parameters.Add("@Dbname", SqlDbType.NVarChar).Value = txtDbName.Text.Trim();
                 var checkDt = new DataTable();
                 checkAdp.Fill(checkDt);
 
@@ -555,9 +545,11 @@ namespace SmartAuditERP.Form_WPF
                 bool nameOk = false;
                 while (!nameOk)
                 {
+                    // FIX P1-011: استخدام معامل SQL بدل الإدراج النصي
                     var nameAdp = new SqlDataAdapter(
-                        $"SELECT dbid FROM master.dbo.sysdatabases WHERE name=N'{autoName}'",
+                        "SELECT dbid FROM master.dbo.sysdatabases WHERE name=@name",
                         localConn);
+                    nameAdp.SelectCommand.Parameters.Add("@name", SqlDbType.NVarChar).Value = autoName;
                     var nameDt = new DataTable();
                     nameAdp.Fill(nameDt);
                     if (nameDt.Rows.Count == 0) nameOk = true;

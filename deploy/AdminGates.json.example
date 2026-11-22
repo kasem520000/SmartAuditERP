@@ -1,0 +1,9 @@
+{
+  "_تعليمات": "انسخ هذا الملف بجوار SmartAuditERP.exe باسم AdminGates.json واضبط كلمات مرور قوية. بدون هذا الملف تبقى البوابات الإدارية معطلة (fail-closed).",
+  "Gate0": "CHANGE-ME-strong-password-0",
+  "Gate100": "CHANGE-ME-strong-password-100",
+  "Gate200": "CHANGE-ME-strong-password-200",
+  "Gate300": "CHANGE-ME-strong-password-300",
+  "Gate400": "CHANGE-ME-strong-password-400",
+  "LogServer": "CHANGE-ME-strong-password-logserver"
+}

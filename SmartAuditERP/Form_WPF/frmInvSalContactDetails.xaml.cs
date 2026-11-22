@@ -945,12 +945,16 @@ namespace SmartAuditERP.Form_WPF
 
                     EnsureConnectionOpen();
 
+                    // FIX NEW-010: كان التحديث يستهدف جدول inv بدل InvContratct
+                    // (الجدول الفعلي المعروض في الشبكة والمستخدم في بقية عمليات
+                    // التحويل)، مع إضافة قيد الفرع مثل العمليات الشقيقة.
                     using var cmd = new SqlCommand(
-                        "UPDATE inv SET pay_type=2, Bank=@Bank, cash=0, visa=InvTotal, paid=InvTotal " +
-                        "WHERE InvGlobalID=@InvGlobalID", _conn);
+                        "UPDATE InvContratct SET pay_type=2, Bank=@Bank, cash=0, visa=InvTotal, paid=InvTotal " +
+                        "WHERE branch=@branch AND InvGlobalID=@InvGlobalID", _conn);
 
                     cmd.Parameters.AddWithValue("@InvGlobalID", globalId);
                     cmd.Parameters.AddWithValue("@Bank", bankId);
+                    cmd.Parameters.AddWithValue("@branch", MainClass.BranchNo);
                     cmd.ExecuteNonQuery();
 
                     RegenerateEntry(globalId);

@@ -1,0 +1,7 @@
+{
+  "_تعليمات": "انسخ هذا الملف بجوار SmartAuditERP.exe باسم SyncBroker.json. الافتراضي بدون الملف: منفذ 1883 بدون TLS (توافق قديم). يُنصح بضبط Secure=true مع وسيط MQTT يدعم TLS 1.2 واسم مستخدم/كلمة مرور.",
+  "Port": 8883,
+  "Secure": true,
+  "Username": "mqtt-user",
+  "Password": "CHANGE-ME"
+}

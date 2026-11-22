@@ -4,6 +4,9 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <!-- FIX P1-002: تمكين WinForms صراحة؛ 37 ملفاً تستخدم System.Windows.Forms
+         (NotifyIcon وMessageBox وغيرها) دون تصريح UseWindowsForms في المشروع. -->
+    <UseWindowsForms>true</UseWindowsForms>
     <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
 

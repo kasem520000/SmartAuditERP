@@ -272,8 +272,10 @@ namespace SmartAuditERP
             try
             {
                 using var connection = MainClass.ConnObj();
+                // FIX NEW-025: كان المعامل داخل علامات اقتباس (N'@Name') فلا يطابق
+                // أي صف أبداً وتعيد الدالة -1 دائماً؛ صُحح إلى معامل حقيقي.
                 using var adapter = new SqlDataAdapter(
-                    "select id from units where name=N'@Name'",
+                    "select id from units where name=@Name",
                     connection);
                 adapter.SelectCommand.Parameters.AddWithValue("@Name", name);
                 var dt = new DataTable();
@@ -1278,11 +1280,15 @@ namespace SmartAuditERP
                 if (sqlConnection.State != ConnectionState.Open)
                     sqlConnection.Open();
                 var frmUserLogin = new frmUserLogin();
+                // FIX P3-001 + P1-011: أزيل «|| true» الذي كان يعطّل فحص الفترة
+                // المحاسبية بالكامل (الدالة تعيد true دائماً)، وصُحح الاستعلام
+                // لاستخدام معامل SQL بدل الإدراج النصي لاسم القاعدة.
                 using var adapter = new SqlDataAdapter(
                     "SELECT * FROM master.dbo.DatabasesManagment "
                     + "where IsActive=1 and IsDeleted=0 "
-                    + "and DbAutoName=N'" + frmUserLogin.txtDatabase + "'",
+                    + "and DbAutoName=@DbAutoName",
                     sqlConnection);
+                adapter.SelectCommand.Parameters.AddWithValue("@DbAutoName", frmUserLogin.txtDatabase);
                 var dt = new DataTable();
                 adapter.Fill(dt);
 
@@ -1291,13 +1297,15 @@ namespace SmartAuditERP
                     var row = dt.Rows[0];
                     DateTime end = Convert.ToDateTime(row["AccountingPeriodEnd"]);
                     DateTime start = Convert.ToDateTime(row["AccountingPeriodStart"]);
-                    return !(InvoiceDate > end || InvoiceDate < start) || true;
+                    return !(InvoiceDate > end || InvoiceDate < start);
                 }
                 return true;
             }
             catch
             {
-                return true;
+                // FIX P3-001: عند فشل فحص الفترة يُمنع الترحيل (fail-closed)
+                // بدل السماح دائماً؛ الفترة المحاسبية ضابط مالي.
+                return false;
             }
         }
 

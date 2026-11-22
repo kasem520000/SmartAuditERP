@@ -209,7 +209,9 @@ namespace SmartAuditERP
 					pos_seller.street = Conversions.ToString(RuntimeHelpers.GetObjectValue(Operators.ConcatenateObject(Operators.ConcatenateObject("", Common.FoundationInfoDT.Rows[0]["StreetName"]), "")));
 					pos_seller.buildingNumber = Conversions.ToString(RuntimeHelpers.GetObjectValue(Operators.ConcatenateObject(Operators.ConcatenateObject("", Common.FoundationInfoDT.Rows[0]["BuildingNumber"]), "")));
 					pos_seller.postalCode = Conversions.ToString(RuntimeHelpers.GetObjectValue(Operators.ConcatenateObject(Operators.ConcatenateObject("", Common.FoundationInfoDT.Rows[0]["PostalZone"]), "")));
-					pos_seller.floor = Conversions.ToString(RuntimeHelpers.GetObjectValue(Operators.ConcatenateObject(Operators.ConcatenateObject("", Common.FoundationInfoDT.Rows[0]["PostalZone"]), "")));
+					// FIX NEW-016 (D2-N9): كان حقل الطابق يُملأ بقيمة النطقة البريدية (خطأ نسخ)؛
+					// يُستخدم "1" أسوة بـ EtaService.cs
+					pos_seller.floor = "1";
 					pos_seller.room = "";
 					pos_seller.device_serial = EtaSetting.PosEtaSerial;
 					pos_seller.activityCode = EtaSetting.ActivityCode;

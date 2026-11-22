@@ -6,6 +6,10 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <!-- FIX P1-003: التطبيق الرئيسي يشغّل "update.exe" من مجلد التطبيق،
+         بينما كان مخرج هذا المشروع SmartAuditUpdater.exe فلا يتطابق اسم
+         أداة التحديث مع الملف المنتج؛ يوحَّد الاسم إلى update.exe. -->
+    <AssemblyName>update</AssemblyName>
   </PropertyGroup>
 
 </Project>

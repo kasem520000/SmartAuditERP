@@ -15,8 +15,13 @@ namespace SmartAuditERP.Form_WPF
     {
         #region Fields
        // https://github.com/AlbaraaQ/update_SmartAuditERP/releases/download/26011805/update_SmartAuditERP.zip
+        // FIX NEW-020 (D2-N1): أزيل رابط التحديث المثبت على مجلد wp-content
+        // بموقع طرف ثالث (dhit.com.sa)؛ يُقرأ الآن من UpdateConfig.json
+        // (المفتاح LegacyUpdateUrl) بجوار ملف التنفيذ، وعند غيابه يُعطّل
+        // التحديث عبر الإنترنت في هذه الشاشة القديمة (المسار الحديث عبر
+        // GitHub + SmartAuditUpdater هو المعتمد).
         private string FileName = "";
-        private string UrlZipFile = "https://dhit.com.sa/wp-content/uploads/update.zip";
+        private string UrlZipFile = "";
         private string date1 = DateTime.Now.ToString("yyyy.MM.dd");
         private string FolderUpdate;
         private string FileDownload;
@@ -49,12 +54,32 @@ namespace SmartAuditERP.Form_WPF
         {
             new Thread(LoadUpdateInfo).Start();
 
+            // FIX NEW-020 (D2-N1): قراءة رابط التحديث من ملف الإعدادات الآمن
+            string configuredUrl = SecureConfig.ReadValue("UpdateConfig.json", "LegacyUpdateUrl");
+            if (!string.IsNullOrWhiteSpace(configuredUrl))
+            {
+                UrlZipFile = configuredUrl.Trim();
+            }
+
             // تحديد طريقة التحديث بناءً على الاتصال
             bool hasInternet = MainClass.CheckForInternetConnection();
-            rbOnline.IsEnabled = hasInternet;
-            if (!hasInternet)
+
+            bool urlValid =
+                !string.IsNullOrWhiteSpace(UrlZipFile) &&
+                UrlZipFile.StartsWith("https://", StringComparison.OrdinalIgnoreCase);
+
+            rbOnline.IsEnabled = hasInternet && urlValid;
+            if (!hasInternet || !urlValid)
             {
                 rbManual.IsChecked = true;
+                if (hasInternet && !urlValid)
+                {
+                    DXMessageBox.Show(
+                        "التحديث عبر الإنترنت معطّل: لم يُضبط رابط تحديث آمن.\n" +
+                        "راجع ملف UpdateConfig.json (المفتاح LegacyUpdateUrl — يجب أن يبدأ بـ https).\n" +
+                        "يمكن استخدام التحديث اليدوي أو آلية التحديث الحديثة.",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
             else
             {
@@ -215,12 +240,29 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
+                // FIX P1-026 (جزئي): رفض التحميل إن كان الرابط غير مضبوط أو غير HTTPS
+                if (string.IsNullOrWhiteSpace(UrlZipFile) ||
+                    !UrlZipFile.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+                {
+                    DXMessageBox.Show("رابط التحديث غير مضبوط أو غير آمن (يتطلب https)", "خطأ",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
                 using var wc = new WebClient();
                 wc.DownloadProgressChanged += (s, ev) =>
                     Dispatcher.Invoke(() => ProgressBar1.Value = ev.ProgressPercentage);
                 wc.DownloadFileCompleted += (s, ev) =>
                     Dispatcher.Invoke(() =>
                     {
+                        // FIX P1-026 (جزئي): فحص فشل التحميل قبل الإعلان عن الاستبدال
+                        if (ev.Error != null)
+                        {
+                            DXMessageBox.Show("فشل تحميل التحديث: " + ev.Error.Message, "خطأ",
+                                MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
+                        }
+
                         ReplaceFiles();
                         GoToPage(2);
                         btnNext.Content = "✅ إنتهاء";
@@ -242,7 +284,14 @@ namespace SmartAuditERP.Form_WPF
                 DXMessageBox.Show("سيتم إغلاق البرنامج لإتمام عملية التحديث", "تحديث",
                                 MessageBoxButton.OK, MessageBoxImage.Information);
                 UpdateLicenseEndDate();
-                 Process.Start(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Updater.exe"));
+
+                // FIX P1-003: توحيد اسم أداة التحديث مع مخرج المشروع (update.exe)
+                // مع بديل احتياطي للاسم القديم.
+                string updaterPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "update.exe");
+                if (!File.Exists(updaterPath))
+                    updaterPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Updater.exe");
+                if (File.Exists(updaterPath))
+                    Process.Start(updaterPath);
             }
             catch (Exception ex)
             {

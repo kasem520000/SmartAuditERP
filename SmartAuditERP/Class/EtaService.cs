@@ -344,7 +344,17 @@ namespace SmartAuditERP
 				sendEinvoice.client_secret_1 = EtaSetting.EtaClientSecret1;
 				sendEinvoice.client_secret_2 = EtaSetting.EtaClientSecret2;
 				sendEinvoice.print_invoice(Conversions.ToString(RuntimeHelpers.GetObjectValue(Inv_UUID)));
-				Process.Start(sendEinvoice.returnds.Tables["rootNode"].Rows[0]["publicUrl"].ToString());
+				// FIX NEW-011/NEW-017 (D1-N11 + D2-N6): التحقق من مخطط الرابط قبل
+				// فتحه بالمتصفح (http/https فقط) مع UseShellExecute=true (كان
+				// Process.Start(string) على net8 يفشل بصمت لأن UseShellExecute=false).
+				string etaPublicUrl = Conversions.ToString(sendEinvoice.returnds.Tables["rootNode"].Rows[0]["publicUrl"]);
+				if (Uri.TryCreate(etaPublicUrl, UriKind.Absolute, out Uri etaUri) && (etaUri.Scheme == Uri.UriSchemeHttp || etaUri.Scheme == Uri.UriSchemeHttps))
+				{
+					Process.Start(new ProcessStartInfo(etaUri.ToString())
+					{
+						UseShellExecute = true
+					});
+				}
 			}
 			catch (Exception projectError)
 			{

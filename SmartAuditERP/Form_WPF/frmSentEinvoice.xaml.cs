@@ -174,10 +174,21 @@ namespace SmartAuditERP.Form_WPF
 
             try
             {
-                Process.Start(new ProcessStartInfo(publicUrl.Text)
+                // FIX NEW-011 (D1-N11): التحقق من مخطط الرابط (http/https فقط) قبل
+                // فتحه بالمتصفح — كان أي قيمة من قاعدة البيانات تُمرر للمتصفح.
+                if (Uri.TryCreate(publicUrl.Text, UriKind.Absolute, out Uri openUri) &&
+                    (openUri.Scheme == Uri.UriSchemeHttp || openUri.Scheme == Uri.UriSchemeHttps))
                 {
-                    UseShellExecute = true
-                });
+                    Process.Start(new ProcessStartInfo(openUri.ToString())
+                    {
+                        UseShellExecute = true
+                    });
+                }
+                else
+                {
+                    DXMessageBox.Show("رابط غير صالح", "خطأ",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
             catch (Exception ex)
             {

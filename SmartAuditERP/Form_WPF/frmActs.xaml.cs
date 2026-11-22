@@ -226,7 +226,9 @@ namespace SmartAuditERP.Form_WPF
         /// </summary>
         private void InsertNewRecord()
         {
-            string query = "INSERT INTO Acts(name) VALUES(N@name)";
+            // FIX NEW-026: كانت البادئة N قبل المعامل (N@name) خطأ نحوياً في T-SQL
+            // يفشل الإدراج دائماً؛ صُححت إلى معامل عادي.
+            string query = "INSERT INTO Acts(name) VALUES(@name)";
             using (SqlCommand cmd = new SqlCommand(query, _connection))
             {
                 cmd.Parameters.AddWithValue("@name", txtName.Text.Trim());

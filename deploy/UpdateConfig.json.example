@@ -1,0 +1,4 @@
+{
+  "_تعليمات": "انسخ هذا الملف بجوار SmartAuditERP.exe باسم UpdateConfig.json. يفعّل التحديث الأونلاين في شاشة التحديث القديمة فقط (الرابط يجب أن يبدأ بـ https). بدون الملف تُعطل هذه الطريقة ويبقى المسار الحديث (GitHub + update.exe) هو المعتمد.",
+  "LegacyUpdateUrl": "https://example.com/releases/update.zip"
+}

@@ -412,13 +412,28 @@ namespace SmartAuditERP.Form_WPF
 
         private void ClientOffer()
         {
+            // FIX NEW-009: كان فشل حذف/إدراج عرض العميل يُبتلع بصمت (catch { })
+            // ثم يُعرض حوار النجاح دائماً؛ يُنفّذ الآن ضمن معاملة واحدة
+            // (حذف + إدراج) ويُبلغ عن الفشل.
+            SqlTransaction tx = null;
             try
             {
+                if (conn.State != ConnectionState.Open)
+                    conn.Open();
+
                 double offerNum = 0;
                 double.TryParse(txtOfferNo.Text, out offerNum);
 
+                tx = conn.BeginTransaction();
+
                 if (Code != -1)
-                    new SqlCommand($"delete from OfferForClient where OfferId={(int)offerNum}", conn).ExecuteNonQuery();
+                {
+                    var delCmd = new SqlCommand(
+                        "delete from OfferForClient where OfferId=@OfferId",
+                        conn, tx);
+                    delCmd.Parameters.Add("@OfferId", SqlDbType.Int).Value = (int)offerNum;
+                    delCmd.ExecuteNonQuery();
+                }
 
                 string sql = @"INSERT INTO [dbo].[OfferForClient]
                     ([OfferId],[ClientID],[CatatogryID],[ItemID],[IsForAllItems],[unit],
@@ -426,7 +441,7 @@ namespace SmartAuditERP.Form_WPF
                     VALUES(@OfferId,@ClientID,@CatatogryID,@ItemID,@IsForAllItems,@unit,
                     @OfferTargetQnty,@OfferItemValue,@OfferItemPercentage)";
 
-                SqlCommand cmd = new SqlCommand(sql, conn);
+                SqlCommand cmd = new SqlCommand(sql, conn, tx);
                 cmd.Parameters.Add("@OfferId", SqlDbType.Int).Value = (int)offerNum;
                 cmd.Parameters.Add("@ClientID", SqlDbType.Int).Value = cmbClients.SelectedValue ?? (object)0;
                 cmd.Parameters.Add("@unit", SqlDbType.Int).Value = 1;
@@ -454,8 +469,15 @@ namespace SmartAuditERP.Form_WPF
                 }
 
                 cmd.ExecuteNonQuery();
+
+                tx.Commit();
             }
-            catch { }
+            catch (Exception offerEx)
+            {
+                try { tx?.Rollback(); } catch { }
+                MessageBox.Show("فشل حفظ عرض العميل: " + offerEx.Message, "خطأ",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         #endregion

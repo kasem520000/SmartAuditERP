@@ -87,24 +87,16 @@ namespace SmartAuditERP.Form_WPF
                         CheckDatabasePassword(enteredPassword);
                         break;
 
+                    // FIX P1-008: أزيلت كلمات المرور الثابتة المكتوبة في الكود
+                    // (auditor / auditor2021 / 2020AUDITOR / DARH2024 / auditorzatca)
+                    // وتُقرأ الآن من ملف AdminGates.json بجوار ملف التنفيذ،
+                    // وعند غيابها تُرفض العملية (fail-closed).
                     case 0:
-                        ValidateFixedPassword(enteredPassword, "auditor");
-                        break;
-
                     case 100:
-                        ValidateFixedPassword(enteredPassword, "auditor2021");
-                        break;
-
                     case 200:
-                        ValidateFixedPassword(enteredPassword, "2020AUDITOR");
-                        break;
-
                     case 300:
-                        ValidateFixedPassword(enteredPassword, "DARH2024");
-                        break;
-
                     case 400:
-                        ValidateFixedPassword(enteredPassword, "auditorzatca");
+                        ValidateConfiguredGatePassword(enteredPassword, "Gate" + CheckType);
                         break;
 
                     default:
@@ -128,12 +120,15 @@ namespace SmartAuditERP.Form_WPF
 
         private void CheckDatabasePassword(string enteredPassword)
         {
+            // FIX P1-011: استبدال الإدراج النصي بمعاملات SQL لمنع الحقن
             SqlDataAdapter adapter = new SqlDataAdapter(
                 "SELECT id, lastChanged FROM OperationPermission " +
-                $"WHERE IS_Deleted = 0 " +
-                $"AND pwd = '{enteredPassword}' " +
-                $"AND OperNo = {operNo}",
+                "WHERE IS_Deleted = 0 " +
+                "AND pwd = @pwd " +
+                "AND OperNo = @OperNo",
                 conn);
+            adapter.SelectCommand.Parameters.Add("@pwd", SqlDbType.NVarChar).Value = enteredPassword;
+            adapter.SelectCommand.Parameters.Add("@OperNo", SqlDbType.Int).Value = operNo;
 
             DataTable dataTable = new DataTable();
             adapter.Fill(dataTable);
@@ -156,9 +151,27 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
-        private void ValidateFixedPassword(string enteredPassword, string correctPassword)
+        /// <summary>
+        /// FIX P1-008: التحقق من كلمة مرور البوابة الإدارية من ملف AdminGates.json
+        /// (مفتاح Gate0 / Gate100 / Gate200 / Gate300 / Gate400) بدل القيم الثابتة.
+        /// لا يوجد ملف أو مفتاح = رفض العملية (fail-closed).
+        /// </summary>
+        private void ValidateConfiguredGatePassword(string enteredPassword, string gateKey)
         {
-            if (enteredPassword == correctPassword)
+            string expected = SecureConfig.ReadValue("AdminGates.json", gateKey);
+
+            if (string.IsNullOrEmpty(expected))
+            {
+                MessageBox.Show(
+                    "هذه العملية غير مفعلة: لم يتم ضبط كلمة مرور البوابة الإدارية.\n" +
+                    "راجع ملف AdminGates.json بجوار البرنامج (المفتاح " + gateKey + ").",
+                    "غير مفعلة",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Stop);
+                return;
+            }
+
+            if (enteredPassword == expected)
             {
                 Iscorrect = true;
                 Close();

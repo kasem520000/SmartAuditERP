@@ -699,13 +699,30 @@ namespace SmartAuditERP.Form_WPF
             if (!File.Exists(localFile))
                 return;
 
+            // FIX P1-015: أزيلت بيانات FTP المثبتة في الكود (السيرفر/المستخدم/كلمة
+            // المرور) ورفع النسخة عبر قناة غير مشفرة؛ تُقرأ الإعدادات الآن من
+            // ملف BackupUpload.json (Host/Username/Password/EnableSsl)، وعند
+            // غيابه يُتخطى الرفع مع تسجيل تحذير (تبقى النسخة محلية).
+            string host = SecureConfig.ReadValue("BackupUpload.json", "Host");
+            string user = SecureConfig.ReadValue("BackupUpload.json", "Username");
+            string pass = SecureConfig.ReadValue("BackupUpload.json", "Password");
+            bool enableSsl = SecureConfig.ReadBool("BackupUpload.json", "EnableSsl", false);
+
+            if (string.IsNullOrEmpty(host) || string.IsNullOrEmpty(user))
+            {
+                System.Diagnostics.Debug.WriteLine(
+                    "UploadBackup: لم تُضبط إعدادات رفع النسخة الاحتياطية (BackupUpload.json) — تم التخطي");
+                return;
+            }
+
             try
             {
                 FtpWebRequest request = (FtpWebRequest)WebRequest.Create(
-                    $"ftp://173.212.208.114/Client_{MainClass.Database}/{System.IO.Path.GetFileName(localFile)}");
+                    $"ftp://{host}/Client_{MainClass.Database}/{System.IO.Path.GetFileName(localFile)}");
 
                 request.Method = WebRequestMethods.Ftp.UploadFile;
-                request.Credentials = new NetworkCredential("backup_user", "PASSWORD");
+                request.Credentials = new NetworkCredential(user, pass ?? "");
+                request.EnableSsl = enableSsl;
                 request.UseBinary = true;
                 request.UsePassive = true;
                 request.KeepAlive = false;
@@ -718,7 +735,11 @@ namespace SmartAuditERP.Form_WPF
                     requestStream.Write(fileContents, 0, fileContents.Length);
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                // FIX: تسجيل فشل الرفع بدل تجاهله الصامت الكامل
+                System.Diagnostics.Debug.WriteLine("UploadBackup فشل: " + ex.Message);
+            }
         }
 
         #endregion

@@ -404,7 +404,13 @@ namespace SmartAuditERP
 
                 if (!this.IsLogin)
                 {
-                    this.ISSecureLogin();
+                    // FIX P1-016: التوقف الفوري عند فشل المصادقة الأولى بدل
+                    // متابعة إقلاع البرنامج بوضع غير موثق.
+                    if (!this.ISSecureLogin())
+                    {
+                        System.Windows.Application.Current.Shutdown();
+                        return;
+                    }
                 }
 
                 this.conn = MainClass.ConnObj();
@@ -977,37 +983,42 @@ namespace SmartAuditERP
 
         private bool ISSecureLogin()
         {
-            frmUserLogin.ISExit = false;
-            if (this._is_active)
-                this._is_active = false;
-
-            frmUserLogin.ShowDialog();
-
-            if (frmUserLogin.ISExit)
+            // FIX (جودة): تحويل الاستدعاء الذاتي غير المحدود إلى حلقة
+            // لتفادي تدفق المكدس عند تكرار المحاولات.
+            while (true)
             {
-                frmSecurityPnl.ShowDialog();
                 frmUserLogin.ISExit = false;
+                if (this._is_active)
+                    this._is_active = false;
 
-                if (!frmSecurityPnl.IsExit)
+                frmUserLogin.ShowDialog();
+
+                if (frmUserLogin.ISExit)
                 {
-                    this.IsLogin = true;
-                    return true;
+                    frmSecurityPnl.ShowDialog();
+                    frmUserLogin.ISExit = false;
+
+                    if (!frmSecurityPnl.IsExit)
+                    {
+                        this.IsLogin = true;
+                        return true;
+                    }
+                    this.IsLogin = false;
+                    continue;
                 }
-                this.IsLogin = false;
-                this.ISSecureLogin();
-            }
-            else
-            {
-                if (MainClass.EmpNo != -1)
+                else
                 {
-                    this.IsLogin = true;
-                    return true;
+                    if (MainClass.EmpNo != -1)
+                    {
+                        this.IsLogin = true;
+                        return true;
+                    }
+                    var processes = Process.GetProcessesByName("Auditor E-Invoicing");
+                    foreach (var p in processes)
+                        p.Kill();
                 }
-                var processes = Process.GetProcessesByName("Auditor E-Invoicing");
-                foreach (var p in processes)
-                    p.Kill();
+                return false;
             }
-            return false;
         }
 
         public async void logOut()
@@ -1045,11 +1056,18 @@ namespace SmartAuditERP
 
         public void @lock()
         {
+            // FIX P2-002: لا يُرفع القفل إلا بعد نجاح المصادقة (Iscorrect=true)؛
+            // كان إغلاق نافذة القفل بدون كلمة مرور يترك الجلسة مفتوحة.
             try
             {
-                var frmLock = new frmlock();
-                MainClass.DoApplyUserSett(frmLock);
-                frmLock.ShowDialog();
+                while (true)
+                {
+                    var frmLock = new frmlock();
+                    MainClass.DoApplyUserSett(frmLock);
+                    frmLock.ShowDialog();
+                    if (frmLock.Iscorrect)
+                        break;
+                }
             }
             catch { }
         }

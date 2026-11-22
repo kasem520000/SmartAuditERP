@@ -422,7 +422,11 @@ namespace SmartAuditERP.Form_WPF
                     string deviceSql = DevicesInfQry;
                     if (MainClass.EmpNo == 0)
                     {
-                        new SqlCommand($"delete from LicenseDevices where DeviceID='{txtUID.Text}'", conn).ExecuteNonQuery();
+                        // FIX NEW-003: استخدام معامل SQL بدل الإدراج النصي لمعرّف الجهاز
+                        var deleteCmd = new SqlCommand(
+                            "delete from LicenseDevices where DeviceID=@DeviceID", conn);
+                        deleteCmd.Parameters.Add("@DeviceID", SqlDbType.NVarChar).Value = txtUID.Text;
+                        deleteCmd.ExecuteNonQuery();
                     }
 
                     SqlCommand deviceCmd = new SqlCommand(deviceSql, conn);
@@ -444,7 +448,10 @@ namespace SmartAuditERP.Form_WPF
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                // FIX NEW-003: إظهار فشل حفظ الترخيص للمستخدم بدل كتابته في
+                // Console فقط (غير مرئي في تطبيق WPF).
+                DXMessageBox.Show("فشل حفظ بيانات الترخيص: " + ex.Message, "خطأ",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

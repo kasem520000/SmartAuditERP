@@ -126,9 +126,12 @@ namespace SmartAuditERP.Form_WPF
                 if (Code == -1)
                 {
                     // التحقق من التكرار
+                    // FIX NEW-004: استخدام معاملات SQL بدل الإدراج النصي
                     var checkAdapter = new SqlDataAdapter(
-                        $"SELECT id FROM Suppliers WHERE name=N'{txtName.Text}' " +
-                        $"AND taxNo=N'{txtTaxNo.Text}' AND IS_Deleted=0", conn);
+                        "SELECT id FROM Suppliers WHERE name=@name " +
+                        "AND taxNo=@taxNo AND IS_Deleted=0", conn);
+                    checkAdapter.SelectCommand.Parameters.Add("@name", SqlDbType.NVarChar).Value = txtName.Text;
+                    checkAdapter.SelectCommand.Parameters.Add("@taxNo", SqlDbType.NVarChar).Value = txtTaxNo.Text;
                     var checkTable = new DataTable();
                     checkAdapter.Fill(checkTable);
 
@@ -144,8 +147,10 @@ namespace SmartAuditERP.Form_WPF
 
                     // إضافة جديد
                     var insertCmd = new SqlCommand(
-                        $"INSERT INTO Suppliers(name,taxNo,IS_Deleted) " +
-                        $"VALUES(N'{txtName.Text}',N'{txtTaxNo.Text}',0)", conn);
+                        "INSERT INTO Suppliers(name,taxNo,IS_Deleted) " +
+                        "VALUES(@name,@taxNo,0)", conn);
+                    insertCmd.Parameters.Add("@name", SqlDbType.NVarChar).Value = txtName.Text;
+                    insertCmd.Parameters.Add("@taxNo", SqlDbType.NVarChar).Value = txtTaxNo.Text;
                     insertCmd.ExecuteNonQuery();
                     txtName.Text = "";
                     txtName.Focus();
@@ -154,8 +159,11 @@ namespace SmartAuditERP.Form_WPF
                 {
                     // تعديل
                     var updateCmd = new SqlCommand(
-                        $"UPDATE Suppliers SET name=N'{txtName.Text}', " +
-                        $"taxNo=N'{txtTaxNo.Text}' WHERE id={Code}", conn);
+                        "UPDATE Suppliers SET name=@name, " +
+                        "taxNo=@taxNo WHERE id=@id", conn);
+                    updateCmd.Parameters.Add("@name", SqlDbType.NVarChar).Value = txtName.Text;
+                    updateCmd.Parameters.Add("@taxNo", SqlDbType.NVarChar).Value = txtTaxNo.Text;
+                    updateCmd.Parameters.Add("@id", SqlDbType.Int).Value = Code;
                     updateCmd.ExecuteNonQuery();
                     txtName.Focus();
                 }

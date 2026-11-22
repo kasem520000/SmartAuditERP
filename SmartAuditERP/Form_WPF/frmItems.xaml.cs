@@ -1869,8 +1869,9 @@ namespace SmartAuditERP.Form_WPF
             // توليد باركود عشوائي (hamode)
             try
             {
-                var rnd = new Random();
-                int num = rnd.Next(4344, 34355353);
+                // FIX NEW-013 (D1-N13): استخدام مولد أرقام تشفيري بدل System.Random
+                // المُبذّر (باركودات قابلة للتوقع/للتصادم تُمسح في نقاط البيع).
+                int num = System.Security.Cryptography.RandomNumberGenerator.GetInt32(4344, 34355353);
                 txtBarcode.Text = (ParseDouble(txtBarcode.Text) + num).ToString();
             }
             catch { }

@@ -383,32 +383,62 @@ namespace SmartAuditERP
                 using var localConn = ConnObj();
                 localConn.Open();
 
+                // FIX P1-011: استخدام معاملات SQL بدل الإدراج النصي لاسم النموذج
                 var adapter = new SqlDataAdapter(
-                    $"SELECT IS_New, IS_Save, IS_Delete, IS_Search, IS_Print, Forms.id " +
-                    $"FROM User_Permissions, Forms " +
-                    $"WHERE User_Permissions.Form_id=Forms.id " +
-                    $"AND Forms.FormName='{formName.Trim()}' " +
-                    $"AND user_id={UserID}", localConn);
+                    "SELECT IS_New, IS_Save, IS_Delete, IS_Search, IS_Print, Forms.id " +
+                    "FROM User_Permissions, Forms " +
+                    "WHERE User_Permissions.Form_id=Forms.id " +
+                    "AND Forms.FormName=@FormName " +
+                    "AND user_id=@UserId", localConn);
+                adapter.SelectCommand.Parameters.Add("@FormName", SqlDbType.NVarChar).Value = formName.Trim();
+                adapter.SelectCommand.Parameters.Add("@UserId", SqlDbType.Int).Value = UserID;
 
                 var dt = new DataTable();
                 adapter.Fill(dt);
 
-                if (dt.Rows.Count == 0) return;
+                bool canNew, canSave, canDelete, canSearch, canPrint;
 
-                DataRow perm = dt.Rows[0];
+                if (dt.Rows.Count > 0)
+                {
+                    DataRow perm = dt.Rows[0];
 
-                bool canNew = Convert.ToBoolean(perm["IS_New"]);
-                bool canSave = Convert.ToBoolean(perm["IS_Save"]);
-                bool canDelete = Convert.ToBoolean(perm["IS_Delete"]);
-                bool canSearch = Convert.ToBoolean(perm["IS_Search"]);
-                bool canPrint = Convert.ToBoolean(perm["IS_Print"]);
+                    canNew = Convert.ToBoolean(perm["IS_New"]);
+                    canSave = Convert.ToBoolean(perm["IS_Save"]);
+                    canDelete = Convert.ToBoolean(perm["IS_Delete"]);
+                    canSearch = Convert.ToBoolean(perm["IS_Search"]);
+                    canPrint = Convert.ToBoolean(perm["IS_Print"]);
+                }
+                else
+                {
+                    // FIX P1-012 (مبدأ الرفض الافتراضي): إذا كان النموذج مسجلاً في
+                    // جدول الصلاحيات وليس للمستخدم أي سجل صلاحيات له، تُرفض كل
+                    // الأزرار بدل السماح بكل شيء.
+                    var formCheck = new SqlDataAdapter(
+                        "SELECT COUNT(*) FROM Forms WHERE FormName=@FormName", localConn);
+                    formCheck.SelectCommand.Parameters.Add("@FormName", SqlDbType.NVarChar).Value = formName.Trim();
+
+                    int registeredForms = Convert.ToInt32(
+                        formCheck.SelectCommand.ExecuteScalar());
+
+                    if (registeredForms == 0)
+                    {
+                        // نموذج غير مسجل في نظام الصلاحيات أصلاً: يبقى السلوك كما كان
+                        return;
+                    }
+
+                    canNew = canSave = canDelete = canSearch = canPrint = false;
+                }
 
                 // تطبيق الصلاحيات على أزرار WPF
                 ApplyWpfPermissions(window, canNew, canSave, canDelete, canSearch, canPrint);
             }
             catch (Exception ex)
             {
+                // FIX P1-012: عند فشل جلب الصلاحيات يُطبق الرفض الكامل (fail-closed)
+                // بدل المتابعة دون قيود.
                 System.Diagnostics.Debug.WriteLine($"خطأ في تطبيق الصلاحيات: {ex.Message}");
+                try { ApplyWpfPermissions(window, false, false, false, false, false); }
+                catch { }
             }
         }
 
@@ -562,7 +592,8 @@ namespace SmartAuditERP
             string name = btn.Name;
             bool disable = false;
 
-            if (!canNew && name == "btnSave") disable = true;
+            // FIX NEW-022 (D2-N11): كان شرط canNew يفحص btnSave بدل btnNew
+            if (!canNew && name == "btnNew") disable = true;
             if (!canSave && (name == "btnSave" || name == "btnSavePrint"))
                 disable = true;
             if (!canDelete && name == "btnDelete") disable = true;
@@ -594,7 +625,8 @@ namespace SmartAuditERP
             string name = btn.Name;
             bool disable = false;
 
-            if (!canNew && name == "btnSave") disable = true;
+            // FIX NEW-022 (D2-N11): كان شرط canNew يفحص btnSave بدل btnNew
+            if (!canNew && name == "btnNew") disable = true;
             if (!canSave && (name == "btnSave" || name == "btnSavePrint"))
                 disable = true;
             if (!canDelete && name == "btnDelete") disable = true;

@@ -432,12 +432,16 @@ namespace SmartAuditERP.Form_WPF
                     }
 
                     // التحقق من التكرار
+                    // FIX NEW-002: استخدام معاملات SQL بدل الإدراج النصي
                     SqlDataAdapter dupAdapter = new SqlDataAdapter(
-                        $"SELECT id FROM Customers " +
-                        $"WHERE type = {customerType} " +
-                        $"AND name = N'{txtName.Text.Trim()}' " +
-                        $"AND mobile = N'{txtMobile.Text.Trim()}'",
+                        "SELECT id FROM Customers " +
+                        "WHERE type = @type " +
+                        "AND name = @name " +
+                        "AND mobile = @mobile",
                         conn1);
+                    dupAdapter.SelectCommand.Parameters.Add("@type", SqlDbType.Int).Value = customerType;
+                    dupAdapter.SelectCommand.Parameters.Add("@name", SqlDbType.NVarChar).Value = txtName.Text.Trim();
+                    dupAdapter.SelectCommand.Parameters.Add("@mobile", SqlDbType.NVarChar).Value = txtMobile.Text.Trim();
                     DataTable dupTable = new DataTable();
                     dupAdapter.Fill(dupTable);
 
@@ -520,20 +524,29 @@ namespace SmartAuditERP.Form_WPF
                                   : Common.CurrentBranch.CustomersAcc;
 
                 SqlDataAdapter adapter = new SqlDataAdapter(
-                    $"SELECT * FROM Accounts_Index WHERE code = N'{txtAccCode.Text}'",
+                    "SELECT * FROM Accounts_Index WHERE code = @code",
                     conn);
+                adapter.SelectCommand.Parameters.Add("@code", SqlDbType.NVarChar).Value = txtAccCode.Text;
                 DataTable dataTable = new DataTable();
                 adapter.Fill(dataTable);
 
                 if (dataTable.Rows.Count == 0)
                 {
+                    // FIX NEW-002: استخدام معاملات SQL بدل الإدراج النصي في إدراج
+                    // الحساب، وإظهار أي فشل بدل تجاهله بصمت (كان catch { }).
                     SqlCommand insertCmd = new SqlCommand(
-                        $"INSERT INTO Accounts_Index(Code,AName,Type,ParentCode,FinalAcc," +
-                        $"Acc_branch,Nature,IValue,UserName,date) " +
-                        $"VALUES(N'{txtAccCode.Text}',N'{txtName.Text}',2,N'{parentCode}',1," +
-                        $"{MainClass.BranchNo},{nature},{ConvertToDouble(IValue.Text)}," +
-                        $"{MainClass.UserID},@date)",
+                        "INSERT INTO Accounts_Index(Code,AName,Type,ParentCode,FinalAcc," +
+                        "Acc_branch,Nature,IValue,UserName,date) " +
+                        "VALUES(@code,@aname,2,@parentCode,1," +
+                        "@branch,@nature,@ivalue,@username,@date)",
                         conn);
+                    insertCmd.Parameters.Add("@code", SqlDbType.NVarChar).Value = txtAccCode.Text;
+                    insertCmd.Parameters.Add("@aname", SqlDbType.NVarChar).Value = txtName.Text;
+                    insertCmd.Parameters.Add("@parentCode", SqlDbType.NVarChar).Value = parentCode;
+                    insertCmd.Parameters.Add("@branch", SqlDbType.Int).Value = MainClass.BranchNo;
+                    insertCmd.Parameters.Add("@nature", SqlDbType.Int).Value = nature;
+                    insertCmd.Parameters.Add("@ivalue", SqlDbType.Float).Value = ConvertToDouble(IValue.Text);
+                    insertCmd.Parameters.Add("@username", SqlDbType.Int).Value = MainClass.UserID;
                     insertCmd.Parameters.Add("@date", SqlDbType.DateTime).Value = DateTime.Now;
                     insertCmd.ExecuteNonQuery();
 
@@ -553,20 +566,27 @@ namespace SmartAuditERP.Form_WPF
             {
                 int nature = debt.IsChecked == true ? 1 : 2;
 
+                // FIX NEW-002: استخدام معاملات SQL بدل الإدراج النصي
                 SqlDataAdapter adapter = new SqlDataAdapter(
-                    $"SELECT * FROM Accounts_Index WHERE AName = N'{_currentName}'",
+                    "SELECT * FROM Accounts_Index WHERE AName = @aname",
                     conn);
+                adapter.SelectCommand.Parameters.Add("@aname", SqlDbType.NVarChar).Value = _currentName;
                 DataTable dataTable = new DataTable();
                 adapter.Fill(dataTable);
 
                 if (dataTable.Rows.Count > 0)
                 {
-                    new SqlCommand(
-                        $"UPDATE Accounts_Index SET AName = N'{txtName.Text}', " +
-                        $"Nature = {nature}, " +
-                        $"IValue = {ConvertToDouble(IValue.Text)} " +
-                        $"WHERE Code = N'{dataTable.Rows[0]["Code"]}'",
-                        conn).ExecuteNonQuery();
+                    var updateCmd = new SqlCommand(
+                        "UPDATE Accounts_Index SET AName = @newName, " +
+                        "Nature = @nature, " +
+                        "IValue = @ivalue " +
+                        "WHERE Code = @code",
+                        conn);
+                    updateCmd.Parameters.Add("@newName", SqlDbType.NVarChar).Value = txtName.Text;
+                    updateCmd.Parameters.Add("@nature", SqlDbType.Int).Value = nature;
+                    updateCmd.Parameters.Add("@ivalue", SqlDbType.Float).Value = ConvertToDouble(IValue.Text);
+                    updateCmd.Parameters.Add("@code", SqlDbType.NVarChar).Value = dataTable.Rows[0]["Code"].ToString();
+                    updateCmd.ExecuteNonQuery();
                 }
             }
             catch { }

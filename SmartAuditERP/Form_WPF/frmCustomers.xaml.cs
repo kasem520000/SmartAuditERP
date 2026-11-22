@@ -396,7 +396,7 @@ namespace SmartAuditERP.Form_WPF
 
         #region Load Grid (Search Tab)
 
-        private void LoadGrid(string condition)
+        private void LoadGrid(string condition, params System.Data.SqlClient.SqlParameter[] searchParameters)
         {
             try
             {
@@ -415,6 +415,8 @@ namespace SmartAuditERP.Form_WPF
                        ORDER BY c.id DESC";
 
                 var adapter = new SqlDataAdapter(query, _conn);
+                if (searchParameters != null && searchParameters.Length > 0)
+                    adapter.SelectCommand.Parameters.AddRange(searchParameters);
                 var dataTable = new DataTable();
                 adapter.Fill(dataTable);
 
@@ -1341,28 +1343,43 @@ namespace SmartAuditERP.Form_WPF
 
         private void Search()
         {
-            string condition = string.Empty;
+            // FIX P1-011: بناء شروط البحث بمعاملات SQL بدل الإدراج النصي
+            // لمنع حقن SQL عبر حقول البحث.
+            var conditions = new List<string>();
+            var parameters = new List<System.Data.SqlClient.SqlParameter>();
 
             string nameSrch = txtNameSrch.EditValue?.ToString().Trim() ?? string.Empty;
             string mobileSrch = txtMobileSrch.EditValue?.ToString().Trim() ?? string.Empty;
             string vatSrch = txtVATSrch.EditValue?.ToString().Trim() ?? string.Empty;
 
             if (!string.IsNullOrEmpty(nameSrch))
-                condition += $"name LIKE N'%{nameSrch}%' AND ";
+            {
+                conditions.Add("name LIKE N'%' + @name + '%' ");
+                parameters.Add(new System.Data.SqlClient.SqlParameter("@name", SqlDbType.NVarChar) { Value = nameSrch });
+            }
 
             if (!string.IsNullOrEmpty(mobileSrch))
-                condition += $"mobile LIKE N'%{mobileSrch}%' AND ";
+            {
+                conditions.Add("mobile LIKE N'%' + @mobile + '%' ");
+                parameters.Add(new System.Data.SqlClient.SqlParameter("@mobile", SqlDbType.NVarChar) { Value = mobileSrch });
+            }
 
             if (!string.IsNullOrEmpty(vatSrch))
-                condition += $"tax_no LIKE N'%{vatSrch}%' AND ";
+            {
+                conditions.Add("tax_no LIKE N'%' + @taxno + '%' ");
+                parameters.Add(new System.Data.SqlClient.SqlParameter("@taxno", SqlDbType.NVarChar) { Value = vatSrch });
+            }
 
             if (chkAllBranches.IsChecked != true &&
                 cmbBranches.EditValue != null)
             {
-                condition += $"Branch={cmbBranches.EditValue} AND ";
+                conditions.Add($"Branch={cmbBranches.EditValue} ");
             }
 
-            LoadGrid(condition);
+            string condition = string.Join("AND ", conditions);
+            if (condition.Length > 0) condition += "AND ";
+
+            LoadGrid(condition, parameters.ToArray());
         }
 
         private void GridView1_RowDoubleClick(

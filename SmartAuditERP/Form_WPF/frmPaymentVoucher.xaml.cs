@@ -454,14 +454,17 @@ namespace SmartAuditERP.Form_WPF
                 if (_currentCode == -1)
                 {
                     LoadNxtNo();
+                    // FIX NEW-001: استخدام معامل SQL لرقم السند (txtNo) بدل
+                    // الإدراج النصي لمنع حقن SQL عبر حقل الرقم.
                     cmd = new SqlCommand(
-                        $"INSERT INTO SandSD (id,date,emp_person,emp_id,acc_code,val,type," +
-                        $"safe_bank_id,sales_emp,check_no,check_date,checkbank,check_state," +
-                        $"notes,rest_id,branch,IS_Deleted) VALUES ({txtNo.Text}," +
-                        $"@date,@emp_person,@emp_id,@acc_code,@val,@type," +
-                        $"@safe_bank_id,@sales_emp,@check_no,@check_date,@checkbank,@check_state," +
-                        $"@notes,@rest_id,@branch,@IS_Deleted)",
+                        "INSERT INTO SandSD (id,date,emp_person,emp_id,acc_code,val,type," +
+                        "safe_bank_id,sales_emp,check_no,check_date,checkbank,check_state," +
+                        "notes,rest_id,branch,IS_Deleted) VALUES (@id," +
+                        "@date,@emp_person,@emp_id,@acc_code,@val,@type," +
+                        "@safe_bank_id,@sales_emp,@check_no,@check_date,@checkbank,@check_state," +
+                        "@notes,@rest_id,@branch,@IS_Deleted)",
                         _conn, transaction);
+                    cmd.Parameters.Add("@id", SqlDbType.Int).Value = Convert.ToInt32(txtNo.Text);
                 }
                 else
                 {

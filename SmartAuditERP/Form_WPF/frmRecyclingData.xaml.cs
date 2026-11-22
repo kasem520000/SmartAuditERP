@@ -202,10 +202,12 @@ namespace SmartAuditERP.Form_WPF
                     }
 
                     // التحقق من التكرار
+                    // FIX NEW-006: استخدام معامل SQL بدل الإدراج النصي لاسم القاعدة
                     using (var da = new SqlDataAdapter(
-                        $"SELECT * FROM master.dbo.DatabasesManagment WHERE Dbname='{txtDbName.Text.Trim()}'",
+                        "SELECT * FROM master.dbo.DatabasesManagment WHERE Dbname=@Dbname",
                         masterConn))
                     {
+                        da.SelectCommand.Parameters.Add("@Dbname", SqlDbType.NVarChar).Value = txtDbName.Text.Trim();
                         var dt = new DataTable();
                         da.Fill(dt);
                         if (dt.Rows.Count > 0)
@@ -230,22 +232,44 @@ namespace SmartAuditERP.Form_WPF
                         string[] scripts = Properties.Resources.CrystalLiteDB.Split(
                             new string[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
 
+                        // FIX NEW-008: تتبع فشل السكربتات الفردية بدل تجاهلها
+                        // بصمت ثم إعلان النجاح الكامل.
+                        var failedScripts = new System.Collections.Generic.List<string>();
+
                         foreach (var script in scripts)
                         {
                             if (!string.IsNullOrWhiteSpace(script))
                             {
                                 using (var cmd = new SqlCommand(script, newConn))
                                 {
-                                    try { await cmd.ExecuteNonQueryAsync(); } catch { }
+                                    try { await cmd.ExecuteNonQueryAsync(); }
+                                    catch (Exception scriptEx)
+                                    {
+                                        failedScripts.Add(
+                                            script.Trim().Length > 60
+                                                ? script.Trim().Substring(0, 60) + "..."
+                                                : script.Trim());
+                                        System.Diagnostics.Debug.WriteLine(
+                                            "فشل سكريبت إنشاء القاعدة: " + scriptEx.Message);
+                                    }
                                 }
                             }
                         }
 
+                        if (failedScripts.Count > 0)
+                        {
+                            DXMessageBox.Show(
+                                $"⚠️ تم إنشاء القاعدة لكن فشل تنفيذ {failedScripts.Count} سكريبت من أصل {scripts.Length}.\n" +
+                                "قد تكون القاعدة غير مكتملة — راجع مدير النظام.");
+                        }
+
                         // تسجيل في جدول الإدارة
+                        // FIX NEW-006: استخدام معامل SQL بدل الإدراج النصي
                         using (var da = new SqlDataAdapter(
-                            $"SELECT dbid FROM master.dbo.sysdatabases WHERE name=N'{autoDbName}'",
+                            "SELECT dbid FROM master.dbo.sysdatabases WHERE name=@name",
                             masterConn))
                         {
+                            da.SelectCommand.Parameters.Add("@name", SqlDbType.NVarChar).Value = autoDbName;
                             var dt = new DataTable();
                             da.Fill(dt);
                             string dbId = dt.Rows.Count > 0 ? dt.Rows[0]["dbid"].ToString() : "0";
@@ -327,16 +351,31 @@ namespace SmartAuditERP.Form_WPF
 
         private async Task CreateDatabaseOnServerAsync(SqlConnection conn, string dbName)
         {
+            // FIX NEW-006: التحقق من صحة المعرفات قبل بناء أمر CREATE DATABASE
+            // (لا يمكن استخدام معاملات SQL في DDL، لذا يُتحقق من صحة الإدخال).
+            if (!System.Text.RegularExpressions.Regex.IsMatch(
+                    dbName.Trim(), @"^[A-Za-z0-9_]+$"))
+            {
+                throw new InvalidOperationException(
+                    "اسم قاعدة البيانات يحتوي محارف غير مسموحة");
+            }
+
             string sql = $"CREATE DATABASE {dbName.Trim()}";
 
             if (!string.IsNullOrWhiteSpace(txtPath.Text))
             {
+                // FIX NEW-006: التحقق من مسار الملفات (يجب أن يكون مساراً مطلقاً صالحاً)
+                string dataPath = txtPath.Text.Trim();
+                if (!System.IO.Path.IsPathRooted(dataPath))
+                    throw new InvalidOperationException(
+                        "مسار ملفات قاعدة البيانات يجب أن يكون مساراً مطلقاً صالحاً");
+
                 sql += $" CONTAINMENT = NONE ON PRIMARY " +
                        $"( NAME = N'{dbName.Trim()}', " +
-                       $"FILENAME = N'{txtPath.Text}.mdf', " +
+                       $"FILENAME = N'{dataPath}.mdf', " +
                        $"SIZE = 9280KB, MAXSIZE = UNLIMITED, FILEGROWTH = 1024KB ) " +
                        $"LOG ON ( NAME = N'{dbName.Trim()}_log', " +
-                       $"FILENAME = N'{txtPath.Text}.ldf', " +
+                       $"FILENAME = N'{dataPath}.ldf', " +
                        $"SIZE = 3904KB, MAXSIZE = 2048GB, FILEGROWTH = 10%)";
             }
 

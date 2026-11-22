@@ -169,10 +169,12 @@ namespace SmartAuditERP.Form_WPF
                 }
 
                 // التحقق من تكرار الاسم
+                // FIX NEW-007: استخدام معامل SQL بدل الإدراج النصي
                 var dupAdapter = new SqlDataAdapter(
-                    $"SELECT * FROM master.dbo.DatabasesManagment " +
-                    $"WHERE Dbname='{dbDisplayName}'",
+                    "SELECT * FROM master.dbo.DatabasesManagment " +
+                    "WHERE Dbname=@Dbname",
                     masterConn);
+                dupAdapter.SelectCommand.Parameters.Add("@Dbname", SqlDbType.NVarChar).Value = dbDisplayName;
                 var dupTable = new DataTable();
                 dupAdapter.Fill(dupTable);
 
@@ -202,6 +204,10 @@ namespace SmartAuditERP.Form_WPF
                 string[] scripts = Properties.Resources.CrystalLiteDB
                     .Split(new[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
 
+                // FIX NEW-008: تتبع فشل السكربتات الفردية بدل تجاهلها بصمت
+                // ثم إعلان النجاح الكامل.
+                var failedScripts = new System.Collections.Generic.List<string>();
+
                 foreach (string script in scripts)
                 {
                     try
@@ -209,14 +215,34 @@ namespace SmartAuditERP.Form_WPF
                         if (!string.IsNullOrWhiteSpace(script))
                             new SqlCommand(script, newConn).ExecuteNonQuery();
                     }
-                    catch { /* ignore individual script errors */ }
+                    catch (Exception scriptEx)
+                    {
+                        if (!string.IsNullOrWhiteSpace(script))
+                        {
+                            failedScripts.Add(
+                                script.Trim().Length > 60
+                                    ? script.Trim().Substring(0, 60) + "..."
+                                    : script.Trim());
+                        }
+                        System.Diagnostics.Debug.WriteLine(
+                            "فشل سكريبت إنشاء القاعدة: " + scriptEx.Message);
+                    }
+                }
+
+                if (failedScripts.Count > 0)
+                {
+                    DXMessageBox.Show(
+                        $"⚠️ تم إنشاء القاعدة لكن فشل تنفيذ {failedScripts.Count} سكريبت من أصل {scripts.Length}.\n" +
+                        "قد تكون القاعدة غير مكتملة — راجع مدير النظام.");
                 }
 
                 // الحصول على dbid
+                // FIX NEW-007: استخدام معامل SQL بدل الإدراج النصي
                 var dbIdAdapter = new SqlDataAdapter(
-                    $"SELECT dbid FROM master.dbo.sysdatabases " +
-                    $"WHERE name=N'{autoName}'",
+                    "SELECT dbid FROM master.dbo.sysdatabases " +
+                    "WHERE name=@name",
                     masterConn);
+                dbIdAdapter.SelectCommand.Parameters.Add("@name", SqlDbType.NVarChar).Value = autoName;
                 var dbIdTable = new DataTable();
 
                 if (masterConn.State == ConnectionState.Closed)
@@ -285,6 +311,15 @@ namespace SmartAuditERP.Form_WPF
 
         private void CreateDatabaseOnServer(SqlConnection conn, string dbName)
         {
+            // FIX NEW-007: التحقق من صحة المعرف قبل بناء أمر CREATE DATABASE
+            // (لا يمكن استخدام معاملات SQL في DDL، لذا يُتحقق من صحة الإدخال).
+            if (!System.Text.RegularExpressions.Regex.IsMatch(
+                    dbName.Trim(), @"^[A-Za-z0-9_]+$"))
+            {
+                ShowError("اسم قاعدة البيانات يحتوي محارف غير مسموحة");
+                return;
+            }
+
             var cmd = new SqlCommand($"CREATE DATABASE {dbName.Trim()}", conn);
 
             try

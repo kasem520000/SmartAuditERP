@@ -185,27 +185,9 @@ namespace SmartAuditERP.Form_WPF
                     BuildConnectionStrings();
                 }
 
-                // التحقق من دخول auditor الخاص
-                string CombinedPwd = "";
-                bool SecureLogin = false;
-
-                if (txtUser.Text.Trim().Equals("auditor", StringComparison.OrdinalIgnoreCase)
-                    && type == 1)
-                {
-                    CombinedPwd = "auditor"
-                                + DateTime.Now.Year.ToString()
-                                + DateTime.Now.Month.ToString();
-
-                    if (txtPwd.Password.Trim() != CombinedPwd)
-                    {
-                        MessageBox.Show("دخول غير صحيح", "",
-                            MessageBoxButton.OK, MessageBoxImage.Information);
-                        txtPwd.Clear();
-                        frmSecurityPnl.Secured = false;
-                        return;
-                    }
-                    SecureLogin = true;
-                }
+                // FIX P1-008: أزيل مسار الدخول الخلفي الخاص بحساب auditor
+                // (كلمة المرور المتوقعة auditor+السنة+الشهر ثم تجاوز التحقق بكلمة "auditor" الثابتة).
+                // جميع المستخدمين يتحققون الآن من جدول Users بالطريقة العادية.
 
                 // اللغة
                 MainClass.Language = cmblanguages.SelectedIndex == 0 ? "ar" : "en-us";
@@ -223,15 +205,15 @@ namespace SmartAuditERP.Form_WPF
 
                 // تسجيل الدخول (أونلاين أو أوفلاين)
                 bool loginSuccess;
-                if (Sync.CheckSync(selectedBranch) && !SecureLogin)
+                if (Sync.CheckSync(selectedBranch))
                 {
                     loginSuccess = Sync.BranchType == 4
                         ? await OnlineLogin(type)
-                        : await OfflineLogin(SecureLogin, type);
+                        : await OfflineLogin(type);
                 }
                 else
                 {
-                    loginSuccess = await OfflineLogin(SecureLogin, type);
+                    loginSuccess = await OfflineLogin(type);
                 }
 
                 if (!loginSuccess) return;
@@ -255,6 +237,9 @@ namespace SmartAuditERP.Form_WPF
                 Home.Activate();
                 datelogin = DateTime.Now;
                 txtPwd.Clear();
+                // FIX P2-002: تعليم نجاح الدخول ليتمكن frmlock من التحقق من النتيجة
+                // قبل إخفاء نافذة القفل (كان يخفيها دون فحص نتيجة المصادقة).
+                SuccessLogin = true;
                 // في frmUserLogin.cs - دالة Login بعد نجاح الدخول
                 //datelogin = DateTime.Now;
                 MainClass.LoginDate = datelogin; // ✅ حفظ التاريخ في MainClass
@@ -360,27 +345,34 @@ namespace SmartAuditERP.Form_WPF
 
         private void SaveStartupData()
         {
+            // FIX P1-009: لا تُحفظ كلمات المرور نصياً في StartupData.json إلا إذا فعّل
+            // المستخدم "تذكرني"؛ وعند عدم التفعيل تُكتب قيم فارغة فقط.
+            bool remember = chkRemember.IsChecked == true;
+
             var startupData = new StartupData
             {
-                Remember = chkRemember.IsChecked == true,
+                Remember = remember,
                 ConnType = MainClass.Conn_type.ToString(),
                 Server = MainClass.Server,
                 DatabaseName = cmbDatabases.SelectedValue?.ToString() ?? "",
                 Branch = cmbBranches.SelectedValue?.ToString() ?? "",
-                UserName = txtUser.Text,
-                Password = txtPwd.Password,
+                UserName = remember ? txtUser.Text : "",
+                Password = remember ? txtPwd.Password : "",
                 Language = cmblanguages.SelectedIndex.ToString()
             };
 
-            if (conn_type == 1 && MainClass.UseServerAuth)
+            if (remember)
             {
-                startupData.ServerUserName = MainClass.NetUserId;
-                startupData.ServerPassword = MainClass.NetPwd;
-            }
-            if (conn_type == 2)
-            {
-                startupData.ServerUserName = MainClass.NetUserId;
-                startupData.ServerPassword = MainClass.NetPwd;
+                if (conn_type == 1 && MainClass.UseServerAuth)
+                {
+                    startupData.ServerUserName = MainClass.NetUserId;
+                    startupData.ServerPassword = MainClass.NetPwd;
+                }
+                if (conn_type == 2)
+                {
+                    startupData.ServerUserName = MainClass.NetUserId;
+                    startupData.ServerPassword = MainClass.NetPwd;
+                }
             }
 
             string json = JsonConvert.SerializeObject(startupData, Formatting.Indented);
@@ -426,12 +418,12 @@ namespace SmartAuditERP.Form_WPF
                     }
                     else
                     {
-                        return await OfflineLogin(false, type);
+                        return await OfflineLogin(type);
                     }
                 }
                 else
                 {
-                    return await OfflineLogin(false, type);
+                    return await OfflineLogin(type);
                 }
             }
             catch (Exception ex)
@@ -443,7 +435,7 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
-        public async Task<bool> OfflineLogin(bool SecureLogin, int Type)
+        public async Task<bool> OfflineLogin(int Type)
         {
             try
             {
@@ -452,7 +444,9 @@ namespace SmartAuditERP.Form_WPF
 
                 if (Type == 1)
                 {
-                    string pwd = SecureLogin ? "auditor" : txtPwd.Password;
+                    // FIX P1-008: أزيل تجاوز كلمة المرور الثابتة "auditor"؛
+                    // تُستخدم دائماً كلمة المرور المدخلة من المستخدم.
+                    string pwd = txtPwd.Password;
                     da = new SqlDataAdapter(
                         "select * from Users where username=@Username and pwd=@Password and IS_Deleted=0",
                         conn);

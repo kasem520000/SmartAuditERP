@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Net;
+using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -30,12 +31,25 @@ namespace SmartAuditUpdater
         private const string MainExeName = "SmartAuditERP.exe";
         private const string MainProcessName = "SmartAuditERP";
 
+        // FIX NEW-023 (D2-N4): حارس تشغيل أحادي لمنع تشغيل نسختين من المحدّث
+        // معاً (تدمير مجلد التحميل المؤقت المشترك).
+        private static Mutex _instanceMutex;
+
         #endregion
 
         #region ══════════════════ Constructor ══════════════════
 
         public MainWindow()
         {
+            // FIX NEW-023 (D2-N4): تشغيل أحادي — إن كانت نسخة أخرى تعمل نُغلق فوراً.
+            _instanceMutex = new Mutex(true, "SmartAuditUpdater_SingleInstance",
+                out bool createdNew);
+            if (!createdNew)
+            {
+                Application.Current.Shutdown();
+                return;
+            }
+
             InitializeComponent();
             Loaded += MainWindow_Loaded;
         }
@@ -92,6 +106,11 @@ namespace SmartAuditUpdater
                 // 2) تحميل الملف
                 bool downloaded = await DownloadUpdate();
                 if (!downloaded) return;
+
+                // FIX P1-020: التحقق من بصمة SHA-256 لحزمة التحديث إن توفر ملف
+                // البصمة المرافق (update.zip.sha256) قبل التثبيت.
+                bool verified = await VerifyUpdatePackageHashAsync();
+                if (!verified) return;
 
                 // 3) نسخ احتياطي
                 await BackupOldFiles();
@@ -190,6 +209,18 @@ namespace SmartAuditUpdater
 
             AddLog($"رابط التحميل: {_downloadUrl}");
 
+            // FIX P1-020: لا يُسمح إلا بروابط HTTPS لتحميل التحديثات
+            // (منع تنفيذ حزم عبر قنوات غير مشفرة قابلة للاعتراض).
+            if (!string.IsNullOrEmpty(_downloadUrl) &&
+                !_downloadUrl.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
+            {
+                AddLog("❌ مرفوض: يُسمح فقط بروابط HTTPS لتحميل التحديث");
+                Dispatcher.Invoke(() =>
+                    SetError("❌ رابط تحميل غير آمن!"));
+                tcs.SetResult(false);
+                return tcs.Task;
+            }
+
             try
             {
                 // تجهيز المجلد المؤقت
@@ -248,6 +279,83 @@ namespace SmartAuditUpdater
             }
 
             return tcs.Task;
+        }
+
+        #endregion
+
+        #region ══════════════════ Step 1b: Verify Hash ══════════════════
+
+        /// <summary>
+        /// FIX P1-020: التحقق من سلامة حزمة التحديث عبر بصمة SHA-256.
+        /// يُنزّل ملف البصمة المرافق ({رابط}.sha256) إن وُجد؛ فإن وُجد ولم
+        /// يتطابق فيُفشل التحديث (fail-closed). وإن لم يتوفر ملف البصمة يُسجّل
+        /// تحذير وتُستكمل العملية للحفاظ على توافق النشر الحالي.
+        /// </summary>
+        private async Task<bool> VerifyUpdatePackageHashAsync()
+        {
+            UpdateStep("🔒 التحقق من سلامة حزمة التحديث...");
+
+            string expectedHash = null;
+            try
+            {
+                string hashUrl = _downloadUrl + ".sha256";
+                using (var wc = new WebClient())
+                {
+                    expectedHash = (await wc.DownloadStringTaskAsync(new Uri(hashUrl)))
+                        ?.Trim();
+                }
+
+                // يدعم صيغتي "<hash>  <filename>" و "<hash>"
+                if (!string.IsNullOrEmpty(expectedHash) && expectedHash.Contains(" "))
+                    expectedHash = expectedHash.Split(' ')[0].Trim();
+            }
+            catch (WebException)
+            {
+                expectedHash = null; // لا يوجد ملف بصمة مرافق
+            }
+
+            if (string.IsNullOrEmpty(expectedHash))
+            {
+                AddLog("⚠️ لا يتوفر ملف بصمة SHA-256 للتحقق — تُستكمل العملية");
+                AddLog("   (انشر update.zip.sha256 بجوار الحزمة لتفعيل التحقق)");
+                return true;
+            }
+
+            try
+            {
+                string actualHash;
+                using (var sha = SHA256.Create())
+                using (var stream = File.OpenRead(_zipPath))
+                {
+                    actualHash = BitConverter.ToString(sha.ComputeHash(stream))
+                        .Replace("-", "")
+                        .ToLowerInvariant();
+                }
+
+                bool match = string.Equals(
+                    actualHash, expectedHash.ToLowerInvariant(),
+                    StringComparison.Ordinal);
+
+                if (!match)
+                {
+                    AddLog($"❌ بصمة الحزمة غير مطابقة!");
+                    AddLog($"   المتوقعة : {expectedHash}");
+                    AddLog($"   الفعلية : {actualHash}");
+                    Dispatcher.Invoke(() =>
+                        SetError("❌ فشل التحقق من سلامة التحديث!"));
+                    return false;
+                }
+
+                AddLog("✅ تطابقت بصمة SHA-256 للحزمة");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                AddLog($"❌ فشل التحقق: {ex.Message}");
+                Dispatcher.Invoke(() =>
+                    SetError("❌ فشل التحقق من سلامة التحديث!"));
+                return false;
+            }
         }
 
         #endregion
@@ -357,6 +465,18 @@ namespace SmartAuditUpdater
                 UpdateStep("📦 الخطوة 3: تثبيت ملفات التحديث...");
                 Dispatcher.Invoke(() => SetProgress(0));
 
+                // FIX NEW-023 (D2-N4): إعادة فحص إغلاق البرنامج الرئيسي قبل
+                // التثبيت مباشرة (كان يُفحص في الخطوة 0 فقط وقد يُعاد تشغيله).
+                var running = Process.GetProcessesByName(MainProcessName);
+                if (running.Length > 0)
+                {
+                    AddLog("⚠️ البرنامج الرئيسي يعمل — إعادة محاولة الإغلاق...");
+                    foreach (var p in running)
+                    {
+                        try { p.Kill(); p.WaitForExit(5000); } catch { }
+                    }
+                }
+
                 try
                 {
                     string extractFolder =
@@ -367,6 +487,10 @@ namespace SmartAuditUpdater
                         SearchOption.AllDirectories);
 
                     AddLog($"عدد الملفات: {files.Length}");
+
+                    // FIX P1-022: تتبع الملفات التي فشل نسخها بدل إعلان نجاح
+                    // كامل مطلق رغم الإخفاقات.
+                    int failedCopies = 0;
 
                     for (int i = 0; i < files.Length; i++)
                     {
@@ -401,13 +525,26 @@ namespace SmartAuditUpdater
                         }
 
                         if (!copied)
+                        {
+                            failedCopies++;
                             AddLog($"  ⚠️ تعذر نسخ: {rel}");
+                        }
 
                         int pct = (i + 1) * 100 / files.Length;
                         Dispatcher.Invoke(() => SetProgress(pct));
                     }
 
                     AddLog("");
+
+                    if (failedCopies > 0)
+                    {
+                        AddLog($"❌ فشل نسخ {failedCopies} ملف — التحديث غير مكتمل!");
+                        AddLog("يمكن استعادة النسخة الاحتياطية من مجلد Backups");
+                        Dispatcher.Invoke(() =>
+                            SetError($"❌ فشل تثبيت {failedCopies} ملف!"));
+                        return false;
+                    }
+
                     AddLog("✅ تم تثبيت جميع الملفات بنجاح!");
                     return true;
                 }

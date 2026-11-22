@@ -117,13 +117,22 @@ namespace SmartAuditERP.Form_WPF
 
                 if (Code == -1)
                 {
-                    new SqlCommand($"insert into Managements(name) values(N'{txtName.Text}')", conn).ExecuteNonQuery();
+                    // FIX NEW-005: استخدام معامل SQL بدل الإدراج النصي
+                    var insertCmd = new SqlCommand(
+                        "insert into Managements(name) values(@name)", conn);
+                    insertCmd.Parameters.Add("@name", SqlDbType.NVarChar).Value = txtName.Text;
+                    insertCmd.ExecuteNonQuery();
                     txtName.Text = "";
                     txtName.Focus();
                 }
                 else
                 {
-                    new SqlCommand($"update Managements set name=N'{txtName.Text}' where id={Code}", conn).ExecuteNonQuery();
+                    // FIX NEW-005: استخدام معامل SQL بدل الإدراج النصي
+                    var updateCmd = new SqlCommand(
+                        "update Managements set name=@name where id=@id", conn);
+                    updateCmd.Parameters.Add("@name", SqlDbType.NVarChar).Value = txtName.Text;
+                    updateCmd.Parameters.Add("@id", SqlDbType.Int).Value = Code;
+                    updateCmd.ExecuteNonQuery();
                     txtName.Focus();
                 }
 

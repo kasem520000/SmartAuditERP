@@ -86,15 +86,20 @@ namespace SmartAuditERP.Form_WPF
                 double numericCode = 0;
                 double.TryParse(passwordText, out numericCode);
 
+                // FIX P1-011: استبدال الإدراج النصي بمعاملات SQL لمنع الحقن
                 SqlDataAdapter adapterSecure = new SqlDataAdapter(
-                    $"select * from Users where emp={MainClass.UserID} and SecureCode={(int)numericCode} and LoginSecode=1",
+                    "select * from Users where emp=@emp and SecureCode=@SecureCode and LoginSecode=1",
                     conn);
+                adapterSecure.SelectCommand.Parameters.Add("@emp", SqlDbType.Int).Value = MainClass.UserID;
+                adapterSecure.SelectCommand.Parameters.Add("@SecureCode", SqlDbType.Int).Value = (int)numericCode;
                 DataTable dtSecure = new DataTable();
                 adapterSecure.Fill(dtSecure);
 
                 SqlDataAdapter adapterPwd = new SqlDataAdapter(
-                    $"select * from Users where emp={MainClass.UserID} and pwd='{passwordText}'",
+                    "select * from Users where emp=@emp and pwd=@pwd",
                     conn);
+                adapterPwd.SelectCommand.Parameters.Add("@emp", SqlDbType.Int).Value = MainClass.UserID;
+                adapterPwd.SelectCommand.Parameters.Add("@pwd", SqlDbType.NVarChar).Value = passwordText;
                 DataTable dtPwd = new DataTable();
                 adapterPwd.Fill(dtPwd);
 
@@ -208,7 +213,20 @@ namespace SmartAuditERP.Form_WPF
                 var frmUserLogin = new frmUserLogin();
                 Topmost = false;
                 frmUserLogin.ShowDialog();
-                Hide();
+
+                // FIX P2-002: لا تُخفى نافذة القفل إلا إذا نجحت المصادقة فعلياً؛
+                // كان يتم الإخفاء دائماً بعد إغلاق نافذة الدخول (تجاوز للقفل).
+                if (frmUserLogin.SuccessLogin)
+                {
+                    Iscorrect = true;
+                    Hide();
+                }
+                else
+                {
+                    Topmost = true;
+                    txtPass.Clear();
+                    txtPass.Focus();
+                }
             }
             catch { }
         }

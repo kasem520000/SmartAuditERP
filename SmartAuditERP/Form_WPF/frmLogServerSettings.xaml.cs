@@ -49,11 +49,23 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
-                if (string.Equals(passwordText, "auditor", StringComparison.Ordinal) &&
-                    string.Equals(usernameText, "auditor", StringComparison.Ordinal))
+                // FIX P1-008: أزيلت بيانات الدخول الثابتة (auditor/auditor)؛
+                // تُقرأ كلمة المرور الآن من AdminGates.json (المفتاح LogServer)
+                // وعند غيابها تُرفض العملية (fail-closed).
+                string expected = SecureConfig.ReadValue("AdminGates.json", "LogServer");
+
+                if (!string.IsNullOrEmpty(expected) &&
+                    string.Equals(passwordText, expected, StringComparison.Ordinal))
                 {
                     Iscorrect = true;
                     Close();
+                }
+                else if (string.IsNullOrEmpty(expected))
+                {
+                    DXMessageBox.Show(
+                        "هذه العملية غير مفعلة: لم يتم ضبط كلمة مرور البوابة الإدارية.\n" +
+                        "راجع ملف AdminGates.json بجوار البرنامج (المفتاح LogServer).",
+                        "غير مفعلة", MessageBoxButton.OK, MessageBoxImage.Stop);
                 }
                 else
                 {

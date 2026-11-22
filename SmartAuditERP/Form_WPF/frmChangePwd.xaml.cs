@@ -89,10 +89,14 @@ namespace SmartAuditERP.Form_WPF
                 if (conn.State != ConnectionState.Open)
                     conn.Open();
 
-                new SqlCommand(
-                    $"UPDATE Users SET pwd = '{txtPass.Password}' " +
-                    $"WHERE emp = {MainClass.UserID}",
-                    conn).ExecuteNonQuery();
+                // FIX P1-011: استبدال الإدراج النصي بكلمة المرور داخل SQL
+                // بمعاملات لمنع حقن SQL عبر حقل كلمة المرور.
+                var updateCmd = new SqlCommand(
+                    "UPDATE Users SET pwd = @pwd WHERE emp = @emp",
+                    conn);
+                updateCmd.Parameters.Add("@pwd", SqlDbType.NVarChar).Value = txtPass.Password;
+                updateCmd.Parameters.Add("@emp", SqlDbType.Int).Value = MainClass.UserID;
+                updateCmd.ExecuteNonQuery();
 
                 MessageBox.Show("تم الحفظ بنجاح ✅",
                     "نجاح", MessageBoxButton.OK, MessageBoxImage.Information);
