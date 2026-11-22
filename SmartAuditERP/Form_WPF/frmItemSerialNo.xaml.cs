@@ -128,11 +128,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-            if (_availableItems.Count <= 1)
-            {
-                InvItem.InvoiceItemDetails.Clear();
-            }
-
+            // P4-029: الإغلاق يُلغي الحوار فقط — كان يمحو تفاصيل الصنف المسلسل
+            // (التفاصيل المختارة/المحمّلة) عند توفر صف واحد أو أقل فيُفقد
+            // الاختيار لمجرد إغلاق النافذة
             Close();
         }
 
@@ -425,6 +423,8 @@ namespace SmartAuditERP.Form_WPF
                 _availableItems.Clear();
 
                 // استعلام رصيد المخزون لكل رقم تسلسلي
+                // P4-029: الرصيد محصور بفرع/مخزن الصنف المسلسل — كان يجمع أرقاماً
+                // تسلسلية من كل الفروع والمخازن فتُعرض أرقام خارج الموقع للبيع
                 string stockQuery = $@"
                     SELECT itemid,
                            ItemSerialNo,
@@ -440,6 +440,8 @@ namespace SmartAuditERP.Form_WPF
                         WHERE  inv.IS_Deleted     = 0
                           AND  ItemId             = {InvItem.ItemId}
                           AND  InvertoryImpact    = 1
+                          AND  inv.branch         = {MainClass.BranchNo}
+                          AND  inv.safe           = {InvItem.InvertoryId}
                         GROUP BY itemid, ItemSerialNo
 
                         UNION ALL
@@ -454,6 +456,8 @@ namespace SmartAuditERP.Form_WPF
                         WHERE  inv.IS_Deleted     = 0
                           AND  ItemId             = {InvItem.ItemId}
                           AND  InvertoryImpact    = 2
+                          AND  inv.branch         = {MainClass.BranchNo}
+                          AND  inv.safe           = {InvItem.InvertoryId}
                         GROUP BY itemid, ItemSerialNo
                     ) AS stockSummary
                     GROUP BY itemid, ItemSerialNo";

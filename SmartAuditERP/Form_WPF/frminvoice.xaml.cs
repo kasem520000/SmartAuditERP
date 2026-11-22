@@ -1499,7 +1499,11 @@ namespace SmartAuditERP.Form_WPF
                 return;
             }
             this.saveInvoice();
-            if (this.MarId != 0) this.MarineExit(this.MarId);
+            // P4-025: تغيير الحضور البحري (خروج المركب/إرجاعه) لا يتم إلا بعد
+            // نجاح حفظ الفاتورة فعلاً — كان ينفذ بعد الفشل أيضاً (فشل التحقق أو
+            // حدّ النسخة التجريبية أو استثناء الحفظ) فتُسجَّل رحلة المركب بلا فاتورة
+            if (this.ISInserted && this.MarId != 0)
+                this.MarineExit(this.MarId);
             if (this.ISInserted)
             {
                 this.PrintDevexpress();

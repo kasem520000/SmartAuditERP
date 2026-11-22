@@ -778,7 +778,18 @@ namespace SmartAuditERP
                             newItem.ItemQuantity * newItem.UnitEquality;
 
                         if (newItem.InvType == 2 || newItem.InvType == 3)
-                            newItem.ItemPrice = ToDouble(row["sale"]);
+                        {
+                            // P4-026: سياسة تسعير الفاتورة تُطبَّق في هذا المسار
+                            // أيضاً — كان يرجع مبكراً بسعر البيع الخام متجاوزاً
+                            // ResolvePrice فلا ترى الوحدة الموجودة تسعيرة
+                            // العميل/سياسة السعر المعرفة للفاتورة
+                            double sale = ToDouble(row["sale"]);
+                            double purch = ToDouble(row["purch"]);
+                            newItem.ItemPrice = ResolvePrice(
+                                pricing, newItem.ItemId, sale, purch);
+                            if (pricing == Pricing.Default)
+                                newItem.ItemPrice = sale;
+                        }
                         else
                             newItem.ItemPrice = ToDouble(row["purch"]);
 
@@ -1214,7 +1225,7 @@ namespace SmartAuditERP
                 SqlConnection conn = MainClass.ConnObj();
 
                 using (SqlDataAdapter adapter = new SqlDataAdapter(
-                    "select InvoiceID from Offer" +
+                    "select OfferId, InvoiceID from Offer" +
                     " where OfferStartDate<=@CurrentDate" +
                     " and OfferExpire>=@CurrentDate" +
                     " and offerType=3 and ISDeleted=0" +
@@ -1231,11 +1242,16 @@ namespace SmartAuditERP
                         return false;
                     if (invo.ProcType == 2) return false;
 
+                    // P4-027: تفاصيل عرض الفئة مقيدة بالعرض المختار نفسه —
+                    // كانت تُجلب لكل صف بذات التصنيف من أي عرض (حتى غير المفعل)
+                    int selectedOfferId = ToInt(dt.Rows[0]["OfferId"]);
+
                     using (SqlDataAdapter adapter2 = new SqlDataAdapter(
                         "select id, OfferId, OfferItemValue," +
                         " OfferItemPercentage, CatatogryID" +
-                        $" from OfferForClient" +
-                        $" where CatatogryID={newItem.CatagoryId}", conn))
+                        " from OfferForClient" +
+                        $" where CatatogryID={newItem.CatagoryId}" +
+                        $" and OfferId={selectedOfferId}", conn))
                     {
                         DataTable dt2 = new DataTable();
                         adapter2.Fill(dt2);
@@ -1367,6 +1383,17 @@ namespace SmartAuditERP
                         newItem.ItemDiscount =
                             newItem.ItemSumPrice * offerValue / 100;
                 }
+                else if (offerType == 2)
+                {
+                    // P4-027: فرع هدية الصنف ينفذ أثره — قيمة الهدية المكتسبة
+                    // تُطبَّق خصماً على سطر الصنف (كان الفرع فارغاً فلا أثر
+                    // لعرض الهدية إطلاقاً رغم اجتيازه شرط الكميات)
+                    if (isValOffer)
+                        newItem.ItemDiscount += offerValue;
+                    else
+                        newItem.ItemDiscount =
+                            newItem.ItemSumPrice * offerValue / 100;
+                }
             }
             catch (Exception ex)
             {
@@ -1413,7 +1440,12 @@ namespace SmartAuditERP
                             item.ItemQuantity * item.UnitEquality;
 
                         if (item.IsScaleItem && IsPriceFromBarcode)
+                        {
                             item.ItemSumPrice = item.ItemPrice;
+                            // P4-028: تُستهلك مرة واحدة — لا تسرّب لأسعار أصناف
+                            // الميزان الأخرى في الحسابات اللاحقة
+                            IsPriceFromBarcode = false;
+                        }
                         else
                             item.ItemSumPrice =
                                 item.ItemQuantity * item.ItemPrice;
@@ -1957,6 +1989,11 @@ namespace SmartAuditERP
                 SqlConnection conn = MainClass.ConnObj();
 
                 if (string.IsNullOrEmpty(barcode)) return;
+
+                // P4-028: الحالة تبدأ نظيفة عند كل مسح — كانت تُضبط عند مسح باركود
+                // سعر مضمّن (wscale=3) وتبقى static إلى الأبد فيتغير حساب كل
+                // أصناف الميزان اللاحقة (السعر كوحدة بدل الكمية×السعر)
+                IsPriceFromBarcode = false;
 
                 // بحث في ItemUnits
                 using (SqlDataAdapter adapter = new SqlDataAdapter(

@@ -344,9 +344,10 @@ namespace SmartAuditERP.Form_WPF
                     double costPrice = 0.0;
                     if (rbAvgCost.IsChecked == true)
                     {
-                        // ItemOper.AvgCost - استدعاء دالة المشروع
-                        // costPrice = ItemOper.AvgCost(itemId, MainClass.BranchNo, safeId) * perc;
-                        costPrice = GetAvgCost(itemId, branchId, safeId) * perc;
+                        // P4-030: متوسط التكلفة عبر الإجراء المعتمد (ItemAvrgCost) —
+                        // الاستعلام المحلي كان يستعلم أعمدة غير موجودة في Inv_Sub
+                        // (cost/qty/type/safe_id) فيفشل دائماً ويعيد صفراً بصمت
+                        costPrice = ItemOper.AvgCost(itemId, branchId, safeId) * perc;
                     }
                     else if (rbPurchPrice.IsChecked == true)
                     {
@@ -354,7 +355,9 @@ namespace SmartAuditERP.Form_WPF
                     }
                     else if (rbLastPurchPrice.IsChecked == true)
                     {
-                        costPrice = GetRecentPurchPrice(itemId);
+                        // P4-030: آخر سعر شراء عبر دالة المشروع — الاستعلام المحلي
+                        // كان يستعلم unit_price/type/inv_id غير الموجودة في Inv_Sub
+                        costPrice = ItemOper.RecentPurchPrice(itemId);
                     }
 
                     if (qty < 0) costPrice = 0.0;
@@ -435,55 +438,9 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
-        private double GetAvgCost(int itemId, int branchId, int safeId)
-        {
-            try
-            {
-                EnsureOpen(conn);
-                string sql = $@"SELECT ISNULL(SUM(cost * qty) / NULLIF(SUM(qty), 0), 0) AS AvgCost
-                                FROM Inv_Sub
-                                WHERE ItemId = {itemId}
-                                  AND type IN (1,3,5)
-                                  {(safeId > -1 ? $"AND safe_id = {safeId}" : "")}";
-                var cmd = new SqlCommand(sql, conn);
-                var result = cmd.ExecuteScalar();
-                return result != null && result != DBNull.Value
-                    ? Convert.ToDouble(result)
-                    : 0.0;
-            }
-            catch
-            {
-                return 0.0;
-            }
-            finally
-            {
-                EnsureClose(conn);
-            }
-        }
-
-        private double GetRecentPurchPrice(int itemId)
-        {
-            try
-            {
-                EnsureOpen(conn);
-                string sql = $@"SELECT TOP 1 unit_price FROM Inv_Sub
-                                WHERE ItemId = {itemId} AND type = 1
-                                ORDER BY inv_id DESC";
-                var cmd    = new SqlCommand(sql, conn);
-                var result = cmd.ExecuteScalar();
-                return result != null && result != DBNull.Value
-                    ? Convert.ToDouble(result)
-                    : 0.0;
-            }
-            catch
-            {
-                return 0.0;
-            }
-            finally
-            {
-                EnsureClose(conn);
-            }
-        }
+        // P4-030: أُزيل GetAvgCost/GetRecentPurchPrice المحليان — كانا
+        // يستعلمان أعمدة غير موجودة في Inv_Sub فيفشلان ويعيدان صفراً؛
+        // حل محلهما ItemOper.AvgCost (الإجراء ItemAvrgCost) وItemOper.RecentPurchPrice
 
         private void UpdateSummaries()
         {

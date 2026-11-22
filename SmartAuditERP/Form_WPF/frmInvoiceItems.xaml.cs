@@ -312,9 +312,17 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
+                // P4-032: التعديل على النموذج المستلَم فعلاً — حوار العقود
+                // (InvType=23) يستلم invcontract (Invoicecontract) وكان التعديل
+                // يجري على inv (InvoiceDGV) الفارغ فلا يُطبَّق اختيار الجزء
+                // على فاتورة العقد إطلاقاً (تبقى كل سطورها بكمياتها الكاملة)
+                var targetItems = InvType == 23
+                    ? invcontract.InvoiceItems
+                    : inv.InvoiceItems;
+
                 foreach (var selectedRow in selectedRows)
                 {
-                    foreach (var invoiceItem in inv.InvoiceItems)
+                    foreach (var invoiceItem in targetItems)
                     {
                         // P4-013: المطابقة بهوية السطر (RowNo = ROW_NUMBER بترتيب
                         // معرف السطر = ItemRowIndex المرتب نفسه عند الربط) — كانت
@@ -345,13 +353,17 @@ namespace SmartAuditERP.Form_WPF
         {
             // P4-013: الإبقاء على هويات السطور المختارة — لا على كل سطور الأصناف
             // المختارة (الصنف المتكرر في سطور غير مختارة كان يبقى معها جميعاً)
+            // P4-032: والنموذج المستلَم (invcontract للعقود) لا النموذج الآخر
+            var targetItems = InvType == 23
+                ? invcontract.InvoiceItems
+                : inv.InvoiceItems;
             var selectedRowNos = selectedRows.Select(r => r.RowNo).ToHashSet();
-            var itemsToRemove = inv.InvoiceItems
+            var itemsToRemove = targetItems
                 .Where(i => !selectedRowNos.Contains(i.ItemRowIndex))
                 .ToList();
 
             foreach (var item in itemsToRemove)
-                inv.InvoiceItems.Remove(item);
+                targetItems.Remove(item);
         }
 
         private void CloseWithoutResult()

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows;
@@ -331,7 +331,8 @@ namespace SmartAuditERP.Form_WPF
         /// <summary>
         /// حفظ ربط المركب بالفاتورة مع إدخالات دفترية.
         /// </summary>
-        public void SaveInvoiceLink()
+        // P4-025: يُرجع نجاح الربط فعلياً — كان void والمستدعي يعلن النجاح دائماً
+        public bool SaveInvoiceLink()
         {
             SqlTransaction transaction = null;
             try
@@ -490,6 +491,8 @@ namespace SmartAuditERP.Form_WPF
 
                 new SqlCommand(sql, _conn, transaction).ExecuteNonQuery();
                 transaction.Commit();
+                // P4-025: النجاح يُبلَّغ للمستدعي بعد الالتزام فقط
+                return true;
             }
             catch (Exception ex)
             {
@@ -501,6 +504,7 @@ namespace SmartAuditERP.Form_WPF
                 if (_conn.State != ConnectionState.Closed)
                     _conn.Close();
             }
+            return false;
         }
 
         #endregion
@@ -537,11 +541,15 @@ namespace SmartAuditERP.Form_WPF
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    SaveInvoiceLink();
-                    DXMessageBox.Show("✅ تم ربط الفاتورة بنجاح", "", MessageBoxButton.OK, MessageBoxImage.Information);
-                    LoadInvoicesGrid(string.Empty);
-                    ClearFields();
-                    _clientName = string.Empty;
+                    // P4-025: إعلان النجاح/تنظيف الحقول فقط عند نجاح الربط فعلاً —
+                    // كان يُعلن «تم الربط بنجاح» حتى بعد فشل الحفظ ورسالة خطئه
+                    if (SaveInvoiceLink())
+                    {
+                        DXMessageBox.Show("✅ تم ربط الفاتورة بنجاح", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                        LoadInvoicesGrid(string.Empty);
+                        ClearFields();
+                        _clientName = string.Empty;
+                    }
                 }
             }
             catch (Exception ex)
