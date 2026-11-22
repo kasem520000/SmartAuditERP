@@ -316,7 +316,11 @@ namespace SmartAuditERP.Form_WPF
                 {
                     foreach (var invoiceItem in inv.InvoiceItems)
                     {
-                        if (invoiceItem.ItemId == selectedRow.Item_ID)
+                        // P4-013: المطابقة بهوية السطر (RowNo = ROW_NUMBER بترتيب
+                        // معرف السطر = ItemRowIndex المرتب نفسه عند الربط) — كانت
+                        // المطابقة بالصنف وحده فيعدل الصنف المتكرر في كل سطور
+                        // الفاتورة ويُحتفظ بها جميعاً رغم اختيار سطر واحد منها
+                        if (invoiceItem.ItemRowIndex == selectedRow.RowNo)
                         {
                             invoiceItem.ItemQuantity = selectedRow.ItemQty;
                             invoiceItem.ItemDiscount = selectedRow.ItemDiscount;
@@ -339,9 +343,11 @@ namespace SmartAuditERP.Form_WPF
 
         private void RemoveNonSelectedItems(List<InvoiceItemRow> selectedRows)
         {
-            var selectedIds = selectedRows.Select(r => r.Item_ID).ToHashSet();
+            // P4-013: الإبقاء على هويات السطور المختارة — لا على كل سطور الأصناف
+            // المختارة (الصنف المتكرر في سطور غير مختارة كان يبقى معها جميعاً)
+            var selectedRowNos = selectedRows.Select(r => r.RowNo).ToHashSet();
             var itemsToRemove = inv.InvoiceItems
-                .Where(i => !selectedIds.Contains(i.ItemId))
+                .Where(i => !selectedRowNos.Contains(i.ItemRowIndex))
                 .ToList();
 
             foreach (var item in itemsToRemove)

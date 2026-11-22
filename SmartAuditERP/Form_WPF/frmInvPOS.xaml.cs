@@ -2218,7 +2218,7 @@ namespace SmartAuditERP.Form_WPF
 
                 // حفظ الفاتورة
                 bool saved = invoiceOper.SaveInvoice(
-                    invoice, entry, Invoic.ISNew);
+                    invoice, entry, Invoic.ISNew, InvObj.SaleByMinus);
 
                 // معالجة الطاولات
                 if (ProcType == 3)

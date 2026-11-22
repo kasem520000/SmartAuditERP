@@ -253,10 +253,11 @@ namespace SmartAuditERP
                                 item.EgyCodeType = invoiceItem.EgyCodeType;
                                 list.Add(item);
                         }
-                        List<InvoiceItem> Items;
-                        Items = (invoicecontract = Inv).InvoiceItems;
-                        this.BindingCompositeItems(ref Items, Inv.InvertoryImpact);
-                        invoicecontract.InvoiceItems = Items;
+                        // P4-011 (التوأم): توسيع المركّب على نسخة — القائمة الأصلية
+                        // لا تُعدّل والمعاينة المتكررة لا تضاعف المكونات
+                        List<InvoiceItem> expandedItems = new List<InvoiceItem>(Inv.InvoiceItems);
+                        this.BindingCompositeItems(ref expandedItems, Inv.InvertoryImpact);
+                        invoice.InvoiceItems = expandedItems;
                         invoice.Items = list;
                         return invoice;
                 }

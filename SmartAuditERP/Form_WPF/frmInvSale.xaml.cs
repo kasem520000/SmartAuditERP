@@ -1908,7 +1908,9 @@ namespace SmartAuditERP.Form_WPF
                     ? invoiceOper.BindToEntry(invoice)
                     : null;
 
-                bool saved = invoiceOper.SaveInvoice(invoice, entry, Invoic.ISNew);
+                // P4-014: سياسة البيع بالسالب تمرر للحفظ — عند منعها يُعاد التحقق
+                // من الرصيد ذرياً داخل معاملة الحفظ (الحارس المرئي يعتمد رصيداً محملاً)
+                bool saved = invoiceOper.SaveInvoice(invoice, entry, Invoic.ISNew, InvObj.SaleByMinus);
 
                 if (saved)
                 {

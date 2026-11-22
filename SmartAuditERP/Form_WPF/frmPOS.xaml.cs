@@ -1616,7 +1616,8 @@ namespace SmartAuditERP.Form_WPF
             var inv = BindToInvoice();
             var entry = (Paytype == 5 || Paytype == -1) ? invoiceOper.BindToEntry(inv) : null;
 
-            bool saved = invoiceOper.SaveInvoice(inv, entry, ISNew);
+            // P4-014: سياسة البيع بالسالب تمرر للحفظ (تحقق ذري عند منعها)
+            bool saved = invoiceOper.SaveInvoice(inv, entry, ISNew, InvObj.SaleByMinus);
             Inventory.UpdateItemStock(inv);
 
             if (saved && IsPrinted && print.PrintNo > 0)

@@ -286,23 +286,34 @@ namespace SmartAuditERP
         #region Cost Recalculation
 
         public static void RecalculateCost(int itemId, double newQnty,
-            ref double avgCost, string cond)
+            ref double avgCost, string cond,
+            int branchId = -1, int storeId = -1)
         {
             SqlConnection conn = MainClass.ConnObj();
             try
             {
                 using (SqlDataAdapter adapter = new SqlDataAdapter(
                     $"select CurrentQnty,Inv_Sub.InvGlobalID," +
+                    $" Inv_Sub.id as LineId," +
                     $" Inv_Sub.AvrgCost as AvrgCost," +
                     $" ItemId as ItemID, inv.minus as Invdiscount" +
                     $" from inv, Inv_Sub" +
                     $" where inv.inv_type>=2 and inv.inv_type<=3" +
                     $" and inv.proc_type=1 and inv.IS_Deleted=0" +
                     $" and inv.InvGlobalID=inv_sub.InvGlobalID" +
-                    $" and Inv_Sub.ItemId={itemId}" +
+                    $" and Inv_Sub.ItemId=@ItemId" +
                     $" and CurrentQnty<0 {cond}" +
+                    // P4-010: التصحيح محصور بنطاق الفرع/المخزن الممرّر — كان بلا
+                    // حصر فيعيد كتابة سطور سالبة لفروع/مخازن أخرى للمادة نفسها
+                    $" and (@branchId is null or inv.branch=@branchId)" +
+                    $" and (@storeId is null or inv_sub.store=@storeId)" +
                     $" order by inv.date Asc", conn))
                 {
+                    adapter.SelectCommand.Parameters.Add("@ItemId", SqlDbType.Int).Value = itemId;
+                    adapter.SelectCommand.Parameters.Add("@branchId", SqlDbType.Int).Value =
+                        (object)(branchId == -1 ? DBNull.Value : branchId);
+                    adapter.SelectCommand.Parameters.Add("@storeId", SqlDbType.Int).Value =
+                        (object)(storeId == -1 ? DBNull.Value : storeId);
                     DataTable dt = new DataTable();
                     adapter.Fill(dt);
 
@@ -316,15 +327,16 @@ namespace SmartAuditERP
                         double newCurrentQnty =
                             newQnty + ToDouble(dt.Rows[i]["CurrentQnty"]);
                         string invGlobalId = ToStr(dt.Rows[i]["InvGlobalID"]);
+                        // P4-010: التحديث بهوية السطر لا بمفتاح (فاتورة+صنف) — الصنف
+                        // المتكرر في سطور الفاتورة كان يُكتب عليها جميعاً بقيم سطر واحد
+                        int lineId = ToInt(dt.Rows[i]["LineId"]);
                         int dbItemId = ToInt(dt.Rows[i]["ItemID"]);
                         double invDiscount = ToDouble(dt.Rows[i]["Invdiscount"]);
 
                         using (SqlCommand cmd = new SqlCommand(
-                            StoredQueries.UpdateItemCost, conn))
+                            StoredQueries.UpdateItemCostByLine, conn))
                         {
-                            cmd.Parameters.Add("@InvGlobalID", SqlDbType.NVarChar)
-                                .Value = invGlobalId;
-                            cmd.Parameters.Add("@ItemId", SqlDbType.Int).Value = dbItemId;
+                            cmd.Parameters.Add("@LineId", SqlDbType.Int).Value = lineId;
                             cmd.Parameters.Add("@AvrgCost", SqlDbType.Float).Value = avgCost;
                             cmd.Parameters.Add("@CurrentQnty", SqlDbType.Float)
                                 .Value = newCurrentQnty;
@@ -345,7 +357,8 @@ namespace SmartAuditERP
                             $" Inv_Sub.taxval as Vat," +
                             $" Inv_Sub.val*Inv_Sub.AvrgCost as AvrgCost" +
                             $" from Inv_Sub" +
-                            $" where Inv_Sub.InvGlobalID=N'{invGlobalId}'", conn))
+                            $" where Inv_Sub.InvGlobalID=N'{invGlobalId}'" +
+                            $" and Inv_Sub.ItemId={dbItemId}", conn))
                         {
                             DataTable subDt = new DataTable();
                             subAdapter.Fill(subDt);
@@ -370,7 +383,9 @@ namespace SmartAuditERP
                             {
                                 profitCmd.Parameters.Add("@InvGlobalID", SqlDbType.NVarChar)
                                     .Value = invGlobalId;
-                                profitCmd.Parameters.Add("@InvProfit", SqlDbType.Int)
+                                // P4-010: الربح Float لا Int — كان الاقتطاع لصحيح
+                                // يحذف الكسور من ربح الفاتورة عند كل تصحيح
+                                profitCmd.Parameters.Add("@InvProfit", SqlDbType.Float)
                                     .Value = profit;
                                 profitCmd.ExecuteNonQuery();
                             }

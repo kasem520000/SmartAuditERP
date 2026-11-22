@@ -1034,7 +1034,10 @@ namespace SmartAuditERP.Form_WPF
                 foreach (var it in _invoic.InvoiceItems.ToList())
                 {
                     double avg = it.ItemCost;
-                    ItemOper.RecalculateCost(it.ItemId, it.ItemPrimaryQnty, ref avg, "");
+                    // P4-010: التصحيح محصور بفرع/مخزن الوجهة — كان بلا حصر
+                    // فيلمس سطوراً سالبة في فروع/مخازن أخرى لنفس المادة
+                    ItemOper.RecalculateCost(it.ItemId, it.ItemPrimaryQnty,
+                        ref avg, "", _invoic.Branch, it.InvertoryId);
                     it.ItemCost = avg;
                 }
             }

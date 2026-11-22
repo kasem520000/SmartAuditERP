@@ -795,89 +795,195 @@ namespace SmartAuditERP
                         return text6;
                 }
 
+                // P4-012: رصيد كميات كل صنف من فاتورة مرجعية — الأساس التراكمي
+                // لعقد المرتجعات (المُرتجَع سابقاً يُجمع من كل المرتجعات لا من
+                // أول مقارنة)
+                private static Dictionary<int, double> GetInvoiceQtyPerItem(string refValue)
+                {
+                        Dictionary<int, double> result;
+                        result = new Dictionary<int, double>();
+                        try
+                        {
+                                using (SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(
+                                        "select Inv_Sub.ItemId, sum(Inv_Sub.val) as qty " +
+                                        "from Inv_Sub join Inv on Inv.InvGlobalID=Inv_Sub.InvGlobalID " +
+                                        "where Inv.IS_Deleted=0 " +
+                                        "and (Inv.InvGlobalID=@ref or Inv.InvCombinedId=@ref) " +
+                                        "group by Inv_Sub.ItemId", MainClass.ConnObj()))
+                                {
+                                        sqlDataAdapter.SelectCommand.Parameters.Add("@ref", SqlDbType.NVarChar).Value = refValue;
+                                        DataTable dataTable;
+                                        dataTable = new DataTable();
+                                        sqlDataAdapter.Fill(dataTable);
+                                        foreach (DataRow row in dataTable.Rows)
+                                        {
+                                                int itemId = Conversions.ToInteger(row["ItemId"]);
+                                                double qty = Conversions.ToDouble(row["qty"]);
+                                                if (result.ContainsKey(itemId))
+                                                {
+                                                        result[itemId] = result[itemId] + qty;
+                                                }
+                                                else
+                                                {
+                                                        result.Add(itemId, qty);
+                                                }
+                                        }
+                                }
+                        }
+                        catch (Exception projectError)
+                        {
+                                ProjectData.SetProjectError(projectError);
+                                ProjectData.ClearProjectError();
+                        }
+                        return result;
+                }
+
+                private static Dictionary<int, double> GetReturnedQtyPerItem(string refValue)
+                {
+                        Dictionary<int, double> result;
+                        result = new Dictionary<int, double>();
+                        try
+                        {
+                                using (SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(
+                                        "select Inv_Sub.ItemId, sum(Inv_Sub.val) as qty " +
+                                        "from Inv_Sub join Inv on Inv.InvGlobalID=Inv_Sub.InvGlobalID " +
+                                        "where Inv.IS_Deleted=0 and Inv.proc_type=2 " +
+                                        "and (Inv.Reff_No=@ref " +
+                                        // كلا صيغتا المرجع (المعرف المركّب أو GlobalID) —
+                                        // مرتجعات POS تخزن GlobalID ومرتجعات البيع تخزن المركّب
+                                        "or Inv.Reff_No in (select InvGlobalID from Inv where IS_Deleted=0 and (InvCombinedId=@ref or InvGlobalID=@ref)) " +
+                                        "or Inv.Reff_No in (select InvCombinedId from Inv where IS_Deleted=0 and (InvGlobalID=@ref or InvCombinedId=@ref))) " +
+                                        "group by Inv_Sub.ItemId", MainClass.ConnObj()))
+                                {
+                                        sqlDataAdapter.SelectCommand.Parameters.Add("@ref", SqlDbType.NVarChar).Value = refValue;
+                                        DataTable dataTable;
+                                        dataTable = new DataTable();
+                                        sqlDataAdapter.Fill(dataTable);
+                                        foreach (DataRow row in dataTable.Rows)
+                                        {
+                                                int itemId = Conversions.ToInteger(row["ItemId"]);
+                                                double qty = Conversions.ToDouble(row["qty"]);
+                                                if (result.ContainsKey(itemId))
+                                                {
+                                                        result[itemId] = result[itemId] + qty;
+                                                }
+                                                else
+                                                {
+                                                        result.Add(itemId, qty);
+                                                }
+                                        }
+                                }
+                        }
+                        catch (Exception projectError)
+                        {
+                                ProjectData.SetProjectError(projectError);
+                                ProjectData.ClearProjectError();
+                        }
+                        return result;
+                }
+
                 public static bool IsPreviousReturned(string GlobalId, string InvCombinedId)
                 {
-                        SqlDataAdapter sqlDataAdapter;
-                        sqlDataAdapter = new SqlDataAdapter(selectConnection: MainClass.ConnObj(), selectCommandText: "select id from Inv where proc_type=2  and (Reff_No=N'" + GlobalId + "' or Reff_No=N'" + InvCombinedId + "' ) and  IS_Deleted=0 ");
-                        DataTable dataTable;
-                        dataTable = new DataTable();
-                        sqlDataAdapter.Fill(dataTable);
-                        if (dataTable.Rows.Count >= 1)
+                        // P4-012: يُحجب فقط عند نفاد الرصيد المتبقي لكل صنف — كان أي
+                        // مرتجع سابق واحد (أو حتى مطابقة تاريخ) يحجب أي إرجاع آخر
+                        // مهما بقي متبقياً، بينما شاشة المبيعات بالعكس لا تحجب
+                        // شيئاً (المقارنة المرجعية المساواة بها لا تتحقق أبداً)
+                        try
                         {
-                                return true;
+                                string[] refs = new string[] { GlobalId, InvCombinedId };
+                                foreach (string refValue in refs)
+                                {
+                                        if (string.IsNullOrEmpty(refValue))
+                                        {
+                                                continue;
+                                        }
+                                        Dictionary<int, double> original = InvoiceOper.GetInvoiceQtyPerItem(refValue);
+                                        if (original.Count == 0)
+                                        {
+                                                continue;
+                                        }
+                                        Dictionary<int, double> returned = InvoiceOper.GetReturnedQtyPerItem(refValue);
+                                        bool nothingLeft = true;
+                                        foreach (KeyValuePair<int, double> pair in original)
+                                        {
+                                                double already;
+                                                if (!returned.TryGetValue(pair.Key, out already))
+                                                {
+                                                        already = 0.0;
+                                                }
+                                                if (pair.Value - already > 0.001)
+                                                {
+                                                        nothingLeft = false;
+                                                        break;
+                                                }
+                                        }
+                                        if (nothingLeft)
+                                        {
+                                                return true;
+                                        }
+                                }
+                                return false;
+                        }
+                        catch (Exception projectError)
+                        {
+                                ProjectData.SetProjectError(projectError);
+                                ProjectData.ClearProjectError();
                         }
                         return false;
                 }
 
                 public static bool isReturned(InvoiceDGV inv)
                 {
-                        checked
+                        // P4-012: عقد الرصيد المتبقي التراكمي — يُجمع المُرتجَع
+                        // سابقاً لكل صنف من كل مرتجعات الفاتورة الأصل (بمرجعها)،
+                        // والرفض فقط عند تجاوز سطر المرتجع الجديد المتبقي؛ كان
+                        // الحكم يخرج من أول مقارنة صنف واحد بمساواة مرجعية
+                        // (Equals غير معاد تعريفه في InvoiceItem) لا تتحقق أبداً
+                        // فلا يُمنع أي إرجاع مكرر، أو يحجب بمطابقة التاريخ نفسه
+                        // لأي مرتجع آخر في نفس اليوم
+                        try
                         {
-                                bool result;
-                                try
+                                string refValue = inv.ReffNo;
+                                if (string.IsNullOrEmpty(refValue))
                                 {
-                                        SqlConnection selectConnection;
-                                        selectConnection = MainClass.ConnObj();
-                                        new List<InvoiceItem>();
-                                        SqlDataAdapter sqlDataAdapter;
-                                        sqlDataAdapter = new SqlDataAdapter("select id,InvGlobalID,Reff_No from Inv where (inv_type=1 or inv_type=2 or inv_type=3) and proc_type=2  and (Reff_No=N'" + inv.InvGlobalID + "' or Reff_No=N'" + inv.ReffNo + "' or Date=N'" + Conversions.ToString(inv.InvDate) + "' ) and  IS_Deleted=0 ", selectConnection);
-                                        DataTable dataTable;
-                                        dataTable = new DataTable();
-                                        sqlDataAdapter.Fill(dataTable);
-                                        if (dataTable.Rows.Count >= 1)
+                                        refValue = inv.InvGlobalID;
+                                }
+                                if (string.IsNullOrEmpty(refValue))
+                                {
+                                        return false;
+                                }
+                                Dictionary<int, double> original = InvoiceOper.GetInvoiceQtyPerItem(refValue);
+                                if (original.Count == 0)
+                                {
+                                        return false;
+                                }
+                                Dictionary<int, double> returned = InvoiceOper.GetReturnedQtyPerItem(refValue);
+                                foreach (InvoiceItem invoiceItem in inv.InvoiceItems)
+                                {
+                                        double originalQty;
+                                        if (!original.TryGetValue(invoiceItem.ItemId, out originalQty))
                                         {
-                                                int num;
-                                                num = dataTable.Rows.Count - 1;
-                                                int num2;
-                                                num2 = 0;
-                                                while (true)
-                                                {
-                                                        if (num2 <= num)
-                                                        {
-                                                                List<InvoiceItem> list;
-                                                                list = new List<InvoiceItem>();
-                                                                InvoiceOper.BindItems(list, Conversions.ToString(Operators.ConcatenateObject(Operators.ConcatenateObject("select ItemId,InvGlobalID,unit,val from Inv_sub where  InvGlobalID in(select InvGlobalID from inv where (inv_type=1 or inv_type=2 or inv_type=3) and InvGlobalID=N'", dataTable.Rows[num2]["InvGlobalID"]), "') ")));
-                                                                if (list == null)
-                                                                {
-                                                                        if (num2 == dataTable.Rows.Count - 1)
-                                                                        {
-                                                                                result = false;
-                                                                                break;
-                                                                        }
-                                                                }
-                                                                else
-                                                                {
-                                                                        if (InvoiceOper.isSameItems(inv.InvoiceItems.OrderBy([SpecialName] (InvoiceItem x) => x.ItemId).ToList(), list.OrderBy([SpecialName] (InvoiceItem x) => x.ItemId).ToList()))
-                                                                        {
-                                                                                result = true;
-                                                                                break;
-                                                                        }
-                                                                        if (num2 == dataTable.Rows.Count - 1)
-                                                                        {
-                                                                                result = false;
-                                                                                break;
-                                                                        }
-                                                                }
-                                                                num2++;
-                                                                continue;
-                                                        }
-                                                        result = true;
-                                                        break;
-                                                }
+                                                continue;
                                         }
-                                        else
+                                        double alreadyReturned;
+                                        if (!returned.TryGetValue(invoiceItem.ItemId, out alreadyReturned))
                                         {
-                                                result = false;
+                                                alreadyReturned = 0.0;
+                                        }
+                                        double remaining = originalQty - alreadyReturned;
+                                        if (invoiceItem.ItemPrimaryQnty > remaining + 0.001)
+                                        {
+                                                return true;
                                         }
                                 }
-                                catch (Exception projectError)
-                                {
-                                        ProjectData.SetProjectError(projectError);
-                                        result = false;
-                                        ProjectData.ClearProjectError();
-                                }
-                                return result;
+                                return false;
                         }
+                        catch (Exception projectError)
+                        {
+                                ProjectData.SetProjectError(projectError);
+                                ProjectData.ClearProjectError();
+                        }
+                        return false;
                 }
 
                 public static bool isnotice(InvoiceDGV inv)
@@ -931,29 +1037,9 @@ namespace SmartAuditERP
                         }
                 }
 
-                private static bool isSameItems(List<InvoiceItem> invItemList, List<InvoiceItem> ReInvItemList)
-                {
-                        checked
-                        {
-                                foreach (InvoiceItem invItem in invItemList)
-                                {
-                                        int num;
-                                        num = ReInvItemList.Count - 1;
-                                        for (int i = 0; i <= num; i++)
-                                        {
-                                                if (invItem.Equals(ReInvItemList[i]))
-                                                {
-                                                        return true;
-                                                }
-                                                if (i == ReInvItemList.Count - 1)
-                                                {
-                                                        return false;
-                                                }
-                                        }
-                                }
-                                return true;
-                        }
-                }
+                // P4-012: أُزيل isSameItems — المساواة المرجعية كانت تجعل
+                // المقارنة تعود من أول صنف بنتيجة خاطئة دائماً؛ حل محله عقد
+                // الرصيد المتبقي التراكمي أعلاه
 
                 public static bool IsHasRefrence(string ReffId)
                 {
@@ -1307,7 +1393,69 @@ namespace SmartAuditERP
                         return "";
                 }
 
-                public bool SaveInvoice(Invoice inv, Entry Entr, bool IsNew)
+                // P4-014: تحقق ذري من رصيد المخزن لأسطر الخروج داخل معاملة الحفظ —
+                // يجمع أسطر الخروج المتكررة للصنف/المخزن نفسه ويتحقق من الرصيد
+                // المقفل (UPDLOCK+HOLDLOCK) مرة واحدة لكل مجموعة
+                private bool ValidateStockInTransaction(Invoice inv, SqlConnection conn, SqlTransaction tx)
+                {
+                        try
+                        {
+                                Dictionary<string, double> outLines;
+                                outLines = new Dictionary<string, double>();
+                                foreach (InvoiceItem invoiceItem in inv.InvoiceItems)
+                                {
+                                        if (invoiceItem.InvertoryImpact != 2)
+                                        {
+                                                continue;
+                                        }
+                                        if (invoiceItem.ItemType == 5)
+                                        {
+                                                continue;
+                                        }
+                                        string key = Conversions.ToString(invoiceItem.ItemId) + "|" + Conversions.ToString(invoiceItem.InvertoryId);
+                                        if (outLines.ContainsKey(key))
+                                        {
+                                                outLines[key] = outLines[key] + invoiceItem.ItemPrimaryQnty;
+                                        }
+                                        else
+                                        {
+                                                outLines.Add(key, invoiceItem.ItemPrimaryQnty);
+                                        }
+                                }
+                                foreach (KeyValuePair<string, double> pair in outLines)
+                                {
+                                        string[] parts = pair.Key.Split('|');
+                                        int itemId = Conversions.ToInteger(parts[0]);
+                                        int storeId = Conversions.ToInteger(parts[1]);
+                                        double requested = pair.Value;
+                                        using (SqlCommand cmd = new SqlCommand(
+                                                "select ISNULL(sum(case when s.proc_type=1 then s.val when s.proc_type=2 then -s.val else 0 end), 0) " +
+                                                "from Inv_Sub s with (ROWLOCK, UPDLOCK, HOLDLOCK) " +
+                                                "join Inv i with (UPDLOCK, HOLDLOCK) on i.InvGlobalID = s.InvGlobalID " +
+                                                "where s.ItemId=@ItemId and s.store=@Store and i.branch=@Branch and i.IS_Deleted=0", conn, tx))
+                                        {
+                                                cmd.Parameters.Add("@ItemId", SqlDbType.Int).Value = itemId;
+                                                cmd.Parameters.Add("@Store", SqlDbType.Int).Value = storeId;
+                                                cmd.Parameters.Add("@Branch", SqlDbType.Int).Value = inv.Branch;
+                                                double available = Conversions.ToDouble(cmd.ExecuteScalar());
+                                                if (available - requested < -0.001)
+                                                {
+                                                        return false;
+                                                }
+                                        }
+                                }
+                        }
+                        catch (Exception projectError)
+                        {
+                                ProjectData.SetProjectError(projectError);
+                                ProjectData.ClearProjectError();
+                                // فشل التحقق نفسه لا يُمرر الحفظ بصمت — يُعاد false
+                                return false;
+                        }
+                        return true;
+                }
+
+                public bool SaveInvoice(Invoice inv, Entry Entr, bool IsNew, bool allowNegativeStock = true)
                 {
                         bool result;
                         if (MainClass.EmpNo < 1)
@@ -1516,6 +1664,19 @@ namespace SmartAuditERP
                                         new SqlCommand("delete from InvoiceCost where InvGlobalID=N'" + inv.InvGlobalID + "'", sqlConnection2, sqlTransaction).ExecuteNonQuery();
                                         new SqlCommand("delete from Glasses where InvGlobalID=N'" + inv.InvGlobalID + "'", sqlConnection2, sqlTransaction).ExecuteNonQuery();
                                         sqlCommand3 = new SqlCommand(StoredQueries.UpdateInv, sqlConnection2, sqlTransaction);
+                                }
+                                // P4-014: التحقق الذري من توفر الرصيد داخل معاملة الحفظ
+                                // نفسها (UPDLOCK/HOLDLOCK يمنع سباق الحفظ المتزامن) —
+                                // الحارس المرئي كان يعتمد رصيد الصنف وقت تحميله فلا
+                                // يرى مبيعات متزامنة أخرى، ومسارات الاستيراد لا تمر
+                                // عليه أصلاً؛ السياسة المحفوظة (allowNegativeStock =
+                                // SaleByMinus من إعدادات النوع) تحكم التفعيل
+                                if (!allowNegativeStock && !ValidateStockInTransaction(inv, sqlConnection2, sqlTransaction))
+                                {
+                                        sqlTransaction.Rollback();
+                                        MessageBox.Show("الكمية أكبر من رصيد المخزن المتاح حالياً", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                        result = false;
+                                        return result;
                                 }
                                 int num;
                                 num = -1;
@@ -4319,10 +4480,14 @@ namespace SmartAuditERP
                                 item.EgyCodeType = invoiceItem.EgyCodeType;
                                 list.Add(item);
                         }
-                        List<InvoiceItem> Items;
-                        Items = (invoiceDGV = Inv).InvoiceItems;
-                        this.BindingCompositeItems(ref Items, Inv.InvertoryImpact);
-                        invoiceDGV.InvoiceItems = Items;
+                        // P4-011: توسيع المركّب على نسخة جديدة — القائمة الأصلية
+                        // للنموذج لا تُعدّل؛ كانت المعاينة/الطباعة/الحفظ المتكررة
+                        // توسّع نفس القائمة فيتضاعف مكونات الصنف المركب مع كل
+                        // استدعاء، والنسخة الموسعة هي التي تحمل المكونات إلى
+                        // الحفظ (ProductId≠0 يفلترها عند إعادة الربط من القاعدة)
+                        List<InvoiceItem> expandedItems = new List<InvoiceItem>(Inv.InvoiceItems);
+                        this.BindingCompositeItems(ref expandedItems, Inv.InvertoryImpact);
+                        invoice.InvoiceItems = expandedItems;
                         invoice.Items = list;
                         return invoice;
                 }
