@@ -1,0 +1,182 @@
+[
+  {
+    "Header": "#",
+    "Width": 45.0,
+    "DisplayIndex": 0,
+    "Visibility": "Visible"
+  },
+  {
+    "Header": "📦 الصنف",
+    "Width": 180.0,
+    "DisplayIndex": 1,
+    "Visibility": "Visible"
+  },
+  {
+    "Header": "الوحدة",
+    "Width": 80.0,
+    "DisplayIndex": 2,
+    "Visibility": "Visible"
+  },
+  {
+    "Header": "الكمية",
+    "Width": 80.0,
+    "DisplayIndex": 3,
+    "Visibility": "Visible"
+  },
+  {
+    "Header": "السعر",
+    "Width": 85.0,
+    "DisplayIndex": 4,
+    "Visibility": "Visible"
+  },
+  {
+    "Header": "المجموع",
+    "Width": 90.0,
+    "DisplayIndex": 5,
+    "Visibility": "Visible"
+  },
+  {
+    "Header": "الخصم",
+    "Width": 80.0,
+    "DisplayIndex": 6,
+    "Visibility": "Visible"
+  },
+  {
+    "Header": "الضريبة",
+    "Width": 80.0,
+    "DisplayIndex": 7,
+    "Visibility": "Visible"
+  },
+  {
+    "Header": "الإجمالي",
+    "Width": 90.0,
+    "DisplayIndex": 8,
+    "Visibility": "Visible"
+  },
+  {
+    "Header": "الصافي",
+    "Width": 95.0,
+    "DisplayIndex": 9,
+    "Visibility": "Visible"
+  },
+  {
+    "Header": null,
+    "Width": 1.0,
+    "DisplayIndex": 10,
+    "Visibility": "Collapsed"
+  },
+  {
+    "Header": null,
+    "Width": 1.0,
+    "DisplayIndex": 11,
+    "Visibility": "Collapsed"
+  },
+  {
+    "Header": null,
+    "Width": 1.0,
+    "DisplayIndex": 12,
+    "Visibility": "Collapsed"
+  },
+  {
+    "Header": null,
+    "Width": 1.0,
+    "DisplayIndex": 13,
+    "Visibility": "Collapsed"
+  },
+  {
+    "Header": null,
+    "Width": 1.0,
+    "DisplayIndex": 14,
+    "Visibility": "Collapsed"
+  },
+  {
+    "Header": null,
+    "Width": 1.0,
+    "DisplayIndex": 15,
+    "Visibility": "Collapsed"
+  },
+  {
+    "Header": null,
+    "Width": 1.0,
+    "DisplayIndex": 16,
+    "Visibility": "Collapsed"
+  },
+  {
+    "Header": null,
+    "Width": 1.0,
+    "DisplayIndex": 17,
+    "Visibility": "Collapsed"
+  },
+  {
+    "Header": null,
+    "Width": 1.0,
+    "DisplayIndex": 18,
+    "Visibility": "Collapsed"
+  },
+  {
+    "Header": null,
+    "Width": 1.0,
+    "DisplayIndex": 19,
+    "Visibility": "Collapsed"
+  },
+  {
+    "Header": null,
+    "Width": 1.0,
+    "DisplayIndex": 20,
+    "Visibility": "Collapsed"
+  },
+  {
+    "Header": null,
+    "Width": 1.0,
+    "DisplayIndex": 21,
+    "Visibility": "Collapsed"
+  },
+  {
+    "Header": null,
+    "Width": 1.0,
+    "DisplayIndex": 22,
+    "Visibility": "Collapsed"
+  },
+  {
+    "Header": null,
+    "Width": 1.0,
+    "DisplayIndex": 23,
+    "Visibility": "Collapsed"
+  },
+  {
+    "Header": null,
+    "Width": 1.0,
+    "DisplayIndex": 24,
+    "Visibility": "Collapsed"
+  },
+  {
+    "Header": null,
+    "Width": 1.0,
+    "DisplayIndex": 25,
+    "Visibility": "Collapsed"
+  },
+  {
+    "Header": null,
+    "Width": 1.0,
+    "DisplayIndex": 26,
+    "Visibility": "Collapsed"
+  },
+  {
+    "Header": null,
+    "Width": 1.0,
+    "DisplayIndex": 27,
+    "Visibility": "Collapsed"
+  },
+  {
+    "Header": null,
+    "Width": 1.0,
+    "DisplayIndex": 28,
+    "Visibility": "Collapsed"
+  },
+  {
+    "Header": null,
+    "Width": 1.0,
+    "DisplayIndex": 29,
+    "Visibility": "Collapsed"
+  }
+]

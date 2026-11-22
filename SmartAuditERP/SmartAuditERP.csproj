@@ -46,6 +46,18 @@
     </None>
   </ItemGroup>
 
+  <!-- P1-004 fix (تكملة — قوالب التقارير): أرشيف المالك الحقيقي (93 ملفاً)
+       يُشحن الآن مع البناء إلى مجلد Reports/ الذي يبحث عنه Common.cs
+       (BaseDirectory\Reports) وReports/Styles لمخططات الشبكات.
+       81 من 91 اسم قالب يطلبه الكود مغطاة (بينها 4 بفروق حالة أحرف
+       تعمل على NTFS)؛ الأسماء العشرة الناقصة موثقة في
+       docs/audit/REPAIR-LOG-STAGE1.md لخط الإصدار. -->
+  <ItemGroup>
+    <None Include="Reports\**\*.repx" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="Reports\**\*.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="Reports\**\*.xml" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
   <ItemGroup>
     <Reference Include="AuditorAPI">
       <HintPath>$(ExternalLibsDir)\AuditorAPI.exe</HintPath>

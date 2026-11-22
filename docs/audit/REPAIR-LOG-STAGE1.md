@@ -40,7 +40,7 @@
 | **P1-001** High/gap | اعتماديات محلية خارج المستودع (127 مرجعًا) | **جزئي**: مرجع المسار المطلق للمستخدم (System.Data.SqlClient من `C:\Users\...`) → PackageReference 4.8.6؛ 38 مرجعًا خارجيًا عبر خاصية `ExternalLibsDir` قابلة للتهيئة؛ **المتبقي**: تضمين الـDLLs الفعلية في `libs/` أو NuGet-ة البدائل (يتطلب الملفات الثنائية من المالك) | `592b197` |
 | **P1-002** High/potential | WinForms مستخدم بلا إعلان | `<UseWindowsForms>true</UseWindowsForms>` صريحًا | `d5b3754` |
 | **P1-003** High/gap | ثلاثة أسماء لأداة التحديث (SmartAuditUpdater.exe/update.exe/Updater.exe) | `AssemblyName=update` في csproj + توحيد مواقع الإطلاق على update.exe | `2c55596` |
-| **P1-004** High/gap | ملفات الإصدار/السجل/القوالب غير مرفقة | Version.txt (وفق محلل VersionInfo) + log4net.config (AdoNetAppender باتصال محقون وEmpID) أُنشئا وأُرفقا بـCopyToOutputDirectory؛ **المتبقي**: قوالب .repx ينتجها خط الإصدار (مستندة) | `486227d` |
+| **P1-004** High/gap | ملفات الإصدار/السجل/القوالب غير مرفقة | Version.txt (وفق محلل VersionInfo) + log4net.config (AdoNetAppender باتصال محقون وEmpID) أُنشئا وأُرفقا بـCopyToOutputDirectory؛ **ثم أُكمل بأرشيف قوالب المالك** (رفعه المالك — 93 ملفاً): 91 قالب `.repx` في `Reports/` + ملفا `Reports/Styles/` (AccountDirectorySettings.json وSaleInvoSaveLayoutToXML.xml حيث يقرأهما الكود) — الجميع XML صالح وموصول بـcsproj للنسخ إلى مخرجات البناء؛ **التغطية: 81 من 91 اسم قالب يطلبه الكود** (بينها 4 بفروق حالة أحرف تعمل على NTFS: RptBond/rptBond، RptPOS/rptPOS، RptPOSA4/rptPOSA4، rptSafeAdjust/RptSafeAdjust)؛ الأسماء العشرة الناقصة موثقة أدناه | `486227d` + هذا الإصلاح |
 | **P1-005** Medium/gap | لا اختبارات ولا CI | `tests/SmartAuditERP.SecurityTests` (xUnit: PasswordHasher/SqlBatchSplitter/PermissionGate) + `.github/workflows/build-and-test.yml` | `d5b3754` |
 | **P1-006** Low/gap | bin/obj متتبعة بلا gitignore | `.gitignore` + إلغاء تتبع 62 ملف مخرجات | `efb4baa` |
 
@@ -54,4 +54,14 @@
 - P1-011: 38 موقع SQL interpolated منخفض الخطورة (أرقام/مهرّبة) — تُ NUGet-ة… تُعالَج ضمن المراحل 2–7.
 - P1-001: تضمين 38 DLL خارجية في المستودع (يتطلب ثنائيات المالك).
 - P1-033: كبسات Designer الفارغة في نماذج WinForms القديمة.
-- P1-004: قوالب .repx كمنتج خط إصدار موقّع مع مانيفست P1-020.
+- P1-004: الأسماء العشرة الناقصة أدناه — تُنتج من خط إصدار المالك (مصمم تقارير DevExpress) وتُوقّع ضمن مانيفست P1-020.
+
+### قوالب .repx الناقصة (10 من 91 — يطلبها الكود وغير موجودة في أرشيف المالك)
+`Barcode2` · `PaySalary` · `RentCreditNote` · `RptInvPOS` · `RptItemSalesByCategory` · `RptItemsExpiration` · `Statement2` · `rptItemsProfit` · `rptcontract` · `rptsandBond`
+
+ملاحظات توثيقية على الأرشيف المرفوع:
+- `RptIncomeStatementNew.repx` و`rptlnvGA4Pos.repx` و`rptPOSA4Vat.repx` كانا يحملان علامات RTL خفية (U+200F) في اسم الملف — **طُبّع الاسم** ليطابق مرجع الكود النظيف (`IncomeStatementForm.xaml.cs:769` يطلب الاسم بلا علامات؛ File.Exists على Windows يفرّق بين المحرفين فكان سيفشل التحميل).
+- `rptlnvGA4.repx`/`rptlnvGA4Pos.repx`: الاسم في الأرشيف بحرف l صغير بدل I (تشابه بصري) — أُبقي كما ورد؛ لم يُعثر على مرجع `GA4` في الكود.
+- `rptItemsExpire.repx` مرفوع بينما الكود يطلب `RptItemsExpiration.repx` — غالباً نسختان لاسم واحد عبر الزمن؛ يُبقى على الاسم المرفوع ولا يُخمَّن إعادة تسمية.
+- قوالب مرفوعة لا يطلبها الكود بالاسم الصريح (قد تُحمّل عبر مسار RptUrl من قاعدة البيانات أو إصدارات قديمة): `RptPosA4Ortal`، `RptPurchase`، `RptSaleEpson`، `daysalesA4`، `rptClosedayRent`، `rptPOSA422`، `rptPOSA4En`، `rptPOSCreditNote`.
+- القوالب مبنية بـDevExpress 18.2 والحزم المعلنة 25.2.3 — DevExpress يرقّي المخططات عند التحميل عادةً؛ إن فشل ترقية قالب يظهر خطأ صريح وقت التحميل (خيراً من غياب الملف صمتاً).
