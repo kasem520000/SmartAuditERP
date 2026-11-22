@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "kind": "R11-prospective-canonical-register-restoration-after-duplicate-ID-freeze",
+  "assessment_reference_date_utc": "2026-11-16",
+  "path": "docs/audit/findings.csv",
+  "before": {
+    "bytes": 223808,
+    "sha256": "d8e706c04a2f9cc036560a9ad3ed2877b4195dbdab515092ab74fd376f59212c",
+    "rows": 337
+  },
+  "after": {
+    "bytes": 222939,
+    "sha256": "ce8c8b823a9a683d446d73dc4ffe564039f1542b649aeda79acd4c7a6600c42a",
+    "rows": 335
+  },
+  "canonical_source_commit": "dbf2760a6e7d2961736283b5faebc769e062a115",
+  "canonical_source_git_blob": "4e7d8ed8b2745e785a7cb5ee6924994f01a210b5",
+  "remote337_exact_bytes_preserved_in": {
+    "path": "docs/audit/evidence/remote-R10-frozen-07B39R11.tar.gz",
+    "bytes": 54680,
+    "sha256": "10b5ef5445bb09069b1841f6f2dee4de5c8167a3a0f6e183fc335eff25c624d9",
+    "member": "docs/audit/findings.csv"
+  },
+  "remote_two_rows_remain_frozen_not_silently_deleted": [
+    {
+      "id": "P7-164",
+      "severity": "High",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "title": "حفظ سندات الاستعادة القديمة SaveReceipt2 يسقط معامل Recipient المطلوب فيفشل كل تنفيذ بالاستثناء ويمنع حذف الصف القديم المشروط",
+      "evidence": "SmartAuditERP/Class/ReceiptOper.cs:300-343;SmartAuditERP/Class/StoredQueries.cs:30;SmartAuditERP/Form_WPF/frmSandD.xaml.cs:637;SmartAuditERP/Form_WPF/frmSandSD.xaml.cs:484",
+      "next_phase": "8"
+    },
+    {
+      "id": "P7-165",
+      "severity": "Medium",
+      "certainty": "confirmed",
+      "type": "implementation-defect",
+      "status": "open-not-remediated",
+      "title": "حفظ إعدادات إشعارات MQTT يحذف صف القاعدة ثم يدرج بلا معاملة وبنطاق DB بلا فرع والقارئ يأخذ أول صف بلا مرشح فرع",
+      "evidence": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs:3882-3951;SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:983-1022;SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs:847",
+      "next_phase": "8"
+    }
+  ],
+  "R1_four_additions_preserved": true,
+  "original335_row_fields_changed": false,
+  "original_raw_CRLF_bytes_preserved": true,
+  "remote_new_root_numbers_adopted": false,
+  "remote_questions_semantically_rejected_just_because_ID_collision": false,
+  "next_disposition": "Independently source-review the two questions under nonnumbered R11Q identifiers; preserve current original335 plus R1 four dictionaries. Do not reuse existing P7-164/P7-165 or recertify unavailable345.",
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started_by_this_work": false,
+  "phase8_authorized_by_this_work": false
+}

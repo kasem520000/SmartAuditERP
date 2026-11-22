@@ -1,0 +1,376 @@
+{
+  "schema_version": 1,
+  "kind": "R11-authored-bounded-source-review-not-automated-reading-telemetry",
+  "assessment_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "capability_exit_certificates_issued": 0,
+  "four_family_exit_certificates_issued": 0,
+  "new_accepted_external_handoffs": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "pinned_inputs": [
+    {
+      "path": "docs/audit/evidence/reconciliation-source-facts-07B39R11.json",
+      "bytes": 645470,
+      "sha256": "a0f09abc998489c39f4c1af72bb1d78fd19444ef55e4bceb6e55664cc5e201ac"
+    },
+    {
+      "path": "docs/audit/evidence/reference-date-provenance-07B39R11.json",
+      "bytes": 1704,
+      "sha256": "c9c0b53066efa3c8b97fecfc04cb456601518abdabe84d93ba9256d7395c6284"
+    }
+  ],
+  "extraction_equals_reading": false,
+  "independent_human_review_claimed": false,
+  "raw_source_display_streams_preserved": false,
+  "individual_read_timestamps_invented": false,
+  "lost_R10_97_contexts_reconstructed": false,
+  "actual_review_provenance": "Agent reviewed the selected whole bodies and listed text ranges through workspace read tools and focused AST displays in this continuation. The generated body archive is inspectable source evidence, NOT original display stdout, an independent reviewer attestation or timestamp telemetry.",
+  "selected_method_reviews": [
+    {
+      "path": "SmartAuditERP/Class/ReceiptOper.cs",
+      "selector": "SaveReceipt",
+      "start": 159,
+      "end": 297,
+      "syntax_utf8_sha256": "ab4b304c87c2bca407ed8a54220826865939cb349bea357fb48ab8b830a7a414",
+      "bounded_semantic_review": "The ordinary writer supplies Recipient along with the other 28 header parameters, chooses insert/update, and has the separate Entry/null-entry flow already qualified in P3-003/P3-004. It is a counterexample to a model-property-spelling omission in every writer.",
+      "not_established": "No SqlClient binding, deployed Receipt model definition, null/default contract, atomicity remediation or all-writer acceptance."
+    },
+    {
+      "path": "SmartAuditERP/Class/ReceiptOper.cs",
+      "selector": "SaveReceipt2",
+      "start": 299,
+      "end": 371,
+      "syntax_utf8_sha256": "24d25a1ae115a831bf5db00374c4ebbfb9b05798ba36062d000f3e0cec3373b2",
+      "bounded_semantic_review": "This writer selects InsertReceipt only, supplies 28 names, omits Recipient under the stated casefold comparison, then writes Execute/Commit/true with a caught rollback/false branch. Open and BeginTransaction precede try; rollback can itself fail.",
+      "not_established": "No every-call-false, never-delete, guaranteed-rollback, provider exception or data-loss/no-data-loss theorem."
+    },
+    {
+      "path": "SmartAuditERP/Class/ReceiptOper.cs",
+      "selector": "ReadReceiptOnline",
+      "start": 569,
+      "end": 692,
+      "syntax_utf8_sha256": "333b8c6b11f6062349c8bb31d2fd8cab5f7d5a7a3612dd34ae0fdfa52d0a0e63",
+      "bounded_semantic_review": "The online writer supplies Recipient and selects insert/update. The later entry-generation/query/rollback/commit flow remains a separate issue, not proof the restore writer succeeds or fails at runtime.",
+      "not_established": "Property use is not recovery of the external model class; no import/ledger/remote-ack acceptance."
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs",
+      "selector": "ctor:frmSettings",
+      "start": 64,
+      "end": 105,
+      "syntax_utf8_sha256": "ca852985b7c099aee7416e87053b83643719ca34abf0562d795f4a0de552ee1f",
+      "bounded_semantic_review": "The constructor obtains conn and conn1 from ConnObj, creates con1 separately, and registers Loaded and event handlers. No transaction is established by the selected constructor.",
+      "not_established": "No WPF construction/Loaded scheduling, same-object connection alias or policy allowed-set certified."
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs",
+      "selector": "RegisterEvents",
+      "start": 111,
+      "end": 232,
+      "syntax_utf8_sha256": "69a4707f6ce8152c806256a0cc6163bb3e05a5c3dab59c29abcbfbfeacbacfd2",
+      "bounded_semantic_review": "The complete selected registration body conditionally hooks btnconnectit.Click to BtnConnect_Click. Other handlers are merely referenced here; their bodies are not claimed read in R11.",
+      "not_established": "No event dispatch or double-handler runtime outcome and no semantic review of every referenced handler."
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs",
+      "selector": "frmUserSettings_Load",
+      "start": 278,
+      "end": 332,
+      "syntax_utf8_sha256": "76b2fc82cae5aa52f2bd8fc516869171be4618d676f1baa6a0e9e02480a7ef08",
+      "bounded_semantic_review": "The guarded Loaded body calls LoadSettingNotify before subsequent DB/sync loaders and hides notify panels for EmpNo>0. This is source order and UI visibility, not authorization.",
+      "not_established": "No all-loader review, document/branch/year ACL or actual WPF timing."
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs",
+      "selector": "EnsureConnectionOpen",
+      "start": 634,
+      "end": 640,
+      "syntax_utf8_sha256": "f975ac024135d4ef46a4c2e0204a95f0001e220642c41625474709a1ad35d7ce",
+      "bounded_semantic_review": "Only checks connection state and opens; it adds no explicit transaction for the notify save.",
+      "not_established": "No ambient-transaction or deployment proof from this helper."
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs",
+      "selector": "LoadSettingNotify",
+      "start": 646,
+      "end": 739,
+      "syntax_utf8_sha256": "0bee2da132f5df11abe93bc83a10681d47db33e83bd88c32ce88d223e9d62426",
+      "bounded_semantic_review": "Reads active branch names, then one reader.Read from an unfiltered Settingmqtt SELECT; populates DB, BranchId, credentials and flags; swallows errors and closes conn.",
+      "not_established": "No stable first-row order, singleton table, correct branch choice or successful load certified."
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs",
+      "selector": "BtnConnect_Click",
+      "start": 3820,
+      "end": 3879,
+      "syntax_utf8_sha256": "9a8c8bbc73fda659beb13e09e3df16793689f2b5a246f44ce602e66403aae485",
+      "bounded_semantic_review": "Password-window and basic input/branch selection checks precede the void notify save. After that call the caller unconditionally disables panels and paints success, then attempts LoadReceived.",
+      "not_established": "No command ACL from a dialog, no save-result guard, persistence result, broker connection or message delivery certified."
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSettings.xaml.cs",
+      "selector": "insert_SettingNotify",
+      "start": 3881,
+      "end": 3951,
+      "syntax_utf8_sha256": "0af1f1940b2b5a32f3d5fb738726a5ca1dbc69357628ba8c3cc2ef0b728e4525",
+      "bounded_semantic_review": "Checks DB, conditionally deletes all matching DB rows, then inserts 22 columns/22 insert parameters; 24 AddWithValue calls total include check/delete. The selected commands use conn without an explicit transaction argument; catch reports an error and finally closes conn.",
+      "not_established": "No permanent whole-table erasure, actual failed insert, ambient transaction absence, schema deployment, remediation or branch authorization inferred."
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+      "selector": "ctor:frmUserLogin",
+      "start": 59,
+      "end": 81,
+      "syntax_utf8_sha256": "21305ff24b52f6169cc5a82af642e41f6348a2470f5d62d1094a97b0eb0e0f47",
+      "bounded_semantic_review": "The constructor takes separate ConnObj results, creates service/helper instances and subscribes window events. It does not materialize a versioned Receipt model contract.",
+      "not_established": "No login execution, connection lifetime across all later builders or service behavior."
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+      "selector": "Login",
+      "start": 142,
+      "end": 277,
+      "syntax_utf8_sha256": "7f0bd530b52a39ae2a8f018a97bb89b1547ac0578c6cb0b4d3821b372fb66115",
+      "bounded_semantic_review": "The async-void body returns after unsuccessful login and calls ConnectMQTList following status/startup updates on the written success path. It constructs a new Home locally.",
+      "not_established": "No authentication re-audit, operational acceptance, event scheduling or proof the locally constructed Home is the displayed singleton."
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+      "selector": "LoadBranches",
+      "start": 665,
+      "end": 765,
+      "syntax_utf8_sha256": "12740e012cc23dfa7192b8c38db937e8c4dd79fb9664f63a7edf26be41c6a75c",
+      "bounded_semantic_review": "Local ALTER snippets concern Branches. MQTT path requires any active row and non-branch-sync, then reads BranchId from unfiltered Settingmqtt row zero and filters Branches by that value; this does not bind the selected MQTT row to that active row.",
+      "not_established": "No wrong-branch observation, deployed cardinality, employee branch ACL or completed year/DB rehydration review."
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+      "selector": "ConnectMQTList",
+      "start": 983,
+      "end": 1066,
+      "syntax_utf8_sha256": "ad31c669063c5c23ace6f94e9e817b080c7a06b6dc49ef742847cebcb7404190",
+      "bounded_semantic_review": "SELECT * from Settingmqtt has no DB/Branch/ORDER filter, ElementAtOrDefault(0) supplies settings, is_active gates broker setup, and three sync flags are assigned. Errors log and return.",
+      "not_established": "No deterministic row, singleton cardinality, live broker authentication/TLS, correct displayed Home or successful sync result."
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmUserLogin.xaml.cs",
+      "selector": "CheckMqttStat",
+      "start": 1068,
+      "end": 1090,
+      "syntax_utf8_sha256": "c469ee25a64e48019402f161f08fdd75bc27c3d22062dfffbb10912f8d2a023d",
+      "bounded_semantic_review": "Returns true if any row satisfies is_active=1; catches log and return false. It does not return the row used by LoadBranches/ConnectMQTList.",
+      "not_established": "No same-row identity, current branch permission or provider outcome."
+    },
+    {
+      "path": "SmartAuditERP/Class/MainClass.cs",
+      "selector": "ConnObj",
+      "start": 45,
+      "end": 49,
+      "syntax_utf8_sha256": "59b79ff794ac09db6608f40f45f4b9df7e5210e85a92695ad465f62795bd24c5",
+      "bounded_semantic_review": "Creates a new SqlConnection(connstr), assigns the static conn field and returns that object. New calls do not by syntax share a caller transaction.",
+      "not_established": "No connection-string correctness, ownership across all objects or ambient transaction proof."
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRecyclingData.xaml.cs",
+      "selector": "CopySettingsTablesAsync",
+      "start": 440,
+      "end": 472,
+      "syntax_utf8_sha256": "67fd0daf7144b19ec0f116b546935330e6600e2232ade0bd7bcdd614c2b9dc30",
+      "bounded_semantic_review": "Settingmqtt is in the selected maintenance drop/copy list. DROP and SELECT INTO are two awaited helper calls; this is an available local alternate table-population path.",
+      "not_established": "No execution, success of either statement, retention of source constraints/indexes or singleton invariant assumed."
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRecyclingData.xaml.cs",
+      "selector": "ExecuteSqlAsync",
+      "start": 574,
+      "end": 587,
+      "syntax_utf8_sha256": "e8c7e203f4aec8923be3b75ad3947888f1bd113402e7ffdb77c7fbaf16cb5cf6",
+      "bounded_semantic_review": "Opens _conn, awaits SqlCommand(sql,_conn).ExecuteNonQueryAsync and catches errors without returning a success result.",
+      "not_established": "No maintenance acceptance, rollback guarantee or caller continuation modeled as an executed event."
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmRecyclingData.xaml.cs",
+      "selector": "EnsureOpen",
+      "start": 938,
+      "end": 941,
+      "syntax_utf8_sha256": "13e685dfc81aea4cb499c69958ed679481b19cedcf33d32985e987b54021c418",
+      "bounded_semantic_review": "Only opens a non-open connection in the selected maintenance helper.",
+      "not_established": "No explicit/ambient transaction or connection validity certified."
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandD.xaml.cs",
+      "selector": "RestorePreviousReceipt",
+      "start": 605,
+      "end": 654,
+      "syntax_utf8_sha256": "2b68bba934ee93eef34418fff7352636a2c61c500bfddcc5129d3acb3fc56ddd",
+      "bounded_semantic_review": "The SandD reader filters by current branch and deletes by receipt id alone only under SaveReceipt2/saved. It supplies only the visible partial object initializer; no explicit GlobalID/date/account/Recipient assignments occur in this body.",
+      "not_established": "No external model defaults, unique id, safe unscoped delete, observed failed migration or universal nondeletion/no-data-loss conclusion. Read/delete atomicity and allowed sets remain unclosed."
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandSD.xaml.cs",
+      "selector": "RestorePreviousReceipt",
+      "start": 414,
+      "end": 508,
+      "syntax_utf8_sha256": "5919c9555187aa2356a97d49c80a94b6bd07c119e58c47f19c7decf5fdbcb885",
+      "bounded_semantic_review": "The SandSD reader filters by current branch and deletes by receipt id alone only under SaveReceipt2/saved. It explicitly constructs MAX(AutoID)+1 GlobalID and maps entry/account/date fields, with per-row catch-and-continue.",
+      "not_established": "No external model defaults, unique id, safe unscoped delete, observed failed migration or universal nondeletion/no-data-loss conclusion. Read/delete atomicity and allowed sets remain unclosed."
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandSD.xaml.cs",
+      "selector": "SafeOpenConnection",
+      "start": 1445,
+      "end": 1452,
+      "syntax_utf8_sha256": "fd29085635cd67c33f03e94aa6c1f18084885578b6a2f58c982985b62e89d035",
+      "bounded_semantic_review": "Selected helper checks null/state and opens or closes the supplied connection; it does not propagate the SaveReceipt2 transaction.",
+      "not_established": "No connection/provider/transaction execution or proof all restore outcomes are handled."
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandSD.xaml.cs",
+      "selector": "SafeCloseConnection",
+      "start": 1454,
+      "end": 1458,
+      "syntax_utf8_sha256": "eb65e377168208424452a05396a03006d8201d6139c48ada6f5bbb34821288c5",
+      "bounded_semantic_review": "Selected helper checks null/state and opens or closes the supplied connection; it does not propagate the SaveReceipt2 transaction.",
+      "not_established": "No connection/provider/transaction execution or proof all restore outcomes are handled."
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandQD.xaml.cs",
+      "selector": "RestorePreviousReceipt",
+      "start": 405,
+      "end": 491,
+      "syntax_utf8_sha256": "a08daed2033cca1886cc32f8f4b28c9f39bff92bfe0ecedd69c575f2c92cf273",
+      "bounded_semantic_review": "The SandQD reader filters by current branch and deletes by receipt id alone only under SaveReceipt2/saved. It explicitly constructs MAX(AutoID)+1 GlobalID and maps entry/account/date fields, with per-row catch-and-continue.",
+      "not_established": "No external model defaults, unique id, safe unscoped delete, observed failed migration or universal nondeletion/no-data-loss conclusion. Read/delete atomicity and allowed sets remain unclosed."
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandQD.xaml.cs",
+      "selector": "SafeOpen",
+      "start": 1489,
+      "end": 1495,
+      "syntax_utf8_sha256": "5ef45b27f04e52b5382ab39491a636064a035e5dfbd09690b6d87b969bf498fc",
+      "bounded_semantic_review": "Selected helper checks null/state and opens or closes the supplied connection; it does not propagate the SaveReceipt2 transaction.",
+      "not_established": "No connection/provider/transaction execution or proof all restore outcomes are handled."
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandQD.xaml.cs",
+      "selector": "SafeClose",
+      "start": 1497,
+      "end": 1501,
+      "syntax_utf8_sha256": "b5fdbb1d9d1e742d07789790cb94ae3cf9c5e58a20cf2fb698886b0db97c5e42",
+      "bounded_semantic_review": "Selected helper checks null/state and opens or closes the supplied connection; it does not propagate the SaveReceipt2 transaction.",
+      "not_established": "No connection/provider/transaction execution or proof all restore outcomes are handled."
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSandQAndroid.xaml.cs",
+      "selector": "RestorePreviousReceipt",
+      "start": 317,
+      "end": 364,
+      "syntax_utf8_sha256": "3d2134a624da1584461c3d0fd620b7d218708d75b80a19f4a1ac2df4fa2742ea",
+      "bounded_semantic_review": "The SandQ reader filters by current branch and deletes by receipt id alone only under SaveReceipt2/saved. It supplies only the visible partial object initializer; no explicit GlobalID/date/account/Recipient assignments occur in this body.",
+      "not_established": "No external model defaults, unique id, safe unscoped delete, observed failed migration or universal nondeletion/no-data-loss conclusion. Read/delete atomicity and allowed sets remain unclosed."
+    }
+  ],
+  "selected_literal_query_reviews": [
+    {
+      "path": "SmartAuditERP/Class/StoredQueries.cs",
+      "query": "InsertReceipt",
+      "start": 30,
+      "end": 30,
+      "syntax_utf8_sha256": "6b43c27fbda7aaa6b0ab4fbb0f53b099930038ff2a0d3d5c2eced0e8565f1523",
+      "review": "29 unique placeholder spellings; includes Recipient in column/value lists. Source contract, not deployed binding."
+    },
+    {
+      "path": "SmartAuditERP/Class/StoredQueries.cs",
+      "query": "UpdateReceipt",
+      "start": 32,
+      "end": 32,
+      "syntax_utf8_sha256": "bf3d364333083238e7ef06561cc4dc44f4ba09dc3090141ec5ba8d72456e2de4",
+      "review": "Also contains Recipient; SaveReceipt2 does not select this query. This fact must not be changed into an update-call claim."
+    }
+  ],
+  "selected_text_range_reviews": [
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "text_range_key": "receipt-base-create",
+      "start": 1496,
+      "end": 1531,
+      "decoded_range_utf8_sha256": "378f66299eead9f8e6de7a985a24f20bd3b79bc9f6eb88f53a81a8e6e21e2d1c",
+      "review": "Local DDL exists; never classify this range as an unavailable schema or successful migration."
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "text_range_key": "receipt-guarded-create",
+      "start": 47874,
+      "end": 47912,
+      "decoded_range_utf8_sha256": "4d2c80eaa6523863f4b9afe05f30f393a6b25109f35c6ffd2ad82d1993d3c553",
+      "review": "Local DDL exists; never classify this range as an unavailable schema or successful migration."
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "text_range_key": "receipt-recipient-guarded-alter",
+      "start": 50887,
+      "end": 50892,
+      "decoded_range_utf8_sha256": "daa64ae7a509717553d5bf80b444a3638515dcd7c56079c9de5d4c4264e72830",
+      "review": "Local DDL exists; never classify this range as an unavailable schema or successful migration."
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "text_range_key": "mqtt-base-create",
+      "start": 4809,
+      "end": 4837,
+      "decoded_range_utf8_sha256": "aefad75e39ee0644eb94ef86d3cc2979e24c34620f6bd7cc67dae25b5d9ff593",
+      "review": "Local DDL exists; never classify this range as an unavailable schema or successful migration."
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "text_range_key": "mqtt-guarded-create",
+      "start": 50501,
+      "end": 50529,
+      "decoded_range_utf8_sha256": "e5ee71ed2b05e34f49627bf86353286ac19995a614f75a9b218826424f220fdb",
+      "review": "Local DDL exists; never classify this range as an unavailable schema or successful migration."
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "text_range_key": "mqtt-ip-guarded-alter",
+      "start": 50601,
+      "end": 50606,
+      "decoded_range_utf8_sha256": "08ab22b4498b3785861ca98964793eca33151607b4d4fcccdd641ba5bc3ffa1f",
+      "review": "Local DDL exists; never classify this range as an unavailable schema or successful migration."
+    },
+    {
+      "path": "SmartAuditERP/Properties/Resources.resx",
+      "text_range_key": "mqtt-flags-guarded-alters",
+      "start": 50680,
+      "end": 50698,
+      "decoded_range_utf8_sha256": "64c0f9246cc96187f39839ea1cc3daaea335fafebab289e4b18738ae3a81ae91",
+      "review": "Local DDL exists; never classify this range as an unavailable schema or successful migration."
+    },
+    {
+      "path": "SmartAuditERP/SmartAuditERP.csproj",
+      "text_range_key": "external-model-reference",
+      "start": 28,
+      "end": 36,
+      "decoded_range_utf8_sha256": "b1887030cabf7c6b091bd20ef0db89be65e407f8444cf08b07ba05da9dd84bc2",
+      "review": "Bounded literal context only, not runtime construction/binding/default proof."
+    },
+    {
+      "path": "SmartAuditERP/Form_WPF/frmSettings.xaml",
+      "text_range_key": "notify-button-element",
+      "start": 1949,
+      "end": 1955,
+      "decoded_range_utf8_sha256": "eea557bd855e97ec0fe3a978e74871f850e3b7e566f1f9bc3d02233082b2a0c2",
+      "review": "Bounded literal context only, not runtime construction/binding/default proof."
+    },
+    {
+      "path": "SmartAuditERP/Class/ReceiptOper.cs",
+      "text_range_key": "receipt-model-namespace",
+      "start": 1,
+      "end": 12,
+      "decoded_range_utf8_sha256": "90cfb7d8ab1cb21f8bbfc40ccc32f4b19e86bf6b875119d743c51df7cca9a3b0",
+      "review": "Bounded literal context only, not runtime construction/binding/default proof."
+    }
+  ]
+}

@@ -1,0 +1,242 @@
+{
+  "schema_version": 1,
+  "kind": "actual-postcapture-R11-publication-integrity-not-a-new-unittest-suite-or-589-input",
+  "assessment_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "records": [
+    {
+      "id": "publication-R11-integrity",
+      "command": [
+        "/usr/bin/python",
+        "-B",
+        "-W",
+        "error::ResourceWarning",
+        "docs/audit/tools/disposition07b/verify_reconciliation_07B39R11.py",
+        "--rederive"
+      ],
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "matched": true,
+      "stdout": {
+        "path": "docs/audit/evidence/publication-R11-integrity-07B39R11.stdout.txt",
+        "bytes": 870,
+        "sha256": "bc1ecb98132922976a004c39c1a8f793e0aaf25c1c1b1da1aa75b32249a6ac19"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/publication-R11-integrity-07B39R11.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "publication-R9-integrity",
+      "command": [
+        "/usr/bin/python",
+        "-B",
+        "-W",
+        "error::ResourceWarning",
+        "docs/audit/tools/disposition07b/verify_save_edit.py",
+        "--verify",
+        "--rederive"
+      ],
+      "actual_exit": 0,
+      "expected_exit": 0,
+      "matched": true,
+      "stdout": {
+        "path": "docs/audit/evidence/publication-R9-integrity-07B39R11.stdout.txt",
+        "bytes": 679,
+        "sha256": "ee01cc4c6ac8698c31854267dad057daefa05b8db89dcf9752b3b07c5af89305"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/publication-R9-integrity-07B39R11.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "id": "publication-R11-open-gate",
+      "command": [
+        "/usr/bin/python",
+        "-B",
+        "-W",
+        "error::ResourceWarning",
+        "docs/audit/tools/disposition07b/verify_reconciliation_07B39R11.py",
+        "--require-complete"
+      ],
+      "actual_exit": 2,
+      "expected_exit": 2,
+      "matched": true,
+      "stdout": {
+        "path": "docs/audit/evidence/publication-R11-open-gate-07B39R11.stdout.txt",
+        "bytes": 870,
+        "sha256": "bc1ecb98132922976a004c39c1a8f793e0aaf25c1c1b1da1aa75b32249a6ac19"
+      },
+      "stderr": {
+        "path": "docs/audit/evidence/publication-R11-open-gate-07B39R11.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "run_archives_and_streams_verified": [
+    {
+      "run": "run01",
+      "receipt": {
+        "path": "docs/audit/evidence/validation-run01-receipt-07B39R11.json",
+        "bytes": 612152,
+        "sha256": "52b2f4ffa7a3e021de14b99f53eb0cfc6a5eb7f2e8a6073e91763c08a6e34c26"
+      },
+      "exact_member_count": 25,
+      "exact_streams_checked": 14,
+      "journal_rows_checked": 7,
+      "all_actual_member_and_stream_bytes_match": true,
+      "wrapper_exit": 1
+    },
+    {
+      "run": "run02",
+      "receipt": {
+        "path": "docs/audit/evidence/validation-run02-receipt-07B39R11.json",
+        "bytes": 616724,
+        "sha256": "9b909de8ff1c7f495224a1874078430b9da2d48feeb1e7a5cb41315d16192d3c"
+      },
+      "exact_member_count": 26,
+      "exact_streams_checked": 14,
+      "journal_rows_checked": 7,
+      "all_actual_member_and_stream_bytes_match": true,
+      "wrapper_exit": 1
+    }
+  ],
+  "Python_tools_syntax_parsed_without_import_or_execution": 169,
+  "new_report_local_links_checked": 25,
+  "links": [
+    {
+      "document": "PHASE-07B39R11.md",
+      "target": "SOURCE-REVIEW-07B39R11.md"
+    },
+    {
+      "document": "PHASE-07B39R11.md",
+      "target": "evidence/reconciliation-adjudications-07B39R11.json"
+    },
+    {
+      "document": "PHASE-07B39R11.md",
+      "target": "evidence/capability-reconciliation-07B39R11.json"
+    },
+    {
+      "document": "PHASE-07B39R11.md",
+      "target": "VALIDATION-07B39R11.md"
+    },
+    {
+      "document": "PHASE-07B39R11.md",
+      "target": "evidence/remote-R10-frozen-07B39R11.tar.gz"
+    },
+    {
+      "document": "PHASE-07B39R11.md",
+      "target": "evidence/reconciliation-entry-07B39R11.json"
+    },
+    {
+      "document": "PHASE-07B39R11.md",
+      "target": "evidence/canonical-register-restoration-07B39R11.json"
+    },
+    {
+      "document": "PHASE-07B39R11.md",
+      "target": "evidence/entry-hydration-receipt-07B39R11.json"
+    },
+    {
+      "document": "PHASE-07B39R11.md",
+      "target": "evidence/development-corrections-07B39R11.json"
+    },
+    {
+      "document": "PHASE-07B39R11.md",
+      "target": "evidence/reference-date-provenance-07B39R11.json"
+    },
+    {
+      "document": "SOURCE-REVIEW-07B39R11.md",
+      "target": "evidence/reconciliation-source-facts-07B39R11.json"
+    },
+    {
+      "document": "SOURCE-REVIEW-07B39R11.md",
+      "target": "evidence/reconciliation-source-review-07B39R11.json"
+    },
+    {
+      "document": "SOURCE-REVIEW-07B39R11.md",
+      "target": "evidence/reconciliation-adjudications-07B39R11.json"
+    },
+    {
+      "document": "SOURCE-REVIEW-07B39R11.md",
+      "target": "evidence/capability-reconciliation-07B39R11.json"
+    },
+    {
+      "document": "SOURCE-REVIEW-07B39R11.md",
+      "target": "evidence/reference-date-provenance-07B39R11.json"
+    },
+    {
+      "document": "VALIDATION-07B39R11.md",
+      "target": "evidence/validation-run01-receipt-07B39R11.json"
+    },
+    {
+      "document": "VALIDATION-07B39R11.md",
+      "target": "evidence/validation-run02-receipt-07B39R11.json"
+    },
+    {
+      "document": "VALIDATION-07B39R11.md",
+      "target": "evidence/validation-run01-journal-07B39R11.jsonl"
+    },
+    {
+      "document": "VALIDATION-07B39R11.md",
+      "target": "evidence/validation-run02-journal-07B39R11.jsonl"
+    },
+    {
+      "document": "VALIDATION-07B39R11.md",
+      "target": "evidence/validation-run01-consumed-07B39R11.tar.gz"
+    },
+    {
+      "document": "VALIDATION-07B39R11.md",
+      "target": "evidence/validation-run02-consumed-07B39R11.tar.gz"
+    },
+    {
+      "document": "VALIDATION-07B39R11.md",
+      "target": "evidence/reference-date-provenance-07B39R11.json"
+    },
+    {
+      "document": "VALIDATION-07B39R11.md",
+      "target": "evidence/development-corrections-07B39R11.json"
+    },
+    {
+      "document": "VALIDATION-07B39R11.md",
+      "target": "evidence/remote-R10-frozen-07B39R11.tar.gz"
+    },
+    {
+      "document": "VALIDATION-07B39R11.md",
+      "target": "evidence/canonical-register-restoration-07B39R11.json"
+    }
+  ],
+  "run02_inputs_changed_since_capture": [
+    "docs/audit/PLAN.md",
+    "docs/audit/README.md"
+  ],
+  "only_explicit_index_prefixes_with_original_suffixes_changed": true,
+  "late_report_identities": [
+    {
+      "path": "docs/audit/PHASE-07B39R11.md",
+      "bytes": 10231,
+      "sha256": "11811ced80123954cd0b700a5bd266db5e0f0b103633b32c847449fc45b8e199"
+    },
+    {
+      "path": "docs/audit/SOURCE-REVIEW-07B39R11.md",
+      "bytes": 13189,
+      "sha256": "6499984f1fa8978e9959868d783b8092dc7491c60758b8fd638c66623a0ff316"
+    },
+    {
+      "path": "docs/audit/VALIDATION-07B39R11.md",
+      "bytes": 7669,
+      "sha256": "d8a80600692efe7675a4db5da6d5a1338ad167818179a99257a8890c95bf4739"
+    }
+  ],
+  "late_report_and_index_prefixes_were_589_inputs": false,
+  "additional_unittest_cases": 0,
+  "old_R10_remote_verifier_executed": false,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false
+}

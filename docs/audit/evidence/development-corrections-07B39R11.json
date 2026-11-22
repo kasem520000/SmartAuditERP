@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "kind": "R11-prospective-tool-and-fixture-corrections-preserving-all-actual-failures",
+  "assessment_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "source_derivation_runs": [
+    {
+      "run": "run01",
+      "receipt": {
+        "path": "docs/audit/evidence/reconciliation-derivation-run01-receipt-07B39R11.json",
+        "bytes": 1126,
+        "sha256": "4f8c597b8845525f128fc1cf3a6d1dd95501f41f0df5a0d8d9e64ab23ac04ada"
+      },
+      "actual_exit": 1,
+      "actual_problem": "JSONDecodeError Extra data: a concatenated command expression started and ended with quotes but was not one literal.",
+      "facts_file_written": false
+    },
+    {
+      "run": "run02",
+      "receipt": {
+        "path": "docs/audit/evidence/reconciliation-derivation-run02-receipt-07B39R11.json",
+        "bytes": 1126,
+        "sha256": "f4085995b3d1c946fdd26c78c53abc2e6bd30a23e2652543358c7dfa6fc5253e"
+      },
+      "actual_exit": 0,
+      "correction": "Decode only a whole supported literal; retain interpolation as unevaluated syntax and do not evaluate concatenation.",
+      "source_assertion_errors": []
+    }
+  ],
+  "first_full_capture": {
+    "receipt": {
+      "path": "docs/audit/evidence/validation-run01-receipt-07B39R11.json",
+      "bytes": 612152,
+      "sha256": "52b2f4ffa7a3e021de14b99f53eb0cfc6a5eb7f2e8a6073e91763c08a6e34c26"
+    },
+    "exact_versions_archive": {
+      "path": "docs/audit/evidence/validation-run01-consumed-07B39R11.tar.gz",
+      "bytes": 439926,
+      "sha256": "7856f51eda5a2186a55eccb4c9c002af91018db848aae3fcd5a5d0792a3b115d",
+      "members": 25,
+      "member_paths": [
+        "docs/audit/SOURCE-REVIEW-07B39R11.md",
+        "docs/audit/evidence/canonical-register-restoration-07B39R11.json",
+        "docs/audit/evidence/capability-reconciliation-07B39R11.json",
+        "docs/audit/evidence/entry-before-hydration-07B39R11.json",
+        "docs/audit/evidence/entry-hydration-forward-07B39R11.stderr.txt",
+        "docs/audit/evidence/entry-hydration-forward-07B39R11.stdout.txt",
+        "docs/audit/evidence/entry-hydration-receipt-07B39R11.json",
+        "docs/audit/evidence/reconciliation-adjudications-07B39R11.json",
+        "docs/audit/evidence/reconciliation-derivation-run01-07B39R11.stderr.txt",
+        "docs/audit/evidence/reconciliation-derivation-run01-07B39R11.stdout.txt",
+        "docs/audit/evidence/reconciliation-derivation-run01-consumed-07B39R11.tar.gz",
+        "docs/audit/evidence/reconciliation-derivation-run01-receipt-07B39R11.json",
+        "docs/audit/evidence/reconciliation-derivation-run02-07B39R11.stderr.txt",
+        "docs/audit/evidence/reconciliation-derivation-run02-07B39R11.stdout.txt",
+        "docs/audit/evidence/reconciliation-derivation-run02-consumed-07B39R11.tar.gz",
+        "docs/audit/evidence/reconciliation-derivation-run02-receipt-07B39R11.json",
+        "docs/audit/evidence/reconciliation-entry-07B39R11.json",
+        "docs/audit/evidence/reconciliation-source-facts-07B39R11.json",
+        "docs/audit/evidence/reconciliation-source-review-07B39R11.json",
+        "docs/audit/evidence/reference-date-provenance-07B39R11.json",
+        "docs/audit/evidence/remote-R10-frozen-07B39R11.tar.gz",
+        "docs/audit/tools/disposition07b/capture_reconciliation_07B39R11.py",
+        "docs/audit/tools/disposition07b/reconcile_entry_07B39R11.py",
+        "docs/audit/tools/disposition07b/test_reconciliation_07B39R11.py",
+        "docs/audit/tools/disposition07b/verify_reconciliation_07B39R11.py"
+      ]
+    },
+    "combined_tests": 589,
+    "combined_status_counts": {
+      "ok": 585,
+      "FAIL": 3,
+      "ERROR": 1
+    },
+    "combined_seconds": 179.685,
+    "old_seven_modules_cases": 519,
+    "new_R11_cases": 70,
+    "new_R11_status_counts": {
+      "ok": 66,
+      "FAIL": 3,
+      "ERROR": 1
+    },
+    "B38_status_counts": {
+      "ok": 42,
+      "FAIL": 1,
+      "ERROR": 0
+    },
+    "B38_assertion_lines": [
+      "AssertionError: 169 != 142"
+    ],
+    "wrapper_exit": 1,
+    "inputs_changed_during_capture": []
+  },
+  "corrections": [
+    {
+      "test": "test_notify_check_wrong_parameter_name_is_not_accepted_by_total_count",
+      "actual_problem": "The consumed verifier compared query text/total adds but did not check check/delete parameter names and trimmed DB expressions.",
+      "correction": "Strengthen the source guard to compare both actual command-specific adds; retain the same negative fixture and expected rejection."
+    },
+    {
+      "tests": [
+        "test_restore_SandD_reversed_direct_guard_is_rejected",
+        "test_restore_SandQAndroid_reversed_direct_guard_is_rejected"
+      ],
+      "actual_problem": "The consumed verifier accepted any condition containing the SaveReceipt2 spelling, including a negated call.",
+      "correction": "Require the exact normalized positive direct-call condition or saved. Retain both negative source fixtures; no parser relaxation."
+    },
+    {
+      "test": "test_original37_ancestry_cannot_be_replaced_by_new_claim",
+      "actual_problem": "Fixture attempted pop() on upstream integer37 rather than the actual preserved ancestry records.",
+      "correction": "Assert the upstream37 counter and sum of records, then remove an actual record in the isolated copied ancestry object. Do not alter the original ledger or R6 flags."
+    }
+  ],
+  "postcorrection_source_code": {
+    "path": "docs/audit/tools/disposition07b/verify_reconciliation_07B39R11.py",
+    "bytes": 37779,
+    "sha256": "e494df51b1627665beb6f70ac04980c4714140660b24bf500adb5e37c0b36f05"
+  },
+  "postcorrection_test_code": {
+    "path": "docs/audit/tools/disposition07b/test_reconciliation_07B39R11.py",
+    "bytes": 22401,
+    "sha256": "3d8e7db0ffb80f1433fa7bd8000192ed3928f49dca854375b17a797ea207bce6"
+  },
+  "B38_expected142_or_source_application_changed": false,
+  "failed_runs_or_streams_overwritten": false,
+  "old_R9_519_tests_modified": false,
+  "lost_local_R10_578_recertified": false,
+  "new_full_rerun_result": "Not yet measured; a distinct exclusive run02 must record it.",
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started": false,
+  "phase8_authorized": false
+}

@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "errors": [],
+  "selected_complete_method_contexts": 142,
+  "source_identities": 25,
+  "literal_command_calls": 35,
+  "selected_command_owners": 23,
+  "editor_pipelines": 6,
+  "selected_alternate_opener_owners": 26,
+  "source_decisions": 15,
+  "capability_exit_certificates_issued": 0,
+  "four_family_exit_certificates_issued": 0,
+  "new_accepted_external_handoffs": 0,
+  "whole_7B_static_assessment_complete": false,
+  "application_execution_count": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false,
+  "limit": "Recorded static assertions, not reading/calendar/runtime authorization, provider, financial or capability/family acceptance."
+}

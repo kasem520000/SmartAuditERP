@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "kind": "R11-prospective-reference-and-conflicting-frozen-calendar-labels-not-chronology-certification",
+  "prospective_session_reference_date_utc": "2026-11-16",
+  "reference_use": "Reference for newly authored R11 assessments only, not a claim about the dates on which historical commands or reviews actually ran.",
+  "frozen_labels": [
+    {
+      "paths": ["docs/audit/evidence/entry-before-hydration-07B39R11.json", "docs/audit/evidence/entry-hydration-receipt-07B39R11.json"],
+      "assessment_reference_date_utc_verbatim": "2026-11-16",
+      "raw_clock_date_verbatim": "2026-11-22",
+      "disposition": "Both labels remain exactly as executed and pinned. Raw clock values are not calendar authority and do not authenticate chronology. This annotation does not rerun or relabel the one-shot hydration."
+    },
+    {
+      "paths": ["docs/audit/evidence/reconciliation-entry-07B39R11.json", "docs/audit/evidence/7c-start-gate-07B39R10.json"],
+      "conflicting_reference_label_verbatim": "2026-11-22",
+      "disposition": "Preserved remote/reference labels, not proof that 7C was authorized here or that the underlying dates were authenticated."
+    }
+  ],
+  "prior_summary_22Nov_current_authority_label_adopted_as_calendar_proof": false,
+  "prior_16Nov_or_21Nov_attributions_to_user_recertified": false,
+  "frozen_dates_or_raw_clocks_authenticate_chronology": false,
+  "old_executed_files_relabelled": false,
+  "old_read_flags_changed": false,
+  "hashes_or_passing_tests_authenticate_calendar_or_reading": false,
+  "lost_local_R10_dates_or_capture_reconstructed": false,
+  "application_execution_count": 0,
+  "phase7C_started": false,
+  "phase8_authorized": false
+}

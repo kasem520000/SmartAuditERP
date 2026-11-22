@@ -1,0 +1,44 @@
+{
+  "schema_version": 1,
+  "kind": "R11-new-entry-forward-receipt-preserving-original-archive-not-lost-local-R10",
+  "assessment_reference_date_utc": "2026-11-16",
+  "raw_clocks_are_calendar_authority": false,
+  "raw_started_clock_verbatim": "2026-11-22T14:26:24.687210+00:00",
+  "raw_finished_clock_verbatim": "2026-11-22T14:26:34.124839+00:00",
+  "branch": "arena/94ae8414-smartauditerp",
+  "old_HEAD": "10ba215152f722c8808aea0bb672c1d1d4d9d711",
+  "forward_HEAD": "0f6559cf6853cc580b6fe3a2c63100e40f673453",
+  "forward_exit_code": 0,
+  "original_audit_files_verified_in_reused_archive": 1216,
+  "published_audit_files_checked": 1686,
+  "original_archive_duplicated": false,
+  "source_files_unchanged": 827,
+  "original_archive_restored": {
+    "path": "docs/audit/evidence/untracked-entry-docs-07B39R4.tar.gz",
+    "bytes": 14560801,
+    "sha256": "2ab6e6d3df2e30b038cb3c9f99ac957d6e13b59b119b074207535b2e19b3cc87"
+  },
+  "entry_before": {
+    "path": "docs/audit/evidence/entry-before-hydration-07B39R11.json",
+    "bytes": 342518,
+    "sha256": "98dd35419dbd30b1137a6dce43502850cd69364a17fd8c58a574b0705da6895f"
+  },
+  "stdout": {
+    "path": "docs/audit/evidence/entry-hydration-forward-07B39R11.stdout.txt",
+    "bytes": 226449,
+    "sha256": "7155257138e9fb23cf9d42c93ebfc925eadd2f91ba5aba6284ae327e7997c007"
+  },
+  "stderr": {
+    "path": "docs/audit/evidence/entry-hydration-forward-07B39R11.stderr.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "lost_local_R10_deliverable_reconstructed": false,
+  "lost_R10_578_tests_recertified": false,
+  "remote_7C_gate_adopted_as_authorization": false,
+  "remote_new_finding_ids_accepted_without_review": false,
+  "application_execution_count": 0,
+  "whole_7B_static_assessment_complete": false,
+  "phase7C_started_by_this_work": false,
+  "phase8_authorized_by_this_work": false
+}
