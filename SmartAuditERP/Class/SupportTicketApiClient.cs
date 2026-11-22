@@ -91,7 +91,22 @@ namespace SmartAuditERP
                 if (response.IsSuccessStatusCode)
                 {
                     var apiResponse =
-                        JsonConvert.DeserializeObject<ApiResponse>(responseBody);
+                        JsonConvert.DeserializeObject<ApiResponse>(responseBody)
+                        ?? new ApiResponse();
+
+                    // P6-025 fix: نجاح الأعمال لا يُستنتج من HTTP2xx وحده — جسم
+                    // الرد يحمل Success/Message من الخدمة ويُحترم: رد 2xx برسالة
+                    // رفض من الخدمة = فشل فعلي برسالة الخدمة (كان أي 2xx = نجاح).
+                    if (!apiResponse.Success)
+                    {
+                        return new TicketResponse
+                        {
+                            Success = false,
+                            Message = string.IsNullOrEmpty(apiResponse.Message)
+                                ? $"رفضت الخدمة إنشاء التذكرة ({response.StatusCode})"
+                                : apiResponse.Message
+                        };
+                    }
 
                     return new TicketResponse
                     {
@@ -128,8 +143,28 @@ namespace SmartAuditERP
 
                 if (response.IsSuccessStatusCode)
                 {
-                    JsonConvert.DeserializeObject<TicketDetailsApiResponse>(responseBody);
-                    return new TicketDetailsResponse { Success = true };
+                    // P6-024 fix: الجسم المحلل هو مصدر بيانات التذكرة — كان يُحلل
+                    // إلى نموذج مختزل ثم يُرمى وتُعاد استجابة Success=true بتذكرة
+                    // غير مهيأة (Ticket=null) فيسقط المستدعي بمرجع فارغ عند
+                    // result.Ticket.Subject. الآن: التفاصيل المحللة تُعاد في
+                    // Ticket، والنجاح مشروط بتذكرة موجودة فعلًا.
+                    var ticket =
+                        JsonConvert.DeserializeObject<TicketDetails>(responseBody);
+
+                    if (ticket != null && !string.IsNullOrEmpty(ticket.TicketNumber))
+                    {
+                        return new TicketDetailsResponse
+                        {
+                            Success = true,
+                            Ticket = ticket
+                        };
+                    }
+
+                    return new TicketDetailsResponse
+                    {
+                        Success = false,
+                        Message = "جسم الرد لا يحمل تذكرة صالحة"
+                    };
                 }
 
                 return new TicketDetailsResponse
@@ -163,13 +198,16 @@ namespace SmartAuditERP
                            ?? new List<TicketDetails>();
                 }
 
-                return new List<TicketDetails>();
+                // P6-025 fix: الفشل لا يُنكر كقائمة فارغة — تعاد null فيميز
+                // المستدعي بين «لا تذاكر للعميل» (قائمة فارغة) و«تعذر الجلب»
+                // (null) فلا تعرض الشاشة فشلًا كأنه غياب تذاكر.
+                return null;
             }
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine(
                     $"خطأ في GetCustomerTicketsAsync: {ex.Message}");
-                return new List<TicketDetails>();
+                return null;
             }
         }
 
@@ -197,19 +235,44 @@ namespace SmartAuditERP
                 var response = await _httpClient
                     .PostAsync($"{_apiBaseUrl}/api/Tickets/AddReply", content);
 
-                await response.Content.ReadAsStringAsync();
-
-                return response.IsSuccessStatusCode
-                    ? new ApiResponseBase
+                // P6-025 fix: جسم الرد يُحلل ويُحترم — نجاح الأعمال في الرسالة
+                // لا في HTTP2xx وحده (كان الجسم يُقرأ ويُرمى).
+                string replyBody = await response.Content.ReadAsStringAsync();
+                if (response.IsSuccessStatusCode)
+                {
+                    ApiResponseBase parsed = null;
+                    try
+                    {
+                        parsed = JsonConvert.DeserializeObject<ApiResponseBase>(replyBody);
+                    }
+                    catch
+                    {
+                        // جسم غير قابل للتحليل — نكتفي بنجاح النقل
+                    }
+                    if (parsed != null && !parsed.Success)
+                    {
+                        return new ApiResponseBase
+                        {
+                            Success = false,
+                            Message = string.IsNullOrEmpty(parsed.Message)
+                                ? "رفضت الخدمة إضافة الرد"
+                                : parsed.Message
+                        };
+                    }
+                    return new ApiResponseBase
                     {
                         Success = true,
-                        Message = "تم إضافة الرد بنجاح"
-                    }
-                    : new ApiResponseBase
-                    {
-                        Success = false,
-                        Message = "فشل إضافة الرد"
+                        Message = (parsed != null && !string.IsNullOrEmpty(parsed.Message))
+                            ? parsed.Message
+                            : "تم إضافة الرد بنجاح"
                     };
+                }
+
+                return new ApiResponseBase
+                {
+                    Success = false,
+                    Message = "فشل إضافة الرد"
+                };
             }
             catch (Exception ex)
             {

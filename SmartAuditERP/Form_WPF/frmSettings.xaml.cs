@@ -4044,7 +4044,13 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
-        private void Btntestneoleap_Click(object sender, RoutedEventArgs e)
+        // P6-022 fix: الاختبار ينتظر النتيجة ويعرضها (كان fire-and-forget فلا
+        // يعرف المستخدم شيئًا عن نتيجة جهازه)، والمبلغ من حقل المستخدم (كان
+        // يُقرأ ثم يُرمى ويُستبدل بـ 0.5 ثابتة). الحد المعماري الموثق: سطح
+        // neoleapconnector المستعمل في المستودع لا يبني إلا طلبات SALE — لا
+        // يظهر نوع طلب غير مالي بلا وثائق المزود، فيبقى الاختبار عملية بيع
+        // تجريبية على توكن التجارب الاختباري، وناتجها يُعرض صراحة.
+        private async void Btntestneoleap_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -4057,8 +4063,28 @@ namespace SmartAuditERP.Form_WPF
                     });
                 });
 
-                _ = SafeDouble(txtAmountneoleap.Text, 0);
-                neoleapService.TestConnection();
+                double testAmount = SafeDouble(txtAmountneoleap.Text, 0.5);
+                if (testAmount <= 0)
+                {
+                    testAmount = 0.5;
+                }
+                txtLogging.AppendText(
+                    $"اختبار NeoLeap: إرسال عملية تجريبية بمبلغ {testAmount}..." + Environment.NewLine);
+
+                TransactionResponse result = await neoleapService.TestConnection(testAmount);
+
+                if (result.Success)
+                {
+                    MessageBox.Show(
+                        $"نجح اتصال الجهاز ✅ (استجابة معتمدة: {result.StatusCode})",
+                        "NeoLeap", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show(
+                        $"فشل اختبار الجهاز ❌ {result.ErrorMessage ?? result.Message ?? ""}",
+                        "NeoLeap", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
             catch (Exception ex)
             {

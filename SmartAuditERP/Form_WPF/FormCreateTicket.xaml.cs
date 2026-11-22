@@ -164,13 +164,16 @@ namespace SmartAuditERP.Form_WPF
             {
                 var result = await apiClient.GetTicketAsync(ticketNumber);
 
-                if (result.Success)
+                // P6-024 fix: التذكرة المحللة موجودة قبل الوصول لحقولها — كانت
+                // الاستجابة تعيد Success=true بتذكرة غير مهيأة فيسقط الوصول هنا
+                // بمرجع فارغ دائمًا.
+                if (result.Success && result.Ticket != null)
                 {
                     MessageBox.Show($"الموضوع: {result.Ticket.Subject}\nالحالة: {result.Ticket.Status}");
                 }
                 else
                 {
-                    MessageBox.Show(result.Message);
+                    MessageBox.Show(result.Success ? "لا توجد تفاصيل للتذكرة" : result.Message);
                 }
             }
             catch (Exception ex)
@@ -189,6 +192,14 @@ namespace SmartAuditERP.Form_WPF
             {
                 var name = Common.FoundationInfoDT.Rows[0]["nameA"]?.ToString();
                 var tickets = await apiClient.GetCustomerTicketsAsync(name);
+
+                // P6-025 fix: الفشل (null) لا يُعرض كقائمة فارغة — رسالة خطأ
+                // صريحة بدل «لا تذاكر».
+                if (tickets == null)
+                {
+                    MessageBox.Show("تعذر جلب تذاكر العميل — تحقق من الاتصال بخدمة الدعم");
+                    return;
+                }
 
                 GridTickets.ItemsSource = tickets;
             }

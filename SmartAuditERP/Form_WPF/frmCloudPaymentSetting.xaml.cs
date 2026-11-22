@@ -307,12 +307,15 @@ namespace SmartAuditERP.Form_WPF
                         $"SET CloudPaytypeID = {cmbCreditCard.SelectedValue}, " +
                         $"BankId = 1 WHERE ID = 3");
 
+                // P6-023 fix: الحذف دائمًا ثم الإدراج إن وُجدت صفوف — كان الحذف
+                // مشروطًا بـ (Count > 0) فحذف آخر ربط دفع من الواجهة يترك صفه
+                // المحفوظ في الجدول (لا يُمسح أبدًا وتعود العلاقة عند إعادة الفتح).
+                ExecuteNonQuery(conn,
+                    "DELETE FROM CloudPaytypeSetting WHERE ID > 4");
+
                 // حفظ إعدادات البنوك
                 if (_bankRows.Count > 0)
                 {
-                    ExecuteNonQuery(conn,
-                        "DELETE FROM CloudPaytypeSetting WHERE ID > 4");
-
                     foreach (BankPayTypeRow row in _bankRows)
                     {
                         if (string.IsNullOrEmpty(row.BankId) ||

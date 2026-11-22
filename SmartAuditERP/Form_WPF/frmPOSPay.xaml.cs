@@ -51,6 +51,10 @@ namespace SmartAuditERP.Form_WPF
         private double _defInsu    = 0;
         private bool   _delvEditable = true;
         private bool   _insEditable  = true;
+        // P6-021 fix: أثر دائم لمحاولات جهاز الدفع (المبلغ + الرمز + الحالة) —
+        // ربط المحاولة بالفاتورة قبل أي إعادة دفع.
+        private static readonly log4net.ILog _deviceTrace =
+            log4net.LogManager.GetLogger(System.Environment.MachineName);
         private bool   _dScndTime   = false;
         private bool   _vScndTime   = false;
         private bool   _rScndTime   = false;
@@ -425,20 +429,6 @@ namespace SmartAuditERP.Form_WPF
                 resCash    = Convert.ToDouble(txtCashpay.Text);
                 resNetwork = Convert.ToDouble(txtNetwork.Text);
 
-                // ATM/Geidea
-                if (resNetwork > 0 && _isATM)
-                {
-                    byte[] resp = global::UtilitiesProj.Geidea.Pay(resNetwork);
-                    string code = $"{(char)resp[0]}{(char)resp[1]}{(char)resp[2]}";
-                    string[] validCodes = { "000","001","003","007","087","089" };
-                    if (!Array.Exists(validCodes, c => c == code))
-                    {
-                        DXMessageBox.Show("العملية مرفوضة، يرجى إعادة الدفع",
-                            "", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        return;
-                    }
-                }
-
                 resTotal = Math.Round(resNetwork + resCash, 3);
                 double.TryParse(lblNetVal.Text, out double netVal);
 
@@ -466,6 +456,39 @@ namespace SmartAuditERP.Form_WPF
                 if (Invoic.PayType == 5)
                 {
                     resTotal = 0; resCash = 0; resNetwork = 0;
+                }
+
+                // P6-020 fix: استدعاء جهاز الدفع بعد استكمال تحققات المبلغ/الباقي —
+                // كان يُستدعى قبلها فيُخصم من البطاقة ثم تُكتشف مبالغ فاسدة/متبقٍ
+                // غير مطابق فيبقى الخصم معلقًا بلا فاتورة ويُخصم مرتين عند الإعادة.
+                // ATM/Geidea
+                if (resNetwork > 0 && _isATM)
+                {
+                    byte[] resp = global::UtilitiesProj.Geidea.Pay(resNetwork);
+                    string code = (resp != null && resp.Length >= 3)
+                        ? $"{(char)resp[0]}{(char)resp[1]}{(char)resp[2]}"
+                        : "";
+                    string[] validCodes = { "000","001","003","007","087","089" };
+                    // P6-021 fix: تصنيف نتيجة الجهاز — استجابة غير قابلة للقراءة =
+                    // حالة «مجهولة»: لا يُعرف هل نُفذ الخصم، فلا إعادة دفع أعمى بل
+                    // حسم مع الجهاز/الإيصال أولًا؛ والمحاولة تُسجل بمبلغها ورمزها.
+                    bool unknownResponse = code.Length < 3
+                        || code[0] < '0' || code[0] > '9'
+                        || code[1] < '0' || code[1] > '9'
+                        || code[2] < '0' || code[2] > '9';
+                    _deviceTrace.Error($"POSPay Geidea attempt inv={Invoic.InvGlobalID} amount={resNetwork} code='{(code.Length < 3 ? "<none>" : code)}' unknown={unknownResponse}");
+                    if (unknownResponse)
+                    {
+                        DXMessageBox.Show("لا يوجد رد واضح من جهاز الدفع — تحقق من الجهاز والإيصال قبل إعادة المحاولة (قد تكون العملية منفذة بالفعل)",
+                            "", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+                    if (!Array.Exists(validCodes, c => c == code))
+                    {
+                        DXMessageBox.Show("العملية مرفوضة، يرجى إعادة الدفع",
+                            "", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
                 }
 
                 var payment = new InvoicePayment
