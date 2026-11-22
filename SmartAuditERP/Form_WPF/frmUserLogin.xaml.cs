@@ -143,7 +143,8 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
-                var Home = new Home();
+                // P1-017 fix: لا نسخة Home جديدة هنا — المعروضة هي MainWindow.
+                var Home = System.Windows.Application.Current?.MainWindow as Home;
                 var frmSecurityPnl = new frmSecurityPnl();
                 if (type == 1)
                 {
@@ -194,7 +195,7 @@ namespace SmartAuditERP.Form_WPF
                 // اللغة
                 MainClass.Language = cmblanguages.SelectedIndex == 0 ? "ar" : "en-us";
 
-                if (MainClass.IsTrial)
+                if (MainClass.IsTrial && Home != null)
                     Home.lblIsTrial1.Text = "نسخة تجريبية";
 
                 MainClass.conn = conn;
@@ -236,7 +237,7 @@ namespace SmartAuditERP.Form_WPF
                 SaveStartupData();
 
                 frmSecurityPnl.Secured = true;
-                Home.Activate();
+                Home?.Activate();
                 datelogin = DateTime.Now;
                 txtPwd.Clear();
                 // في frmUserLogin.cs - دالة Login بعد نجاح الدخول
@@ -309,7 +310,10 @@ namespace SmartAuditERP.Form_WPF
 
         private void UpdateHomeStatusBar()
         {
-            var Home = new Home();
+            // P1-017 fix: التحديث على نافذة Home المعروضة فعلاً (MainWindow من WPF)،
+            // لا على نسخة جديدة لم تُعرض أبداً فتضيع التحديثات.
+            var Home = System.Windows.Application.Current?.MainWindow as Home;
+            if (Home == null) return;
             if (MainClass.Language == "en-us")
             {
                 Home.txtLoggedUser1.Text = "User: " + MainClass.UserName;

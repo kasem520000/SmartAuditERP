@@ -1190,7 +1190,9 @@ namespace SmartAuditERP
                     }
                     if (MainClass.Conn_type == 2)
                     {
-                        connectionString = "server=" + MainClass.Server + ";database=" + MainClass.Database + ";user id=" + MainClass.Database + ";pwd=" + MainClass.NetPwd;
+                        // P1-031 fix: كان اسم قاعدة البيانات يُستخدم اسم مستخدم SQL لسجل
+                        // التدقيق — يستخدم معرف المستخدم الفعلي المخزن كما في بقية المسارات.
+                        connectionString = "server=" + MainClass.Server + ";database=" + MainClass.Database + ";user id=" + MainClass.NetUserId + ";pwd=" + MainClass.NetPwd;
                     }
                     Common.SetUpLogDbConnection(connectionString, "log4net.config");
                 }
@@ -2580,6 +2582,30 @@ namespace SmartAuditERP
                 // ═══ إنشاء جدول الإصدارات إن لم يكن موجوداً ═══
                 new SqlCommand(StoredQueries.CreateVersionTb, sqlConn)
                     .ExecuteNonQuery();
+
+                // P1-028 fix: قفل تطبيق حصري حول الترقية — نسخة ثانية من البرنامج على
+                // جهاز/مستخدم آخر لن تبدأ ترقية المخطط بالتوازي مع هذه. timeout قصير:
+                // إن كان القفل مأخوذاً ننجز لاحقاً في تشغيل قادم بدل الانتظار الطويل.
+                bool lockAcquired = false;
+                using (var lockCmd = new SqlCommand(
+                    "DECLARE @r int; EXEC @r = sp_getapplock " +
+                    "@Resource='SmartAuditERP_DbUpgrade', @LockMode='Exclusive', " +
+                    "@LockOwner='Session', @LockTimeout=15000; SELECT @r;",
+                    sqlConn))
+                {
+                    object lockResult = lockCmd.ExecuteScalar();
+                    lockAcquired = lockResult != null &&
+                        Convert.ToInt32(lockResult) >= 0;
+                }
+
+                if (!lockAcquired)
+                {
+                    Dispatcher.Invoke(() =>
+                        ProgressBarC.Visibility = Visibility.Collapsed);
+                    System.Diagnostics.Debug.WriteLine(
+                        "DB-UPGRADE: another instance holds the upgrade lock — deferring.");
+                    return;
+                }
 
                 // ═══ جلب آخر إصدار مسجل في قاعدة البيانات ═══
                 var versionCmd = new SqlCommand(

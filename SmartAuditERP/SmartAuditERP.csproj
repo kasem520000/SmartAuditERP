@@ -4,6 +4,10 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
     <UseWPF>true</UseWPF>
+    <!-- P1-002 fix: المشروع يستخدم عناصر WinForms فعلياً (NotifyIcon/Timer في
+         Home.xaml.cs وMainWindow.xaml.cs وfrm_ReportDesign وغيرها) — الإعلان
+         الصريح يوثق الاعتماد ويضمن توفر الأنواع بدل الاعتماد الضمني. -->
+    <UseWindowsForms>true</UseWindowsForms>
     <Platforms>AnyCPU;x86</Platforms>
   </PropertyGroup>
 
