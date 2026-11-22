@@ -2300,27 +2300,32 @@ namespace SmartAuditERP.Form_WPF
                 // إرسال للسحابة
                 if (Home._is_active)
                 {
-                    if (ConnectBroker.IsConnectedToInternet())
+                    // P5-002 fix: بوابة واحدة — اتصال الوسيط نفسه (لا ICMP)،
+                    // وP5-006: فشل أي نشر يُلحق بالمستند في الطابور بدل فقدانه
+                    // (كان فرع «إنترنت بلا وسيط» لا يفعل شيئًا إطلاقًا).
+                    if (ConnectBroker.CheckConnectionAndBroker())
                     {
-                        if (ConnectBroker.CheckConnectionAndBroker())
-                        {
-                            string c1 = "where InvGlobalID=N'" +
-                                        invoice.InvGlobalID + "'";
-                            string c2 = "WHERE InvGlobalID=N'" +
-                                        invoice.InvGlobalID + "'";
-                            string c3 = "where GlobalID=N'" +
-                                        invoice.EntryGlobalID + "'";
-                            string c4 = "where EntryGlobalID=N'" +
-                                        invoice.EntryGlobalID + "'";
+                        string c1 = "where InvGlobalID=N'" +
+                                    invoice.InvGlobalID + "'";
+                        string c2 = "WHERE InvGlobalID=N'" +
+                                    invoice.InvGlobalID + "'";
+                        string c3 = "where GlobalID=N'" +
+                                    invoice.EntryGlobalID + "'";
+                        string c4 = "where EntryGlobalID=N'" +
+                                    invoice.EntryGlobalID + "'";
 
-                            SendData.SendDataa("Inv",
-                                invoice.InvGlobalID, SendData.GetInv(c1));
-                            SendData.SendDataa("InvSub",
-                                invoice.InvGlobalID, SendData.GetInvSub(c2));
-                            SendData.SendDataa("entry",
-                                invoice.EntryGlobalID, SendData.GetEntryData(c3));
-                            SendData.SendDataa("entryDetails",
-                                invoice.EntryGlobalID, SendData.GetEntrySubData(c4));
+                        bool sent = SendData.SendDataa("Inv",
+                            invoice.InvGlobalID, SendData.GetInv(c1));
+                        sent = SendData.SendDataa("InvSub",
+                            invoice.InvGlobalID, SendData.GetInvSub(c2)) && sent;
+                        sent = SendData.SendDataa("entry",
+                            invoice.EntryGlobalID, SendData.GetEntryData(c3)) && sent;
+                        sent = SendData.SendDataa("entryDetails",
+                            invoice.EntryGlobalID, SendData.GetEntrySubData(c4)) && sent;
+                        if (!sent)
+                        {
+                            SaveGlobalIDOffLine(
+                                Invoic.InvGlobalID, Invoic.EntryGlobalID);
                         }
                     }
                     else
@@ -2376,30 +2381,20 @@ namespace SmartAuditERP.Form_WPF
             {
                 InvGlobalID = invGlobalID,
                 GlobalID = entryGlobalID,
-                EntryGLobalID = entryGlobalID
+                EntryGLobalID = entryGlobalID,
+                // P5-005 fix: سياق الجلسة مع الإدخال
+                ClientCode = Sync.ClientCode,
+                BranchNo = MainClass.BranchNo.ToString(),
+                DataBase = MainClass.DataBaseAutoName
             };
             AddInvLocally(newInv);
         }
 
         private void AddInvLocally(InvGLobalIDOff newInv)
         {
-            var list = new List<InvGLobalIDOff>();
-            string path = Path.Combine(
-                AppDomain.CurrentDomain.BaseDirectory,
-                "Data", "InvGlobalID.json");
-
-            if (File.Exists(path))
-            {
-                string json = File.ReadAllText(path);
-                if (!string.IsNullOrWhiteSpace(json))
-                    list = JsonConvert.DeserializeObject<
-                               List<InvGLobalIDOff>>(json)
-                           ?? new List<InvGLobalIDOff>();
-            }
-
-            list.Add(newInv);
-            File.WriteAllText(path,
-                JsonConvert.SerializeObject(list, Formatting.Indented));
+            // P5-004 fix: إلحاق مقفول ذرّي عبر OfflineQueue — كانت كتابة مباشرة
+            // بلا قفل تُفقد إدخالات عند التسابق مع تفريغ المؤقت.
+            OfflineQueue.Append(OfflineQueue.InvoicesQueuePath, newInv);
         }
 
         #endregion

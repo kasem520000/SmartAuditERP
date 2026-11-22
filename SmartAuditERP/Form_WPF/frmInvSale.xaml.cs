@@ -2484,20 +2484,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void AddInvLocally(InvGLobalIDOff newInv)
         {
-            var list = new List<InvGLobalIDOff>();
-            string path = Path.Combine(
-                System.Windows.Forms.Application.StartupPath,
-                "Data", "InvGlobalID.json");
-            if (File.Exists(path))
-            {
-                string content = File.ReadAllText(path);
-                if (!string.IsNullOrWhiteSpace(content))
-                    list = JsonConvert.DeserializeObject<
-                        List<InvGLobalIDOff>>(content);
-            }
-            list.Add(newInv);
-            File.WriteAllText(path,
-                JsonConvert.SerializeObject(list, Formatting.Indented));
+            // P5-004 fix: إلحاق مقفول ذرّي عبر OfflineQueue — كانت كتابة مباشرة
+            // بلا قفل تُفقد إدخالات عند التسابق مع تفريغ المؤقت.
+            OfflineQueue.Append(OfflineQueue.InvoicesQueuePath, newInv);
         }
 
         #endregion

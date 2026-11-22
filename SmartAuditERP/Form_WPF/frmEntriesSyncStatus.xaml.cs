@@ -1068,17 +1068,11 @@ namespace SmartAuditERP.Form_WPF
                     "    FROM Entry \r\n" +
                     "    WHERE Date>=N'" + fromDateStr + "' and Date<=N'" + toDateStr + "'";
 
-                ConnectBroker.mqttClient.Publish(
-                    ConnectBroker.ClientCode + "Entry",
-                    Encoding.UTF8.GetBytes(SendData.GetEntryData(entryCond)),
-                    0,
-                    true);
-
-                ConnectBroker.mqttClient.Publish(
-                    ConnectBroker.ClientCode + "EntrySub",
-                    Encoding.UTF8.GetBytes(SendData.GetEntrySubData(entrySubCond)),
-                    0,
-                    true);
+                // P5-007 fix: النشر بنفس مواضيع المستقبل (SendDataa: QoS 1) —
+                // كان ينشر إلى Entry/EntrySub بأحرف وأسماء لا يطابقها أي
+                // اشتراك فلا يُطبَّق القيد وقيوده أبدًا.
+                SendData.SendDataa("entry", "range", SendData.GetEntryData(entryCond));
+                SendData.SendDataa("entryDetails", "range", SendData.GetEntrySubData(entrySubCond));
             }
             catch (Exception ex)
             {

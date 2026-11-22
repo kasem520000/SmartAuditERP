@@ -985,23 +985,13 @@ namespace SmartAuditERP.Form_WPF
                     $"where Date>=N'{fromStr}' and Date<=N'{toStr}')";
             }
 
-            string s1 = SendData.GetInv(cond) ?? string.Empty;
-            string s2 = SendData.GetInvSub(invGlobalId) ?? string.Empty;
-            string s3 = SendData.GetEntryData(cond2) ?? string.Empty;
-            string s4 = SendData.GetEntrySubData(cond3) ?? string.Empty;
-
-            ConnectBroker.mqttClient.Publish(
-                ConnectBroker.ClientCode + "Inv",
-                Encoding.UTF8.GetBytes(s1), 0, true);
-            ConnectBroker.mqttClient.Publish(
-                ConnectBroker.ClientCode + "InvSub",
-                Encoding.UTF8.GetBytes(s2), 0, true);
-            ConnectBroker.mqttClient.Publish(
-                ConnectBroker.ClientCode + "Entry",
-                Encoding.UTF8.GetBytes(s3), 0, true);
-            ConnectBroker.mqttClient.Publish(
-                ConnectBroker.ClientCode + "EntryGlobalID",
-                Encoding.UTF8.GetBytes(s4), 0, true);
+            // P5-007 fix: النشر بنفس مواضيع المستقبل (SendDataa: QoS 1) —
+            // كان ينشر إلى Entry/EntryGlobalID بأحرف وأسماء لا يطابقها أي
+            // اشتراك فلا يُطبَّق القيد وقيوده أبدًا.
+            SendData.SendDataa("Inv", "range", SendData.GetInv(cond) ?? string.Empty);
+            SendData.SendDataa("InvSub", "range", SendData.GetInvSub(invGlobalId) ?? string.Empty);
+            SendData.SendDataa("entry", "range", SendData.GetEntryData(cond2) ?? string.Empty);
+            SendData.SendDataa("entryDetails", "range", SendData.GetEntrySubData(cond3) ?? string.Empty);
         }
 
         #endregion

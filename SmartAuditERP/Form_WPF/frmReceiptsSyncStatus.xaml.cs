@@ -644,15 +644,12 @@ namespace SmartAuditERP.Form_WPF
 
                 if (ConnectBroker.CheckConnectionAndBroker())
                 {
-                    ConnectBroker.mqttClient.Publish(
-                        ConnectBroker.ClientCode + "Receipts",
-                        Encoding.UTF8.GetBytes(SendData.GetReceipts(cond)), 0, true);
-                    ConnectBroker.mqttClient.Publish(
-                        ConnectBroker.ClientCode + "Entry",
-                        Encoding.UTF8.GetBytes(SendData.GetEntryData(cond2)), 0, true);
-                    ConnectBroker.mqttClient.Publish(
-                        ConnectBroker.ClientCode + "EntryGlobalID",
-                        Encoding.UTF8.GetBytes(SendData.GetEntrySubData(cond3)), 0, true);
+                    // P5-007 fix: النشر بنفس مواضيع المستقبل (SendDataa: QoS 1) —
+                    // كان ينشر إلى Entry/EntryGlobalID بأحرف وأسماء لا يطابقها
+                    // أي اشتراك فلا يُطبَّق القيد وقيوده أبدًا.
+                    SendData.SendDataa("Receipts", "range", SendData.GetReceipts(cond));
+                    SendData.SendDataa("entry", "range", SendData.GetEntryData(cond2));
+                    SendData.SendDataa("entryDetails", "range", SendData.GetEntrySubData(cond3));
                 }
             }
         }

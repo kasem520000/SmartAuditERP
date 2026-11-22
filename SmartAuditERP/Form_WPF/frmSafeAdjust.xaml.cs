@@ -939,26 +939,29 @@ namespace SmartAuditERP.Form_WPF
             // Broker
             if (Home._is_active)
             {
-                if (ConnectBroker.IsConnectedToInternet() &&
-                    ConnectBroker.CheckConnectionAndBroker())
+                // P5-002/P5-007/P5-006 fix: بوابة اتصال الوسيط نفسه، والنشر عبر
+                // SendDataa (QoS 1 وبنفس شكل مواضيع المستقبل — كان ينشر إلى
+                // Entry/EntrySub بأحرف وأسماء لا يطابقها أي اشتراك فلا يُطبَّق
+                // شيء)، وفشل أي نشر يُلحق بالمستند في الطابور.
+                if (ConnectBroker.CheckConnectionAndBroker())
                 {
                     string cond  = $"where InvGlobalID=N'{invoice.InvGlobalID}'";
                     string invGl = $"WHERE InvGlobalID=N'{invoice.InvGlobalID}'";
                     string ec2   = $"where GlobalID=N'{invoice.EntryGlobalID}'";
                     string ec3   = $"where EntryGlobalID=N'{invoice.EntryGlobalID}'";
 
-                    ConnectBroker.mqttClient.Publish(
-                        ConnectBroker.ClientCode + "Inv",
-                        Encoding.UTF8.GetBytes(SendData.GetInv(cond)), 0, true);
-                    ConnectBroker.mqttClient.Publish(
-                        ConnectBroker.ClientCode + "InvSub",
-                        Encoding.UTF8.GetBytes(SendData.GetInvSub(invGl)), 0, true);
-                    ConnectBroker.mqttClient.Publish(
-                        ConnectBroker.ClientCode + "Entry",
-                        Encoding.UTF8.GetBytes(SendData.GetEntryData(ec2)), 0, true);
-                    ConnectBroker.mqttClient.Publish(
-                        ConnectBroker.ClientCode + "EntrySub",
-                        Encoding.UTF8.GetBytes(SendData.GetEntrySubData(ec3)), 0, true);
+                    bool sent = SendData.SendDataa("Inv",
+                        invoice.InvGlobalID, SendData.GetInv(cond));
+                    sent = SendData.SendDataa("InvSub",
+                        invoice.InvGlobalID, SendData.GetInvSub(invGl)) && sent;
+                    sent = SendData.SendDataa("entry",
+                        invoice.EntryGlobalID, SendData.GetEntryData(ec2)) && sent;
+                    sent = SendData.SendDataa("entryDetails",
+                        invoice.EntryGlobalID, SendData.GetEntrySubData(ec3)) && sent;
+                    if (!sent)
+                    {
+                        SaveGlobalIDOffLine(invoice.InvGlobalID, invoice.EntryGlobalID);
+                    }
                 }
                 else
                 {
@@ -1084,23 +1087,15 @@ namespace SmartAuditERP.Form_WPF
                 InvGlobalID    = invGlobalID,
                 GlobalID       = entryGlobalID,
                 EntryGLobalID  = entryGlobalID,
+                // P5-005 fix: سياق الجلسة مع الإدخال
+                ClientCode = Sync.ClientCode,
+                BranchNo = MainClass.BranchNo.ToString(),
+                DataBase = MainClass.DataBaseAutoName
             };
 
-            var list = new List<InvGLobalIDOff>();
-            string path = Path.Combine(
-                System.Windows.Forms.Application.StartupPath,
-                "Data", "InvGlobalID.json");
-
-            if (File.Exists(path))
-            {
-                string json = File.ReadAllText(path);
-                if (!string.IsNullOrWhiteSpace(json))
-                    list = JsonConvert.DeserializeObject<List<InvGLobalIDOff>>(json);
-            }
-
-            list.Add(item);
-            File.WriteAllText(path,
-                JsonConvert.SerializeObject(list, Formatting.Indented));
+            // P5-004 fix: إلحاق مقفول ذرّي عبر OfflineQueue — كانت كتابة مباشرة
+            // بلا قفل تُفقد إدخالات عند التسابق مع تفريغ المؤقت.
+            OfflineQueue.Append(OfflineQueue.InvoicesQueuePath, item);
         }
 
         #endregion

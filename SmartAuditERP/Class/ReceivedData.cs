@@ -28,6 +28,72 @@ namespace SmartAuditERP
 
 		public static string _passcode = "";
 
+		// P5-010 fix: فك الغلاف — الـ passcode لاحقة يضيفها المرسل إلى النص المفكوك؛
+		// نزيل لاحقة واحدة فقط. كانت الشيفرة تستبدل كل ظهور للـ passcode في النص
+		// المفكوك فتفسد قيم JSON تحتويه (اسم/ملاحظة/باركود).
+		private static string DecryptEnvelope(string cipherText)
+		{
+			string plain = cipherText ?? "";
+			if (string.IsNullOrEmpty(ReceivedData._passcode))
+			{
+				return plain;
+			}
+			if (plain.EndsWith(ReceivedData._passcode, StringComparison.Ordinal))
+			{
+				return plain.Substring(0, plain.Length - ReceivedData._passcode.Length);
+			}
+			return plain;
+		}
+
+		// P5-011 fix: تمييز معرفات المستندات الأجنبية عن معرفات هذا الفرع.
+		// صيغة المعرف عند تفعيل المزامنة: {ClientCode}-{BranchNo}-{seq}
+		// وبلا مزامنة: {BranchNo}-{seq} — فمقطع الفرع هو [1] أو [0] على الترتيب.
+		// كان الفحص StartsWith(BranchNo) فكان فرع 1 يلتقط معرفات فرع 12/120…
+		// (ورقم العميل نفسه في الوضع المتزامن) ويتخطى استيرادها.
+		private static bool IsOwnBranchGlobalID(string globalId)
+		{
+			if (string.IsNullOrEmpty(globalId))
+			{
+				return false;
+			}
+			string[] parts = globalId.Split('-');
+			string branchSegment = parts.Length >= 3 ? parts[1] : (parts.Length == 2 ? parts[0] : null);
+			return branchSegment != null && string.Equals(branchSegment, MainClass.BranchNo.ToString(), StringComparison.Ordinal);
+		}
+
+		// P5-011 fix: كل مواقع الاستيراد تستفسر «أجنبي؟» بهذه الدالة بدل StartsWith.
+		private static bool IsForeignGlobalID(string globalId)
+		{
+			return !string.IsNullOrEmpty(globalId) && !ReceivedData.IsOwnBranchGlobalID(globalId);
+		}
+
+		// P5-009 fix: عائلة الموضوع = المقطع الأول بعد نزع بادئة رمز العميل —
+		// يطابق النشر الجديد (Items/5) والقديم (Items) لأن اشتراك «Items/#»
+		// يشمل مستوى الأب نفسه (مواصفة MQTT).
+		private static string TopicFamily(string topic)
+		{
+			string t = topic ?? "";
+			if (!string.IsNullOrEmpty(ConnectBroker.ClientCode) && t.StartsWith(ConnectBroker.ClientCode, StringComparison.Ordinal))
+			{
+				t = t.Substring(ConnectBroker.ClientCode.Length);
+			}
+			string[] parts = t.Split('/');
+			return parts.Length > 0 ? parts[0] : "";
+		}
+
+		// P5-012 fix: معرف السجل من الموضوع (المقطع الثاني) — نطاق التفريغ لتفاصيل
+		// المستند حتى عندما تصل الحمولة فارغة (رأس بلا بنود بعد حذفها عند المصدر).
+		private static string TopicRecordId(string topic)
+		{
+			string t = topic ?? "";
+			if (!string.IsNullOrEmpty(ConnectBroker.ClientCode) && t.StartsWith(ConnectBroker.ClientCode, StringComparison.Ordinal))
+			{
+				t = t.Substring(ConnectBroker.ClientCode.Length);
+			}
+			string[] parts = t.Split('/');
+			return parts.Length > 1 ? parts[1] : null;
+		}
+
 		public static void LoadReceived(string Cnstring)
 		{
 			try
@@ -48,11 +114,18 @@ namespace SmartAuditERP
 					return;
 				}
 				ReceivedData.connString = Cnstring;
-				string[] source;
-				source = new string[20]
+				// P5-008 fix: قائمة إلغاء الاشتراك تغطي كل ما يمكن الاشتراك فيه (بما فيها
+				// الأشكال القديمة والمواضيع التعريفية والعروض والخزائن) حتى لا تبقى
+				// اشتراكات حية بعد تغيير الإعدادات — كانت تُلغي 20 موضوعًا فقط فتبقى
+				// تعريفات/عروض تعمل بلا معالج أو بمعالج معطل.
+				string[] source = new string[54]
 				{
 				"Items", "ItemsUnit", "ItemPrices", "ItemComponents", "ItemSerialNo", "ItemBarcode", "ItemsCategory", "Units", "Customers", "AccountCust",
-				"AccountIndex", "CasherClosed", "CasherClosed_Sub", "Inv/#", "InvSub/#", "entry/#", "entryDetails/#", "Receipts/#", "CasherClosed/#", "CasherClosed_Sub/#"
+				"AccountIndex", "CasherClosed", "CasherClosed_Sub", "Inv", "InvSub", "entry", "entryDetails", "Receipts",
+				"Items/#", "ItemsUnit/#", "ItemPrices/#", "ItemComponents/#", "ItemSerialNo/#", "ItemBarcode/#", "ItemsCategory/#", "Units/#",
+				"Inv/#", "InvSub/#", "entry/#", "entryDetails/#", "Receipts/#", "CasherClosed/#", "CasherClosed_Sub/#",
+				"Banks", "Branches", "StockEmp", "Stock", "SafeEmp", "Safe", "OperationPermission", "UserPermissions", "Users", "AccountEmp",
+				"EmpBranches", "Employee", "Offer", "OfferClient", "OfferItem"
 				};
 				try
 				{
@@ -65,8 +138,12 @@ namespace SmartAuditERP
 				}
 				if (ConnectBroker._syncItems)
 				{
+					// P5-008/P5-009 fix: الاشتراك بمواضيع البدل للأصناف (Items/#…) يطابق نشر
+					// العنصر الواحد (Items/5) والكتالوج الكامل (Items) معًا (مواصفة MQTT:
+					// الاشتراك «X/#» يشمل مستوى X نفسه). Customers نُقل هنا لأن معالجه
+					// (MqttMsgReceivedItems) هو من يتعامل معه فعلًا.
 					string[] array;
-					array = new string[8] { "Items", "ItemsUnit", "ItemPrices", "ItemComponents", "ItemSerialNo", "ItemBarcode", "ItemsCategory", "Units" };
+					array = new string[9] { "Items/#", "ItemsUnit/#", "ItemPrices/#", "ItemComponents/#", "ItemSerialNo/#", "ItemBarcode/#", "ItemsCategory/#", "Units/#", "Customers" };
 					foreach (string text in array)
 					{
 						ConnectBroker.mqttClient.Subscribe(new string[1] { ConnectBroker.ClientCode + text }, new byte[1] { 1 });
@@ -76,11 +153,13 @@ namespace SmartAuditERP
 				}
 				if (ConnectBroker._syncOper)
 				{
+					// P5-008 fix: قائمة المعاملات تطابق ما يعالجه MqttMsgReceivedOper
+					// فعلًا — كانت تشترك في Customers/AccountCust/AccountIndex بلا معالج
+					// هنا (تسقط في default)، وفي تكرار CasherClosed مرتين.
 					string[] array2;
-					array2 = new string[12]
+					array2 = new string[7]
 					{
-					"Customers", "AccountCust", "AccountIndex", "CasherClosed", "CasherClosed_Sub", "Inv/#", "InvSub/#", "entry/#", "entryDetails/#", "Receipts/#",
-					"CasherClosed/#", "CasherClosed_Sub/#"
+					"Inv/#", "InvSub/#", "entry/#", "entryDetails/#", "Receipts/#", "CasherClosed/#", "CasherClosed_Sub/#"
 					};
 					foreach (string text2 in array2)
 					{
@@ -91,11 +170,15 @@ namespace SmartAuditERP
 				}
 				if (ConnectBroker._syncDefinitions)
 				{
+					// P5-008 fix: القائمة تطابق معالجات MqttMsgReceiveddefinitions — أضيفت
+					// المواضيع التي لها معالج ولم تكن مشتركة أبدًا
+					// (AccountCust/AccountIndex/Offer/OfferClient/OfferItem/Safe) ونُقلت
+					// من قائمة المعاملات التي كانت تشترك بها بلا معالج هناك.
 					string[] array3;
-					array3 = new string[11]
+					array3 = new string[17]
 					{
-					"Banks", "Branches", "StockEmp", "Stock", "SafeEmp", "OperationPermission", "UserPermissions", "Users", "AccountEmp", "EmpBranches",
-					"Employee"
+					"AccountCust", "AccountIndex", "Banks", "Branches", "StockEmp", "Stock", "Safe", "SafeEmp", "OperationPermission", "UserPermissions", "Users",
+					"AccountEmp", "EmpBranches", "Employee", "Offer", "OfferClient", "OfferItem"
 					};
 					foreach (string text3 in array3)
 					{
@@ -150,17 +233,20 @@ namespace SmartAuditERP
 			{
 				string cipherText;
 				cipherText = Encoding.UTF8.GetString(e.Message);
-				cipherText = ReceivedData.ConEncrypt.DecryptString(cipherText, ReceivedData._passcode).Replace(ReceivedData._passcode, "");
+				cipherText = ReceivedData.DecryptEnvelope(ReceivedData.ConEncrypt.DecryptString(cipherText, ReceivedData._passcode));
 				if (string.IsNullOrWhiteSpace(cipherText))
 				{
 					Console.WriteLine("Received an empty or invalid message.");
 					return;
 				}
-				string text;
-				text = e.Topic.Replace(ConnectBroker.ClientCode, "");
+				// P5-009/P5-012 fix: عائلة الموضوع بمعزل عن حالة الأحرف في البادئة،
+				// ومعرف السجل من المقطع الثاني (كان يُستهلك ويُهدر _) مع حماية الطول —
+				// الموضوع الأب (Inv بلا «/») يترك المعرف null بدل استثناء يُبتلع فتضيع
+				// الرسالة كاملة.
 				string text2;
-				text2 = text.Split('/')[0];
-				_ = text.Split('/')[1];
+				text2 = ReceivedData.TopicFamily(e.Topic);
+				string recordId;
+				recordId = ReceivedData.TopicRecordId(e.Topic);
 				switch (text2)
 				{
 					case "Inv":
@@ -178,7 +264,7 @@ namespace SmartAuditERP
 					case "InvSub":
 						try
 						{
-							ReceivedData.InsertInvSub(JsonConvert.DeserializeObject<List<listInvSub>>(cipherText));
+							ReceivedData.InsertInvSub(JsonConvert.DeserializeObject<List<listInvSub>>(cipherText), recordId);
 							break;
 						}
 						catch (Exception projectError6)
@@ -202,7 +288,7 @@ namespace SmartAuditERP
 					case "entryDetails":
 						try
 						{
-							ReceivedData.InsertEntrySub(JsonConvert.DeserializeObject<List<ListEntrySub>>(cipherText));
+							ReceivedData.InsertEntrySub(JsonConvert.DeserializeObject<List<ListEntrySub>>(cipherText), recordId);
 							break;
 						}
 						catch (Exception projectError4)
@@ -267,7 +353,7 @@ namespace SmartAuditERP
 				string cipherText;
 				cipherText = Encoding.UTF8.GetString(e.Message);
 				_ = ReceivedData._passcode;
-				cipherText = ReceivedData.ConEncrypt.DecryptString(cipherText, ReceivedData._passcode).Replace(ReceivedData._passcode, "");
+				cipherText = ReceivedData.DecryptEnvelope(ReceivedData.ConEncrypt.DecryptString(cipherText, ReceivedData._passcode));
 				string topic;
 				topic = e.Topic;
 				if (topic.EndsWith("AccountCust"))
@@ -354,44 +440,43 @@ namespace SmartAuditERP
 				string cipherText;
 				cipherText = Encoding.UTF8.GetString(e.Message);
 				_ = ReceivedData._passcode;
-				cipherText = ReceivedData.ConEncrypt.DecryptString(cipherText, ReceivedData._passcode).Replace(ReceivedData._passcode, "");
-				string topic;
-				topic = e.Topic;
-				if (topic.EndsWith("Items"))
+				cipherText = ReceivedData.DecryptEnvelope(ReceivedData.ConEncrypt.DecryptString(cipherText, ReceivedData._passcode));
+				// P5-009 fix: التوزيع بالمقطع الأول من الموضوع (Items/5 → "Items")
+				// بدل EndsWith — لا يستقبل النشر الفردي إلا بهذا الشكل، ويظل
+				// متوافقًا مع النشر الكتالوجي القديم (Items).
+				string text2;
+				text2 = ReceivedData.TopicFamily(e.Topic);
+				string recordId;
+				recordId = ReceivedData.TopicRecordId(e.Topic);
+				switch (text2)
 				{
-					ReceivedData.InsertItems(JsonConvert.DeserializeObject<List<ListItems>>(cipherText));
-				}
-				else if (topic.EndsWith("ItemsUnit"))
-				{
-					ReceivedData.InsertItemUnits(JsonConvert.DeserializeObject<List<ListItemunit>>(cipherText), ReceivedData.connString);
-				}
-				else if (topic.EndsWith("ItemPrices"))
-				{
-					ReceivedData.InsertItemPrice(JsonConvert.DeserializeObject<List<ItemPrices>>(cipherText));
-				}
-				else if (topic.EndsWith("ItemComponents"))
-				{
-					ReceivedData.InsertItemComponents(JsonConvert.DeserializeObject<List<ItemComponent>>(cipherText));
-				}
-				else if (topic.EndsWith("ItemSerialNo"))
-				{
-					ReceivedData.InsertItemSerialNo(JsonConvert.DeserializeObject<List<ItemSerialNo>>(cipherText));
-				}
-				else if (topic.EndsWith("Customers"))
-				{
-					ReceivedData.InsertCustomers(JsonConvert.DeserializeObject<List<ListCustomers>>(cipherText));
-				}
-				else if (topic.EndsWith("ItemsCategory"))
-				{
-					ReceivedData.insertItemCategory(JsonConvert.DeserializeObject<List<ListItemsCategory>>(cipherText));
-				}
-				else if (topic.EndsWith("ItemBarcode"))
-				{
-					ReceivedData.insertItemBarcode(JsonConvert.DeserializeObject<List<listItemBarcode>>(cipherText));
-				}
-				else if (topic.EndsWith("Units"))
-				{
-					ReceivedData.InsertUnits(JsonConvert.DeserializeObject<List<ListUnit>>(cipherText));
+					case "Items":
+						ReceivedData.InsertItems(JsonConvert.DeserializeObject<List<ListItems>>(cipherText));
+						break;
+					case "ItemsUnit":
+						ReceivedData.InsertItemUnits(JsonConvert.DeserializeObject<List<ListItemunit>>(cipherText), ReceivedData.connString, recordId);
+						break;
+					case "ItemPrices":
+						ReceivedData.InsertItemPrice(JsonConvert.DeserializeObject<List<ItemPrices>>(cipherText));
+						break;
+					case "ItemComponents":
+						ReceivedData.InsertItemComponents(JsonConvert.DeserializeObject<List<ItemComponent>>(cipherText), recordId);
+						break;
+					case "ItemSerialNo":
+						ReceivedData.InsertItemSerialNo(JsonConvert.DeserializeObject<List<ItemSerialNo>>(cipherText), recordId);
+						break;
+					case "Customers":
+						ReceivedData.InsertCustomers(JsonConvert.DeserializeObject<List<ListCustomers>>(cipherText));
+						break;
+					case "ItemsCategory":
+						ReceivedData.insertItemCategory(JsonConvert.DeserializeObject<List<ListItemsCategory>>(cipherText));
+						break;
+					case "ItemBarcode":
+						ReceivedData.insertItemBarcode(JsonConvert.DeserializeObject<List<listItemBarcode>>(cipherText), recordId);
+						break;
+					case "Units":
+						ReceivedData.InsertUnits(JsonConvert.DeserializeObject<List<ListUnit>>(cipherText));
+						break;
 				}
 			}
 			catch (Exception ex)
@@ -457,43 +542,52 @@ namespace SmartAuditERP
 			ReceivedData.conn.Close();
 		}
 
-		private static void InsertItemUnits(List<ListItemunit> units, string Connstring)
-		{
-			using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(Connstring))
+		private static void InsertItemUnits(List<ListItemunit> units, string Connstring, string flushItemId)
 			{
+				// P5-021 fix: عقد استبدال لكل صنف — تُحذف صفوف الصنف ثم تُدرج صفوف
+				// الحمولة (المرسل يرسل كل صفوف الصنف الحالية). كان upsert بلا حذف
+				// فلا يصل حذف أي صف تابع (وحدة/مكون/باركود) حُذف عند المصدر، ومعرّف
+				// الصنف من الموضوع يفرّغ الصنف عندما تصل حمولته فارغة.
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(Connstring);
 				try
 				{
-					new SqlCommand();
 					sqlConnection.Open();
+					List<int> scopeItems = new List<int>();
 					foreach (ListItemunit unit in units)
 					{
-						SqlCommand sqlCommand;
-						sqlCommand = new SqlCommand("SELECT COUNT(*) FROM ItemUnits WHERE Itemid = @Itemid AND unit = @unit", sqlConnection);
-						sqlCommand.Parameters.AddWithValue("@Itemid", unit.Itemid);
-						sqlCommand.Parameters.AddWithValue("@unit", unit.unite);
-						if (Conversions.ToInteger(sqlCommand.ExecuteScalar()) > 0)
+						if (!scopeItems.Contains(unit.Itemid))
 						{
-							SqlCommand sqlCommand2;
-							sqlCommand2 = new SqlCommand("UPDATE ItemUnits SET perc = @perc, purch = @purch, sale = @sale, barcode = @barcode WHERE Itemid = @Itemid AND unit = @unit", sqlConnection);
-							sqlCommand2.Parameters.AddWithValue("@Itemid", unit.Itemid);
-							sqlCommand2.Parameters.AddWithValue("@unit", unit.unite);
-							sqlCommand2.Parameters.AddWithValue("@perc", unit.perc);
-							sqlCommand2.Parameters.AddWithValue("@purch", unit.purch);
-							sqlCommand2.Parameters.AddWithValue("@sale", unit.sale);
-							sqlCommand2.Parameters.AddWithValue("@barcode", unit.barcode);
-							sqlCommand2.ExecuteNonQuery();
+							scopeItems.Add(unit.Itemid);
 						}
-						else
+					}
+					if (!string.IsNullOrEmpty(flushItemId))
+					{
+						int flushId;
+						if (int.TryParse(flushItemId, out flushId) && flushId != 0 && !scopeItems.Contains(flushId))
 						{
-							SqlCommand sqlCommand2;
-							sqlCommand2 = new SqlCommand("INSERT INTO ItemUnits (Itemid, unit, perc, purch, sale, barcode) \r\n                                           VALUES (@Itemid, @unit, @perc, @purch, @sale, @barcode)", sqlConnection);
-							sqlCommand2.Parameters.AddWithValue("@Itemid", unit.Itemid);
-							sqlCommand2.Parameters.AddWithValue("@unit", unit.unite);
-							sqlCommand2.Parameters.AddWithValue("@perc", unit.perc);
-							sqlCommand2.Parameters.AddWithValue("@purch", unit.purch);
-							sqlCommand2.Parameters.AddWithValue("@sale", unit.sale);
-							sqlCommand2.Parameters.AddWithValue("@barcode", unit.barcode);
-							sqlCommand2.ExecuteNonQuery();
+							scopeItems.Add(flushId);
+						}
+					}
+					foreach (int itemId in scopeItems)
+					{
+						SqlCommand deleteCmd = new SqlCommand("delete from ItemUnits where ItemId = @Itemid", sqlConnection);
+						deleteCmd.Parameters.AddWithValue("@Itemid", itemId);
+						deleteCmd.ExecuteNonQuery();
+						foreach (ListItemunit unit2 in units)
+						{
+							if (unit2.Itemid != itemId)
+							{
+								continue;
+							}
+							SqlCommand sqlCommand;
+							sqlCommand = new SqlCommand("INSERT INTO ItemUnits (Itemid, unit, perc, purch, sale, barcode) \r\n                                           VALUES (@Itemid, @unit, @perc, @purch, @sale, @barcode)", sqlConnection);
+							sqlCommand.Parameters.AddWithValue("@Itemid", unit2.Itemid);
+							sqlCommand.Parameters.AddWithValue("@unit", unit2.unite);
+							sqlCommand.Parameters.AddWithValue("@perc", unit2.perc);
+							sqlCommand.Parameters.AddWithValue("@purch", unit2.purch);
+							sqlCommand.Parameters.AddWithValue("@sale", unit2.sale);
+							sqlCommand.Parameters.AddWithValue("@barcode", unit2.barcode);
+							sqlCommand.ExecuteNonQuery();
 						}
 					}
 				}
@@ -503,8 +597,6 @@ namespace SmartAuditERP
 					ProjectData.ClearProjectError();
 				}
 			}
-			ReceivedData.conn.Close();
-		}
 
 		public static void InsertItemPrice(List<ItemPrices> prices)
 		{
@@ -574,67 +666,97 @@ namespace SmartAuditERP
 			return result;
 		}
 
-		public static void InsertItemComponents(List<ItemComponent> itemComponents)
-		{
-			ReceivedData.connString = ReceivedData.connString;
-			new SqlCommand();
-			using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
-			try
+		public static void InsertItemComponents(List<ItemComponent> itemComponents, string flushItemId)
 			{
-				sqlConnection.Open();
-				foreach (ItemComponent itemComponent in itemComponents)
+				// P5-021 fix: نفس عقد الاستبدال لكل صنف — حذف مكونات الصنف ثم إدراج
+				// الحمولة، ومعرّف الصنف من الموضوع يفرّغ عندما تكون الحمولة فارغة.
+				ReceivedData.connString = ReceivedData.connString;
+				new SqlCommand();
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
+				try
 				{
-					using SqlCommand sqlCommand = new SqlCommand("SELECT COUNT(*) FROM ItemComponents WHERE Id = @Id", sqlConnection);
-					sqlCommand.Parameters.AddWithValue("@Id", itemComponent.Id);
-					SqlCommand sqlCommand2;
-					sqlCommand2 = ((Convert.ToInt32(RuntimeHelpers.GetObjectValue(sqlCommand.ExecuteScalar())) <= 0) ? new SqlCommand("\r\n                            INSERT INTO ItemComponents \r\n                            (Id, itemId, ComponentId, price, quantity, unit, total, type, store) \r\n                            VALUES \r\n                            (@Id, @ItemId, @ComponentId, @Price, @Quantity, @Unit, @Total, @Type, @Store)", sqlConnection) : new SqlCommand("\r\n                            UPDATE ItemComponents \r\n                            SET \r\n                                itemId = @ItemId, \r\n                                ComponentId = @ComponentId, \r\n                                price = @Price, \r\n                                quantity = @Quantity, \r\n                                unit = @Unit, \r\n                                total = @Total, \r\n                                type = @Type, \r\n                                store = @Store \r\n                            WHERE Id = @Id", sqlConnection));
-					sqlCommand2.Parameters.AddWithValue("@ItemId", itemComponent.ItemId);
-					sqlCommand2.Parameters.AddWithValue("@ComponentId", itemComponent.ComponentId);
-					sqlCommand2.Parameters.AddWithValue("@Price", itemComponent.Price);
-					sqlCommand2.Parameters.AddWithValue("@Quantity", itemComponent.Quantity);
-					sqlCommand2.Parameters.AddWithValue("@Unit", itemComponent.Unit);
-					sqlCommand2.Parameters.AddWithValue("@Total", itemComponent.Total);
-					sqlCommand2.Parameters.AddWithValue("@Type", itemComponent.Type);
-					sqlCommand2.Parameters.AddWithValue("@Store", itemComponent.Store);
-					sqlCommand2.Parameters.AddWithValue("@Id", itemComponent.Id);
-					sqlCommand2.ExecuteNonQuery();
+					sqlConnection.Open();
+					List<int> scopeItems = new List<int>();
+					foreach (ItemComponent itemComponent in itemComponents)
+					{
+						if (!scopeItems.Contains(itemComponent.ItemId))
+						{
+							scopeItems.Add(itemComponent.ItemId);
+						}
+					}
+					if (!string.IsNullOrEmpty(flushItemId))
+					{
+						int flushId;
+						if (int.TryParse(flushItemId, out flushId) && flushId != 0 && !scopeItems.Contains(flushId))
+						{
+							scopeItems.Add(flushId);
+						}
+					}
+					foreach (int itemId in scopeItems)
+					{
+						SqlCommand deleteCmd = new SqlCommand("delete from ItemComponents where itemId = @ItemId", sqlConnection);
+						deleteCmd.Parameters.AddWithValue("@ItemId", itemId);
+						deleteCmd.ExecuteNonQuery();
+						foreach (ItemComponent itemComponent2 in itemComponents)
+						{
+							if (itemComponent2.ItemId != itemId)
+							{
+								continue;
+							}
+							SqlCommand sqlCommand;
+							sqlCommand = new SqlCommand("\r\n                            INSERT INTO ItemComponents \r\n                            (Id, itemId, ComponentId, price, quantity, unit, total, type, store) \r\n                            VALUES \r\n                            (@Id, @ItemId, @ComponentId, @Price, @Quantity, @Unit, @Total, @Type, @Store)", sqlConnection);
+							sqlCommand.Parameters.AddWithValue("@ItemId", itemComponent2.ItemId);
+							sqlCommand.Parameters.AddWithValue("@ComponentId", itemComponent2.ComponentId);
+							sqlCommand.Parameters.AddWithValue("@Price", itemComponent2.Price);
+							sqlCommand.Parameters.AddWithValue("@Quantity", itemComponent2.Quantity);
+							sqlCommand.Parameters.AddWithValue("@Unit", itemComponent2.Unit);
+							sqlCommand.Parameters.AddWithValue("@Total", itemComponent2.Total);
+							sqlCommand.Parameters.AddWithValue("@Type", itemComponent2.Type);
+							sqlCommand.Parameters.AddWithValue("@Store", itemComponent2.Store);
+							sqlCommand.Parameters.AddWithValue("@Id", itemComponent2.Id);
+							sqlCommand.ExecuteNonQuery();
+						}
+					}
+				}
+				catch (Exception projectError)
+				{
+					ProjectData.SetProjectError(projectError);
+					ProjectData.ClearProjectError();
 				}
 			}
-			catch (Exception projectError)
-			{
-				ProjectData.SetProjectError(projectError);
-				ProjectData.ClearProjectError();
-			}
-		}
 
-		public static void InsertItemSerialNo(List<ItemSerialNo> itemSerialNoList)
-		{
-			ReceivedData.connString = ReceivedData.connString;
-			new SqlCommand();
-			using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
-			try
+		public static void InsertItemSerialNo(List<ItemSerialNo> itemSerialNoList, string flushItemId)
 			{
-				sqlConnection.Open();
-				foreach (ItemSerialNo itemSerialNo in itemSerialNoList)
+				// P5-014 fix: مفتاح الوجود هو (ItemId, SerialNo) — كان الفحص يمرر
+				// itemSerialNo.Id (معرف الصف) في @ItemId فلا يطابق شيئًا أبدًا: كل
+				// إعادة استلام تحاول INSERT بمعرف موجود (فشل مبتلع يوقف بقية الدفعة)
+				// وفرع UPDATE (WHERE Id=@Id) لا يُوصل أبدًا.
+				ReceivedData.connString = ReceivedData.connString;
+				new SqlCommand();
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
+				try
 				{
-					using SqlCommand sqlCommand = new SqlCommand("SELECT COUNT(*) FROM ItemSerialNo WHERE ItemId = @ItemId and SerialNo=@SerialNo", sqlConnection);
-					sqlCommand.Parameters.AddWithValue("@ItemId", itemSerialNo.Id);
-					sqlCommand.Parameters.AddWithValue("@SerialNo", itemSerialNo.SerialNo);
-					SqlCommand sqlCommand2;
-					sqlCommand2 = ((Convert.ToInt32(RuntimeHelpers.GetObjectValue(sqlCommand.ExecuteScalar())) <= 0) ? new SqlCommand("INSERT INTO ItemSerialNo (Id, ItemId, SerialNo, InvGlobalID) VALUES (@Id, @ItemId, @SerialNo, @InvGlobalID)", sqlConnection) : new SqlCommand("UPDATE ItemSerialNo SET ItemId = @ItemId, SerialNo = @SerialNo, InvGlobalID = @InvGlobalID WHERE Id = @Id", sqlConnection));
-					sqlCommand2.Parameters.AddWithValue("@ItemId", itemSerialNo.ItemId);
-					sqlCommand2.Parameters.AddWithValue("@SerialNo", itemSerialNo.SerialNo);
-					sqlCommand2.Parameters.AddWithValue("@InvGlobalID", itemSerialNo.InvGlobalID);
-					sqlCommand2.Parameters.AddWithValue("@Id", itemSerialNo.Id);
-					sqlCommand2.ExecuteNonQuery();
+					sqlConnection.Open();
+					foreach (ItemSerialNo itemSerialNo in itemSerialNoList)
+					{
+						using SqlCommand sqlCommand = new SqlCommand("SELECT COUNT(*) FROM ItemSerialNo WHERE ItemId = @ItemId and SerialNo=@SerialNo", sqlConnection);
+						sqlCommand.Parameters.AddWithValue("@ItemId", itemSerialNo.ItemId);
+						sqlCommand.Parameters.AddWithValue("@SerialNo", itemSerialNo.SerialNo);
+						SqlCommand sqlCommand2;
+						sqlCommand2 = ((Convert.ToInt32(RuntimeHelpers.GetObjectValue(sqlCommand.ExecuteScalar())) <= 0) ? new SqlCommand("INSERT INTO ItemSerialNo (Id, ItemId, SerialNo, InvGlobalID) VALUES (@Id, @ItemId, @SerialNo, @InvGlobalID)", sqlConnection) : new SqlCommand("UPDATE ItemSerialNo SET InvGlobalID = @InvGlobalID WHERE ItemId = @ItemId and SerialNo=@SerialNo", sqlConnection));
+						sqlCommand2.Parameters.AddWithValue("@ItemId", itemSerialNo.ItemId);
+						sqlCommand2.Parameters.AddWithValue("@SerialNo", itemSerialNo.SerialNo);
+						sqlCommand2.Parameters.AddWithValue("@InvGlobalID", itemSerialNo.InvGlobalID);
+						sqlCommand2.Parameters.AddWithValue("@Id", itemSerialNo.Id);
+						sqlCommand2.ExecuteNonQuery();
+					}
+				}
+				catch (Exception projectError)
+				{
+					ProjectData.SetProjectError(projectError);
+					ProjectData.ClearProjectError();
 				}
 			}
-			catch (Exception projectError)
-			{
-				ProjectData.SetProjectError(projectError);
-				ProjectData.ClearProjectError();
-			}
-		}
 
 		public static void InsertCustomers(List<ListCustomers> customers)
 		{
@@ -761,44 +883,57 @@ namespace SmartAuditERP
 			}
 		}
 
-		public static void insertItemBarcode(List<listItemBarcode> ItemId)
-		{
-			ReceivedData.connString = ReceivedData.connString;
-			using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
-			try
+		public static void insertItemBarcode(List<listItemBarcode> ItemId, string flushItemId)
 			{
-				sqlConnection.Open();
-				foreach (listItemBarcode item in ItemId)
+				// P5-021 fix: نفس عقد الاستبدال لكل صنف — حذف باركود الصنف ثم إدراج
+				// حمولته، ومعرّف الموضوع يفرّغ الصنف عند الحمولة الفارغة. كان الفرع
+				// «if (0 - flag…) > 0» غير قابل للتحقق أصلًا (شرط دائمًا false)
+				// فلا يوجد UPDATE إطلاقًا.
+				ReceivedData.connString = ReceivedData.connString;
+				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
+				try
 				{
-					bool flag;
-					using (SqlCommand sqlCommand = new SqlCommand("SELECT COUNT(*) FROM Itembarcodes WHERE ItemId = @ItemId and Barcode=@Barcode", sqlConnection))
+					sqlConnection.Open();
+					List<int> scopeItems = new List<int>();
+					foreach (listItemBarcode item in ItemId)
 					{
-						sqlCommand.Parameters.AddWithValue("@ItemId", item.ItemId);
-						sqlCommand.Parameters.AddWithValue("@Barcode", item.Barcode);
-						flag = Convert.ToInt32(RuntimeHelpers.GetObjectValue(sqlCommand.ExecuteScalar())) != 0;
+						if (!scopeItems.Contains(item.ItemId))
+						{
+							scopeItems.Add(item.ItemId);
+						}
 					}
-					if (0 - (flag ? 1 : 0) > 0)
+					if (!string.IsNullOrEmpty(flushItemId))
 					{
-						using SqlCommand sqlCommand2 = new SqlCommand("\r\n                        UPDATE Itembarcodes\r\n                        SET \r\n                            ItemId = @ItemId,\r\n                            Barcode = @Barcode                         \r\n                        WHERE ItemId = @ItemId and Barcode=@Barcode", sqlConnection);
-						sqlCommand2.Parameters.AddWithValue("@ItemId", item.ItemId);
-						sqlCommand2.Parameters.AddWithValue("@Barcode", item.Barcode);
-						sqlCommand2.ExecuteNonQuery();
+						int flushId;
+						if (int.TryParse(flushItemId, out flushId) && flushId != 0 && !scopeItems.Contains(flushId))
+						{
+							scopeItems.Add(flushId);
+						}
 					}
-					else
+					foreach (int itemId in scopeItems)
 					{
-						using SqlCommand sqlCommand3 = new SqlCommand("\r\n                        INSERT INTO Itembarcodes\r\n                            (ItemId,Barcode)\r\n                        VALUES\r\n                            (@ItemId, @Barcode)", sqlConnection);
-						sqlCommand3.Parameters.AddWithValue("@ItemId", item.ItemId);
-						sqlCommand3.Parameters.AddWithValue("@Barcode", item.Barcode);
-						sqlCommand3.ExecuteNonQuery();
+						SqlCommand deleteCmd = new SqlCommand("delete from Itembarcodes where ItemId = @ItemId", sqlConnection);
+						deleteCmd.Parameters.AddWithValue("@ItemId", itemId);
+						deleteCmd.ExecuteNonQuery();
+						foreach (listItemBarcode item2 in ItemId)
+						{
+							if (item2.ItemId != itemId)
+							{
+								continue;
+							}
+							using SqlCommand sqlCommand3 = new SqlCommand("\r\n                        INSERT INTO Itembarcodes\r\n                            (ItemId,Barcode)\r\n                        VALUES\r\n                            (@ItemId, @Barcode)", sqlConnection);
+							sqlCommand3.Parameters.AddWithValue("@ItemId", item2.ItemId);
+							sqlCommand3.Parameters.AddWithValue("@Barcode", item2.Barcode);
+							sqlCommand3.ExecuteNonQuery();
+						}
 					}
 				}
+				catch (Exception projectError)
+				{
+					ProjectData.SetProjectError(projectError);
+					ProjectData.ClearProjectError();
+				}
 			}
-			catch (Exception projectError)
-			{
-				ProjectData.SetProjectError(projectError);
-				ProjectData.ClearProjectError();
-			}
-		}
 
 		public static void InsertUnits(List<ListUnit> units)
 		{
@@ -1043,45 +1178,57 @@ namespace SmartAuditERP
 		}
 
 		private static void InsertOperPrimisson(List<ListOperationPermission> permissionsList)
-		{
-			try
 			{
-				new SqlCommand();
-				using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString))
+				try
 				{
-					sqlConnection.Open();
-					foreach (ListOperationPermission permissions in permissionsList)
+					new SqlCommand();
+					using (SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString))
 					{
-						SqlCommand sqlCommand;
-						sqlCommand = new SqlCommand("delete from OperationPermission where OperNo>7 and  emp=" + Conversions.ToString(permissions.emp), sqlConnection);
-						sqlCommand.Parameters.AddWithValue("@emp", permissions.emp);
-						sqlCommand.ExecuteNonQuery();
-						sqlCommand = new SqlCommand("update  OperationPermission set Activated= 0  where  emp=" + Conversions.ToString(permissions.emp), sqlConnection);
-						sqlCommand.Parameters.AddWithValue("@emp", permissions.emp);
-						sqlCommand.ExecuteNonQuery();
-						sqlCommand = new SqlCommand("insert into OperationPermission(emp,OperNo,pwd,lastChanged,IS_Deleted,OperVal,Activated)values(@emp,@OperNo,@pwd,@lastChanged,@IS_Deleted,@OperVal,@Activated)", sqlConnection);
-						sqlCommand.Parameters.AddWithValue("@id", permissions.id);
-						sqlCommand.Parameters.AddWithValue("@emp", permissions.emp);
-						sqlCommand.Parameters.AddWithValue("@Pwd", permissions.Pwd);
-						sqlCommand.Parameters.AddWithValue("@OperNo", permissions.OperNo);
-						sqlCommand.Parameters.AddWithValue("@OperVal", permissions.OperVal);
-						sqlCommand.Parameters.AddWithValue("@lastChanged", permissions.lastChanged);
-						sqlCommand.Parameters.AddWithValue("@IS_Deleted", permissions.IS_Deleted);
-						sqlCommand.Parameters.AddWithValue("@Activated", permissions.Activated);
-						sqlCommand.ExecuteNonQuery();
+						sqlConnection.Open();
+							// P5-013 fix: إعادة التعيين (حذف >7 وتعطيل الكل) مرة واحدة لكل موظف
+							// مختلف في الدفعة، ثم إدراج كل الصفوف — كانت تُنفَّذ داخل حلقة الصفوف
+							// فكان كل صف وارد يلغي صفوف الموظف نفسه المدرجة قبله ولا يبقى إلا
+							// آخر صف. كما صارت شروط الموظف بمعاملات بدل الدمج النصي.
+							List<int> resetDone = new List<int>();
+							foreach (ListOperationPermission permissions in permissionsList)
+							{
+								if (resetDone.Contains(permissions.emp))
+								{
+									continue;
+								}
+								resetDone.Add(permissions.emp);
+								SqlCommand resetDelete = new SqlCommand("delete from OperationPermission where OperNo>7 and emp=@emp", sqlConnection);
+								resetDelete.Parameters.AddWithValue("@emp", permissions.emp);
+								resetDelete.ExecuteNonQuery();
+								SqlCommand resetDeactivate = new SqlCommand("update OperationPermission set Activated=0 where emp=@emp", sqlConnection);
+								resetDeactivate.Parameters.AddWithValue("@emp", permissions.emp);
+								resetDeactivate.ExecuteNonQuery();
+							}
+							foreach (ListOperationPermission permissions2 in permissionsList)
+							{
+								SqlCommand sqlCommand;
+								sqlCommand = new SqlCommand("insert into OperationPermission(emp,OperNo,pwd,lastChanged,IS_Deleted,OperVal,Activated)values(@emp,@OperNo,@pwd,@lastChanged,@IS_Deleted,@OperVal,@Activated)", sqlConnection);
+								sqlCommand.Parameters.AddWithValue("@emp", permissions2.emp);
+								sqlCommand.Parameters.AddWithValue("@Pwd", permissions2.Pwd);
+								sqlCommand.Parameters.AddWithValue("@OperNo", permissions2.OperNo);
+								sqlCommand.Parameters.AddWithValue("@OperVal", permissions2.OperVal);
+								sqlCommand.Parameters.AddWithValue("@lastChanged", permissions2.lastChanged);
+								sqlCommand.Parameters.AddWithValue("@IS_Deleted", permissions2.IS_Deleted);
+								sqlCommand.Parameters.AddWithValue("@Activated", permissions2.Activated);
+								sqlCommand.ExecuteNonQuery();
+							}
+						}
+					if (ReceivedData.conn.State == ConnectionState.Open)
+					{
+						ReceivedData.conn.Close();
 					}
 				}
-				if (ReceivedData.conn.State == ConnectionState.Open)
+				catch (Exception projectError)
 				{
-					ReceivedData.conn.Close();
+					ProjectData.SetProjectError(projectError);
+					ProjectData.ClearProjectError();
 				}
 			}
-			catch (Exception projectError)
-			{
-				ProjectData.SetProjectError(projectError);
-				ProjectData.ClearProjectError();
-			}
-		}
 
 		private static void InsertUsers(List<ListUsers> usersList)
 		{
@@ -1168,7 +1315,7 @@ namespace SmartAuditERP
 					sqlConnection.Open();
 					foreach (ListInvoice invoice in invoices)
 					{
-						if (!invoice.InvGlobalID.StartsWith((Conversions.ToString(MainClass.BranchNo) ?? "") ?? ""))
+						if (ReceivedData.IsForeignGlobalID(invoice.InvGlobalID))
 						{
 							SqlCommand sqlCommand;
 							sqlCommand = new SqlCommand("select COUNT(*) FROM Inv WHERE InvGlobalID = @InvGlobalID", sqlConnection);
@@ -1247,106 +1394,155 @@ namespace SmartAuditERP
 			}
 		}
 
-		private static void InsertInvSub(List<listInvSub> invSubList)
-		{
-			try
+		private static void InsertInvSub(List<listInvSub> invSubList, string flushGlobalId)
 			{
-				new SqlCommand();
-				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
-				sqlConnection.Open();
-				foreach (listInvSub invSub in invSubList)
+				// P5-012 fix: تفريغ ثم إدراج بنود الفاتورة داخل معاملة واحدة وبنطاق من
+				// معرف السجل في الموضوع — كانت الحلقتان كتابات مستقلة (فشل بينهما يفقد
+				// البنود القديمة) والتفريغ لا يُعرَّف عندما تصل الحمولة فارغة (رأس حُذفت
+				// بنوده عند المصدر تبقى بنوده القديمة للأبد)، والحذف بُني بالدمج النصي.
+				try
 				{
-					if (!invSub.InvGlobalID.StartsWith((Conversions.ToString(MainClass.BranchNo) ?? "") ?? ""))
+					new SqlCommand();
+					using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
+					sqlConnection.Open();
+					using (SqlTransaction sqlTransaction = sqlConnection.BeginTransaction())
 					{
-						SqlCommand sqlCommand;
-						sqlCommand = new SqlCommand("delete FROM Inv_Sub WHERE InvGlobalID =N'" + invSub.InvGlobalID + "'", sqlConnection);
-						sqlCommand.Parameters.AddWithValue("@InvGlobalID", invSub.InvGlobalID);
-						sqlCommand.ExecuteNonQuery();
+						try
+						{
+							List<string> flushScopes = new List<string>();
+							if (!string.IsNullOrEmpty(flushGlobalId) && ReceivedData.IsForeignGlobalID(flushGlobalId))
+							{
+								flushScopes.Add(flushGlobalId);
+							}
+							foreach (listInvSub invSub in invSubList)
+							{
+								if (ReceivedData.IsForeignGlobalID(invSub.InvGlobalID) && !flushScopes.Contains(invSub.InvGlobalID))
+								{
+									flushScopes.Add(invSub.InvGlobalID);
+								}
+							}
+							foreach (string gid in flushScopes)
+							{
+								SqlCommand deleteCmd = new SqlCommand("delete FROM Inv_Sub WHERE InvGlobalID = @InvGlobalID", sqlConnection, sqlTransaction);
+								deleteCmd.Parameters.AddWithValue("@InvGlobalID", gid);
+								deleteCmd.ExecuteNonQuery();
+							}
+							foreach (listInvSub invSub2 in invSubList)
+							{
+								if (ReceivedData.IsForeignGlobalID(invSub2.InvGlobalID))
+								{
+									SqlCommand sqlCommand;
+									sqlCommand = new SqlCommand("\r\n                        INSERT INTO Inv_Sub \r\n                        (InvGlobalID, proc_id, proc_type, store, ItemId, unit, UnitEquality, val, val1, exchange_price, expire_date, taxperc, taxval, discount, notes, Description, ProductId, AvrgCost, CurrentQnty, ItemAddedCost, ItemPriceWithoutVAT, WithholdingTax, WithholdingTaxPerc, ItemCostCenter, ItemAdditionalTax, ItemAdditionalTaxPerc)\r\n                        VALUES \r\n                        (@InvGlobalID, @proc_id, @proc_type, @store, @ItemId, @unit, @UnitEquality, @val, @val1, @exchange_price, @expire_date, @taxperc, @taxval, @discount, @notes, @Description, @ProductId, @AvrgCost, @CurrentQnty, @ItemAddedCost, @ItemPriceWithoutVAT, @WithholdingTax, @WithholdingTaxPerc, @ItemCostCenter, @ItemAdditionalTax, @ItemAdditionalTaxPerc)", sqlConnection, sqlTransaction);
+									sqlCommand.Parameters.AddWithValue("@InvGlobalID", invSub2.InvGlobalID);
+									sqlCommand.Parameters.AddWithValue("@ItemId", invSub2.ItemId);
+									int? procID;
+									sqlCommand.Parameters.AddWithValue("@proc_id", RuntimeHelpers.GetObjectValue(((int?)(procID = invSub2.ProcID)).HasValue ? ((object)procID.GetValueOrDefault()) : DBNull.Value));
+									sqlCommand.Parameters.AddWithValue("@proc_type", RuntimeHelpers.GetObjectValue(((int?)(procID = invSub2.ProcType)).HasValue ? ((object)procID.GetValueOrDefault()) : DBNull.Value));
+									sqlCommand.Parameters.AddWithValue("@store", RuntimeHelpers.GetObjectValue(((int?)(procID = invSub2.Store)).HasValue ? ((object)procID.GetValueOrDefault()) : DBNull.Value));
+									sqlCommand.Parameters.AddWithValue("@unit", RuntimeHelpers.GetObjectValue(((int?)(procID = invSub2.Unit)).HasValue ? ((object)procID.GetValueOrDefault()) : DBNull.Value));
+									double? unitEquality;
+									sqlCommand.Parameters.AddWithValue("@UnitEquality", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.UnitEquality)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
+									sqlCommand.Parameters.AddWithValue("@val", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.Val)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
+									sqlCommand.Parameters.AddWithValue("@val1", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.Val1)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
+									sqlCommand.Parameters.AddWithValue("@exchange_price", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.ExchangePrice)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
+									DateTime? expireDate;
+									sqlCommand.Parameters.AddWithValue("@expire_date", RuntimeHelpers.GetObjectValue(((DateTime?)(expireDate = invSub2.ExpireDate)).HasValue ? ((object)expireDate.GetValueOrDefault()) : DBNull.Value));
+									sqlCommand.Parameters.AddWithValue("@taxperc", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.TaxPerc)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
+									sqlCommand.Parameters.AddWithValue("@taxval", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.TaxVal)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
+									sqlCommand.Parameters.AddWithValue("@discount", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.Discount)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
+									sqlCommand.Parameters.AddWithValue("@notes", RuntimeHelpers.GetObjectValue(((object)invSub2.Notes) ?? ((object)DBNull.Value)));
+									sqlCommand.Parameters.AddWithValue("@Description", RuntimeHelpers.GetObjectValue(((object)invSub2.Description) ?? ((object)DBNull.Value)));
+									sqlCommand.Parameters.AddWithValue("@ProductId", RuntimeHelpers.GetObjectValue(((int?)(procID = invSub2.ProductId)).HasValue ? ((object)procID.GetValueOrDefault()) : DBNull.Value));
+									sqlCommand.Parameters.AddWithValue("@AvrgCost", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.AvrgCost)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
+									sqlCommand.Parameters.AddWithValue("@CurrentQnty", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.CurrentQnty)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
+									sqlCommand.Parameters.AddWithValue("@ItemAddedCost", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.ItemAddedCost)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
+									sqlCommand.Parameters.AddWithValue("@ItemPriceWithoutVAT", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.ItemPriceWithoutVAT)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
+									sqlCommand.Parameters.AddWithValue("@WithholdingTax", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.WithholdingTax)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
+									sqlCommand.Parameters.AddWithValue("@WithholdingTaxPerc", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.WithholdingTaxPerc)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
+									sqlCommand.Parameters.AddWithValue("@ItemCostCenter", RuntimeHelpers.GetObjectValue(((object)invSub2.ItemCostCenter) ?? ((object)DBNull.Value)));
+									sqlCommand.Parameters.AddWithValue("@ItemAdditionalTax", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.ItemAdditionalTax)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
+									sqlCommand.Parameters.AddWithValue("@ItemAdditionalTaxPerc", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.ItemAdditionalTaxPerc)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
+									sqlCommand.ExecuteNonQuery();
+								}
+							}
+							sqlTransaction.Commit();
+						}
+						catch
+						{
+							sqlTransaction.Rollback();
+							throw;
+						}
 					}
 				}
-				foreach (listInvSub invSub2 in invSubList)
+				catch (Exception projectError)
 				{
-					if (!invSub2.InvGlobalID.StartsWith((Conversions.ToString(MainClass.BranchNo) ?? "") ?? ""))
-					{
-						SqlCommand sqlCommand;
-						sqlCommand = new SqlCommand("\r\n                        INSERT INTO Inv_Sub \r\n                        (InvGlobalID, proc_id, proc_type, store, ItemId, unit, UnitEquality, val, val1, exchange_price, expire_date, taxperc, taxval, discount, notes, Description, ProductId, AvrgCost, CurrentQnty, ItemAddedCost, ItemPriceWithoutVAT, WithholdingTax, WithholdingTaxPerc, ItemCostCenter, ItemAdditionalTax, ItemAdditionalTaxPerc)\r\n                        VALUES \r\n                        (@InvGlobalID, @proc_id, @proc_type, @store, @ItemId, @unit, @UnitEquality, @val, @val1, @exchange_price, @expire_date, @taxperc, @taxval, @discount, @notes, @Description, @ProductId, @AvrgCost, @CurrentQnty, @ItemAddedCost, @ItemPriceWithoutVAT, @WithholdingTax, @WithholdingTaxPerc, @ItemCostCenter, @ItemAdditionalTax, @ItemAdditionalTaxPerc)", sqlConnection);
-						sqlCommand.Parameters.AddWithValue("@InvGlobalID", invSub2.InvGlobalID);
-						sqlCommand.Parameters.AddWithValue("@ItemId", invSub2.ItemId);
-						int? procID;
-						sqlCommand.Parameters.AddWithValue("@proc_id", RuntimeHelpers.GetObjectValue(((int?)(procID = invSub2.ProcID)).HasValue ? ((object)procID.GetValueOrDefault()) : DBNull.Value));
-						sqlCommand.Parameters.AddWithValue("@proc_type", RuntimeHelpers.GetObjectValue(((int?)(procID = invSub2.ProcType)).HasValue ? ((object)procID.GetValueOrDefault()) : DBNull.Value));
-						sqlCommand.Parameters.AddWithValue("@store", RuntimeHelpers.GetObjectValue(((int?)(procID = invSub2.Store)).HasValue ? ((object)procID.GetValueOrDefault()) : DBNull.Value));
-						sqlCommand.Parameters.AddWithValue("@unit", RuntimeHelpers.GetObjectValue(((int?)(procID = invSub2.Unit)).HasValue ? ((object)procID.GetValueOrDefault()) : DBNull.Value));
-						double? unitEquality;
-						sqlCommand.Parameters.AddWithValue("@UnitEquality", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.UnitEquality)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
-						sqlCommand.Parameters.AddWithValue("@val", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.Val)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
-						sqlCommand.Parameters.AddWithValue("@val1", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.Val1)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
-						sqlCommand.Parameters.AddWithValue("@exchange_price", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.ExchangePrice)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
-						DateTime? expireDate;
-						sqlCommand.Parameters.AddWithValue("@expire_date", RuntimeHelpers.GetObjectValue(((DateTime?)(expireDate = invSub2.ExpireDate)).HasValue ? ((object)expireDate.GetValueOrDefault()) : DBNull.Value));
-						sqlCommand.Parameters.AddWithValue("@taxperc", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.TaxPerc)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
-						sqlCommand.Parameters.AddWithValue("@taxval", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.TaxVal)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
-						sqlCommand.Parameters.AddWithValue("@discount", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.Discount)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
-						sqlCommand.Parameters.AddWithValue("@notes", RuntimeHelpers.GetObjectValue(((object)invSub2.Notes) ?? ((object)DBNull.Value)));
-						sqlCommand.Parameters.AddWithValue("@Description", RuntimeHelpers.GetObjectValue(((object)invSub2.Description) ?? ((object)DBNull.Value)));
-						sqlCommand.Parameters.AddWithValue("@ProductId", RuntimeHelpers.GetObjectValue(((int?)(procID = invSub2.ProductId)).HasValue ? ((object)procID.GetValueOrDefault()) : DBNull.Value));
-						sqlCommand.Parameters.AddWithValue("@AvrgCost", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.AvrgCost)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
-						sqlCommand.Parameters.AddWithValue("@CurrentQnty", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.CurrentQnty)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
-						sqlCommand.Parameters.AddWithValue("@ItemAddedCost", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.ItemAddedCost)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
-						sqlCommand.Parameters.AddWithValue("@ItemPriceWithoutVAT", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.ItemPriceWithoutVAT)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
-						sqlCommand.Parameters.AddWithValue("@WithholdingTax", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.WithholdingTax)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
-						sqlCommand.Parameters.AddWithValue("@WithholdingTaxPerc", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.WithholdingTaxPerc)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
-						sqlCommand.Parameters.AddWithValue("@ItemCostCenter", RuntimeHelpers.GetObjectValue(((object)invSub2.ItemCostCenter) ?? ((object)DBNull.Value)));
-						sqlCommand.Parameters.AddWithValue("@ItemAdditionalTax", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.ItemAdditionalTax)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
-						sqlCommand.Parameters.AddWithValue("@ItemAdditionalTaxPerc", RuntimeHelpers.GetObjectValue(((double?)(unitEquality = invSub2.ItemAdditionalTaxPerc)).HasValue ? ((object)unitEquality.GetValueOrDefault()) : DBNull.Value));
-						sqlCommand.ExecuteNonQuery();
-					}
+					ProjectData.SetProjectError(projectError);
+					ProjectData.ClearProjectError();
 				}
 			}
-			catch (Exception projectError)
-			{
-				ProjectData.SetProjectError(projectError);
-				ProjectData.ClearProjectError();
-			}
-		}
 
-		private static void InsertEntrySub(List<ListEntrySub> entrySubList)
-		{
-			try
+		private static void InsertEntrySub(List<ListEntrySub> entrySubList, string flushGlobalId)
 			{
-				using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
-				sqlConnection.Open();
-				foreach (ListEntrySub entrySub in entrySubList)
+				try
 				{
-					if (!entrySub.EntryGlobalID.StartsWith((Conversions.ToString(MainClass.BranchNo) ?? "") ?? ""))
+					using SqlConnection sqlConnection = MainClass.CreateSqlConnection(ReceivedData.connString);
+					sqlConnection.Open();
+					// P5-012 fix: نفس عقد InsertInvSub — تفريغ بنطاق معرف الموضوع (يُعرّف
+					// الحمولة الفارغة) داخل معاملة واحدة، والحذف بمعامل بدل الدمج النصي.
+					using (SqlTransaction sqlTransaction = sqlConnection.BeginTransaction())
 					{
-						new SqlCommand("DELETE FROM Entry_sub WHERE EntryGlobalID =N'" + entrySub.EntryGlobalID + "'", sqlConnection).ExecuteNonQuery();
+						try
+						{
+							List<string> flushScopes = new List<string>();
+							if (!string.IsNullOrEmpty(flushGlobalId) && ReceivedData.IsForeignGlobalID(flushGlobalId))
+							{
+								flushScopes.Add(flushGlobalId);
+							}
+							foreach (ListEntrySub entrySub in entrySubList)
+							{
+								if (ReceivedData.IsForeignGlobalID(entrySub.EntryGlobalID) && !flushScopes.Contains(entrySub.EntryGlobalID))
+								{
+									flushScopes.Add(entrySub.EntryGlobalID);
+								}
+							}
+							foreach (string gid in flushScopes)
+							{
+								SqlCommand deleteCmd = new SqlCommand("DELETE FROM Entry_sub WHERE EntryGlobalID = @EntryGlobalID", sqlConnection, sqlTransaction);
+								deleteCmd.Parameters.AddWithValue("@EntryGlobalID", gid);
+								deleteCmd.ExecuteNonQuery();
+							}
+							foreach (ListEntrySub entrySub2 in entrySubList)
+							{
+								if (ReceivedData.IsForeignGlobalID(entrySub2.EntryGlobalID))
+								{
+									SqlCommand sqlCommand;
+									sqlCommand = new SqlCommand("\r\n                    INSERT INTO Entry_sub \r\n                    (EntryGlobalID, res_id, dept, credit, acc_no, CCcode, notes, branch)\r\n                    VALUES \r\n                    (@EntryGlobalID, @res_id, @dept, @credit, @acc_no, @CCcode, @notes, @branch)", sqlConnection, sqlTransaction);
+									sqlCommand.Parameters.AddWithValue("@EntryGlobalID", entrySub2.EntryGlobalID);
+									sqlCommand.Parameters.AddWithValue("@res_id", entrySub2.ResID);
+									sqlCommand.Parameters.AddWithValue("@dept", entrySub2.Dept);
+									sqlCommand.Parameters.AddWithValue("@credit", entrySub2.Credit);
+									sqlCommand.Parameters.AddWithValue("@acc_no", entrySub2.AccNo);
+									sqlCommand.Parameters.AddWithValue("@CCcode", entrySub2.CCCode);
+									sqlCommand.Parameters.AddWithValue("@notes", entrySub2.Notes);
+									sqlCommand.Parameters.AddWithValue("@branch", entrySub2.Branch);
+									sqlCommand.ExecuteNonQuery();
+								}
+							}
+							sqlTransaction.Commit();
+						}
+						catch
+						{
+							sqlTransaction.Rollback();
+							throw;
+						}
 					}
 				}
-				foreach (ListEntrySub entrySub2 in entrySubList)
+				catch (Exception projectError)
 				{
-					if (!entrySub2.EntryGlobalID.StartsWith((Conversions.ToString(MainClass.BranchNo) ?? "") ?? ""))
-					{
-						SqlCommand sqlCommand;
-						sqlCommand = new SqlCommand("\r\n                    INSERT INTO Entry_sub \r\n                    (EntryGlobalID, res_id, dept, credit, acc_no, CCcode, notes, branch)\r\n                    VALUES \r\n                    (@EntryGlobalID, @res_id, @dept, @credit, @acc_no, @CCcode, @notes, @branch)", sqlConnection);
-						sqlCommand.Parameters.AddWithValue("@EntryGlobalID", entrySub2.EntryGlobalID);
-						sqlCommand.Parameters.AddWithValue("@res_id", entrySub2.ResID);
-						sqlCommand.Parameters.AddWithValue("@dept", entrySub2.Dept);
-						sqlCommand.Parameters.AddWithValue("@credit", entrySub2.Credit);
-						sqlCommand.Parameters.AddWithValue("@acc_no", entrySub2.AccNo);
-						sqlCommand.Parameters.AddWithValue("@CCcode", entrySub2.CCCode);
-						sqlCommand.Parameters.AddWithValue("@notes", entrySub2.Notes);
-						sqlCommand.Parameters.AddWithValue("@branch", entrySub2.Branch);
-						sqlCommand.ExecuteNonQuery();
-					}
+					ProjectData.SetProjectError(projectError);
+					ProjectData.ClearProjectError();
 				}
 			}
-			catch (Exception projectError)
-			{
-				ProjectData.SetProjectError(projectError);
-				ProjectData.ClearProjectError();
-			}
-		}
 
 		private static void InsertOrUpdateEntry(List<ListEntry> entryList)
 		{
@@ -1357,7 +1553,7 @@ namespace SmartAuditERP
 				sqlConnection.Open();
 				foreach (ListEntry entry in entryList)
 				{
-					if (!entry.GlobalID.StartsWith((Conversions.ToString(MainClass.BranchNo) ?? "") ?? ""))
+					if (ReceivedData.IsForeignGlobalID(entry.GlobalID))
 					{
 						SqlCommand sqlCommand;
 						sqlCommand = new SqlCommand("select Count(*) from Entry WHERE GlobalID = @GlobalID ", sqlConnection);
@@ -1548,7 +1744,7 @@ namespace SmartAuditERP
 				sqlConnection.Open();
 				foreach (ListRecipt receipts in receiptsList)
 				{
-					if (receipts.GlobalID.StartsWith((Conversions.ToString(MainClass.BranchNo) ?? "") ?? ""))
+					if (ReceivedData.IsOwnBranchGlobalID(receipts.GlobalID))
 					{
 						continue;
 					}

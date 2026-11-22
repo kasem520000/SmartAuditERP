@@ -1140,31 +1140,21 @@ namespace SmartAuditERP.Form_WPF
                 // MQTT Publish
                 if (Home._is_active)
                 {
-                    if (!ConnectBroker.IsConnectedToInternet())
+                    // P5-002 fix: البوابة اتصال الوسيط نفسه (TCP/MQTT) — لم يعد
+                    // نجاح ICMP إلى عنوان خارجي شرطًا.
+                    if (!ConnectBroker.CheckConnectionAndBroker())
                         SaveItemIDOffLine();
-                    else if (ConnectBroker.CheckConnectionAndBroker())
+                    else
                     {
+                        // P5-009 fix: نشر الصنف عبر SendDataa — مواضيع فرده
+                        // (Items/{id}) محفوظة لكل صنف بدل موضوع retained واحد
+                        // مشترك تمسحه كل عملية، وبجودة QoS 1.
                         int itemNo = Convert.ToInt32(txtNo.Text);
-                        string cond = $"where id={itemNo}";
-                        string cond2 = $"where Itemid={itemNo} ";
-                        ConnectBroker.mqttClient.Publish(
-                            ConnectBroker.ClientCode + "Items",
-                            Encoding.UTF8.GetBytes(SendData.GetItems(cond)), 0, true);
-                        ConnectBroker.mqttClient.Publish(
-                            ConnectBroker.ClientCode + "ItemsUnit",
-                            Encoding.UTF8.GetBytes(SendData.GetItemsUnit(cond2)), 0, true);
-                        ConnectBroker.mqttClient.Publish(
-                            ConnectBroker.ClientCode + "ItemPrices",
-                            Encoding.UTF8.GetBytes(SendData.GetItemPrices(cond2)), 0, true);
-                        ConnectBroker.mqttClient.Publish(
-                            ConnectBroker.ClientCode + "ItemComponents",
-                            Encoding.UTF8.GetBytes(SendData.GetItemComponents(cond2)), 0, true);
-                        ConnectBroker.mqttClient.Publish(
-                            ConnectBroker.ClientCode + "ItemSerialNo",
-                            Encoding.UTF8.GetBytes(SendData.GetItemSerialNo(cond2)), 0, true);
-                        ConnectBroker.mqttClient.Publish(
-                            ConnectBroker.ClientCode + "ItemBarcode",
-                            Encoding.UTF8.GetBytes(SendData.GetItemBarcode(cond2)), 0, true);
+                        if (!SendData.SendItemDataByid(itemNo))
+                        {
+                            // P5-006 fix: فشل النشر → الطابور للدورة القادمة
+                            SaveItemIDOffLine();
+                        }
                     }
                 }
 
@@ -2142,23 +2132,22 @@ namespace SmartAuditERP.Form_WPF
 
         private void SaveItemIDOffLine()
         {
-            var item = new ItemIdOff { itemid = Convert.ToInt32(txtNo.Text) };
-            AddItemLocally(item);
+            // P5-004/P5-005 fix: الإلحاق عبر OfflineQueue (قفل + كتابة ذرّية) مع
+            // سياق الجلسة (العميل/الفرع/قاعدة البيانات) — كانت كتابة مباشرة
+            // بلا قفل تُفقد إدخالات عند التسابق مع تفريغ المؤقت.
+            var item = new ItemIdOff
+            {
+                itemid = Convert.ToInt32(txtNo.Text),
+                ClientCode = Sync.ClientCode,
+                BranchNo = MainClass.BranchNo.ToString(),
+                DataBase = MainClass.DataBaseAutoName
+            };
+            OfflineQueue.Append(OfflineQueue.ItemsQueuePath, item);
         }
 
         private void AddItemLocally(ItemIdOff newItem)
         {
-            var list = new List<ItemIdOff>();
-            string path = Path.Combine(
-                System.Windows.Forms.Application.StartupPath, "Data", "Itemid.json");
-            if (File.Exists(path))
-            {
-                string val = File.ReadAllText(path);
-                if (!string.IsNullOrWhiteSpace(val))
-                    list = JsonConvert.DeserializeObject<List<ItemIdOff>>(val);
-            }
-            list.Add(newItem);
-            File.WriteAllText(path, JsonConvert.SerializeObject(list, Formatting.Indented));
+            OfflineQueue.Append(OfflineQueue.ItemsQueuePath, newItem);
         }
 
         #endregion

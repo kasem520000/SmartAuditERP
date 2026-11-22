@@ -2085,7 +2085,7 @@ namespace SmartAuditERP
                                         {
                                                 new SqlCommand("update Entry set IS_Deleted=1 ,state=2 where GlobalID=N'" + Invoic.EntryGlobalID + "'", sqlConnection, sqlTransaction).ExecuteNonQuery();
                                         }
-                                        if (Home._is_active && ConnectBroker.IsConnectedToInternet() && ConnectBroker.CheckConnectionAndBroker())
+                                        if (Home._is_active && ConnectBroker.CheckConnectionAndBroker())
                                         {
                                                 string cond;
                                                 cond = "where InvGlobalID=N'" + Invoic.InvGlobalID + "'";

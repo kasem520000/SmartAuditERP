@@ -55,17 +55,35 @@ namespace SmartAuditERP
                         bool result = default(bool);
                         try
                         {
+                                // P5-001 fix: جلسة واحدة مستقرة — لا يُستبدل العميل ولا هوية الجلسة
+                                // عند كل فحص. الفحص يعيد استخدام العميل المتصل، والمقطوع يعاد
+                                // توصيله بنفس clientId حتى تبقى معالجات الاستقبال (المشتركة
+                                // على هذه النسخة) واشتراكات الجلسة سارية. عميل جديد يُنشأ مرة
+                                // واحدة فقط عند عدم وجوده.
+                                if (ConnectBroker.mqttClient != null && ConnectBroker.mqttClient.IsConnected)
+                                {
+                                        return true;
+                                }
+
                                 // P1-014 fix: المنفذ وTLS من الإعدادات، والاتصال باعتماد الوسيط عند توفره.
                                 MqttSslProtocols sslProtocol = ConnectBroker._mqttUseTls
                                         ? MqttSslProtocols.TLSv1_2
                                         : MqttSslProtocols.None;
 
-                                ConnectBroker.mqttClient = new MqttClient(
-                                        ConnectBroker._IpServer,
-                                        ConnectBroker._mqttPort,
-                                        ConnectBroker._mqttUseTls,
-                                        null, null, sslProtocol);
-                                ConnectBroker.clientId = Guid.NewGuid().ToString();
+                                if (ConnectBroker.mqttClient == null)
+                                {
+                                        ConnectBroker.mqttClient = new MqttClient(
+                                                ConnectBroker._IpServer,
+                                                ConnectBroker._mqttPort,
+                                                ConnectBroker._mqttUseTls,
+                                                null, null, sslProtocol);
+                                        ConnectBroker.clientId = Guid.NewGuid().ToString();
+                                }
+
+                                if (string.IsNullOrEmpty(ConnectBroker.clientId))
+                                {
+                                        ConnectBroker.clientId = Guid.NewGuid().ToString();
+                                }
 
                                 if (!string.IsNullOrEmpty(ConnectBroker._mqttUser))
                                 {
@@ -112,7 +130,11 @@ namespace SmartAuditERP
                         bool result;
                         try
                         {
-                                result = new Ping().Send("8.8.8.8").Status == IPStatus.Success;
+                                // P5-002 fix: الفحص أصبح TCP إلى الوسيط نفسه (الوجهة الفعلية)
+                                // بدل ICMP إلى عنوان إنترنت خارجي — ICMP محجوب كثيرًا في
+                                // شبكات تسمح بـ MQTT فوق TCP، فكان بوابة الوصول تمنع
+                                // المزامنة بلا سبب.
+                                result = ConnectBroker.CanReachBrokerTcp();
                         }
                         catch (Exception projectError)
                         {
@@ -123,34 +145,42 @@ namespace SmartAuditERP
                         return result;
                 }
 
+                // P5-002 fix: فحص TCP قصير المهلة إلى وسيط MQTT المُعدّ.
+                private static bool CanReachBrokerTcp()
+                {
+                    try
+                    {
+                        if (string.IsNullOrEmpty(ConnectBroker._IpServer))
+                        {
+                            return false;
+                        }
+                        using (System.Net.Sockets.TcpClient tcp = new System.Net.Sockets.TcpClient())
+                        {
+                            IAsyncResult ar = tcp.BeginConnect(
+                                ConnectBroker._IpServer,
+                                ConnectBroker._mqttPort,
+                                null,
+                                null);
+                            bool reached = ar.AsyncWaitHandle.WaitOne(3000);
+                            if (reached && tcp.Connected)
+                            {
+                                tcp.EndConnect(ar);
+                                return true;
+                            }
+                            return false;
+                        }
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                }
+
                 public static bool CheckConnectionAndBroker()
                 {
-                        bool result;
-                        if (ConnectBroker.IsConnectedToInternet())
-                        {
-                                if (!ConnectBroker.IsConnectedToBroker(ConnectBroker.connString))
-                                {
-                                        try
-                                        {
-                                                ConnectBroker.mqttClient.Connect(ConnectBroker.clientId);
-                                        }
-                                        catch (Exception projectError)
-                                        {
-                                                ProjectData.SetProjectError(projectError);
-                                                result = false;
-                                                ProjectData.ClearProjectError();
-                                                goto IL_004b;
-                                        }
-                                }
-                                result = true;
-                        }
-                        else
-                        {
-                                result = false;
-                        }
-                        goto IL_004b;
-                IL_004b:
-                        return result;
+                        // P5-002 fix: البوابة لم تعد ICMP ثم إعادة اتصال مزدوجة — محاولة
+                        // الاتصال الفعلية بالوسيط هي الفيصل (تعيد استخدام الجلسة، P5-001).
+                        return ConnectBroker.IsConnectedToBroker(ConnectBroker.connString);
                 }
         }
 }

@@ -673,7 +673,14 @@ namespace SmartAuditERP
 			return result;
 		}
 
-		private static void SendItemDataByid(int Item_ID)
+		// P5-009 fix: لكل صنف موضوع retained خاص به (Items/{id}…) بدل موضوع
+		// retained واحد مشترك تمسحه كل عملية تحديث — فالمشترك المتأخر كان يستلم
+		// آخر صنف فقط بدل سجل التغييرات. المواضيع الكتالوجية (Units/ItemsCategory
+		// = لقطة كاملة) تبقى كما هي لأن semantics اللقطة هو الاستبدال.
+		// P5-006/P5-007 fix: النشر عبر SendDataa (QoS 1 + شكل الموضوع الذي
+		// يستقبله الطرف الآخر) ويُرجع نجاح النشر ليقرر المتصل إبقاء الإدخال
+		// في الطابور أو حذفه.
+		public static bool SendItemDataByid(int Item_ID)
 		{
 			string cond;
 			cond = ("where id=" + Conversions.ToString(Item_ID)) ?? "";
@@ -681,100 +688,89 @@ namespace SmartAuditERP
 			cond2 = "where Itemid=" + Conversions.ToString(Item_ID) + " ";
 			string cond3;
 			cond3 = "";
-			ConnectBroker.mqttClient.Publish(ConnectBroker.ClientCode + "Items", Encoding.UTF8.GetBytes(global::SmartAuditERP.SendData.GetItems(cond)), 0, retain: true);
-			ConnectBroker.mqttClient.Publish(ConnectBroker.ClientCode + "ItemsUnit", Encoding.UTF8.GetBytes(global::SmartAuditERP.SendData.GetItemsUnit(cond2)), 0, retain: true);
-			ConnectBroker.mqttClient.Publish(ConnectBroker.ClientCode + "ItemPrices", Encoding.UTF8.GetBytes(global::SmartAuditERP.SendData.GetItemPrices(cond2)), 0, retain: true);
-			ConnectBroker.mqttClient.Publish(ConnectBroker.ClientCode + "ItemComponents", Encoding.UTF8.GetBytes(global::SmartAuditERP.SendData.GetItemComponents(cond2)), 0, retain: true);
-			ConnectBroker.mqttClient.Publish(ConnectBroker.ClientCode + "ItemSerialNo", Encoding.UTF8.GetBytes(global::SmartAuditERP.SendData.GetItemSerialNo(cond2)), 0, retain: true);
-			ConnectBroker.mqttClient.Publish(ConnectBroker.ClientCode + "ItemBarcode", Encoding.UTF8.GetBytes(global::SmartAuditERP.SendData.GetItemBarcode(cond2)), 0, retain: true);
-			ConnectBroker.mqttClient.Publish(ConnectBroker.ClientCode + "Units", Encoding.UTF8.GetBytes(global::SmartAuditERP.SendData.GetUnit(cond3)), 0, retain: true);
-			ConnectBroker.mqttClient.Publish(ConnectBroker.ClientCode + "ItemsCategory", Encoding.UTF8.GetBytes(global::SmartAuditERP.SendData.GetItemsCategory(cond3)), 0, retain: true);
+			return SendData.SendDataa("Items", Conversions.ToString(Item_ID), global::SmartAuditERP.SendData.GetItems(cond))
+				&& SendData.SendDataa("ItemsUnit", Conversions.ToString(Item_ID), global::SmartAuditERP.SendData.GetItemsUnit(cond2))
+				&& SendData.SendDataa("ItemPrices", Conversions.ToString(Item_ID), global::SmartAuditERP.SendData.GetItemPrices(cond2))
+				&& SendData.SendDataa("ItemComponents", Conversions.ToString(Item_ID), global::SmartAuditERP.SendData.GetItemComponents(cond2))
+				&& SendData.SendDataa("ItemSerialNo", Conversions.ToString(Item_ID), global::SmartAuditERP.SendData.GetItemSerialNo(cond2))
+				&& SendData.SendDataa("ItemBarcode", Conversions.ToString(Item_ID), global::SmartAuditERP.SendData.GetItemBarcode(cond2))
+				&& SendData.SendDataa("Units", "catalog", global::SmartAuditERP.SendData.GetUnit(cond3))
+				&& SendData.SendDataa("ItemsCategory", "catalog", global::SmartAuditERP.SendData.GetItemsCategory(cond3));
 		}
 
 		public static void SendStoredItems()
 		{
 			try
 			{
-				int item_ID;
-				item_ID = 0;
-				if (!ConnectBroker.IsConnectedToInternet())
+				// P5-002 fix: لم يعد تفريغ الطابور مشروطًا بنجاح ICMP — الفيصل هو
+				// اتصال الوسيط نفسه.
+				if (!ConnectBroker.CheckConnectionAndBroker())
 				{
 					return;
 				}
-				string text;
-				text = Application.StartupPath + "\\Data\\";
-				string path;
-				path = text + "Itemid.json";
-				if (File.Exists(path))
+
+				// ─── طابور الأصناف (Itemid.json) ───
+				// P5-003 fix: النموذج الصحيح للقراءة هو ItemIdOff (الملف يُكتب بخاصية
+				// itemid) — كان يُقرأ كـ ListItems فكانت item.id دائمًا صفرًا والنشر
+				// يذهب إلى where id=0 فلا يُرسل شيء.
+				// P5-006 fix: لا تفريغ عمياء — يُحذف من الملف فقط ما نُشر فعلًا (QoS 1
+				// عبر SendDataa)، ويبقى غير المنشور وإدخالات السياق الآخر للدورة القادمة
+				// (كان الملف يُفرَّغ حتى بعد تخطي النشر).
+				// P5-004/P5-005 fix: القراءة/الكتابة عبر OfflineQueue (قفل + كتابة ذرّية
+				// + احترام سياق الجلسة).
+				List<ItemIdOff> queuedItems = OfflineQueue.ReadAll<ItemIdOff>(OfflineQueue.ItemsQueuePath);
+				if (queuedItems.Count > 0)
 				{
-					if (string.IsNullOrEmpty(item_ID.ToString()))
+					List<ItemIdOff> remainingItems = new List<ItemIdOff>();
+					foreach (ItemIdOff queued in queuedItems)
 					{
-						return;
-					}
-					string value;
-					value = File.ReadAllText(path);
-					if (!string.IsNullOrWhiteSpace(value))
-					{
-						foreach (ListItems item in JsonConvert.DeserializeObject<List<ListItems>>(value))
+						if (OfflineQueue.MatchesCurrentSession(queued.ClientCode, queued.BranchNo, queued.DataBase)
+							&& global::SmartAuditERP.SendData.SendItemDataByid(queued.itemid))
 						{
-							item_ID = item.id;
-							global::SmartAuditERP.SendData.SendItemDataByid(item_ID);
+							continue;
 						}
+						remainingItems.Add(queued);
 					}
-					File.WriteAllText(path, string.Empty);
+					OfflineQueue.WriteAll(OfflineQueue.ItemsQueuePath, remainingItems);
 				}
-				path = text + "InvGlobalID.json";
-				if (File.Exists(path))
+
+				// ─── طابور الفواتير/القيود (InvGlobalID.json) ───
+				List<InvGLobalIDOff> queuedDocs = OfflineQueue.ReadAll<InvGLobalIDOff>(OfflineQueue.InvoicesQueuePath);
+				if (queuedDocs.Count > 0)
 				{
-					if (string.IsNullOrEmpty(item_ID.ToString()))
+					List<InvGLobalIDOff> remainingDocs = new List<InvGLobalIDOff>();
+					foreach (InvGLobalIDOff queued in queuedDocs)
 					{
-						return;
-					}
-					string value2;
-					value2 = File.ReadAllText(path);
-					if (!string.IsNullOrWhiteSpace(value2))
-					{
-						foreach (ListInvoice item2 in JsonConvert.DeserializeObject<List<ListInvoice>>(value2))
+						if (!OfflineQueue.MatchesCurrentSession(queued.ClientCode, queued.BranchNo, queued.DataBase))
 						{
-							string invGlobalID;
-							invGlobalID = item2.InvGlobalID;
-							if (ConnectBroker.CheckConnectionAndBroker())
-							{
-								string cond;
-								cond = "where InvGlobalID=N'" + invGlobalID + "'";
-								ConnectBroker.mqttClient.Publish(ConnectBroker.ClientCode + "Inv", Encoding.UTF8.GetBytes(global::SmartAuditERP.SendData.GetInv(cond)), 0, retain: true);
-							}
+							remainingDocs.Add(queued);
+							continue;
 						}
-						foreach (listInvSub item3 in JsonConvert.DeserializeObject<List<listInvSub>>(value2))
+
+						// P5-007 fix: النشر بنفس عقد المواضيع الذي يستقبله الطرف الآخر
+						// (SendDataa: QoS 1، «type/id») — كان ينشر إلى Inv/Entry/EntryGlobalID
+						// بأحرف وشكل لا يطابق اشتراكات المستقبل فلا يُطبَّق شيء.
+						string invCond = "where InvGlobalID=N'" + queued.InvGlobalID + "'";
+						string invSubCond = "WHERE InvGlobalID=N'" + queued.InvGlobalID + "'";
+						bool sent = SendData.SendDataa("Inv", queued.InvGlobalID, global::SmartAuditERP.SendData.GetInv(invCond))
+							&& SendData.SendDataa("InvSub", queued.InvGlobalID, global::SmartAuditERP.SendData.GetInvSub(invSubCond));
+
+						if (sent && !string.IsNullOrEmpty(queued.EntryGLobalID))
 						{
-							string invGlobalID2;
-							invGlobalID2 = "WHERE TRY_CAST(InvGlobalID AS nvarchar) IN (\r\n                SELECT InvGlobalID FROM inv \r\n                WHERE InvGlobalID=N'" + item3.InvGlobalID + "')";
-							if (ConnectBroker.CheckConnectionAndBroker())
-							{
-								ConnectBroker.mqttClient.Publish(ConnectBroker.ClientCode + "InvSub", Encoding.UTF8.GetBytes(global::SmartAuditERP.SendData.GetInvSub(invGlobalID2)), 0, retain: true);
-							}
+							string entryCond = "where GlobalID=N'" + queued.EntryGLobalID + "'";
+							string entrySubCond = "where EntryGlobalID=N'" + queued.EntryGLobalID + "'";
+							sent = SendData.SendDataa("entry", queued.EntryGLobalID, global::SmartAuditERP.SendData.GetEntryData(entryCond))
+				&& SendData.SendDataa("entryDetails", queued.EntryGLobalID, global::SmartAuditERP.SendData.GetEntrySubData(entrySubCond));
 						}
-						foreach (ListEntry item4 in JsonConvert.DeserializeObject<List<ListEntry>>(value2))
+
+						if (!sent)
 						{
-							string cond2;
-							cond2 = "where GlobalID=N'" + item4.GlobalID + "'";
-							if (ConnectBroker.CheckConnectionAndBroker())
-							{
-								ConnectBroker.mqttClient.Publish(ConnectBroker.ClientCode + "Entry", Encoding.UTF8.GetBytes(global::SmartAuditERP.SendData.GetEntryData(cond2)), 0, retain: true);
-							}
-						}
-						foreach (ListEntrySub item5 in JsonConvert.DeserializeObject<List<ListEntrySub>>(value2))
-						{
-							string cond3;
-							cond3 = "where EntryGlobalID=N'" + item5.EntryGlobalID + "'";
-							if (ConnectBroker.CheckConnectionAndBroker())
-							{
-								ConnectBroker.mqttClient.Publish(ConnectBroker.ClientCode + "EntryGlobalID", Encoding.UTF8.GetBytes(global::SmartAuditERP.SendData.GetEntrySubData(cond3)), 0, retain: true);
-							}
+							remainingDocs.Add(queued);
 						}
 					}
-					File.WriteAllText(path, string.Empty);
+					OfflineQueue.WriteAll(OfflineQueue.InvoicesQueuePath, remainingDocs);
 				}
+
 				ReceivedData.LoadReceived(global::SmartAuditERP.SendData.connString);
 			}
 			catch (Exception projectError)
@@ -1800,22 +1796,35 @@ namespace SmartAuditERP
 			return memoryStream.ToArray();
 		}
 
-		public static void SendDataa(string topicType, string recordId, string jsonData)
+		// P5-006/P5-029 fix: العقد يُرجع نتيجة النشر الفعلية (QoS 1) ليقرر المتصل
+		// حذف الإدخال من الطابور أو تثبيت حالة المزامنة — لم يكن يعيد شيئًا
+		// يمكن فحصه.
+		public static bool SendDataa(string topicType, string recordId, string jsonData)
 		{
 			try
 			{
+				if (ConnectBroker.mqttClient == null)
+				{
+					return false;
+				}
 				if (!ConnectBroker.mqttClient.IsConnected)
 				{
 					try
 					{
-						ConnectBroker.mqttClient.Connect(Guid.NewGuid().ToString());
+						// P5-001 fix: إعادة توصيل نفس هوية الجلسة (كانت هوية عشوائية جديدة
+						// تقطع الاشتراكات وتستبدل الجلسة).
+						if (string.IsNullOrEmpty(ConnectBroker.clientId))
+						{
+							ConnectBroker.clientId = Guid.NewGuid().ToString();
+						}
+						ConnectBroker.mqttClient.Connect(ConnectBroker.clientId);
 					}
 					catch (Exception ex)
 					{
 						ProjectData.SetProjectError(ex);
 						Console.WriteLine("Error connecting to broker: " + ex.Message);
 						ProjectData.ClearProjectError();
-						return;
+						return false;
 					}
 				}
 				if (ConnectBroker.mqttClient.IsConnected)
@@ -1824,17 +1833,17 @@ namespace SmartAuditERP
 					topic = $"{ConnectBroker.ClientCode.Trim()}{topicType}/{recordId}";
 					ConnectBroker.mqttClient.Publish(topic, Encoding.UTF8.GetBytes(jsonData), 1, retain: true);
 					Console.WriteLine($"{topicType} {recordId} sent and retained.");
+					return true;
 				}
-				else
-				{
-					Console.WriteLine("Failed to connect to the broker.");
-				}
+				Console.WriteLine("Failed to connect to the broker.");
+				return false;
 			}
 			catch (Exception ex2)
 			{
 				ProjectData.SetProjectError(ex2);
 				Console.WriteLine("Error: " + ex2.Message);
 				ProjectData.ClearProjectError();
+				return false;
 			}
 		}
 	}

@@ -1012,15 +1012,19 @@ namespace SmartAuditERP.Form_WPF
                 var Home = new Home();
                 if (Home._is_active)
                 {
-                    if (ConnectBroker.IsConnectedToInternet() && ConnectBroker.CheckConnectionAndBroker())
+                    // P5-002/P5-006 fix: بوابة واحدة (اتصال الوسيط) وفشل أي نشر
+                    // يُلحق بالمستند في الطابور.
+                    if (ConnectBroker.CheckConnectionAndBroker())
                     {
                         string c1 = $"WHERE InvGlobalID=N'{invoice.InvGlobalID}'";
                         string c2 = $"WHERE GlobalID=N'{invoice.EntryGlobalID}'";
                         string c3 = $"WHERE EntryGlobalID=N'{invoice.EntryGlobalID}'";
-                        SendData.SendDataa("Inv", invoice.InvGlobalID, SendData.GetInv(c1));
-                        SendData.SendDataa("InvSub", invoice.InvGlobalID, SendData.GetInvSub(c1));
-                        SendData.SendDataa("entry", invoice.EntryGlobalID, SendData.GetEntryData(c2));
-                        SendData.SendDataa("entryDetails", invoice.EntryGlobalID, SendData.GetEntrySubData(c3));
+                        bool sent = SendData.SendDataa("Inv", invoice.InvGlobalID, SendData.GetInv(c1));
+                        sent = SendData.SendDataa("InvSub", invoice.InvGlobalID, SendData.GetInvSub(c1)) && sent;
+                        sent = SendData.SendDataa("entry", invoice.EntryGlobalID, SendData.GetEntryData(c2)) && sent;
+                        sent = SendData.SendDataa("entryDetails", invoice.EntryGlobalID, SendData.GetEntrySubData(c3)) && sent;
+                        if (!sent)
+                            SaveGlobalIDOffLine(_invoic.InvGlobalID, _invoic.EntryGlobalID);
                     }
                     else
                         SaveGlobalIDOffLine(_invoic.InvGlobalID, _invoic.EntryGlobalID);
@@ -1124,30 +1128,18 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
-                var list = new List<InvGLobalIDOff>();
-                string path = Path.Combine(
-                    AppDomain.CurrentDomain.BaseDirectory, "Data", "InvGlobalID.json");
-
-                if (File.Exists(path))
-                {
-                    string json = File.ReadAllText(path);
-                    if (!string.IsNullOrWhiteSpace(json))
-                        list = JsonConvert.DeserializeObject<List<InvGLobalIDOff>>(json)
-                               ?? new List<InvGLobalIDOff>();
-                }
-
-                list.Add(new InvGLobalIDOff
+                // P5-004/P5-005 fix: الإلحاق عبر OfflineQueue (قفل + كتابة ذرّية)
+                // مع سياق الجلسة — كانت كتابة مباشرة بلا قفل تُفقد إدخالات عند
+                // التسابق مع تفريغ المؤقت.
+                OfflineQueue.Append(OfflineQueue.InvoicesQueuePath, new InvGLobalIDOff
                 {
                     InvGlobalID = invGID,
                     GlobalID = entryGID,
-                    EntryGLobalID = entryGID
+                    EntryGLobalID = entryGID,
+                    ClientCode = Sync.ClientCode,
+                    BranchNo = MainClass.BranchNo.ToString(),
+                    DataBase = MainClass.DataBaseAutoName
                 });
-
-                string dir = Path.GetDirectoryName(path);
-                if (!Directory.Exists(dir))
-                    Directory.CreateDirectory(dir);
-                File.WriteAllText(path,
-                    JsonConvert.SerializeObject(list, Formatting.Indented));
             }
             catch
             {
