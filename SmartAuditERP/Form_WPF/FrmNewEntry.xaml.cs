@@ -783,8 +783,11 @@ namespace SmartAuditERP.Form_WPF
                         EntryNo = entry.EntryNo,
                         Name = acc.AccName,
                         Code = acc.AccCode,
-                        Debt = acc.AccDebit,
-                        Credit = acc.AccCredit,
+                        // P3-007 fix: تطبيع المبالغ المحفوظة إلى منزلتين (نمط
+                        // فحص التوازن نفسه) — كان الفحص مقرباً والقيم المخزنة
+                        // خاماً فتتسرب كسور السنت إلى الأرصدة المتراكمة
+                        Debt = Math.Round(acc.AccDebit, 2, MidpointRounding.AwayFromZero),
+                        Credit = Math.Round(acc.AccCredit, 2, MidpointRounding.AwayFromZero),
                         Note = note,
                         CCcode = (acc.AccCostCenter > 0 ? acc.AccCostCenter : -1).ToString(),
                         salesman = salesman

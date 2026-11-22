@@ -195,7 +195,14 @@ namespace SmartAuditERP.Form_WPF
                 // 1. حساب الرصيد السابق
                 if (chkPrevbalance.IsChecked == false && ckTotalPeriod.IsChecked == false)
                 {
-                    runningBalance = GetPreviousBalance(accountCode, startDateTime);
+                    // P3-021 fix: تطبيع إشارة الرصيد السابق على اصطلاح طبيعة
+                    // الحساب نفسه المستخدم في تراكم الحركات — كان يدخل بالصيغة
+                    // الخام (مدين−دائن) من GetPreviousBalance فيعاكس تراكم
+                    // الخصوم/الإيرادات (دائن−مدين) ويخلط الإشارة ويُعكس عرضه
+                    double previousRaw = GetPreviousBalance(accountCode, startDateTime);
+                    runningBalance = (accountFirstDigit == "1" || accountFirstDigit == "3")
+                        ? previousRaw        // أصول/مصروفات: المدين موجب
+                        : -previousRaw;      // خصوم/إيرادات: الدائن موجب
                     AddPreviousBalanceRow(dtResult, runningBalance, accountFirstDigit, startDate);
                 }
 
@@ -222,7 +229,13 @@ namespace SmartAuditERP.Form_WPF
                     string branchName = Common.GetBranchName(Convert.ToInt32(row["Branch"]));
                     string entryType = Common.ResrirectionType(Convert.ToInt32(row["type"]));
 
-                    string notes = row["subNotes"] != DBNull.Value ? row["subNotes"].ToString() : row["notes"].ToString();
+                    // P3-022 fix: عمود subNotes يعيده الوضع التفصيلي فقط —
+                    // الوضع التجميعي لا يعيده فكان الوصول إليه يرمي استثناء
+                    // ويكسر الكشف التجميعي كلياً
+                    string notes = dtMovements.Columns.Contains("subNotes") &&
+                                   row["subNotes"] != DBNull.Value
+                        ? row["subNotes"].ToString()
+                        : row["notes"].ToString();
 
                     dtResult.Rows.Add(
                         rank++,

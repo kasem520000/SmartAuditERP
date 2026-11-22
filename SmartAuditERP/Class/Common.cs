@@ -311,8 +311,12 @@ namespace SmartAuditERP
             {
                 using var connection = MainClass.ConnObj();
                 using var adapter = new SqlDataAdapter(
-                    "select Code from Accounts_Index where AName=N'" + Aname + "'",
+                    "select Code from Accounts_Index where AName=@AName",
                     connection);
+                // P3-008 fix: بارامتر بدل الدمج النصي (الاسم من قاعدة البيانات
+                // قد يحمل علامات خاصة فيكسر الاستعلام أو يحقن)
+                adapter.SelectCommand.Parameters.AddWithValue("@AName",
+                    Aname ?? string.Empty);
                 var dt = new DataTable();
                 adapter.Fill(dt);
                 return dt.Rows.Count > 0 ? dt.Rows[0][0].ToString() : "";

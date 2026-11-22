@@ -304,7 +304,30 @@ namespace SmartAuditERP.Form_WPF
                             DataTable initDt = new DataTable();
                             initAdapter.Fill(initDt);
 
+                            // P3-019 fix: الرصيد السابق كان يسقط كلياً في مسار
+                            // «الحسابات الفرعية فقط» (لا استعلام له إطلاقاً هنا)
+                            // بينما مسار الشجرة يحسبه — نفس الاستعلام والدلالات
+                            // المعتمدة هناك: حركات ما قبل تاريخ البدء بلا قيد
+                            // بالنوع، وتُستثنى فقط بخيار «استثناء الرصيد السابق»
+                            SqlDataAdapter prevAdapter = new SqlDataAdapter(
+                                $"select sum(Entry_sub.dept) as dept, sum(Entry_sub.credit) as credit " +
+                                $"from Entry,Entry_sub where {branchFilter} Entry.IS_Deleted=0 and Entry.state=1 " +
+                                $"and Entry.date<@pdate1 and Entry.GlobalID=Entry_sub.EntryGlobalID and Entry_sub.acc_no={currentCode}", conn);
+                            prevAdapter.SelectCommand.Parameters.Add("@pdate1", SqlDbType.DateTime).Value = dtFrom.ToShortDateString();
+                            DataTable prevDt = new DataTable();
+                            prevAdapter.Fill(prevDt);
+
                             double num3 = 0.0, num4 = 0.0, num5 = 0.0, num6 = 0.0;
+                            double numPrevDept = 0.0, numPrevCredit = 0.0;
+
+                            if (chkAll.IsChecked != true && prevDt.Rows.Count > 0 &&
+                                chkPrevbalance.IsChecked != true)
+                            {
+                                if (prevDt.Rows[0]["dept"] != DBNull.Value)
+                                    double.TryParse(prevDt.Rows[0]["dept"].ToString(), out numPrevDept);
+                                if (prevDt.Rows[0]["credit"] != DBNull.Value)
+                                    double.TryParse(prevDt.Rows[0]["credit"].ToString(), out numPrevCredit);
+                            }
 
                             if (initDt.Rows.Count > 0)
                             {
@@ -325,8 +348,9 @@ namespace SmartAuditERP.Form_WPF
                             else
                             { num8 = num6 - num5; num7 = 0; }
 
-                            double num9 = num3 + num7;
-                            double num10 = num4 + num8;
+                            // P3-019 fix: الرصيد السابق يدخل التسوية كما في مسار الشجرة
+                            double num9 = num3 + num7 + numPrevDept;
+                            double num10 = num4 + num8 + numPrevCredit;
 
                             if (num9 >= num10)
                             { num9 -= num10; num10 = 0; }

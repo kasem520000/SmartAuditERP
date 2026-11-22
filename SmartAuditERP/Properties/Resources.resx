@@ -47781,8 +47781,9 @@ END
 GO
 IF EXISTS(SELECT * FROM [Entry] WHERE GlobalID is NULL)
 BEGIN 
-UPDATE [Entry]  SET GlobalID=STable.GlobalID  from (SELECT CONCAT(branch,'-',id)as GlobalID,id  from [Entry]
-WHERE GlobalID is NULL)  as STable  WHERE [Entry].id= STable.id;
+/* P3-024 fix: CONCAT من صف المدخل نفسه (فرعه ورقمه) — الوصلة بالرقم
+   وحده كانت غامضة عند تكرار الرقم بين الفروع فيربط الفرع اعتباطياً */
+UPDATE [Entry] SET GlobalID = CONCAT(branch,'-',id) WHERE GlobalID is NULL;
 END
 GO
 IF Not EXISTS(SELECT * FROM [Entry] WHERE GlobalID is  NULL)
@@ -47804,8 +47805,13 @@ END
 GO
 IF EXISTS(SELECT * FROM Entry_sub WHERE EntryGlobalID is NULL)
 BEGIN 
-UPDATE Entry_sub  SET EntryGlobalID=STable.EntryGlobalID  from (SELECT CONCAT(branch,'-',res_id)as EntryGlobalID,res_id  from Entry_sub
- )  as STable  WHERE Entry_sub.res_id= STable.res_id
+/* P3-024 fix: ربط البند بقيده الفعلي عبر (res_id + branch) وأخذ هويته
+   المهاجرة الصحيحة — كان يُبنى من رقم محلي بلا فرع ويوصل بفرع اعتباطي
+   عند تكرار الرقم بين الفروع، وبلا تصفية NULL فيصحح نفسه عند كل تشغيل */
+UPDATE ES SET ES.EntryGlobalID = E.GlobalID
+FROM Entry_sub ES
+INNER JOIN [Entry] E ON E.id = ES.res_id AND ES.branch = E.branch
+WHERE ES.EntryGlobalID IS NULL
 END
 GO
 /*  End Alter Entry Table and its sub */

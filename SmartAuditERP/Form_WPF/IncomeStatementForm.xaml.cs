@@ -295,22 +295,18 @@ namespace SmartAuditERP.Form_WPF
                     // 1. الإيرادات
                     AddAccountGroup(sqlConn, dataTable, "1. الإيرادات", "41%", fromDt, toDt, branchId);
 
-                    decimal salesReturns = dataTable.AsEnumerable()
-                        .Where(r => r["Category"].ToString().Contains("الإيرادات")
-                                 && r["AccountCode"].ToString().StartsWith("4100002"))
-                        .Sum(r => r["balance"] != DBNull.Value ? Convert.ToDecimal(r["balance"]) : 0m);
-
-                    decimal salesDiscounts = dataTable.AsEnumerable()
-                        .Where(r => r["Category"].ToString().Contains("الإيرادات")
-                                 && r["AccountCode"].ToString().StartsWith("4100003"))
-                        .Sum(r => r["balance"] != DBNull.Value ? Convert.ToDecimal(r["balance"]) : 0m);
+                    // P3-020 fix: بطاقات المرتجعات (4100002) والخصومات (4100003) تُعرض الآن
+                    // بإشارتها السالبة داخل الإيرادات (كانت ABS يمحو أثرها)
 
                     decimal totalRevenue = dataTable.AsEnumerable()
                         .Where(r => r["Category"].ToString().Contains("الإيرادات")
                                  && r["AccountCode"].ToString().StartsWith("41"))
                         .Sum(r => r["balance"] != DBNull.Value ? Convert.ToDecimal(r["balance"]) : 0m);
 
-                    decimal netSales = totalRevenue - salesReturns - salesDiscounts;
+                    // P3-020 fix: بتحويل الأرصدة إلى مُعلَّمة بطبيعة الحساب صار مجموع بطاقات
+                    // الإيرادات هو الصافي نفسه (المرتجعات/الخصومات داخله بإشارة سالبة) —
+                    // كان الطرح يعيد إضافتهما ويُلغي أثرهما مرتين
+                    decimal netSales = totalRevenue;
 
                     if (netSales != 0m)
                         dataTable.Rows.Add("1. الإيرادات", "41", "صافي المبيعات", netSales, "");
@@ -425,7 +421,11 @@ namespace SmartAuditERP.Form_WPF
                     AI.AName AS AccountName, 
                     COALESCE(SUM(ES.dept),0) AS TotalDebit, 
                     COALESCE(SUM(ES.credit),0) AS TotalCredit, 
-                    ABS(COALESCE(SUM(ES.dept),0) - COALESCE(SUM(ES.credit),0)) AS Balance 
+                    CASE 
+                        WHEN LEFT(CAST(AI.Code AS NVARCHAR(50)), 1) IN ('2','4') 
+                            THEN COALESCE(SUM(ES.credit),0) - COALESCE(SUM(ES.dept),0) 
+                        ELSE COALESCE(SUM(ES.dept),0) - COALESCE(SUM(ES.credit),0) 
+                    END AS Balance  
                 FROM Entry E 
                 INNER JOIN Entry_sub ES ON E.GlobalId = ES.EntryGlobalId 
                 INNER JOIN Accounts_Index AI ON ES.acc_no = AI.Code 
@@ -484,7 +484,11 @@ namespace SmartAuditERP.Form_WPF
                     AI.AName AS AccountName, 
                     COALESCE(SUM(ES.dept),0) AS TotalDebit, 
                     COALESCE(SUM(ES.credit),0) AS TotalCredit, 
-                    ABS(COALESCE(SUM(ES.dept),0) - COALESCE(SUM(ES.credit),0)) AS Balance 
+                    CASE 
+                        WHEN LEFT(CAST(AI.Code AS NVARCHAR(50)), 1) IN ('2','4') 
+                            THEN COALESCE(SUM(ES.credit),0) - COALESCE(SUM(ES.dept),0) 
+                        ELSE COALESCE(SUM(ES.dept),0) - COALESCE(SUM(ES.credit),0) 
+                    END AS Balance  
                 FROM Entry E 
                 INNER JOIN Entry_sub ES ON E.GlobalId = ES.EntryGlobalId 
                 INNER JOIN Accounts_Index AI ON ES.acc_no = AI.Code 

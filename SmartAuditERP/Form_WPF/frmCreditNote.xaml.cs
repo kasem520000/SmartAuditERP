@@ -558,11 +558,17 @@ namespace SmartAuditERP.Form_WPF
                 {
                     cmd = new SqlCommand(
                         "UPDATE CreditDeptNotes SET " +
+                        // P3-025 fix: تعديل تاريخ الإشعار كان يغيّر تاريخ قيده
+                        // ويُبقي تاريخ رأسه القديم (الـUPDATE لم يكن يمس عمود
+                        // Date أصلاً) — الآن الرأس والقيد يتحدثان معاً
                         "Inv_No=@Inv_No, Discount=@Discount, Net=@Net, " +
+                        "Date=@Date, " +
                         "Edit_Date=@Edit_Date, emp_id=@emp_id, notes=@notes, " +
                         "cust_id=@cust_id, Inv_Val=@Inv_Val " +
-                        $"WHERE Doc_Type=1 AND Doc_No={Code}",
+                        "WHERE Doc_Type=1 AND Doc_No=@DocNo",
                         conn, sqlTransaction);
+                    // P3-011-pattern: بارامتر بدل الدمج النصي
+                    cmd.Parameters.Add("@DocNo", SqlDbType.Int).Value = Code;
                 }
 
                 cmd.Parameters.Add("@Inv_No", SqlDbType.Int).Value =

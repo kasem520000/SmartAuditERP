@@ -301,6 +301,12 @@ namespace SmartAuditERP.Form_WPF
                 {
                     startDate = txtDateFrom.SelectedDate;
                     endDate = txtDateTo.SelectedDate;
+                    // P3-023 fix: نهاية اليوم كانت منتصف الليل (00:00) من
+                    // DatePicker والإجراء يقارن «<= @EndDate» فتُستبعد كل
+                    // حركات يوم النهاية بعد منتصف الليل — الآن نهاية اليوم
+                    // فعلاً (23:59:59) فتشمل حركات اليوم كاملاً
+                    if (endDate.HasValue)
+                        endDate = endDate.Value.Date.AddDays(1).AddSeconds(-1);
                 }
 
                 DataTable accountStatement = GetAccountStatement(parentCode, startDate, endDate, branch);
