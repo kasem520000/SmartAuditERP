@@ -221,6 +221,34 @@ namespace SmartAuditERP.Form_WPF
                 wc.DownloadFileCompleted += (s, ev) =>
                     Dispatcher.Invoke(() =>
                     {
+                        // P1-026 fix: فحص نتيجة التنزيل قبل أي تقدم — الفشل لا يُعرض نجاحاً
+                        if (ev.Error != null)
+                        {
+                            DXMessageBox.Show(
+                                "فشل تنزيل التحديث: " + ev.Error.Message,
+                                "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
+                            btnNext.IsEnabled = true;
+                            btnPrev.IsEnabled = true;
+                            return;
+                        }
+
+                        if (ev.Cancelled)
+                        {
+                            btnNext.IsEnabled = true;
+                            btnPrev.IsEnabled = true;
+                            return;
+                        }
+
+                        // تحقق وجود الملف قبل الاستبدال
+                        if (!File.Exists(FileDownload) ||
+                            new FileInfo(FileDownload).Length == 0)
+                        {
+                            DXMessageBox.Show(
+                                "ملف التحديث المنزّل غير صالح",
+                                "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
+                        }
+
                         ReplaceFiles();
                         GoToPage(2);
                         btnNext.Content = "✅ إنتهاء";
@@ -238,11 +266,21 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
+                // P1-026 fix: لا استبدال قبل التحقق من وجود ملف التنزيل وصلاحيته
+                if (!File.Exists(FileDownload) ||
+                    new FileInfo(FileDownload).Length == 0)
+                {
+                    DXMessageBox.Show("ملف التحديث غير موجود أو فارغ", "خطأ",
+                                    MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
                 UtilitiesProj.Updates.unZipFile(FileDownload);
                 DXMessageBox.Show("سيتم إغلاق البرنامج لإتمام عملية التحديث", "تحديث",
                                 MessageBoxButton.OK, MessageBoxImage.Information);
                 UpdateLicenseEndDate();
-                 Process.Start(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Updater.exe"));
+                // P1-003 fix: الاسم الموحد update.exe (كان Updater.exe فلا تطابق مخرجات المشروع)
+                Process.Start(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "update.exe"));
             }
             catch (Exception ex)
             {
@@ -253,15 +291,8 @@ namespace SmartAuditERP.Form_WPF
 
         private void UpdateLicenseEndDate()
         {
-            try
-            {
-                if (conn.State != System.Data.ConnectionState.Open) conn.Open();
-                new SqlCommand(
-                    "UPDATE License SET LicenseExpire = DATEADD(YEAR, 1, LicenseExpire)",
-                    conn).ExecuteNonQuery();
-                conn.Close();
-            }
-            catch { }
+            // P1-032 fix: توسيع الترخيص دون تحقق استحقاق معطل هنا أيضاً (الموقع الثاني) —
+            // لا تمديد إلا باستجابة موقعة من خدمة الترخيص عند توفرها.
         }
 
         private void CreateFolderUpdate()

@@ -6,6 +6,11 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <!-- P1-003 fix: توحيد عقد اسم أداة التحديث — المخرج update.exe كما تتوقعه
+         مواقع الإطلاق في Home.xaml.cs وFrmUpdate.xaml.cs (كانت ثلاثة أسماء مختلفة:
+         SmartAuditUpdater.exe الراسم وupdate.exe وUpdater.exe المستهلَكان). -->
+    <AssemblyName>update</AssemblyName>
+    <RootNamespace>SmartAuditUpdater</RootNamespace>
   </PropertyGroup>
 
 </Project>

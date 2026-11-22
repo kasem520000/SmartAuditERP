@@ -93,17 +93,27 @@ namespace SmartAuditUpdater
                 bool downloaded = await DownloadUpdate();
                 if (!downloaded) return;
 
-                // 3) نسخ احتياطي
-                await BackupOldFiles();
+                // 3) P1-020 fix: تحقق سلامة/توقيع الحزمة قبل أي تثبيت
+                bool verified = await VerifyPackageIntegrity();
+                if (!verified) return;
 
-                // 4) تثبيت التحديث
+                // 4) نسخ احتياطي — P1-023 fix: فشله يوقف التحديث
+                bool backedUp = await BackupOldFiles();
+                if (!backedUp) return;
+
+                // 5) تثبيت التحديث
                 bool installed = await InstallUpdate();
-                if (!installed) return;
+                if (!installed)
+                {
+                    // P1-023 fix: استعادة تلقائية من النسخة الاحتياطية عند فشل التثبيت
+                    await RestoreFromBackup();
+                    return;
+                }
 
-                // 5) تنظيف
+                // 6) تنظيف
                 await CleanUp();
 
-                // 6) اكتمل التحديث
+                // 7) اكتمل التحديث
                 Dispatcher.Invoke(() =>
                 {
                     SetSuccess();
@@ -119,6 +129,16 @@ namespace SmartAuditUpdater
                     SetError("❌ فشل التحديث!");
                     _isUpdating = false;
                     EnableClose(false);
+                });
+            }
+            finally
+            {
+                // P1-021 fix: كل مسارات الخروج تطلق الإغلاق — لا يبقى الإغلاق ممنوعاً أبداً
+                Dispatcher.Invoke(() =>
+                {
+                    _isUpdating = false;
+                    if (!btnClose.IsEnabled)
+                        EnableClose(false);
                 });
             }
         }
@@ -152,7 +172,8 @@ namespace SmartAuditUpdater
                         txtDetails.Text = $"انتظار إغلاق البرنامج... {waited} ثانية");
                 }
 
-                // إغلاق إجباري إذا لزم
+                // إغلاق إجباري إذا لزم — P1-024 fix: لا يُقتل إلا ما كان فعلاً من
+                // مجلد هذا التثبيت (تحقق مسار الملف التنفيذي)، لا كل عملية بالاسم.
                 var remaining = Process.GetProcessesByName(MainProcessName);
                 if (remaining.Length > 0)
                 {
@@ -161,6 +182,18 @@ namespace SmartAuditUpdater
                     {
                         try
                         {
+                            string procPath = null;
+                            try { procPath = p.MainModule?.FileName; }
+                            catch { /* وصول مرفوض = ليس ملفنا بأمان */ }
+
+                            if (procPath == null ||
+                                !procPath.StartsWith(_appFolder,
+                                    StringComparison.OrdinalIgnoreCase))
+                            {
+                                AddLog($"  ↩️ تخطي عملية خارج مجلد التثبيت: {p.Id}");
+                                continue;
+                            }
+
                             p.Kill();
                             p.WaitForExit(5000);
                         }
@@ -252,9 +285,108 @@ namespace SmartAuditUpdater
 
         #endregion
 
+        #region ══════════════════ Step 1.5: Integrity (P1-020) ══════════════════
+
+        /// <summary>
+        /// P1-020 fix: لا تثبيت لحزمة لم تُتحقق سلامتها.
+        /// الأولوية: مانيفست موقّع (RSA-SHA256 عبر ManifestSignatureVerifier) ثم ملف
+        /// تجزئة جانبي update.zip.sha256. الحزم القديمة غير الموقعة تمر بتحذير مسجل
+        /// (خطة التوقيع موثقة في REPAIR-LOG-STAGE1 — خط الإصدار عليه توليد المانيفست).
+        /// </summary>
+        private Task<bool> VerifyPackageIntegrity()
+        {
+            return Task.Run(() =>
+            {
+                UpdateStep("🔐 التحقق من سلامة الحزمة...");
+
+                try
+                {
+                    // استخراج مؤقت للتحقق
+                    string extractFolder = Path.Combine(_tempFolder, "extracted");
+                    if (!Directory.Exists(extractFolder))
+                    {
+                        ZipFile.ExtractToDirectory(_zipPath, extractFolder);
+                    }
+
+                    // 1) مانيفست موقّع؟
+                    string manifestPath = Path.Combine(extractFolder, "manifest.txt");
+                    if (File.Exists(manifestPath))
+                    {
+                        bool ok = ManifestSignatureVerifier.VerifyManifest(
+                            manifestPath, extractFolder);
+                        if (!ok)
+                        {
+                            AddLog("❌ فشل تحقق توقيع/تجزئة المانيفست — رفض الحزمة");
+                            Dispatcher.Invoke(() =>
+                                SetError("❌ حزمة غير موثوقة — تم رفض التحديث!"));
+                            return false;
+                        }
+                        AddLog("✅ تحقق توقيع المانيفست وتجزئة كل ملف");
+                        return true;
+                    }
+
+                    // 2) ملف تجزئة جانبي للحزمة المضغوطة؟
+                    string shaPath = _zipPath + ".sha256";
+                    string remoteSha = TryDownloadText(_downloadUrl + ".sha256");
+                    if (!string.IsNullOrEmpty(remoteSha))
+                    {
+                        using (var sha = System.Security.Cryptography.SHA256.Create())
+                        using (var fs = File.OpenRead(_zipPath))
+                        {
+                            string actual = Convert.ToHexString(
+                                sha.ComputeHash(fs)).ToLowerInvariant();
+                            string expected = remoteSha.Trim().ToLowerInvariant();
+                            if (!string.Equals(actual, expected,
+                                StringComparison.Ordinal))
+                            {
+                                AddLog("❌ عدم تطابق SHA256 للحزمة — رفض التحديث");
+                                Dispatcher.Invoke(() =>
+                                    SetError("❌ حزمة تالفة/معدلة — تم رفض التحديث!"));
+                                return false;
+                            }
+                        }
+                        AddLog("✅ تطابق SHA256 للحزمة");
+                        return true;
+                    }
+
+                    // 3) حزمة قديمة بلا توقيع — توافق موثق بتحذير صريح
+                    AddLog("⚠️ الحزمة بلا مانيفست موقّع ولا تجزئة — " +
+                           "استمرار بضمان خادم التحميل فقط (خطة التوقيع في REPAIR-LOG)");
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    AddLog($"❌ خطأ التحقق من السلامة: {ex.Message}");
+                    Dispatcher.Invoke(() =>
+                        SetError("❌ فشل التحقق من الحزمة!"));
+                    return false;
+                }
+            });
+        }
+
+        private string TryDownloadText(string url)
+        {
+            try
+            {
+                using (var client = new WebClient())
+                {
+                    return client.DownloadString(url);
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        #endregion
+
         #region ══════════════════ Step 2: Backup ══════════════════
 
-        private Task BackupOldFiles()
+        /// <summary>
+        /// P1-023 fix: تعيد false عند فشل النسخ الاحتياطي — الفشل يوقف التحديث.
+        /// </summary>
+        private Task<bool> BackupOldFiles()
         {
             return Task.Run(() =>
             {
@@ -277,10 +409,9 @@ namespace SmartAuditUpdater
                     string extractTemp =
                         Path.Combine(_tempFolder, "extracted");
 
-                    if (Directory.Exists(extractTemp))
-                        Directory.Delete(extractTemp, true);
+                    if (!Directory.Exists(extractTemp))
+                        ZipFile.ExtractToDirectory(_zipPath, extractTemp);
 
-                    ZipFile.ExtractToDirectory(_zipPath, extractTemp);
                     AddLog("✅ تم استخراج ملفات التحديث مؤقتاً");
 
                     // جمع الملفات للنسخ الاحتياطي
@@ -328,6 +459,16 @@ namespace SmartAuditUpdater
                             }
                         }
 
+                        // P1-023 fix: تحقق صلاحية النسخة (موجودة + غير فارغة) قبل السماح بالتحديث
+                        var backupInfo = new FileInfo(backupZip);
+                        if (!backupInfo.Exists || backupInfo.Length == 0)
+                        {
+                            AddLog("❌ النسخة الاحتياطية غير صالحة — إيقاف التحديث");
+                            Dispatcher.Invoke(() =>
+                                SetError("❌ فشل النسخ الاحتياطي — تم إيقاف التحديث!"));
+                            return false;
+                        }
+
                         AddLog($"✅ نسخة احتياطية: " +
                                $"{filesToBackup.Count} ملف");
                     }
@@ -337,11 +478,15 @@ namespace SmartAuditUpdater
                     }
 
                     AddLog("");
+                    return true;
                 }
                 catch (Exception ex)
                 {
-                    AddLog($"⚠️ تحذير في النسخ الاحتياطي: {ex.Message}");
-                    AddLog("المتابعة رغم ذلك...");
+                    // P1-023 fix: لا «متابعة رغم ذلك» — فشل النسخ يوقف التحديث
+                    AddLog($"❌ فشل النسخ الاحتياطي: {ex.Message} — إيقاف التحديث");
+                    Dispatcher.Invoke(() =>
+                        SetError("❌ فشل النسخ الاحتياطي — تم إيقاف التحديث!"));
+                    return false;
                 }
             });
         }
@@ -368,11 +513,20 @@ namespace SmartAuditUpdater
 
                     AddLog($"عدد الملفات: {files.Length}");
 
+                    // P1-022 fix: تتبع الفشل — أي ملف فشل نسخه يمنع إعلان النجاح
+                    var failedFiles = new List<string>();
+
                     for (int i = 0; i < files.Length; i++)
                     {
                         string src = files[i];
                         string rel = src.Substring(
                             extractFolder.Length).TrimStart('\\', '/');
+
+                        // المانيفست ليس ملف تطبيق — لا يُثبت في مجلد البرنامج
+                        if (rel.Equals("manifest.txt",
+                            StringComparison.OrdinalIgnoreCase))
+                            continue;
+
                         string dest = Path.Combine(_appFolder, rel);
 
                         // إنشاء المجلدات
@@ -401,10 +555,23 @@ namespace SmartAuditUpdater
                         }
 
                         if (!copied)
-                            AddLog($"  ⚠️ تعذر نسخ: {rel}");
+                        {
+                            // P1-022 fix: لا نجاح كاذب — الفشل يُسجل ويُمنع إعلان النجاح
+                            failedFiles.Add(rel);
+                            AddLog($"  ❌ تعذر نسخ: {rel}");
+                        }
 
                         int pct = (i + 1) * 100 / files.Length;
                         Dispatcher.Invoke(() => SetProgress(pct));
+                    }
+
+                    if (failedFiles.Count > 0)
+                    {
+                        AddLog($"❌ فشل تثبيت {failedFiles.Count} ملف — " +
+                               "لا يُعلن نجاح التحديث");
+                        Dispatcher.Invoke(() =>
+                            SetError($"❌ فشل تثبيت {failedFiles.Count} ملف!"));
+                        return false;
                     }
 
                     AddLog("");
@@ -417,6 +584,58 @@ namespace SmartAuditUpdater
                     Dispatcher.Invoke(() =>
                         SetError("❌ فشل التثبيت!"));
                     return false;
+                }
+            });
+        }
+
+        #endregion
+
+        #region ══════════════════ Step 3.5: Restore (P1-023) ══════════════════
+
+        /// <summary>
+        /// P1-023 fix: استعادة تلقائية من النسخة الاحتياطية عند فشل التثبيت.
+        /// </summary>
+        private Task RestoreFromBackup()
+        {
+            return Task.Run(() =>
+            {
+                try
+                {
+                    UpdateStep("♻️ استعادة الملفات من النسخة الاحتياطية...");
+
+                    string backupZip = Path.Combine(
+                        _backupFolder,
+                        $"Backup_v{_oldVersion}.zip");
+
+                    if (!File.Exists(backupZip))
+                    {
+                        AddLog("⚠️ لا نسخة احتياطية للاستعادة");
+                        return;
+                    }
+
+                    using (var zip = ZipFile.OpenRead(backupZip))
+                    {
+                        foreach (var entry in zip.Entries)
+                        {
+                            if (string.IsNullOrEmpty(entry.Name))
+                                continue; // مجلد
+
+                            string dest = Path.Combine(_appFolder, entry.FullName);
+                            string destDir = Path.GetDirectoryName(dest);
+                            if (!Directory.Exists(destDir))
+                                Directory.CreateDirectory(destDir);
+
+                            entry.ExtractToFile(dest, overwrite: true);
+                            AddLog($"  ♻️ {entry.FullName}");
+                        }
+                    }
+
+                    AddLog("✅ تمت الاستعادة إلى الإصدار السابق");
+                }
+                catch (Exception ex)
+                {
+                    AddLog($"❌ فشل الاستعادة: {ex.Message} — " +
+                           $"النسخة الاحتياطية متاحة يدوياً في {_backupFolder}");
                 }
             });
         }
