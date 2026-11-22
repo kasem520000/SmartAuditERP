@@ -695,11 +695,23 @@ namespace SmartAuditERP
                     result = true;
                 }
 
+            // P5-026 fix: تفريغ ملفات الطابور وإعادة المتبقي فقط عند قبول الدفعة —
+            // كان التنظيف يُنفَّذ حتى بعد رفض الدفعة ثم لا يُعاد إلا «المتبقي»،
+            // فتضيع الدفعة المرفوضة بالكامل (مُحذفة من الطابور وغير محفوظة سحابيًا).
+            if (saveResult?.IsValid == true)
+            {
                 InvoicesLastSync = DateTime.Now;
                 invoiceCRUD.CLearfiles();
 
                 if (remaining.Count > 0)
                     invoiceCRUD.AddinvoicesLocally(remaining, IsNew: false);
+            }
+            else
+            {
+                // P5-026 fix: الدفعة مرفوضة — أعِد الدفعة كاملة (المرسلة + المتبقية)
+                // إلى الطابور دون أي تفريغ لإعادة المحاولة في الدورة القادمة.
+                invoiceCRUD.AddinvoicesLocally(allInvoices, IsNew: false);
+            }
             }
             catch (Exception ex)
             {

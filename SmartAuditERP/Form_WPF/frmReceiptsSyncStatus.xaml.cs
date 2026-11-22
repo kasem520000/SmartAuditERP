@@ -431,6 +431,7 @@ namespace SmartAuditERP.Form_WPF
                 var receiptCRUD = new ReceiptCRUD(Sync.APIUrl);
                 var list        = new List<Receipt>();
 
+                var sentReceipts = new List<Receipt>();
                 foreach (var row in selectedRows)
                 {
                     var receipt = receiptOper.BindReceiptByID(row.DgvGlobalID);
@@ -439,6 +440,9 @@ namespace SmartAuditERP.Form_WPF
                         receipt.DistBranch = (int?)cmbMainBranch.SelectedValue;
 
                     list.Add(receipt);
+                    // P5-027 fix: التثبيت مرهون بنجاح الإرسال الفعلي — كانت الحالة
+                    // تثبت قبل نتيجة الإرسال وعلى كل الصفوف حتى بعد تخطي النشر.
+                    bool brokerSent = true;
                     Home Home = new Home();
                     if (Home._is_active)
                     {
@@ -447,35 +451,50 @@ namespace SmartAuditERP.Form_WPF
                         string cond2    = $"WHERE GlobalID=N'{globalId}'";
                         string cond3    = $"WHERE EntryGlobalID=N'{globalId}'";
 
-                        SendData.SendDataa("Receipts",      "0", SendData.GetReceipts(cond));
-                        SendData.SendDataa("entry",         "0", SendData.GetEntryData(cond2));
-                        SendData.SendDataa("entryDetails",  "0", SendData.GetEntrySubData(cond3));
+                        brokerSent = SendData.SendDataa("Receipts", "0", SendData.GetReceipts(cond));
+                        brokerSent = SendData.SendDataa("entry", "0", SendData.GetEntryData(cond2)) && brokerSent;
+                        brokerSent = SendData.SendDataa("entryDetails", "0", SendData.GetEntrySubData(cond3)) && brokerSent;
+                    }
+                    else
+                    {
+                        brokerSent = false;
+                    }
+                    if (brokerSent)
+                    {
+                        sentReceipts.Add(receipt);
                     }
                 }
 
-                // تحديث حالة المزامنة في قاعدة البيانات
-                EnsureOpen(_conn);
-                foreach (var receipt in list)
-                {
-                    using (var cmd = new SqlCommand(
-                        $"UPDATE receipts SET Sync=1 WHERE GlobalID=N'{receipt.GlobalID}'",
-                        _conn))
-                        cmd.ExecuteNonQuery();
-                }
-                CloseConn(_conn);
-
-                // إرسال عبر API
+                // إرسال عبر API (قبل التثبيت — النتيجة تُحدد الحالة)
                 if (Sync.ValidAPIUrl)
                     await receiptCRUD.PostReceipts(list);
+
+                // تحديث حالة المزامنة في قاعدة البيانات — للمرسَل فعلًا فقط
+                EnsureOpen(_conn);
+                foreach (var receipt in sentReceipts)
+                {
+                    using (var cmd = new SqlCommand(
+                        "UPDATE receipts SET Sync=1 WHERE GlobalID=@GlobalID",
+                        _conn))
+                    {
+                        cmd.Parameters.Add("@GlobalID", SqlDbType.NVarChar).Value = receipt.GlobalID;
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                CloseConn(_conn);
 
                 DXMessageBox.Show("تمت العملية بنجاح",
                     "", MessageBoxButton.OK, MessageBoxImage.Information);
 
-                // تحديث عرض الجدول
+                // تحديث عرض الجدول — للمرسَل فعلًا فقط
+                var sentIds = new HashSet<string>(sentReceipts.Select(r => r.GlobalID));
                 foreach (var row in selectedRows)
                 {
-                    row.DgvSyncStatus     = true;
-                    row.DgvSyncStatusText = "✅ متزامن";
+                    if (sentIds.Contains(row.DgvGlobalID))
+                    {
+                        row.DgvSyncStatus     = true;
+                        row.DgvSyncStatusText = "✅ متزامن";
+                    }
                 }
             }
             catch (Exception ex)

@@ -4220,7 +4220,7 @@ CREATE PROCEDURE [dbo].[CalcProductStocks]
 WITH EXECUTE AS CALLER
 AS
 BEGIN
- set @stock = (select Quantity from ProductStocks where ProductId=@item and BranchId=@branch and UnitId=(select unit from Items where id=@item))   
+ set @stock = (select Quantity from ProductStocks where ProductId=@item and BranchId=@branch and InventoryId=@Inventory and UnitId=(select unit from Items where id=@item))   
 	if (@stock is null) set @stock=0
 END
 GO
@@ -49330,7 +49330,7 @@ CREATE PROCEDURE [dbo].[CalcProductStocks]
 WITH EXECUTE AS CALLER
 AS
 BEGIN
- set @stock = (select Quantity from ProductStocks where ProductId=@item and BranchId=@branch and UnitId=(select unit from Items where id=@item))   
+ set @stock = (select Quantity from ProductStocks where ProductId=@item and BranchId=@branch and InventoryId=@Inventory and UnitId=(select unit from Items where id=@item))   
 	if (@stock is null) set @stock=0
 END')
 GO
@@ -51321,6 +51321,27 @@ WHERE TABLE_NAME ='AccountingPeriods' AND COLUMN_NAME='ReopenCount')
 BEGIN 
 ALTER TABLE AccountingPeriods Add ReopenCount int not null default 0
 End
+GO
+
+GO
+-- P5-024 fix: إجراء رصيد مخزون السحابة كان يستقبل @Inventory ولا يرشح به —
+-- يعيد كمية المادة من أي مخزن (وبأكثر من صف يرمي استعلامًا فرعيًا متعدد
+-- القيم). هذا التعديل يفعل الرشح على قواعد البيانات القائمة (الإنشاء
+-- المحروس أعلاه يفعل الشيء نفسه لقواعد جديدة).
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND OBJECT_ID = OBJECT_ID('dbo.[CalcProductStocks]'))
+BEGIN
+exec('ALTER PROCEDURE [dbo].[CalcProductStocks]
+	@branch [int],
+	@Inventory [int],
+	@item [int],
+	@stock Float out
+WITH EXECUTE AS CALLER
+AS
+BEGIN
+ set @stock = (select Quantity from ProductStocks where ProductId=@item and BranchId=@branch and InventoryId=@Inventory and UnitId=(select unit from Items where id=@item))   
+	if (@stock is null) set @stock=0
+END')
+END
 GO
 </value></data>
   <data name="icons8_cash_register_64" mimetype="application/x-microsoft.net.object.binary.base64"><value>AAEAAAD/////AQAAAAAAAAAMAgAAAFFTeXN0ZW0uRHJhd2luZywgVmVyc2lvbj00LjAuMC4wLCBD

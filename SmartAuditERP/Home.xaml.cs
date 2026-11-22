@@ -2460,7 +2460,11 @@ namespace SmartAuditERP
         {
             try
             {
-                if (Sync.CheckSync(MainClass.BranchNo) && Sync.SyncType > 0)
+                // P5-031 fix: نمطا نهاية اليوم (3) والوردية (4) لا يدخلان المزامنة
+                // الفورية والمؤقت — تزامنهما عند حدثي إغلاق اليوم/الوردية فقط؛
+                // كان «SyncType > 0» يدخل كل الأنماط في الدورة الفورية والمؤقت
+                // كالنمط الدوري (1/2).
+                if (Sync.CheckSync(MainClass.BranchNo) && (Sync.SyncType == 1 || Sync.SyncType == 2))
                 {
                     Sync.ValidAPIUrl = await Sync.ISValidAPIUrlAsync();
                     Dispatcher.Invoke(() =>
@@ -2489,8 +2493,19 @@ namespace SmartAuditERP
             Dispatcher.Invoke(() => PerformSync(false));
         }
 
+        // P5-028 fix: سياج دورة واحدة — المؤقت والنقر والمهام الخلفية كانت
+        // تدخل PerformSync بتوازٍ فتتداخل دورات المزامنة على الاتصالات نفسها.
+        private bool _syncCycleRunning = false;
+
         public async void PerformSync(bool loadCardData)
         {
+        // P5-031 fix: أنماط نهاية اليوم/الوردية لا تزامن هنا (حدث الإغلاق فقط)
+        if (Sync.SyncType == 3 || Sync.SyncType == 4)
+        return;
+
+        if (_syncCycleRunning)
+        return;
+        _syncCycleRunning = true;
             try
             {
                 if (Sync.SyncType > 0)
@@ -2529,10 +2544,20 @@ namespace SmartAuditERP
 
                         if (MainClass.Conn_type == 1)
                         {
-                            await Sync.ReadDataPeriodically();
-                            await Sync.PostDataPeriodically();
-                            btnSyncIng.Text = "حالة المزامنة: نشطة";
-                            btnSyncIng.Foreground = new SolidColorBrush(Colors.Green);
+                            // P5-030 fix: المؤشر الأخضر مرهون بنتائج القراءة/الإرسال الفعلية —
+                            // كان يضيء أخضر بجرد انتهاء الاستدعاءين دون جمع نتيجتهما.
+                            bool readOk = await Sync.ReadDataPeriodically();
+                            bool postOk = await Sync.PostDataPeriodically();
+                            if (readOk && postOk)
+                            {
+                                btnSyncIng.Text = "حالة المزامنة: نشطة";
+                                btnSyncIng.Foreground = new SolidColorBrush(Colors.Green);
+                            }
+                            else
+                            {
+                                btnSyncIng.Text = "حالة المزامنة: تعذّرت الدورة";
+                                btnSyncIng.Foreground = new SolidColorBrush(Colors.Red);
+                            }
                         }
                         else
                         {
@@ -2552,6 +2577,11 @@ namespace SmartAuditERP
                 }
             }
             catch { }
+            finally
+            {
+                // P5-028 fix: تحرير السياج في كل المسارات
+                _syncCycleRunning = false;
+            }
         }
 
         private async void BackgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
@@ -2562,7 +2592,8 @@ namespace SmartAuditERP
                 btnSyncIng.Foreground = new SolidColorBrush(Colors.Orange);
             });
 
-            await Sync.PostDataPeriodicallyCloud();
+            // P5-030 fix: نتيجة الدورة السحابية تحدد المؤشر — كان أخضر دائمًا
+            bool cloudOk = await Sync.PostDataPeriodicallyCloud();
 
             if (Sync.SyncQuantity)
             {
@@ -2572,8 +2603,16 @@ namespace SmartAuditERP
 
             Dispatcher.Invoke(() =>
             {
-                btnSyncIng.Text = "حالة المزامنة: نشطة";
-                btnSyncIng.Foreground = new SolidColorBrush(Colors.Green);
+                if (cloudOk)
+                {
+                    btnSyncIng.Text = "حالة المزامنة: نشطة";
+                    btnSyncIng.Foreground = new SolidColorBrush(Colors.Green);
+                }
+                else
+                {
+                    btnSyncIng.Text = "حالة المزامنة: تعذّر الإرسال";
+                    btnSyncIng.Foreground = new SolidColorBrush(Colors.Red);
+                }
             });
         }
 

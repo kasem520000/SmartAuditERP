@@ -296,6 +296,8 @@ namespace SmartAuditERP.Form_WPF
 
             EntityOperations entityOperations = new EntityOperations();
             ItemOper itemOper = new ItemOper();
+            // P5-030 fix: جمع نتائج الحفظ الفعلية — مؤشر النجاح لم يكن يجمعها
+            bool allApplied = true;
 
             if (ckBranches.IsChecked == true)
             {
@@ -303,7 +305,7 @@ namespace SmartAuditERP.Form_WPF
                 List<Branch> branches = (List<Branch>)await branchCRUD.GetBranches(
                     Sync.ClientCode, Sync.BranchId, Sync.BranchType, DateTime.MinValue);
                 if (branches.Count > 0)
-                    entityOperations.SaveBranch(branches);
+                    allApplied &= entityOperations.SaveBranch(branches);
             }
 
             if (ckInventories.IsChecked == true)
@@ -312,7 +314,7 @@ namespace SmartAuditERP.Form_WPF
                 List<Invertory> inventories = (List<Invertory>)await invertoryCRUD.GetInvertories(
                     Sync.ClientCode, Sync.BranchId, Sync.BranchType, DateTime.MinValue);
                 if (inventories.Count > 0)
-                    entityOperations.SaveInvertory(inventories, Addlocally: false);
+                    allApplied &= entityOperations.SaveInvertory(inventories, Addlocally: false);
             }
 
             if (ckEmp.IsChecked == true)
@@ -323,7 +325,7 @@ namespace SmartAuditERP.Form_WPF
                     Sync.ClientCode, Sync.BranchId, Sync.BranchType, DateTime.MinValue);
                 List<BranchEmployee> branchEmployees = (List<BranchEmployee>)await branchCRUD2.GetBranchEmployee(Sync.ClientCode);
                 if (employees.Count > 0)
-                    entityOperations.SaveEmployee(employees, AddedLocally: false, branchEmployees);
+                    allApplied &= entityOperations.SaveEmployee(employees, AddedLocally: false, branchEmployees);
             }
 
             if (ckclients.IsChecked == true)
@@ -332,7 +334,7 @@ namespace SmartAuditERP.Form_WPF
                 List<global::AuditorAPI.Models.Customer> customers = (List<global::AuditorAPI.Models.Customer>)await customerCRUD.GetCustomers(
                     Sync.ClientCode, Sync.BranchId, Sync.BranchType, DateTime.MinValue);
                 if (customers.Count > 0)
-                    entityOperations.SaveCustomer(customers, AddedLocally: false);
+                    allApplied &= entityOperations.SaveCustomer(customers, AddedLocally: false);
             }
 
             if (ckaccounts.IsChecked == true)
@@ -341,7 +343,7 @@ namespace SmartAuditERP.Form_WPF
                 List<TreeAccount> accounts = (List<TreeAccount>)await accountCRUD.GetTreeAccounts(
                     Sync.ClientCode, Sync.BranchId, Sync.BranchType, DateTime.MinValue);
                 if (accounts.Count > 0)
-                    entityOperations.SaveAccounts(accounts);
+                    allApplied &= entityOperations.SaveAccounts(accounts);
             }
 
             if (ckboxes.IsChecked == true)
@@ -350,7 +352,7 @@ namespace SmartAuditERP.Form_WPF
                 List<global::AuditorAPI.Models.Treasury> treasuries = (List<global::AuditorAPI.Models.Treasury>)await treasuryCRUD.GetTreasurys(
                     Sync.ClientCode, Sync.BranchId, Sync.BranchType, DateTime.MinValue);
                 if (treasuries.Count > 0)
-                    entityOperations.SaveTreasuries(treasuries, AddedLocally: false);
+                    allApplied &= entityOperations.SaveTreasuries(treasuries, AddedLocally: false);
             }
 
             if (ckbanks.IsChecked == true)
@@ -359,17 +361,19 @@ namespace SmartAuditERP.Form_WPF
                 List<global::AuditorAPI.Models.Bank> banks = (List<global::AuditorAPI.Models.Bank>)await bankCRUD.GetBanks(
                     Sync.ClientCode, Sync.BranchId, Sync.BranchType, DateTime.MinValue);
                 if (banks.Count > 0)
-                    entityOperations.SaveBanks(banks, AddedLocally: false);
+                    allApplied &= entityOperations.SaveBanks(banks, AddedLocally: false);
             }
 
-            if (ckunits.IsChecked == true)    itemOper.ReadUnitsOnline();
+            if (ckunits.IsChecked == true)    allApplied &= await itemOper.ReadUnitsOnline();
             if (ckgroups.IsChecked == true)   itemOper.ReadCategoriesOnline();
             if (ckitems.IsChecked == true)    itemOper.ReadProductsOnline();
 
-            DXMessageBox.Show("تم تحميل البيانات بنجاح", "",
-                MessageBoxButton.OK, MessageBoxImage.Information);
+            // P5-030 fix: مؤشر النجاح يعكس نتائج الحفظ الفعلية
+            DXMessageBox.Show(allApplied ? "تم تحميل البيانات بنجاح" : "تعذّر تحميل بعض البيانات — أعد المحاولة",
+                MessageBoxButton.OK,
+                allApplied ? MessageBoxImage.Information : MessageBoxImage.Warning);
 
-            return true;
+            return allApplied;
         }
 
         #endregion

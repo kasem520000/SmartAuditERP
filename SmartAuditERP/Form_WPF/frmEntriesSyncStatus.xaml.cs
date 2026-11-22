@@ -982,6 +982,7 @@ namespace SmartAuditERP.Form_WPF
                     }
 
                     // الإرسال عبر Broker
+                    bool brokerSent = true;
                     if (canUseBroker)
                     {
                         if (ConnectBroker.CheckConnectionAndBroker())
@@ -989,16 +990,25 @@ namespace SmartAuditERP.Form_WPF
                             string entryCond = "where GlobalID=N'" + entryGlobalId + "'";
                             string entrySubCond = "WHERE EntryGlobalID=N'" + entryGlobalId + "'";
 
-                            SendData.SendDataa("entry", entryGlobalId,
+                            brokerSent = SendData.SendDataa("entry", entryGlobalId,
                                 SendData.GetEntryData(entryCond));
 
-                            SendData.SendDataa("entryDetails", entryGlobalId,
-                                SendData.GetEntrySubData(entrySubCond));
+                            brokerSent = SendData.SendDataa("entryDetails", entryGlobalId,
+                                SendData.GetEntrySubData(entrySubCond)) && brokerSent;
+                        }
+                        else
+                        {
+                            brokerSent = false;
                         }
                     }
 
-                    // تحديث حالة المزامنة محلياً
-                    UpdateEntrySyncStatus(entryGlobalId, true);
+                    // تحديث حالة المزامنة محلياً — P5-027 fix: فقط عند نجاح الإرسال الفعلي
+                    // عبر الوسيط (مسار API يثبّت حالته أدناه بعد نتيجة الإرسال)؛ كانت
+                    // تثبت قبل أي نتيجة وحتى بعد تخطي النشر لفشل الاتصال.
+                    if (brokerSent)
+                    {
+                        UpdateEntrySyncStatus(entryGlobalId, true);
+                    }
 
                     ProgressBar1.Value = rowIndex + 1;
                 }

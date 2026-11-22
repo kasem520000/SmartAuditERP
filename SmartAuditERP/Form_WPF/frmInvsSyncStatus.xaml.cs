@@ -476,6 +476,8 @@ namespace SmartAuditERP.Form_WPF
                 var invoiceOper = new InvoiceOper();
                 var invoiceList = new List<Invoice>();
                 var invoiceCRUD = new InvoiceCRUD(Sync.APIUrl);
+                // P5-027 fix: هوية ما نُشر فعلًا عبر الوسيط
+                var brokerSentIds = new HashSet<string>();
 
                 foreach (int handle in handles)
                 {
@@ -580,15 +582,27 @@ namespace SmartAuditERP.Form_WPF
                         await invoiceCRUD.PostInvoices(invoiceList);
                 }
 
-                // تحديث حالة المزامنة في قاعدة البيانات
+                // تحديث حالة المزامنة في قاعدة البيانات — P5-027 fix: فقط ما نُشر
+                // فعلًا (ناجح الوسيط أو العائد من إرسال API) — كان يشمل كل القائمة
+                // حتى الفاشلة.
+                var idsToMark = new HashSet<string>(brokerSentIds);
+                if (Sync.ValidAPIUrl && !MainClass.IsTrial)
+                {
+                    foreach (Invoice postedInv in invoiceList)
+                    {
+                        if (postedInv != null)
+                        idsToMark.Add(postedInv.InvGlobalID);
+                    }
+                }
                 EnsureConnectionOpen();
                 int progress = 0;
                 foreach (Invoice inv in invoiceList)
                 {
-                    if (inv == null) continue;
+                    if (inv == null || !idsToMark.Contains(inv.InvGlobalID)) continue;
                     using var cmd = new SqlCommand(
-                        $"UPDATE Inv SET Sync=1 " +
-                        $"WHERE InvGlobalID=N'{inv.InvGlobalID}'", _conn);
+                        "UPDATE Inv SET Sync=1 WHERE InvGlobalID=@InvGlobalID", _conn);
+                    cmd.Parameters.Add("@InvGlobalID", SqlDbType.NVarChar)
+                        .Value = inv.InvGlobalID;
                     cmd.ExecuteNonQuery();
 
                     progress++;

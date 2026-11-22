@@ -571,6 +571,21 @@ namespace SmartAuditERP
                 if (sqlConnection.State != ConnectionState.Open)
                     sqlConnection.Open();
 
+                // P5-025 fix: اشتقاق وحدة الصنف من جدول الأصناف — كان الرفع يوسم كل
+                // الكميات بالوحدة 1 ثابتة، فتخالف قراءة السحابة (CalcProductStocks
+                // يقرأ بوحدة الصنف) وتمثل الكميات بوحدة خاطئة للمواد غير المفردة.
+                var unitLookup = new Dictionary<int, int>();
+                using (var unitCmd = new SqlCommand(
+                    "SELECT id, unit FROM Items", sqlConnection))
+                    using (var unitReader = unitCmd.ExecuteReader())
+                    {
+                        while (unitReader.Read())
+                        {
+                            unitLookup[Convert.ToInt32(unitReader["id"])] =
+                                Convert.ToInt32(unitReader["unit"]);
+                        }
+                    }
+
                 const string sql =
                     "SELECT * FROM [dbo].[ItemsStockByBranch]()";
 
@@ -625,7 +640,11 @@ namespace SmartAuditERP
                                     InventoryId = Convert.ToInt32(row["InventoryId"]),
                                     Quantity = Convert.ToDecimal(row["Quantity"]),
                                     AvrgCost = Convert.ToDecimal(row["AvrgCost"]),
-                                    UnitId = 1,
+                                    // P5-025 fix: وحدة الصنف الفعلية بدل الثابت 1
+                                    UnitId = unitLookup.TryGetValue(
+                                        Convert.ToInt32(row["ItemId"]), out int itemUnit)
+                                        ? itemUnit
+                                        : 1,
                                     LastUpdate = DateTime.Now
                                 });
                             }
