@@ -849,6 +849,10 @@ namespace SmartAuditERP
 
         public bool SaveEnty(Entry entry)
         {
+            // P3-002 fix: بوابة ثوابت النشر — التحقق قبل أي اتصال أو معاملة
+            if (!ValidateEntryInvariants(entry))
+                return false;
+
             using SqlConnection conn = MainClass.ConnObj();
 
             if (conn.State != ConnectionState.Open)
@@ -858,65 +862,12 @@ namespace SmartAuditERP
 
             try
             {
-                // ─── التحقق من وجود القيد ───
-                bool isNew = true;
-                using (SqlCommand checkCmd = new SqlCommand(
-                    "SELECT COUNT(*) FROM Entry WHERE GlobalID = @GlobalID",
-                    conn, transaction))
+                // P3-005/P3-006 fix: الاستدلال التلقائي (قديم) + حراس الهوية داخل النواة
+                if (!SaveEntyCore(entry, conn, transaction, null))
                 {
-                    checkCmd.Parameters.AddWithValue("@GlobalID", entry.EntryGlobalID);
-                    isNew = Convert.ToInt32(checkCmd.ExecuteScalar()) == 0;
+                    transaction.Rollback();
+                    return false;
                 }
-
-                if (!isNew)
-                {
-                    using SqlCommand delCmd = new SqlCommand(
-                        "DELETE FROM Entry_Sub WHERE EntryGlobalID = @GlobalID",
-                        conn, transaction);
-                    delCmd.Parameters.AddWithValue("@GlobalID", entry.EntryGlobalID);
-                    delCmd.ExecuteNonQuery();
-                }
-
-                string sql = isNew ? StoredQueries.InsertEntry : StoredQueries.UpdateEntry;
-                using (SqlCommand cmd = new SqlCommand(sql, conn, transaction))
-                {
-                    cmd.Parameters.Add("@GlobalID", SqlDbType.VarChar).Value = entry.EntryGlobalID;
-                    cmd.Parameters.Add("@id", SqlDbType.Int).Value = entry.EntryNo;
-                    cmd.Parameters.Add("@date", SqlDbType.DateTime).Value = entry.EntryDate;
-                    cmd.Parameters.Add("@doc_no", SqlDbType.Int).Value = entry.ReffNo;
-                    cmd.Parameters.Add("@type", SqlDbType.Int).Value = (int)entry.Type;
-                    cmd.Parameters.Add("@state", SqlDbType.Int).Value = entry.State;
-                    cmd.Parameters.Add("@notes", SqlDbType.NVarChar).Value = entry.Note ?? string.Empty;
-                    cmd.Parameters.Add("@branch", SqlDbType.Int).Value = entry.Branch;
-                    cmd.Parameters.Add("@EmpID", SqlDbType.Int).Value = entry.EmpID;
-                    cmd.Parameters.Add("@Sync", SqlDbType.Bit).Value = false;
-                    cmd.Parameters.Add("@IS_Deleted", SqlDbType.Bit).Value = entry.ISDeleted;
-                    cmd.Parameters.Add("@IsVAT", SqlDbType.Bit).Value = entry.IsVAT;
-                    cmd.ExecuteNonQuery();
-                }
-
-                foreach (Account account in entry.Accounts)
-                {
-                    using SqlCommand subCmd = new SqlCommand(
-                        StoredQueries.InsertEntrySub, conn, transaction);
-                    subCmd.Parameters.Add("@EntryGlobalID", SqlDbType.NVarChar).Value = entry.EntryGlobalID;
-                    subCmd.Parameters.Add("@res_id", SqlDbType.Int).Value = account.EntryNo;
-                    subCmd.Parameters.Add("@dept", SqlDbType.Float).Value = account.Debt;
-                    subCmd.Parameters.Add("@credit", SqlDbType.Float).Value = account.Credit;
-                    subCmd.Parameters.Add("@acc_no", SqlDbType.Int).Value = account.Code;
-                    subCmd.Parameters.Add("@CCcode", SqlDbType.Int).Value = account.CCcode;
-                    subCmd.Parameters.Add("@notes", SqlDbType.NVarChar).Value = account.Note ?? string.Empty;
-                    subCmd.Parameters.Add("@branch", SqlDbType.Int).Value = entry.Branch;
-                    subCmd.Parameters.Add("@salesman", SqlDbType.Int).Value = account.salesman;
-                    subCmd.ExecuteNonQuery();
-                }
-
-                if (filePathDocument != null)
-                {
-                    foreach (string _ in filePathDocument)
-                        insertDocument(entry.EntryGlobalID);
-                }
-
                 transaction.Commit();
                 return true;
             }
@@ -932,6 +883,203 @@ namespace SmartAuditERP
                     MessageBoxImage.Error);
                 return false;
             }
+        }
+
+        // P3-003 fix: حفظ القيد داخل معاملة المستدعي — السند/الفاتورة وقيدها
+        // معاملة واحدة لا تقبل الافتراق؛ المستدعي وحده يملك Commit/Rollback.
+        // isNew: نية المستدعي الصريحة (true = إدراج جديد، false = تعديل)؛
+        // الاستثناءات تُعاد للمستدعي لأنه مالك المعاملة.
+        public bool SaveEnty(Entry entry, SqlConnection conn, SqlTransaction transaction, bool isNew)
+        {
+            if (!ValidateEntryInvariants(entry))
+                return false;
+            return SaveEntyCore(entry, conn, transaction, isNew);
+        }
+
+        // P3-002 fix: ثوابت القيد — قائمة فارغة أو بند غير صالح = رفض صريح؛
+        // التوازن (مدين = دائن بتفاوت ≤ 0.01) مطلوب لكل الأنواع إلا القيد
+        // الافتتاحي (رصيد افتتاحي بطبيعته مجموعة غير متوازنة — استثناء عمل
+        // موثق على قرار التدقيق).
+        private static bool ValidateEntryInvariants(Entry entry)
+        {
+            if (entry == null || entry.Accounts == null || entry.Accounts.Count == 0)
+            {
+                MessageBox.Show(
+                    GetErrorMessage("لا يمكن حفظ قيد بلا بنود",
+                                    "cannot save an entry with no lines", ""),
+                    "ثوابت القيد", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            double sumDebt = 0.0, sumCredit = 0.0;
+            foreach (Account account in entry.Accounts)
+            {
+                if (account == null ||
+                    string.IsNullOrWhiteSpace(account.Code))
+                {
+                    MessageBox.Show(
+                        GetErrorMessage("بند قيد بلا حساب (كود فارغ) غير مقبول",
+                                        "entry line without an account code is rejected", ""),
+                        "ثوابت القيد", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return false;
+                }
+                if (account.Debt < 0.0 || account.Credit < 0.0 ||
+                    (account.Debt > 0.0 && account.Credit > 0.0) ||
+                    (account.Debt == 0.0 && account.Credit == 0.0))
+                {
+                    MessageBox.Show(
+                        GetErrorMessage($"بند غير صالح (مدين {account.Debt:0.##} / دائن {account.Credit:0.##}): {account.Name}",
+                                        $"invalid line (debit {account.Debt:0.##} / credit {account.Credit:0.##}): {account.Name}", ""),
+                        "ثوابت القيد", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return false;
+                }
+                sumDebt += account.Debt;
+                sumCredit += account.Credit;
+            }
+
+            if (entry.Type != EntryType.IntialEntry &&
+                Math.Abs(sumDebt - sumCredit) > 0.01)
+            {
+                MessageBox.Show(
+                    GetErrorMessage($"القيد غير متوازن: مدين {sumDebt:0.##} / دائن {sumCredit:0.##}",
+                                    $"unbalanced entry: debit {sumDebt:0.##} / credit {sumCredit:0.##}", ""),
+                    "ثوابت القيد", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+
+            return true;
+        }
+
+        // P3-003/P3-005/P3-006 fix: نواة الحفظ داخل معاملة المستدعي.
+        // isNewHint = null (استدلال قديم عبر الوجود) أو نية صريحة من المستدعي.
+        private bool SaveEntyCore(Entry entry, SqlConnection conn,
+                                  SqlTransaction transaction, bool? isNewHint)
+        {
+            bool isNew;
+
+            // ─── التحقق من وجود القيد ───
+            // P3-005 fix: تلميحات UPDLOCK+HOLDLOCK تُسلسِل قرار
+            // (فحص-ثم-إدراج) لنفس الرقم العالمي فلا يتكرر الصف ولا
+            // يتسابق معاملة ثانية على نفس القرار.
+            bool exists;
+            using (SqlCommand checkCmd = new SqlCommand(
+                "SELECT COUNT(*) FROM Entry WITH (UPDLOCK, HOLDLOCK) WHERE GlobalID = @GlobalID",
+                conn, transaction))
+            {
+                checkCmd.Parameters.AddWithValue("@GlobalID", entry.EntryGlobalID);
+                exists = Convert.ToInt32(checkCmd.ExecuteScalar()) > 0;
+            }
+
+            if (isNewHint.HasValue)
+            {
+                isNew = isNewHint.Value;
+                if (isNew && exists)
+                {
+                    // P3-005 fix: تصادم ترقيم = رفض صريح لا استبدال
+                    MessageBox.Show(
+                        GetErrorMessage($"رقم القيد العالمي {entry.EntryGlobalID} محجوز لقيد آخر — أعد الحفظ ليرقّم البرنامج قيدك برقم جديد",
+                                        $"entry id {entry.EntryGlobalID} is already reserved by another entry — retry the save to get a fresh number", ""),
+                        "ترقيم القيود", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return false;
+                }
+                if (!isNew && !exists)
+                {
+                    MessageBox.Show(
+                        GetErrorMessage($"القيد المطلوب تعديله غير موجود: {entry.EntryGlobalID}",
+                                        $"entry to edit does not exist: {entry.EntryGlobalID}", ""),
+                        "تعديل القيد", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return false;
+                }
+            }
+            else
+            {
+                isNew = !exists;
+            }
+
+            if (!isNew)
+            {
+                // P3-006 fix: تحقق هوية القيد الموجود قبل استبدال تفاصيله —
+                // تحيد (id/type/branch) يعني مستنداً مختلفاً لا قيداً محرراً؛
+                // الرفض يمنع «تصادم الترقيم يتحول إلى استبدال» (P3-005)
+                using (SqlCommand guardCmd = new SqlCommand(
+                    "SELECT id, type, branch FROM Entry WITH (UPDLOCK, HOLDLOCK) WHERE GlobalID = @GlobalID",
+                    conn, transaction))
+                {
+                    guardCmd.Parameters.AddWithValue("@GlobalID", entry.EntryGlobalID);
+                    using (var reader = guardCmd.ExecuteReader())
+                    {
+                        if (!reader.Read())
+                        {
+                            MessageBox.Show(
+                                GetErrorMessage($"القيد المطلوب تعديله غير موجود: {entry.EntryGlobalID}",
+                                                $"entry to edit does not exist: {entry.EntryGlobalID}", ""),
+                                "تعديل القيد", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return false;
+                        }
+                        int existingId = Convert.ToInt32(reader["id"]);
+                        int existingType = Convert.ToInt32(reader["type"]);
+                        int existingBranch = Convert.ToInt32(reader["branch"]);
+                        if (existingId != entry.EntryNo ||
+                            existingType != (int)entry.Type ||
+                            existingBranch != entry.Branch)
+                        {
+                            MessageBox.Show(
+                                GetErrorMessage($"هوية القيد الموجود (رقم {existingId}/نوع {existingType}/فرع {existingBranch}) لا تطابق القيد المحفوظ (رقم {entry.EntryNo}/نوع {(int)entry.Type}/فرع {entry.Branch}) — لن يُستبدل قيد قائم بمستند مختلف",
+                                                $"existing entry identity ({existingId}/{existingType}/{existingBranch}) does not match the saved one ({entry.EntryNo}/{(int)entry.Type}/{entry.Branch}) — an existing entry will not be replaced by a different document", ""),
+                                "تحقق هوية القيد", MessageBoxButton.OK, MessageBoxImage.Warning);
+                            return false;
+                        }
+                    }
+                }
+
+                using SqlCommand delCmd = new SqlCommand(
+                    "DELETE FROM Entry_Sub WHERE EntryGlobalID = @GlobalID",
+                    conn, transaction);
+                delCmd.Parameters.AddWithValue("@GlobalID", entry.EntryGlobalID);
+                delCmd.ExecuteNonQuery();
+            }
+
+            string sql = isNew ? StoredQueries.InsertEntry : StoredQueries.UpdateEntry;
+            using (SqlCommand cmd = new SqlCommand(sql, conn, transaction))
+            {
+                cmd.Parameters.Add("@GlobalID", SqlDbType.VarChar).Value = entry.EntryGlobalID;
+                cmd.Parameters.Add("@id", SqlDbType.Int).Value = entry.EntryNo;
+                cmd.Parameters.Add("@date", SqlDbType.DateTime).Value = entry.EntryDate;
+                cmd.Parameters.Add("@doc_no", SqlDbType.Int).Value = entry.ReffNo;
+                cmd.Parameters.Add("@type", SqlDbType.Int).Value = (int)entry.Type;
+                cmd.Parameters.Add("@state", SqlDbType.Int).Value = entry.State;
+                cmd.Parameters.Add("@notes", SqlDbType.NVarChar).Value = entry.Note ?? string.Empty;
+                cmd.Parameters.Add("@branch", SqlDbType.Int).Value = entry.Branch;
+                cmd.Parameters.Add("@EmpID", SqlDbType.Int).Value = entry.EmpID;
+                cmd.Parameters.Add("@Sync", SqlDbType.Bit).Value = false;
+                cmd.Parameters.Add("@IS_Deleted", SqlDbType.Bit).Value = entry.ISDeleted;
+                cmd.Parameters.Add("@IsVAT", SqlDbType.Bit).Value = entry.IsVAT;
+                cmd.ExecuteNonQuery();
+            }
+
+            foreach (Account account in entry.Accounts)
+            {
+                using SqlCommand subCmd = new SqlCommand(
+                    StoredQueries.InsertEntrySub, conn, transaction);
+                subCmd.Parameters.Add("@EntryGlobalID", SqlDbType.NVarChar).Value = entry.EntryGlobalID;
+                subCmd.Parameters.Add("@res_id", SqlDbType.Int).Value = account.EntryNo;
+                subCmd.Parameters.Add("@dept", SqlDbType.Float).Value = account.Debt;
+                subCmd.Parameters.Add("@credit", SqlDbType.Float).Value = account.Credit;
+                subCmd.Parameters.Add("@acc_no", SqlDbType.Int).Value = account.Code;
+                subCmd.Parameters.Add("@CCcode", SqlDbType.Int).Value = account.CCcode;
+                subCmd.Parameters.Add("@notes", SqlDbType.NVarChar).Value = account.Note ?? string.Empty;
+                subCmd.Parameters.Add("@branch", SqlDbType.Int).Value = entry.Branch;
+                subCmd.Parameters.Add("@salesman", SqlDbType.Int).Value = account.salesman;
+                subCmd.ExecuteNonQuery();
+            }
+
+            if (filePathDocument != null)
+            {
+                foreach (string _ in filePathDocument)
+                    insertDocument(entry.EntryGlobalID);
+            }
+
+            return true;
         }
 
         #endregion
@@ -1268,8 +1416,10 @@ namespace SmartAuditERP
             if (conn.State != ConnectionState.Open)
                 conn.Open();
 
+            // P3-005 fix: بارامترات بدل الدمج النصي (نفس القيم الداخلية)
             using SqlCommand maxCmd = new SqlCommand(
-                $"SELECT ISNULL(MAX(id), 0) FROM Entry WHERE branch = {MainClass.BranchNo}", conn);
+                "SELECT ISNULL(MAX(id), 0) FROM Entry WHERE branch = @branch", conn);
+            maxCmd.Parameters.AddWithValue("@branch", MainClass.BranchNo);
             entryNo = Convert.ToInt32(maxCmd.ExecuteScalar());
 
             do
@@ -1280,8 +1430,10 @@ namespace SmartAuditERP
                     ? $"{Sync.ClientCode}-{MainClass.BranchNo}-{entryNo}"
                     : $"{MainClass.BranchNo}-{entryNo}";
 
+                // P3-005 fix: بارامتر بدل الدمج النصي
                 using SqlCommand checkCmd = new SqlCommand(
-                    $"SELECT COUNT(*) FROM Entry WHERE GlobalID = '{entryGlobalId}'", conn);
+                    "SELECT COUNT(*) FROM Entry WHERE GlobalID = @gid", conn);
+                checkCmd.Parameters.AddWithValue("@gid", entryGlobalId);
                 int count = Convert.ToInt32(checkCmd.ExecuteScalar());
                 if (count == 0) break;
             }
@@ -1307,15 +1459,19 @@ namespace SmartAuditERP
         public static void GetEntryNobyType(int entryType, ref int entryNo)
         {
             string branchFilter = MainClass.BranchNo != -1
-                ? $" AND branch = {MainClass.BranchNo}"
+                ? " AND branch = @branch"
                 : string.Empty;
 
             using SqlConnection conn = MainClass.ConnObj();
             if (conn.State == ConnectionState.Closed)
                 conn.Open();
 
+            // P3-005 fix: بارامترات بدل الدمج النصي
             using SqlCommand cmd = new SqlCommand(
-                $"SELECT ISNULL(MAX(doc_no), 0) FROM Entry WHERE type = {entryType}{branchFilter}", conn);
+                $"SELECT ISNULL(MAX(doc_no), 0) FROM Entry WHERE type = @type{branchFilter}", conn);
+            cmd.Parameters.AddWithValue("@type", entryType);
+            if (MainClass.BranchNo != -1)
+                cmd.Parameters.AddWithValue("@branch", MainClass.BranchNo);
 
             double.TryParse(cmd.ExecuteScalar()?.ToString(), out double maxVal);
             entryNo = Convert.ToInt32(Math.Round(maxVal + 1.0));
