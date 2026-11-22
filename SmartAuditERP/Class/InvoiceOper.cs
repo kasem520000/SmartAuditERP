@@ -2398,37 +2398,17 @@ namespace SmartAuditERP
                                                         account = new Account();
                                                         if (((inv.InvoiceType == InvoiceType.Sale) & (inv.ProcType == 1)) | ((inv.InvoiceType == InvoiceType.POS) & (inv.ProcType == 1)) | ((inv.InvoiceType == InvoiceType.Purchase) & (inv.ProcType == 2)) | ((inv.InvoiceType == (InvoiceType)21) & (inv.ProcType == 1)) | ((inv.InvoiceType == InvoiceType.ReturnSales) & (inv.ProcType == 2)))
                                                         {
-                                                                if (inv.PriceIncVAT)
-                                                                {
-                                                                        double num7;
-                                                                        num7 = invoiceItem.ItemPrice * invoiceItem.ItemQuantity * inv.TotDiscount / inv.SumPrice;
-                                                                        double num8;
-                                                                        num8 = num7 - num7 / (1.0 + invoiceObj.VAT / 100.0);
-                                                                        credit = invoiceItem.ItemNetPrice - invoiceItem.ItemVat + num8;
-                                                                        debt = 0.0;
-                                                                }
-                                                                else
-                                                                {
-                                                                        credit = invoiceItem.ItemNetPrice - invoiceItem.ItemVat;
-                                                                        debt = 0.0;
-                                                                }
+                                                                // P4-003: ضريبة السطر (ItemVat) أصبحت متزامنة مع
+                                                                // إعادة حساب خصم الفاتورة في CalcTotal — لم يبقَ حاجة
+                                                                // لتعويض num8/num10 (ضريبة حصة الخصم) الذي كان يعوّض
+                                                                // بقاء الضريبة قبل الخصم؛ إبقاؤه يضيفها مرتين الآن
+                                                                credit = invoiceItem.ItemNetPrice - invoiceItem.ItemVat;
+                                                                debt = 0.0;
                                                         }
                                                         else if (((inv.InvoiceType == InvoiceType.Sale) & (inv.ProcType == 2)) | ((inv.InvoiceType == InvoiceType.POS) & (inv.ProcType == 2)) | ((inv.InvoiceType == InvoiceType.Purchase) & (inv.ProcType == 1)) | ((inv.InvoiceType == (InvoiceType)21) & (inv.ProcType == 2)) | ((inv.InvoiceType == InvoiceType.ReturnSales) & (inv.ProcType == 1)))
                                                         {
-                                                                if (inv.PriceIncVAT)
-                                                                {
-                                                                        double num9;
-                                                                        num9 = invoiceItem.ItemPrice * invoiceItem.ItemQuantity * inv.TotDiscount / inv.SumPrice;
-                                                                        double num10;
-                                                                        num10 = num9 - num9 / (1.0 + invoiceObj.VAT / 100.0);
-                                                                        credit = 0.0;
-                                                                        debt = invoiceItem.ItemNetPrice - invoiceItem.ItemVat + num10;
-                                                                }
-                                                                else
-                                                                {
-                                                                        credit = 0.0;
-                                                                        debt = invoiceItem.ItemNetPrice - invoiceItem.ItemVat;
-                                                                }
+                                                                credit = 0.0;
+                                                                debt = invoiceItem.ItemNetPrice - invoiceItem.ItemVat;
                                                         }
                                                         account.EntryGlobalID = entry.EntryGlobalID;
                                                         account.EntryNo = entry.EntryNo;

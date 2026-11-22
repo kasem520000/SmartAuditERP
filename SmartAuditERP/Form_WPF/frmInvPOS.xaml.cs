@@ -2102,6 +2102,7 @@ namespace SmartAuditERP.Form_WPF
                         Invoic.ISNew = false;
                         Invoic.ProcType = 1;
                         wasHold = true;
+                        RestoreHoldLineImpact();
                         LoadInvNo();
                         Invoic.InvoiceNo = int.Parse(txtNo.Text);
                         Invoic.InvNote =
@@ -2125,6 +2126,7 @@ namespace SmartAuditERP.Form_WPF
                     {
                         Invoic.ISNew = false;
                         Invoic.ProcType = 1;
+                        RestoreHoldLineImpact();
                         LoadInvNo();
                         Invoic.InvoiceNo = int.Parse(txtNo.Text);
                         Invoic.InvNote =
@@ -2535,6 +2537,13 @@ namespace SmartAuditERP.Form_WPF
                         Invoic.Paid = 0;
                         Invoic.Remainder = 0;
 
+                        // P4-002: التعليق (proc_type=3) لا يحرك المخزون — وفق
+                        // كتالوج InvTypes (فاتورة معلقة IsInput=0) — أثر سطور
+                        // البيع يُصفَّر عند حفظ المعلَّق ويُستعاد عند استئناف الدفع؛
+                        // كان يُحفظ كخروج فيخصم المخزون لمجرد تعليق الطلب
+                        foreach (var heldItem in Invoic.InvoiceItems)
+                            heldItem.InvertoryImpact = 0;
+
                         SaveAndPrint();
 
                         HoldList[i] = Invoic.InvoiceNo;
@@ -2595,6 +2604,18 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
+        // P4-002: استعادة أثر بيع السطور عند استئناف طلب معلَّق/طاولة —
+        // الأثر صُفِّر عند حفظ التعليق (المعلَّق لا يحرك المخزون)، وفعلياً
+        // عند إتمام البيع يعود إلى أثر نوع الفاتورة (خروج للأصناف المخزنية،
+        // 0 للخدمات/المركّبة — نفس عقد إضافة صنف جديد في ItemOper)
+        private void RestoreHoldLineImpact()
+        {
+            int saleImpact = InvObj.InvertoryImpact;
+            foreach (var it in Invoic.InvoiceItems)
+                it.InvertoryImpact =
+                    (it.ItemType == 3 || it.ItemType == 5) ? 0 : saleImpact;
+        }
+
         #endregion
 
         #region Return Sales (مرتجع)
@@ -2639,7 +2660,11 @@ namespace SmartAuditERP.Form_WPF
                 InvoiceOper.InsertFromInv(ref Invoic, sourceType);
                 Invoic.ProcType = ProcType;
                 Invoic.InvNote = "";
-                Invoic.InvertoryImpact = 2;
+                // P4-001: مرتجع البيع يعيد المادة إلى المخزن — أثر السطر = 1 (دخول)
+                // وفق كتالوج InvTypes (مرتجع نقطة بيع IsInput=1) وعقد شاشة البيع
+                // المرتبطة InsertLinkedReturn(2, 1)؛ كان 2 (خروج) فيخصم المخزون
+                // مرة عند البيع ومرة أخرى عند إرجاعه
+                Invoic.InvertoryImpact = 1;
                 Invoic.PayATM = 0;
                 Invoic.Paycash = 0;
                 Invoic.Paid = 0;

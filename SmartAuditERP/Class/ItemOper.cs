@@ -1498,7 +1498,6 @@ namespace SmartAuditERP
                     invo.Total += item.ItemTotalPrice;
                     invo.SumCost +=
                         item.ItemCost * item.ItemPrimaryQnty;
-                    invo.InvProfit += invo.Total - invo.SumCost;
                     invo.ItemsDiscount += item.ItemDiscount;
                     invo.TotalQty +=
                         new decimal(item.ItemPrimaryQnty);
@@ -1516,6 +1515,12 @@ namespace SmartAuditERP
 
                 if (invo.InvDiscount > 0)
                     CalcTotal(ref invo);
+
+                // P4-005: الربح = الإجمالي النهائي − التكلفة، مرة واحدة بعد
+                // اكتمال الجمع (وعند وجود خصم فاتورة بعد CalcTotal) — كان
+                // يتراكم داخل الحلقة من المجاميع المرحلية فيتغير بقيمة
+                // مختلفة مع تغيير ترتيب السطور
+                invo.InvProfit = invo.Total - invo.SumCost;
 
                 if (invo.Additions > 0)
                 {
@@ -1540,6 +1545,8 @@ namespace SmartAuditERP
                 invo.ExtraVAT = 0;
                 invo.VAT = 0;
                 invo.Total = 0;
+                // P4-004: يُعاد جمع الاستقطاع على الأساس بعد الخصم
+                invo.TotalWithholdingTax = 0;
 
                 foreach (InvoiceItem item in invo.InvoiceItems)
                 {
@@ -1618,6 +1625,21 @@ namespace SmartAuditERP
                         invo.VATperc == 0)
                         vat = 0;
 
+                    // P4-003: السطر يتبع الرأس المعاد حسابه — ضريبة السطر
+                    // وإجماله وصافيه تُحدَّث بقيم ما بعد توزيع خصم الفاتورة
+                    // (كانت تبقى بقيم ما قبل الخصم فتخالف رأس الفاتورة
+                    // المحفوظ/المطبوع والقيد التفصيلي)
+                    if (EtaSetting.Active)
+                        item.WithholdingTax =
+                            lineTotal * (item.WithholdingTaxPerc / 100);
+
+                    item.ItemVat = vat;
+                    item.ItemTotalPrice = lineTotal;
+                    item.ItemPriceAfterDiscount =
+                        item.ItemQuantity > 0
+                            ? lineTotal / item.ItemQuantity
+                            : 0;
+
                     if (EtaSetting.Active)
                         item.ItemNetPrice =
                             linePriceForVat + vat + extraVat -
@@ -1636,9 +1658,14 @@ namespace SmartAuditERP
                     invo.ExtraVAT += extraVat;
                     invo.VAT += vat;
                     invo.Total += lineTotal;
+                    invo.TotalWithholdingTax += item.WithholdingTax;
                 }
 
-                invo.Net = invo.Total + invo.VAT + invo.ExtraVAT;
+                // P4-004: صافي الرأس يبقى بصيغة CalcRows نفسها (طرح
+                // الاستقطاع) — كانت الكتابة هنا تُسقط الطرح فيكبر الصافي
+                // بمقدار الاستقطاع كله بعد أي خصم فاتورة
+                invo.Net = invo.Total + invo.VAT + invo.ExtraVAT -
+                    invo.TotalWithholdingTax;
                 invo.TotDiscount += invo.InvDiscount;
             }
             catch { }
