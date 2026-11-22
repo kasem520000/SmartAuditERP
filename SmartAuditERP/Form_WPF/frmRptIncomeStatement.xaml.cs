@@ -376,7 +376,10 @@ namespace SmartAuditERP.Form_WPF
                 if (cmbBranches.SelectedIndex != -1 && cmbBranches.SelectedValue != null)
                     branch = Convert.ToInt32(cmbBranches.SelectedValue);
 
-                double invCost = Inventory.InventoryCost(branch, txtToDate.DateTime);
+                // P4-008: نهاية اليوم فعلياً (23:59:59) حتى يشمل مرشح التاريخ الجديد
+                // في الإجراء حركات يوم النهاية كاملة (نفس عقد P3-023)
+                double invCost = Inventory.InventoryCost(branch,
+                    txtToDate.DateTime.Date.AddDays(1).AddSeconds(-1));
 
                 if (_FormType == 1)
                 {

@@ -316,7 +316,11 @@ namespace SmartAuditERP.Form_WPF
 
                 double stockCost = _Stock != 0.0
                     ? _Stock
-                    : Inventory.InventoryCost(selectedBranch.HasValue ? selectedBranch.Value : MainClass.BranchNo, txtToDate.SelectedDate ?? DateTime.Today);
+                    : Inventory.InventoryCost(
+                        selectedBranch.HasValue ? selectedBranch.Value : MainClass.BranchNo,
+                        // P4-008: نهاية اليوم فعلياً (23:59:59) — منتصف الليل كان
+                        // سيستبعد حركات يوم النهاية بعد تطبيق مرشح التاريخ في الإجراء
+                        (txtToDate.SelectedDate ?? DateTime.Today).Date.AddDays(1).AddSeconds(-1));
 
                 DataRow[] inventoryExisting = groupedTable.Select($"code={inventoryCode}");
                 if (inventoryExisting.Length > 0)

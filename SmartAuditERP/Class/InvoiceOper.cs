@@ -4291,13 +4291,15 @@ namespace SmartAuditERP
                                         invoiceItem.ItemCost = ItemOper.ItemDiscountValue(new decimal(Inv.SumPrice), new decimal(Inv.InvDiscount), invoiceItem.ItemPrice * invoiceItem.ItemQuantity, new decimal(invoiceItem.ItemPrimaryQnty), new decimal(invoiceItem.ItemDiscount));
                                         invoiceItem.ItemAddedCost = ItemOper.ItemAdditonalCos(Inv.Total, Convert.ToDouble(Inv.AdditionalCost), invoiceItem.ItemPrice * invoiceItem.ItemPrimaryQnty, invoiceItem.ItemPrimaryQnty);
                                 }
-                                else if (item.ValiableStock < 0.0)
-                                {
-                                        invoiceItem.ItemCost = 0.0;
-                                }
                                 else
                                 {
-                                        invoiceItem.ItemCost = ItemOper.AvgCost(invoiceItem.ItemId, MainClass.BranchNo);
+                                        // P4-006: سياسة التكلفة المختارة (Common.CostType:
+                                        // متوسط/سعر شراء/آخر سعر شراء) تحكم تسعير سطر البيع
+                                        // عند الربط والمعاينة والحفظ — نفس عقد إضافة صنف
+                                        // جديد (ItemOper.Cost)؛ كان الربط يتجاوز الاختيار
+                                        // ويسعّر دائماً بمتوسط الفرع (أو صفراً عند سالبية
+                                        // الرصيد) فتتغير تكلفة السطر بمجرد المعاينة
+                                        invoiceItem.ItemCost = ItemOper.Cost(invoiceItem.ItemId);
                                 }
                                 item.AvegCost = invoiceItem.ItemCost;
                                 item.ItemAddedCost = invoiceItem.ItemAddedCost;

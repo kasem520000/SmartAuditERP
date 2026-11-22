@@ -686,7 +686,10 @@ namespace SmartAuditERP.Form_WPF
                         branch = bid;
                 }
 
-                return (decimal)Inventory.InventoryCost(branch, txtToDate.DateTime);
+                // P4-008: نهاية اليوم فعلياً (23:59:59) حتى يشمل مرشح التاريخ الجديد
+                // في الإجراء حركات يوم النهاية كاملة (نفس عقد P3-023)
+                return (decimal)Inventory.InventoryCost(branch,
+                    txtToDate.DateTime.Date.AddDays(1).AddSeconds(-1));
             }
             catch
             {
