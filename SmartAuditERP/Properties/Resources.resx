@@ -1,4 +1,4 @@
-﻿﻿﻿﻿<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:element name="root" msdata:IsDataSet="true">
@@ -51288,6 +51288,24 @@ If Not EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
 WHERE TABLE_NAME ='SettingSync' AND COLUMN_NAME='MqttPass')
 BEGIN 
 ALTER TABLE SettingSync Add MqttPass nvarchar(512) null
+End
+GO
+If Not EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME ='AccountingPeriods' AND COLUMN_NAME='ReopenedBy')
+BEGIN 
+ALTER TABLE AccountingPeriods Add ReopenedBy nvarchar(100) null
+End
+GO
+If Not EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME ='AccountingPeriods' AND COLUMN_NAME='ReopenedDate')
+BEGIN 
+ALTER TABLE AccountingPeriods Add ReopenedDate datetime null
+End
+GO
+If Not EXISTS(SELECT * FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME ='AccountingPeriods' AND COLUMN_NAME='ReopenCount')
+BEGIN 
+ALTER TABLE AccountingPeriods Add ReopenCount int not null default 0
 End
 GO
 </value></data>

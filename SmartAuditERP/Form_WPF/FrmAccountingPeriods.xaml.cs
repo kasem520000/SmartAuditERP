@@ -189,7 +189,7 @@ namespace SmartAuditERP.Form_WPF
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    if (_periodManager.ClosePeriod(selected.PeriodID, Environment.UserName))
+                    if (_periodManager.ClosePeriod(selected.PeriodID, MainClass.UserName))
                     {
                         MessageBox.Show("تم إغلاق الفترة المحاسبية بنجاح", "نجاح",
                             MessageBoxButton.OK, MessageBoxImage.Information);
@@ -231,7 +231,8 @@ namespace SmartAuditERP.Form_WPF
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    if (_periodManager.ReopenPeriod(selected.PeriodID))
+                    // P3-018 fix: هوية المستخدم التطبيقية لا هوية Windows
+                    if (_periodManager.ReopenPeriod(selected.PeriodID, MainClass.UserName))
                     {
                         MessageBox.Show("تم إعادة فتح الفترة المحاسبية بنجاح", "نجاح",
                             MessageBoxButton.OK, MessageBoxImage.Information);

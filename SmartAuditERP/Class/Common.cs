@@ -1271,18 +1271,28 @@ namespace SmartAuditERP
 
         public static bool CheckProiedAcc(DateTime InvoiceDate)
         {
+            // P3-001 fix: حارس الفترة الحقيقي — كان ثلاثي العطب: (١) القرار
+            // ينتهي بـ«|| true» فيسمح دائماً؛ (٢) الاستعلام كان يقرأ حقل
+            // txtDatabase من نسخة frmUserLogin جديدة (قيمتها التصميمية الفارغة)
+            // فلا يطابق أي صف أصلاً؛ (٣) الاستثناء = سماح. الآن: نطاق الفترة
+            // مفروض فعلاً (خارجه = منع)، والاستعلام مُعلْمَت على الاسم الآلي
+            // الحي من MainClass.DataBaseAutoName، والخطأ = منع (fail-closed).
+            // بلا سجل فترة نشط (نشر بلا تهيئة فترة) يبقى السماح — قرار توافق
+            // موثق كي لا يُقفل حفظ التثبيتات غير المهيأة؛ التهيئة من شاشة
+            // إدارة قواعد البيانات تفعّل الحراسة.
             try
             {
                 string connStr = BuildMasterConnectionString();
                 using var sqlConnection = MainClass.CreateSqlConnection(connStr);
                 if (sqlConnection.State != ConnectionState.Open)
                     sqlConnection.Open();
-                var frmUserLogin = new frmUserLogin();
                 using var adapter = new SqlDataAdapter(
-                    "SELECT * FROM master.dbo.DatabasesManagment "
-                    + "where IsActive=1 and IsDeleted=0 "
-                    + "and DbAutoName=N'" + frmUserLogin.txtDatabase + "'",
+                    "SELECT AccountingPeriodStart, AccountingPeriodEnd "
+                    + "FROM master.dbo.DatabasesManagment "
+                    + "WHERE IsActive=1 AND IsDeleted=0 AND DbAutoName=@dbName",
                     sqlConnection);
+                adapter.SelectCommand.Parameters.AddWithValue(
+                    "@dbName", MainClass.DataBaseAutoName ?? string.Empty);
                 var dt = new DataTable();
                 adapter.Fill(dt);
 
@@ -1291,13 +1301,16 @@ namespace SmartAuditERP
                     var row = dt.Rows[0];
                     DateTime end = Convert.ToDateTime(row["AccountingPeriodEnd"]);
                     DateTime start = Convert.ToDateTime(row["AccountingPeriodStart"]);
-                    return !(InvoiceDate > end || InvoiceDate < start) || true;
+                    // P3-001 fix: التنفيذ الفعلي للنطاق — كان || true يلغيه
+                    return InvoiceDate >= start && InvoiceDate <= end;
                 }
+                // P3-001 fix: بلا تهيئة فترة = سماح موثق (توافق النشر القائم)
                 return true;
             }
             catch
             {
-                return true;
+                // P3-001 fix: الخطأ = منع لا سماح (fail-closed)
+                return false;
             }
         }
 

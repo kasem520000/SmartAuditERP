@@ -201,6 +201,11 @@ namespace SmartAuditERP.Form_WPF
                 MainClass.conn = conn;
                 MainClass.Conn_type = conn_type;
                 MainClass.DataBaseName = cmbDatabases.Text;
+                // P3-001 fix: الاسم الآلي الحي (DbAutoName) لحارس الفترة —
+                // كان حارس CheckProiedAcc يقرأ نسخة نموذج جديدة فلا يجد شيئاً
+                MainClass.DataBaseAutoName =
+                    cmbDatabases.SelectedValue?.ToString().Trim()
+                    ?? txtDatabase ?? string.Empty;
 
                 int selectedBranch = 0;
                 if (cmbBranches.SelectedValue != null)

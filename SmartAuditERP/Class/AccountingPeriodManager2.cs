@@ -147,16 +147,21 @@ namespace SmartAuditERP
             }
         }
 
-        public bool ReopenPeriod(int periodID)
+        public bool ReopenPeriod(int periodID, string reopenedBy)
         {
             using (SqlConnection conn = MainClass.CreateSqlConnection(_connectionString))
             {
+                // P3-018 fix: إعادة الفتح لا تمحو سجل الإقفال — ClosedBy/ClosedDate
+                // يبقيان؛ هوية إعادة الفتح وتاريخها وعدّادها بالأعمدة الجديدة
                 string query = @"UPDATE AccountingPeriods 
-                                 SET IsClosed = 0, ClosedBy = NULL, ClosedDate = NULL
+                                 SET IsClosed = 0, ReopenedBy = @ReopenedBy, ReopenedDate = @ReopenedDate,
+                                     ReopenCount = ISNULL(ReopenCount, 0) + 1
                                  WHERE PeriodID = @ID";
 
                 SqlCommand cmd = new SqlCommand(query, conn);
                 cmd.Parameters.AddWithValue("@ID", periodID);
+                cmd.Parameters.AddWithValue("@ReopenedBy", reopenedBy ?? "");
+                cmd.Parameters.AddWithValue("@ReopenedDate", DateTime.Now);
 
                 conn.Open();
                 return cmd.ExecuteNonQuery() > 0;
@@ -168,17 +173,51 @@ namespace SmartAuditERP
             using (SqlConnection conn = MainClass.CreateSqlConnection(_connectionString))
             {
                 conn.Open();
+                // P3-017 fix: التفعيل ذرية واحدة: فحص الإغلاق + فحص التداخل مع
+                // النشطة + إلغاء التفعيل + التفعيل داخل معاملة بتلميحات قفل
+                using (SqlTransaction tx = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        SqlCommand checkCmd = new SqlCommand(
+                            "SELECT IsClosed, StartDate, EndDate FROM AccountingPeriods WITH (UPDLOCK, HOLDLOCK) WHERE PeriodID = @ID", conn, tx);
+                        checkCmd.Parameters.AddWithValue("@ID", periodID);
+                        using (var reader = checkCmd.ExecuteReader())
+                        {
+                            if (!reader.Read())
+                                throw new Exception("الفترة المطلوبة غير موجودة");
+                            if (Convert.ToBoolean(reader["IsClosed"]))
+                                throw new Exception("لا يمكن تفعيل فترة محاسبية مغلقة");
+                            var start = (DateTime)reader["StartDate"];
+                            var end = (DateTime)reader["EndDate"];
+                            reader.Close();
 
-                // إلغاء تفعيل جميع الفترات
-                SqlCommand deactivateCmd = new SqlCommand("UPDATE AccountingPeriods SET IsActive = 0", conn);
-                deactivateCmd.ExecuteNonQuery();
+                            SqlCommand overlapCmd = new SqlCommand(
+                                "SELECT COUNT(*) FROM AccountingPeriods WITH (UPDLOCK, HOLDLOCK) WHERE IsActive = 1 AND PeriodID <> @ID AND (StartDate <= @End AND EndDate >= @Start)", conn, tx);
+                            overlapCmd.Parameters.AddWithValue("@ID", periodID);
+                            overlapCmd.Parameters.AddWithValue("@Start", start);
+                            overlapCmd.Parameters.AddWithValue("@End", end);
+                            if (Convert.ToInt32(overlapCmd.ExecuteScalar()) > 0)
+                                throw new Exception("لا يمكن تفعيل فترة تتداخل مع فترة نشطة أخرى");
+                        }
 
-                // تفعيل الفترة المحددة
-                string query = "UPDATE AccountingPeriods SET IsActive = 1 WHERE PeriodID = @ID";
-                SqlCommand cmd = new SqlCommand(query, conn);
-                cmd.Parameters.AddWithValue("@ID", periodID);
+                        SqlCommand deactivateCmd = new SqlCommand("UPDATE AccountingPeriods SET IsActive = 0", conn, tx);
+                        deactivateCmd.ExecuteNonQuery();
 
-                return cmd.ExecuteNonQuery() > 0;
+                        string query = "UPDATE AccountingPeriods SET IsActive = 1 WHERE PeriodID = @ID";
+                        SqlCommand cmd = new SqlCommand(query, conn, tx);
+                        cmd.Parameters.AddWithValue("@ID", periodID);
+
+                        bool result = cmd.ExecuteNonQuery() > 0;
+                        tx.Commit();
+                        return result;
+                    }
+                    catch
+                    {
+                        tx.Rollback();
+                        throw;
+                    }
+                }
             }
         }
 

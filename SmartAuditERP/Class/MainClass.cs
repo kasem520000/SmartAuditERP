@@ -33,6 +33,11 @@ namespace SmartAuditERP
         public static int Conn_type = 1;
         public static string DataBaseName = "";
 
+        // P3-001 fix: الاسم الآلي الحي لقاعدة البيانات الحالية (DbAutoName
+        // في master.DatabasesManagment) — يُضبط عند الدخول من قيمة cmbDatabases
+        // الفعلية؛ CheckProiedAcc يستعلم به بدل نسخة نموذج فارغة
+        public static string DataBaseAutoName = "";
+
         public static string connstr =
             $"server={Server};database={Database};trusted_connection=true";
 
