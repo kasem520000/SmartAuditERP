@@ -2924,7 +2924,29 @@ namespace SmartAuditERP
                     return null;
                 }
 
-                string tagName = ExtractJsonValue(json, "tag_name").TrimStart('v', 'V');
+                // P1-025 fix: تحليل مطبوع عبر Newtonsoft بدل الاستخراج اليدوي بالفهارس —
+                // لا كسر على المحارف المهرّبة، وعقد أصول صريح بدل «أول مرفق».
+                Updates.GitHubRelease release;
+                try
+                {
+                    release = Newtonsoft.Json.JsonConvert
+                        .DeserializeObject<Updates.GitHubRelease>(json);
+                }
+                catch (Newtonsoft.Json.JsonException jex)
+                {
+                    System.Diagnostics.Debug.WriteLine(
+                        "Release JSON contract violation: " + jex.Message);
+                    return null;
+                }
+
+                if (release == null ||
+                    string.IsNullOrWhiteSpace(release.TagName))
+                {
+                    System.Diagnostics.Debug.WriteLine("tag_name not found");
+                    return null;
+                }
+
+                string tagName = release.TagName.TrimStart('v', 'V');
                 System.Diagnostics.Debug.WriteLine("tagName = " + tagName);
 
                 if (string.IsNullOrWhiteSpace(tagName))
@@ -2954,19 +2976,27 @@ namespace SmartAuditERP
                     return null;
                 }
 
+                // عقد الأصول: .zip واحد، أو update*.zip عند التعدد، وإلا رفض صريح
+                var asset = release.SelectUpdateAsset();
+                if (asset == null)
+                {
+                    System.Diagnostics.Debug.WriteLine(
+                        "No unambiguous update asset (.zip) in release — refusing");
+                    return null;
+                }
+
                 var info = new AppUpdateInfo
                 {
                     NewVersion = tagName,
-                    ReleaseTitle = ExtractJsonValue(json, "name"),
-                    ReleaseNotes = ExtractJsonValue(json, "body"),
-                    DownloadUrl = ExtractDownloadUrl(json),
-                    FileName = ExtractAssetName(json),
-                    FileSize = ExtractFileSize(json)
+                    ReleaseTitle = release.Name ?? "",
+                    ReleaseNotes = release.Body ?? "",
+                    DownloadUrl = asset.BrowserDownloadUrl,
+                    FileName = asset.Name ?? "update_SmartAuditERP.zip",
+                    FileSize = asset.Size
                 };
 
-                string publishDate = ExtractJsonValue(json, "published_at");
-                if (!string.IsNullOrWhiteSpace(publishDate) &&
-                    DateTime.TryParse(publishDate, out DateTime dt))
+                if (!string.IsNullOrWhiteSpace(release.PublishedAt) &&
+                    DateTime.TryParse(release.PublishedAt, out DateTime dt))
                 {
                     info.ReleaseDate = dt.ToString("yyyy/MM/dd hh:mm tt");
                 }
@@ -3027,106 +3057,9 @@ namespace SmartAuditERP
 
         #region ══════════════════ JSON Helpers ══════════════════
 
-        private string ExtractJsonValue(string json, string key)
-        {
-            try
-            {
-                string searchKey = $"\"{key}\"";
-                int keyIndex = json.IndexOf(searchKey);
-                if (keyIndex == -1) return "";
 
-                int colonIndex = json.IndexOf(':', keyIndex + searchKey.Length);
-                if (colonIndex == -1) return "";
 
-                int valueStart = colonIndex + 1;
-                while (valueStart < json.Length && json[valueStart] == ' ')
-                    valueStart++;
 
-                if (valueStart >= json.Length) return "";
-
-                if (json[valueStart] == '"')
-                {
-                    int strStart = valueStart + 1;
-                    int strEnd = strStart;
-                    while (strEnd < json.Length)
-                    {
-                        if (json[strEnd] == '"' && json[strEnd - 1] != '\\')
-                            break;
-                        strEnd++;
-                    }
-                    return json.Substring(strStart, strEnd - strStart)
-                        .Replace("\\n", "\n")
-                        .Replace("\\r", "")
-                        .Replace("\\\"", "\"");
-                }
-                else if (json[valueStart] == 'n')
-                {
-                    return "";
-                }
-                else
-                {
-                    int numEnd = valueStart;
-                    while (numEnd < json.Length &&
-                           json[numEnd] != ',' &&
-                           json[numEnd] != '}' &&
-                           json[numEnd] != ']')
-                        numEnd++;
-                    return json.Substring(valueStart, numEnd - valueStart).Trim();
-                }
-            }
-            catch { return ""; }
-        }
-
-        private string ExtractDownloadUrl(string json)
-        {
-            try
-            {
-                string key = "\"browser_download_url\"";
-                int keyIdx = json.IndexOf(key);
-                if (keyIdx == -1) return "";
-                int colonIdx = json.IndexOf(':', keyIdx + key.Length);
-                int urlStart = json.IndexOf('"', colonIdx + 1) + 1;
-                int urlEnd = json.IndexOf('"', urlStart);
-                return json.Substring(urlStart, urlEnd - urlStart);
-            }
-            catch { return ""; }
-        }
-
-        private string ExtractAssetName(string json)
-        {
-            try
-            {
-                int assetsIdx = json.IndexOf("\"assets\"");
-                if (assetsIdx == -1) return "update_SmartAuditERP.zip";
-                string nk = "\"name\"";
-                int nIdx = json.IndexOf(nk, assetsIdx);
-                if (nIdx == -1) return "update_SmartAuditERP.zip";
-                int cIdx = json.IndexOf(':', nIdx + nk.Length);
-                int nStart = json.IndexOf('"', cIdx + 1) + 1;
-                int nEnd = json.IndexOf('"', nStart);
-                return json.Substring(nStart, nEnd - nStart);
-            }
-            catch { return "update_SmartAuditERP.zip"; }
-        }
-
-        private long ExtractFileSize(string json)
-        {
-            try
-            {
-                int assetsIdx = json.IndexOf("\"assets\"");
-                if (assetsIdx == -1) return 0;
-                string sk = "\"size\"";
-                int sIdx = json.IndexOf(sk, assetsIdx);
-                if (sIdx == -1) return 0;
-                int cIdx = json.IndexOf(':', sIdx + sk.Length);
-                int nStart = cIdx + 1;
-                while (nStart < json.Length && json[nStart] == ' ') nStart++;
-                int nEnd = nStart;
-                while (nEnd < json.Length && char.IsDigit(json[nEnd])) nEnd++;
-                return long.Parse(json.Substring(nStart, nEnd - nStart));
-            }
-            catch { return 0; }
-        }
 
         #endregion
 
