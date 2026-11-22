@@ -190,86 +190,134 @@ namespace SmartAuditERP.Form_WPF
 
                 Generate();
                 SaveCSR();
-                ComplianceCSID();
+
+                // P6-010 fix: بوابة إنشاء الاعتماد — كان فشل ComplianceCSID يُبتلع
+                // (void/Logger فقط) فيواصل الحفظ: يُمسح الاعتماد القائم ويُستبدل بآخر
+                // فارغ ثم تظهر «تم الحفظ» بينما الربط معطل. الآن: فشل الإنشاء =
+                // توقف كامل قبل أي كتابة (آخر اعتماد صالح يبقى كما هو).
+                if (!ComplianceCSID())
+                    return;
+
+                // P6-010 fix: اكتمال الاعتماد قبل استبدال أي شيء قائم
+                if (string.IsNullOrWhiteSpace(request.Csr)
+                    || string.IsNullOrWhiteSpace(request.PrivateKey)
+                    || string.IsNullOrWhiteSpace(request.CSID)
+                    || string.IsNullOrWhiteSpace(request.Secret)
+                    || string.IsNullOrWhiteSpace(request.RequestID))
+                {
+                    DXMessageBox.Show(
+                        "تعذّر اكتمال بيانات اعتماد الزكاة (CSR/المفتاح/CSID/Secret/RequestID) — لم يُغيَّر أي إعداد قائم",
+                        "", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
 
                 if (conn.State != ConnectionState.Open) conn.Open();
 
-                new SqlCommand("DELETE FROM SettingZatca", conn).ExecuteNonQuery();
-
-                var insertCmd = new SqlCommand(
-                    "INSERT INTO SettingZatca " +
-                    "(ID,filePath,isProduction,IsActive,IsSimulation,SyncManual,StartDate,EndDate) " +
-                    "VALUES (1,@filePath,@isProduction,@IsActive,@IsSimulation,@SyncManual,@StartDate,@EndDate)",
-                    conn);
-                insertCmd.Parameters.Add("@filePath",     SqlDbType.NVarChar).Value = txtPath.Text;
-                insertCmd.Parameters.Add("@isProduction", SqlDbType.Bit).Value      =
-                    rdCompliance.IsChecked == true ? 0 : 1;
-                insertCmd.Parameters.Add("@IsActive",     SqlDbType.Bit).Value      =
-                    chkActivate.IsChecked == true;
-                insertCmd.Parameters.Add("@IsSimulation", SqlDbType.Bit).Value      =
-                    chkSimulation.IsChecked == true;
-                insertCmd.Parameters.Add("@SyncManual",   SqlDbType.Bit).Value      =
-                    chkSyncManual.IsChecked == true;
-                insertCmd.Parameters.Add("@StartDate",    SqlDbType.DateTime).Value =
-                    txtDate.DateTime;
-                insertCmd.Parameters.Add("@EndDate",      SqlDbType.DateTime).Value =
-                    txtDate.DateTime.AddYears(1);
-                insertCmd.ExecuteNonQuery();
-
-                // CSR Properties
-                var checkAdapter = new SqlDataAdapter(
-                    $"SELECT serialNumber FROM CSRProperties WHERE serialNumber=N'{txtSerialNumber.Text}'",
-                    conn);
-                var checkTable = new DataTable();
-                checkAdapter.Fill(checkTable);
-
-                SqlCommand csrCmd;
-                if (checkTable.Rows.Count == 0)
+                // P6-010 fix: وحدة اعتماد واحدة — الإعدادات والخصائص والاعتماد
+                // تُكتب/تُستبدل داخل معاملة واحدة كلها-أو-لا شيء (كانت ثلاث كتابات
+                // مستقلة بلا معاملة: فشل أي منها يترك نصف الحالة والاعتماد ممسوحًا).
+                var tx = conn.BeginTransaction();
+                try
                 {
-                    csrCmd = new SqlCommand(
-                        "INSERT INTO CSRProperties(Id,commonName,serialNumber," +
-                        "organizationIdentifier,organizationUnitName,organizationName," +
-                        "countryName,invoiceType,address,industry) " +
-                        "VALUES(@Id,@commonName,@serialNumber,@organizationIdentifier," +
-                        "@organizationUnitName,@organizationName,@countryName," +
-                        "@invoiceType,@address,@industry)", conn);
-                    csrCmd.Parameters.Add("@Id", SqlDbType.Int).Value = 1;
+                    new SqlCommand("DELETE FROM SettingZatca", conn, tx).ExecuteNonQuery();
+
+                    var insertCmd = new SqlCommand(
+                        "INSERT INTO SettingZatca " +
+                        "(ID,filePath,isProduction,IsActive,IsSimulation,SyncManual,StartDate,EndDate) " +
+                        "VALUES (1,@filePath,@isProduction,@IsActive,@IsSimulation,@SyncManual,@StartDate,@EndDate)",
+                        conn, tx);
+                    insertCmd.Parameters.Add("@filePath",     SqlDbType.NVarChar).Value = txtPath.Text;
+                    insertCmd.Parameters.Add("@isProduction", SqlDbType.Bit).Value      =
+                        rdCompliance.IsChecked == true ? 0 : 1;
+                    insertCmd.Parameters.Add("@IsActive",     SqlDbType.Bit).Value      =
+                        chkActivate.IsChecked == true;
+                    insertCmd.Parameters.Add("@IsSimulation", SqlDbType.Bit).Value      =
+                        chkSimulation.IsChecked == true;
+                    insertCmd.Parameters.Add("@SyncManual",   SqlDbType.Bit).Value      =
+                        chkSyncManual.IsChecked == true;
+                    insertCmd.Parameters.Add("@StartDate",    SqlDbType.DateTime).Value =
+                        txtDate.DateTime;
+                    insertCmd.Parameters.Add("@EndDate",      SqlDbType.DateTime).Value =
+                        txtDate.DateTime.AddYears(1);
+                    insertCmd.ExecuteNonQuery();
+
+                    // CSR Properties
+                    var checkAdapter = new SqlDataAdapter(
+                        "SELECT serialNumber FROM CSRProperties WHERE serialNumber=@serialNumber",
+                        conn);
+                    checkAdapter.SelectCommand.Transaction = tx;
+                    checkAdapter.SelectCommand.Parameters.Add(
+                        "@serialNumber", SqlDbType.NVarChar).Value = txtSerialNumber.Text;
+                    var checkTable = new DataTable();
+                    checkAdapter.Fill(checkTable);
+
+                    SqlCommand csrCmd;
+                    if (checkTable.Rows.Count == 0)
+                    {
+                        csrCmd = new SqlCommand(
+                            "INSERT INTO CSRProperties(Id,commonName,serialNumber," +
+                            "organizationIdentifier,organizationUnitName,organizationName," +
+                            "countryName,invoiceType,address,industry) " +
+                            "VALUES(@Id,@commonName,@serialNumber,@organizationIdentifier," +
+                            "@organizationUnitName,@organizationName,@countryName," +
+                            "@invoiceType,@address,@industry)", conn, tx);
+                        csrCmd.Parameters.Add("@Id", SqlDbType.Int).Value = 1;
+                    }
+                    else
+                    {
+                        csrCmd = new SqlCommand(
+                            "UPDATE CSRProperties SET commonName=@commonName," +
+                            "organizationIdentifier=@organizationIdentifier," +
+                            "organizationUnitName=@organizationUnitName," +
+                            "organizationName=@organizationName,countryName=@countryName," +
+                            "invoiceType=@invoiceType,address=@address,industry=@industry", conn, tx);
+                    }
+
+                    csrCmd.Parameters.Add("@commonName",              SqlDbType.NVarChar).Value = txtCommonName.Text;
+                    csrCmd.Parameters.Add("@serialNumber",            SqlDbType.NVarChar).Value = txtSerialNumber.Text;
+                    csrCmd.Parameters.Add("@organizationIdentifier",  SqlDbType.NVarChar).Value = txtOrganizationIdentifier.Text;
+                    csrCmd.Parameters.Add("@organizationUnitName",    SqlDbType.NVarChar).Value = txtOrganizationUnitName.Text;
+                    csrCmd.Parameters.Add("@organizationName",        SqlDbType.NVarChar).Value = txtOrganizationName.Text;
+                    csrCmd.Parameters.Add("@countryName",             SqlDbType.NVarChar).Value = txtCountryName.Text;
+                    csrCmd.Parameters.Add("@invoiceType",             SqlDbType.NVarChar).Value = txtInvoiceType.Text;
+                    csrCmd.Parameters.Add("@address",                 SqlDbType.NVarChar).Value = txtAddress.Text;
+                    csrCmd.Parameters.Add("@industry",                SqlDbType.NVarChar).Value = txtIndustry.Text;
+                    csrCmd.ExecuteNonQuery();
+
+                    // ZatcaCredential — upsert يحفظ أعمدة الإنتاج (P_*) عبر إعادة
+                    // حفظ الامتثال (كان DELETE يحذف شهادة الإنتاج القائمة كلها ثم
+                    // INSERT بلا P_*). P6-011 fix: قائمة الأعمدة والقيم والمعاملات
+                    // متطابقة (التوأمان القديمان في زر PCSID واستيراد الملف كانا:
+                    // 8 أعمدة مقابل 7 قيم بلا CSR/PrivateKey → إدراج يفشل دائمًا).
+                    var credCmd = new SqlCommand(
+                        "IF EXISTS (SELECT 1 FROM ZatcaCredential WHERE ID=1) " +
+                        "UPDATE ZatcaCredential SET CSR=@CSR,PrivateKey=@PrivateKey," +
+                        "RequestID=@RequestID,CSID=@CSID,Secret=@Secret WHERE ID=1 " +
+                        "ELSE " +
+                        "INSERT INTO ZatcaCredential(ID,CSR,PrivateKey,RequestID,CSID,Secret) " +
+                        "VALUES(1,@CSR,@PrivateKey,@RequestID,@CSID,@Secret)",
+                        conn, tx);
+                    credCmd.Parameters.Add("@CSR",       SqlDbType.NVarChar).Value = request.Csr;
+                    credCmd.Parameters.Add("@PrivateKey", SqlDbType.NVarChar).Value = request.PrivateKey;
+                    credCmd.Parameters.Add("@RequestID", SqlDbType.NVarChar).Value = request.RequestID;
+                    credCmd.Parameters.Add("@CSID",      SqlDbType.NVarChar).Value = request.CSID;
+                    credCmd.Parameters.Add("@Secret",    SqlDbType.NVarChar).Value = request.Secret;
+                    credCmd.ExecuteNonQuery();
+
+                    tx.Commit();
                 }
-                else
+                catch (Exception txEx)
                 {
-                    csrCmd = new SqlCommand(
-                        "UPDATE CSRProperties SET commonName=@commonName," +
-                        "organizationIdentifier=@organizationIdentifier," +
-                        "organizationUnitName=@organizationUnitName," +
-                        "organizationName=@organizationName,countryName=@countryName," +
-                        "invoiceType=@invoiceType,address=@address,industry=@industry", conn);
+                    try { tx.Rollback(); } catch { /* المعاملة قد تكون أُنجزت/أُغلقت */ }
+                    Logger.Error($"{Title} btnSavePath_Click_tx {txEx.Message} {MainClass.UserName}");
+                    DXMessageBox.Show("خطأ\n" + txEx.Message,
+                        "", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
                 }
-
-                csrCmd.Parameters.Add("@commonName",              SqlDbType.NVarChar).Value = txtCommonName.Text;
-                csrCmd.Parameters.Add("@serialNumber",            SqlDbType.NVarChar).Value = txtSerialNumber.Text;
-                csrCmd.Parameters.Add("@organizationIdentifier",  SqlDbType.NVarChar).Value = txtOrganizationIdentifier.Text;
-                csrCmd.Parameters.Add("@organizationUnitName",    SqlDbType.NVarChar).Value = txtOrganizationUnitName.Text;
-                csrCmd.Parameters.Add("@organizationName",        SqlDbType.NVarChar).Value = txtOrganizationName.Text;
-                csrCmd.Parameters.Add("@countryName",             SqlDbType.NVarChar).Value = txtCountryName.Text;
-                csrCmd.Parameters.Add("@invoiceType",             SqlDbType.NVarChar).Value = txtInvoiceType.Text;
-                csrCmd.Parameters.Add("@address",                 SqlDbType.NVarChar).Value = txtAddress.Text;
-                csrCmd.Parameters.Add("@industry",                SqlDbType.NVarChar).Value = txtIndustry.Text;
-                csrCmd.ExecuteNonQuery();
-
-                // ZatcaCredential
-                new SqlCommand("DELETE FROM ZatcaCredential", conn).ExecuteNonQuery();
-                var credCmd = new SqlCommand(
-                    "INSERT INTO ZatcaCredential " +
-                    "(ID,CSR,PrivateKey,CSID,Secret,RequestID) " +
-                    "VALUES(1,@CSR,@PrivateKey,@CSID,@Secret,@RequestID)", conn);
-                credCmd.Parameters.Add("@CSR",       SqlDbType.NVarChar).Value = request.Csr;
-                credCmd.Parameters.Add("@PrivateKey", SqlDbType.NVarChar).Value = request.PrivateKey;
-                credCmd.Parameters.Add("@CSID",      SqlDbType.NVarChar).Value = request.CSID;
-                credCmd.Parameters.Add("@Secret",    SqlDbType.NVarChar).Value = request.Secret;
-                credCmd.Parameters.Add("@RequestID", SqlDbType.NVarChar).Value = request.RequestID;
-                credCmd.ExecuteNonQuery();
-
-                if (conn.State != ConnectionState.Closed) conn.Close();
+                finally
+                {
+                    if (conn.State != ConnectionState.Closed) conn.Close();
+                }
 
                 MainClass.ZatcafilePath = txtPath.Text;
                 MainSetting.IsProductionZatca       = rdProduction.IsChecked == true;
@@ -354,11 +402,24 @@ namespace SmartAuditERP.Form_WPF
                     new SqlCommand("SELECT COUNT(*) FROM ZatcaCredential WHERE ID=1", conn)
                     .ExecuteScalar());
 
+                // P6-011 fix: فرع الإنشاء الجديد كان 8 أعمدة مقابل 7 قيم بلا
+                // CSR/PrivateKey ومعاملات لا تطابق مواضعها → يفشل الإدراج دائمًا
+                // بخطأ 109 (وتُبتلع رسالته في catch) فلا يُحفظ اعتماد الإنتاج لصف
+                // جديد أبدًا. الآن: 9 أعمدة مقابل 9 قيم بمعاملات متطابقة، وقيم
+                // الامتثال تُقرأ من الاعتماد القائم الذي وُلّد منه اعتماد الإنتاج.
                 SqlCommand cmd;
                 if (count == 0)
+                {
+                    var credNow = LoadZatcaCredential();
                     cmd = new SqlCommand(
-                        "INSERT INTO ZatcaCredential(ID,CSR,RequestID,CSID,Secret,P_RequestID,P_CSID,P_Secret) " +
-                        "VALUES(1,@RequestID,@CSID,@Secret,@P_RequestID,@P_CSID,@P_Secret)", conn);
+                        "INSERT INTO ZatcaCredential(ID,CSR,PrivateKey,RequestID,CSID,Secret,P_RequestID,P_CSID,P_Secret) " +
+                        "VALUES(1,@CSR,@PrivateKey,@RequestID,@CSID,@Secret,@P_RequestID,@P_CSID,@P_Secret)", conn);
+                    cmd.Parameters.Add("@CSR",       SqlDbType.NVarChar).Value = credNow.Csr ?? "";
+                    cmd.Parameters.Add("@PrivateKey", SqlDbType.NVarChar).Value = credNow.PrivateKey ?? "";
+                    cmd.Parameters.Add("@RequestID", SqlDbType.NVarChar).Value = credNow.RequestID ?? "";
+                    cmd.Parameters.Add("@CSID",      SqlDbType.NVarChar).Value = credNow.CSID ?? "";
+                    cmd.Parameters.Add("@Secret",    SqlDbType.NVarChar).Value = credNow.Secret ?? "";
+                }
                 else
                     cmd = new SqlCommand(
                         "UPDATE ZatcaCredential SET P_RequestID=@P_RequestID," +
@@ -505,24 +566,40 @@ namespace SmartAuditERP.Form_WPF
 
         private void SaveCSR()
         {
+            // P6-010 fix: توليد/حفظ CSR في الذاكرة فقط — كان يحذف ZatcaCredential
+            // من قاعدة البيانات ويركّب صفاً بـ CSID/Secret فارغين في منتصف دورة
+            // الحفظ (كتابة وسيّطة مدمّرة: أي فشل لاحق يترك الاعتماد القائم محاذ
+            // وشهادة فارغة). الكتابة النهائية كلها في معاملة واحدة أدناه.
             try
             {
-                if (conn.State == ConnectionState.Open) conn.Close();
-                conn.Open();
-                new SqlCommand("DELETE FROM ZatcaCredential", conn).ExecuteNonQuery();
-                var cmd = new SqlCommand(
-                    "INSERT INTO ZatcaCredential(ID,CSR,PrivateKey,CSID,Secret) " +
-                    "VALUES(1,@CSR,@PrivateKey,@CSID,@Secret)", conn);
-                cmd.Parameters.Add("@CSR",       SqlDbType.NVarChar).Value = request.Csr;
-                cmd.Parameters.Add("@PrivateKey", SqlDbType.NVarChar).Value = request.PrivateKey;
-                cmd.Parameters.Add("@CSID",      SqlDbType.NVarChar).Value = request.CSID ?? "";
-                cmd.Parameters.Add("@Secret",    SqlDbType.NVarChar).Value = request.Secret ?? "";
-                cmd.ExecuteNonQuery();
+                var props = new CSRProperties
+                {
+                    commonName             = txtCommonName.Text,
+                    serialNumber           = txtSerialNumber.Text,
+                    organizationIdentifier = txtOrganizationIdentifier.Text,
+                    organizationUnitName   = txtOrganizationUnitName.Text,
+                    organizationName       = txtOrganizationName.Text,
+                    countryName            = txtCountryName.Text,
+                    invoiceType            = txtInvoiceType.Text,
+                    address                = txtAddress.Text,
+                    industry               = txtIndustry.Text
+                };
+
+                bool isProduction  = rdProduction.IsChecked == true;
+                bool isSimulation  = chkSimulation.IsChecked == true;
+
+                var result = new CSRGenerator().Generate(props, isProduction, isSimulation);
+
+                if (!string.IsNullOrEmpty(result.ErrorMessage))
+                    Logger.Error($"{Title} Generate {result.ErrorMessage} {MainClass.UserName}");
+
+                txtCSR.Text        = result.Csr;
+                txtPrivateKey.Text = result.PrivateKey;
+                request.Csr        = result.Csr;
+                request.PrivateKey = result.PrivateKey;
             }
             catch (Exception ex)
             {
-                DXMessageBox.Show(ex.InnerException?.ToString() ?? ex.Message,
-                    "", MessageBoxButton.OK, MessageBoxImage.Error);
                 Logger.Error($"{Title} SaveCSR {ex.Message} {MainClass.UserName}");
             }
         }
@@ -531,7 +608,11 @@ namespace SmartAuditERP.Form_WPF
 
         #region Compliance CSID
 
-        private void ComplianceCSID()
+        // P6-010 fix: تعيد نتيجة الطلب للمستدعي (كان void يبتلع الفشل في Logger فقط
+        // فيواصل btnSavePath_Click الحفظ ويستبدل اعتمادًا قائمًا بآخر فارغ ويُظهر
+        // «تم الحفظ»)، ولا تكتب قاعدة البيانات هنا — الكتابة كلها في معاملة الحفظ
+        // الواحدة (كانت تمسح ZatcaCredential وتكتب صفاً وسط الدورة).
+        private bool ComplianceCSID()
         {
             try
             {
@@ -539,25 +620,25 @@ namespace SmartAuditERP.Form_WPF
                 {
                     DXMessageBox.Show("نأسف ليس لديك الصلاحية لهذه العملية",
                         "", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
+                    return false;
                 }
                 if (string.IsNullOrEmpty(txtOTP.Text))
                 {
                     DXMessageBox.Show("يجب إدخال OTP",
                         "", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
+                    return false;
                 }
                 if (!MainClass.CheckForInternetConnection())
                 {
                     DXMessageBox.Show("الرجاء الاتصال بالإنترنت",
                         "", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
+                    return false;
                 }
                 if (string.IsNullOrWhiteSpace(txtCSR.Text))
                 {
                     DXMessageBox.Show("يجب عليك إنشاء CSR أولاً!",
                         "", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
+                    return false;
                 }
 
                 bool isProduction = rdProduction.IsChecked == true;
@@ -573,38 +654,19 @@ namespace SmartAuditERP.Form_WPF
                 {
                     DXMessageBox.Show(result.ErrorMessage,
                         "", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
+                    return false;
                 }
 
                 request.CSID      = result.CSID.Trim();
                 request.Secret    = result.Secret.Trim();
                 request.RequestID = result.RequestID;
-
-                try
-                {
-                    if (conn.State == ConnectionState.Open) conn.Close();
-                    conn.Open();
-                    new SqlCommand("DELETE FROM ZatcaCredential", conn).ExecuteNonQuery();
-                    var cmd = new SqlCommand(
-                        "INSERT INTO ZatcaCredential(ID,CSR,PrivateKey,CSID,Secret,RequestID) " +
-                        "VALUES(1,@CSR,@PrivateKey,@CSID,@Secret,@RequestID)", conn);
-                    cmd.Parameters.Add("@CSR",       SqlDbType.NVarChar).Value = request.Csr;
-                    cmd.Parameters.Add("@PrivateKey", SqlDbType.NVarChar).Value = request.PrivateKey;
-                    cmd.Parameters.Add("@CSID",      SqlDbType.NVarChar).Value = request.CSID;
-                    cmd.Parameters.Add("@Secret",    SqlDbType.NVarChar).Value = request.Secret;
-                    cmd.Parameters.Add("@RequestID", SqlDbType.NVarChar).Value = request.RequestID;
-                    cmd.ExecuteNonQuery();
-                }
-                catch (Exception ex)
-                {
-                    DXMessageBox.Show(ex.InnerException?.ToString() ?? ex.Message,
-                        "", MessageBoxButton.OK, MessageBoxImage.Error);
-                    Logger.Error($"{Title} ComplianceCSID_Save {ex.Message} {MainClass.UserName}");
-                }
+                return true;
             }
             catch (Exception ex)
             {
                 Logger.Error($"{Title} ComplianceCSID {ex.Message} {MainClass.UserName}");
+                DXMessageBox.Show(ex.Message, "", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
         }
 
@@ -1060,11 +1122,14 @@ namespace SmartAuditERP.Form_WPF
                     .ExecuteScalar());
 
                 SqlCommand cmd;
+                // P6-011 fix: نفس الخلل هنا — 8 أعمدة مقابل 7 قيم بلا CSR/PrivateKey
+                // (يفشل الإدراج بخطأ 109 دائمًا). الآن 9/9 متطابقة، وCSR/المفتاح من
+                // ملف استجابة الامتثال المستورد.
                 if (count == 0)
                     cmd = new SqlCommand(
                         "INSERT INTO ZatcaCredential " +
-                        "(ID,CSR,RequestID,CSID,Secret,P_RequestID,P_CSID,P_Secret) " +
-                        "VALUES(1,@RequestID,@CSID,@Secret,@P_RequestID,@P_CSID,@P_Secret)", conn);
+                        "(ID,CSR,PrivateKey,RequestID,CSID,Secret,P_RequestID,P_CSID,P_Secret) " +
+                        "VALUES(1,@CSR,@PrivateKey,@RequestID,@CSID,@Secret,@P_RequestID,@P_CSID,@P_Secret)", conn);
                 else
                     cmd = new SqlCommand(
                         "UPDATE ZatcaCredential SET " +
@@ -1072,6 +1137,8 @@ namespace SmartAuditERP.Form_WPF
                         "P_RequestID=@P_RequestID,P_CSID=@P_CSID,P_Secret=@P_Secret " +
                         "WHERE ID=1", conn);
 
+                cmd.Parameters.Add("@CSR",         SqlDbType.NVarChar).Value = compCred.Csr ?? "";
+                cmd.Parameters.Add("@PrivateKey",  SqlDbType.NVarChar).Value = compCred.PrivateKey ?? "";
                 cmd.Parameters.Add("@RequestID",   SqlDbType.NVarChar).Value = compCred.RequestID;
                 cmd.Parameters.Add("@CSID",        SqlDbType.NVarChar).Value = compCred.CSID;
                 cmd.Parameters.Add("@Secret",      SqlDbType.NVarChar).Value = compCred.Secret;

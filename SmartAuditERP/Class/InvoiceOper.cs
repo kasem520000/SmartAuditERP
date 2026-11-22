@@ -1619,6 +1619,11 @@ namespace SmartAuditERP
                         }
                         goto IL_264b;
                 IL_0594:
+                        // P6-007 fix: عَلَم قبول بعيد قبل الحفظ المحلي — يُستخدم في مسارات فشل
+                        // الحفظ (فحص الرصيد/فشل القيد/الإمساك العام) كي لا يُعاد إصدار
+                        // الفاتورة عمياء بعد قبولها لدى الزكاة (قبول بعيد + فقد محلي =
+                        // فجوة غير قابلة للمطابقة؛ القبول مؤرشف في ZatcaResponse).
+                        bool zatcaAcceptedBeforeLocalSave = false;
                         int[] source;
                         source = new int[4] { 2, 3, 21, 20 };
                         int[] source2;
@@ -1640,6 +1645,7 @@ namespace SmartAuditERP
                                 zatcaResponse.Message = systemResponse.Message;
                                 InvoiceOper.InsertZatcaResponse(zatcaResponse);
                                 inv.ZatcaSent = true;
+                                zatcaAcceptedBeforeLocalSave = true;
                         }
                         SqlConnection sqlConnection2;
                         sqlConnection2 = MainClass.ConnObj();
@@ -1674,7 +1680,13 @@ namespace SmartAuditERP
                                 if (!allowNegativeStock && !ValidateStockInTransaction(inv, sqlConnection2, sqlTransaction))
                                 {
                                         sqlTransaction.Rollback();
-                                        MessageBox.Show("الكمية أكبر من رصيد المخزن المتاح حالياً", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                        // P6-007: قبول بعيد + فشل محلي — تحذير صريح بلا إعادة إصدار عمياء
+                                        string stockFailMsg = "الكمية أكبر من رصيد المخزن المتاح حالياً";
+                                        if (zatcaAcceptedBeforeLocalSave)
+                                        {
+                                                stockFailMsg += "\r\nتنبيه: قَبِلت هيئة الزكاة هذه الفاتورة قبل فشل الحفظ المحلي — لا تُعد إرسالها كفاتورة جديدة؛ القبول مؤرشف في ZatcaResponse للمطابقة.";
+                                        }
+                                        MessageBox.Show(stockFailMsg, "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                                         result = false;
                                         return result;
                                 }
@@ -2010,6 +2022,11 @@ namespace SmartAuditERP
                                         {
                                                 text6 = "error in saving";
                                         }
+                                        // P6-007: قبول بعيد + فشل محلي — تحذير صريح بلا إعادة إصدار عمياء
+                                        if (zatcaAcceptedBeforeLocalSave)
+                                        {
+                                                text6 += "\r\nتنبيه: قَبِلت هيئة الزكاة هذه الفاتورة قبل فشل الحفظ المحلي — لا تُعد إرسالها كفاتورة جديدة؛ القبول مؤرشف في ZatcaResponse للمطابقة.";
+                                        }
                                         MessageBox.Show(text6, "", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                                         result = false;
                                         goto end_IL_06aa;
@@ -2028,18 +2045,12 @@ if (MainSetting.ZatcaIntegerationActive && !MainSetting.ZatcaSyncManual && !Invo
                                                 inv.ZatcaSent = true;
                                                 if (!string.IsNullOrEmpty(inv.EncodedInvoice))
                                                 {
-                                                        if (sqlConnection2.State != ConnectionState.Open)
-                                                        {
-                                                                sqlConnection2.Open();
-                                                        }
-                                                        sqlCommand3 = new SqlCommand("update Inv set QRCode=@QRCode ,InvoiceHash=@InvoiceHash,UUID=@UUID,ZatcaSent=@ZatcaSent where InvGlobalID=@InvGlobalID", sqlConnection2, sqlTransaction);
-                                                        sqlCommand3.Parameters.Add("@InvGlobalID", SqlDbType.NVarChar).Value = inv.InvGlobalID;
-                                                        sqlCommand3.Parameters.Add("@QRCode", SqlDbType.NVarChar).Value = inv.QRCode;
-                                                        sqlCommand3.Parameters.Add("@InvoiceHash", SqlDbType.NVarChar).Value = inv.InvoiceHash;
-                                                        sqlCommand3.Parameters.Add("@UUID", SqlDbType.NVarChar).Value = inv.UUID;
-                                                        sqlCommand3.Parameters.Add("@ZatcaSent", SqlDbType.Bit).Value = inv.ZatcaSent;
-                                                        sqlCommand3.ExecuteNonQuery();
-                                                        this.InsertZatcaEncodedInvoice(inv);
+                                                        // P6-007 fix: التثبيت المحلي بعد القبول البعيد يجري في اتصال/معاملة
+                                                        // مستقلة جديدة (معاملة الفاتورة أُنجزت Commit عند IL_23e6) — كان
+                                                        // الأمر يُنفذ على المعاملة المنتهية فيرمي استثناءً بعد الالتزام
+                                                        // ثم يرمي التراجع داخل catch استثناءً ثانٍ غير معالج، فتنفجر
+                                                        // عملية الحفظ بعد نجاحها وتضيع QR/UUID/Hash/ZatcaSent أبدًا.
+                                                        this.PersistZatcaAcceptanceLocal(inv);
                                                 }
                                         }
                                         ZatcaResponse zatcaResponse2;
@@ -2064,6 +2075,11 @@ if (MainSetting.ZatcaIntegerationActive && !MainSetting.ZatcaSyncManual && !Invo
                                 {
                                         text7 = "error in saving";
                                 }
+                                // P6-007: قبول بعيد + فشل محلي — تحذير صريح بلا إعادة إصدار عمياء
+                                if (zatcaAcceptedBeforeLocalSave)
+                                {
+                                        text7 += "\r\nتنبيه: قَبِلت هيئة الزكاة هذه الفاتورة قبل فشل الحفظ المحلي — لا تُعد إرسالها كفاتورة جديدة؛ القبول مؤرشف في ZatcaResponse للمطابقة.";
+                                }
                                 MessageBox.Show((Operators.CompareString(MainClass.Language, "ar", TextCompare: false) != 0) ? (text7 + Environment.NewLine + "Error details: " + ex2.Message) : (text7 + Environment.NewLine + "تفاصيل الخطأ: " + ex2.Message), "", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                                 result = false;
                                 ProjectData.ClearProjectError();
@@ -2078,7 +2094,59 @@ if (MainSetting.ZatcaIntegerationActive && !MainSetting.ZatcaSyncManual && !Invo
                         goto IL_264b;
                 }
 
-                private void InsertZatcaEncodedInvoice(object Inv)
+                // P6-007 fix: تثبيت القبول البعيد محليًا — يُنفذ في اتصال مستقل جديد بعد
+                // Commit معاملة الحفظ (لا على المعاملة المنتهية). فشل التثبيت لا يهدم
+                // الحفظ الملتزم ولا يُطمر: يُسجل ويُخطر المستخدم، والقبول مؤرشف في
+                // ZatcaResponse للمطابقة (INV6-12 — لا rollback وهمي لعملية خارجية).
+                private void PersistZatcaAcceptanceLocal(Invoice inv)
+                {
+                        try
+                        {
+                                SqlConnection persistConn;
+                                persistConn = MainClass.ConnObj();
+                                try
+                                {
+                                        if (persistConn.State != ConnectionState.Open)
+                                        {
+                                                persistConn.Open();
+                                        }
+                                        using (SqlCommand sqlCommand = new SqlCommand("update Inv set QRCode=@QRCode ,InvoiceHash=@InvoiceHash,UUID=@UUID,ZatcaSent=@ZatcaSent where InvGlobalID=@InvGlobalID", persistConn))
+                                        {
+                                                sqlCommand.Parameters.Add("@InvGlobalID", SqlDbType.NVarChar).Value = inv.InvGlobalID;
+                                                sqlCommand.Parameters.Add("@QRCode", SqlDbType.NVarChar).Value = inv.QRCode;
+                                                sqlCommand.Parameters.Add("@InvoiceHash", SqlDbType.NVarChar).Value = inv.InvoiceHash;
+                                                sqlCommand.Parameters.Add("@UUID", SqlDbType.NVarChar).Value = inv.UUID;
+                                                sqlCommand.Parameters.Add("@ZatcaSent", SqlDbType.Bit).Value = inv.ZatcaSent;
+                                                sqlCommand.ExecuteNonQuery();
+                                        }
+                                        InvoiceOper.InsertZatcaEncodedInvoice(inv);
+                                }
+                                finally
+                                {
+                                        if (persistConn.State != ConnectionState.Closed)
+                                        {
+                                                persistConn.Close();
+                                        }
+                                }
+                        }
+                        catch (Exception ex)
+                        {
+                                ProjectData.SetProjectError(ex);
+                                InvoiceOper.Logger.Error("Invoice Oper PersistZatcaAcceptanceLocal " + ex.Message + " " + MainClass.UserName);
+                                string text;
+                                text = "تم حفظ الفاتورة وقَبِلها الزكاة، لكن تعذّر تثبيت حالة الإرسال محليًا — راجع شاشة متابعة الزكاة";
+                                if (Operators.CompareString(MainClass.Language, "en", TextCompare: false) == 0)
+                                {
+                                        text = "Invoice saved and accepted by ZATCA, but marking the local send-state failed — check the ZATCA tracking screen";
+                                }
+                                MessageBox.Show(text, "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                                ProjectData.ClearProjectError();
+                        }
+                }
+
+                // P6-008 fix: صار عامًا/ساكنًا — شاشة المتابعة اليدوية تؤرشف XML المعاد
+                // من ZATCA بنفس مسار الحفظ التلقائي.
+                public static void InsertZatcaEncodedInvoice(object Inv)
                 {
                         try
                         {
@@ -2354,18 +2422,11 @@ if (!MainSetting.ZatcaIntegerationActive || MainSetting.ZatcaSyncManual || Invoi
                                         inv.ZatcaSent = true;
                                         if (!string.IsNullOrEmpty(inv.EncodedInvoice))
                                         {
-                                                if (sqlConnection.State != ConnectionState.Open)
-                                                {
-                                                        sqlConnection.Open();
-                                                }
-                                                sqlCommand = new SqlCommand("update Inv set QRCode=@QRCode ,InvoiceHash=@InvoiceHash,UUID=@UUID,ZatcaSent=@ZatcaSent where InvGlobalID=@InvGlobalID", sqlConnection, sqlTransaction);
-                                                sqlCommand.Parameters.Add("@InvGlobalID", SqlDbType.NVarChar).Value = inv.InvGlobalID;
-                                                sqlCommand.Parameters.Add("@QRCode", SqlDbType.NVarChar).Value = inv.QRCode;
-                                                sqlCommand.Parameters.Add("@InvoiceHash", SqlDbType.NVarChar).Value = inv.InvoiceHash;
-                                                sqlCommand.Parameters.Add("@UUID", SqlDbType.NVarChar).Value = inv.UUID;
-                                                sqlCommand.Parameters.Add("@ZatcaSent", SqlDbType.Bit).Value = inv.ZatcaSent;
-                                                sqlCommand.ExecuteNonQuery();
-                                                this.InsertZatcaEncodedInvoice(inv);
+                                                // P6-007 fix: نفس عقد التثبيت المستقل بعد الالتزام — كان
+                                                // التحديث يجري على sqlTransaction منتهية (Commit أعلاه)
+                                                // فيرمي استثناءً يفقده المسار عقد الإرجاع (P5-015) ويضيع
+                                                // QR/UUID/Hash/ZatcaSent.
+                                                this.PersistZatcaAcceptanceLocal(inv);
                                         }
                                 }
                                 ZatcaResponse zatcaResponse2;
@@ -4373,8 +4434,10 @@ if (!MainSetting.ZatcaIntegerationActive || MainSetting.ZatcaSyncManual || Invoi
                         invoice.InvGlobalID = Inv.InvGlobalID;
                         invoice.CloudID = Inv.CloudID;
                         invoice.QRCode = Inv.QRCode;
-                        invoice.PIH = InvoiceOper.GetPIH(Inv.InvoiceNo, (int)Inv.InvoiceType, Inv.ProcType, Inv.Branch);
-                        invoice.previousUUID = InvoiceOper.GetPreviousUUID(Inv.InvoiceNo, (int)Inv.InvoiceType, Inv.ProcType, Inv.Branch);
+                        // P6-005 fix: سلسلة وحدة الإصدار — انظر عقد GetPIH/GetPreviousUUID
+                        // الجديد (هوية المستند + تاريخه + فرعه) بدل «الرقم-1 داخل النوع».
+                        invoice.PIH = InvoiceOper.GetPIH(Inv.InvGlobalID, Inv.InvDate, Inv.Branch);
+                        invoice.previousUUID = InvoiceOper.GetPreviousUUID(Inv.InvGlobalID, Inv.InvDate, Inv.Branch);
                         invoice.EntryGlobalID = Inv.EntryGlobalID;
                         invoice.AutoIncrementID = Inv.AutoIncrementID;
                         if (Inv.AutoIncrementID == 0)
@@ -5489,45 +5552,64 @@ if (!MainSetting.ZatcaIntegerationActive || MainSetting.ZatcaSyncManual || Invoi
                         }
                 }
 
-                public static string GetPIH(int InvoiceId, int InvType, int ProcType, int BranchID)
+                // P6-005 fix: السلسلة الضريبية (PIH) تُشتق من تسلسل وحدة الإصدار الصريح —
+                // آخر مستند «مقبول» (ZatcaSent=1 وبها هاش صالح) في نطاق الفرع/الوحدة
+                // عبر الجدولين Inv وInvContratct بتاريخ لا يتجاوز المستند الحالي وباستثناء
+                // المستند نفسه — لا من «الرقم ناقص 1 داخل النوع» الذي كان: (1) يعيد null
+                // عند غياب السطر (أول فاتورة/فجوة هويات/اختلاف نوع السابق) فيفسد PIH
+                // بالمطلق، (2) يعتمد سابقاً لم يُرسل أصلًا، (3) يحصر السلسلة داخل النوع
+                // بينما سلسلة EGS تشمل فواتير وإشعارات الوحدة كلها. لا سابق → ثابت بداية
+                // السلسلة المعتمد في المشروع (لا null أبدًا).
+                public static string GetPIH(string InvGlobalID, DateTime DocDate, int BranchID)
                 {
-                        string result = default(string);
+                        string chainInitialHash = "NWZlY2ViNjZmZmM4NmYzOGQ5NTI3ODZjNmQ2OTZjNzljMmRiYzIzOWRkNGU5MWI0NjcyOWQ3M2EyN2ZiNTdlOQ==";
+                        string result = chainInitialHash;
                         try
                         {
-                                int num;
-                                num = checked(InvoiceId - 1);
                                 SqlDataAdapter sqlDataAdapter;
-                                sqlDataAdapter = new SqlDataAdapter(selectConnection: MainClass.ConnObj(), selectCommandText: "Select IsNull(InvoiceHash,0) as InvoiceHash from inv where id= " + Conversions.ToString(num) + "  and  inv_type=" + Conversions.ToString(InvType) + " and proc_type=" + Conversions.ToString(ProcType) + " and branch=" + Conversions.ToString(BranchID));
+                                sqlDataAdapter = new SqlDataAdapter(selectConnection: MainClass.ConnObj(), selectCommandText: "SELECT TOP 1 u.InvoiceHash FROM (SELECT InvoiceHash, date, id, ZatcaSent, branch, InvGlobalID FROM Inv UNION ALL SELECT InvoiceHash, date, id, ZatcaSent, branch, InvGlobalID FROM InvContratct) u WHERE u.branch=@BranchID AND u.ZatcaSent=1 AND u.InvoiceHash IS NOT NULL AND u.InvoiceHash<>'' AND u.InvoiceHash<>'0' AND u.InvGlobalID<>@InvGlobalID AND u.date<=@DocDate ORDER BY u.date DESC, u.id DESC");
+                                sqlDataAdapter.SelectCommand.Parameters.Add("@BranchID", SqlDbType.Int).Value = BranchID;
+                                sqlDataAdapter.SelectCommand.Parameters.Add("@InvGlobalID", SqlDbType.NVarChar).Value = (object)InvGlobalID ?? "";
+                                sqlDataAdapter.SelectCommand.Parameters.Add("@DocDate", SqlDbType.DateTime).Value = DocDate;
                                 DataTable dataTable;
                                 dataTable = new DataTable();
                                 sqlDataAdapter.Fill(dataTable);
                                 if (dataTable.Rows.Count > 0)
                                 {
-                                        result = ((!Operators.ConditionalCompareObjectNotEqual(dataTable.Rows[0]["InvoiceHash"], "0", TextCompare: false)) ? "NWZlY2ViNjZmZmM4NmYzOGQ5NTI3ODZjNmQ2OTZjNzljMmRiYzIzOWRkNGU5MWI0NjcyOWQ3M2EyN2ZiNTdlOQ==" : dataTable.Rows[0]["InvoiceHash"].ToString().Trim());
+                                        string text = dataTable.Rows[0]["InvoiceHash"].ToString().Trim();
+                                        result = ((Operators.CompareString(text, "", TextCompare: false) == 0 || Operators.CompareString(text, "0", TextCompare: false) == 0) ? chainInitialHash : text);
                                 }
                         }
                         catch (Exception projectError)
                         {
                                 ProjectData.SetProjectError(projectError);
-                                result = "NWZlY2ViNjZmZmM4NmYzOGQ5NTI3ODZjNmQ2OTZjNzljMmRiYzIzOWRkNGU5MWI0NjcyOWQ3M2EyN2ZiNTdlOQ==";
+                                result = chainInitialHash;
                                 ProjectData.ClearProjectError();
                         }
                         return result;
                 }
 
-                public static string GetPreviousUUID(int InvoiceId, int InvType, int ProcType, int BranchID)
+                // P6-005 fix: نفس عقد سلسلة وحدة الإصدار للـ previousUUID (إيصالات ETA
+                // وإشعارات الزكاة) — آخر UUID مقبول في الوحدة قبل المستند الحالي، لا
+                // «الرقم ناقص 1 داخل النوع».
+                public static string GetPreviousUUID(string InvGlobalID, DateTime DocDate, int BranchID)
                 {
-                        string result;
+                        string result = "";
                         try
                         {
-                                int num;
-                                num = checked(InvoiceId - 1);
                                 SqlDataAdapter sqlDataAdapter;
-                                sqlDataAdapter = new SqlDataAdapter(selectConnection: MainClass.ConnObj(), selectCommandText: "Select IsNull(UUID,0) as PreviousUUID from inv where id= " + Conversions.ToString(num) + "  and  inv_type=" + Conversions.ToString(InvType) + " and proc_type=" + Conversions.ToString(ProcType) + " and branch=" + Conversions.ToString(BranchID));
+                                sqlDataAdapter = new SqlDataAdapter(selectConnection: MainClass.ConnObj(), selectCommandText: "SELECT TOP 1 u.UUID FROM (SELECT UUID, date, id, ZatcaSent, branch, InvGlobalID FROM Inv UNION ALL SELECT UUID, date, id, ZatcaSent, branch, InvGlobalID FROM InvContratct) u WHERE u.branch=@BranchID AND u.ZatcaSent=1 AND u.UUID IS NOT NULL AND u.UUID<>'' AND u.UUID<>'0' AND u.InvGlobalID<>@InvGlobalID AND u.date<=@DocDate ORDER BY u.date DESC, u.id DESC");
+                                sqlDataAdapter.SelectCommand.Parameters.Add("@BranchID", SqlDbType.Int).Value = BranchID;
+                                sqlDataAdapter.SelectCommand.Parameters.Add("@InvGlobalID", SqlDbType.NVarChar).Value = (object)InvGlobalID ?? "";
+                                sqlDataAdapter.SelectCommand.Parameters.Add("@DocDate", SqlDbType.DateTime).Value = DocDate;
                                 DataTable dataTable;
                                 dataTable = new DataTable();
                                 sqlDataAdapter.Fill(dataTable);
-                                result = ((dataTable.Rows.Count <= 0) ? "" : ((!Conversions.ToBoolean(Operators.AndObject(Operators.CompareObjectNotEqual(dataTable.Rows[0]["PreviousUUID"], "0", TextCompare: false), Operators.CompareString(dataTable.Rows[0]["PreviousUUID"].ToString(), "", TextCompare: false) != 0))) ? "" : dataTable.Rows[0]["PreviousUUID"].ToString().Trim()));
+                                if (dataTable.Rows.Count > 0)
+                                {
+                                        string text = dataTable.Rows[0]["UUID"].ToString().Trim();
+                                        result = ((Operators.CompareString(text, "", TextCompare: false) == 0 || Operators.CompareString(text, "0", TextCompare: false) == 0) ? "" : text);
+                                }
                         }
                         catch (Exception projectError)
                         {

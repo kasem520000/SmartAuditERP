@@ -379,6 +379,8 @@
                         <!-- مخفية -->
                         <dxg:GridColumn FieldName="DgvProcType"  Visible="False"/>
                         <dxg:GridColumn FieldName="DgvStore"     Visible="False"/>
+                        <!-- P6-009: مصدر الصف (Inv / C=عقد) لمحمل المزامنة اليدوية -->
+                        <dxg:GridColumn FieldName="DgvSource"    Visible="False"/>
 
                     </dxg:GridControl.Columns>
 

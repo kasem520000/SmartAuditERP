@@ -107,8 +107,12 @@ namespace SmartAuditERP
                         invoice.InvGlobalID = Inv.InvGlobalID;
                         invoice.CloudID = Inv.CloudID;
                         invoice.QRCode = Inv.QRCode;
-                        invoice.PIH = InvoiceOper.GetPIH(Inv.InvoiceNo, (int)Inv.InvoiceType, Inv.ProcType, Inv.Branch);
-                        invoice.previousUUID = InvoiceOperContract.GetPreviousUUIDcontract(Inv.InvoiceNo, (int)Inv.InvoiceType, Inv.ProcType, Inv.Branch);
+                        // P6-005 fix: سلسلة وحدة الإصدار الموحدة — كان العقد يحسب PIH من جدول
+                        // inv برقم العقد-1 (خلط عائلتين) وpreviousUUID من InvContratct
+                        // بالرقم-1 داخل النوع؛ الاثنان الآن من عقد وحدة الإصدار الموحد
+                        // (Inv+InvContratct معًا، المقبول فقط، قبل تاريخ المستند).
+                        invoice.PIH = InvoiceOper.GetPIH(Inv.InvGlobalID, Inv.InvDate, Inv.Branch);
+                        invoice.previousUUID = InvoiceOper.GetPreviousUUID(Inv.InvGlobalID, Inv.InvDate, Inv.Branch);
                         invoice.EntryGlobalID = Inv.EntryGlobalID;
                         invoice.AutoIncrementID = Inv.AutoIncrementID;
                         if (Inv.AutoIncrementID == 0)
@@ -283,55 +287,9 @@ namespace SmartAuditERP
                         return num;
                 }
 
-                public static string GetPreviousUUIDcontract(int InvoiceId, int InvType, int ProcType, int BranchID)
-                {
-                        string result;
-                        try
-                        {
-                                int num;
-                                num = checked(InvoiceId - 1);
-                                SqlDataAdapter sqlDataAdapter;
-                                sqlDataAdapter = new SqlDataAdapter(selectConnection: MainClass.ConnObj(), selectCommandText: "Select IsNull(UUID,0) as PreviousUUID from InvContratct where id= " + Conversions.ToString(num) + "  and  inv_type=" + Conversions.ToString(InvType) + " and proc_type=" + Conversions.ToString(ProcType) + " and branch=" + Conversions.ToString(BranchID));
-                                DataTable dataTable;
-                                dataTable = new DataTable();
-                                sqlDataAdapter.Fill(dataTable);
-                                result = ((dataTable.Rows.Count <= 0) ? "" : ((!Conversions.ToBoolean(Operators.AndObject(Operators.CompareObjectNotEqual(dataTable.Rows[0]["PreviousUUID"], "0", TextCompare: false), Operators.CompareString(dataTable.Rows[0]["PreviousUUID"].ToString(), "", TextCompare: false) != 0))) ? "" : dataTable.Rows[0]["PreviousUUID"].ToString().Trim()));
-                        }
-                        catch (Exception projectError)
-                        {
-                                ProjectData.SetProjectError(projectError);
-                                result = "";
-                                ProjectData.ClearProjectError();
-                        }
-                        return result;
-                }
-
-                public static string GetPIH(int InvoiceId, int InvType, int ProcType, int BranchID)
-                {
-                        string result = default(string);
-                        try
-                        {
-                                int num;
-                                num = checked(InvoiceId - 1);
-                                SqlDataAdapter sqlDataAdapter;
-                                sqlDataAdapter = new SqlDataAdapter(selectConnection: MainClass.ConnObj(), selectCommandText: "Select IsNull(InvoiceHash,0) as InvoiceHash from inv where id= " + Conversions.ToString(num) + "  and  inv_type=" + Conversions.ToString(InvType) + " and proc_type=" + Conversions.ToString(ProcType) + " and branch=" + Conversions.ToString(BranchID));
-                                DataTable dataTable;
-                                dataTable = new DataTable();
-                                sqlDataAdapter.Fill(dataTable);
-                                if (dataTable.Rows.Count > 0)
-                                {
-                                        result = ((!Operators.ConditionalCompareObjectNotEqual(dataTable.Rows[0]["InvoiceHash"], "0", TextCompare: false)) ? "NWZlY2ViNjZmZmM4NmYzOGQ5NTI3ODZjNmQ2OTZjNzljMmRiYzIzOWRkNGU5MWI0NjcyOWQ3M2EyN2ZiNTdlOQ==" : dataTable.Rows[0]["InvoiceHash"].ToString().Trim());
-                                }
-                        }
-                        catch (Exception projectError)
-                        {
-                                ProjectData.SetProjectError(projectError);
-                                result = "NWZlY2ViNjZmZmM4NmYzOGQ5NTI3ODZjNmQ2OTZjNzljMmRiYzIzOWRkNGU5MWI0NjcyOWQ3M2EyN2ZiNTdlOQ==";
-                                ProjectData.ClearProjectError();
-                        }
-                        return result;
-                }
-
+                // P6-005 fix: حُذف التوأمان الميتان GetPreviousUUIDcontract وGetPIH
+                // (استعلام «الرقم-1 داخل النوع» على InvContratct) — كلا مساري الحفظ
+                // (inv والعقد) يستعملان عقد وحدة الإصدار الموحد في InvoiceOper.
                 public static void GetInvoiceGlobalIDcontract(ref string InvGlobalID, ref int AutoIncrementID)
                 {
                         SqlConnection sqlConnection;
@@ -796,6 +754,10 @@ namespace SmartAuditERP
                 public bool SaveInvoice(Invoice inv, Entry Entr, bool IsNew)
                 {
                         bool result;
+                        // P6-007 fix: عَلَم قبول بعيد على مستوى جسم الدالة — قسم الحفظ
+                        // (IL_099c) خارج كتلة بوابة الإرسال في المترجم المُفكك، فلا
+                        // يرى متغيرًا معلنًا داخلها.
+                        bool zatcaAcceptedBeforeLocalSave = false;
                         if (MainClass.EmpNo < 1)
                         {
                                 Interaction.MsgBox("المستخدم ليس لديه الصلاحية لحفظ الفاتورة ");
@@ -905,14 +867,22 @@ namespace SmartAuditERP
                                         sqlConnection2 = MainClass.ConnObj();
                                         if (inv.ZatcaSent)
                                         {
-                                                using (SqlCommand sqlCommand3 = new SqlCommand("UPDATE InvContratct SET ZatcaSent = 1, InvoiceHash = @InvoiceHash WHERE InvGlobalID = @InvGlobalID", sqlConnection2))
+                                                // P6-007 fix: تحديث ما قبل الحفظ يثبت الآن الحقول الأربعة كلها
+                                                // (كان يثبت ZatcaSent/InvoiceHash فقط) — لمسار إعادة حفظ عقد
+                                                // موجود؛ أما العقد الجديد فيحمل الحقول عبر INSERT نفسه (كان
+                                                // التحديث قبل وجود الصف عملية لا-تؤثر).
+                                                using (SqlCommand sqlCommand3 = new SqlCommand("UPDATE InvContratct SET ZatcaSent = @ZatcaSent, InvoiceHash = @InvoiceHash, UUID = @UUID, QRCode = @QRCode WHERE InvGlobalID = @InvGlobalID", sqlConnection2))
                                                 {
                                                         sqlConnection2.Open();
                                                         sqlCommand3.Parameters.Add("@InvGlobalID", SqlDbType.NVarChar).Value = inv.InvGlobalID;
-                                                        sqlCommand3.Parameters.Add("@InvoiceHash", SqlDbType.NVarChar).Value = inv.InvoiceHash;
+                                                        sqlCommand3.Parameters.Add("@InvoiceHash", SqlDbType.NVarChar).Value = inv.InvoiceHash ?? "";
+                                                        sqlCommand3.Parameters.Add("@UUID", SqlDbType.NVarChar).Value = inv.UUID ?? "";
+                                                        sqlCommand3.Parameters.Add("@QRCode", SqlDbType.NVarChar).Value = inv.QRCode ?? "";
+                                                        sqlCommand3.Parameters.Add("@ZatcaSent", SqlDbType.Bit).Value = inv.ZatcaSent;
                                                         sqlCommand3.ExecuteNonQuery();
                                                 }
                                                 sqlConnection2.Close();
+                                                zatcaAcceptedBeforeLocalSave = true;
                                                 ZatcaResponse zatcaResponse;
                                                 zatcaResponse = new ZatcaResponse();
                                                 zatcaResponse.InvGlobalID = inv.InvGlobalID;
@@ -1388,6 +1358,11 @@ namespace SmartAuditERP
                                         {
                                                 text5 = "error in saving";
                                         }
+                                        // P6-007: قبول بعيد + فشل محلي — تحذير صريح بلا إعادة إصدار عمياء
+                                        if (zatcaAcceptedBeforeLocalSave)
+                                        {
+                                                text5 += "\r\nتنبيه: قَبِلت هيئة الزكاة هذا العقد قبل فشل الحفظ المحلي — لا تُعد إرساله كمستند جديد؛ القبول مؤرشف في ZatcaResponse للمطابقة.";
+                                        }
                                         MessageBox.Show(text5, "", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                                         result = false;
                                         goto end_IL_09ce;
@@ -1406,6 +1381,11 @@ namespace SmartAuditERP
                                         if (Operators.CompareString(MainClass.Language, "en", TextCompare: false) == 0)
                                         {
                                                 text6 = "error in saving";
+                                        }
+                                        // P6-007: قبول بعيد + فشل محلي — تحذير صريح بلا إعادة إصدار عمياء
+                                        if (zatcaAcceptedBeforeLocalSave)
+                                        {
+                                                text6 += "\r\nتنبيه: قَبِلت هيئة الزكاة هذا العقد قبل فشل الحفظ المحلي — لا تُعد إرساله كمستند جديد؛ القبول مؤرشف في ZatcaResponse للمطابقة.";
                                         }
                                         MessageBox.Show((Operators.CompareString(MainClass.Language, "ar", TextCompare: false) != 0) ? (text6 + Environment.NewLine + "Error details: " + ex2.Message) : (text6 + Environment.NewLine + "تفاصيل الخطأ: " + ex2.Message), "", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                                         result = false;

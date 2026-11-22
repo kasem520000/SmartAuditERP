@@ -174,6 +174,10 @@ namespace SmartAuditERP.Form_WPF
                 resultTable.Columns.Add("DgvProcType", typeof(int));
                 resultTable.Columns.Add("DgvStore", typeof(string));
                 resultTable.Columns.Add("DgvSyncStatus", typeof(bool));
+                // P6-009 fix: عمود مصدر الصف (Inv / C=عقد) — الجدول يعرض اتحاد Inv و
+                // InvContratct بينما محمل الصف المختار كان يبحث في Inv وحده فتُقصى
+                // العقود صامتة من المزامنة اليدوية.
+                resultTable.Columns.Add("DgvSource", typeof(string));
 
                 GridControl1.ItemsSource = null;
 
@@ -182,7 +186,8 @@ namespace SmartAuditERP.Form_WPF
                 string sql = $@"
                     SELECT InvGlobalID, id, proc_type, Inv_type,
                            safe, branch, tot_net, cust_id,
-                           sales_emp, date, ZatcaSent, pay_type
+                           sales_emp, date, ZatcaSent, pay_type,
+                           'Inv' AS DgvSource
                     FROM Inv
                     WHERE {filterCond} id IS NOT NULL
 
@@ -190,7 +195,8 @@ namespace SmartAuditERP.Form_WPF
 
                     SELECT InvGlobalID, id, proc_type, Inv_type,
                            safe, branch, tot_net, cust_id,
-                           sales_emp, date, ZatcaSent, pay_type
+                           sales_emp, date, ZatcaSent, pay_type,
+                           'C' AS DgvSource
                     FROM InvContratct
                     WHERE {filterCondContract} id IS NOT NULL
 
@@ -267,7 +273,8 @@ namespace SmartAuditERP.Form_WPF
                         zatcaMsg,
                         procType,
                         storeName,
-                        zatcaSent);
+                        zatcaSent,
+                        row["DgvSource"].ToString());
 
                     Dispatcher.Invoke(() => ProgressBar1.Value++);
                 }
@@ -476,7 +483,7 @@ namespace SmartAuditERP.Form_WPF
                         connection.Open();
 
                     int progressIdx = 0;
-                    foreach (Invoice invoice in selectedInvoices)
+                    foreach (var (invoice, isContract) in selectedInvoices)
                     {
                         Invoice invoiceRef = invoice;
                         var response = zatcaService.IntegrateInvoice(
@@ -490,9 +497,18 @@ namespace SmartAuditERP.Form_WPF
 
                         if (invoiceRef.ZatcaSent)
                         {
+                            // P6-008 fix: الإرسال اليدوي الناجح يثبت كل ما أعاده ZATCA
+                            // (UUID وQRCode وInvoiceHash وZatcaSent) — كان يثبت
+                            // ZatcaSent/InvoiceHash فقط فيضيع هوية المستند المعتمد
+                            // ورمز QR المعاد بعد القبول.
+                            // P6-009 fix: التحديث يستهدف جدول مصدر الصف (العقود في
+                            // InvContratct) — كان Inv وحده.
+                            string targetTable = isContract
+                                ? "InvContratct" : "Inv";
                             using var cmd = new SqlCommand(
-                                "UPDATE Inv SET ZatcaSent=1, " +
-                                "InvoiceHash=@InvoiceHash " +
+                                $"UPDATE {targetTable} SET ZatcaSent=1, " +
+                                "InvoiceHash=@InvoiceHash, UUID=@UUID, " +
+                                "QRCode=@QRCode " +
                                 "WHERE InvGlobalID=@InvGlobalID",
                                 connection);
                             cmd.Parameters
@@ -500,8 +516,21 @@ namespace SmartAuditERP.Form_WPF
                                .Value = invoiceRef.InvGlobalID;
                             cmd.Parameters
                                .Add("@InvoiceHash", SqlDbType.NVarChar)
-                               .Value = invoiceRef.InvoiceHash;
+                               .Value = invoiceRef.InvoiceHash ?? "";
+                            cmd.Parameters
+                               .Add("@UUID", SqlDbType.NVarChar)
+                               .Value = invoiceRef.UUID ?? "";
+                            cmd.Parameters
+                               .Add("@QRCode", SqlDbType.NVarChar)
+                               .Value = invoiceRef.QRCode ?? "";
                             cmd.ExecuteNonQuery();
+
+                            // P6-008 fix: أرشفة XML المستند المعاد (ZatcaEncodedInvoice)
+                            // بنفس مسار الحفظ التلقائي — كانت الشاشة اليدوية لا تؤرشفه.
+                            if (!string.IsNullOrEmpty(invoiceRef.EncodedInvoice))
+                            {
+                                InvoiceOper.InsertZatcaEncodedInvoice(invoiceRef);
+                            }
                         }
 
                         InvoiceOper.InsertZatcaResponse(zatcaResponse);
@@ -588,7 +617,7 @@ namespace SmartAuditERP.Form_WPF
                 });
 
                 int idx = 0;
-                foreach (Invoice inv in selectedInvoices)
+                foreach (var (inv, isContract) in selectedInvoices)
                 {
                     bool sent;
                     if (EtaSetting.Receipt)
@@ -598,10 +627,16 @@ namespace SmartAuditERP.Form_WPF
 
                     if (!sent) break;
 
+                    // P6-009 fix: جدول مصدر الصف + استعلام مُعلم
+                    string targetTable = isContract
+                        ? "InvContratct" : "Inv";
                     using var cmd = new SqlCommand(
-                        $"UPDATE Inv SET ZatcaSent=1 " +
-                        $"WHERE InvGlobalID=N'{inv.InvGlobalID}'",
+                        $"UPDATE {targetTable} SET ZatcaSent=1 " +
+                        "WHERE InvGlobalID=@InvGlobalID",
                         connection);
+                    cmd.Parameters
+                       .Add("@InvGlobalID", SqlDbType.NVarChar)
+                       .Value = inv.InvGlobalID;
                     cmd.ExecuteNonQuery();
 
                     idx++;
@@ -625,9 +660,11 @@ namespace SmartAuditERP.Form_WPF
             if (conn.State != ConnectionState.Open)
                 conn.Open();
 
-            using var reader = new SqlCommand(
-                $"SELECT * FROM Inv WHERE InvGlobalID=N'{globalId}'",
-                conn).ExecuteReader();
+            // P6-009 fix: استعلام مُعلم — كانت الهوية تُركّب في النص مباشرة.
+            using var headerCmd = new SqlCommand(
+                "SELECT * FROM Inv WHERE InvGlobalID=@InvGlobalID", conn);
+            headerCmd.Parameters.Add("@InvGlobalID", SqlDbType.NVarChar).Value = globalId ?? "";
+            using var reader = headerCmd.ExecuteReader();
 
             if (!reader.HasRows) return null;
             reader.Read();
@@ -674,9 +711,8 @@ namespace SmartAuditERP.Form_WPF
             invoice.PayATM = Convert.ToDouble(reader["visa"]);
             invoice.PayType = Convert.ToInt32(reader["pay_type"].ToString());
             invoice.PIH = InvoiceOper.GetPIH(
-                invoice.InvoiceNo,
-                (int)invoice.InvoiceType,
-                invoice.ProcType,
+                invoice.InvGlobalID,
+                invoice.InvDate,
                 invoice.Branch);
 
             if (invoice.PayType == 1)
@@ -730,9 +766,11 @@ namespace SmartAuditERP.Form_WPF
                    LEFT JOIN Units AS U ON Inv.unit = U.id
                    LEFT JOIN ItemUnits AS IU ON (inv.ItemId=IU.ItemId
                                                  AND inv.unit=IU.unit)
-                   WHERE inv.InvGlobalID=N'{invoice.InvGlobalID}'
+                   WHERE inv.InvGlobalID=@InvGlobalID
                      AND Inv.ProductId=0
                    ORDER BY Inv.id", conn);
+            da.SelectCommand.Parameters.Add(
+                "@InvGlobalID", SqlDbType.NVarChar).Value = invoice.InvGlobalID;
 
             var dtItems = new DataTable();
             da.Fill(dtItems);
@@ -810,9 +848,212 @@ namespace SmartAuditERP.Form_WPF
             return invoice;
         }
 
-        private List<Invoice> GetSelectedInvoicesFromGrid()
+        // P6-009 fix: محمل عقد الفاتورة (InvContratct + InvContratct_Sub) — كان جدول
+        // المتابعة يعرض صفوف العقود (UNION) لكن المحمل الوحيد يبحث في Inv فيُقصى
+        // العقد المختار صامتًا (null) ولا يمكن إرساله يدويًا أبدًا. يعيد نموذج
+        // Invoice بنفس حقول التوأم (رأس + بنود + سلسلة وحدة الإصدار).
+        public Invoice BindContractByID(string globalId)
         {
-            var result = new List<Invoice>();
+            var conn = MainClass.ConnObj();
+            if (conn.State != ConnectionState.Open)
+                conn.Open();
+
+            using var headerCmd = new SqlCommand(
+                "SELECT * FROM InvContratct WHERE InvGlobalID=@InvGlobalID", conn);
+            headerCmd.Parameters.Add("@InvGlobalID", SqlDbType.NVarChar).Value = globalId ?? "";
+            using var reader = headerCmd.ExecuteReader();
+
+            if (!reader.HasRows) return null;
+            reader.Read();
+
+            var invoice = new Invoice();
+            var invoiceObj =
+                new InvoiceObj(
+                    Convert.ToInt32(reader["Inv_type"]),
+                    Convert.ToInt32(reader["proc_type"]));
+
+            invoice.AutoIncrementID = reader["proc_id"] != DBNull.Value
+                ? Convert.ToInt32(reader["proc_id"])
+                : 0;
+            invoice.InvGlobalID = reader["InvGlobalID"].ToString();
+            invoice.UUID = reader["UUID"] != DBNull.Value
+                ? reader["UUID"].ToString().Trim() : "";
+            invoice.InvoiceHash = reader["InvoiceHash"] != DBNull.Value
+                ? reader["InvoiceHash"].ToString().Trim() : "";
+            invoice.InvCombinedId = reader["InvCombinedId"] != DBNull.Value
+                ? reader["InvCombinedId"].ToString() : string.Empty;
+            invoice.InvoiceNo = Convert.ToInt32(reader["id"]);
+            invoice.InvoiceType =
+                (InvoiceType)Convert.ToInt32(reader["Inv_type"]);
+            invoice.Bank = Convert.ToInt32(reader["bank"]);
+            invoice.ProcType = Convert.ToInt32(reader["proc_type"]);
+            invoice.OrderNo = -1;
+            invoice.OrderType = -1;
+            invoice.InvDate = Convert.ToDateTime(reader["date"]);
+            invoice.User = Convert.ToInt32(reader["sales_emp"]);
+            invoice.Branch = Convert.ToInt32(reader["branch"]);
+            invoice.DistBranch = Sync.DistBranch;
+            invoice.ClientCode = Sync.ClientCode;
+            invoice.BranchType = Sync.BranchType;
+            invoice.Received = false;
+            invoice.PriceIncVAT = Convert.ToBoolean(reader["PriceIncVAT"]);
+            invoice.Total = Convert.ToDouble(reader["InvTotal"]);
+            invoice.SumPrice = Convert.ToDouble(reader["InvSum"]);
+            invoice.VAT = Convert.ToDouble(reader["tax"]);
+            invoice.TotalWithholdingTax =
+                Convert.ToDouble(reader["TotalWithholdingTax"]);
+            invoice.Net = Convert.ToDouble(reader["tot_net"]);
+            invoice.Discount = Convert.ToDouble(reader["minus"]);
+            invoice.Additions = Convert.ToDouble(reader["AdditionsTot"]);
+            invoice.Insurance = Convert.ToDouble(reader["Insurance"]);
+            invoice.Paycash = Convert.ToDouble(reader["cash"]);
+            invoice.PayATM = Convert.ToDouble(reader["visa"]);
+            invoice.PayType = Convert.ToInt32(reader["pay_type"].ToString());
+
+            if (invoice.PayType == 1)
+            {
+                invoice.Paycash = invoice.Net;
+                invoice.PayATM = 0;
+                invoice.Paid = invoice.Net;
+            }
+            else if (invoice.PayType == 2)
+            {
+                invoice.Paycash = 0;
+                invoice.PayATM = invoice.Net;
+                invoice.Paid = invoice.Net;
+            }
+
+            invoice.Remainder = Convert.ToDouble(reader["paid"])
+                                 - Convert.ToDouble(reader["tot_net"]);
+            invoice.Customer = Convert.ToInt32(reader["cust_id"].ToString());
+            invoice.InvNote = reader["notes"].ToString();
+            invoice.IsDeleted = Convert.ToBoolean(reader["IS_Deleted"]);
+            invoice.VATperc = Convert.ToDouble(reader["VATPercent"]);
+            invoice.ReffNo = reader["Reff_No"].ToString();
+            invoice.RefDate = Convert.ToDateTime(reader["Reff_date"]);
+            invoice.Store = Convert.ToInt32(reader["safe"].ToString());
+            invoice.TotDiscount = invoice.Discount;
+
+            invoice.InvAccCode = invoice.ProcType == 1
+                                 ? invoiceObj.InvAcc
+                                 : invoiceObj.InvReturnAcc;
+
+            // P6-005 fix: سلسلة وحدة الإصدار الموحدة (نفس عقد محمل الفواتير)
+            invoice.PIH = InvoiceOper.GetPIH(
+                invoice.InvGlobalID,
+                invoice.InvDate,
+                invoice.Branch);
+            invoice.previousUUID = InvoiceOper.GetPreviousUUID(
+                invoice.InvGlobalID,
+                invoice.InvDate,
+                invoice.Branch);
+
+            reader.Close();
+
+            // بنود العقد — InvContratct_Sub بنفس مخطط Inv_Sub
+            var itemsList = new List<InvoiceItem>();
+            using var da = new SqlDataAdapter(
+                @"SELECT Inv.id, Inv.proc_type, Inv.ItemId,
+                          Inv.Description, Inv.notes, Inv.unit,
+                          Inv.val, Inv.val1, Inv.exchange_price,
+                          Inv.discount, Inv.ItemPriceWithoutVAT,
+                          Inv.AvrgCost, Inv.taxval, Inv.taxperc,
+                          Inv.CurrentQnty, Inv.store, Inv.expire_date,
+                          Inv.WithholdingTaxPerc, Inv.WithholdingTax,
+                          I.name AS ItemName, I.nameEN AS ItemNameEn,
+                          I.code AS ItemCode, I.ItemProperty,
+                          U.name AS UnitName,
+                          ISNULL(U.UnitCode,'') AS UnitCode,
+                          IU.barcode AS UnitBarcode,
+                          I.EgyCodeType, I.EgyItemCode
+                   FROM InvContratct_Sub AS Inv
+                   LEFT JOIN Items AS I ON Inv.ItemId = I.id
+                   LEFT JOIN Units AS U ON Inv.unit = U.id
+                   LEFT JOIN ItemUnits AS IU ON (inv.ItemId=IU.ItemId
+                                                 AND inv.unit=IU.unit)
+                   WHERE inv.InvGlobalID=@InvGlobalID
+                     AND Inv.ProductId=0
+                   ORDER BY Inv.id", conn);
+            da.SelectCommand.Parameters.Add(
+                "@InvGlobalID", SqlDbType.NVarChar).Value = invoice.InvGlobalID;
+
+            var dtItems = new DataTable();
+            da.Fill(dtItems);
+
+            for (int i = 0; i < dtItems.Rows.Count; i++)
+            {
+                DataRow r = dtItems.Rows[i];
+                var item = new InvoiceItem
+                {
+                    ItemRowIndex = i + 1,
+                    InvGlobalID = invoice.InvGlobalID,
+                    InvertoryImpact = Convert.ToInt32(r["proc_type"]),
+                    ItemCode = r["ItemCode"].ToString(),
+                    ItemId = Convert.ToInt32(r["ItemId"].ToString()),
+                    ItemName = r["ItemName"].ToString(),
+                    Description = r["Description"].ToString(),
+                    ItemNotes = r["notes"].ToString(),
+                    UnitName = r["UnitName"].ToString(),
+                    UnitCode = r["UnitCode"].ToString(),
+                    UnitID = Convert.ToInt32(r["unit"]),
+                    ItemBarcode = r["UnitBarcode"].ToString(),
+                    ItemPrimaryQnty = Convert.ToDouble(r["val"].ToString()),
+                    ItemQuantity = Convert.ToDouble(r["val1"].ToString()),
+                    ItemPrice = Convert.ToDouble(r["exchange_price"]),
+                    ItemDiscount = Convert.ToDouble(r["discount"].ToString()),
+                    WithholdingTax = Convert.ToDouble(r["WithholdingTax"].ToString()),
+                    WithholdingTaxPerc =
+                        Convert.ToDouble(r["WithholdingTaxPerc"].ToString()),
+                    EgyCodeType = r["EgyCodeType"].ToString(),
+                    EgyItemCode = r["EgyItemCode"].ToString()
+                };
+
+                item.ItemPriceWithoutVAT =
+                    !string.IsNullOrEmpty(r["ItemPriceWithoutVAT"].ToString())
+                    ? Convert.ToDouble(r["ItemPriceWithoutVAT"])
+                    : item.ItemPrice;
+
+                item.UnitEquality =
+                    Common.DivisionOperation(
+                        new decimal(item.ItemPrimaryQnty),
+                        new decimal(item.ItemQuantity));
+
+                item.ItemSumPrice = item.ItemQuantity * item.ItemPrice;
+                item.ItemDiscountPerc =
+                    Common.DivisionOperation(
+                        new decimal(item.ItemDiscount),
+                        new decimal(item.ItemSumPrice)) * 100.0;
+                item.ItemCost =
+                    r["AvrgCost"] == null || r["AvrgCost"] == DBNull.Value
+                    ? 0.0 : Convert.ToDouble(r["AvrgCost"]);
+
+                item.ItemTotalPrice = item.ItemSumPrice - item.ItemDiscount;
+                item.ItemVat = Convert.ToDouble(r["taxval"]);
+                item.ItemVatPerc = Convert.ToDouble(r["taxperc"]);
+
+                if (invoice.PriceIncVAT)
+                    item.ItemTotalPrice -= item.ItemVat;
+
+                item.ItemNetPrice =
+                    item.ItemTotalPrice + item.ItemVat;
+                item.ValiableInvertory =
+                    Convert.ToDouble(r["CurrentQnty"]);
+
+                invoice.TotDiscount += item.ItemDiscount;
+                itemsList.Add(item);
+            }
+
+            invoice.InvoiceItems = itemsList;
+
+            conn.Close();
+            return invoice;
+        }
+
+        // P6-009 fix: الصفوف المختارة تحمل مصدرها (فاتورة/عقد) — يحدد المحمل والجدول
+        // المحدّث عند المزامنة اليدوية.
+        private List<(Invoice Invoice, bool IsContract)> GetSelectedInvoicesFromGrid()
+        {
+            var result = new List<(Invoice, bool)>();
             int[] handles = GridView1.GetSelectedRowHandles();
 
             if (handles == null || handles.Length == 0)
@@ -827,8 +1068,12 @@ namespace SmartAuditERP.Form_WPF
                                   ?? string.Empty;
                 if (string.IsNullOrWhiteSpace(globalId)) continue;
 
-                Invoice inv = BindInvoByID(globalId);
-                if (inv != null) result.Add(inv);
+                bool isContract = drv["DgvSource"]?.ToString() == "C";
+
+                Invoice inv = isContract
+                    ? BindContractByID(globalId)
+                    : BindInvoByID(globalId);
+                if (inv != null) result.Add((inv, isContract));
             }
 
             return result;
