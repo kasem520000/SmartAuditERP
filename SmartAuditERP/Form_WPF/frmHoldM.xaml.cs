@@ -468,7 +468,12 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
-        private void RecordMarineExit(int marineId)
+        // P4-025: النجاح يُبلَّغ للمستدعي بعد الالتزام فقط (bool)
+        // P7-026 fix: الخروج حدث حضور مستقل يُدرج كالحضور نفسه (AddGdata
+        // بوضع الخروج وبوقته الفعلي) — كان يعدل كل أحداث اليوم للمركب
+        // دفعة واحدة (update على اليوم كله) فتحول إدخالات الصباح إلى
+        // خروج أيضاً وضاعت سلسلة الأحداث الأصلية
+        private bool RecordMarineExit(int marineId)
         {
             SqlTransaction transaction = null;
             try
@@ -480,18 +485,24 @@ namespace SmartAuditERP.Form_WPF
 
                 DateTime selectedDate = txtDate.SelectedDate ?? DateTime.Today;
 
-                string sql = $@"
-                    UPDATE Attendance
-                    SET    _inOutMode  = 1,
-                           takeJoureny = 1
-                    WHERE  _enrollNumber = {marineId}
-                      AND  _year        = {selectedDate.Year}
-                      AND  _month       = {selectedDate.Month}
-                      AND  _day         = {selectedDate.Day}";
-
-                new SqlCommand(sql, _conn, transaction).ExecuteNonQuery();
+                var cmd = new SqlCommand("AddGdata", _conn, transaction)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add("@_machineNumber", SqlDbType.Int).Value = 0;
+                cmd.Parameters.Add("@_enrollNumber", SqlDbType.Int).Value = marineId;
+                cmd.Parameters.Add("@_enrollMachineNumber", SqlDbType.Int).Value = 0;
+                cmd.Parameters.Add("@_verifyMode", SqlDbType.Int).Value = 0;
+                cmd.Parameters.Add("@_inOutMode", SqlDbType.Int).Value = 1;
+                cmd.Parameters.Add("@_year", SqlDbType.Int).Value = selectedDate.Year;
+                cmd.Parameters.Add("@_month", SqlDbType.Int).Value = selectedDate.Month;
+                cmd.Parameters.Add("@_day", SqlDbType.Int).Value = selectedDate.Day;
+                cmd.Parameters.Add("@_hour", SqlDbType.Int).Value = DateTime.Now.Hour;
+                cmd.Parameters.Add("@_minute", SqlDbType.Int).Value = DateTime.Now.Minute;
+                cmd.Parameters.Add("@takeJoureny", SqlDbType.Int).Value = 1;
+                cmd.Parameters.Add("@_statu", SqlDbType.Bit).Value = 1;
+                cmd.ExecuteNonQuery();
                 transaction.Commit();
-                // P4-025: النجاح يُبلَّغ للمستدعي بعد الالتزام فقط
                 return true;
             }
             catch (Exception ex)

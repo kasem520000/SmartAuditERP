@@ -26,6 +26,10 @@ namespace SmartAuditERP.Form_WPF
         public bool IsDone;
         private List<BranchRowData> _employeeBranches = new List<BranchRowData>();
 
+        // P7-028 fix: تتبع حالة الصورة — dirty + bytes (null مع dirty = محو صريح)
+        private bool _imageDirty = false;
+        private byte[] _imageBytes = null;
+
         #endregion
 
         #region Constructor
@@ -98,6 +102,10 @@ namespace SmartAuditERP.Form_WPF
         {
             _currentCode = -1;
 
+            // P7-028 fix: حالة الصورة تُصفّر مع النموذج (لا نسخ محفوظ)
+            _imageDirty = false;
+            _imageBytes = null;
+
             txtName.Text = string.Empty;
             txtAccCode.Text = MaxId("Code", "Accounts_Index",
                                      Common.CurrentBranch.EmployeeAcc).ToString();
@@ -133,7 +141,9 @@ namespace SmartAuditERP.Form_WPF
             txtBirthDate.DateTime = DateTime.Now;
             txtWorkDate.DateTime = DateTime.Now;
 
-            dgvBranches.Items.Clear();
+            // P7-027 fix: لا Items.Clear فوق شبكة مربوطة بـItemsSource — كان
+            // يرمي استثناء «Operation is not valid while ItemsSource is in use»
+            // في أي تفريغ بعد أول ربط؛ المجموعة المصدر تُفرغ داخل LoadBranches
             LoadBranches();
 
             txtCurrentEmpId.Text = "--";
@@ -428,6 +438,10 @@ namespace SmartAuditERP.Form_WPF
                 {
                     picImage.Source = ByteArrayToBitmapImage(imgBytes);
                 }
+                // P7-028 fix: الصورة المحملة غير «متسخة» — تُحفظ كما هي عند إعادة
+                // الحفظ (لا إعادة ترميز ولا محو)
+                _imageDirty = false;
+                _imageBytes = null;
             }
             catch { /* ignore */ }
 
@@ -448,6 +462,9 @@ namespace SmartAuditERP.Form_WPF
             reader.Close();
 
             // Load Branches
+            // P7-027 fix: تعبئة المجموعة المصدر (_employeeBranches) لا Items —
+            // كان Items.Clear/Add فوق شبكة مربوطة بـItemsSource يرمي استثناء
+            // يُبتلع فيُعرض الموظف بفرع واحد افتراضي مهما كانت فروعه
             try
             {
                 var branchAdapter = new SqlDataAdapter(
@@ -456,15 +473,16 @@ namespace SmartAuditERP.Form_WPF
                 var branchTable = new DataTable();
                 branchAdapter.Fill(branchTable);
 
-                dgvBranches.Items.Clear();
+                _employeeBranches.Clear();
                 foreach (DataRow row in branchTable.Rows)
                 {
-                    dgvBranches.Items.Add(
+                    _employeeBranches.Add(
                         new BranchRowData
                         {
                             BranchId = Convert.ToInt32(row["branch"])
                         });
                 }
+                dgvBranches.Items.Refresh();
             }
             catch { /* ignore */ }
 
@@ -590,8 +608,20 @@ namespace SmartAuditERP.Form_WPF
 
                 var employeeList = new List<Employee> { employee };
 
+                // P7-028 fix: قيم الشاشة كاملة تمر إلى الحفظ — البدلات والحوافز
+                // والطبي والملاحظات والإدارة والصورة — كانت تُصفر/تمحى في
+                // EntityOperations.SaveEmployee بدل حفظها
+                byte[] imageParam = null;
+                if (_imageDirty)
+                    imageParam = _imageBytes ?? new byte[0];
+
                 if (new EntityOperations().SaveEmployee(
-                        employeeList, true, branchList))
+                        employeeList, true, branchList,
+                        managId,
+                        ToDecimal(txtMedical.Text),
+                        ToDecimal(txtSalaryAdd.Text),
+                        txtNotes.Text,
+                        imageParam))
                 {
                     if (Sync.ActiveSync && Sync.SyncType > 0)
                         new EmployeeCRUD().AddImployee(employeeList);
@@ -957,7 +987,13 @@ namespace SmartAuditERP.Form_WPF
                 };
 
                 if (dialog.ShowDialog() == true)
-                    picImage.Source = new BitmapImage(new Uri(dialog.FileName));
+                {
+                    var bmp = new BitmapImage(new Uri(dialog.FileName));
+                    picImage.Source = bmp;
+                    // P7-028 fix: الصورة المختارة تُتتبع لتُحفظ فعلياً
+                    _imageBytes = BitmapImageToByteArray(bmp);
+                    _imageDirty = true;
+                }
             }
             catch (Exception ex)
             {
@@ -970,6 +1006,19 @@ namespace SmartAuditERP.Form_WPF
             MouseButtonEventArgs e)
         {
             picImage.Source = null;
+            // P7-028 fix: المحو قصد صريح — يُحفظ DBNull عند الحفظ
+            _imageBytes = null;
+            _imageDirty = true;
+        }
+
+        // P7-028 fix: ترميز الصورة إلى بايتات لحفظها
+        private static byte[] BitmapImageToByteArray(BitmapImage image)
+        {
+            using var ms = new System.IO.MemoryStream();
+            var encoder = new System.Windows.Media.Imaging.PngBitmapEncoder();
+            encoder.Frames.Add(System.Windows.Media.Imaging.BitmapFrame.Create(image));
+            encoder.Save(ms);
+            return ms.ToArray();
         }
 
         private BitmapImage ByteArrayToBitmapImage(byte[] bytes)

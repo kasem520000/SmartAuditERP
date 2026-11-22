@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -501,6 +502,12 @@ namespace SmartAuditERP.Form_WPF
 
         private void ClearAll()
         {
+            // P7-023 fix: هوية التحرير ورقم العرض يعادان مع التفريغ — كانت
+            // تبقيان بعد حفظ حجز محرر فيتحول الحفظ التالي صامتاً إلى تعديل
+            // فوق الحجز السابق بدل إدراج جديد
+            Code = -1;
+            ProcID = -1;
+
             _dgvDataList.Clear();
             _dgvSrchList.Clear();
 
@@ -616,6 +623,38 @@ namespace SmartAuditERP.Form_WPF
                     }
                 }
 
+                // P7-024 fix: حاجز تداخل ذري — الحجوزات النشطة المتقاطعة زمنياً
+                // لنفس المركب تُفحص داخل معاملة الحجز نفسها بUPDLOCK+HOLDLOCK
+                // فيُسلسَل قرار (فحص-ثم-إدراج) ولا يمر حجزان متعارضان بفحصين
+                // متزامنين؛ استثناء الحجز نفسه عند التحرير
+                DateTime bookingStart = GetEditValue(cmbBookingDate);
+                double bookingPeriodHours = hourVal + (minuteVal / 60.0);
+                DateTime bookingEnd = bookingStart.AddHours(bookingPeriodHours);
+
+                using (SqlCommand overlapCmd = new SqlCommand(
+                    "SELECT COUNT(*) FROM Booking WITH (UPDLOCK, HOLDLOCK) " +
+                    "WHERE IsDeleted=0 AND MarineId=@MarineId " +
+                    "AND InvId<>@SelfInvId " +
+                    "AND dateIn < @End " +
+                    "AND DATEADD(HOUR, ISNULL(PeriodHour,0) + ISNULL(PeriodMinute,0)/60.0, dateIn) > @Start",
+                    conn, transaction))
+                {
+                    overlapCmd.Parameters.Add("@MarineId", SqlDbType.Int).Value = cmbMarine.SelectedValue;
+                    overlapCmd.Parameters.Add("@SelfInvId", SqlDbType.Int).Value = ProcID;
+                    overlapCmd.Parameters.Add("@Start", SqlDbType.DateTime).Value = bookingStart;
+                    overlapCmd.Parameters.Add("@End", SqlDbType.DateTime).Value = bookingEnd;
+                    int overlaps = Convert.ToInt32(overlapCmd.ExecuteScalar());
+                    if (overlaps > 0)
+                    {
+                        transaction.Rollback();
+                        MessageBox.Show(
+                            "يوجد حجز متعارض لنفس المركب في هذه الفترة (" + overlaps + ") —\n" +
+                            "اختر فترة أخرى أو فحص حجوزات المركب",
+                            "تعارض الحجز", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+                }
+
                 double rentPeriod = hourVal + (minuteVal / 60.0);
                 double.TryParse(txtPrice.Text, out double priceVal);
                 double.TryParse(txttotAdditions.Text, out double totAdditions);
@@ -704,16 +743,30 @@ namespace SmartAuditERP.Form_WPF
                 cmd.Parameters.Add("@IsDeleted", SqlDbType.Bit).Value = 0;
                 cmd.ExecuteNonQuery();
 
+                // P7-022 fix: هوية الحجز الحقيقية من الإدراج (SCOPE_IDENTITY
+                // في نطاق معاملة الحجز) — الإضافات كانت تربط برقم العرض المحسوب
+                // من عدد الصفوف (COUNT+1) فتفصل عن حجزها الفعلي عند أول فجوة
+                // هوية أو حذف منطقي
+                int bookingBid = Code;
+                if (Code == -1)
+                {
+                    bookingBid = Convert.ToInt32(
+                        new SqlCommand("SELECT CAST(SCOPE_IDENTITY() AS int)",
+                            conn, transaction).ExecuteScalar());
+                    txtNo.Text = bookingBid.ToString();
+                }
+
                 // حذف الإضافات القديمة
-                new SqlCommand(
-                    "delete BookingAddition where bookId=" + Code,
-                    conn, transaction).ExecuteNonQuery();
+                using (SqlCommand delAddCmd = new SqlCommand(
+                    "delete BookingAddition where bookId=@bookId", conn, transaction))
+                {
+                    delAddCmd.Parameters.Add("@bookId", SqlDbType.Int).Value = bookingBid;
+                    delAddCmd.ExecuteNonQuery();
+                }
 
                 // إدراج الإضافات الجديدة
                 if (_dgvDataList.Count > 0)
                 {
-                    double.TryParse(txtNo.Text, out double bookNo);
-
                     foreach (BookingAdditionItem item in _dgvDataList)
                     {
                         SqlCommand insertCmd = new SqlCommand(
@@ -721,8 +774,9 @@ namespace SmartAuditERP.Form_WPF
                             "quanty,notes,IsDeleted) values(@bookId,@AditionID," +
                             "@Price,@quanty,@notes,@IsDeleted)", conn, transaction);
 
+                        // P7-022 fix: الربط بهوية الحجز الحقيقية (Bid) لا رقم العرض
                         insertCmd.Parameters.Add("@bookId", SqlDbType.Int).Value =
-                            (int)bookNo;
+                            bookingBid;
                         insertCmd.Parameters.Add("@AditionID", SqlDbType.Int).Value =
                             item.Id;
                         insertCmd.Parameters.Add("@Price", SqlDbType.Float).Value =
@@ -739,6 +793,8 @@ namespace SmartAuditERP.Form_WPF
                 MessageBox.Show(" تم حفظ الحجز",
                     "", MessageBoxButton.OK, MessageBoxImage.Information);
                 ClearAll();
+                // P7-023 fix: رقم عرض جديد للسجل التالي (يعيد الكود أيضاً)
+                LoadBokNo();
             }
             catch (Exception ex)
             {
@@ -1221,26 +1277,32 @@ namespace SmartAuditERP.Form_WPF
         {
             Search(2);
 
+            // P7-025 fix: المطابقة تُقرأ من لقطة قبل أي إعادة تعبئة — كانت
+            // استدعاءات البحث داخل foreach تفرغ _dgvSrchList وتعيد ملأه أثناء
+            // تعداده فيرمي استثناء تعداد المجموعة ويسقط مسار الهاتف كاملاً؛
+            // وتُؤخذ أول مطابقة (لا تكرار البحث لكل صف مطابق)
             if (!string.IsNullOrWhiteSpace(txtClientName.Text))
             {
-                foreach (BookingSearchItem item in _dgvSrchList)
+                foreach (BookingSearchItem item in _dgvSrchList.ToList())
                 {
                     if (string.Equals(item.CustomerName, txtClientName.Text))
                     {
                         ClientN = item.CustomerId;
                         Search(3);
+                        break;
                     }
                 }
             }
 
             if (string.IsNullOrWhiteSpace(txtCustPhone.Text)) return;
 
-            foreach (BookingSearchItem item in _dgvSrchList)
+            foreach (BookingSearchItem item in _dgvSrchList.ToList())
             {
                 if (string.Equals(item.Mobile, txtCustPhone.Text))
                 {
                     ClientN = item.CustomerId;
                     Search(3);
+                    break;
                 }
             }
         }

@@ -1740,7 +1740,12 @@ public class EntityOperations
         }
     }
 
-    public bool SaveEmployee(List<Employee> employees, bool AddedLocally, List<BranchEmployee> EmbBranches)
+    // P7-028 fix: الحقول التي لا يحملها نموذج Employee الخارجي تمر كمعاملات
+    // اختيارية — null = غير مقدم: في UPDATE تُحفظ القيمة القائمة (لا تمحى
+    // كما كانت)، وفي INSERT تكتب قيمها الافتراضية؛ شاشة الموظف تمرر قيمها
+    // كاملة دائماً. مصفوفة الصورة الفارغة = محو صريح.
+    public bool SaveEmployee(List<Employee> employees, bool AddedLocally, List<BranchEmployee> EmbBranches,
+        int? manag = null, decimal? medical = null, decimal? salaryAdd = null, string notes = null, byte[] image = null)
     {
         SqlConnection sqlConnection;
         sqlConnection = MainClass.ConnObj();
@@ -1779,11 +1784,17 @@ public class EntityOperations
                             new SqlCommand("insert into EmpBranches(emp,branch)values(" + EmbBranch.EmployeeId + "," + Conversions.ToString(EmbBranch.BranchId) + ")", sqlConnection).ExecuteNonQuery();
                         }
                     }
-                    sqlCommand = new SqlCommand("update Employees set name=@name ,manag=@manag ,dep=@dep ,state=@state ,job=@job  ,birth_date=@birth_date ,insurance_no=@insurance_no ,work_date=@work_date ,marital_state=@marital_state ,nationality=@nationality ,sex=@sex ,tel=@tel ,mobile=@mobile ,email=@email ,address=@address ,notes=@notes ,image=@image ,salary_basic=@salary_basic ,house=@house, travel=@travel, food=@food, medical=@medical, salary_add=@salary_add ,salary_other=@salary_other ,IS_Deleted=@IS_Deleted ,AccCode=@AccCode , CardNo=@CardNo , BankNo=@BankNo , BankName=@BankName where id=" + Conversions.ToString(employee.EmpId), sqlConnection);
+                    sqlCommand = new SqlCommand("update Employees set name=@name ,dep=@dep ,state=@state ,job=@job  ,birth_date=@birth_date ,insurance_no=@insurance_no ,work_date=@work_date ,marital_state=@marital_state ,nationality=@nationality ,sex=@sex ,tel=@tel ,mobile=@mobile ,email=@email ,address=@address ,salary_basic=@salary_basic ,house=@house, travel=@travel, food=@food, salary_other=@salary_other ,IS_Deleted=@IS_Deleted ,AccCode=@AccCode , CardNo=@CardNo , BankNo=@BankNo , BankName=@BankName"
+                        + (manag.HasValue ? " ,manag=@manag" : "")
+                        + (medical.HasValue ? " ,medical=@medical" : "")
+                        + (salaryAdd.HasValue ? " ,salary_add=@salary_add" : "")
+                        + (notes != null ? " ,notes=@notes" : "")
+                        + (image != null ? " ,image=@image" : "")
+                        + " where id=" + Conversions.ToString(employee.EmpId), sqlConnection);
                 }
                 sqlCommand.Parameters.Add("@id", SqlDbType.Int).Value = employee.EmpId;
                 sqlCommand.Parameters.Add("@name", SqlDbType.NVarChar).Value = employee.EmpName;
-                sqlCommand.Parameters.Add("@manag", SqlDbType.Int).Value = -1;
+                sqlCommand.Parameters.Add("@manag", SqlDbType.Int).Value = manag ?? -1;
                 sqlCommand.Parameters.Add("@dep", SqlDbType.Int).Value = employee.Department;
                 sqlCommand.Parameters.Add("@state", SqlDbType.Int).Value = employee.Status;
                 sqlCommand.Parameters.Add("@job", SqlDbType.Int).Value = employee.Role;
@@ -1797,14 +1808,18 @@ public class EntityOperations
                 sqlCommand.Parameters.Add("@mobile", SqlDbType.NVarChar).Value = employee.EmpMobile;
                 sqlCommand.Parameters.Add("@email", SqlDbType.NVarChar).Value = employee.EmpEmail;
                 sqlCommand.Parameters.Add("@address", SqlDbType.NVarChar).Value = employee.EmpAddress;
-                sqlCommand.Parameters.Add("@notes", SqlDbType.NVarChar).Value = "";
-                sqlCommand.Parameters.Add("@image", SqlDbType.Image).Value = DBNull.Value;
+                // P7-028 fix: قيم الشاشة لا نصوص فارغة مفروضة — null = القيمة القائمة
+                sqlCommand.Parameters.Add("@notes", SqlDbType.NVarChar).Value = notes ?? "";
+                sqlCommand.Parameters.Add("@image", SqlDbType.Image).Value = (image == null || image.Length == 0)
+                    ? (object)DBNull.Value
+                    : image;
                 sqlCommand.Parameters.Add("@salary_basic", SqlDbType.Float).Value = employee.Salary;
                 sqlCommand.Parameters.Add("@house", SqlDbType.Float).Value = employee.Housing;
                 sqlCommand.Parameters.Add("@travel", SqlDbType.Float).Value = employee.Travel;
-                sqlCommand.Parameters.Add("@food", SqlDbType.Float).Value = 0;
-                sqlCommand.Parameters.Add("@medical", SqlDbType.Float).Value = 0;
-                sqlCommand.Parameters.Add("@salary_add", SqlDbType.Float).Value = 0;
+                // P7-028 fix: بدل الطعام من نموذج الموظف (Living) — كان صفراً مفروضاً
+                sqlCommand.Parameters.Add("@food", SqlDbType.Float).Value = Convert.ToDouble(employee.Living);
+                sqlCommand.Parameters.Add("@medical", SqlDbType.Float).Value = medical.HasValue ? Convert.ToDouble(medical.Value) : 0.0;
+                sqlCommand.Parameters.Add("@salary_add", SqlDbType.Float).Value = salaryAdd.HasValue ? Convert.ToDouble(salaryAdd.Value) : 0.0;
                 sqlCommand.Parameters.Add("@salary_other", SqlDbType.Float).Value = employee.salary_other;
                 sqlCommand.Parameters.Add("@IS_Deleted", SqlDbType.Bit).Value = employee.IsDeleted;
                 sqlCommand.Parameters.Add("@AccCode", SqlDbType.NVarChar).Value = employee.AccCode;

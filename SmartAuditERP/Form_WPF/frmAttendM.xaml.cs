@@ -563,13 +563,27 @@ namespace SmartAuditERP.Form_WPF
                 AMonth = selectedDate.Month;
                 Aday = selectedDate.Day;
 
-                var cmd = new SqlCommand(
-                    "update Attendance set _inOutMode=1 " +
-                    "Where _enrollNumber=" + marineId +
-                    " And _year=" + Ayear +
-                    " And _month=" + AMonth +
-                    " And _day=" + Aday,
-                    conn, transaction);
+                // P7-026 fix: الخروج حدث حضور مستقل يُدرج كالحضور نفسه
+                // (AddGdata بوضع الخروج وبوقته الفعلي) — كان يعدل كل أحداث
+                // اليوم للمركب دفعة واحدة (update _inOutMode=1 على اليوم
+                // كله) فتحول إدخالات الصباح إلى خروج أيضاً وضاعت سلسلة
+                // الأحداث الأصلية
+                var cmd = new SqlCommand("AddGdata", conn, transaction)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                cmd.Parameters.Add("@_machineNumber", SqlDbType.Int).Value = 0;
+                cmd.Parameters.Add("@_enrollNumber", SqlDbType.Int).Value = marineId;
+                cmd.Parameters.Add("@_enrollMachineNumber", SqlDbType.Int).Value = 0;
+                cmd.Parameters.Add("@_verifyMode", SqlDbType.Int).Value = 0;
+                cmd.Parameters.Add("@_inOutMode", SqlDbType.Int).Value = 1;
+                cmd.Parameters.Add("@_year", SqlDbType.Int).Value = Ayear;
+                cmd.Parameters.Add("@_month", SqlDbType.Int).Value = AMonth;
+                cmd.Parameters.Add("@_day", SqlDbType.Int).Value = Aday;
+                cmd.Parameters.Add("@_hour", SqlDbType.Int).Value = DateTime.Now.Hour;
+                cmd.Parameters.Add("@_minute", SqlDbType.Int).Value = DateTime.Now.Minute;
+                cmd.Parameters.Add("@takeJoureny", SqlDbType.Int).Value = 0;
+                cmd.Parameters.Add("@_statu", SqlDbType.Bit).Value = 1;
                 cmd.ExecuteNonQuery();
                 transaction.Commit();
 
