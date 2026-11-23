@@ -70,6 +70,9 @@ namespace SmartAuditERP.Form_WPF
         private string RptName;
         private string RptUrl;
 
+        // P7-045: هل آخر حساب للخلايا تم بنجاح؟ (تحرس الطباعة من ربط نتائج فاشلة)
+        private bool _lastCalcOk = false;
+
         // WPF bindable date values (used by DateEdit bindings)
         public DateTime DateFromValue { get; set; }
         public DateTime DateToValue { get; set; }
@@ -447,6 +450,11 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
+                // P7-046 fix: كل النتائج تُجمَّع في متغيرات محلية أولاً ولا تُنشر
+                // إلى خلايا الواجهة إلا دفعة واحدة بعد نجاح كل الاستعلامات —
+                // فشل مصدر متأخر كان يترك خلايا جديدة وأخرى قديمة قابلة
+                // للطباعة معاً
+
                 // Sales accumulators
                 double saleBase = 0, saleTax = 0, saleExtra = 0;
                 double saleRetBase = 0, saleRetTax = 0, saleRetExtra = 0;
@@ -462,9 +470,14 @@ namespace SmartAuditERP.Form_WPF
                 // Expense accumulators
                 double expTotal = 0, expVAT = 0;
 
+                // Receipts / rent accumulators (P7-046: لا نشر أثناء التجميع)
+                double receiptsTotal = 0, receiptsVAT = 0;
+                double rentBase = 0, rentVAT = 0;
+
                 string branchInv = GetBranchConditionInv();
                 string branchBranch = GetBranchConditionBranchID();
                 string branchEntry = GetBranchConditionEntry();
+                string branchPlain = GetBranchConditionPlain();
 
                 DateTime date1 = GetDateFrom();
                 DateTime date2 = GetDateTo();
@@ -508,13 +521,6 @@ namespace SmartAuditERP.Form_WPF
                     }
                 }
 
-                SetCellText(txtNetSale, Math.Round(saleBase - saleRetBase, 2).ToString());
-                SetCellText(txtTaxNetSale, Math.Round(saleTax - saleRetTax, 2).ToString());
-                SetCellText(txtExtraVAT, Math.Round(saleExtra - saleRetExtra
-                                                      + saleNoTaxTax - saleRetNoTaxTax, 2).ToString());
-                SetCellText(txtSalesOutTax, Math.Round(saleNoTaxBase - saleRetNoTaxBase, 2).ToString());
-                SetCellText(txtSalesNoTax, Math.Round(saleNoTaxTax - saleRetNoTaxTax, 2).ToString());
-
                 // ── Receipts (type 10) ──────────────────────────────────────
                 string sqlReceipts =
                     $"SELECT SUM(Payment) AS total, SUM(NetVal) AS NetVal " +
@@ -528,15 +534,12 @@ namespace SmartAuditERP.Form_WPF
                     var dt = new DataTable();
                     adapter.Fill(dt);
 
-                    double total = dt.Rows.Count > 0 ? SafeDouble(dt.Rows[0]["total"]) : 0;
+                    receiptsTotal = dt.Rows.Count > 0 ? SafeDouble(dt.Rows[0]["total"]) : 0;
                     double netVal = dt.Rows.Count > 0 ? SafeDouble(dt.Rows[0]["NetVal"]) : 0;
-                    SetCellText(txtReceipts, total.ToString());
-                    SetCellText(txtReceiptsVAT, (netVal - total).ToString());
+                    receiptsVAT = netVal - receiptsTotal;
                 }
 
                 // ── Rent invoices ───────────────────────────────────────────
-                string branchPlain = GetBranchConditionPlain();
-
                 string sqlRentIn =
                     $"SELECT SUM(tot_net) AS tot_net, SUM(tax) AS TaxVal " +
                     $"FROM RentInvoice WHERE {branchPlain}" +
@@ -548,8 +551,13 @@ namespace SmartAuditERP.Form_WPF
                     adapter.SelectCommand.Parameters.AddWithValue("@date2", date2);
                     var dt = new DataTable();
                     adapter.Fill(dt);
-                    SetCellText(txtIncomes, dt.Rows.Count > 0 ? SafeDouble(dt.Rows[0]["tot_net"]).ToString() : "0");
-                    SetCellText(txtIncomesVAT, dt.Rows.Count > 0 ? SafeDouble(dt.Rows[0]["TaxVal"]).ToString() : "0");
+                    // P7-051 fix: tot_net في RentInvoice هو الصافي الشامل للضريبة
+                    // (NetVal = الإيجار + الضريبة عند الحفظ) والضريبة عمود مستقل —
+                    // الأساس قبل الضريبة = tot_net − tax
+                    double rentGross = dt.Rows.Count > 0 ? SafeDouble(dt.Rows[0]["tot_net"]) : 0;
+                    double rentTax = dt.Rows.Count > 0 ? SafeDouble(dt.Rows[0]["TaxVal"]) : 0;
+                    rentBase = rentGross - rentTax;
+                    rentVAT = rentTax;
                 }
 
                 string sqlRentRet =
@@ -565,23 +573,14 @@ namespace SmartAuditERP.Form_WPF
                     adapter.Fill(dt);
                     if (dt.Rows.Count > 0)
                     {
-                        double curIncomes = SafeDouble(txtIncomes.Text.Trim());
-                        double curIncomesVAT = SafeDouble(txtIncomesVAT.Text.Trim());
-                        SetCellText(txtIncomes, (curIncomes - SafeDouble(dt.Rows[0]["tot_net"])).ToString());
-                        SetCellText(txtIncomesVAT, (curIncomesVAT - SafeDouble(dt.Rows[0]["TaxVal"])).ToString());
+                        // P7-051 fix: المرتجع يُطرح بأساسه قبل الضريبة
+                        // (tot_net المرتجع شامل ضريبته) والضريبة تُطرح وحدها
+                        double retGross = SafeDouble(dt.Rows[0]["tot_net"]);
+                        double retTax = SafeDouble(dt.Rows[0]["TaxVal"]);
+                        rentBase -= retGross - retTax;
+                        rentVAT -= retTax;
                     }
                 }
-
-                // ── Sales totals ────────────────────────────────────────────
-                // P7-044 fix: الإجمالي يضم صف المعفاة المعروض (المبيعات خارج
-                // الضريبة) — كان يُعرض ولا يُضم فلا يطابق الإجمالي مجموع صفوفه
-                double netSales = Math.Round(
-                    SafeDouble(txtNetSale.Text) + SafeDouble(txtSalesOutTax.Text) +
-                    SafeDouble(txtReceipts.Text) + SafeDouble(txtIncomes.Text), 2);
-                double netSalesTax = Math.Round(
-                    SafeDouble(txtTaxNetSale.Text) + SafeDouble(txtReceiptsVAT.Text) + SafeDouble(txtIncomesVAT.Text), 2);
-                SetCellText(txtNetSales, netSales.ToString());
-                SetCellText(txtNetSaleTax, netSalesTax.ToString());
 
                 // ── Purchase invoices ───────────────────────────────────────
                 string sqlPurch =
@@ -619,11 +618,6 @@ namespace SmartAuditERP.Form_WPF
                         }
                     }
                 }
-
-                SetCellText(txtNetPurch, Math.Round(purchBase - purchRetBase, 2).ToString());
-                SetCellText(txtTaxNetPurch, Math.Round(purchTax - purchRetTax, 2).ToString());
-                SetCellText(txtPurchOutTax, Math.Round(purchNoTaxBase - purchRetNoTaxBase, 2).ToString());
-                SetCellText(txtNoTaxPurch, Math.Round(purchNoTaxTax - purchRetNoTaxTax, 2).ToString());
 
                 // ── Expense receipts (type 9) ───────────────────────────────
                 string sqlExpReceipts =
@@ -665,21 +659,60 @@ namespace SmartAuditERP.Form_WPF
                     }
                 }
 
-                SetCellText(txtExpenseNet, expTotal.ToString(Common.DigitsNo));
-                SetCellText(txtExpenseVAT, expVAT.ToString(Common.DigitsNo));
+                // ═══════════ النشر من المتغيرات المحلية (نقطة واحدة) ═══════════
+                // كل المجاميع مشتقة من المتراكمات المحلية لا من نص الخلايا —
+                // لا قراءة لقيمة منشورة داخل الحساب (كانت المجاميع تقرأ
+                // نصوص الخلايا المنشورة جزئياً)
 
-                // ── Purchase totals ─────────────────────────────────────────
+                double netSaleCell     = Math.Round(saleBase - saleRetBase, 2);
+                double taxNetSaleCell  = Math.Round(saleTax - saleRetTax, 2);
+                double extraVATCell    = Math.Round(saleExtra - saleRetExtra
+                                                     + saleNoTaxTax - saleRetNoTaxTax, 2);
+                double salesOutTaxCell = Math.Round(saleNoTaxBase - saleRetNoTaxBase, 2);
+                double salesNoTaxCell  = Math.Round(saleNoTaxTax - saleRetNoTaxTax, 2);
+                double incomesCell     = Math.Round(rentBase, 2);
+                double incomesVATCell  = rentVAT;
+
+                double netPurchCell    = Math.Round(purchBase - purchRetBase, 2);
+                double taxNetPurchCell = Math.Round(purchTax - purchRetTax, 2);
+                double purchOutTaxCell = Math.Round(purchNoTaxBase - purchRetNoTaxBase, 2);
+                double noTaxPurchCell  = Math.Round(purchNoTaxTax - purchRetNoTaxTax, 2);
+
+                // P7-044 fix: الإجمالي يضم صف المعفاة المعروض (المبيعات خارج
+                // الضريبة) — كان يُعرض ولا يُضم فلا يطابق الإجمالي مجموع صفوفه
+                double netSales = Math.Round(
+                    netSaleCell + salesOutTaxCell + receiptsTotal + incomesCell, 2);
+                double netSalesTax = Math.Round(
+                    taxNetSaleCell + receiptsVAT + incomesVATCell, 2);
+
                 // P7-044 fix: يضم صف معفى المشتريات المعروض كذلك
                 double netPurches = Math.Round(
-                    SafeDouble(txtNetPurch.Text) + SafeDouble(txtPurchOutTax.Text) + expTotal, 2);
-                double netPurchesTax = Math.Round(
-                    SafeDouble(txtTaxNetPurch.Text) + expVAT, 2);
-                SetCellText(txtNetPurches, netPurches.ToString());
-                SetCellText(txtNetPurchTax, netPurchesTax.ToString());
+                    netPurchCell + purchOutTaxCell + expTotal, 2);
+                double netPurchesTax = Math.Round(taxNetPurchCell + expVAT, 2);
 
                 // ── Net VAT ─────────────────────────────────────────────────
-                double netVAT = SafeDouble(txtNetSaleTax.Text) - SafeDouble(txtNetPurchTax.Text);
+                double netVAT = netSalesTax - netPurchesTax;
                 string netVATText = netVAT.ToString(Common.DigitsNo);
+
+                SetCellText(txtNetSale, netSaleCell.ToString());
+                SetCellText(txtTaxNetSale, taxNetSaleCell.ToString());
+                SetCellText(txtExtraVAT, extraVATCell.ToString());
+                SetCellText(txtSalesOutTax, salesOutTaxCell.ToString());
+                SetCellText(txtSalesNoTax, salesNoTaxCell.ToString());
+                SetCellText(txtReceipts, receiptsTotal.ToString());
+                SetCellText(txtReceiptsVAT, receiptsVAT.ToString());
+                SetCellText(txtIncomes, incomesCell.ToString());
+                SetCellText(txtIncomesVAT, incomesVATCell.ToString());
+                SetCellText(txtNetSales, netSales.ToString());
+                SetCellText(txtNetSaleTax, netSalesTax.ToString());
+                SetCellText(txtNetPurch, netPurchCell.ToString());
+                SetCellText(txtTaxNetPurch, taxNetPurchCell.ToString());
+                SetCellText(txtPurchOutTax, purchOutTaxCell.ToString());
+                SetCellText(txtNoTaxPurch, noTaxPurchCell.ToString());
+                SetCellText(txtExpenseNet, expTotal.ToString(Common.DigitsNo));
+                SetCellText(txtExpenseVAT, expVAT.ToString(Common.DigitsNo));
+                SetCellText(txtNetPurches, netPurches.ToString());
+                SetCellText(txtNetPurchTax, netPurchesTax.ToString());
 
                 if (netVAT > 0.0)
                 {
@@ -691,9 +724,14 @@ namespace SmartAuditERP.Form_WPF
                     txtNetTax.Text = netVATText + "   (غير مستحق)    ";
                     txtNetTax.Foreground = Brushes.Green;
                 }
+
+                // P7-046: النشر اكتمل كاملاً — الخلايا كلها من نفس الحساب
+                _lastCalcOk = true;
             }
             catch (Exception ex)
             {
+                // P7-046: فشل مصدر متأخر — لا خلايا جديدة مع قديمة قابلة للطباعة
+                _lastCalcOk = false;
                 DXMessageBox.Show("خطأ\n" + ex.Message);
             }
         }
@@ -805,6 +843,13 @@ namespace SmartAuditERP.Form_WPF
                 DXMessageBox.Show("يجب إدخال اسم التقرير من الإعدادات");
                 return;
             }
+
+            // P7-045 fix: المعاينة/الطباعة تعيد الحساب بمعايير الفترة الحالية
+            // أولاً — كانت تربط نتائج آخر استعلام ناجح بمعايير جديدة (رأس
+            // التقرير يقرأ التواريخ الحية بينما الخلايا من حساب سابق)، وفشل
+            // إعادة الحساب يوقف الطباعة لا أن يطبع لقطة قديمة بمعايير جديدة
+            ShowDetails22();
+            if (!_lastCalcOk) return;
 
             var report = XtraReport.FromFile(Path.Combine(RptUrl, RptName));
             report.DataSource = BindToData();
