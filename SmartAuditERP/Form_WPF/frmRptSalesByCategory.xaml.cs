@@ -207,22 +207,26 @@ namespace SmartAuditERP.Form_WPF
                 catAdapter.Fill(catDt);
 
                 // جلب الأصناف
+                // P7-069 fix: الضريبة والصافي من بيانات البنود (taxval)
+                // لا من نسبة 15% ثابتة؛ P7-070 fix: وزن توزيع خصم الفاتورة
+                // إجمالي السطر (qty×price) لا سعر الوحدة وحده
                 string itemSql =
                     "SELECT ItemName, ItemCode, " +
                     "SUM(stockin - stockout) AS qty, " +
                     "SUM((ItemTotal1 - InvoiceDiscount1) " +
                     " - (ItemTotal2 - InvoiceDiscount2)) AS total, " +
+                    "SUM(taxval1 - taxval2) AS itemvat, " +
                     "SUM((ItemTotal1 - InvoiceDiscount1) " +
-                    " - (ItemTotal2 - InvoiceDiscount2)) * 0.15 AS itemvat, " +
-                    "SUM((ItemTotal1 - InvoiceDiscount1) " +
-                    " - (ItemTotal2 - InvoiceDiscount2)) * 1.15 AS itemNet, " +
+                    " - (ItemTotal2 - InvoiceDiscount2)) " +
+                    "+ SUM(taxval1 - taxval2) AS itemNet, " +
                     "SUM(InvoiceDiscount1 - InvoiceDiscount2) AS InvDiscount, " +
                     "ItemId, CategoryId " +
                     "FROM (" +
-                    "SELECT SUM(ROUND((ItemPriceWithoutVAT * minus / " +
+                    "SELECT SUM(ROUND(((val1 * ItemPriceWithoutVAT) * minus / " +
                     "NULLIF(InvSum,0)),2)) AS InvoiceDiscount1, " +
                     "0 AS InvoiceDiscount2, SUM(val) AS stockin, " +
                     "0 AS stockout, " +
+                    "SUM(inv_sub.taxval) AS taxval1, 0 AS taxval2, " +
                     "SUM((val1 * ItemPriceWithoutVAT) - inv_sub.discount) AS ItemTotal1, " +
                     "0 AS ItemTotal2, Items.id AS ItemId, " +
                     "Items.group_id AS CategoryId, " +
@@ -233,8 +237,9 @@ namespace SmartAuditERP.Form_WPF
                     $"AND inv.IS_Deleted=0 {condWhere}{condItems} " +
                     "GROUP BY Items.id, Items.name, Items.code, Items.group_id " +
                     "UNION ALL " +
-                    "SELECT 0, SUM(ROUND((ItemPriceWithoutVAT * minus / " +
-                    "NULLIF(InvSum,0)),2)), 0, SUM(val), 0, " +
+                    "SELECT 0, SUM(ROUND(((val1 * ItemPriceWithoutVAT) * minus / " +
+                    "NULLIF(InvSum,0)),2)), 0, SUM(val), " +
+                    "0, SUM(inv_sub.taxval), " +
                     "SUM((val1 * ItemPriceWithoutVAT) - inv_sub.discount), " +
                     "Items.id, Items.group_id, Items.code, Items.name " +
                     "FROM Items JOIN inv_sub ON Items.Id=inv_sub.ItemId " +
@@ -514,26 +519,53 @@ namespace SmartAuditERP.Form_WPF
 
         public DataSet BuildReportDataSet()
         {
+            // P7-071 fix: مصدر الطباعة ينقل البنود ومجاميعها لا رأساً
+            // واحداً فقط — كان التقرير المطبوع يظهر الرأس وفراغاً تحته
             var list = new List<InventoryData>();
-            var item = new InventoryData
-            {
-                ProcessType   = Title,
-                InventoryType = Title,
-                FromDate      = txtStartDate.DateTime.ToShortDateString(),
-                ToDate        = txtEndDate.DateTime.ToShortDateString(),
-                BranchName    = cmbBranch.Text,
-                User          = Common.GetEmpName(MainClass.EmpNo),
-                PrintDate     = DateTime.Now.ToShortDateString(),
-            };
 
+            string address = "", foundation = "", vatNo = "";
             if (Common.FoundationInfoDT.Rows.Count > 0)
             {
-                item.Address    = Common.FoundationInfoDT.Rows[0]["Address"]?.ToString() ?? "";
-                item.Foundation = Common.FoundationInfoDT.Rows[0]["nameA"]?.ToString() ?? "";
-                item.VATNo      = Common.FoundationInfoDT.Rows[0]["tax_no"]?.ToString() ?? "";
+                address    = Common.FoundationInfoDT.Rows[0]["Address"]?.ToString() ?? "";
+                foundation = Common.FoundationInfoDT.Rows[0]["nameA"]?.ToString() ?? "";
+                vatNo      = Common.FoundationInfoDT.Rows[0]["tax_no"]?.ToString() ?? "";
             }
 
-            list.Add(item);
+            foreach (var cat in CategoryList)
+            {
+                foreach (var item in cat.ItemDetails)
+                {
+                    list.Add(new InventoryData
+                    {
+                        ProcessType   = Title,
+                        InventoryType = Title,
+                        FromDate      = txtStartDate.DateTime.ToShortDateString(),
+                        ToDate        = txtEndDate.DateTime.ToShortDateString(),
+                        BranchName    = cmbBranch.Text,
+                        User          = Common.GetEmpName(MainClass.EmpNo),
+                        PrintDate     = DateTime.Now.ToShortDateString(),
+                        Address       = address,
+                        Foundation    = foundation,
+                        VATNo         = vatNo,
+
+                        CategoryName  = cat.Name,
+                        CategoryCode  = cat.Code,
+                        ItemName      = item.ItemName,
+                        ItemCode      = item.ItemCode,
+                        Quantity      = item.Qty.ToString("N2"),
+                        Total         = item.Total.ToString("N2"),
+                        Tax           = item.ItemVat.ToString("N2"),
+                        Net           = item.ItemNet.ToString("N2"),
+                        ItemDiscount  = item.InvDiscount.ToString("N2"),
+
+                        // المجاميع الكلية من بطاقات الشاشة
+                        SumQty        = lblTotQty.Text,
+                        Sum           = lblTotTotal.Text,
+                        SumTax        = lblTotVat.Text,
+                        NetTotal      = lblTotNet.Text,
+                    });
+                }
+            }
 
             var ds = new DataSet("Name");
             ds.Tables.Add(global::UtilitiesProj.Common.ToDataTable(list));

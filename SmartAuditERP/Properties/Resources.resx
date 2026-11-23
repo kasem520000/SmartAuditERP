@@ -4423,7 +4423,7 @@ BEGIN
             ItemId ,  
 			SUM((val1 * exchange_price) - discount) as Sales 
 			,0 as ReturnSales,
-			SUM(round((exchange_price * minus  /InvSum),2)) InvoiceDiscount1,
+			SUM(round(((val1 * exchange_price) * minus  /InvSum),2)) InvoiceDiscount1,
 			0 InvoiceDiscount2,
 			CAST(inv.date AS DATE) as InvDate
         FROM Inv_Sub
@@ -4442,7 +4442,7 @@ BEGIN
 		   0 as Sales ,
 		   SUM((val1 * exchange_price) - discount) as ReturnSales,
 		   0 InvoiceDiscount1,
-		   SUM(round((exchange_price * minus  /InvSum),2)) InvoiceDiscount2,
+		   SUM(round(((val1 * exchange_price) * minus  /InvSum),2)) InvoiceDiscount2,
 		   CAST(inv.date AS DATE) as InvDate
          FROM Inv_Sub
         LEFT JOIN inv ON Inv_Sub.InvGlobalID = Inv.InvGlobalID
@@ -49714,7 +49714,7 @@ BEGIN
             ItemId ,  
 			SUM((val1 * exchange_price) - discount) as Sales 
 			,0 as ReturnSales,
-			SUM(round((exchange_price * minus  /InvSum),2)) InvoiceDiscount1,
+			SUM(round(((val1 * exchange_price) * minus  /InvSum),2)) InvoiceDiscount1,
 			0 InvoiceDiscount2,
 			CAST(inv.date AS DATE) as InvDate
         FROM Inv_Sub
@@ -49734,7 +49734,7 @@ BEGIN
 		   0 as Sales ,
 		   SUM((val1 * exchange_price) - discount) as ReturnSales,
 		   0 InvoiceDiscount1,
-		   SUM(round((exchange_price * minus  /InvSum),2)) InvoiceDiscount2,
+		   SUM(round(((val1 * exchange_price) * minus  /InvSum),2)) InvoiceDiscount2,
 		   CAST(inv.date AS DATE) as InvDate
          FROM Inv_Sub
         LEFT JOIN inv ON Inv_Sub.InvGlobalID = Inv.InvGlobalID
@@ -49778,7 +49778,7 @@ BEGIN
             ItemId ,  
 			SUM((val1 * exchange_price) - discount) as Sales 
 			,0 as ReturnSales,
-			SUM(round((exchange_price * minus  /InvSum),2)) InvoiceDiscount1,
+			SUM(round(((val1 * exchange_price) * minus  /InvSum),2)) InvoiceDiscount1,
 			0 InvoiceDiscount2,
 			CAST(inv.date AS DATE) as InvDate
         FROM Inv_Sub
@@ -49798,7 +49798,7 @@ BEGIN
 		   0 as Sales ,
 		   SUM((val1 * exchange_price) - discount) as ReturnSales,
 		   0 InvoiceDiscount1,
-		   SUM(round((exchange_price * minus  /InvSum),2)) InvoiceDiscount2,
+		   SUM(round(((val1 * exchange_price) * minus  /InvSum),2)) InvoiceDiscount2,
 		   CAST(inv.date AS DATE) as InvDate
          FROM Inv_Sub
         LEFT JOIN inv ON Inv_Sub.InvGlobalID = Inv.InvGlobalID
