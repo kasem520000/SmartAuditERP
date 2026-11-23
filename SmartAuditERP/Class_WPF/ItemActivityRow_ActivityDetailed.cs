@@ -20,6 +20,15 @@ namespace SmartAuditERP.Form_WPF
 
         public int    DgvNo         { get; set; }
         public string DgvInvType    { get; set; } = "";
+
+        // P7-061 fix: هوية الفاتورة للفتح من الشاشة — الرقم العام
+        // (يحمل الفرع) والنوع الرقمي واتجاها الرأس والسطر؛ الافتتاح
+        // القديم كان باسم العرض والرقم المحلي الذي يتكرر بين الفروع
+        public string DgvInvGlobalID { get; set; } = "";
+        public int    DgvInvTypeId   { get; set; }
+        public int    DgvProcHeader  { get; set; }
+        public int    DgvProcSub     { get; set; }
+
         public string DgvStore      { get; set; } = "";
         public string DgvItemCode   { get; set; } = "";
         public string DgvItemName   { get; set; } = "";

@@ -45,6 +45,12 @@ namespace SmartAuditERP.Form_WPF
         /// <summary>إجمالي مرتجع نقطة البيع</summary>
         public double DgvRePOS      { get; set; }
 
+        /// <summary>P7-057: الصنف المنتج في أمر الإنتاج (نوع 6، سطر proc_type=1)</summary>
+        public double DgvProdIn     { get; set; }
+
+        /// <summary>P7-057: المكونات المستهلكة في الإنتاج (نوع 6، سطر proc_type=2)</summary>
+        public double DgvProdOut    { get; set; }
+
         /// <summary>مناقلة مرسلة (تحويل للخارج)</summary>
         public double DgvTransTo    { get; set; }
 

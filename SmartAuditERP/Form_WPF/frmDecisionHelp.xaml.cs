@@ -217,18 +217,23 @@ namespace SmartAuditERP.Form_WPF
                     double transferIn = GetSumVal(branchFilter, itemId, null, 7, 1, 1);
                     double transferOut = GetSumVal(branchFilter, itemId, null, 7, 1, 2);
 
+                    // P7-057 fix: نوع الإنتاج 6 كان يسقط من حركة دعم القرار —
+                    // الصنف المنتج سطر proc_type=1 والمكونات سطر proc_type=2
+                    double prodIn = GetSumVal(branchFilter, itemId, null, 6, null, 1);
+                    double prodOut = GetSumVal(branchFilter, itemId, null, 6, null, 2);
+
                     bool hasMovement =
                         openingStock != 0 || purchaseIncome != 0 ||
                         saleOutcome != 0 || adjIncome != 0 ||
                         adjOutcome != 0 || transferIn != 0 ||
-                        transferOut != 0;
+                        transferOut != 0 || prodIn != 0 || prodOut != 0;
 
                     if (hasMovement)
                     {
                         double totalIncome = openingStock + purchaseIncome - purchaseReturn
-                                             + adjIncome + transferIn;
+                                             + adjIncome + transferIn + prodIn;
                         double totalOutcome = saleOutcome - saleReturn + rentOutcome - rentReturn
-                                             + adjOutcome + transferOut;
+                                             + adjOutcome + transferOut + prodOut;
                         double balance = totalIncome - totalOutcome;
 
                         double slackRate = totalIncome != 0

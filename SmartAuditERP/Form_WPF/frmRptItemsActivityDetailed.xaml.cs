@@ -290,6 +290,7 @@ namespace SmartAuditERP.Form_WPF
                     $"SELECT {condTop} " +
                     "Inv_sub.store AS safe, Inv.proc_type, " +
                     "Inv_sub.proc_type AS ProcTypeSub, date, Inv.id, " +
+                    "Inv.InvGlobalID, " +
                     "ItemId, val, val1, exchange_price, " +
                     "(exchange_price/NULLIF(UnitEquality,0)) AS price, " +
                     "(val*(exchange_price/NULLIF(UnitEquality,0))) AS sum, " +
@@ -301,7 +302,9 @@ namespace SmartAuditERP.Form_WPF
                     $"WHERE {condBranch} Inv.InvGlobalID=Inv_Sub.InvGlobalID " +
                     "AND Inv_Sub.proc_type IN(1,2) " +
                     $"AND Inv.IS_Deleted=0 {condItems} " +
-                    "ORDER BY inv.date ASC";
+                    // P7-059 fix: خيار «آخر حركة» يطلب TOP(1) — كان الترتيب
+                    // تصاعدياً فيعيد أقدم حركة؛ التنازلي يعيد الأخيرة فعلًا
+                    $"ORDER BY inv.date {(condTop.Length > 0 ? "DESC" : "ASC")}";
 
                 var adapter = new SqlDataAdapter(sql, conn);
                 adapter.SelectCommand.Parameters.Add(
@@ -326,7 +329,11 @@ namespace SmartAuditERP.Form_WPF
                     int    procType    = Convert.ToInt32(row["proc_type"]);
                     int    procTypeSub = Convert.ToInt32(row["ProcTypeSub"]);
 
-                    string rightCond = invType == 7
+                    // P7-060 fix: اتجاه سطور الإنتاج (نوع 6) من السطر نفسه
+                    // لا من رأس الفاتورة — عقد الحفظ: الصنف المنتج سطر
+                    // proc_type=1 والمكونات سطر proc_type=2 بينما رأس الإنتاج
+                    // محمول على proc_type واحد (التسوية 7 كذلك من سطرها)
+                    string rightCond = (invType == 6 || invType == 7)
                         ? $"AND ProcType={procTypeSub}"
                         : $"AND ProcType={procType}";
 
@@ -377,6 +384,13 @@ namespace SmartAuditERP.Form_WPF
                     {
                         DgvNo        = ActivityList.Count + 1,
                         DgvInvType   = invTypeTxt,
+                        // P7-061 fix: هوية الفاتورة للفتح — الرقم العام
+                        // والنوع الرقمي واتجاها الرأس والسطر (كان الافتتاح
+                        // باسم العرض والرقم المحلي الذي يتكرر بين الفروع)
+                        DgvInvGlobalID = row["InvGlobalID"]?.ToString() ?? "",
+                        DgvInvTypeId   = invType,
+                        DgvProcHeader  = procType,
+                        DgvProcSub     = procTypeSub,
                         DgvStore     = GetsafeName(Convert.ToInt32(row["safe"])),
                         DgvItemCode  = row["ItemCode"]?.ToString() ?? "",
                         DgvItemName  = row["ItemName"]?.ToString() ?? "",
@@ -439,8 +453,9 @@ namespace SmartAuditERP.Form_WPF
                 4  => " and Inv.inv_type=5 ",
 
                 5  => rdAll ? " and Inv.inv_type=6 "
-                    : rdIn  ? " and inv.proc_type=1 and Inv.inv_type=6 "
-                    :         " and inv.proc_type=2 and Inv.inv_type=6 ",
+                    // P7-060 fix: اتجاه بنود الإنتاج من السطر (المُنتج 1/المكون 2)
+                    : rdIn  ? " and inv_sub.proc_type=1 and Inv.inv_type=6 "
+                    :         " and inv_sub.proc_type=2 and Inv.inv_type=6 ",
 
                 6  => rdAll ? " and Inv.inv_type=7 "
                     : rdIn  ? " and inv_sub.proc_type=1 and Inv.inv_type=7 "
@@ -1014,14 +1029,13 @@ namespace SmartAuditERP.Form_WPF
             {
                 try
                 {
-                    string invType = item.DgvInvType;
-                    string invNoStr = item.DgvInvNo;
-
-                    if (string.IsNullOrEmpty(invType) ||
-                        string.IsNullOrEmpty(invNoStr))
+                    // P7-061 fix: الفتح بالهوية العامة والنوع الرقمي — لا اسم
+                    // العرض (يتغير باللغة فكان الزر لا يفتح شيئاً بالإنجليزية)
+                    // والرقم المحلي (يتكرر بين الفروع فكان يفتح فاتورة فرع آخر)
+                    if (string.IsNullOrEmpty(item.DgvInvGlobalID))
                         return;
 
-                    OpenInvoiceByType(invType, invNoStr);
+                    OpenInvoiceByType(item);
                 }
                 catch (Exception ex)
                 {
@@ -1031,137 +1045,117 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
-        private void OpenInvoiceByType(string invType, string invNo)
+        // P7-061 fix: التنقل بالرقم العام (يحمل هوية الفرع) والنوع الرقمي —
+        // التحديد القديم كان نص اسم العرض والرقم المحلي
+        private void OpenInvoiceByType(ItemActivityRow_ActivityDetailed item)
         {
-            switch (invType)
+            string gid = item.DgvInvGlobalID;
+
+            switch (item.DgvInvTypeId)
             {
-                case "فاتورة مبيعات":
+                case 1: // مشتريات / مرتجعها
+                    OpenForm<frmInvPurch>(f =>
+                    {
+                        f.InvType  = 1;
+                        f.ProcType = item.DgvProcHeader;
+                        if (item.DgvProcHeader == 2) f.Title = "مرتجع مشتريات";
+                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
+                                   $"AND InvGlobalID=N'{gid}'");
+                    });
+                    break;
+
+                case 2: // مبيعات / مرتجعها
                     OpenForm<frmInvSale>(f =>
                     {
-                        f.InvType  = 2; f.ProcType = 1;
+                        f.InvType  = 2;
+                        f.ProcType = item.DgvProcHeader;
+                        if (item.DgvProcHeader == 2) f.Title = "مرتجع مبيعات";
                         f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND inv_type=2 AND proc_type=1 AND id={invNo}");
+                                   $"AND InvGlobalID=N'{gid}'");
                     });
                     break;
 
-                case "مرتجع مبيعات":
-                case "مرتجع مبيعات ":
-                    OpenForm<frmInvSale>(f =>
-                    {
-                        f.Title = "مرتجع مبيعات";
-                        f.InvType  = 2; f.ProcType = 2;
-                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND inv_type=2 AND proc_type=2 AND id={invNo}");
-                    });
-                    break;
-
-                case "فاتورة مشتريات":
-                    OpenForm<frmInvPurch>(f =>
-                    {
-                        f.InvType  = 1; f.ProcType = 1;
-                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND inv_type=1 AND proc_type=1 AND id={invNo}");
-                    });
-                    break;
-
-                case "مرتجع مشتريات":
-                    OpenForm<frmInvPurch>(f =>
-                    {
-                        f.Title = "مرتجع مشتريات";
-                        f.InvType  = 1; f.ProcType = 2;
-                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND inv_type=1 AND proc_type=2 AND id={invNo}");
-                    });
-                    break;
-
-                case "نقطة بيع":
+                case 3: // نقطة البيع / مرتجعها
                     OpenForm<frmInvPOS>(f =>
                     {
-                        f.ProcType = 1; f.InvType = 3;
+                        f.ProcType = item.DgvProcHeader;
+                        f.InvType  = 3;
+                        if (item.DgvProcHeader == 2) f.Title = "مرتجع";
                         f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND inv_type=3 AND proc_type=1 AND id={invNo}");
+                                   $"AND InvGlobalID=N'{gid}'");
                     });
                     break;
 
-                case "مرتجع نقطة بيع":
-                    OpenForm<frmInvPOS>(f =>
-                    {
-                        f.Title = "مرتجع"; f.ProcType = 2; f.InvType = 3;
-                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND inv_type=3 AND proc_type=2 AND id={invNo}");
-                    });
-                    break;
-
-                case "بضاعة أول مدة":
+                case 9: // بضاعة أول المدة
                     OpenForm<frmInvPurch>(f =>
                     {
-                        f.Title = "بضاعة أول مدة";
-                        f.InvType  = 9; f.ProcType = 1;
+                        f.Title    = "بضاعة أول المدة";
+                        f.InvType  = 9;
+                        f.ProcType = 1;
                         f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND inv_type=9 AND proc_type=1 AND id={invNo}");
+                                   $"AND InvGlobalID=N'{gid}'");
                     });
                     break;
 
-                case "فاتورة الإدخال":
+                case 4: // فاتورة إدخال
                     OpenForm<frmInvInputOutput>(f =>
                     {
-                        f.InvType = 4; f.ProcType = 1;
+                        f.InvType  = 4;
+                        f.ProcType = 1;
                         f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND proc_type=1 AND inv_type=4 AND id={invNo}");
+                                   $"AND InvGlobalID=N'{gid}'");
                     });
                     break;
 
-                case "فاتورة الإخراج":
+                case 5: // فاتورة إخراج
                     OpenForm<frmInvInputOutput>(f =>
                     {
-                        f.Title = "فاتورة إخراج";
-                        f.InvType = 5; f.ProcType = 1;
+                        f.Title    = "فاتورة إخراج";
+                        f.InvType  = 5;
+                        f.ProcType = 1;
                         f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND proc_type=1 AND inv_type=5 AND id={invNo}");
+                                   $"AND InvGlobalID=N'{gid}'");
                     });
                     break;
 
-                case "إنتاج":
+                case 6: // أمر إنتاج — المنتج والمكونات في الفاتورة نفسها
                     OpenWindow<frmProductionOrder>(f =>
                     {
                         f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND proc_type=1 AND inv_type=6 AND id={invNo}");
+                                   $"AND InvGlobalID=N'{gid}'");
                     });
                     break;
 
-                case "مستهلك في الإنتاج":
-                    OpenWindow<frmProductionOrder>(f =>
-                    {
-                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND proc_type=2 AND inv_type=6 AND id={invNo}");
-                    });
-                    break;
-
-                case "مناقلة إلى":
+                case 8: // مناقلة — الاتجاه على الرأس (2 مرسلة / 1 مستلمة)
                     OpenWindow<frmInventoryTransfer>(f =>
                     {
+                        if (item.DgvProcHeader == 1)
+                        {
+                            f.Title = "مناقلة مستلمة (تحويل مخزني من)";
+                            f.lblReceiveTransfer.Visibility = Visibility.Visible;
+                        }
+                        else
+                        {
+                            f.Title = "مناقلة مرسلة (تحويل مخزني إلى)";
+                        }
+                        f.ProcType = item.DgvProcHeader;
+                        f.InvType  = 8;
                         f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND proc_type=1 AND inv_type=8 AND id={invNo}");
+                                   $"AND InvGlobalID=N'{gid}'");
                     });
                     break;
 
-                case "مناقلة من":
-                    OpenWindow<frmInventoryTransfer>(f =>
-                    {
-                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND proc_type=2 AND inv_type=8 AND id={invNo}");
-                    });
-                    break;
-
-                case "تسوية جردية مدخلة":
-                case "تسوية جردية مخرجة":
+                case 7: // تسوية جردية — عقد الحفظ: Inv.id = SafesAdjust.id
                     OpenForm<frmSafeAdjust>(f =>
                     {
-                        f.Navigate($"SELECT * FROM SafesAdjust WHERE id={invNo}");
+                        f.Navigate(
+                            "SELECT * FROM SafesAdjust WHERE id=" +
+                            $"(SELECT id FROM Inv WHERE InvGlobalID=N'{gid}')");
                     });
                     break;
             }
         }
+
 
         /// <summary>Helper لفتح نموذج WinForms بشكل موحد</summary>
         private static void OpenForm<T>(Action<T> configure)

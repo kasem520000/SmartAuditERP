@@ -200,9 +200,12 @@ namespace SmartAuditERP.Form_WPF
 
                 if (chkAllClients.IsChecked != true && cmbClients.SelectedIndex > -1)
                 {
-                    // cmbClients هنا static items (نص) وليس id
-                    // إذا كان مرتبطًا بـ DataSource يحتوي id، استخدم SelectedValue
-                    // هنا نتجاهله لأن القائمة نصية في XAML
+                    // P7-058 fix: العميل/المورد المختار يرشّح استعلامات الحركة —
+                    // كان يُتجاهل تماماً (القائمة مربوطة بمعرفات Customers عبر
+                    // LoadClients فعند اختيار عملاء/موردين يكون SelectedValue
+                    // هو المعرف)
+                    if (cmbClients.SelectedValue != null)
+                        extraFilter += $" AND inv.cust_id={cmbClients.SelectedValue}";
                 }
 
                 // ─── تهيئة الجدول ───
@@ -239,29 +242,44 @@ namespace SmartAuditERP.Form_WPF
                     double reSalesVal = GetSumVal(itemDbId, 2, 2, branchFilter, extraFilter, dateFrom, dateTo);
                     double posVal     = GetSumVal(itemDbId, 3, 1, branchFilter, extraFilter, dateFrom, dateTo);
                     double rePosVal   = GetSumVal(itemDbId, 3, 2, branchFilter, extraFilter, dateFrom, dateTo);
-                    double transToVal = GetSumVal(itemDbId, 7, 1, branchFilter, extraFilter, dateFrom, dateTo, isProcOnSub: true);
-                    double transFrVal = GetSumVal(itemDbId, 7, 2, branchFilter, extraFilter, dateFrom, dateTo, isProcOnSub: true);
-                    double safeAdjVal = GetSumVal(itemDbId, 8, 1, branchFilter, extraFilter, dateFrom, dateTo, isProcOnInv: true);
-                    double safeAdjRet = GetSumVal(itemDbId, 8, 2, branchFilter, extraFilter, dateFrom, dateTo, isProcOnInv: true);
+
+                    // P7-056 fix: المناقلة نوع8 والتسوية نوع7 — كانت الأعمدة
+                    // متقاطعة (التسوية 7 في أعمدة المناقلة والمناقلة 8 في
+                    // التسوية)؛ عقد الحفظ: frmInventoryTransfer يكتب inv_type=8
+                    // والاتجاه على رأس الفاتورة (2 مرسلة/1 مستلمة)، وfrmSafeAdjust
+                    // يكتب inv_type=7 والاتجاه على سطر الصنف (1 مدخلة/2 مخرجة)
+                    double transToVal = GetSumVal(itemDbId, 8, 2, branchFilter, extraFilter, dateFrom, dateTo, isProcOnInv: true);
+                    double transFrVal = GetSumVal(itemDbId, 8, 1, branchFilter, extraFilter, dateFrom, dateTo, isProcOnInv: true);
+                    double safeAdjVal = GetSumVal(itemDbId, 7, 1, branchFilter, extraFilter, dateFrom, dateTo, isProcOnSub: true);
+                    double safeAdjRet = GetSumVal(itemDbId, 7, 2, branchFilter, extraFilter, dateFrom, dateTo, isProcOnSub: true);
+
+                    // P7-057 fix: نوع الإنتاج 6 كان لا يُقرأ أصلاً فتسقط
+                    // أصنافه وأثرها من الرصيد؛ عقد الحفظ (frmProductionOrder):
+                    // الصنف المنتج سطر proc_type=1 والمكونات سطر proc_type=2
+                    double prodInVal  = GetSumVal(itemDbId, 6, 1, branchFilter, extraFilter, dateFrom, dateTo, isProcOnSub: true);
+                    double prodOutVal = GetSumVal(itemDbId, 6, 2, branchFilter, extraFilter, dateFrom, dateTo, isProcOnSub: true);
+
                     double entryInv   = GetSumVal(itemDbId, 4, -1, branchFilter, extraFilter, dateFrom, dateTo);
                     double outInv     = GetSumVal(itemDbId, 5, -1, branchFilter, extraFilter, dateFrom, dateTo);
 
-                    // حساب الرصيد
+                    // حساب الرصيد — المناقلة المرسلة خارج والمستلمة داخل
                     double balance = firstVal + purchVal - rePurchVal
                                    - salesVal + reSalesVal
                                    - posVal   + rePosVal
-                                   + transToVal - transFrVal
+                                   - transToVal + transFrVal
                                    + safeAdjVal - safeAdjRet
-                                   + entryInv   - outInv;
+                                   + entryInv   - outInv
+                                   + prodInVal  - prodOutVal;
 
                     // تجاهل الأصناف بدون أي حركة
                     bool hasMovement = (firstVal   != 0 || purchVal  != 0 ||
                                         rePurchVal != 0 || salesVal  != 0 ||
                                         reSalesVal != 0 || posVal    != 0 ||
                                         rePosVal   != 0 || transToVal!= 0 ||
-                                        transFrVal != 0 || safeAdjVal!= 0||
+                                        transFrVal != 0 || safeAdjVal!= 0 ||
                                         safeAdjRet != 0 || entryInv  != 0 ||
-                                        outInv     != 0);
+                                        outInv     != 0 || prodInVal != 0 ||
+                                        prodOutVal != 0);
                     if (!hasMovement) continue;
 
                     // ─── حساب متوسط التكلفة ───
@@ -285,6 +303,8 @@ namespace SmartAuditERP.Form_WPF
                         DgvReSales    = reSalesVal,
                         DgvPOS        = posVal,
                         DgvRePOS      = rePosVal,
+                        DgvProdIn     = prodInVal,
+                        DgvProdOut    = prodOutVal,
                         DgvTransTo    = transToVal,
                         DgvTransFrom  = transFrVal,
                         DgvEntryInv   = entryInv,
@@ -687,6 +707,8 @@ namespace SmartAuditERP.Form_WPF
                     ReturnSell    = row.DgvReSales.ToString("N2"),
                     Pos           = row.DgvPOS.ToString("N2"),
                     RePos         = row.DgvRePOS.ToString("N2"),
+                    ProdIn        = row.DgvProdIn.ToString("N2"),
+                    ProdOut       = row.DgvProdOut.ToString("N2"),
                     TransFrom     = row.DgvTransFrom.ToString("N2"),
                     TransTo       = row.DgvTransTo.ToString("N2"),
                     InputInv      = row.DgvEntryInv.ToString("N2"),
@@ -733,6 +755,8 @@ namespace SmartAuditERP.Form_WPF
                 dt.Columns.Add("مرتجع المبيعات",typeof(double));
                 dt.Columns.Add("نقطة البيع",     typeof(double));
                 dt.Columns.Add("مرتجع POS",      typeof(double));
+                dt.Columns.Add("إنتاج (منتج)",   typeof(double));
+                dt.Columns.Add("إنتاج (مستهلك)", typeof(double));
                 dt.Columns.Add("مناقلة مرسلة",   typeof(double));
                 dt.Columns.Add("مناقلة مستلمة",  typeof(double));
                 dt.Columns.Add("فاتورة إدخال",   typeof(double));
@@ -748,6 +772,7 @@ namespace SmartAuditERP.Form_WPF
                         r.DgvFirstVal, r.DgvPurch,    r.DgvRePurch,
                         r.DgvSales,    r.DgvReSales,
                         r.DgvPOS,      r.DgvRePOS,
+                        r.DgvProdIn,   r.DgvProdOut,
                         r.DgvTransTo,  r.DgvTransFrom,
                         r.DgvEntryInv, r.DgvOutInv,
                         r.DgvSafeAdj,  r.DgvSafeAdjRet);

@@ -646,6 +646,24 @@
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>
 
+                                <!-- P7-057: إنتاج (الصنف المنتج) -->
+                                <DataGridTextColumn Header="إنتاج (منتج)"
+                                                    Binding="{Binding DgvProdIn, StringFormat=N2}"
+                                                    Width="100">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource NumberCell}"/>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+
+                                <!-- P7-057: إنتاج (المكونات المستهلكة) -->
+                                <DataGridTextColumn Header="إنتاج (مستهلك)"
+                                                    Binding="{Binding DgvProdOut, StringFormat=N2}"
+                                                    Width="100">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock" BasedOn="{StaticResource NumberCell}"/>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+
                                 <!-- مناقلة مرسلة -->
                                 <DataGridTextColumn Header="مناقلة مرسلة"
                                                     Binding="{Binding DgvTransTo, StringFormat=N2}"

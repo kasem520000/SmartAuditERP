@@ -104,6 +104,12 @@ namespace SmartAuditERP
         public string TransFrom { get; set; } = string.Empty;
         public string RePos { get; set; } = string.Empty;
         public string Pos { get; set; } = string.Empty;
+
+        [DisplayName("إنتاج (منتج)")]
+        public string ProdIn { get; set; } = string.Empty;
+
+        [DisplayName("إنتاج (مستهلك)")]
+        public string ProdOut { get; set; } = string.Empty;
         public string OperDate { get; set; } = string.Empty;
         public string ReceivedQnty { get; set; } = string.Empty;
         public string SentQnty { get; set; } = string.Empty;
