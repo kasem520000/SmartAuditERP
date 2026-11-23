@@ -1580,7 +1580,10 @@ namespace SmartAuditERP.Form_WPF
                 byVisa = payFrm.Invoic.PayType == 2;
                 PayNetwork = payFrm.resNetwork;
                 Paycash = payFrm.resCash;
-                InvDiscount = double.Parse(payFrm.txtInvDiscount.Text);
+                // V-032 fix: TryParse بدل Parse — حقل الخصص فارغ/غير رقمي كان
+                // يرمي استثناءً يقود مسار الدفع إلى «خطأ أثناء إدخال الدفع»
+                // ولا تُحفظ الفاتورة.
+                double.TryParse(payFrm.txtInvDiscount.Text, out InvDiscount);
                 double.TryParse(payFrm.lblNetVal.Text, out double newNet);
                 txtNet.Text = Math.Round(newNet, 2).ToString();
                 DeliVal = payFrm.DeliveryVal;
@@ -2250,6 +2253,12 @@ namespace SmartAuditERP.Form_WPF
             foreach (var row in _gridSource)
             {
                 int.TryParse(row.ItemIdDgv, out int rowItemId);
+
+                // V-031 fix: لا يُحفظ سطر صنف فارغ (ItemId<=0) — أي سطر
+                // تمهيدي غير مكتمل في شبكة نقطة البيع لا يصل إلى Inv_Sub.
+                if (rowItemId <= 0)
+                    continue;
+
                 var item = new Item
                 {
                     InvGlobalID = InvGlobalID,

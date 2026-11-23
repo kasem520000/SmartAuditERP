@@ -4612,6 +4612,14 @@ if (!MainSetting.ZatcaIntegerationActive || MainSetting.ZatcaSyncManual || Invoi
                         list = new List<Item>();
                         foreach (InvoiceItem invoiceItem in Inv.InvoiceItems)
                         {
+                                // V-031 fix: لا يُحفظ سطر صنف فارغ (ItemId<=0) —
+                                // صف الإضافة الجديد في شبكة المحرر (CanUserAddRows)
+                                // كان يلتزم InvoiceItem بأصفار عند فتح نوافذ البحث
+                                // النمطية فيصل سطر أصفار إلى Inv_Sub.
+                                if (invoiceItem == null || invoiceItem.ItemId <= 0)
+                                {
+                                        continue;
+                                }
                                 Item item;
                                 item = new Item();
                                 item.InvGlobalID = invoice.InvGlobalID;

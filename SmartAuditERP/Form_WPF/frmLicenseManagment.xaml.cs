@@ -391,9 +391,10 @@ namespace SmartAuditERP.Form_WPF
 
                 string licenseFeatures = cmbLicenseFeatures.SelectedIndex == 0 ? "110100" : "000001";
 
-                if (MainClass.EmpNo == 0)
-                    new SqlCommand("delete from License", conn).ExecuteNonQuery();
-
+                // V-030 fix: لا حذف شامل للجدول قبل الحفظ — كان الحذف (لمستخدم
+                // EmpNo==0) يعيد الإدراج بحالة LicenseStatus=0 فيُطفئ تنشيط
+                // الترخيص بمجرد إعادة حفظ البيانات؛ المسار الآن: إدراج عند
+                // الفراغ وتحديث عند الوجود مع الحفاظ على التنشيط.
                 SqlDataAdapter checkAdapter = new SqlDataAdapter("select * from License", conn);
                 DataTable checkDt = new DataTable();
                 checkAdapter.Fill(checkDt);
@@ -439,6 +440,52 @@ namespace SmartAuditERP.Form_WPF
 
                     Code = 1;
                     DXMessageBox.Show("تم حفظ بيانات الترخيص بنجاح", "",
+                        MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    // V-030 fix: مسار التعديل — كان زر الحفظ لا يفعل شيئًا بعد أول
+                    // حفظ (الصف موجود فلا INSERT، ولا يوجد UPDATE أصلاً) فتستحيل
+                    // تعديل بيانات العميل بعد الحفظ. يُحدَّث الصف القائم (بمفتاحه
+                    // الأصلي licenseID حفاظًا على ربط LicenseDevices) مع الإبقاء على
+                    // حالة التنشيط LicenseStatus كما هي وتحديث كل الحقول القابلة
+                    // للتعديل بما فيها country/Address/city/bsn_no التي كانت غائبة
+                    // عن استعلام التحديث القديم.
+                    string existingLicenseId = checkDt.Rows[0]["licenseID"]?.ToString() ?? txtUID.Text;
+                    bool existingStatus = checkDt.Rows[0]["LicenseStatus"] != DBNull.Value
+                        && Convert.ToBoolean(checkDt.Rows[0]["LicenseStatus"]);
+
+                    SqlCommand updateCmd = new SqlCommand(
+                        @"update [dbo].[License]
+                          set [LicenseDate]=@LicenseDate,[LicenseExpire]=@LicenseExpire,
+                          [ClientName]=@ClientName,[ClientEmail]=@ClientEmail,
+                          [LicenseStatus]=@LicenseStatus,[LicenseType]=@LicenseType,
+                          [LicenseEmp]=@LicenseEmp,[LiciensesNo]=@LiciensesNo,
+                          [ClientMobile]=@ClientMobile,[LicenseFeatures]=@LicenseFeatures,
+                          [Salesman]=@Salesman,[country]=@country,[Address]=@Address,
+                          [city]=@city,[bsn_no]=@bsn_no
+                          where licenseID=@existingLicenseID", conn);
+
+                    updateCmd.Parameters.Add("@existingLicenseID", SqlDbType.NVarChar).Value = existingLicenseId;
+                    updateCmd.Parameters.Add("@LicenseDate", SqlDbType.DateTime).Value = txtLicenseDate.SelectedDate ?? DateTime.Today;
+                    updateCmd.Parameters.Add("@LicenseExpire", SqlDbType.DateTime).Value = txtDateExpire.SelectedDate ?? new DateTime(2050, 1, 1);
+                    updateCmd.Parameters.Add("@ClientName", SqlDbType.NVarChar).Value = txtClientName.Text;
+                    updateCmd.Parameters.Add("@ClientEmail", SqlDbType.NVarChar).Value = txtEmail.Text;
+                    updateCmd.Parameters.Add("@LicenseStatus", SqlDbType.Bit).Value = existingStatus ? 1 : 0;
+                    updateCmd.Parameters.Add("@LicenseType", SqlDbType.NVarChar).Value = " ";
+                    updateCmd.Parameters.Add("@LicenseEmp", SqlDbType.NVarChar).Value = "";
+                    updateCmd.Parameters.Add("@LiciensesNo", SqlDbType.Int).Value = ToIntSafe(txtNoDevices.Text);
+                    updateCmd.Parameters.Add("@ClientMobile", SqlDbType.NVarChar).Value = txtMobile.Text;
+                    updateCmd.Parameters.Add("@LicenseFeatures", SqlDbType.NVarChar).Value = licenseFeatures;
+                    updateCmd.Parameters.Add("@Salesman", SqlDbType.NVarChar).Value = txtSalesMan.Text;
+                    updateCmd.Parameters.Add("@country", SqlDbType.NVarChar).Value = txtCountry.Text;
+                    updateCmd.Parameters.Add("@Address", SqlDbType.NVarChar).Value = txtAddress.Text;
+                    updateCmd.Parameters.Add("@City", SqlDbType.NVarChar).Value = txtCity.Text;
+                    updateCmd.Parameters.Add("@bsn_no", SqlDbType.NVarChar).Value = txtBusnNo.Text;
+                    updateCmd.ExecuteNonQuery();
+
+                    Code = 1;
+                    DXMessageBox.Show("تم تعديل بيانات الترخيص بنجاح", "",
                         MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }

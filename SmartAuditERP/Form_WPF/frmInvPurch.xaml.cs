@@ -624,6 +624,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void AddNewItem()
         {
+            // V-031 fix: إلغاء أي التزام معلق قبل النافذة النمطية.
+            this.GridControl1.CancelEdit(System.Windows.Controls.DataGridEditingUnit.Row);
+
             var frm = new frmItemsSrch();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -638,6 +641,9 @@ namespace SmartAuditERP.Form_WPF
                 foreach (int id in frm.Itemlist)
                     this.SearchByID(id, 0, "");
             }
+
+            // V-031 fix: تنظيف أي سطر أصفار التُزم أثناء عمر النافذة النمطية.
+            this.RemoveEmptyItemRows();
         }
 
         private void ReadBarcode(string itemBarcode, bool isMultiText)
@@ -1209,7 +1215,35 @@ namespace SmartAuditERP.Form_WPF
 
         private void ItemSearch_ButtonClick_WPF(object sender, RoutedEventArgs e)
         {
+            // V-031 fix: نفس حماية محرر المبيعات — إلغاء التزام صف الإضافة
+            // المعلق قبل فتح نافذة البحث النمطية (كان يُدرج سطر أصفار).
+            this.GridControl1.CancelEdit(System.Windows.Controls.DataGridEditingUnit.Row);
+            this.RemoveEmptyItemRows();
+
             this.AddNewItem();
+        }
+
+        // V-031: إزالة أسطر الأصناف الفارغة (ItemId<=0) مع إعادة الترقيم.
+        private void RemoveEmptyItemRows()
+        {
+            bool changed = false;
+            for (int i = this.Invoic.InvoiceItems.Count - 1; i >= 0; i--)
+            {
+                if (this.Invoic.InvoiceItems[i] == null ||
+                    this.Invoic.InvoiceItems[i].ItemId <= 0)
+                {
+                    this.Invoic.InvoiceItems.RemoveAt(i);
+                    changed = true;
+                }
+            }
+            if (changed)
+            {
+                int idx = 1;
+                foreach (var inv in this.Invoic.InvoiceItems)
+                    inv.ItemRowIndex = idx++;
+                ItemOper.CalcRows(ref this.Invoic);
+                this.BindingDGV();
+            }
         }
 
         #endregion

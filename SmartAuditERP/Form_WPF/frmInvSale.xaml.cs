@@ -99,6 +99,13 @@ namespace SmartAuditERP.Form_WPF
 
         private void ItemSearchButton_Click(object sender, RoutedEventArgs e)
         {
+            // V-031 fix: فتح نافذة البحث النمطية كان يلتزم صف الإضافة الجديد
+            // (CanUserAddRows) داخل الشبكة فيُدرَج سطر InvoiceItem بأصفار ضمن
+            // بنود الفاتورة بجوار الصنف المختار — يُلغى أي تعديل/التزام معلق
+            // قبل الفتح وتُنظَّف الأسطر الفارغة الملتزمة سابقًا.
+            GridControl1.CancelEdit(DataGridEditingUnit.Row);
+            RemoveEmptyItemRows();
+
             // عند الضغط على زر البحث 🔍 داخل خلية الصنف
             addNewItem();
 
@@ -107,6 +114,29 @@ namespace SmartAuditERP.Form_WPF
             {
                 MoveFocusToColumn("ItemQuantity");
             }), System.Windows.Threading.DispatcherPriority.Background);
+        }
+
+        // V-031: إزالة أسطر الأصناف الفارغة (ItemId<=0) التي يلتزمها صف الإضافة
+        // في الشبكة (أو أي مسار آخر) مع إعادة ترقيم الأسطر المتبقية.
+        private void RemoveEmptyItemRows()
+        {
+            bool changed = false;
+            for (int i = Invoic.InvoiceItems.Count - 1; i >= 0; i--)
+            {
+                if (Invoic.InvoiceItems[i] == null || Invoic.InvoiceItems[i].ItemId <= 0)
+                {
+                    Invoic.InvoiceItems.RemoveAt(i);
+                    changed = true;
+                }
+            }
+            if (changed)
+            {
+                int idx = 1;
+                foreach (var inv in Invoic.InvoiceItems)
+                    inv.ItemRowIndex = idx++;
+                ItemOper.CalcRows(ref Invoic);
+                BindingDGV();
+            }
         }
 
         #endregion
@@ -686,6 +716,10 @@ namespace SmartAuditERP.Form_WPF
 
         private void addNewItem()
         {
+            // V-031 fix: إلغاء أي التزام معلق لصف الإضافة قبل فتح النافذة
+            // النمطية (فقدان التركيز عند ShowDialog كان يلتزم صف أصفار).
+            GridControl1.CancelEdit(DataGridEditingUnit.Row);
+
             var frm = new frmItemsSrch();
             MainClass.ApplyPermissionToForm(frm);
             MainClass.DoApplyUserSett(frm);
@@ -700,6 +734,9 @@ namespace SmartAuditERP.Form_WPF
                 foreach (var id in frm.Itemlist)
                     SearchByID(id, 0, "", "");
             }
+            // V-031 fix: تنظيف أي سطر أصفار التُزم أثناء عمر النافذة النمطية
+            // (يغطي مسار الإلغاء أيضًا — GetItemByID ينظف عند الإضافة فقط).
+            RemoveEmptyItemRows();
         }
 
         private void ReadBarcode(string itemBarcode, bool isMultiText)

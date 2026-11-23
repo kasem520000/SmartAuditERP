@@ -39,6 +39,10 @@ namespace SmartAuditERP.Form_WPF
         private string kitchenprinter;
         private string serverName;
 
+        // V-033: قائمة الطابعات المثبتة — مصدر عناصر قائمة اختيار الطابعة
+        // في شبكة ربط الطابعات بالتقارير (كانت كتابة نصية حرة).
+        public List<string> InstalledPrinters { get; private set; } = new List<string>();
+
         private readonly ObservableCollection<PrinterGridRow> _printerRows;
         private readonly ObservableCollection<DatabaseManagementRow> _availableDatabaseRows;
         private readonly ObservableCollection<YearPreviewRow> _yearPreviewRows;
@@ -136,6 +140,9 @@ namespace SmartAuditERP.Form_WPF
             if (Button1 != null) Button1.Click += Button1_Click_1;
 
             if (btnconnectit != null) btnconnectit.Click += BtnConnect_Click;
+            // V-034 fix: زر الحفظ في تبويب «الإشعارات والربط» كان بلا أي معالج
+            // (ولا توصيل برمجي) — كبسة بلا أثر؛ يوصل الآن بحفظ تفاصيل الربط.
+            if (Button2 != null) Button2.Click += BtnSaveNotifyDetails_Click;
             if (btnSelectPath != null) btnSelectPath.Click += btnSelectPath_Click;
             if (AddColumnAdd != null) AddColumnAdd.Click += AddColumnAdd_Click;
 
@@ -804,11 +811,19 @@ namespace SmartAuditERP.Form_WPF
                 cmbCashPrinter.Items.Clear();
                 cmbKitchenprinter.Items.Clear();
 
+                // V-033: تُجمع القائمة مرة واحدة وتُعلن للربط (تغذية عمود
+                // الطابعة القابل للاختيار في الشبكة) — أي فشل في التعداد لا
+                // يفرّغ القوائم بصمت بل يُبقي آخر حالة ناجحة.
+                var printers = new List<string>();
                 foreach (string printerName in PrinterSettings.InstalledPrinters)
                 {
+                    printers.Add(printerName);
                     cmbCashPrinter.Items.Add(printerName);
                     cmbKitchenprinter.Items.Add(printerName);
                 }
+
+                InstalledPrinters = printers;
+                DataContext = this;
             }
             catch
             {
@@ -3816,6 +3831,47 @@ namespace SmartAuditERP.Form_WPF
         #endregion
 
         #region Notify / Connection
+
+        // V-034: حفظ تفاصيل الربط (القنوات والمفاتيح وبيانات الدخول) بعد
+        // الاتصال — الزر كان ميتًا؛ يعيد استخدام نفس عقد الحفظ في Settingmqtt
+        // مع تحقق مختصر من الحقول الأساسية المطلوبة لصحة الصف.
+        private void BtnSaveNotifyDetails_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                bool validInput =
+                    !string.IsNullOrWhiteSpace(txtclientid.Text) &&
+                    int.TryParse(txtnodeid.Text, out _) &&
+                    !string.IsNullOrWhiteSpace(txtprivatekey.Text) &&
+                    !string.IsNullOrWhiteSpace(txtpublickey.Text);
+
+                if (!validInput)
+                {
+                    MessageBox.Show("يرجى تعبئة بيانات الربط (Node ID والمفاتيح)",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(CmbTxtDataBase.Text) ||
+                    string.IsNullOrWhiteSpace(Cmbservername.Text) ||
+                    CmbBranchMqtt.SelectedValue == null)
+                {
+                    MessageBox.Show("يرجى إكمال إعداد الاتصال أولًا (السيرفر/القاعدة/الفرع)",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
+                insert_SettingNotify();
+
+                MessageBox.Show("تم حفظ تفاصيل الربط", "نجاح",
+                    MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("خطأ أثناء الحفظ" + Environment.NewLine + ex.Message,
+                    "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
 
         private void BtnConnect_Click(object sender, RoutedEventArgs e)
         {

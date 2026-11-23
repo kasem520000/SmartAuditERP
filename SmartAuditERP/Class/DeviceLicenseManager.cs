@@ -133,6 +133,45 @@ namespace SmartAuditERP
                         return Convert.ToBase64String(sHA.ComputeHash(Encoding.UTF8.GetBytes(input)));
                 }
 
+                // V-029: تحقق استجابة السيرفر قبل اعتمادها كملف ترخيص — نفس عقد
+                // LoadAndValidateLicense (بنية JSON + توقيع داخلي) مضافًا إليه مطابقة
+                // DeviceId مع UID هذا الجهاز؛ رسائل الخطأ هنا صامتة (Debug) لأن
+                // المسار يُستدعى دوريًا في الخلفية.
+                private static bool ValidateLicenseResponse(string body, string localUid)
+                {
+                        try
+                        {
+                                if (string.IsNullOrWhiteSpace(body))
+                                {
+                                        System.Diagnostics.Debug.WriteLine("license-response: empty body");
+                                        return false;
+                                }
+                                DeviceLicenseDto dto;
+                                dto = JsonConvert.DeserializeObject<DeviceLicenseDto>(body);
+                                if (dto == null)
+                                {
+                                        System.Diagnostics.Debug.WriteLine("license-response: bad JSON");
+                                        return false;
+                                }
+                                if (Operators.CompareString(Right: DeviceLicenseManager.GenerateHash(dto.CompanyName + dto.DeviceId + dto.Email + dto.ExpireDate.ToString("yyyyMMdd") + dto.Features), Left: dto.Signature, TextCompare: false) != 0)
+                                {
+                                        System.Diagnostics.Debug.WriteLine("license-response: signature mismatch");
+                                        return false;
+                                }
+                                if (Operators.CompareString(localUid, dto.DeviceId, TextCompare: false) != 0)
+                                {
+                                        System.Diagnostics.Debug.WriteLine("license-response: DeviceId mismatch (server returned a license for another device)");
+                                        return false;
+                                }
+                                return true;
+                        }
+                        catch (Exception ex)
+                        {
+                                System.Diagnostics.Debug.WriteLine("license-response: " + ex.Message);
+                                return false;
+                        }
+                }
+
                 public static async Task<bool> ActivateOnlineLicense(string baseUrl, string companyName, string email)
                 {
                         try
@@ -147,18 +186,42 @@ namespace SmartAuditERP
                                 machineName = Environment.MachineName;
                                 using HttpClient httpClient = new HttpClient();
                                 StringContent content;
-                                content = new StringContent(JsonConvert.SerializeObject((companyName, text, machineName, email)), Encoding.UTF8, "application/json");
+                                // V-028 fix: السيرفر يفكّ نموذجًا بخصائص مسماة
+                                // (CompanyName/DeviceId/MachineName/Email) — كانت تُرسل
+                                // ValueTuple فتتسلسل كـ Item1..Item4 ويرفضها السيرفر دائمًا
+                                // ("CompanyName and DeviceId are required") فيفشل كل
+                                // تفعيل ويبقى device.lic القديم (الموثق لجهاز آخر)
+                                // فتتحول النسخة لتجريبية وتُمنع عمليات الحفظ.
+                                content = new StringContent(JsonConvert.SerializeObject(new
+                                {
+                                        CompanyName = companyName,
+                                        DeviceId = text,
+                                        MachineName = machineName,
+                                        Email = email
+                                }), Encoding.UTF8, "application/json");
                                 baseUrl += "/api/DeviceLicense/authorize";
                                 HttpResponseMessage httpResponseMessage;
                                 httpResponseMessage = await httpClient.PostAsync(baseUrl, content);
                                 if (httpResponseMessage.IsSuccessStatusCode)
                                 {
+                                        string body;
+                                        body = await httpResponseMessage.Content.ReadAsStringAsync();
+                                        // V-029 fix: لا تُكتب فوق device.lic القائم استجابة
+                                        // لا تطابق هذا الجهاز — تُفكّ الاستجابة وتُتحقق
+                                        // (بنية + توقيع + DeviceId) قبل الحفظ؛ أي عدم
+                                        // تطابق يُبقي الترخيص المحلي الصالح كما هو بدل
+                                        // طمسه بترخيص جهاز آخر (وهي الحالة التي كانت
+                                        // تُقفل البرنامج برسالة «ترخيص جهاز آخر» كل تشغيل).
+                                        if (!DeviceLicenseManager.ValidateLicenseResponse(body, text))
+                                        {
+                                                return false;
+                                        }
                                         // P6-028 fix: لا مسح للترخيص القائم قبل نجاح كتابة الجديد —
                                         // الكتابة نفسها ذرّية (temp ثم استبدال) ونتيجتها تحكم
                                         // القيمة المعادة (كان: حذف القائم ثم حفظ بلا تحقق،
                                         // ففشل الحفظ يمحو ترخيصًا صالحًا وتعيد الدالة true).
                                         bool flag;
-                                        flag = DeviceLicenseManager.SaveLicenseFile(await httpResponseMessage.Content.ReadAsStringAsync());
+                                        flag = DeviceLicenseManager.SaveLicenseFile(body);
                                         return flag;
                                 }
                         }
@@ -274,7 +337,10 @@ namespace SmartAuditERP
                 }
 
                 MainClass.LicenseExpire = lic.ExpireDate.Date;
-                MainClass.LicenseFeature = lic.Features.Trim();
+                // V-028 تتمة: Features قد تكون null بعد الفك (Json.NET يطغى على
+                // القيمة الافتراضية) — Trim() على null كان يرمي فيتحول المسار
+                // بالكامل إلى IsTrial=true داخل الـcatch.
+                MainClass.LicenseFeature = (lic.Features ?? "").Trim();
 
                 DateTime expireDate;
                 if (DateTime.TryParse(MainClass.LicenseExpire.ToString("yyyy-MM-dd"), out expireDate))

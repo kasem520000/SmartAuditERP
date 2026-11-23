@@ -1207,10 +1207,20 @@
                                                                 Header="الاسم"
                                                                 Binding="{Binding DgvName, UpdateSourceTrigger=PropertyChanged}"
                                                                 Width="*"/>
-                                                        <DataGridTextColumn x:Name="DgvPrinterName"
-                                                                Header="الطابعة"
-                                                                Binding="{Binding DgvPrinterName, UpdateSourceTrigger=PropertyChanged}"
-                                                                Width="*"/>
+                                                        <!-- V-033 fix: عمود الطابعة كان نصًا حرًّا (لا يمكن اختيار
+                                                             طابعة من المثبتة) — صار قائمة قابلة للاختيار والتحرير -->
+                                                        <DataGridTemplateColumn Header="الطابعة" Width="*">
+                                                            <DataGridTemplateColumn.CellTemplate>
+                                                                <DataTemplate>
+                                                                    <ComboBox IsEditable="True"
+                                                                              Text="{Binding DgvPrinterName, UpdateSourceTrigger=PropertyChanged}"
+                                                                              ItemsSource="{Binding InstalledPrinters, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                              VerticalContentAlignment="Center"
+                                                                              BorderThickness="0"
+                                                                              Background="Transparent"/>
+                                                                </DataTemplate>
+                                                            </DataGridTemplateColumn.CellTemplate>
+                                                        </DataGridTemplateColumn>
                                                         <DataGridTemplateColumn x:Name="DgvReport" Header="التقرير" Width="180">
                                                             <DataGridTemplateColumn.CellTemplate>
                                                                 <DataTemplate>

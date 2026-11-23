@@ -1,7 +1,7 @@
 {
-  "Version": "1",
-  "VersionText": "1.0.0.0",
-  "Description": "Stage1 security remediation build (P1 fixes)",
+  "Version": "2",
+  "VersionText": "1.1.0.0",
+  "Description": "Stage8 verification build 2: device license activation fix, license edit-after-save, zero-row invoice guard, print settings schema completion",
   "TypeUpdates": 1,
-  "PublishDate": "2026-11-22"
+  "PublishDate": "2026-11-23"
 }
