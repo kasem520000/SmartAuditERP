@@ -385,6 +385,8 @@ namespace SmartAuditERP.Form_WPF
                     "inv.Reff_No, inv.Reff_date, " +
                     "inv.cash, inv.visa, inv.bank, inv.cust_id, " +
                     "inv.sales_emp, inv.InvTotal, " +
+                    // P7-092 fix: حالة السداد تدخل القراءة (شرط النقد)
+                    "inv.PaymentStatus, " +
                     "inv.InvSum AS sumPrice, " +           // ← خاص بأندرويد
                     "inv.notes AS notes, " +
                     "(SELECT ISNULL(SUM(discount),0) " +
@@ -496,7 +498,13 @@ namespace SmartAuditERP.Form_WPF
 
                     // النقدي / الشبكة
                     item.Paycash = Convert.ToDouble(row["cash"]);
-                    if (payTypeInt == 1)
+                    // P7-092 fix: النقد المعروض هو المحفوظ (inv.cash) —
+                    // استبداله بصافي الفاتورة بلا فحص حالة السداد كان
+                    // يعرض السداد كاملاً للفواتير المسددة جزئياً؛
+                    // الاستبدال فقط عند اكتمال الدفع (PaymentStatus=1)
+                    // — عقد الشاشة التوأم frmRptInvSalesDetails
+                    if (payTypeInt == 1 &&
+                        Convert.ToInt32(row["PaymentStatus"]) == 1)
                         item.Paycash = Convert.ToDouble(row["tot_net"]);
                     item.PayATM = Convert.ToDouble(row["visa"]);
 

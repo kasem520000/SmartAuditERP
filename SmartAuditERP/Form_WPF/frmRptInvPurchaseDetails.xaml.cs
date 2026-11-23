@@ -360,7 +360,10 @@ namespace SmartAuditERP.Form_WPF
             string whereClause = $"inv.Inv_type={Invtype} and ";
 
             // فلتر الفرع
-            if (cmbBranches.SelectedIndex > -1)
+            // P7-088 fix: «كل الفروع» يُلغي قيد الفرع — كان الاختيار
+            // السابق يبقى مقيداً للاستعلام حتى مع تفعيل الخيار
+            if (chkAllBranches.IsChecked != true &&
+                cmbBranches.SelectedIndex > -1)
                 whereClause +=
                     $"inv.branch={cmbBranches.SelectedValue} and ";
 
@@ -747,12 +750,17 @@ namespace SmartAuditERP.Form_WPF
                 "Customers.name   as CustName," +
                 "Users.username   as username," +
                 "Branches.name    as BranchName," +
-                "Stocks.name      as StoreName " +   // ✅ بدل GetStoreName
+                // P7-087 fix: اسم المستودع من جدوله الصحيح (Safes) —
+                // نطاق inv.safe هو معرفات Safes (قائمة المستودعات
+                // LoadData.Invertories تقرأ Safes وGetStoreName يقرأ
+                // Safes.name) — الربط بـ Stocks كان يجلب اسم خزينة
+                // أخرى بمعرف المستودع
+                "Safes.name       as StoreName " +   // ✅ بدل GetStoreName
                 "from Inv " +
                 "left join Customers on inv.cust_id   = Customers.id " +
                 "left join Users     on inv.sales_emp = Users.emp " +
                 "left join Branches  on inv.branch    = Branches.id " +
-                "left join Stocks    on inv.safe       = Stocks.id " + // ✅ JOIN
+                "left join Safes     on inv.safe       = Safes.id " + // ✅ JOIN
                 "where " + p.WhereClause +
                 " Inv.IS_Deleted=0 order by date desc";
         }
@@ -1269,7 +1277,12 @@ namespace SmartAuditERP.Form_WPF
         private void chkAllBranches_Changed(object sender, RoutedEventArgs e)
         {
             if (!IsLoaded) return;
-            cmbBranches.IsEnabled = chkAllBranches.IsChecked != true;
+            bool isAll = chkAllBranches.IsChecked == true;
+            cmbBranches.IsEnabled = !isAll;
+            // P7-088 fix: «الكل» يلغي اختيار الفرع السابق — كان الإبقاء
+            // على الاختيار مع تعطيل القائمة يُبقي قيد الفرع المختار
+            // سابقاً في استعلام العرض
+            if (isAll) cmbBranches.SelectedIndex = -1;
         }
 
         private void ckAllStore_Changed(object sender, RoutedEventArgs e)

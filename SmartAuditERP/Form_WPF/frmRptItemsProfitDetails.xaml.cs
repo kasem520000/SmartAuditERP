@@ -673,16 +673,63 @@ namespace SmartAuditERP.Form_WPF
                 return;
             }
 
-            if (chkAll.IsChecked != true &&
-                string.IsNullOrWhiteSpace(txtItemName.Text))
+            if (chkAll.IsChecked != true)
             {
-                DXMessageBox.Show("يجب اختيار الصنف.", "تنبيه",
-                                MessageBoxButton.OK, MessageBoxImage.Warning);
-                txtItemName.Focus();
-                return;
+                if (string.IsNullOrWhiteSpace(txtItemName.Text) &&
+                    string.IsNullOrWhiteSpace(txtItemCode.Text))
+                {
+                    DXMessageBox.Show("يجب اختيار الصنف.", "تنبيه",
+                                    MessageBoxButton.OK, MessageBoxImage.Warning);
+                    txtItemName.Focus();
+                    return;
+                }
+
+                // P7-085 fix: نص الصنف يُحلّ إلى هوية قبل العرض — تعديل
+                // النص يدويًا كان يبقي SelectedId السابق فيُعرض تقرير
+                // الصنف القديم تحت اسم الصنف المكتوب الجديد
+                if (!ResolveSelectedItemFromUi()) return;
             }
 
             ShowResult();
+        }
+
+        // P7-085 fix: حلّ نص الواجهة (الرمز أولًا ثم الاسم) إلى هوية صنف
+        private bool ResolveSelectedItemFromUi()
+        {
+            try
+            {
+                string byCode = txtItemCode.Text?.Trim() ?? "";
+                string byName = txtItemName.Text?.Trim() ?? "";
+
+                string where = !string.IsNullOrWhiteSpace(byCode)
+                    ? $"Code=N'{byCode.Replace("'", "''")}'"
+                    : $"name=N'{byName.Replace("'", "''")}'";
+
+                var adapter = new SqlDataAdapter(
+                    $"SELECT name, id, Code FROM Items " +
+                    $"WHERE IS_Deleted=0 AND {where}", conn);
+                var dt = new DataTable();
+                adapter.Fill(dt);
+
+                if (dt.Rows.Count == 0)
+                {
+                    DXMessageBox.Show(
+                        "الصنف المكتوب غير موجود — استخدم البحث لاختيار الصنف.",
+                        "تنبيه", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return false;
+                }
+
+                SelectedId       = Convert.ToInt32(dt.Rows[0]["id"]);
+                txtItemCode.Text = dt.Rows[0]["Code"]?.ToString() ?? "";
+                txtItemName.Text = dt.Rows[0]["name"]?.ToString() ?? "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                DXMessageBox.Show($"خطأ:\n{ex.Message}", "خطأ",
+                                MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)

@@ -430,7 +430,13 @@ namespace SmartAuditERP.Form_WPF
 
                     // النقدي / الشبكة
                     item.Paycash = Convert.ToDouble(row["cash"]);
-                    if (payTypeInt == 1)
+                    // P7-092 fix: النقد المعروض هو المحفوظ (inv.cash) —
+                    // استبداله بصافي الفاتورة بلا فحص حالة السداد كان
+                    // يعرض السداد كاملاً للفواتير المسددة جزئياً؛
+                    // الاستبدال فقط عند اكتمال الدفع (PaymentStatus=1)
+                    // — عقد الشاشة التوأم frmRptInvSalesDetails
+                    if (payTypeInt == 1 &&
+                        Convert.ToInt32(row["PaymentStatus"]) == 1)
                         item.Paycash = Convert.ToDouble(row["tot_net"]);
                     item.PayATM = Convert.ToDouble(row["visa"]);
 

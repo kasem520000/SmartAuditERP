@@ -339,7 +339,10 @@ namespace SmartAuditERP.Form_WPF
                 string where = "";
 
                 // الفرع
-                if (cmbBranches.SelectedIndex > -1 &&
+                // P7-088 fix: «كل الفروع» يُلغي قيد الفرع — كان الاختيار
+                // السابق يبقى مقيداً للاستعلام حتى مع تفعيل الخيار
+                if (chkAllBranches.IsChecked != true &&
+                    cmbBranches.SelectedIndex > -1 &&
                     cmbBranches.SelectedValue != null)
                     where += $"inv.branch={cmbBranches.SelectedValue} and ";
 
@@ -781,7 +784,11 @@ namespace SmartAuditERP.Form_WPF
         private void chkAllBranches_CheckedChanged(object sender, RoutedEventArgs e)
         {
             if (!IsLoaded) return;
-            cmbBranches.IsEnabled = chkAllBranches.IsChecked != true;
+            bool isAll = chkAllBranches.IsChecked == true;
+            cmbBranches.IsEnabled = !isAll;
+            // P7-088 fix: «الكل» يلغي اختيار الفرع السابق — كان الإبقاء
+            // على الاختيار مع تعطيل القائمة يُبقي قيد الفرع في الاستعلام
+            if (isAll) cmbBranches.SelectedIndex = -1;
         }
 
         #endregion
@@ -1130,8 +1137,13 @@ namespace SmartAuditERP.Form_WPF
                     }
 
                     var cmd = new SqlCommand(
-                        "UPDATE inv SET pay_type=1, cash=InvTotal, " +
-                        "visa=0, paid=InvTotal " +
+                        // P7-090 fix: المبلغ المستحق tot_net (الصافي بعد
+                        // الخصم) لا InvTotal (الإجمالي قبل الخصم — كان
+                        // يُدفع بزيادة قيمة الخصم)، وحالة السداد تُصالح
+                        // (مكتملة الدفع=1) وإلا أعاد توليد القيد بحالة
+                        // قديمة فيُقيّد على حسابات خاطئة
+                        "UPDATE inv SET pay_type=1, cash=tot_net, " +
+                        "visa=0, paid=tot_net, PaymentStatus=1 " +
                         "WHERE branch=@Branch AND InvGlobalID=@InvGlobalID",
                         conn);
                     cmd.Parameters.AddWithValue("@Branch", MainClass.BranchNo);
@@ -1191,8 +1203,10 @@ namespace SmartAuditERP.Form_WPF
                     }
 
                     var cmd = new SqlCommand(
+                        // P7-090 fix: تُصالح حالة السداد (غير مدفوعة=0)
                         "UPDATE inv SET pay_type=-1, cash=0, visa=0, " +
-                        "paid=0, bank=0 WHERE InvGlobalID=@InvGlobalID",
+                        "paid=0, bank=0, PaymentStatus=0 " +
+                        "WHERE InvGlobalID=@InvGlobalID",
                         conn);
                     cmd.Parameters.AddWithValue("@InvGlobalID", item.InvGlobalID);
                     cmd.ExecuteNonQuery();
@@ -1302,8 +1316,11 @@ namespace SmartAuditERP.Form_WPF
                             }
 
                             var cmd = new SqlCommand(
+                                // P7-090 fix: tot_net لا InvTotal وحالة
+                                // السداد مكتملة الدفع=1
                                 "UPDATE inv SET pay_type=2, Bank=@Bank, " +
-                                "cash=0, visa=InvTotal, paid=InvTotal " +
+                                "cash=0, visa=tot_net, paid=tot_net, " +
+                                "PaymentStatus=1 " +
                                 "WHERE InvGlobalID=@InvGlobalID",
                                 conn);
                             cmd.Parameters.AddWithValue("@InvGlobalID",
@@ -1340,11 +1357,13 @@ namespace SmartAuditERP.Form_WPF
         // ── تغيير الحساب (العميل)
         private void toolCustomers_Click(object sender, RoutedEventArgs e)
         {
-            addNewItem();
+            // P7-091 fix: لا تحديث بدون اختيار عميل فعلي من الحوار —
+            // الإغلاق بلا اختيار كان يمرر ClientId الصفري إلى التحديث
+            if (!addNewItem()) return;
             Chang_Customer();
         }
 
-        private void addNewItem()
+        private bool addNewItem()
         {
             try
             {
@@ -1357,12 +1376,16 @@ namespace SmartAuditERP.Form_WPF
                 form.lblName.Foreground = Brushes.Black;
                 form.lblMobile.Foreground = Brushes.Black;
                 form.ShowDialog();
+                // P7-091 fix: الحوار بلا اختيار يترك ClientId=0 — يُرفض
+                if (form.ClientId <= 0) return false;
                 Client_id = form.ClientId.ToString();
+                return true;
             }
             catch (Exception ex)
             {
                 DXMessageBox.Show($"خطأ:\n{ex.Message}", "خطأ",
                                 MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
         }
 

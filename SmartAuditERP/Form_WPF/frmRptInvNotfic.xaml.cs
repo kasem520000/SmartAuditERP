@@ -440,19 +440,16 @@ namespace SmartAuditERP.Form_WPF
                             try { inv.RefDate = Convert.ToDateTime(row["Reff_date"]); } catch { }
 
                             // الضريبة
+                            // P7-086 fix: عمود tax يخزن الضريبة الأساسية
+                            // وحدها وExtraVAT عمود مستقل (عقد الحفظ:
+                            // @tax=inv.VAT و@ExtraVAT=inv.ExtraVAT) —
+                            // طرح الإضافية من المحفوظة كان ينقص الضريبة
+                            // المعروضة ويُسقط الإضافية من مجموع الضريبة
                             double taxTotal  = Math.Round(Convert.ToDouble(row["tax"]), 2);
                             double extraVAT  = Math.Round(Convert.ToDouble(row["ExtraVAT"]), 2);
                             inv.ExtraVAT     = extraVAT;
-                            inv.TotalTax     = taxTotal;
-                            inv.VAT          = (taxTotal - extraVAT > 0)
-                                ? Math.Round(taxTotal - extraVAT, 2)
-                                : taxTotal;
-
-                            if (inv.VAT <= 0)
-                            {
-                                inv.VAT      = taxTotal;
-                                inv.TotalTax = Math.Round(inv.VAT + extraVAT, 2);
-                            }
+                            inv.VAT          = taxTotal;
+                            inv.TotalTax     = Math.Round(taxTotal + extraVAT, 2);
 
                             // المدفوعات
                             inv.Paycash  = Convert.ToDouble(row["cash"]);

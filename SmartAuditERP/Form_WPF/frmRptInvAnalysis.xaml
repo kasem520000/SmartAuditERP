@@ -319,7 +319,11 @@
             VerticalContentAlignment="Center"/>
 
                         <!-- الى تاريخ - بعد -->
+                        <!-- P7-089 fix: العمود الخاص به — كان في خلية
+                             txtDateFrom نفسها (كلاهما بلا Grid.Column
+                             فيتدانان في الخلية 0) -->
                         <DatePicker x:Name="txtDateTo"
+                                    Grid.Column="2"
             Height="30"
             FontSize="11"
             FontWeight="SemiBold"
