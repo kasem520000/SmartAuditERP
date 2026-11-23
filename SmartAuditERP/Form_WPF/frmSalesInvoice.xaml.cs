@@ -1505,6 +1505,10 @@ namespace SmartAuditERP.Form_WPF
                     foreach (int id in frm.Itemlist)
                     {
                         SelectedId = id;
+                        // P7-146 fix: الدفعة تُلحق — ضبط الفهرس بعد الإضافة
+                        // كان يجعل الصنف التالي يستبدل السابق (مسار الإضافة
+                        // يزيل السطر عند الفهرس ثم يلحق في النهاية)
+                        RowIndex = _itemsSource.Count;
                         SearchByID(0);
                         RowIndex = _itemsSource.Count - 1;
                     }
@@ -2659,25 +2663,56 @@ namespace SmartAuditERP.Form_WPF
                 {
                     for (int i = 0; i < frm.dtInvSel.Rows.Count; i++)
                     {
+                        // P7-147 fix: قيم الاستيراد تُحفظ قبل الإحلال — كان
+                        // استبدال السطر يعيد التعبئة (كمية 1/سعر 0) فتضيع
+                        // قيم الفاتورة المستوردة؛ تعاد على السطر المحلول
+                        string importCode = frm.dtInvSel.Rows[i]["ItemCode"].ToString();
+                        double importQty = Convert.ToDouble(
+                            frm.dtInvSel.Rows[i]["quntity"]);
+                        double importPrice = Convert.ToDouble(
+                            frm.dtInvSel.Rows[i]["price"]);
+                        string importDesc = frm.dtInvSel.Rows[i]["description"].ToString();
+
                         var newRow = new InvoiceItemRow_frmSalesInvoice
                         {
                             RowNum = _itemsSource.Count + 1,
-                            ItemCode = frm.dtInvSel.Rows[i]["ItemCode"].ToString(),
-                            Description = frm.dtInvSel.Rows[i]["description"].ToString(),
+                            ItemCode = importCode,
+                            Description = importDesc,
                             UnitName = Common.GetUnitName(
                                 Convert.ToInt32(frm.dtInvSel.Rows[i]["unit"])),
-                            Quantity = Convert.ToDouble(
-                                frm.dtInvSel.Rows[i]["quntity"])
+                            Quantity = importQty
                         };
 
-                        double importPrice =
-                            Convert.ToDouble(frm.dtInvSel.Rows[i]["price"]);
                         if (importPrice > 0) newRow.Price = importPrice;
 
                         _itemsSource.Add(newRow);
                         RowIndex = _itemsSource.Count - 1;
                         SearchByCode();
+
+                        // P7-147: إعادة قيم الاستيراد على السطر الناتج
+                        if (RowIndex >= 0 && RowIndex < _itemsSource.Count)
+                        {
+                            var placed = _itemsSource[RowIndex];
+                            if (placed != null && placed.ItemId > 0)
+                            {
+                                placed.Quantity = importQty;
+                                if (importPrice > 0)
+                                    placed.Price = importPrice;
+                                if (!string.IsNullOrEmpty(importDesc))
+                                    placed.Description = importDesc;
+                                CalcRowValues(RowIndex);
+                            }
+                            else if (placed != null && placed.ItemId == 0 &&
+                                     string.Equals(placed.ItemCode, importCode))
+                            {
+                                // الصنف اعتُبر مكرراً وأُضيف لسطره القائم —
+                                // سطر الاستيراد الخام لا يبقى شبحاً
+                                _itemsSource.RemoveAt(RowIndex);
+                                RowIndex = _itemsSource.Count - 1;
+                            }
+                        }
                     }
+                    CalcTot();
                     DXMessageBox.Show("تم الاستيراد بنجاح");
                 }
             }

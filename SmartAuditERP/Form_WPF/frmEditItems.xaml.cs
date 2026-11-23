@@ -202,12 +202,20 @@ namespace SmartAuditERP.Form_WPF
             foreach (var item in products)
             {
                 // سعر البيع
+                double? appliedSale = null;
                 if (!string.IsNullOrWhiteSpace(txtSalePrice.Text))
+                {
                     item.SalePrice = Convert.ToDouble(txtSalePrice.Text);
+                    appliedSale = item.SalePrice;
+                }
 
                 // سعر الشراء
+                double? appliedPurch = null;
                 if (!string.IsNullOrWhiteSpace(txtPurchPrice.Text))
+                {
                     item.PurchPrice = Convert.ToDouble(txtPurchPrice.Text);
+                    appliedPurch = item.PurchPrice;
+                }
 
                 // الضريبة
                 if (!string.IsNullOrWhiteSpace(txtTaxPrec.Text))
@@ -231,6 +239,22 @@ namespace SmartAuditERP.Form_WPF
                         }
                     }
                     item.MainUnit = Convert.ToInt32(cmbUnit.EditValue);
+                }
+                else if (appliedSale.HasValue || appliedPurch.HasValue)
+                {
+                    // P7-154 fix: تغيير السعر وحده يزامن سطر الوحدة الرئيسة —
+                    // كان يغير سعر الرأس (Items) ويبقي سعر الوحدة القائم
+                    // (ItemUnits) الذي يقرأه البيع/POS فعلياً
+                    foreach (var unit in item.ProductUnits)
+                    {
+                        if (unit.UnitId == item.MainUnit)
+                        {
+                            if (appliedSale.HasValue)
+                                unit.SalePrice = appliedSale.Value;
+                            if (appliedPurch.HasValue)
+                                unit.PurchasePrice = appliedPurch.Value;
+                        }
+                    }
                 }
 
                 // الحدود

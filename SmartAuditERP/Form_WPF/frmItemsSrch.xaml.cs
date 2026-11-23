@@ -299,6 +299,22 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
+                // P7-145 fix: إلغاء التحديد يزيل من القائمة — كانت النتائج
+                // تتراكم (ما أضيف بالتحديد يبقى بعد إلغائه) فيدرج المحرر
+                // أصنافاً ألغى المستخدم اختيارها
+                if (e.RemovedItems != null)
+                {
+                    foreach (var removed in e.RemovedItems)
+                    {
+                        if (removed is ItemSearchRow removedItem)
+                        {
+                            int.TryParse(removedItem.id, out int removedId);
+                            if (removedId > 0)
+                                Itemlist.Remove(removedId);
+                        }
+                    }
+                }
+
                 foreach (ItemSearchRow item in GridControl1.SelectedItems)
                 {
                     int.TryParse(item.id, out int itemId);
