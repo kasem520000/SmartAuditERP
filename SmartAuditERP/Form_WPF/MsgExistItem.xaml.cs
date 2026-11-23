@@ -34,14 +34,19 @@ namespace SmartAuditERP.Form_WPF
         private void btnAddquantity_Click(object sender, RoutedEventArgs e)
         {
             this.Topmost = false;
-            Action = 2;
+            // P7-143 fix: القيمتان معكوستان عند كل المستهلكين — إضافة الكمية
+            // هي Action=1 (يرفعون كمية السطر القائم) والإدراج في بند جديد
+            // هو Action=2 (يضيفون سطراً)؛ الحوار كان يعكسهما فيؤدي كل زر
+            // عكس معناه المكتوب عليه
+            Action = 1;
             this.Hide();
         }
 
         private void btnNewTirm_Click(object sender, RoutedEventArgs e)
         {
             this.Topmost = false;
-            Action = 1;
+            // P7-143: بند جديد = 2 عند كل المستهلكين (يكملون إلى إدراج سطر)
+            Action = 2;
             this.Hide();
         }
 

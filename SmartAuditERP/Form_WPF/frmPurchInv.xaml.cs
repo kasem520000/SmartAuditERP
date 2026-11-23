@@ -581,12 +581,22 @@ namespace SmartAuditERP.Form_WPF
                         double.TryParse(_gridSource[foundIndex].QuantDgv, out double q);
                         _gridSource[foundIndex].QuantDgv = (q + 1).ToString();
                         if (RowIndex != foundIndex && RowIndex >= 0 && RowIndex < _gridSource.Count)
+                        {
                             _gridSource.RemoveAt(RowIndex);
+                            // P7-150 fix: إزالة صف قبل المكرر تنزحه — كان
+                            // يعيد الحساب على الفهرس القديم (الصف الذي بعد
+                            // المكرر) فيفصل كمية السطر عن حسابه
+                            if (RowIndex < foundIndex)
+                                foundIndex--;
+                        }
                         CalcRowValues(foundIndex);
                         CalcTot();
                     }
                     else if (msgExist.Action == 2)
                     {
+                        // P7-149 fix: بند مستقل جديد — كان يكتب فوق آخر صف
+                        // قائم (صنف آخر له) بدلاً من إضافة صف نتيجة
+                        _gridSource.Add(new PurchInvRow());
                         RowIndex = _gridSource.Count - 1;
                         FillRowFromDt(RowIndex, dt.Rows[0], unitId);
                     }
@@ -793,18 +803,34 @@ namespace SmartAuditERP.Form_WPF
             }
             else if (frm.ISDone && frm.ItemId <= 0)
             {
-                if (RowIndex >= 0 && RowIndex < _gridSource.Count)
+                // P7-148 fix: إزالة الصف التمهيدي فقط — الصف القائم المعبأ
+                // (صنف حقيقي) كان يُحذف عند إلغاء البحث/الاختيار الفارغ
+                if (IsPreliminaryRow(RowIndex))
                     _gridSource.RemoveAt(RowIndex);
             }
             else
             {
                 try
                 {
-                    if (RowIndex >= 0 && RowIndex < _gridSource.Count)
+                    // P7-148 fix: الإلغاء يمسح الصف التمهيدي الفارغ فقط
+                    if (IsPreliminaryRow(RowIndex))
                         _gridSource.RemoveAt(RowIndex);
                 }
                 catch { }
             }
+        }
+
+        /// <summary>
+        /// P7-148 fix: هل الصف تمهيدياً (أُنشئ لاستقبال نتيجة بحث ولم يُعبأ
+        /// بصنف)؟ — لا كود ولا اسم فيه
+        /// </summary>
+        private bool IsPreliminaryRow(int index)
+        {
+            if (index < 0 || index >= _gridSource.Count) return false;
+            var r = _gridSource[index];
+            return string.IsNullOrWhiteSpace(r.ItemCodeDgv)
+                && string.IsNullOrWhiteSpace(r.ItemNameDgv)
+                && (string.IsNullOrWhiteSpace(r.ItemIdDgv) || r.ItemIdDgv == "0");
         }
 
         #endregion
