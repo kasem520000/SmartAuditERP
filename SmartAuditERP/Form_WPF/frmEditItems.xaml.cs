@@ -254,7 +254,15 @@ namespace SmartAuditERP.Form_WPF
                     item.Property = (ProductProperty)itemProperty;
 
                     if (itemProperty == 2)
-                        item.PackingValue = 2.0;
+                    {
+                        // P7-153 fix: قيمة التعبئة المدخلة لا الثابت 2 —
+                        // التعديل الجماعي كان يستبدل تعبئة كل صنف بـ2
+                        // مهما أُدخل في حقل التعبئة (المُتحقق منه أعلاه)
+                        item.PackingValue = double.TryParse(
+                            txtFillVal.Text, out double fillValApplied)
+                            ? fillValApplied
+                            : 0.0;
+                    }
 
                     if (itemProperty == 1)
                         item.Wscale = wscale;

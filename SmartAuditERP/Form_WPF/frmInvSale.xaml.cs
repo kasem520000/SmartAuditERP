@@ -2143,10 +2143,21 @@ namespace SmartAuditERP.Form_WPF
                 return;
             }
 
+            // P7-163 fix: الطابعة الأصلية تُستعاد بعد تصدير PDF — كان
+            // محرر البيع يبقى على Microsoft Print to PDF فيذهب طلب
+            // الطباعة العادي التالي إلى ملف PDF بدل الطابعة
+            string originalPrinter = print.defPrinter;
             print.defPrinter = "Microsoft Print to PDF";
-            print.Printing(type, print.BindToData(inv),
-                print.RptUrl, print.RptName,
-                print.defPrinter, print.kitchenprinter, print.PrintNo);
+            try
+            {
+                print.Printing(type, print.BindToData(inv),
+                    print.RptUrl, print.RptName,
+                    print.defPrinter, print.kitchenprinter, print.PrintNo);
+            }
+            finally
+            {
+                print.defPrinter = originalPrinter;
+            }
         }
 
         #endregion

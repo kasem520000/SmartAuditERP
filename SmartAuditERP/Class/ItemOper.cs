@@ -636,6 +636,12 @@ namespace SmartAuditERP
 
                 frmItemProperties2.ShowDialog();
 
+                // P7-151 fix: التطبيق عند التأكيد فقط (زر الإدراج) —
+                // الإغلاق بلا تأكيد كان يطبق الكمية الصفرية على السطر
+                // (NetQnty لم تضبط في مسار الإلغاء)
+                if (!frmItemProperties2.Confirmed)
+                    return;
+
                 // بناء الوصف كما في الكود الأصلي
                 string description =
                     frmItemProperties2.lblHeight.Text + ": " +

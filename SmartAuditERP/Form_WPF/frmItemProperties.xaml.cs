@@ -15,6 +15,14 @@ namespace SmartAuditERP.Form_WPF
         public double NetQnty;
         private bool _isInternalUpdate;
 
+        // P7-152 fix: مدخل التعبئة كما أدخله المستخدم — كان حساب التعبئة
+        // يقرأ ناتجه السابق من نفس الحقل فيضرب الكمية مجدداً عند كل
+        // استدعاء متتابع (تغيير العدد بعد أول حساب)
+        private double _packingInputNet;
+
+        // P7-151 fix: علم التأكيد — الإغلاق بلا زر الإدراج ليس تأكيداً
+        public bool Confirmed;
+
         #endregion
 
         #region Constructor
@@ -148,6 +156,14 @@ namespace SmartAuditERP.Form_WPF
                     {
                         txtNetQnty.Text = "0";
                         netQntyValue = 0;
+                        // P7-152: مدخل التعبئة يُثبّت عند التصفير الصريح
+                        _packingInputNet = 0;
+                    }
+                    else
+                    {
+                        // P7-152: المدخل من لقطة المستخدم لا من الحقل الذي
+                        // كُتب فيه الناتج السابق (التراكم المضاعف)
+                        netQntyValue = _packingInputNet;
                     }
 
                     if (widthValue <= 0 || qtyValue <= 0)
@@ -157,9 +173,7 @@ namespace SmartAuditERP.Form_WPF
                     }
                     else
                     {
-                        double currentHeightValue = ParseNumber(txtHeight.Text, 0);
-
-                        if (Math.Abs(currentHeightValue % 1.0) < 0.0000001)
+                        if (Math.Abs(netQntyValue % 1.0) < 0.0000001)
                             heightValue = netQntyValue / widthValue;
                         else
                             heightValue = Math.Ceiling(netQntyValue / widthValue);
@@ -221,7 +235,10 @@ namespace SmartAuditERP.Form_WPF
 
         private void txtNetQnty_TextChanged(object sender, TextChangedEventArgs e)
         {
-            // فقط للتعبئة - لا عمل إضافي هنا
+            // P7-152: التقاط مدخل المستخدم للتعبئة — الكتابات الداخلية
+            // (الناتج) محروسة بـ_isInternalUpdate فلا تلوّث المدخل
+            if (!_isInternalUpdate && ItemProperty == 2)
+                _packingInputNet = ParseNumber(txtNetQnty.Text, 0);
         }
 
         #endregion
@@ -303,6 +320,8 @@ namespace SmartAuditERP.Form_WPF
         private void btnInsert_Click(object sender, RoutedEventArgs e)
         {
             NetQnty = ParseNumber(txtNetQnty.Text, 0);
+            // P7-151: التأكيد الصريح — الإغلاق بلا إدراج ليس تأكيداً
+            Confirmed = true;
             try { DialogResult = true; } catch { }
             Close();
         }
