@@ -846,7 +846,13 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnShow_Click(object sender, RoutedEventArgs e)
         {
-            if (MainClass.ReturnYearPreviews && CmbYearPreviews.SelectedValue != null)
+            // P7-115 fix: قرار السنة السابقة من حالة القائمة نفسها لا من
+            // العلم العالمي — العلم كان يُصفَّر بعد أول عرض فتُقرأ القاعدة
+            // الحالية في أي إعادة عرض والقائمة ما تزال على السنة السابقة
+            bool useYearPreview = CmbYearPreviews.SelectedIndex > 0
+                && CmbYearPreviews.SelectedValue != null;
+
+            if (useYearPreview)
             {
                 MainClass.originalConnStr = MainClass.connstr;
                 MainClass.connstr = $"server={MainClass.Server};database={CmbYearPreviews.SelectedValue};trusted_connection=true";
@@ -855,7 +861,7 @@ namespace SmartAuditERP.Form_WPF
 
             ShowResult();
 
-            if (MainClass.ReturnYearPreviews)
+            if (useYearPreview)
             {
                 MainClass.connstr = MainClass.originalConnStr;
                 MainClass.ReturnYearPreviews = false;
@@ -870,10 +876,10 @@ namespace SmartAuditERP.Form_WPF
 
         private void CmbYearPreviews_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (CmbYearPreviews.SelectedIndex >= 0)
-            {
-                MainClass.ReturnYearPreviews = true;
-            }
+            // P7-115 fix: العلم لا يُرفع إلا لسنة سابقة فعلية (فهرس > 0) —
+            // كان يُرفع لأي اختيار حتى السنة الحالية فيقرأه غير هذه الشاشة
+            // على أنه سنة سابقة نشطة
+            MainClass.ReturnYearPreviews = CmbYearPreviews.SelectedIndex > 0;
         }
 
         private void BtnShowDetail_Click(object sender, RoutedEventArgs e)

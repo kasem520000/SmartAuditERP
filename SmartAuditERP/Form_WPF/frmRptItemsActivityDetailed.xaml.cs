@@ -89,7 +89,12 @@ namespace SmartAuditERP.Form_WPF
 
             LoadSafes();
             LoadBranches();
+            LoadProcTypes();
             LoadPrintSettings();
+
+            // P7-121 fix: استعادة مظهر الجدول المحفوظ — كان الحفظ يكتب
+            // XML ولا يقرؤه أحد عند فتح النافذة
+            LoadGridLayout();
         }
 
         #endregion
@@ -97,6 +102,30 @@ namespace SmartAuditERP.Form_WPF
         // ══════════════════════════════════════════════
         #region Load Helpers
         // ══════════════════════════════════════════════
+
+        /// <summary>
+        /// P7-120 fix: تعبئة قائمة نوع العملية — كانت فارغة أبداً فلا يمكن
+        /// اختيار مرشح النوع (إلغاء «الكل» فعليه بلا خيارات). البنود الثلاثة
+        /// عشر تطابق فروع BuildProcTypeCondition بالفهارس نفسها
+        /// </summary>
+        private void LoadProcTypes()
+        {
+            cmbProcType.Items.Clear();
+            cmbProcType.Items.Add("مشتريات");                      // 0: inv_type=1
+            cmbProcType.Items.Add("مبيعات");                        // 1: inv_type=2
+            cmbProcType.Items.Add("نقطة بيع");                      // 2: inv_type=3
+            cmbProcType.Items.Add("إدخال بضاعة");                   // 3: inv_type=4
+            cmbProcType.Items.Add("إخراج بضاعة");                    // 4: inv_type=5
+            cmbProcType.Items.Add("إنتاج");                          // 5: inv_type=6
+            cmbProcType.Items.Add("تسوية جردية");                    // 6: inv_type=7
+            cmbProcType.Items.Add("مناقلة مخزنية");                  // 7: inv_type=8
+            cmbProcType.Items.Add("بضاعة أول مدة");                  // 8: inv_type=9
+            cmbProcType.Items.Add("إشعار دائن مرتبط (مرتجع)");       // 9: inv_type=21 proc=2
+            cmbProcType.Items.Add("إشعار دائن مرتبط (من فاتورة)");   // 10: inv_type=21 proc=1
+            cmbProcType.Items.Add("مرتجع مرتبط (من فاتورة)");        // 11: inv_type=22 proc=1
+            cmbProcType.Items.Add("مرتجع مرتبط");                    // 12: inv_type=22 proc=2
+            cmbProcType.SelectedIndex = -1;
+        }
 
         public void LoadSafes()
         {
@@ -222,7 +251,14 @@ namespace SmartAuditERP.Form_WPF
             }
 
             if (storeId > 0)
+            {
+                // P7-122 fix: إلغاء «كل المستودعات» قبل تثبيت المستودع
+                // المستقبل — كان الخيار مفعلاً افتراضياً فيتجاهل الاستعلام
+                // المستودع الممرر كلياً (والقائمة معطلة)
+                chkAll.IsChecked = false;
+                cmbSafes.IsEnabled = true;
                 cmbSafes.SelectedValue = storeId;
+            }
 
             if (itemId > 0 || clientId > 0)
             {
@@ -1018,6 +1054,48 @@ namespace SmartAuditERP.Form_WPF
             {
                 DXMessageBox.Show($"خطأ:\n{ex.Message}", "خطأ",
                                 MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        /// <summary>
+        /// P7-121 fix: استعادة مظهر الجدول من ملف الأنماط المحفوظ
+        /// (الرأس مطابقة، العرض، الظهور) — كان الحفظ يكتب الملف بلا قارئ
+        /// </summary>
+        private void LoadGridLayout()
+        {
+            try
+            {
+                if (!File.Exists(StyleFile)) return;
+
+                var doc = new System.Xml.XmlDocument();
+                doc.Load(StyleFile);
+
+                foreach (System.Xml.XmlNode colNode in
+                         doc.SelectNodes("/GridLayout/Column"))
+                {
+                    string header = colNode.Attributes?["Header"]?.Value;
+                    if (string.IsNullOrEmpty(header)) continue;
+
+                    DataGridColumn col = GridControl1.Columns.FirstOrDefault(
+                        c => string.Equals(c.Header?.ToString(), header,
+                                           StringComparison.Ordinal));
+                    if (col == null) continue;
+
+                    string widthText = colNode.Attributes?["Width"]?.Value;
+                    if (double.TryParse(widthText,
+                                        System.Globalization.NumberStyles.Float,
+                                        System.Globalization.CultureInfo.InvariantCulture,
+                                        out double width) && width > 0)
+                        col.Width = new DataGridLength(width);
+
+                    string visText = colNode.Attributes?["Visibility"]?.Value;
+                    if (Enum.TryParse(visText, out Visibility vis))
+                        col.Visibility = vis;
+                }
+            }
+            catch
+            {
+                /* ملف أنماط تالف = إعدادات افتراضية بلا إعلان */
             }
         }
 

@@ -235,8 +235,14 @@ namespace SmartAuditERP.Form_WPF
 
                 int year  = GetSelectedYearInt();
                 int month = GetSelectedMonthInt();
+
+                // P7-124 fix: تقييد اليوم بعدد أيام الشهر المختار — يوم
+                // اليوم الحالي (31مثلاً) في شهر أقصر كان يرمي استثناء
+                // يبتلعه catch فيتجاوز LoadEmpData وتبقى مبالغ الشهر
+                // السابق معروضة تحت الفترة الجديدة
                 if (year > 0 && month > 0)
-                    txtDate.DateTime = new DateTime(year, month, DateTime.Now.Day);
+                    txtDate.DateTime = new DateTime(year, month,
+                        Math.Min(DateTime.Now.Day, DateTime.DaysInMonth(year, month)));
 
                 LoadEmpData(cond);
             }
@@ -302,8 +308,27 @@ namespace SmartAuditERP.Form_WPF
 
         private void BtnAll_Click(object sender, RoutedEventArgs e)
         {
-            _loaded = true;
+            // P7-123 fix: «عرض» لا يعيد الشهر/السنة المختارين إلى الفترة
+            // الحالية — كانت CLR تمسح اختيار المستخدم قبل كل تحميل فيعود
+            // لالفترة الحالية مهما اختار؛ تُحفظ الفترة وتُستعاد بمعالجات
+            // خاملة ثم تحميل واحد للفترة المستعادة
+            int prevMonthIdx = cmbMonth.SelectedIndex;
+            int prevYearIdx  = cmbYear.SelectedIndex;
+
+            _loaded = false;
+
             CLR();
+
+            if (prevMonthIdx > -1) cmbMonth.SelectedIndex = prevMonthIdx;
+            if (prevYearIdx  > -1) cmbYear.SelectedIndex  = prevYearIdx;
+
+            int year  = GetSelectedYearInt();
+            int month = GetSelectedMonthInt();
+            if (year > 0 && month > 0)
+                txtDate.DateTime = new DateTime(year, month,
+                    Math.Min(DateTime.Now.Day, DateTime.DaysInMonth(year, month)));
+
+            _loaded = true;
             LoadEmpData(cond);
         }
 

@@ -724,7 +724,10 @@ namespace SmartAuditERP.Form_WPF
 
                 var saveDialog = new Microsoft.Win32.SaveFileDialog
                 {
-                    Filter = "Excel Files|*.xlsx",
+                    // P7-116 fix: الامتداد المعروض هو المكتوب فعلاً — كان
+                    // الحوار يعرض xlsx والكتابة إلى مسار csv آخر ثم الإعلان
+                    // وفتح مسار xlsx غير الموجود
+                    Filter = "CSV File|*.csv",
                     Title = "تصدير قائمة الدخل",
                     FileName = "قائمة_الدخل_" + DateTime.Now.ToString("yyyy-MM-dd")
                 };
@@ -754,8 +757,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void ExportToExcel(string filePath)
         {
-            // تصدير CSV بدلًا من XLSX (يفتح في Excel)
-            using (StreamWriter sw = new StreamWriter(filePath.Replace(".xlsx", ".csv"),
+            // P7-116 fix: الكتابة إلى المسار المختار نفسه — كانت تستبدل
+            // الامتداد إلى csv وتكتب ملفاً آخر غير المعلن عنه والمفتوح
+            using (StreamWriter sw = new StreamWriter(filePath,
                 false, System.Text.Encoding.UTF8))
             {
                 sw.WriteLine("المجموعة,رقم الحساب,اسم الحساب,الرصيد,ملاحظات");

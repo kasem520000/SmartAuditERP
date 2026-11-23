@@ -50329,6 +50329,7 @@ BEGIN
         WHERE 
             es.acc_no IN (SELECT Code FROM AccountHierarchy WHERE Type = 2)
             AND e.is_Deleted = 0 -- Exclude deleted entries if needed
+            AND e.state = 1 -- P7-114 fix: exclude cancelled entries (detailed-statement contract)
             AND e.date &lt; @StartDate
             AND (@Branch IS NULL OR e.branch = @Branch)
     ),
@@ -50362,6 +50363,7 @@ BEGIN
         WHERE 
             es.acc_no IN (SELECT Code FROM AccountHierarchy)
             AND e.is_Deleted = 0 -- Exclude deleted entries if needed
+            AND e.state = 1 -- P7-114 fix: exclude cancelled entries (detailed-statement contract)
             AND (@StartDate IS NULL OR e.date &gt;= @StartDate)
             AND (@EndDate IS NULL OR e.date &lt;= @EndDate)
             AND (@Branch IS NULL OR e.branch = @Branch)
@@ -51442,6 +51444,164 @@ BEGIN
 	insert into Attendance(_machineNumber,_enrollNumber,
 _enrollMachineNumber,_verifyMode,_inOutMode,_year,_month,_day,_hour,_minute,takeJoureny,_statu)values(@_machineNumber,@_enrollNumber,@_enrollMachineNumber,@_verifyMode,@_inOutMode,@_year,@_month,@_day,@_hour,@_minute,@takeJoureny,@_statu)
 END')
+END
+GO
+
+GO
+-- P7-114 fix: إجراء كشف الحساب الرئيسي لم يكن يستبعد القيود الملغاة
+-- (state &lt;&gt; 1) خلافاً للكشف المفصل الذي يرشح Entry.state=1 وIS_Deleted=0 —
+-- هذا التعديل يطبق الاستبعاد نفسه على قواعد البيانات القائمة (الإنشاء
+-- المحروس أعلاه يفعّل الشيء نفسه لقواعد جديدة).
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND OBJECT_ID = OBJECT_ID('dbo.GetAccountStatement'))
+BEGIN
+   exec('ALTER PROCEDURE [dbo].[GetAccountStatement]
+    @ParentCode NVARCHAR(50),
+    @StartDate DATETIME,
+    @EndDate DATETIME,
+    @Branch NVARCHAR(50),
+    @ShowPreviousBalance BIT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- CTE to get account hierarchy
+    WITH AccountHierarchy AS (
+        SELECT 
+            Code,
+            AName,
+            Type,
+            ParentCode
+        FROM 
+            Accounts_Index
+        WHERE 
+            Code = @ParentCode
+        
+        UNION ALL
+        
+        SELECT 
+            a.Code,
+            a.AName,
+            a.Type,
+            a.ParentCode
+        FROM 
+            Accounts_Index a
+        INNER JOIN 
+            AccountHierarchy ah ON a.ParentCode = ah.Code
+    ),
+
+    -- CTE to calculate previous balance for child accounts
+    PreviousBalance AS (
+        SELECT 
+            @ParentCode AS Code,
+             SUM(es.dept) as PreviousDept,
+			 SUM(es.credit) AS PreviousCredit
+        FROM 
+            entry e
+        INNER JOIN 
+            entry_sub es ON e.GlobalID = es.EntryGlobalID
+        WHERE 
+            es.acc_no IN (SELECT Code FROM AccountHierarchy WHERE Type = 2)
+            AND e.is_Deleted = 0 -- Exclude deleted entries if needed
+            AND e.state = 1 -- P7-114 fix: exclude cancelled entries (detailed-statement contract)
+            AND e.date &lt; @StartDate
+            AND (@Branch IS NULL OR e.branch = @Branch)
+    ),
+
+    -- CTE to get the main statement
+    MainStatement AS (
+        SELECT 
+            ROW_NUMBER() OVER (ORDER BY e.date) AS DgvRank,
+            es.acc_no AS DgvAccCode, 
+            ah.AName AS DgvAccName,
+            e.doc_No AS DgvEntryNo, 
+            es.dept AS DgvDept, 
+            es.credit AS DgvCredit,
+            e.date AS DgvDate,
+            es.notes AS DgvNote,
+            es.EntryGlobalID AS DgvGenralNo,
+            b.name AS DgvBranch,
+			0 as DgvBalance,
+            '''' DgvBalanceStatus,
+            et.Name AS DgvEntryType
+        FROM 
+            entry e
+        INNER JOIN 
+            entry_sub es ON e.GlobalID = es.EntryGlobalID
+        INNER JOIN 
+            AccountHierarchy ah ON es.acc_no = ah.Code
+		LEFT JOIN 
+            Branches b ON e.branch = b.BranchId
+			LEFT JOIN
+			EntryTypes et on e.type=et.Id 
+        WHERE 
+            es.acc_no IN (SELECT Code FROM AccountHierarchy)
+            AND e.is_Deleted = 0 -- Exclude deleted entries if needed
+            AND e.state = 1 -- P7-114 fix: exclude cancelled entries (detailed-statement contract)
+            AND (@StartDate IS NULL OR e.date &gt;= @StartDate)
+            AND (@EndDate IS NULL OR e.date &lt;= @EndDate)
+            AND (@Branch IS NULL OR e.branch = @Branch)
+    )
+
+    -- Combine the previous balance with the main statement based on @ShowPreviousBalance
+    SELECT
+        DgvRank,
+        DgvAccCode,
+        DgvAccName,
+        DgvEntryNo,
+        DgvDept,
+        DgvCredit,
+        DgvDate,
+        DgvNote,
+        DgvGenralNo,
+        DgvBranch,
+        DgvBalance,
+        DgvBalanceStatus,
+        DgvEntryType
+    FROM (
+        -- Previous balance row
+        SELECT
+            0 AS DgvRank, -- Use -1 to ensure it appears first
+            pb.Code AS DgvAccCode,
+            ai.AName AS DgvAccName,
+            NULL AS DgvEntryNo,
+            pb.PreviousDept AS DgvDept,
+            pb.PreviousCredit AS DgvCredit,
+            @StartDate AS DgvDate,
+            ''Previous Balance'' AS DgvNote,
+            NULL AS DgvGenralNo,
+            NULL AS DgvBranch,
+            0 AS DgvBalance,
+		  ''Previous Balance'' DgvBalanceStatus,
+            ''Previous Balance'' AS DgvEntryType
+        FROM
+            PreviousBalance pb
+        INNER JOIN
+            Accounts_Index ai ON pb.Code = ai.Code
+        WHERE @ShowPreviousBalance = 1 
+
+        UNION ALL
+
+        -- Main statement rows
+        SELECT
+            ms.DgvRank,
+            ms.DgvAccCode,
+            ms.DgvAccName,
+            ms.DgvEntryNo,
+            ms.DgvDept,
+            ms.DgvCredit,
+            ms.DgvDate,
+            ms.DgvNote,
+            ms.DgvGenralNo,
+            ms.DgvBranch,
+            ms.DgvBalance,
+            ms.DgvBalanceStatus,
+            ms.DgvEntryType
+        FROM
+            MainStatement ms
+    ) AS CombinedResult
+    ORDER BY
+        DgvRank, DgvDate;
+END;')
 END
 GO
 </value></data>

@@ -591,6 +591,18 @@ namespace SmartAuditERP.Form_WPF
                     bool parentIsRoot = AccountList.Exists(p => p.TrAccount == node.TrParentAcc && p.TrParentAcc == 0);
                     if (parentIsRoot) _displayRows.Add(node);
                 }
+                else if (maxLevel >= 2)
+                {
+                    // P7-118 fix: المستوى الثالث (أحفاد الشجرة) — كان الفرع
+                    // الثالث يكرر شرط الثاني فتعرض أبناء الجذر فقط ولا يصل
+                    // إلى الأحفاد أبداً؛ الأب هنا ابنُ جذر (مستوى ثانٍ)
+                    bool parentIsLevel2 = AccountList.Exists(p =>
+                        p.TrAccount == node.TrParentAcc
+                        && p.TrParentAcc != 0
+                        && AccountList.Exists(g =>
+                            g.TrAccount == p.TrParentAcc && g.TrParentAcc == 0));
+                    if (parentIsLevel2) _displayRows.Add(node);
+                }
             }
 
             UpdateRowCount();
@@ -917,7 +929,9 @@ namespace SmartAuditERP.Form_WPF
             doc.Blocks.Add(info);
 
             Table table = new Table { CellSpacing = 0 };
-            for (int i = 0; i < 10; i++)
+            // P7-119 fix: عمودا الرصيد السابق موجودان في الجدول وتصدير
+            // CSV/HTML — الطباعة المحلية كانت تسقطهما (10 أعمدة بدل 12)
+            for (int i = 0; i < 12; i++)
                 table.Columns.Add(new TableColumn());
 
             TableRowGroup rowGroup = new TableRowGroup();
@@ -930,6 +944,8 @@ namespace SmartAuditERP.Form_WPF
             AddHeaderCell(headerRow, "اسم الحساب");
             AddHeaderCell(headerRow, "افتتاحي مدين");
             AddHeaderCell(headerRow, "افتتاحي دائن");
+            AddHeaderCell(headerRow, "رصيد سابق مدين");
+            AddHeaderCell(headerRow, "رصيد سابق دائن");
             AddHeaderCell(headerRow, "حركة مدين");
             AddHeaderCell(headerRow, "حركة دائن");
             AddHeaderCell(headerRow, "رصيد مدين");
@@ -945,6 +961,9 @@ namespace SmartAuditERP.Form_WPF
                 AddBodyCell(dataRow, row.TrAccName);
                 AddBodyCell(dataRow, row.TrDeptIntial.ToString("N2"));
                 AddBodyCell(dataRow, row.TrCreditIntial.ToString("N2"));
+                // P7-119 fix: عمودا الرصيد السابق في مكانهما (بعد الافتتاحي)
+                AddBodyCell(dataRow, row.TrDeptPervious.ToString("N2"));
+                AddBodyCell(dataRow, row.TrCreditPervious.ToString("N2"));
                 AddBodyCell(dataRow, row.TrDebtorMovement.ToString("N2"));
                 AddBodyCell(dataRow, row.TrCreditorMovement.ToString("N2"));
                 AddBodyCell(dataRow, row.TrDeptBlc.ToString("N2"));

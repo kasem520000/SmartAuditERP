@@ -430,6 +430,10 @@ namespace SmartAuditERP.Form_WPF
                             salesBase -= netBase;
                             salesVAT -= vatAmt;
                             extraVAT -= extraVatAmt;
+                            // P7-127 fix: مرتجع المبيعات يُطرح من مجموع
+                            // المبالغ بلا ضريبة أيضاً — كان يُطرح من الأساس
+                            // والضريبة ويبقى مبلغة بدون ضريبة مضافاً
+                            salesNotTax -= nonTaxable;
                             break;
                     }
                 }
@@ -549,6 +553,9 @@ namespace SmartAuditERP.Form_WPF
                         case 2:
                             purchBase -= netBase;
                             purchVAT -= vatAmt;
+                            // P7-127 fix: مرتجع المشتريات يُطرح من مجموع
+                            // المبالغ بلا ضريبة أيضاً (كان يسقط من الطرح)
+                            purchNotTax -= nonTaxable;
                             break;
                     }
                 }

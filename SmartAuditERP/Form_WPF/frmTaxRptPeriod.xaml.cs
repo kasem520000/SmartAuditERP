@@ -522,10 +522,13 @@ namespace SmartAuditERP.Form_WPF
                 }
 
                 // ── Receipts (type 10) ──────────────────────────────────────
+                // P7-125 fix: جزء السندات كان يثبت فرع الجلسة الثابت
+                // (MainClass.BranchNo) ويتجاهل الفرع المختار وخيار كل
+                // الفروع — صار يستخدم شرط الفرع الموحد مثل بقية الأجزاء
                 string sqlReceipts =
                     $"SELECT SUM(Payment) AS total, SUM(NetVal) AS NetVal " +
-                    $"FROM Receipts WHERE ReceiptType=10 AND branchID={MainClass.BranchNo} " +
-                    "AND Paymenttype=1 AND ReceiptDate>=@date1 AND ReceiptDate<@date2 AND ISDeleted=0";
+                    $"FROM Receipts WHERE ReceiptType=10 AND {branchBranch}" +
+                    "Paymenttype=1 AND ReceiptDate>=@date1 AND ReceiptDate<@date2 AND ISDeleted=0";
 
                 using (var adapter = new SqlDataAdapter(sqlReceipts, conn))
                 {
@@ -965,13 +968,15 @@ namespace SmartAuditERP.Form_WPF
             if (ckQuart.IsChecked.GetValueOrDefault())
             {
                 cmbQuartars.IsEnabled = true;
-                cmbMonthly.IsEnabled = false;
+                // P7-126 fix: إلغاء النمط الآخر يمر بمعالجه الذي يعطل
+                // قائمته بنفسه — لا يعطل هذا المعالج غير قائمته
                 ckMonthly.IsChecked = false;
             }
             else
             {
+                // P7-126 fix: فرع الإلغاء يعطل قائمته فقط — كان يعطل
+                // القائمتين معاً فيعطل قائمة النمط الجديد عند التبديل
                 cmbQuartars.IsEnabled = false;
-                cmbMonthly.IsEnabled = false;
             }
         }
 
@@ -987,8 +992,9 @@ namespace SmartAuditERP.Form_WPF
             }
             else
             {
+                // P7-126 fix: تعطيل قائمة الشهر فقط — قائمة الربع يديرها
+                // معالجها (كان يعطلهما معاً فيعطل الربع عند التبديل إليه)
                 cmbMonthly.IsEnabled = false;
-                cmbQuartars.IsEnabled = false;
                 txtDateTo.IsEnabled = true;
                 txtDateFrom.IsEnabled = true;
             }

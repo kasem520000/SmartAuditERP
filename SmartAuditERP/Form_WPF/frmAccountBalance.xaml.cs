@@ -683,8 +683,13 @@ namespace SmartAuditERP.Form_WPF
         #region Event Handlers
         private void btnShow_Click(object sender, RoutedEventArgs e)
         {
-            // التعامل مع السنوات السابقة
-            if (MainClass.ReturnYearPreviews && CmbYearPreviews.SelectedValue != null)
+            // P7-115 fix: قرار السنة السابقة من حالة القائمة نفسها لا من
+            // العلم العالمي — العلم كان يُصفَّر بعد أول عرض فتُقرأ القاعدة
+            // الحالية في أي إعادة عرض والقائمة ما تزال على السنة السابقة
+            bool useYearPreview = CmbYearPreviews.SelectedIndex > 0
+                && CmbYearPreviews.SelectedValue != null;
+
+            if (useYearPreview)
             {
                 MainClass.originalConnStr = MainClass.connstr;
                 MainClass.connstr = $"server={MainClass.Server};database={CmbYearPreviews.SelectedValue};trusted_connection=true";
@@ -694,7 +699,7 @@ namespace SmartAuditERP.Form_WPF
             ShowAccountData();
 
             // استعادة الاتصال الأصلي
-            if (MainClass.ReturnYearPreviews)
+            if (useYearPreview)
             {
                 MainClass.connstr = MainClass.originalConnStr;
                 MainClass.ReturnYearPreviews = false;

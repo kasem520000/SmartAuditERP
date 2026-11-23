@@ -31,6 +31,10 @@ namespace SmartAuditERP.Form_WPF
         public  int    _FormType   = 1;
         public  double _Stock      = 0.0;
 
+        // P7-117 fix: علم «اختار المستخدم مخزوناً» منفصل عن القيمة —
+        // الصفر المعتمد كان يُفسر «لا اختيار» فيسقط للتقييم التلقائي
+        private bool   _stockChosen = false;
+
         private bool   PrintHeader = true;
         private bool   PrintFooter = true;
         private bool   PrintStamp  = true;
@@ -315,7 +319,7 @@ namespace SmartAuditERP.Form_WPF
                 if (invNameDt.Rows.Count > 0)
                     inventoryName = invNameDt.Rows[0][0].ToString();
 
-                double stockCost = _Stock != 0.0
+                double stockCost = _stockChosen
                     ? _Stock
                     // P7-065 fix: «كل الفروع» يشمل جانب المخزون — كان
                     // الأستاذ بلا مرشح فرع والمخزون يبقى لفرع الجلسة
@@ -432,7 +436,12 @@ namespace SmartAuditERP.Form_WPF
                 safeGrd.ShowDialog();
 
                 if (safeGrd.ISDone)
+                {
+                    // P7-117 fix: الاعتماد يثبت الاختيار حتى لو كان الصفر —
+                    // مخزون صفري معتمد كان يُهمل ويسقط للتقييم التلقائي
                     _Stock = safeGrd._stockTotal;
+                    _stockChosen = true;
+                }
             }
             catch (Exception ex)
             {
