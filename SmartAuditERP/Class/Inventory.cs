@@ -472,6 +472,34 @@ namespace SmartAuditERP
                 "@AvrgCost");
         }
 
+        // P7-065 fix: كلفة المخزون على نطاق الفروع — -1 يعني كل الفروع:
+        // الإجراء InventoryCost مخزني لكل فرع (inv.branch=@branch في كل
+        // أذرعه) فتُجمع رسومه عبر الفروع النشطة — كان «كل الفروع» في
+        // القوائم المالية يبقى على فرع الجلسة في جانب المخزون
+        public static double InventoryCostForBranchScope(int branch, DateTime toDate)
+        {
+            if (branch != -1)
+                return InventoryCost(branch, toDate);
+
+            double total = 0.0;
+            try
+            {
+                using var conn = MainClass.ConnObj();
+                using var da = new SqlDataAdapter(
+                    "SELECT id FROM Branches WHERE IS_Deleted=0", conn);
+                var dt = new DataTable();
+                da.Fill(dt);
+                foreach (DataRow r in dt.Rows)
+                    total += InventoryCost(Convert.ToInt32(r["id"]), toDate);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(
+                    $"خطأ في InventoryCostForBranchScope: {ex.Message}");
+            }
+            return total;
+        }
+
         public static double InventoryCostForBalanceSheet(int branch, DateTime toDate)
         {
             return ExecuteStoredProcDouble("InventoryCostForBalanceSheet",

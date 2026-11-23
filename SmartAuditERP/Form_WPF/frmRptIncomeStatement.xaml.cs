@@ -372,13 +372,18 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
+                // P7-065 fix: «كل الفروع» في القوائم المالية يشمل المخزون
+                // أيضاً — كان الأستاذ يجمع كل الفروع والمخزون يبقى لفرع
+                // الجلسة فيختل التوازن الظاهري للقائمة
                 int branch = MainClass.BranchNo;
-                if (cmbBranches.SelectedIndex != -1 && cmbBranches.SelectedValue != null)
+                if (chkAllBranches.IsChecked == true)
+                    branch = -1;
+                else if (cmbBranches.SelectedIndex != -1 && cmbBranches.SelectedValue != null)
                     branch = Convert.ToInt32(cmbBranches.SelectedValue);
 
                 // P4-008: نهاية اليوم فعلياً (23:59:59) حتى يشمل مرشح التاريخ الجديد
                 // في الإجراء حركات يوم النهاية كاملة (نفس عقد P3-023)
-                double invCost = Inventory.InventoryCost(branch,
+                double invCost = Inventory.InventoryCostForBranchScope(branch,
                     txtToDate.DateTime.Date.AddDays(1).AddSeconds(-1));
 
                 if (_FormType == 1)
@@ -400,8 +405,11 @@ namespace SmartAuditERP.Form_WPF
             try
             {
                 string branchCond = "";
+                // P7-065 fix: «كل الفروع» يشمل افتتاحي المخزون (-1 = بلا مرشح)
                 int branch = MainClass.BranchNo;
-                if (cmbBranches.SelectedIndex != -1 && cmbBranches.SelectedValue != null)
+                if (chkAllBranches.IsChecked == true)
+                    branch = -1;
+                else if (cmbBranches.SelectedIndex != -1 && cmbBranches.SelectedValue != null)
                     branch = Convert.ToInt32(cmbBranches.SelectedValue);
 
                 if (branch != -1)

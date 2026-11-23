@@ -317,8 +317,12 @@ namespace SmartAuditERP.Form_WPF
 
                 double stockCost = _Stock != 0.0
                     ? _Stock
-                    : Inventory.InventoryCost(
-                        selectedBranch.HasValue ? selectedBranch.Value : MainClass.BranchNo,
+                    // P7-065 fix: «كل الفروع» يشمل جانب المخزون — كان
+                    // الأستاذ بلا مرشح فرع والمخزون يبقى لفرع الجلسة
+                    : Inventory.InventoryCostForBranchScope(
+                        selectedBranch.HasValue
+                            ? selectedBranch.Value
+                            : (ckAllBranches.IsChecked == true ? -1 : MainClass.BranchNo),
                         // P4-008: نهاية اليوم فعلياً (23:59:59) — منتصف الليل كان
                         // سيستبعد حركات يوم النهاية بعد تطبيق مرشح التاريخ في الإجراء
                         (txtToDate.SelectedDate ?? DateTime.Today).Date.AddDays(1).AddSeconds(-1));

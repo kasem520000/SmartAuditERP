@@ -158,8 +158,11 @@ namespace SmartAuditERP.Form_WPF
                 string condItems = "";
 
                 // المجموعة
+                // P7-068 fix: أول اختيار فعلي يدخل المرشح — الشرط القديم
+                // «SelectedIndex > 0» كان يتخطى أول مجموعة/مستخدم/فرع
+                // حقيقي (القوائم مربوطة بالبيانات بلا بند «الكل» placeholder)
                 if (CheckBoxgroup.IsChecked != true &&
-                    cmbCategry.SelectedIndex > 0 &&
+                    cmbCategry.SelectedIndex > -1 &&
                     cmbCategry.SelectedValue != null)
                 {
                     condCat   = $" AND CategoryId={cmbCategry.SelectedValue}";
@@ -175,7 +178,7 @@ namespace SmartAuditERP.Form_WPF
 
                 // المستخدم
                 if (Che_user.IsChecked != true &&
-                    cmbUser.SelectedIndex > 0 &&
+                    cmbUser.SelectedIndex > -1 &&
                     cmbUser.SelectedValue != null)
                     condWhere += $" AND Safe_Emps={cmbUser.SelectedValue}";
 
@@ -185,7 +188,7 @@ namespace SmartAuditERP.Form_WPF
 
                 // الفرع
                 if (chk_branch.IsChecked != true &&
-                    cmbBranch.SelectedIndex > 0 &&
+                    cmbBranch.SelectedIndex > -1 &&
                     cmbBranch.SelectedValue != null)
                     condWhere += $" AND inv.branch={cmbBranch.SelectedValue}";
 
