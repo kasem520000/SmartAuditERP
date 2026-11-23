@@ -4876,6 +4876,10 @@ namespace SmartAuditERP
         private void AccountingPeriods_Click(object sender, RoutedEventArgs e) { FrmAccountingPeriods.Show(); }
         private void ToolStripMenuItemRestorData_Click(object sender, RoutedEventArgs e)
         {
+            // V-038 fix: كان معالجاً فارغاً — كبسة بلا أثر؛ الاستعادة تتم من شاشة
+            // النسخ الاحتياطي (stripBackup) — رسالة توضح المسار بدل الصمت.
+            MessageBox.Show("استعادة البيانات تتم من شاشة النسخ الاحتياطي والاستعادة (القائمة: أدوات ← النسخ الاحتياطي)",
+                "تنبيه", MessageBoxButton.OK, MessageBoxImage.Information);
         }
      //   private void ToolStripMenuItemRestorData_Click(object sender, RoutedEventArgs e) { FrmRestorData.Show(); }
         private void stripAddUser_Click(object sender, RoutedEventArgs e) {
@@ -4895,6 +4899,10 @@ namespace SmartAuditERP
             if (!CanOpenStrip(stripfingDevice)) return; MainClass.ApplyPermissionToForm(frmFPSSetting); MainClass.DoApplyUserSett(frmFPSSetting); frmFPSSetting.Show(); frmFPSSetting.Activate(); }
         private void ToolStripMenuItemsallahSetting_Click(object sender, RoutedEventArgs e)
         {
+            // V-038 fix: كان معالجاً فارغاً (شاشة FrmWebhooksetting غير منقولة) —
+            // رسالة صريحة بدل كبسة صامتة.
+            MessageBox.Show("إعدادات ربط سلة غير متوفرة في هذا الإصدار",
+                "تنبيه", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         // private void ToolStripMenuItemsallahSetting_Click(object sender, RoutedEventArgs e) { FrmWebhooksetting.Show(); }
 
@@ -5015,11 +5023,23 @@ namespace SmartAuditERP
 
         #region Menu Click Events - Salla
         private void ToolStripListProductsalla_Click(object sender, RoutedEventArgs e)
-        { }
+        {
+            // V-038 fix: كان معالجاً فارغاً (شاشة FrmSallaProducts غير منقولة).
+            MessageBox.Show("منتجات متجر سلة غير متوفرة في هذا الإصدار",
+                "تنبيه", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
         private void ToolStripMenuItemGetOrderSallah_Click(object sender, RoutedEventArgs e)
-        { }
+        {
+            // V-038 fix: كان معالجاً فارغاً (شاشة FrmOrderSalla غير منقولة).
+            MessageBox.Show("إدارة طلبات سلة غير متوفرة في هذا الإصدار",
+                "تنبيه", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
         private void ToolStripMenuItemSallaSafes_Click(object sender, RoutedEventArgs e)
-        { }
+        {
+            // V-038 fix: كان معالجاً فارغاً (شاشة FrmSallaBranchMapping غير منقولة).
+            MessageBox.Show("ربط مستودعات سلة غير متوفر في هذا الإصدار",
+                "تنبيه", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
         //    private void ToolStripListProductsalla_Click(object sender, RoutedEventArgs e) { FrmSallaProducts.Show(); }
         //     private void ToolStripMenuItemGetOrderSallah_Click(object sender, RoutedEventArgs e) { FrmOrderSalla.Show(); }
         //     private void ToolStripMenuItemSallaSafes_Click(object sender, RoutedEventArgs e) { var frm = new FrmSallaBranchMapping(); frm.Show(); frm.Activate(); }

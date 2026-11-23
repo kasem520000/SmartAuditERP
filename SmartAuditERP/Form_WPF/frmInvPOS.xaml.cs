@@ -1243,7 +1243,10 @@ namespace SmartAuditERP.Form_WPF
 
         private void CtxItemSerialNo_Click(object sender, RoutedEventArgs e)
         {
-            // الرقم التسلسلي
+            // V-038 fix: كان معالجاً فارغاً — كبسة بلا أثر؛ الرقم التسلسلي
+            // يُدخل من حقل البحث التسلسلي المخصص في الشاشة.
+            DXMessageBox.Show("إدخال الرقم التسلسلي يكون من حقل الرقم التسلسلي المخصص في الفاتورة", "",
+                MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void CtxItemCost_Click(object sender, RoutedEventArgs e)
