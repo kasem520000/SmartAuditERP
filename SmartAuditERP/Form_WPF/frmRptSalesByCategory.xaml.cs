@@ -145,11 +145,14 @@ namespace SmartAuditERP.Form_WPF
 
         #region Load Data (Main)
 
-        private void LoadDgv()
+        // P7-046 fix: النتيجة bool — اكتمل النشر الذري أم لا (بوابة الطباعة P7-045)
+        private bool LoadDgv()
         {
             try
             {
-                CategoryList.Clear();
+                // P7-046 fix: التجميع في قائمة محلية (Master-Detail) — لا نشر
+                // تدريجي أثناء الاستعلامات
+                var categories = new List<CategoryNode>();
 
                 string condCat   = "";
                 string condItems = "";
@@ -298,19 +301,25 @@ namespace SmartAuditERP.Form_WPF
 
                     // فقط اضف المجموعات التي لها أصناف
                     if (node.ItemDetails.Count > 0)
-                        CategoryList.Add(node);
+                        categories.Add(node);
                 }
+
+                // ══ نقطة النشر الواحدة (P7-046) ══
+                CategoryList.Clear();
+                foreach (var c in categories) CategoryList.Add(c);
 
                 // تحديث بطاقات الملخص
                 lblTotQty.Text   = CategoryList.Sum(x => x.TotalQty).ToString("N2");
                 lblTotTotal.Text = CategoryList.Sum(x => x.ItemTotal).ToString("N2");
                 lblTotVat.Text   = CategoryList.Sum(x => x.ItemVat).ToString("N2");
                 lblTotNet.Text   = CategoryList.Sum(x => x.ItemNet).ToString("N2");
+                return true;
             }
             catch (Exception ex)
             {
                 DXMessageBox.Show($"خطأ في تحميل البيانات:\n{ex.Message}",
                                 "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
         }
 
@@ -448,6 +457,10 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
+                // P7-045 fix: إعادة الحساب بمعايير الواجهة الحالية قبل الربط —
+                // النتيجة الفارغة يمسكها فحص القائمة الفارغة أدناه
+                if (!LoadDgv()) return;
+
                 if (CategoryList == null || CategoryList.Count == 0)
                 {
                     DXMessageBox.Show("لا توجد بيانات للطباعة.", "تنبيه",

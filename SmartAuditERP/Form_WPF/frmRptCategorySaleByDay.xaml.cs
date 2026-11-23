@@ -129,14 +129,15 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnShowResults_Click(object sender, RoutedEventArgs e) => ShowResults();
 
-        private void ShowResults()
+        // P7-046 fix: النتيجة bool — اكتمل النشر الذري أم لا (بوابة الطباعة P7-045)
+        private bool ShowResults()
         {
             try
             {
-                _dataSource.Clear();
-                _grandTotal    = 0;
-                lblCount.Text  = "0";
-                lblTotal.Text  = "0.00";
+                // P7-046 fix: التجميع في قائمة ومتغير محلي — لا نشر تدريجي، ومسح
+                // الملخصات يصار في نقطة النشر لا في البداية
+                var rows = new List<CategorySaleRow>();
+                double grandTotal = 0;
                 ProgressBar1.Value = 0;
 
                 var cmd = new SqlCommand("proGetCategorySaleByDay");
@@ -180,13 +181,6 @@ namespace SmartAuditERP.Form_WPF
                     var dt = new DataTable();
                     da.Fill(dt);
 
-                    if (dt.Rows.Count == 0)
-                    {
-                        DXMessageBox.Show("لا توجد بيانات، أدخل الفترة الزمنية الصحيحة",
-                            "", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        return;
-                    }
-
                     ProgressBar1.Maximum = dt.Rows.Count;
                     string langName = (MainClass.Language == "en-us") ? "en" : "ar";
 
@@ -203,7 +197,7 @@ namespace SmartAuditERP.Form_WPF
                         if (DateTime.TryParse(dateStr, out DateTime parsedDate))
                             dayName = parsedDate.ToString("ddd", new CultureInfo(langName));
 
-                        _dataSource.Add(new CategorySaleRow
+                        rows.Add(new CategorySaleRow
                         {
                             RowIndex   = rowNo,
                             CtgyCode   = code,
@@ -214,17 +208,32 @@ namespace SmartAuditERP.Form_WPF
                             IsOdd      = rowNo % 2 != 0
                         });
 
-                        _grandTotal     += saleNet;
+                        grandTotal      += saleNet;
                         ProgressBar1.Value = rowNo++;
                     }
                 }
 
+                // ══ نقطة النشر الواحدة (P7-046) ══
+                _dataSource.Clear();
+                foreach (var r in rows) _dataSource.Add(r);
+                _grandTotal = grandTotal;
+
                 lblCount.Text = _dataSource.Count.ToString();
                 lblTotal.Text = _grandTotal.ToString("N2");
+
+                // P7-046: التنبيه على الفراغ بعد نشر الحالة الفارغة المتسقة —
+                // لا قبل النشر فيخلط ملصقات قديمة بشبكة فارغة
+                if (_dataSource.Count == 0)
+                {
+                    DXMessageBox.Show("لا توجد بيانات، أدخل الفترة الزمنية الصحيحة",
+                        "", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                return true;
             }
             catch (Exception ex)
             {
                 DXMessageBox.Show(ex.Message);
+                return false;
             }
         }
 
@@ -275,6 +284,10 @@ namespace SmartAuditERP.Form_WPF
 
         private void PrintDevexpress(int printType)
         {
+            // P7-045 fix: إعادة الحساب بمعايير الواجهة الحالية قبل الربط —
+            // النتيجة الفارغة يمسكها فحص الجدول الفارغ أدناه
+            if (!ShowResults()) return;
+
             string rptName    = "RptCategorySaleByDay.repx";
             string printer    = MainClass.ReportsPrinter;
             string reportsPath = MainClass.ReportsPath;

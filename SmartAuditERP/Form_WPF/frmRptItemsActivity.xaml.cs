@@ -165,7 +165,8 @@ namespace SmartAuditERP.Form_WPF
 
         #region CalcStock - حساب حركة الأصناف
 
-        public void CalcStock()
+        // P7-046 fix: النتيجة bool — اكتمل النشر الذري أم لا (بوابة الطباعة P7-045)
+        public bool CalcStock()
         {
             try
             {
@@ -205,7 +206,9 @@ namespace SmartAuditERP.Form_WPF
                 }
 
                 // ─── تهيئة الجدول ───
-                _gridData.Clear();
+                // P7-046 fix: التجميع في قائمة محلية — لا نشر تدريجي أثناء
+                // استعلامات الحركة (13 استعلاماً لكل صنف)
+                var rows = new List<ItemActivityRow>();
                 ProgressBar1.Maximum = dtItems.Rows.Count;
                 ProgressBar1.Value   = 0;
 
@@ -268,7 +271,7 @@ namespace SmartAuditERP.Form_WPF
                     grandTotalBalance += Math.Round(balance, 2);
                     grandTotalCost    += totCost;
 
-                    _gridData.Add(new ItemActivityRow
+                    rows.Add(new ItemActivityRow
                     {
                         DgvItemCode   = itemCode,
                         DgvItemName   = itemName,
@@ -291,16 +294,22 @@ namespace SmartAuditERP.Form_WPF
                     });
                 }
 
+                // ══ نقطة النشر الواحدة (P7-046) ══
+                _gridData.Clear();
+                foreach (var r in rows) _gridData.Add(r);
+
                 // تحديث بطاقات المجاميع
                 lblSumBalance.Text   = grandTotalBalance.ToString("N2");
                 lblSumTotalCost.Text = grandTotalCost.ToString("N2");
                 lblCountItems.Text   = _gridData.Count.ToString();
 
                 ProgressBar1.Value = ProgressBar1.Maximum;
+                return true;
             }
             catch (Exception ex)
             {
                 DXMessageBox.Show("خطأ في حساب الحركة:\n" + ex.Message);
+                return false;
             }
         }
 
@@ -562,6 +571,10 @@ namespace SmartAuditERP.Form_WPF
 
         private void PrintDevexpress(int printMode)
         {
+            // P7-045 fix: إعادة الحساب بمعايير الواجهة الحالية قبل الربط —
+            // النتيجة الفارغة يمسكها فحص الجدول الفارغ أدناه
+            if (!CalcStock()) return;
+
             RptUrl  = MainClass.ReportsPath;
             RptName = "rptItemsTotalGrd.repx";
             defPrinter = MainClass.ReportsPrinter;
