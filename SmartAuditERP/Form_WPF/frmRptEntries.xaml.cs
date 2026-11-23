@@ -23,6 +23,9 @@ namespace SmartAuditERP.Form_WPF
         private SqlConnection _conn;
 
         private int    _code          = -1;
+        // P7-064 fix: تاريخ القيد الحالي — التنقل يرتب (التاريخ ثم المعرّف)
+        // ويرشّح بهما معاً فلا تتخطى قيود عند اختلاف ترتيب الرقم عن التاريخ
+        private DateTime _curDate     = DateTime.MinValue;
         private int    _resType       = -1;
         private string _globalId      = "-1";
         private string _receiptGlobalId = "";
@@ -159,7 +162,7 @@ namespace SmartAuditERP.Form_WPF
 
         private void LoadLastEntry()
         {
-            Navigate($"SELECT TOP 1 * FROM Entry WHERE {GetBranchCondition()} IS_Deleted=0 ORDER BY date DESC");
+            Navigate($"SELECT TOP 1 * FROM Entry WHERE {GetBranchCondition()} IS_Deleted=0 ORDER BY date DESC, id DESC");
         }
 
         private string GetBranchCondition()
@@ -214,6 +217,7 @@ namespace SmartAuditERP.Form_WPF
                 _detailSource.Clear();
                 _code     = Convert.ToInt32(dr["id"]);
                 _globalId = dr["GlobalId"].ToString();
+                _curDate  = Convert.ToDateTime(dr["date"]);
 
                 txtEntryGID.Text = _globalId;
                 txtNo.Text       = _code.ToString();
@@ -328,16 +332,30 @@ namespace SmartAuditERP.Form_WPF
         #region Navigation Buttons
 
         private void btnFirst_Click(object sender, RoutedEventArgs e)
-            => Navigate($"SELECT TOP 1 * FROM Entry WHERE {GetBranchCondition()} IS_Deleted=0 ORDER BY date ASC");
+            => Navigate($"SELECT TOP 1 * FROM Entry WHERE {GetBranchCondition()} IS_Deleted=0 ORDER BY date ASC, id ASC");
 
         private void btnPrevious_Click(object sender, RoutedEventArgs e)
-            => Navigate($"SELECT TOP 1 * FROM Entry WHERE {GetBranchCondition()} IS_Deleted=0 AND id<{_code} ORDER BY date DESC");
+        {
+            // P7-064 fix: المرشح والترتيب على المفتاح نفسه (التاريخ ثم المعرّف)
+            // — كان المرشح بالرقم والترتيب بالتاريخ فيتخطى قيوداً عند اختلاف
+            // ترتيبهما (تواريخ متساوية أو أرقام غير مواكبة للتسلسل الزمني)
+            string curDate = _curDate.ToString("yyyy-MM-dd HH:mm:ss");
+            Navigate($"SELECT TOP 1 * FROM Entry WHERE {GetBranchCondition()} IS_Deleted=0 " +
+                     $"AND (date < '{curDate}' OR (date = '{curDate}' AND id < {_code})) " +
+                     $"ORDER BY date DESC, id DESC");
+        }
 
         private void btnNext_Click(object sender, RoutedEventArgs e)
-            => Navigate($"SELECT TOP 1 * FROM Entry WHERE {GetBranchCondition()} IS_Deleted=0 AND id>{_code} ORDER BY date ASC");
+        {
+            // P7-064 fix: مفتاح التنقل (التاريخ ثم المعرّف) في الاتجاهين
+            string curDate = _curDate.ToString("yyyy-MM-dd HH:mm:ss");
+            Navigate($"SELECT TOP 1 * FROM Entry WHERE {GetBranchCondition()} IS_Deleted=0 " +
+                     $"AND (date > '{curDate}' OR (date = '{curDate}' AND id > {_code})) " +
+                     $"ORDER BY date ASC, id ASC");
+        }
 
         private void btnLast_Click(object sender, RoutedEventArgs e)
-            => Navigate($"SELECT TOP 1 * FROM Entry WHERE {GetBranchCondition()} IS_Deleted=0 ORDER BY date DESC");
+            => Navigate($"SELECT TOP 1 * FROM Entry WHERE {GetBranchCondition()} IS_Deleted=0 ORDER BY date DESC, id DESC");
 
         #endregion
 

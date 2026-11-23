@@ -213,7 +213,11 @@ namespace SmartAuditERP.Form_WPF
                         $"AND Entry_sub.acc_no={accNo}", conn);
                     prevAdapter.SelectCommand.Parameters.Add(
                         "@date1", SqlDbType.DateTime).Value =
-                        dateFrom.ToShortDateString();
+                        // P7-062 fix: حد الرصيد السابق هو وقت بداية الفترة
+                        // المختار لا منتصف ليل يوم البداية — حركات يوم البداية
+                        // قبل وقت البداية كانت تسقط من السابق (≥ منتصف الليل)
+                        // ومن الفترة (< وقت البداية) معاً
+                        dt1;
 
                     var prevDt = new DataTable();
                     prevAdapter.Fill(prevDt);
