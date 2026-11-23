@@ -17,8 +17,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\SmartAuditERP\SmartAuditERP.csproj" />
-    <!-- مسحة التحقق: مرجع أداة التحديث لاختبار ManifestSignatureVerifier (تحصين P1-020) -->
+    <!-- V-009 fix (مسحة التحقق): مرجع المشروع الرئيسي جعل الاختبارات لا تُبنى في CI
+         إطلاقاً (مشروع SmartAuditERP يحتاج مكتبات P1-001 الخارجية غير المتوفرة في
+         المستودع — 59/59 تشغيل CI فشلت تاريخياً). تُضم ملفات المصدر الفعلية للفئات
+         الأمنية (مكتبات صرفة بلا تبعيات خارجية) بدل نسخ أو مرجع لا يُبنى —
+         الاختبارات تغطي الكود الإنتاجي نفسه حرفياً. -->
+    <Compile Include="..\..\SmartAuditERP\Class\Security\PasswordHasher.cs" Link="Security\PasswordHasher.cs" />
+    <Compile Include="..\..\SmartAuditERP\Class\Security\SqlBatchSplitter.cs" Link="Security\SqlBatchSplitter.cs" />
+    <Compile Include="..\..\SmartAuditERP\Class\Security\PermissionGate.cs" Link="Security\PermissionGate.cs" />
+    <!-- مسحة التحقق: مرجع أداة التحديث لاختبار ManifestSignatureVerifier (تحصين P1-020)
+         (المشروع مستقل بلا تبعيات خارجية — يُبنى في CI بنجاح) -->
     <ProjectReference Include="..\..\SmartAuditUpdater\SmartAuditUpdater.csproj" />
   </ItemGroup>
 
