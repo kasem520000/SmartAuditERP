@@ -506,7 +506,10 @@ namespace SmartAuditERP.Form_WPF
         private double CalcUnitCost(object itemId, DateTime saleDate)
         {
             double totalCostValue = 0.0;
-            int totalQty = 0;
+            // P7-077 fix: الكمية كسرية كما خزّنها الكاتب (inv_sub.val float)
+            // — تقريب المقام إلى عدد صحيح كان يخلف تكلفة الوحدة
+            // (كمية 0.4 تصبح 0 فتُهمل، وكمية 2.5 تصبح 3 فتُبخس التكلفة)
+            double totalQty = 0;
             double unitCost = 0.0;
 
             // من فواتير الشراء
@@ -524,7 +527,7 @@ namespace SmartAuditERP.Form_WPF
                 double.TryParse(dt.Rows[0][1].ToString(), out double v);
                 totalCostValue += v;
                 if (double.TryParse(dt.Rows[0][0].ToString(), out double q))
-                    totalQty += (int)Math.Round(q);
+                    totalQty += q;
             }
 
             // من مرتجعات الشراء
@@ -541,7 +544,7 @@ namespace SmartAuditERP.Form_WPF
                 double.TryParse(dt.Rows[0][1].ToString(), out double v);
                 totalCostValue += v;
                 if (double.TryParse(dt.Rows[0][0].ToString(), out double q))
-                    totalQty += (int)Math.Round(q);
+                    totalQty += q;
             }
 
             if (totalQty != 0)
@@ -568,7 +571,9 @@ namespace SmartAuditERP.Form_WPF
         private double CalcUnitCostStock(object itemId, DateTime saleDate)
         {
             double totalCostValue = 0.0;
-            int totalQty = 0;
+            // P7-077 fix: الكمية كسرية كما خزّنها الكاتب — لا تقريب
+            // المقام إلى عدد صحيح قبل القسمة
+            double totalQty = 0;
             double unitCost = 0.0;
 
             var adp = new SqlDataAdapter(
@@ -585,7 +590,7 @@ namespace SmartAuditERP.Form_WPF
                 double.TryParse(dt.Rows[0][1].ToString(), out double v);
                 totalCostValue += v;
                 if (double.TryParse(dt.Rows[0][0].ToString(), out double q))
-                    totalQty += (int)Math.Round(q);
+                    totalQty += q;
             }
 
             var adp2 = new SqlDataAdapter(
@@ -602,7 +607,7 @@ namespace SmartAuditERP.Form_WPF
                 double.TryParse(dt2.Rows[0][1].ToString(), out double v);
                 totalCostValue += v;
                 if (double.TryParse(dt2.Rows[0][0].ToString(), out double q))
-                    totalQty += (int)Math.Round(q);
+                    totalQty += q;
             }
 
             if (totalQty != 0)
@@ -855,19 +860,20 @@ namespace SmartAuditERP.Form_WPF
                     dt2 = new DataTable();
                     adp2.Fill(dt2);
 
-                    double netQty = 0, netCost = 0, totalQtyForCost = 0;
-                    double lastUnitCost = 0;
+                    double netQty = 0, netCost = 0;
 
                     for (int j = 0; j < dt2.Rows.Count; j++)
                     {
                         double.TryParse(dt2.Rows[j]["val"].ToString(), out double rowQty);
                         netQty += rowQty;
-                        totalQtyForCost += rowQty;
                         DateTime rowDate = Convert.ToDateTime(dt2.Rows[j]["date"]);
-                        lastUnitCost = CalcUnitCost(dt2.Rows[j][0], rowDate);
+                        // P7-078 fix: تكلفة كل سطر (صنف/تاريخ) بتكلفة
+                        // وحدته هو — لا آخر تكلفة مقروءة تُطبَّق على كامل
+                        // كمية الفترة (عقد مسار المجموعات ShowResultGroup
+                        // نفسه: netCost += rowQty * unitCost لكل سطر)
+                        double rowUnitCost = CalcUnitCost(dt2.Rows[j][0], rowDate);
+                        netCost += Math.Round(rowQty * rowUnitCost, 4);
                     }
-
-                    netCost = Math.Round(totalQtyForCost * lastUnitCost, 4);
 
                     double netProfit = netTotal - netCost;
                     double profitRatio = netCost != 0

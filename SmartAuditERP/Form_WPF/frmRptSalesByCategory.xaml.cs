@@ -180,7 +180,12 @@ namespace SmartAuditERP.Form_WPF
                 if (Che_user.IsChecked != true &&
                     cmbUser.SelectedIndex > -1 &&
                     cmbUser.SelectedValue != null)
-                    condWhere += $" AND Safe_Emps={cmbUser.SelectedValue}";
+                    // P7-076 fix: عمود مستخدم الفاتورة هو inv.sales_emp
+                    // (عقد InsertInv: @sales_emp=MainClass.EmpNo وقائمة
+                    // المستخدمين من Employees) — Safe_Emps عمود في جدول
+                    // ربط الخزائن بالموظفين لا وجود له في عقد هذا
+                    // الاستعلام (Items/inv_sub/inv) فيفشل الفلترة بالاستثناء
+                    condWhere += $" AND inv.sales_emp={cmbUser.SelectedValue}";
 
                 // الفترة
                 if (Che_time.IsChecked != true)

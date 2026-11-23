@@ -160,6 +160,10 @@ namespace SmartAuditERP.Form_WPF
             bool isAll = ckAllItems.IsChecked == true;
             txtItemCode.IsEnabled = !isAll;
             txtItemName.IsEnabled = !isAll;
+            // P7-075 fix: زر البحث يتبع حالة «الكل» مع حقلي الصنف —
+            // كان الزر معطّلاً في XAML بلا أي مسار يفعّله فلا يمكن
+            // تحديد صنف من الواجهة (ItemId لا يُعيّن إلا عبر البحث)
+            btnSearch.IsEnabled = !isAll;
             if (isAll)
             {
                 txtItemCode.Text = "";

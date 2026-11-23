@@ -163,8 +163,14 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
-                if (!string.IsNullOrEmpty(txtInvNo.Text))
-                    Cond = "";
+                // P7-073 fix: مسار العرض المحلي يربط تواريخ الواجهة
+                // بمعيار الاستعلام دائمًا — كان Cond فارغًا عند الفتح
+                // (وغير معالجات تغيير التاريخ) فيعرض التقرير كل
+                // الفواتير بلا نطاق زمني، وكتابة رقم الفاتورة كانت
+                // تمسح Cond فتنفصل التواريخ نهائيًا عن الاستعلام
+                // (رقم الفاتورة يُرشّح أصلًا عبر DataView في GenerateFilter)
+                if (string.IsNullOrEmpty(Cond) || !Cond.Contains("@date1"))
+                    Cond = " AND RentInvoice.date>=@date1 AND RentInvoice.date<=@date2 ";
 
                 LoadQry =
                     "SELECT RentInvoice.proc_id AS proc_id, " +
@@ -307,11 +313,13 @@ namespace SmartAuditERP.Form_WPF
 
                 // المستخدم
                 if (cmbUsers.SelectedIndex > -1)
-                    filter += $" AND emp LIKE '%{cmbUsers.Text}%'";
+                    // P7-074 fix: ترميز علامات الاقتباس في نصوص مرشح
+                    // DataView — علامة ' واحدة في الاسم كانت تكسر التعبير
+                    filter += $" AND emp LIKE '%{EscapeLike(cmbUsers.Text)}%'";
 
                 // الفئة
                 if (cmbGroups.SelectedIndex > -1)
-                    filter += $" AND Groupcode LIKE '%{cmbGroups.Text}%'";
+                    filter += $" AND Groupcode LIKE '%{EscapeLike(cmbGroups.Text)}%'";
 
                 // رقم الفاتورة
                 if (!string.IsNullOrWhiteSpace(txtInvNo.Text))
@@ -322,11 +330,11 @@ namespace SmartAuditERP.Form_WPF
 
                 // جوال العميل
                 if (!string.IsNullOrWhiteSpace(txtClientMobile.Text))
-                    filter += $" AND mobile LIKE '%{txtClientMobile.Text.Trim()}%'";
+                    filter += $" AND mobile LIKE '%{EscapeLike(txtClientMobile.Text.Trim())}%'";
 
                 // اسم العميل
                 if (!string.IsNullOrWhiteSpace(txtClientName.Text))
-                    filter += $" AND cust LIKE '%{txtClientName.Text.Trim()}%'";
+                    filter += $" AND cust LIKE '%{EscapeLike(txtClientName.Text.Trim())}%'";
 
                 _dataView.RowFilter  = filter;
                 dgvItems.ItemsSource = _dataView;
@@ -337,6 +345,15 @@ namespace SmartAuditERP.Form_WPF
                 DXMessageBox.Show("خطأ في تطبيق الفلتر:\n" + ex.Message);
             }
         }
+
+        #endregion
+
+        #region Helpers
+
+        // P7-074 fix: ترميز النص لبنية DataView.RowFilter — مضاعفة
+        // علامة الاقتباس المفردة هي الترميز المعتمد للبنية
+        private static string EscapeLike(string value)
+            => (value ?? "").Replace("'", "''");
 
         #endregion
 

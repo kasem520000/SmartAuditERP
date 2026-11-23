@@ -176,20 +176,28 @@ namespace SmartAuditERP.Form_WPF
                 if (MainClass.BranchNo != -1)
                     branchFilter = $"inv.branch={MainClass.BranchNo} AND ";
 
+                // P7-072 fix: هوية المكوّن عمود inv_sub.ItemId — لا عمود
+                // ComponentId في Inv_Sub أصلًا (عقد InsertInvSub وكاتب
+                // frmProductionOrder: سطر المكون proc_type=2 يكتب ItemId=
+                // المكون وProductId=الصنف المنتج) — الاستعلام القديم كان
+                // يطلب عمودًا غير موجود فيفشل كل استدعاء بالاستثناء
                 string sql =
-                    $"SELECT ComponentId, SUM(val) AS Quantity, " +
+                    $"SELECT inv_sub.ItemId, SUM(val) AS Quantity, " +
                     $"SUM(val1 * exchange_price) AS total " +
                     $"FROM inv, inv_sub " +
                     $"WHERE {branchFilter}" +
                     $" inv.inv_type=6 AND inv.proc_type=1 " +
                     $" AND inv.InvGlobalID=inv_sub.InvGlobalID " +
                     $" AND inv_Sub.proc_type=2 " +
-                    $" AND ProductID={itemId} " +
+                    $" AND ProductID=@product " +
                     $" AND date>=@date1 AND date<=@date2 " +
                     $" AND inv.IS_Deleted=0 " +
-                    $"GROUP BY ComponentId";
+                    $"GROUP BY inv_sub.ItemId";
 
                 var adapter = new SqlDataAdapter(sql, conn);
+                // P7-072 fix: معيار الصنف المنتج معامل — لا حشو نصي
+                adapter.SelectCommand.Parameters.Add(
+                    "@product", SqlDbType.Int).Value = itemId;
                 adapter.SelectCommand.Parameters.Add(
                     "@date1", SqlDbType.DateTime).Value
                     = txtDateFrom.DateTime.ToShortDateString();
@@ -203,7 +211,8 @@ namespace SmartAuditERP.Form_WPF
                 int rowNum = 1;
                 foreach (DataRow row in dt.Rows)
                 {
-                    int    compId  = Convert.ToInt32(row["ComponentId"]);
+                    // P7-072 fix: عمود النتيجة ItemId (اسم تحديد الاستعلام)
+                    int compId  = Convert.ToInt32(row["ItemId"]);
                     double qty     = ParseDouble(row["Quantity"]);
                     double total   = ParseDouble(row["total"]);
                     double price   = qty > 0 ? total / qty : 0.0;
