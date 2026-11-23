@@ -332,27 +332,25 @@ namespace SmartAuditERP.Form_WPF
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                     $"{this.Title}_{DateTime.Now:yyyyMMdd_HHmmss}.csv");
 
-                using (var sw = new System.IO.StreamWriter(filePath,
-                    false, System.Text.Encoding.UTF8))
-                {
-                    sw.WriteLine("\"م\",\"رمز الصنف\",\"الصنف\",\"المستودع\"," +
-                                 "\"الكمية\",\"تاريخ الإنتهاء\"," +
-                                 "\"باقي سنوات\",\"باقي أشهر\",\"باقي أيام\"");
-
-                    foreach (var r in _gridData)
+                // P7-048/049 fix: ترميز الخلايا الموحّد بدل الاقتباس اليدوي
+                DelimitedExport.WriteFile(filePath,
+                    new[] { "م", "رمز الصنف", "الصنف", "المستودع",
+                            "الكمية", "تاريخ الإنتهاء",
+                            "باقي سنوات", "باقي أشهر", "باقي أيام" },
+                    _gridData.Select(r => new[]
                     {
-                        sw.WriteLine(
-                            $"\"{r.AutoIncrementID}\"," +
-                            $"\"{r.ItemCode}\"," +
-                            $"\"{r.ItemName}\"," +
-                            $"\"{r.StoreName}\"," +
-                            $"\"{r.ItemStock:N2}\"," +
-                            $"\"{(r.ItemExpire.HasValue ? r.ItemExpire.Value.ToShortDateString() : "")}\"," +
-                            $"\"{r.RemaindeYear}\"," +
-                            $"\"{r.RemaindeMonths}\"," +
-                            $"\"{r.RemaindeDays}\"");
-                    }
-                }
+                        r.AutoIncrementID.ToString(),
+                        r.ItemCode,
+                        r.ItemName,
+                        r.StoreName,
+                        r.ItemStock.ToString("N2"),
+                        r.ItemExpire.HasValue
+                            ? r.ItemExpire.Value.ToShortDateString()
+                            : "",
+                        r.RemaindeYear.ToString(),
+                        r.RemaindeMonths.ToString(),
+                        r.RemaindeDays.ToString()
+                    }));
 
                 Process.Start(new ProcessStartInfo(filePath)
                     { UseShellExecute = true });

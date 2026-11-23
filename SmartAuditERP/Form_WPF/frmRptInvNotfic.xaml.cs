@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows;
@@ -693,48 +694,53 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
-                var sb = new StringBuilder();
-                sb.AppendLine("م,نوع الإشعار,رقم الإشعار,رقم المرجع,التاريخ,الوقت," +
-                              "العميل,نقدي,شبكة,المجموع,الخصم,الإجمالي," +
-                              "الضريبة,ضريبة إضافية,إجمالي الضريبة,الصافي," +
-                              "المستودع,الفرع,المندوب,المستخدم");
-
-                foreach (var inv in _invoicesList)
+                // P7-048/049 fix: ترميز الخلايا الموحّد — الفاصلة والاقتباس
+                // والأسطر وبادئات الصيغ وقيم الألوف كلها خلية واحدة سليمة
+                var notficRows = _invoicesList.Select(inv => new[]
                 {
-                    sb.AppendLine(
-                        $"{inv.AutoIncrementID}," +
-                        $"{inv.InvoiceTypeTxt}," +
-                        $"{inv.InvoiceNo}," +
-                        $"{inv.ReffNo}," +
-                        $"{inv.InvDate:d}," +
-                        $"{inv.InvoiceTime}," +
-                        $"{inv.ClientTxt}," +
-                        $"{inv.Paycash:N2}," +
-                        $"{inv.PayATM:N2}," +
-                        $"{inv.SumPrice:N2}," +
-                        $"{inv.TotDiscount:N2}," +
-                        $"{inv.Total:N2}," +
-                        $"{inv.VAT:N2}," +
-                        $"{inv.ExtraVAT:N2}," +
-                        $"{inv.TotalTax:N2}," +
-                        $"{inv.Net:N2}," +
-                        $"{inv.InvertoryName}," +
-                        $"{inv.BranchTxt}," +
-                        $"{inv.SalesmanTxt}," +
-                        $"{inv.UserTxt}");
-                }
+                    inv.AutoIncrementID.ToString(),
+                    inv.InvoiceTypeTxt,
+                    inv.InvoiceNo.ToString(),
+                    inv.ReffNo,
+                    inv.InvDate.ToString("d"),
+                    inv.InvoiceTime,
+                    inv.ClientTxt,
+                    inv.Paycash.ToString("N2"),
+                    inv.PayATM.ToString("N2"),
+                    inv.SumPrice.ToString("N2"),
+                    inv.TotDiscount.ToString("N2"),
+                    inv.Total.ToString("N2"),
+                    inv.VAT.ToString("N2"),
+                    inv.ExtraVAT.ToString("N2"),
+                    inv.TotalTax.ToString("N2"),
+                    inv.Net.ToString("N2"),
+                    inv.InvertoryName,
+                    inv.BranchTxt,
+                    inv.SalesmanTxt,
+                    inv.UserTxt
+                }).ToList();
 
-                // إضافة صف المجاميع
-                sb.AppendLine(
-                    $",,,,,,المجاميع," +
-                    $"{_sumPaycash:N2},{_sumPayATM:N2}," +
-                    $"{_sumSumPrice:N2},{_sumDiscount:N2}," +
-                    $"{_sumTotal:N2},{_sumVAT:N2}," +
-                    $"{_sumExtraVAT:N2},{_sumTotalTax:N2}," +
-                    $"{_sumNet:N2}");
+                // صف المجاميع
+                notficRows.Add(new[]
+                {
+                    "", "", "", "", "", "", "المجاميع",
+                    _sumPaycash.ToString("N2"), _sumPayATM.ToString("N2"),
+                    _sumSumPrice.ToString("N2"), _sumDiscount.ToString("N2"),
+                    _sumTotal.ToString("N2"), _sumVAT.ToString("N2"),
+                    _sumExtraVAT.ToString("N2"), _sumTotalTax.ToString("N2"),
+                    _sumNet.ToString("N2")
+                });
 
                 string fileName = $"InvNotifications_{DateTime.Now:yyyyMMdd_HHmm}.csv";
-                File.WriteAllText(fileName, sb.ToString(), Encoding.UTF8);
+                DelimitedExport.WriteFile(fileName,
+                    new[]
+                    {
+                        "م", "نوع الإشعار", "رقم الإشعار", "رقم المرجع", "التاريخ",
+                        "الوقت", "العميل", "نقدي", "شبكة", "المجموع", "الخصم",
+                        "الإجمالي", "الضريبة", "ضريبة إضافية", "إجمالي الضريبة",
+                        "الصافي", "المستودع", "الفرع", "المندوب", "المستخدم"
+                    },
+                    notficRows);
 
                 System.Diagnostics.Process.Start(
                     new System.Diagnostics.ProcessStartInfo(fileName)

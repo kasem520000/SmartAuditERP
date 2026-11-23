@@ -567,25 +567,22 @@ namespace SmartAuditERP.Form_WPF
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                     $"ItemsProfit_{DateTime.Now:yyyyMMdd_HHmmss}.csv");
 
-                using (var sw = new System.IO.StreamWriter(filePath,
-                    false, System.Text.Encoding.UTF8))
-                {
-                    sw.WriteLine("\"م\",\"رمز المادة\",\"المادة\",\"الكمية\"," +
-                                 "\"متوسط التكلفة\",\"صافي البيع\",\"الربح\",\"نسبة الربح\"");
-
-                    foreach (var r in _gridData)
+                // P7-048/049 fix: ترميز الخلايا الموحّد بدل الاقتباس اليدوي —
+                // الفواصل والاقتباسات والأسطر وبادئات الصيغ كلها مرمازة
+                DelimitedExport.WriteFile(filePath,
+                    new[] { "م", "رمز المادة", "المادة", "الكمية",
+                            "متوسط التكلفة", "صافي البيع", "الربح", "نسبة الربح" },
+                    _gridData.Select(r => new[]
                     {
-                        sw.WriteLine(
-                            $"\"{r.DgvNo}\"," +
-                            $"\"{r.DgvItemCode}\"," +
-                            $"\"{r.DgvItem}\"," +
-                            $"\"{r.DgvQty:N2}\"," +
-                            $"\"{r.DgvAvgCost:N2}\"," +
-                            $"\"{r.DgvNetSale:N2}\"," +
-                            $"\"{r.DgvProfit:N2}\"," +
-                            $"\"{r.DgvProfitRatio}\"");
-                    }
-                }
+                        r.DgvNo.ToString(),
+                        r.DgvItemCode,
+                        r.DgvItem,
+                        r.DgvQty.ToString("N2"),
+                        r.DgvAvgCost.ToString("N2"),
+                        r.DgvNetSale.ToString("N2"),
+                        r.DgvProfit.ToString("N2"),
+                        r.DgvProfitRatio
+                    }));
 
                 Process.Start(new ProcessStartInfo(filePath)
                     { UseShellExecute = true });

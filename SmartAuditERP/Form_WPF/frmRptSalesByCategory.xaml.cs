@@ -409,26 +409,26 @@ namespace SmartAuditERP.Form_WPF
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                     $"مبيعات_مجموعات_{DateTime.Now:yyyyMMdd_HHmm}.csv");
 
-                using var writer = new System.IO.StreamWriter(
-                    path, false, System.Text.Encoding.UTF8);
-
-                // رأس
-                writer.WriteLine(
-                    "اسم المجموعة,رمز المجموعة,اسم الصنف,رمز الصنف," +
-                    "الكمية,الإجمالي,الضريبة,الصافي,الخصم");
-
-                foreach (var cat in CategoryList)
-                {
-                    foreach (var item in cat.ItemDetails)
+                // P7-048/049 fix: ترميز الخلايا الموحّد — الفاصلة والاقتباس
+                // والأسطر وبادئات الصيغ وقيم الألوف كلها خلية واحدة سليمة
+                DelimitedExport.WriteFile(path,
+                    new[]
                     {
-                        writer.WriteLine(
-                            $"{cat.Name},{cat.Code}," +
-                            $"{item.ItemName},{item.ItemCode}," +
-                            $"{item.Qty:N2},{item.Total:N2}," +
-                            $"{item.ItemVat:N2},{item.ItemNet:N2}," +
-                            $"{item.InvDiscount:N2}");
-                    }
-                }
+                        "اسم المجموعة", "رمز المجموعة", "اسم الصنف", "رمز الصنف",
+                        "الكمية", "الإجمالي", "الضريبة", "الصافي", "الخصم"
+                    },
+                    CategoryList.SelectMany(cat => cat.ItemDetails.Select(item => new[]
+                    {
+                        cat.Name,
+                        cat.Code,
+                        item.ItemName,
+                        item.ItemCode,
+                        item.Qty.ToString("N2"),
+                        item.Total.ToString("N2"),
+                        item.ItemVat.ToString("N2"),
+                        item.ItemNet.ToString("N2"),
+                        item.InvDiscount.ToString("N2")
+                    })));
 
                 Process.Start(new ProcessStartInfo(path)
                 { UseShellExecute = true });

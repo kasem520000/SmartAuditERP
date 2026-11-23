@@ -853,42 +853,41 @@ namespace SmartAuditERP.Form_WPF
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                     $"فواتير_مبيعات_{DateTime.Now:yyyyMMdd_HHmm}.csv");
 
-                using (var writer = new System.IO.StreamWriter(
-                           outputPath, false,
-                           System.Text.Encoding.UTF8))
-                {
-                    writer.WriteLine(
-                        "#,نوع الفاتورة,رقم الفاتورة,التاريخ,الوقت," +
-                        "نوع الدفع,المدفوع,العميل,نقدي,شبكة," +
-                        "المجموع,الخصم,الإجمالي,الضريبة,ضريبة إضافية," +
-                        "إجمالي الضريبة,الصافي,المستودع,الفرع,المندوب,المستخدم");
-
-                    foreach (var item in InvoicesList)
+                // P7-048/049 fix: ترميز الخلايا الموحّد — الفاصلة والاقتباس
+                // والأسطر وبادئات الصيغ وقيم الألوف كلها خلية واحدة سليمة
+                DelimitedExport.WriteFile(outputPath,
+                    new[]
                     {
-                        writer.WriteLine(
-                            $"{item.AutoIncrementID}," +
-                            $"{item.InvoiceTypeTxt}," +
-                            $"{item.InvoiceNo}," +
-                            $"{item.InvDate:yyyy/MM/dd}," +
-                            $"{item.InvoiceTime}," +
-                            $"{item.PaymentTxt}," +
-                            $"{item.Paid:N2}," +
-                            $"{item.ClientTxt}," +
-                            $"{item.Paycash:N2}," +
-                            $"{item.PayATM:N2}," +
-                            $"{item.SumPrice:N2}," +
-                            $"{item.TotDiscount:N2}," +
-                            $"{item.Total:N2}," +
-                            $"{item.VAT:N2}," +
-                            $"{item.ExtraVAT:N2}," +
-                            $"{item.TotalTax:N2}," +
-                            $"{item.Net:N2}," +
-                            $"{item.InvertoryTxt}," +
-                            $"{item.BranchTxt}," +
-                            $"{item.SalesmanTxt}," +
-                            $"{item.UserTxt}");
-                    }
-                }
+                        "#", "نوع الفاتورة", "رقم الفاتورة", "التاريخ", "الوقت",
+                        "نوع الدفع", "المدفوع", "العميل", "نقدي", "شبكة",
+                        "المجموع", "الخصم", "الإجمالي", "الضريبة", "ضريبة إضافية",
+                        "إجمالي الضريبة", "الصافي", "المستودع", "الفرع",
+                        "المندوب", "المستخدم"
+                    },
+                    InvoicesList.Select(item => new[]
+                    {
+                        item.AutoIncrementID.ToString(),
+                        item.InvoiceTypeTxt,
+                        item.InvoiceNo.ToString(),
+                        item.InvDate.ToString("yyyy/MM/dd"),
+                        item.InvoiceTime,
+                        item.PaymentTxt,
+                        item.Paid.ToString("N2"),
+                        item.ClientTxt,
+                        item.Paycash.ToString("N2"),
+                        item.PayATM.ToString("N2"),
+                        item.SumPrice.ToString("N2"),
+                        item.TotDiscount.ToString("N2"),
+                        item.Total.ToString("N2"),
+                        item.VAT.ToString("N2"),
+                        item.ExtraVAT.ToString("N2"),
+                        item.TotalTax.ToString("N2"),
+                        item.Net.ToString("N2"),
+                        item.InvertoryTxt,
+                        item.BranchTxt,
+                        item.SalesmanTxt,
+                        item.UserTxt
+                    }));
 
                 Process.Start(new ProcessStartInfo(outputPath)
                 { UseShellExecute = true });

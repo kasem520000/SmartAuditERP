@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -643,22 +644,119 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
+                // P7-050 fix: الامتداد المعروض هو المكتوب فعلاً — xlsx ملف
+                // Excel حقيقي (ClosedXML)، وcsv بترميز الخلايا الموحّد
+                // (P7-048/049)، وhtml لجدول HTML الحقيقي (كان يعرض xls/csv
+                // ويكتب HTML دائماً)
                 SaveFileDialog saveDialog = new SaveFileDialog
                 {
                     FileName = "ميزان_المراجعة",
-                    Filter = "Excel File (*.xls)|*.xls|CSV File (*.csv)|*.csv",
-                    DefaultExt = ".xls"
+                    Filter = DelimitedExport.ExcelCsvHtmlFilter
                 };
 
                 if (saveDialog.ShowDialog() != true) return;
 
-                ExportToExcelHtml(saveDialog.FileName);
-                Process.Start(new ProcessStartInfo(saveDialog.FileName) { UseShellExecute = true });
+                string exportPath = saveDialog.FileName;
+                if (exportPath.EndsWith(".html", StringComparison.OrdinalIgnoreCase))
+                {
+                    ExportToExcelHtml(exportPath);
+                }
+                else if (exportPath.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase))
+                {
+                    ExportToExcelClosedXml(exportPath);
+                }
+                else
+                {
+                    ExportToCsv(exportPath);
+                }
+
+                Process.Start(new ProcessStartInfo(exportPath) { UseShellExecute = true });
             }
             catch (Exception ex)
             {
                 ShowError(ex);
             }
+        }
+
+        /// <summary>
+        /// P7-048/049 fix: CSV بترميز الخلايا الموحّد.
+        /// </summary>
+        private void ExportToCsv(string fileName)
+        {
+            DelimitedExport.WriteFile(fileName,
+                new[]
+                {
+                    "الحساب", "اسم الحساب", "افتتاحي مدين", "افتتاحي دائن",
+                    "رصيد سابق مدين", "رصيد سابق دائن",
+                    "حركة مدين", "حركة دائن",
+                    "رصيد مدين", "رصيد دائن",
+                    "ختامي مدين", "ختامي دائن"
+                },
+                _displayRows.Select(row => new[]
+                {
+                    row.TrAccount.ToString(),
+                    row.TrAccName,
+                    row.TrDeptIntial.ToString("N2"),
+                    row.TrCreditIntial.ToString("N2"),
+                    row.TrDeptPervious.ToString("N2"),
+                    row.TrCreditPervious.ToString("N2"),
+                    row.TrDebtorMovement.ToString("N2"),
+                    row.TrCreditorMovement.ToString("N2"),
+                    row.TrDeptBlc.ToString("N2"),
+                    row.TrCreditBlc.ToString("N2"),
+                    row.TrDeptFinal.ToString("N2"),
+                    row.TrCreditFinal.ToString("N2")
+                }));
+        }
+
+        /// <summary>
+        /// P7-050 fix: ملف xlsx حقيقي عبر ClosedXML — الأرصدة أرقام عشرية.
+        /// </summary>
+        private void ExportToExcelClosedXml(string fileName)
+        {
+            using var workbook = new ClosedXML.Excel.XLWorkbook();
+            var worksheet = workbook.Worksheets.Add("ميزان المراجعة");
+
+            string[] headers =
+            {
+                "الحساب", "اسم الحساب", "افتتاحي مدين", "افتتاحي دائن",
+                "رصيد سابق مدين", "رصيد سابق دائن",
+                "حركة مدين", "حركة دائن",
+                "رصيد مدين", "رصيد دائن",
+                "ختامي مدين", "ختامي دائن"
+            };
+            for (int c = 0; c < headers.Length; c++)
+            {
+                var cell = worksheet.Cell(1, c + 1);
+                cell.Value = headers[c];
+                cell.Style.Font.Bold = true;
+            }
+
+            int rowIdx = 2;
+            foreach (AccountNode row in _displayRows)
+            {
+                worksheet.Cell(rowIdx, 1).Value = row.TrAccount;
+                worksheet.Cell(rowIdx, 2).Value = row.TrAccName;
+                worksheet.Cell(rowIdx, 3).Value = (double)row.TrDeptIntial;
+                worksheet.Cell(rowIdx, 4).Value = (double)row.TrCreditIntial;
+                worksheet.Cell(rowIdx, 5).Value = (double)row.TrDeptPervious;
+                worksheet.Cell(rowIdx, 6).Value = (double)row.TrCreditPervious;
+                worksheet.Cell(rowIdx, 7).Value = (double)row.TrDebtorMovement;
+                worksheet.Cell(rowIdx, 8).Value = (double)row.TrCreditorMovement;
+                worksheet.Cell(rowIdx, 9).Value = (double)row.TrDeptBlc;
+                worksheet.Cell(rowIdx, 10).Value = (double)row.TrCreditBlc;
+                worksheet.Cell(rowIdx, 11).Value = (double)row.TrDeptFinal;
+                worksheet.Cell(rowIdx, 12).Value = (double)row.TrCreditFinal;
+
+                const string numberFormat = "#,##0.00";
+                for (int col = 3; col <= 12; col++)
+                    worksheet.Cell(rowIdx, col).Style.NumberFormat.Format = numberFormat;
+
+                rowIdx++;
+            }
+
+            worksheet.Columns().AdjustToContents();
+            workbook.SaveAs(fileName);
         }
 
         private void ExportToExcelHtml(string fileName)

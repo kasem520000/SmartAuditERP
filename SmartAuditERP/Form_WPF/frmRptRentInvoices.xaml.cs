@@ -1,10 +1,11 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -494,27 +495,23 @@ namespace SmartAuditERP.Form_WPF
 
                 string filePath = dlg.FileName;
 
-                using (var sw = new System.IO.StreamWriter(filePath,
-                    false, System.Text.Encoding.UTF8))
-                {
-                    // رأس الأعمدة
-                    sw.WriteLine("\"الرقم\",\"المركب\",\"الفئة\",\"الصافي\"," +
-                                 "\"التاريخ\",\"العميل\",\"المستخدم\",\"الجوال\",\"ضمن الخطة\"");
-
-                    foreach (DataRowView drv in source)
+                // P7-048/049 fix: ترميز الخلايا الموحّد بدل الاقتباس اليدوي
+                DelimitedExport.WriteFile(filePath,
+                    new[] { "الرقم", "المركب", "الفئة", "الصافي",
+                            "التاريخ", "العميل", "المستخدم", "الجوال",
+                            "ضمن الخطة" },
+                    source.Cast<DataRowView>().Select(drv => new[]
                     {
-                        sw.WriteLine(
-                            $"\"{drv["id"]}\"," +
-                            $"\"{drv["marine"]}\"," +
-                            $"\"{drv["Groupcode"]}\"," +
-                            $"\"{drv["Net"]}\"," +
-                            $"\"{drv["date1"]}\"," +
-                            $"\"{drv["cust"]}\"," +
-                            $"\"{drv["emp"]}\"," +
-                            $"\"{drv["mobile"]}\"," +
-                            $"\"{drv["InPlan"]}\"");
-                    }
-                }
+                        drv["id"]?.ToString() ?? "",
+                        drv["marine"]?.ToString() ?? "",
+                        drv["Groupcode"]?.ToString() ?? "",
+                        drv["Net"]?.ToString() ?? "",
+                        drv["date1"]?.ToString() ?? "",
+                        drv["cust"]?.ToString() ?? "",
+                        drv["emp"]?.ToString() ?? "",
+                        drv["mobile"]?.ToString() ?? "",
+                        drv["InPlan"]?.ToString() ?? ""
+                    }));
 
                 DXMessageBox.Show($"تم حفظ الملف في:\n{filePath}",
                     "تم التصدير", MessageBoxButton.OK, MessageBoxImage.Information);

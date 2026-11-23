@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -675,21 +676,26 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
+                // P7-050 fix: الامتداد المعروض هو المكتوب فعلاً — xlsx ملف Excel
+                // حقيقي (ClosedXML)، وcsv بترميز الخلايا الموحّد (P7-048/049)،
+                // وhtml لجدول HTML الحقيقي (كان خيار xls يكتب HTML)
                 SaveFileDialog saveDialog = new SaveFileDialog
                 {
                     FileName = Title.Replace(" ", "_"),
-                    Filter = "Excel File (*.xls)|*.xls|CSV File (*.csv)|*.csv",
-                    DefaultExt = ".xls"
+                    Filter   = DelimitedExport.ExcelCsvHtmlFilter
                 };
 
                 if (saveDialog.ShowDialog() != true) return;
 
-                if (saveDialog.FileName.EndsWith(".csv", StringComparison.OrdinalIgnoreCase))
-                    ExportToCsv(saveDialog.FileName);
+                string exportPath = saveDialog.FileName;
+                if (exportPath.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase))
+                    ExportToExcelClosedXml(exportPath);
+                else if (exportPath.EndsWith(".html", StringComparison.OrdinalIgnoreCase))
+                    ExportToExcelHtml(exportPath);
                 else
-                    ExportToExcelHtml(saveDialog.FileName);
+                    ExportToCsv(exportPath);
 
-                Process.Start(new ProcessStartInfo(saveDialog.FileName) { UseShellExecute = true });
+                Process.Start(new ProcessStartInfo(exportPath) { UseShellExecute = true });
             }
             catch (Exception ex)
             {
@@ -697,34 +703,93 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
+        /// <summary>
+        /// P7-048/049 fix: CSV بترميز الخلايا الموحّد — الفاصلة والاقتباسات
+        /// والأسطر وبادئات الصيغ (كان اقتباس يدوي بلا حماية بادئات الصيغ).
+        /// </summary>
         private void ExportToCsv(string fileName)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("م,المستودع,نوع العملية,المورد,التاريخ,الرقم,المادة,الوحدة,الكمية,السعر,المجموع,الخصم,قبل الضريبة,الضريبة,الإجمالي,المستخدم");
+            DelimitedExport.WriteFile(fileName,
+                new[]
+                {
+                    "م", "المستودع", "نوع العملية", "المورد", "التاريخ",
+                    "الرقم", "المادة", "الوحدة", "الكمية", "السعر",
+                    "المجموع", "الخصم", "قبل الضريبة", "الضريبة",
+                    "الإجمالي", "المستخدم"
+                },
+                _dataRows.Select(item => new[]
+                {
+                    item.DgvNo.ToString(),
+                    item.DgvStore,
+                    item.DgvInvType,
+                    item.DgvClient,
+                    item.DgvDate,
+                    item.DgvInvNo,
+                    item.DgvItem,
+                    item.DgvUnit,
+                    item.DgvQty.ToString("N2"),
+                    item.DgvPrice.ToString("N2"),
+                    item.DgvItemSum.ToString("N2"),
+                    item.DgvItemDiscount.ToString("N2"),
+                    item.DgvTotalBeforeTax.ToString("N2"),
+                    item.DgvVAT.ToString("N2"),
+                    item.DgvTotal.ToString("N2"),
+                    item.DgvUser
+                }));
+        }
 
-            foreach (SalesDetailRow item in _dataRows)
+        /// <summary>
+        /// P7-050 fix: ملف xlsx حقيقي عبر ClosedXML — الأعمدة الرقمية أرقام
+        /// (نمط frmInvDetails).
+        /// </summary>
+        private void ExportToExcelClosedXml(string fileName)
+        {
+            using var workbook = new ClosedXML.Excel.XLWorkbook();
+            var worksheet = workbook.Worksheets.Add("تفاصيل المبيعات");
+
+            string[] headers =
             {
-                sb.AppendLine(
-                    $"\"{item.DgvNo}\"," +
-                    $"\"{item.DgvStore}\"," +
-                    $"\"{item.DgvInvType}\"," +
-                    $"\"{item.DgvClient}\"," +
-                    $"\"{item.DgvDate}\"," +
-                    $"\"{item.DgvInvNo}\"," +
-                    $"\"{item.DgvItem}\"," +
-                    $"\"{item.DgvUnit}\"," +
-                    $"\"{item.DgvQty:N2}\"," +
-                    $"\"{item.DgvPrice:N2}\"," +
-                    $"\"{item.DgvItemSum:N2}\"," +
-                    $"\"{item.DgvItemDiscount:N2}\"," +
-                    $"\"{item.DgvTotalBeforeTax:N2}\"," +
-                    $"\"{item.DgvVAT:N2}\"," +
-                    $"\"{item.DgvTotal:N2}\"," +
-                    $"\"{item.DgvUser}\""
-                );
+                "م", "المستودع", "نوع العملية", "المورد", "التاريخ",
+                "الرقم", "المادة", "الوحدة", "الكمية", "السعر",
+                "المجموع", "الخصم", "قبل الضريبة", "الضريبة",
+                "الإجمالي", "المستخدم"
+            };
+            for (int c = 0; c < headers.Length; c++)
+            {
+                var cell = worksheet.Cell(1, c + 1);
+                cell.Value = headers[c];
+                cell.Style.Font.Bold = true;
             }
 
-            File.WriteAllText(fileName, sb.ToString(), Encoding.UTF8);
+            int rowIdx = 2;
+            foreach (SalesDetailRow item in _dataRows)
+            {
+                worksheet.Cell(rowIdx, 1).Value = item.DgvNo;
+                worksheet.Cell(rowIdx, 2).Value = item.DgvStore;
+                worksheet.Cell(rowIdx, 3).Value = item.DgvInvType;
+                worksheet.Cell(rowIdx, 4).Value = item.DgvClient;
+                worksheet.Cell(rowIdx, 5).Value = item.DgvDate;
+                worksheet.Cell(rowIdx, 6).Value = item.DgvInvNo;
+                worksheet.Cell(rowIdx, 7).Value = item.DgvItem;
+                worksheet.Cell(rowIdx, 8).Value = item.DgvUnit;
+                worksheet.Cell(rowIdx, 9).Value = item.DgvQty;
+                worksheet.Cell(rowIdx, 10).Value = item.DgvPrice;
+                worksheet.Cell(rowIdx, 11).Value = item.DgvItemSum;
+                worksheet.Cell(rowIdx, 12).Value = item.DgvItemDiscount;
+                worksheet.Cell(rowIdx, 13).Value = item.DgvTotalBeforeTax;
+                worksheet.Cell(rowIdx, 14).Value = item.DgvVAT;
+                worksheet.Cell(rowIdx, 15).Value = item.DgvTotal;
+                worksheet.Cell(rowIdx, 16).Value = item.DgvUser;
+
+                const string numberFormat = "#,##0.00";
+                foreach (int col in new[] { 9, 10, 11, 12, 13, 14, 15 })
+                    worksheet.Cell(rowIdx, col).Style.NumberFormat.Format = numberFormat;
+
+                rowIdx++;
+            }
+
+            worksheet.Columns().AdjustToContents();
+            workbook.SaveAs(fileName);
         }
 
         private void ExportToExcelHtml(string fileName)

@@ -1,10 +1,11 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -669,24 +670,34 @@ namespace SmartAuditERP.Form_WPF
             {
                 if (_dataSource.Count == 0) return;
 
-                var sb = new StringBuilder();
-                sb.AppendLine("الرمز,مركز التكلفة,رصيد افتتاحي مدين,رصيد افتتاحي دائن," +
-                              "حركة مدين,حركة دائن,رصيد مدين,رصيد دائن," +
-                              "رصيد ختامي مدين,رصيد ختامي دائن,اسم الحساب,العملية,رقم العملية,التاريخ");
-
-                foreach (var row in _dataSource)
-                {
-                    sb.AppendLine(
-                        $"{row.DgvAccount},{row.DgvCostCenter}," +
-                        $"{row.DgvDeptIntial:N2},{row.DgvCreditIntial:N2}," +
-                        $"{row.DgvDebtorMovement:N2},{row.DgvCreditorMovement:N2}," +
-                        $"{row.DgvDeptBlc:N2},{row.DgvCreditBlc:N2}," +
-                        $"{row.DgvDeptFinal:N2},{row.DgvCreditFinal:N2}," +
-                        $"{row.DgvAccName},{row.DgvOperationType},{row.DgvOperationNo},{row.DgvDate}");
-                }
-
+                // P7-048/049 fix: ترميز الخلايا الموحّد — الفاصلة والاقتباس
+                // والأسطر وبادئات الصيغ وقيم الألوف كلها خلية واحدة سليمة
                 string fileName = "CostCenter_Export.csv";
-                File.WriteAllText(fileName, sb.ToString(), Encoding.UTF8);
+                DelimitedExport.WriteFile(fileName,
+                    new[]
+                    {
+                        "الرمز", "مركز التكلفة", "رصيد افتتاحي مدين", "رصيد افتتاحي دائن",
+                        "حركة مدين", "حركة دائن", "رصيد مدين", "رصيد دائن",
+                        "رصيد ختامي مدين", "رصيد ختامي دائن", "اسم الحساب",
+                        "العملية", "رقم العملية", "التاريخ"
+                    },
+                    _dataSource.Select(row => new[]
+                    {
+                        row.DgvAccount.ToString(),
+                        row.DgvCostCenter,
+                        row.DgvDeptIntial.ToString("N2"),
+                        row.DgvCreditIntial.ToString("N2"),
+                        row.DgvDebtorMovement.ToString("N2"),
+                        row.DgvCreditorMovement.ToString("N2"),
+                        row.DgvDeptBlc.ToString("N2"),
+                        row.DgvCreditBlc.ToString("N2"),
+                        row.DgvDeptFinal.ToString("N2"),
+                        row.DgvCreditFinal.ToString("N2"),
+                        row.DgvAccName,
+                        row.DgvOperationType,
+                        row.DgvOperationNo,
+                        row.DgvDate
+                    }));
 
                 System.Diagnostics.Process.Start(
                     new System.Diagnostics.ProcessStartInfo(fileName)

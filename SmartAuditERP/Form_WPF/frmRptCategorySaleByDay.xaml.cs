@@ -1,10 +1,11 @@
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -241,20 +242,26 @@ namespace SmartAuditERP.Form_WPF
             {
                 if (_dataSource.Count == 0) return;
 
-                var sb = new StringBuilder();
-                sb.AppendLine("#,الرمز,المجموعة,اليوم,التاريخ,الإجمالي");
-
-                foreach (var row in _dataSource)
+                // P7-048/049 fix: ترميز الخلايا الموحّد — الفاصلة والاقتباس
+                // والأسطر وبادئات الصيغ وقيم الألوف كلها خلية واحدة سليمة
+                var categoryRows = _dataSource.Select(row => new[]
                 {
-                    sb.AppendLine(
-                        $"{row.RowIndex},{row.CtgyCode},{row.CtgyName}," +
-                        $"{row.SaleDay},{row.CtgyDate:d},{row.CtgyTotale:N2}");
-                }
-
-                sb.AppendLine($",,,,الإجمالي,{_grandTotal:N2}");
+                    row.RowIndex.ToString(),
+                    row.CtgyCode,
+                    row.CtgyName,
+                    row.SaleDay,
+                    row.CtgyDate.ToString("d"),
+                    row.CtgyTotale.ToString("N2")
+                }).ToList();
+                categoryRows.Add(new[]
+                {
+                    "", "", "", "", "الإجمالي", _grandTotal.ToString("N2")
+                });
 
                 string fileName = $"CategorySaleByDay_{DateTime.Now:yyyyMMdd_HHmm}.csv";
-                File.WriteAllText(fileName, sb.ToString(), Encoding.UTF8);
+                DelimitedExport.WriteFile(fileName,
+                    new[] { "#", "الرمز", "المجموعة", "اليوم", "التاريخ", "الإجمالي" },
+                    categoryRows);
 
                 System.Diagnostics.Process.Start(
                     new System.Diagnostics.ProcessStartInfo(fileName)

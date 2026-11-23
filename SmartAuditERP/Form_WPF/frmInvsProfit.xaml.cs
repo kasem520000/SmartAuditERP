@@ -1075,8 +1075,10 @@ namespace SmartAuditERP.Form_WPF
 
         private static string Csv(string value)
         {
-            if (value == null) return "\"\"";
-            return $"\"{value.Replace("\"", "\"\"")}\"";
+            // P7-048/049 fix: الترميز عبر النواة الموحّدة — الاقتباس عند الحاجة
+            // (الفاصلة/الاقتباس/السطر) وتحييد بادئات الصيغ — كان اقتباس كامل
+            // يدوي بلا حماية بادئات الصيغ
+            return DelimitedExport.EncodeCell(value ?? "", ',');
         }
 
         #endregion

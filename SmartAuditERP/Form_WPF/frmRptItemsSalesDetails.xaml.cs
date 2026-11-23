@@ -568,19 +568,19 @@ namespace SmartAuditERP.Form_WPF
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                     $"ItemsSales_{DateTime.Now:yyyyMMdd_HHmmss}.csv");
 
-                using (var sw = new System.IO.StreamWriter(filePath,
-                    false, System.Text.Encoding.UTF8))
-                {
-                    sw.WriteLine("\"م\",\"رمز الصنف\",\"الصنف\",\"الكمية\",\"صافي البيع\",\"الفئة\"");
-                    foreach (var r in _gridData)
-                        sw.WriteLine(
-                            $"\"{r.DgvNo}\"," +
-                            $"\"{r.DgvItemCode}\"," +
-                            $"\"{r.DgvItem}\"," +
-                            $"\"{r.DgvQty:N2}\"," +
-                            $"\"{r.DgvNetSales:N2}\"," +
-                            $"\"{r.DgvCategory}\"");
-                }
+                // P7-048/049 fix: ترميز الخلايا الموحّد بدل الاقتباس اليدوي
+                DelimitedExport.WriteFile(filePath,
+                    new[] { "م", "رمز الصنف", "الصنف", "الكمية",
+                            "صافي البيع", "الفئة" },
+                    _gridData.Select(r => new[]
+                    {
+                        r.DgvNo.ToString(),
+                        r.DgvItemCode,
+                        r.DgvItem,
+                        r.DgvQty.ToString("N2"),
+                        r.DgvNetSales.ToString("N2"),
+                        r.DgvCategory
+                    }));
 
                 Process.Start(new ProcessStartInfo(filePath)
                     { UseShellExecute = true });

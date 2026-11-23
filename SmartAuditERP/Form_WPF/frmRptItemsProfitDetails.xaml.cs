@@ -709,24 +709,36 @@ namespace SmartAuditERP.Form_WPF
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                     $"أرباح_مواد_{DateTime.Now:yyyyMMdd_HHmm}.csv");
 
-                using var writer = new System.IO.StreamWriter(
-                    path, false, System.Text.Encoding.UTF8);
-
-                writer.WriteLine(
-                    "م,المستودع,نوع العملية,التاريخ,الرقم,رمز المادة," +
-                    "المادة,الوحدة,الكمية,متوسط التكلفة,إجمالي التكلفة," +
-                    "السعر,المجموع,الإجمالي,الخصم,الربح,نسبة الربح");
-
-                foreach (var item in ProfitList)
-                {
-                    writer.WriteLine(
-                        $"{item.DgvNo},{item.DgvStore},{item.DgvInvType}," +
-                        $"{item.DgvDate},{item.DgvInvNo},{item.DgvItemCode}," +
-                        $"{item.DgvItem},{item.DgvUnit}," +
-                        $"{item.DgvQty:N2},{item.DgvAvgCost:N2},{item.DgvTotAvg:N2}," +
-                        $"{item.DgvPrice:N2},{item.DgvTotal:N2},{item.DgvSum:N2}," +
-                        $"{item.DgvDiscount:N2},{item.DgvProfit:N2},{item.DgvProfitPerc}");
-                }
+                // P7-048/049 fix: ترميز الخلايا الموحّد — الفاصلة والاقتباس
+                // والأسطر وبادئات الصيغ كلها خلية سليمة واحدة
+                DelimitedExport.WriteFile(path,
+                    new[]
+                    {
+                        "م", "المستودع", "نوع العملية", "التاريخ", "الرقم",
+                        "رمز المادة", "المادة", "الوحدة", "الكمية",
+                        "متوسط التكلفة", "إجمالي التكلفة", "السعر",
+                        "المجموع", "الإجمالي", "الخصم", "الربح", "نسبة الربح"
+                    },
+                    ProfitList.Select(item => new[]
+                    {
+                        item.DgvNo.ToString(),
+                        item.DgvStore,
+                        item.DgvInvType,
+                        item.DgvDate,
+                        item.DgvInvNo.ToString(),
+                        item.DgvItemCode,
+                        item.DgvItem,
+                        item.DgvUnit,
+                        item.DgvQty.ToString("N2"),
+                        item.DgvAvgCost.ToString("N2"),
+                        item.DgvTotAvg.ToString("N2"),
+                        item.DgvPrice.ToString("N2"),
+                        item.DgvTotal.ToString("N2"),
+                        item.DgvSum.ToString("N2"),
+                        item.DgvDiscount.ToString("N2"),
+                        item.DgvProfit.ToString("N2"),
+                        item.DgvProfitPerc
+                    }));
 
                 Process.Start(new ProcessStartInfo(path)
                 { UseShellExecute = true });

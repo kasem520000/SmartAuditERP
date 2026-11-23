@@ -1,4 +1,4 @@
-using AuditorAPI.Models.DGVmodels;
+﻿using AuditorAPI.Models.DGVmodels;
 using DevExpress.Xpf.Core;
 using System;
 using System.Collections.Generic;
@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -654,27 +655,29 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
-                var sb = new StringBuilder();
-                sb.AppendLine("رقم الفاتورة,التاريخ,العميل/المورد,المستخدم,الفرع," +
-                              "المجموع,الخصم,الإجمالي,الضريبة,الصافي");
-
-                foreach (var inv in _invoicesList)
-                {
-                    sb.AppendLine(
-                        $"{inv.InvNote},{inv.InvDate:d},{inv.Customer}," +
-                        $"{inv.User},{inv.Branch}," +
-                        $"{inv.SumPrice:N2},{inv.TotDiscount:N2}," +
-                        $"{inv.Total:N2},{inv.VAT:N2},{inv.Net:N2}");
-                }
-
-                // إضافة المجاميع
-                sb.AppendLine(
-                    $",,,,الإجمالي," +
-                    $"{_sum:N2},{_discount:N2}," +
-                    $"{_nTotal:N2},{_nVAT:N2},{_nNet:N2}");
-
+                // P7-048/049 fix: ترميز الخلايا الموحّد — الفاصلة والاقتباس
+                // والأسطر وبادئات الصيغ وقيم الألوف كلها خلية واحدة سليمة
                 string fileName = $"{this.Title}_{DateTime.Now:yyyyMMdd_HHmm}.csv";
-                File.WriteAllText(fileName, sb.ToString(), Encoding.UTF8);
+                var inventoryRows = new List<string[]>
+                {
+                    new[] { "", "", "", "", "الإجمالي",
+                            _sum.ToString("N2"), _discount.ToString("N2"),
+                            _nTotal.ToString("N2"), _nVAT.ToString("N2"),
+                            _nNet.ToString("N2") }
+                };
+                inventoryRows.InsertRange(0, _invoicesList.Select(inv => new[]
+                {
+                    inv.InvNote, inv.InvDate.ToString("d"), inv.Customer.ToString(),
+                    inv.User.ToString(), inv.Branch.ToString(),
+                    inv.SumPrice.ToString("N2"), inv.TotDiscount.ToString("N2"),
+                    inv.Total.ToString("N2"), inv.VAT.ToString("N2"),
+                    inv.Net.ToString("N2")
+                }));
+                DelimitedExport.WriteFile(fileName,
+                    new[] { "رقم الفاتورة", "التاريخ", "العميل/المورد",
+                            "المستخدم", "الفرع", "المجموع", "الخصم",
+                            "الإجمالي", "الضريبة", "الصافي" },
+                    inventoryRows);
 
                 System.Diagnostics.Process.Start(
                     new System.Diagnostics.ProcessStartInfo(fileName)

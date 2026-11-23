@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -209,17 +210,30 @@ namespace SmartAuditERP.Form_WPF
             {
                 if (_dataSource.Count == 0) return;
 
-                var sb = new StringBuilder();
-                sb.AppendLine("الرقم,التاريخ,اليوم,الإجمالي قبل الضريبة,الضريبة,الإجمالي");
-
-                foreach (var row in _dataSource)
-                    sb.AppendLine($"{row.Dgnos},{row.Ddates:d},{row.daydv}," +
-                                  $"{row.Total:N2},{row.TotalTax:N2},{row.totsal:N2}");
-
-                sb.AppendLine($",,الإجمالي,{_grandTotalBeforeTax:N2},{_grandTotalTax:N2},{_grandTotal:N2}");
+                // P7-048/049 fix: ترميز الخلايا الموحّد — الفاصلة والاقتباس
+                // والأسطر وبادئات الصيغ وقيم الألوف كلها خلية واحدة سليمة
+                var dailyRows = _dataSource.Select(row => new[]
+                {
+                    row.Dgnos.ToString(),
+                    row.Ddates.ToString("d"),
+                    row.daydv,
+                    row.Total.ToString("N2"),
+                    row.TotalTax.ToString("N2"),
+                    row.totsal.ToString("N2")
+                }).ToList();
+                dailyRows.Add(new[]
+                {
+                    "", "", "الإجمالي",
+                    _grandTotalBeforeTax.ToString("N2"),
+                    _grandTotalTax.ToString("N2"),
+                    _grandTotal.ToString("N2")
+                });
 
                 string fileName = "DailySales.csv";
-                File.WriteAllText(fileName, sb.ToString(), Encoding.UTF8);
+                DelimitedExport.WriteFile(fileName,
+                    new[] { "الرقم", "التاريخ", "اليوم",
+                            "الإجمالي قبل الضريبة", "الضريبة", "الإجمالي" },
+                    dailyRows);
 
                 System.Diagnostics.Process.Start(
                     new System.Diagnostics.ProcessStartInfo(fileName)

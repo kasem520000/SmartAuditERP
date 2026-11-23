@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -239,21 +240,111 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
+                // P7-050 fix: الامتداد المعروض هو المكتوب فعلاً — xlsx ملف Excel
+                // حقيقي (ClosedXML)، وcsv بترميز الخلايا الموحّد (P7-048/049)،
+                // وhtml لجدول HTML الحقيقي (كان يعرض xls/csv ويكتب HTML دائماً)
                 SaveFileDialog saveDialog = new SaveFileDialog
                 {
                     FileName   = "إجمالي_المبيعات_والمشتريات",
-                    Filter     = "Excel File (*.xls)|*.xls|CSV File (*.csv)|*.csv",
-                    DefaultExt = ".xls"
+                    Filter     = DelimitedExport.ExcelCsvHtmlFilter
                 };
 
                 if (saveDialog.ShowDialog() != true) return;
 
-                ExportToHtml(saveDialog.FileName);
-                Process.Start(new ProcessStartInfo(saveDialog.FileName) { UseShellExecute = true });
+                string exportPath = saveDialog.FileName;
+                if (exportPath.EndsWith(".html", StringComparison.OrdinalIgnoreCase))
+                {
+                    ExportToHtml(exportPath);
+                }
+                else if (exportPath.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase))
+                {
+                    ExportToExcelClosedXml(exportPath);
+                }
+                else
+                {
+                    ExportToCsv(exportPath);
+                }
+
+                Process.Start(new ProcessStartInfo(exportPath) { UseShellExecute = true });
             }
             catch (Exception ex)
             {
                 ShowError(ex);
+            }
+        }
+
+        /// <summary>
+        /// P7-050 fix: CSV بترميز الخلايا الموحّد — الفاصلة والاقتباسات والأسطر
+        /// وبادئات الصيغ ترميز صحيح (P7-048/049).
+        /// </summary>
+        private void ExportToCsv(string fileName)
+        {
+            DelimitedExport.WriteFile(fileName,
+                new[]
+                {
+                    "رقم الصنف", "الصنف", "الكمية (مشتريات)", "الإجمالي (مشتريات)",
+                    "الكمية (مبيعات)", "الإجمالي (مبيعات)"
+                },
+                _rows.Select(r => new[]
+                {
+                    r.Column1, r.Column2, r.Column3, r.Column4, r.Column6, r.Column5
+                }));
+        }
+
+        /// <summary>
+        /// P7-050 fix: ملف xlsx حقيقي عبر ClosedXML — القيم الرقمية تُكتب أرقاماً.
+        /// </summary>
+        private void ExportToExcelClosedXml(string fileName)
+        {
+            using var workbook = new ClosedXML.Excel.XLWorkbook();
+            var worksheet = workbook.Worksheets.Add("المبيعات والمشتريات");
+
+            string[] headers =
+            {
+                "رقم الصنف", "الصنف", "الكمية (مشتريات)", "الإجمالي (مشتريات)",
+                "الكمية (مبيعات)", "الإجمالي (مبيعات)"
+            };
+            for (int c = 0; c < headers.Length; c++)
+            {
+                var cell = worksheet.Cell(1, c + 1);
+                cell.Value = headers[c];
+                cell.Style.Font.Bold = true;
+            }
+
+            int rowIdx = 2;
+            foreach (SalePurchRow row in _rows)
+            {
+                WriteSheetCell(worksheet, rowIdx, 1, row.Column1);
+                WriteSheetCell(worksheet, rowIdx, 2, row.Column2);
+                WriteSheetCell(worksheet, rowIdx, 3, row.Column3);
+                WriteSheetCell(worksheet, rowIdx, 4, row.Column4);
+                WriteSheetCell(worksheet, rowIdx, 5, row.Column6);
+                WriteSheetCell(worksheet, rowIdx, 6, row.Column5);
+                rowIdx++;
+            }
+
+            worksheet.Columns().AdjustToContents();
+            workbook.SaveAs(fileName);
+        }
+
+        /// <summary>
+        /// يكتب الخلية رقماً إن كانت قيمتها رقماً نصياً، وإلا نصاً محيَّد بادئات الصيغ.
+        /// </summary>
+        private static void WriteSheetCell(
+            ClosedXML.Excel.IXLWorksheet worksheet, int row, int col, string value)
+        {
+            if (double.TryParse(value,
+                    System.Globalization.NumberStyles.Any,
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    out double d))
+            {
+                worksheet.Cell(row, col).Value = d;
+                worksheet.Cell(row, col).Style.NumberFormat.Format = "#,##0.00";
+            }
+            else
+            {
+                worksheet.Cell(row, col).Value =
+                    DelimitedExport.NeutralizeFormulaPrefix(value ?? "");
             }
         }
 

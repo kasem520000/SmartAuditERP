@@ -364,20 +364,22 @@ namespace SmartAuditERP.Form_WPF
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                     $"تسلسلات_{DateTime.Now:yyyyMMdd_HHmm}.csv");
 
-                using var writer = new System.IO.StreamWriter(
-                    path, false, System.Text.Encoding.UTF8);
-
-                writer.WriteLine(
-                    "م,الصنف,رمز الصنف,التسلسل,نوع الفاتورة," +
-                    "رقم الفاتورة,التاريخ,الفرع");
-
-                foreach (var item in SerialList)
-                {
-                    writer.WriteLine(
-                        $"{item.DgvNo},{item.ItemName},{item.ItemCode}," +
-                        $"{item.ItemSerialNo},{item.InvType}," +
-                        $"{item.InvNo},{item.InvDate},{item.BranchName}");
-                }
+                // P7-048/049 fix: ترميز الخلايا الموحّد — الفاصلة والاقتباس
+                // والأسطر وبادئات الصيغ كلها خلية سليمة واحدة
+                DelimitedExport.WriteFile(path,
+                    new[] { "م", "الصنف", "رمز الصنف", "التسلسل",
+                            "نوع الفاتورة", "رقم الفاتورة", "التاريخ", "الفرع" },
+                    SerialList.Select(item => new[]
+                    {
+                        item.DgvNo.ToString(),
+                        item.ItemName,
+                        item.ItemCode,
+                        item.ItemSerialNo,
+                        item.InvType,
+                        item.InvNo,
+                        item.InvDate,
+                        item.BranchName
+                    }));
 
                 Process.Start(new ProcessStartInfo(path)
                 { UseShellExecute = true });

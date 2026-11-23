@@ -390,27 +390,37 @@ namespace SmartAuditERP.Form_WPF
 
             try
             {
+                // P7-050 fix: الامتداد المعروض هو المكتوب فعلاً — xlsx ملف Excel
+                // حقيقي (ClosedXML) وcsv/tsv بترميز الخلايا الموحّد (P7-048/049)
                 var dlg = new Microsoft.Win32.SaveFileDialog
                 {
-                    Filter   = "CSV Files (*.csv)|*.csv|Excel Files (*.xlsx)|*.xlsx",
+                    Filter   = DelimitedExport.ExcelCsvTsvFilter,
                     FileName = $"حركة_صندوق_{DateTime.Now:yyyyMMdd_HHmm}"
                 };
 
                 if (dlg.ShowDialog() != true) return;
 
                 string path = dlg.FileName;
-
-                using var writer = new System.IO.StreamWriter(
-                    path, false, System.Text.Encoding.UTF8);
-
-                writer.WriteLine("م,العملية,الرقم,التاريخ,وارد,صادر,الرصيد,البيان");
-
-                foreach (var row in KhznaList)
+                if (path.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase))
                 {
-                    writer.WriteLine(
-                        $"{row.RowNo},{row.ProcessType},{row.ProcessNo}," +
-                        $"{row.RestDate},{row.Income:N2},{row.Outcome:N2}," +
-                        $"{row.Balance:N2},{row.Note}");
+                    ExportToExcelClosedXml(path);
+                }
+                else
+                {
+                    DelimitedExport.WriteFile(path,
+                        new[] { "م", "العملية", "الرقم", "التاريخ", "وارد",
+                                "صادر", "الرصيد", "البيان" },
+                        KhznaList.Select(r => new[]
+                        {
+                            r.RowNo.ToString(),
+                            r.ProcessType,
+                            r.ProcessNo,
+                            r.RestDate,
+                            r.Income.ToString("N2"),
+                            r.Outcome.ToString("N2"),
+                            r.Balance.ToString("N2"),
+                            r.Note
+                        }));
                 }
 
                 DXMessageBox.Show($"تم حفظ الملف في:\n{path}", "تم",
@@ -424,6 +434,46 @@ namespace SmartAuditERP.Form_WPF
                 DXMessageBox.Show($"خطأ في التصدير:\n{ex.Message}", "خطأ",
                                 MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        /// <summary>
+        /// P7-050 fix: ملف xlsx حقيقي عبر ClosedXML — الأعمدة الرقمية أرقام.
+        /// </summary>
+        private void ExportToExcelClosedXml(string filePath)
+        {
+            using var workbook = new ClosedXML.Excel.XLWorkbook();
+            var worksheet = workbook.Worksheets.Add("حركة الصندوق");
+
+            string[] headers =
+                { "م", "العملية", "الرقم", "التاريخ", "وارد", "صادر", "الرصيد", "البيان" };
+            for (int c = 0; c < headers.Length; c++)
+            {
+                var cell = worksheet.Cell(1, c + 1);
+                cell.Value = headers[c];
+                cell.Style.Font.Bold = true;
+            }
+
+            int rowIdx = 2;
+            foreach (var r in KhznaList)
+            {
+                worksheet.Cell(rowIdx, 1).Value = r.RowNo;
+                worksheet.Cell(rowIdx, 2).Value = r.ProcessType;
+                worksheet.Cell(rowIdx, 3).Value = r.ProcessNo;
+                worksheet.Cell(rowIdx, 4).Value = r.RestDate;
+                worksheet.Cell(rowIdx, 5).Value = r.Income;
+                worksheet.Cell(rowIdx, 6).Value = r.Outcome;
+                worksheet.Cell(rowIdx, 7).Value = r.Balance;
+                worksheet.Cell(rowIdx, 8).Value = r.Note;
+
+                const string numberFormat = "#,##0.00";
+                foreach (int col in new[] { 5, 6, 7 })
+                    worksheet.Cell(rowIdx, col).Style.NumberFormat.Format = numberFormat;
+
+                rowIdx++;
+            }
+
+            worksheet.Columns().AdjustToContents();
+            workbook.SaveAs(filePath);
         }
 
         #endregion

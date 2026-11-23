@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -452,21 +453,107 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
+                // P7-050 fix: الامتداد المعروض هو المكتوب فعلاً — xlsx ملف
+                // Excel حقيقي (ClosedXML)، وcsv بترميز الخلايا الموحّد
+                // (P7-048/049)، وhtml لجدول HTML الحقيقي (كان يعرض xls/csv
+                // ويكتب HTML دائماً)
                 SaveFileDialog saveDialog = new SaveFileDialog
                 {
                     FileName   = "أرباح_وخسائر",
-                    Filter     = "Excel File (*.xls)|*.xls|CSV File (*.csv)|*.csv",
-                    DefaultExt = ".xls"
+                    Filter     = DelimitedExport.ExcelCsvHtmlFilter
                 };
 
                 if (saveDialog.ShowDialog() != true) return;
 
-                ExportToExcelHtml(saveDialog.FileName);
-                Process.Start(new ProcessStartInfo(saveDialog.FileName) { UseShellExecute = true });
+                string exportPath = saveDialog.FileName;
+                if (exportPath.EndsWith(".html", StringComparison.OrdinalIgnoreCase))
+                {
+                    ExportToExcelHtml(exportPath);
+                }
+                else if (exportPath.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase))
+                {
+                    ExportToExcelClosedXml(exportPath);
+                }
+                else
+                {
+                    ExportToCsv(exportPath);
+                }
+
+                Process.Start(new ProcessStartInfo(exportPath) { UseShellExecute = true });
             }
             catch (Exception ex)
             {
                 ShowError(ex);
+            }
+        }
+
+        /// <summary>
+        /// P7-048/049 fix: CSV بترميز الخلايا الموحّد.
+        /// </summary>
+        private void ExportToCsv(string fileName)
+        {
+            DelimitedExport.WriteFile(fileName,
+                new[] { "الحساب", "إسم الحساب", "رصيد مدين", "رصيد دائن" },
+                _rows.Select(row => new[]
+                {
+                    row.Column1, row.Column2, row.Column5, row.Column6
+                }));
+        }
+
+        /// <summary>
+        /// P7-050 fix: ملف xlsx حقيقي عبر ClosedXML — القيم الرقمية أرقام.
+        /// </summary>
+        private void ExportToExcelClosedXml(string fileName)
+        {
+            using var workbook = new ClosedXML.Excel.XLWorkbook();
+            var worksheet = workbook.Worksheets.Add("أرباح وخسائر");
+
+            string[] headers = { "الحساب", "إسم الحساب", "رصيد مدين", "رصيد دائن" };
+            for (int c = 0; c < headers.Length; c++)
+            {
+                var cell = worksheet.Cell(1, c + 1);
+                cell.Value = headers[c];
+                cell.Style.Font.Bold = true;
+            }
+
+            int rowIdx = 2;
+            foreach (AccountBalanceRow row in _rows)
+            {
+                WriteSheetCell(worksheet, rowIdx, 1, row.Column1);
+                WriteSheetCell(worksheet, rowIdx, 2, row.Column2);
+                WriteSheetCell(worksheet, rowIdx, 3, row.Column5);
+                WriteSheetCell(worksheet, rowIdx, 4, row.Column6);
+                rowIdx++;
+            }
+
+            // صف الإجمالي كخلايا نصية مطابقة للشاشة
+            worksheet.Cell(rowIdx, 1).Value = "الإجمالي";
+            WriteSheetCell(worksheet, rowIdx, 3, txtDeptDiff.Text);
+            WriteSheetCell(worksheet, rowIdx, 4, txtCreditDiff.Text);
+            worksheet.Range(rowIdx, 1, rowIdx, 2).Merge();
+
+            worksheet.Columns().AdjustToContents();
+            workbook.SaveAs(fileName);
+        }
+
+        /// <summary>
+        /// يكتب الخلية رقماً إن كانت قيمتها رقماً نصياً، وإلا نصاً محيَّد بادئات الصيغ.
+        /// </summary>
+        private static void WriteSheetCell(
+            ClosedXML.Excel.IXLWorksheet worksheet, int row, int col, string value)
+        {
+            if (double.TryParse(value,
+                    System.Globalization.NumberStyles.Any,
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    out double d))
+            {
+                worksheet.Cell(row, col).Value = d;
+                worksheet.Cell(row, col).Style.NumberFormat.Format = "#,##0.00";
+            }
+            else
+            {
+                worksheet.Cell(row, col).Value =
+                    DelimitedExport.NeutralizeFormulaPrefix(value ?? "");
             }
         }
 

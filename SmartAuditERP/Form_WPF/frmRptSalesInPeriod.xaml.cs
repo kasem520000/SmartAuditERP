@@ -457,38 +457,42 @@ namespace SmartAuditERP.Form_WPF
 
                 string filePath = dlg.FileName;
 
-                using (var sw = new System.IO.StreamWriter(filePath,
-                    false, System.Text.Encoding.UTF8))
+                // P7-048/049 fix: ترميز الخلايا الموحّد بدل الاقتباس اليدوي
+                if (TabControl1.SelectedIndex == 0)
                 {
-                    if (TabControl1.SelectedIndex == 0)
-                    {
-                        sw.WriteLine("\"رقم الصنف\",\"الصنف\",\"الكمية\",\"الإجمالي\"");
-                        foreach (var r in _itemsData)
-                            sw.WriteLine(
-                                $"\"{r.ItemId}\"," +
-                                $"\"{r.ItemName}\"," +
-                                $"\"{r.Quantity:N2}\"," +
-                                $"\"{r.Total:N2}\"");
-                    }
-                    else
-                    {
-                        sw.WriteLine("\"رقم الحركة\",\"رقم الفاتورة\",\"النوع\"," +
-                                     "\"التاريخ\",\"الوقت\",\"نقدي\",\"شبكة\"," +
-                                     "\"الإجمالي\",\"الضريبة\",\"الخصم\",\"الصافي\"");
-                        foreach (var r in _invoiceData)
-                            sw.WriteLine(
-                                $"\"{r.InvGlobalID}\"," +
-                                $"\"{r.id}\"," +
-                                $"\"{r.ProcTypeName}\"," +
-                                $"\"{r.InvDate}\"," +
-                                $"\"{r.InvTime}\"," +
-                                $"\"{r.Cash:N2}\"," +
-                                $"\"{r.Visa:N2}\"," +
-                                $"\"{r.InvTotal:N2}\"," +
-                                $"\"{r.Tax:N2}\"," +
-                                $"\"{r.Minus:N2}\"," +
-                                $"\"{r.TotNet:N2}\"");
-                    }
+                    DelimitedExport.WriteFile(filePath,
+                        new[] { "رقم الصنف", "الصنف", "الكمية", "الإجمالي" },
+                        _itemsData.Select(r => new[]
+                        {
+                            r.ItemId.ToString(),
+                            r.ItemName,
+                            r.Quantity.ToString("N2"),
+                            r.Total.ToString("N2")
+                        }));
+                }
+                else
+                {
+                    DelimitedExport.WriteFile(filePath,
+                        new[]
+                        {
+                            "رقم الحركة", "رقم الفاتورة", "النوع", "التاريخ",
+                            "الوقت", "نقدي", "شبكة", "الإجمالي", "الضريبة",
+                            "الخصم", "الصافي"
+                        },
+                        _invoiceData.Select(r => new[]
+                        {
+                            r.InvGlobalID,
+                            r.id.ToString(),
+                            r.ProcTypeName,
+                            r.InvDate,
+                            r.InvTime,
+                            r.Cash.ToString("N2"),
+                            r.Visa.ToString("N2"),
+                            r.InvTotal.ToString("N2"),
+                            r.Tax.ToString("N2"),
+                            r.Minus.ToString("N2"),
+                            r.TotNet.ToString("N2")
+                        }));
                 }
 
                 DXMessageBox.Show($"تم حفظ الملف:\n{filePath}",

@@ -741,21 +741,12 @@ namespace SmartAuditERP.Form_WPF
                 }
 
                 // حفظ كـ CSV (بديل بسيط لـ Excel بدون مكتبات خارجية)
+                // P7-048/049 fix: ترميز الخلايا الموحّد — الفاصلة والاقتباس
+                // والأسطر وبادئات الصيغ كلها خلية سليمة واحدة
                 string filePath = Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                     $"ItemsActivity_{DateTime.Now:yyyyMMdd_HHmmss}.csv");
-
-                using (var sw = new System.IO.StreamWriter(filePath,
-                    false, System.Text.Encoding.UTF8))
-                {
-                    // رأس الأعمدة
-                    sw.WriteLine(string.Join(",",
-                        dt.Columns.Cast<DataColumn>().Select(c => $"\"{c.ColumnName}\"")));
-                    // البيانات
-                    foreach (DataRow row in dt.Rows)
-                        sw.WriteLine(string.Join(",",
-                            row.ItemArray.Select(v => $"\"{v}\"")));
-                }
+                DelimitedExport.WriteDataTable(filePath, dt);
 
                 // فتح الملف
                 Process.Start(new ProcessStartInfo(filePath)

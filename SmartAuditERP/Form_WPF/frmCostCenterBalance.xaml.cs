@@ -1100,16 +1100,9 @@ namespace SmartAuditERP.Form_WPF
 
         private static string EscapeCsv(string value)
         {
-            if (value == null)
-                return "";
-
-            if (value.Contains("\""))
-                value = value.Replace("\"", "\"\"");
-
-            if (value.Contains(",") || value.Contains("\n") || value.Contains("\r"))
-                value = $"\"{value}\"";
-
-            return value;
+            // P7-048/049 fix: الترميز عبر النواة الموحّدة — اقتباس RFC 4180 عند
+            // الفاصلة/الاقتباس/السطر، وتحييد بادئات الصيغ (= + @ و«-» غير الرقمية)
+            return DelimitedExport.EncodeCell(value ?? "", ',');
         }
 
         private void ExportCurrentGridToCsv(string filePath)

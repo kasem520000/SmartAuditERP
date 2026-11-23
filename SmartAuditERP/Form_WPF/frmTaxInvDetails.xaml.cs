@@ -921,35 +921,27 @@ namespace SmartAuditERP.Form_WPF
 
                 var saveDialog = new Microsoft.Win32.SaveFileDialog
                 {
-                    Filter      = "Excel Files|*.xlsx",
-                    DefaultExt  = "xlsx",
-                    FileName    = "TaxInvoices_Export"
+                    // P7-050 fix: xlsx ملف Excel حقيقي (ClosedXML) وcsv بترميز
+                    // الخلايا الموحّد — كان المرشح xlsx بينما يُكتب XML خام
+                    Filter      = DelimitedExport.ExcelCsvTsvFilter,
+                    FileName    = "TaxInvoices_Export.xlsx"
                 };
 
                 if (saveDialog.ShowDialog() != true) return;
 
-                // تصدير البيانات إلى XML مؤقتاً (يمكن استبداله بـ EPPlus)
-                var table = new DataTable("TaxInvoices");
-                table.Columns.Add("نوع الفاتورة");
-                table.Columns.Add("رقم الفاتورة");
-                table.Columns.Add("التاريخ");
-                table.Columns.Add("العميل");
-                table.Columns.Add("المجموع");
-                table.Columns.Add("الخصم");
-                table.Columns.Add("الصافي قبل الضريبة");
-                table.Columns.Add("الضريبة");
-                table.Columns.Add("الصافي");
-
-                foreach (var row in invoiceRows)
+                string exportPath = saveDialog.FileName;
+                if (exportPath.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase))
                 {
-                    table.Rows.Add(
-                        row.DgvInvType, row.DgvInvNo, row.DgvDate,
-                        row.DgvClient,  row.DgvSum2,  row.DgvDiscount,
-                        row.DgvNetBeforVat, row.DgvVAT, row.DgvNet);
+                    ExportToExcelClosedXml(exportPath);
+                }
+                else
+                {
+                    // P7-048/049: csv/tsv بترميز الخلايا الموحّد
+                    var table = BuildExportTable();
+                    DelimitedExport.WriteDataTable(exportPath, table);
                 }
 
-                table.WriteXml(saveDialog.FileName);
-                Process.Start(new ProcessStartInfo(saveDialog.FileName)
+                Process.Start(new ProcessStartInfo(exportPath)
                     { UseShellExecute = true });
             }
             catch (Exception ex)
@@ -957,6 +949,77 @@ namespace SmartAuditERP.Form_WPF
                 DXMessageBox.Show("خطأ أثناء التصدير\n" + ex.Message,
                     "", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        /// <summary>
+        /// جدول التصدير المشترك بين xlsx وcsv/tsv.
+        /// </summary>
+        private DataTable BuildExportTable()
+        {
+            var table = new DataTable("TaxInvoices");
+            table.Columns.Add("نوع الفاتورة");
+            table.Columns.Add("رقم الفاتورة");
+            table.Columns.Add("التاريخ");
+            table.Columns.Add("العميل");
+            table.Columns.Add("المجموع");
+            table.Columns.Add("الخصم");
+            table.Columns.Add("الصافي قبل الضريبة");
+            table.Columns.Add("الضريبة");
+            table.Columns.Add("الصافي");
+
+            foreach (var row in invoiceRows)
+            {
+                table.Rows.Add(
+                    row.DgvInvType, row.DgvInvNo, row.DgvDate,
+                    row.DgvClient, row.DgvSum2, row.DgvDiscount,
+                    row.DgvNetBeforVat, row.DgvVAT, row.DgvNet);
+            }
+
+            return table;
+        }
+
+        /// <summary>
+        /// P7-050 fix: ملف xlsx حقيقي عبر ClosedXML — الأعمدة المالية أرقام.
+        /// </summary>
+        private void ExportToExcelClosedXml(string filePath)
+        {
+            using var workbook = new ClosedXML.Excel.XLWorkbook();
+            var worksheet = workbook.Worksheets.Add("فواتير الضريبة");
+
+            string[] headers =
+            {
+                "نوع الفاتورة", "رقم الفاتورة", "التاريخ", "العميل",
+                "المجموع", "الخصم", "الصافي قبل الضريبة", "الضريبة", "الصافي"
+            };
+            for (int c = 0; c < headers.Length; c++)
+            {
+                var cell = worksheet.Cell(1, c + 1);
+                cell.Value = headers[c];
+                cell.Style.Font.Bold = true;
+            }
+
+            int rowIdx = 2;
+            foreach (var row in invoiceRows)
+            {
+                worksheet.Cell(rowIdx, 1).Value = row.DgvInvType;
+                worksheet.Cell(rowIdx, 2).Value = row.DgvInvNo;
+                worksheet.Cell(rowIdx, 3).Value = row.DgvDate;
+                worksheet.Cell(rowIdx, 4).Value = row.DgvClient;
+                worksheet.Cell(rowIdx, 5).Value = row.DgvSum2;
+                worksheet.Cell(rowIdx, 6).Value = row.DgvDiscount;
+                worksheet.Cell(rowIdx, 7).Value = row.DgvNetBeforVat;
+                worksheet.Cell(rowIdx, 8).Value = row.DgvVAT;
+                worksheet.Cell(rowIdx, 9).Value = row.DgvNet;
+
+                const string numberFormat = "#,##0.00";
+                foreach (int col in new[] { 5, 6, 7, 8, 9 })
+                    worksheet.Cell(rowIdx, col).Style.NumberFormat.Format = numberFormat;
+
+                rowIdx++;
+            }
+
+            worksheet.Columns().AdjustToContents();
+            workbook.SaveAs(filePath);
         }
 
         private void btnPreview_Click(object sender, RoutedEventArgs e)

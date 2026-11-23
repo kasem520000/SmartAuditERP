@@ -61,9 +61,25 @@ namespace SmartAuditERP.Form_WPF
         private readonly Dictionary<string, InvoiceObj> _invoiceObjCache
             = new Dictionary<string, InvoiceObj>();
 
+        // P7-047 fix: قيم مالية إضافية لكل فاتورة لا يحملها نموذج InvoiceTxt الخارجي
+        // (AuditorAPI.dll) — ضريبة إضافية بمبلغها ونقدي/شبكة الفعليين من Inv
+        private readonly Dictionary<string, InvFinancialExtras> _invExtras
+            = new Dictionary<string, InvFinancialExtras>();
+
         #endregion
 
         #region ══════════════════ Inner Model ══════════════════
+
+        /// <summary>
+        /// P7-047: مبلغ الضريبة الإضافية وتوزيع الدفع نقدي/شبكة لفاتورة واحدة —
+        /// من Inv مباشرة (Inv_Sub.ItemAdditionalTax وInv.cash وInv.visa).
+        /// </summary>
+        private class InvFinancialExtras
+        {
+            public double ExtraVATAmt { get; set; }
+            public double PayCash { get; set; }
+            public double PayAtm { get; set; }
+        }
 
         /// <summary>
         /// يحمل كل قيم UI اللازمة للاستعلام.
@@ -535,6 +551,10 @@ namespace SmartAuditERP.Form_WPF
         {
             var list = new List<InvoiceTxt>();
 
+            // P7-047 fix: تُبنى القيم المالية الإضافية مع نفس التحميل — لا تبقى
+            // من تحميل سابق فوق بيانات جديدة
+            _invExtras.Clear();
+
             // ✅ بناء الاستعلام المحسّن مع LEFT JOIN للمستودع
             string sql = overrideSql ?? BuildOptimizedSql(p);
 
@@ -653,6 +673,16 @@ namespace SmartAuditERP.Form_WPF
 
                             invoiceTxt.TotDiscount = invoiceTxt.InvDiscount;
 
+                            // P7-047 fix: التقاط القيم المالية الإضافية مع الصف
+                            // (مبلغ الضريبة الإضافية من البنود + نقدي/شبكة من Inv)
+                            _invExtras[invoiceTxt.InvGlobalID] =
+                                new InvFinancialExtras
+                                {
+                                    ExtraVATAmt = SafeRowDouble(row, "ExtraVATAmt"),
+                                    PayCash = SafeRowDouble(row, "cash"),
+                                    PayAtm = SafeRowDouble(row, "visa")
+                                };
+
                             // التواريخ
                             if (DateTime.TryParse(
                                     row["date"].ToString(), out DateTime invDate))
@@ -710,6 +740,10 @@ namespace SmartAuditERP.Form_WPF
                 " from Inv_Sub where InvGlobalID=Inv.InvGlobalID) as sumPrice," +
                 "(SELECT ISNULL(sum(discount),0) " +
                 " from Inv_Sub where InvGlobalID=Inv.InvGlobalID) as ItemDiscount," +
+                // P7-047 fix: مبلغ الضريبة الإضافية من بنود الفاتورة — كان
+                // الإسقاط يطبع النسبة مكان المبلغ
+                "(SELECT ISNULL(sum(Inv_Sub.ItemAdditionalTax),0) " +
+                " from Inv_Sub where InvGlobalID=Inv.InvGlobalID) as ExtraVATAmt," +
                 "Customers.name   as CustName," +
                 "Users.username   as username," +
                 "Branches.name    as BranchName," +
@@ -735,6 +769,18 @@ namespace SmartAuditERP.Form_WPF
                 _invoiceObjCache[key] = obj;
             }
             return obj;
+        }
+
+        /// <summary>
+        /// P7-047: قراءة رقم من صف الجدول بلا رمي — أعمدة cash/visa/ExtraVATAmt
+        /// قد تكون NULL في قواعد قديمة.
+        /// </summary>
+        private static double SafeRowDouble(DataRow row, string column)
+        {
+            if (!row.Table.Columns.Contains(column)) return 0.0;
+            object v = row[column];
+            if (v == null || v == DBNull.Value) return 0.0;
+            return double.TryParse(v.ToString(), out double d) ? d : 0.0;
         }
 
         #endregion
@@ -799,6 +845,35 @@ namespace SmartAuditERP.Form_WPF
                 var toDate = txtToDate.EditValue is DateTime td
                     ? td : DateTime.Today;
 
+                // P7-047 fix: مجاميع الحقول المالية التي كان الإسقاط يصفرها
+                double xExtra = 0, xExtra1 = 0;
+                double xTotalTax = 0, xTotalTax1 = 0;
+                double xPaid = 0, xPaid1 = 0;
+                double xRemainder = 0, xRemainder1 = 0;
+                foreach (var row in _invoiceRows)
+                {
+                    var ex = _invExtras.TryGetValue(row.InvGlobalID, out var e)
+                        ? e : null;
+                    double extraAmt = ex?.ExtraVATAmt ?? 0.0;
+                    double totalTax = row.VAT + extraAmt;
+
+                    if (row.ProcType == 1)
+                    {
+                        xExtra += extraAmt;
+                        xTotalTax += totalTax;
+                        xPaid += row.Paid;
+                        xRemainder += row.Remainder;
+                    }
+                    else
+                    {
+                        xExtra1 += extraAmt;
+                        xTotalTax1 += totalTax;
+                        xPaid1 += row.Paid;
+                        xRemainder1 += row.Remainder;
+                    }
+                }
+
+                string fmt = Common.DigitsNo ?? "N2";
                 var report = new Report();
                 var ds = report.BindToData(
                     BuildDataTableForReport(),
@@ -809,7 +884,11 @@ namespace SmartAuditERP.Form_WPF
                     sumDiscount: lblSumDiscount.Text,
                     sumNet: lblSumNet.Text,
                     sumVAT: lblSumVAT.Text,
-                    sumNetFinal: lblSumNetFinal.Text);
+                    sumNetFinal: lblSumNetFinal.Text,
+                    sumExtraTax: (xExtra - xExtra1).ToString(fmt),
+                    sumTotalTax: (xTotalTax - xTotalTax1).ToString(fmt),
+                    sumPaid: (xPaid - xPaid1).ToString(fmt),
+                    sumRemainder: (xRemainder - xRemainder1).ToString(fmt));
 
                 report.Printing(type, ds, RptUrl, RptName, defPrinter, 1);
             }
@@ -852,6 +931,16 @@ namespace SmartAuditERP.Form_WPF
 
             foreach (var row in _invoiceRows)
             {
+                // P7-047 fix: المبالغ لا النسب ولا الأصفار — مبلغ الضريبة الإضافية
+                // من بنود الفاتورة، وإجمالي الضريبة = ضريبة الفاتورة + الإضافية،
+                // ونقدي/شبكة مما دُفع فعلاً في الفاتورة (Inv.cash / Inv.visa)
+                var ex = _invExtras.TryGetValue(row.InvGlobalID, out var extras)
+                    ? extras : null;
+                double extraVatAmt = ex?.ExtraVATAmt ?? 0.0;
+                double totalTax = row.VAT + extraVatAmt;
+                double payCash = ex?.PayCash ?? 0.0;
+                double payAtm = ex?.PayAtm ?? 0.0;
+
                 dt.Rows.Add(
                     row.AutoIncrementID,
                     row.InvoiceTypeTxt,
@@ -873,8 +962,10 @@ namespace SmartAuditERP.Form_WPF
                     row.ProcType,
                     row.Paid.ToString(fmt),
                     row.Remainder.ToString(fmt),
-                    row.ExtraVATPerc.ToString(fmt),
-                    "0", "0", "0");
+                    extraVatAmt.ToString(fmt),
+                    totalTax.ToString(fmt),
+                    payCash.ToString(fmt),
+                    payAtm.ToString(fmt));
             }
             return dt;
         }
@@ -884,19 +975,30 @@ namespace SmartAuditERP.Form_WPF
             if (_invoiceRows.Count == 0) return;
             try
             {
+                // P7-050 fix: الامتداد المعروض هو المكتوب فعلاً — xlsx ملف
+                // Excel حقيقي (ClosedXML)، وcsv/tsv نص مفصول بترميز الخلايا
+                // الموحّد (P7-048/049)
                 var dlg = new Microsoft.Win32.SaveFileDialog
                 {
-                    Filter = "Excel Files (*.xlsx)|*.xlsx|CSV Files (*.csv)|*.csv",
+                    Filter = DelimitedExport.ExcelCsvTsvFilter,
                     FileName = $"فواتير_مشتريات_{DateTime.Now:yyyyMMdd}.xlsx"
                 };
 
                 if (dlg.ShowDialog() != true) return;
 
-                var dt = BuildDataTableForReport();
-                ExportDataTableToTsv(dt, dlg.FileName);
+                string path = dlg.FileName;
+                if (path.EndsWith(".xlsx", StringComparison.OrdinalIgnoreCase))
+                {
+                    ExportToExcelClosedXml(path);
+                }
+                else
+                {
+                    // P7-048/049: الفاصل وفق الامتداد وترميز الخلايا الموحّد
+                    DelimitedExport.WriteDataTable(path, BuildDataTableForReport());
+                }
 
                 System.Diagnostics.Process.Start(
-                    new System.Diagnostics.ProcessStartInfo(dlg.FileName)
+                    new System.Diagnostics.ProcessStartInfo(path)
                     { UseShellExecute = true });
             }
             catch (Exception ex)
@@ -907,33 +1009,71 @@ namespace SmartAuditERP.Form_WPF
         }
 
         /// <summary>
-        /// تصدير DataTable إلى TSV (يفتح بـ Excel)
+        /// P7-050 fix: ملف xlsx حقيقي عبر ClosedXML (نمط frmInvDetails) —
+        /// الأعمدة الرقمية تُكتب أرقاماً لا نصاً.
         /// </summary>
-        private static void ExportDataTableToTsv(
-            DataTable dt, string filePath)
+        private void ExportToExcelClosedXml(string filePath)
         {
-            var sb = new StringBuilder();
+            using var workbook = new ClosedXML.Excel.XLWorkbook();
+            var worksheet = workbook.Worksheets.Add("Invoices");
 
-            // رأس الأعمدة
-            for (int c = 0; c < dt.Columns.Count; c++)
+            string[] headers =
             {
-                sb.Append(dt.Columns[c].ColumnName);
-                if (c < dt.Columns.Count - 1) sb.Append('\t');
-            }
-            sb.AppendLine();
+                "AutoIncrementID", "InvoiceTypeTxt", "InvGlobalID",
+                "InvoiceNo", "ReffNo", "InvDate", "InvoiceTime",
+                "PaymentTxt", "ClientTxt", "SumPrice", "TotDiscount",
+                "Total", "VAT", "Net", "InvertoryName", "BranchTxt",
+                "UserTxt", "ProcType", "Paid", "Remainder",
+                "ExtraVAT", "TotalTax", "Paycash", "PayATM"
+            };
 
-            // البيانات
-            foreach (DataRow row in dt.Rows)
+            for (int c = 0; c < headers.Length; c++)
+                worksheet.Cell(1, c + 1).Value = headers[c];
+
+            int rowIdx = 2;
+            foreach (var row in _invoiceRows)
             {
-                for (int c = 0; c < dt.Columns.Count; c++)
-                {
-                    sb.Append(row[c]?.ToString() ?? "");
-                    if (c < dt.Columns.Count - 1) sb.Append('\t');
-                }
-                sb.AppendLine();
+                var ex = _invExtras.TryGetValue(row.InvGlobalID, out var extras)
+                    ? extras : null;
+                double extraVatAmt = ex?.ExtraVATAmt ?? 0.0;
+
+                worksheet.Cell(rowIdx, 1).Value = row.AutoIncrementID;
+                worksheet.Cell(rowIdx, 2).Value = row.InvoiceTypeTxt;
+                worksheet.Cell(rowIdx, 3).Value = row.InvGlobalID;
+                worksheet.Cell(rowIdx, 4).Value = row.InvoiceNo.ToString();
+                worksheet.Cell(rowIdx, 5).Value = row.ReffNo;
+                worksheet.Cell(rowIdx, 6).Value =
+                    row.InvDate.ToString("MM/d/yyyy hh:mm tt");
+                worksheet.Cell(rowIdx, 7).Value = row.InvoiceTime;
+                worksheet.Cell(rowIdx, 8).Value = row.PaymentTxt;
+                worksheet.Cell(rowIdx, 9).Value = row.ClientTxt;
+                worksheet.Cell(rowIdx, 10).Value = row.SumPrice;
+                worksheet.Cell(rowIdx, 11).Value = row.TotDiscount;
+                worksheet.Cell(rowIdx, 12).Value = row.Total;
+                worksheet.Cell(rowIdx, 13).Value = row.VAT;
+                worksheet.Cell(rowIdx, 14).Value = row.Net;
+                worksheet.Cell(rowIdx, 15).Value = row.InvertoryName;
+                worksheet.Cell(rowIdx, 16).Value = row.BranchTxt;
+                worksheet.Cell(rowIdx, 17).Value = row.UserTxt;
+                worksheet.Cell(rowIdx, 18).Value = row.ProcType;
+                worksheet.Cell(rowIdx, 19).Value = row.Paid;
+                worksheet.Cell(rowIdx, 20).Value = row.Remainder;
+                worksheet.Cell(rowIdx, 21).Value = extraVatAmt;
+                worksheet.Cell(rowIdx, 22).Value = row.VAT + extraVatAmt;
+                worksheet.Cell(rowIdx, 23).Value = ex?.PayCash ?? 0.0;
+                worksheet.Cell(rowIdx, 24).Value = ex?.PayAtm ?? 0.0;
+
+                // تنسيق الأعمدة المالية — يبقى الرقم رقماً مع عرض الألوف
+                // (صيغة Excel لا صيغة .NET)
+                const string numberFormat = "#,##0.00";
+                foreach (int col in new[] { 10, 11, 12, 13, 14, 19, 20, 21, 22, 23, 24 })
+                    worksheet.Cell(rowIdx, col).Style.NumberFormat.Format = numberFormat;
+
+                rowIdx++;
             }
 
-            File.WriteAllText(filePath, sb.ToString(), Encoding.UTF8);
+            worksheet.Columns().AdjustToContents();
+            workbook.SaveAs(filePath);
         }
 
         #endregion

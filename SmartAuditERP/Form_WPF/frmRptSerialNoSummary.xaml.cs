@@ -205,17 +205,18 @@ namespace SmartAuditERP.Form_WPF
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                     $"أرصدة_تسلسلات_{DateTime.Now:yyyyMMdd_HHmm}.csv");
 
-                using var writer = new System.IO.StreamWriter(
-                    path, false, System.Text.Encoding.UTF8);
-
-                writer.WriteLine("م,الصنف,رمز الصنف,التسلسل,العدد");
-
-                foreach (var item in SummaryList)
-                {
-                    writer.WriteLine(
-                        $"{item.DgvNo},{item.ItemName},{item.ItemCode}," +
-                        $"{item.ItemSerialNo},{item.SerialQty:N2}");
-                }
+                // P7-048/049 fix: ترميز الخلايا الموحّد — الفاصلة والاقتباس
+                // والأسطر وبادئات الصيغ كلها خلية سليمة واحدة
+                DelimitedExport.WriteFile(path,
+                    new[] { "م", "الصنف", "رمز الصنف", "التسلسل", "العدد" },
+                    SummaryList.Select(item => new[]
+                    {
+                        item.DgvNo.ToString(),
+                        item.ItemName,
+                        item.ItemCode,
+                        item.ItemSerialNo,
+                        item.SerialQty.ToString("N2")
+                    }));
 
                 Process.Start(new ProcessStartInfo(path)
                 { UseShellExecute = true });

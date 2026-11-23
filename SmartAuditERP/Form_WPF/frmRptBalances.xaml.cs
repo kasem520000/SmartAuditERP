@@ -1,10 +1,11 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -486,23 +487,29 @@ namespace SmartAuditERP.Form_WPF
             {
                 if (_balancesSource.Count == 0) return;
 
-                var sb = new StringBuilder();
-                sb.AppendLine("الحساب,اسم الحساب,رصيد افتتاحي مدين,رصيد افتتاحي دائن," +
-                              "حركة مدين,حركة دائن,رصيد مدين,رصيد دائن," +
-                              "رصيد ختامي مدين,رصيد ختامي دائن");
-
-                foreach (var row in _balancesSource)
-                {
-                    sb.AppendLine(
-                        $"{row.DgvAccount},{row.DgvAccName}," +
-                        $"{row.DgvDeptIntial:N2},{row.DgvCreditIntial:N2}," +
-                        $"{row.DgvDebtorMovement:N2},{row.DgvCreditorMovement:N2}," +
-                        $"{row.DgvDeptBlc:N2},{row.DgvCreditBlc:N2}," +
-                        $"{row.DgvDeptFinal:N2},{row.DgvCreditFinal:N2}");
-                }
-
+                // P7-048/049 fix: ترميز الخلايا الموحّد — الفاصلة والاقتباس
+                // والأسطر وبادئات الصيغ وقيم الألوف كلها خلية واحدة سليمة
                 string fileName = "Balances_Export.csv";
-                File.WriteAllText(fileName, sb.ToString(), Encoding.UTF8);
+                DelimitedExport.WriteFile(fileName,
+                    new[]
+                    {
+                        "الحساب", "اسم الحساب", "رصيد افتتاحي مدين", "رصيد افتتاحي دائن",
+                        "حركة مدين", "حركة دائن", "رصيد مدين", "رصيد دائن",
+                        "رصيد ختامي مدين", "رصيد ختامي دائن"
+                    },
+                    _balancesSource.Select(row => new[]
+                    {
+                        row.DgvAccount.ToString(),
+                        row.DgvAccName,
+                        row.DgvDeptIntial.ToString("N2"),
+                        row.DgvCreditIntial.ToString("N2"),
+                        row.DgvDebtorMovement.ToString("N2"),
+                        row.DgvCreditorMovement.ToString("N2"),
+                        row.DgvDeptBlc.ToString("N2"),
+                        row.DgvCreditBlc.ToString("N2"),
+                        row.DgvDeptFinal.ToString("N2"),
+                        row.DgvCreditFinal.ToString("N2")
+                    }));
 
                 System.Diagnostics.Process.Start(
                     new System.Diagnostics.ProcessStartInfo(fileName)

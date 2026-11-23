@@ -1961,16 +1961,18 @@ namespace SmartAuditERP.Form_WPF
                     int rowIdx = 2;
                     foreach (var row in _itemsSource)
                     {
-                        worksheet.Cells[rowIdx, 1] = row.Column1;
-                        worksheet.Cells[rowIdx, 2] = row.Column8;
-                        worksheet.Cells[rowIdx, 3] = row.Column9;
-                        worksheet.Cells[rowIdx, 4] = row.Column5;
-                        worksheet.Cells[rowIdx, 5] = row.Column10;
-                        worksheet.Cells[rowIdx, 6] = row.Column2;
-                        worksheet.Cells[rowIdx, 7] = row.Column3;
-                        worksheet.Cells[rowIdx, 8] = row.Column4;
-                        worksheet.Cells[rowIdx, 9] = row.Column6;
-                        worksheet.Cells[rowIdx, 10] = row.Column7;
+                        // P7-049 fix: عبر COM Interop تُقيَّم السلسلة التي تبدأ
+                        // بـ = / + / @ صيغةً فعلية — تحيَّد البادئات قبل الإسناد
+                        worksheet.Cells[rowIdx, 1] = DelimitedExport.NeutralizeFormulaPrefix(row.Column1);
+                        worksheet.Cells[rowIdx, 2] = DelimitedExport.NeutralizeFormulaPrefix(row.Column8);
+                        worksheet.Cells[rowIdx, 3] = DelimitedExport.NeutralizeFormulaPrefix(row.Column9);
+                        worksheet.Cells[rowIdx, 4] = DelimitedExport.NeutralizeFormulaPrefix(row.Column5);
+                        worksheet.Cells[rowIdx, 5] = DelimitedExport.NeutralizeFormulaPrefix(row.Column10);
+                        worksheet.Cells[rowIdx, 6] = DelimitedExport.NeutralizeFormulaPrefix(row.Column2);
+                        worksheet.Cells[rowIdx, 7] = DelimitedExport.NeutralizeFormulaPrefix(row.Column3);
+                        worksheet.Cells[rowIdx, 8] = DelimitedExport.NeutralizeFormulaPrefix(row.Column4);
+                        worksheet.Cells[rowIdx, 9] = DelimitedExport.NeutralizeFormulaPrefix(row.Column6);
+                        worksheet.Cells[rowIdx, 10] = DelimitedExport.NeutralizeFormulaPrefix(row.Column7);
                         rowIdx++;
                     }
                 }
