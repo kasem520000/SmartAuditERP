@@ -79,13 +79,15 @@ namespace SmartAuditERP.Form_WPF
 
         #region CalcStock - حساب إجمالي حركة المواد
 
-        private void CalcStock()
+        // P7-046 fix: النتيجة bool — اكتمل النشر الذري أم لا (بوابة الطباعة P7-045)
+        private bool CalcStock()
         {
             try
             {
-                _itemsData.Clear();
-                SumSaleVal = 0.0;
-                SumSale    = 0.0;
+                // P7-046 fix: التجميع في قائمة محلية — لا نشر تدريجي أثناء
+                // الاستعلامات؛ فشل متأخر يترك نتيجة الشاشة السابقة متسقة
+                var rows = new List<SaleItemRow>();
+                double sumSaleVal = 0.0, sumSale = 0.0;
 
                 string branchFilter = "";
                 if (MainClass.BranchNo != -1)
@@ -136,15 +138,15 @@ namespace SmartAuditERP.Form_WPF
                     double netQty   = qty - retQty;
                     double netTotal = Math.Round(total - retTot, 2);
 
-                    SumSaleVal += netQty;
-                    SumSale    += netTotal;
+                    sumSaleVal += netQty;
+                    sumSale    += netTotal;
 
                     string itemName = string.Equals(MainClass.Language, "ar",
                         StringComparison.OrdinalIgnoreCase)
                         ? itemRow["name"].ToString()
                         : itemRow["nameEN"].ToString();
 
-                    _itemsData.Add(new SaleItemRow
+                    rows.Add(new SaleItemRow
                     {
                         ItemId   = itemId,
                         ItemName = itemName,
@@ -153,12 +155,20 @@ namespace SmartAuditERP.Form_WPF
                     });
                 }
 
+                // ══ نقطة النشر الواحدة (P7-046) ══
+                _itemsData.Clear();
+                foreach (var r in rows) _itemsData.Add(r);
+                SumSaleVal = sumSaleVal;
+                SumSale    = sumSale;
+
                 txtSumSale.Text = Math.Round(SumSale, 2).ToString("N2");
                 ProgressBar1.Value = ProgressBar1.Maximum;
+                return true;
             }
             catch (Exception ex)
             {
                 DXMessageBox.Show("خطأ في حساب حركة المواد:\n" + ex.Message);
+                return false;
             }
         }
 
@@ -205,12 +215,14 @@ namespace SmartAuditERP.Form_WPF
 
         #region ShowResults - عرض الفواتير
 
-        private void ShowResults()
+        // P7-046 fix: النتيجة bool — اكتمل النشر الذري أم لا (بوابة الطباعة P7-045)
+        private bool ShowResults()
         {
             try
             {
-                _invoiceData.Clear();
-                _sumSale2 = 0.0;
+                // P7-046 fix: التجميع في قائمة ومتغير محلي — لا نشر تدريجي
+                var rows = new List<SaleInvoiceRow>();
+                double sumSale2 = 0.0;
 
                 string branchFilter = "";
                 if (MainClass.BranchNo != -1)
@@ -246,10 +258,10 @@ namespace SmartAuditERP.Form_WPF
                         isPostpone = true;
 
                     double totNet = ParseDouble(row["tot_net"]);
-                    if (procType == 1)      _sumSale2 += totNet;
-                    else if (procType == 2) _sumSale2 -= totNet;
+                    if (procType == 1)      sumSale2 += totNet;
+                    else if (procType == 2) sumSale2 -= totNet;
 
-                    _invoiceData.Add(new SaleInvoiceRow
+                    rows.Add(new SaleInvoiceRow
                     {
                         InvGlobalID = row["InvGlobalID"].ToString(),
                         id          = row["id"].ToString(),
@@ -266,11 +278,18 @@ namespace SmartAuditERP.Form_WPF
                     });
                 }
 
+                // ══ نقطة النشر الواحدة (P7-046) ══
+                _invoiceData.Clear();
+                foreach (var r in rows) _invoiceData.Add(r);
+                _sumSale2 = sumSale2;
+
                 txtSumSale2.Text = Math.Round(_sumSale2, 2).ToString("N2");
+                return true;
             }
             catch (Exception ex)
             {
                 DXMessageBox.Show("خطأ في عرض الفواتير:\n" + ex.Message);
+                return false;
             }
         }
 
@@ -366,6 +385,17 @@ namespace SmartAuditERP.Form_WPF
 
         private void PrintDevexpress(int printMode)
         {
+            // P7-045 fix: إعادة الحساب بمعايير الواجهة الحالية قبل الربط — كانت
+            // المعاينة تقرأ التواريخ الحية (date1/date2) فوق بيانات آخر استعلام
+            // (المحملة بلقطة DateTimeFrom/DateTimeTo القديمة)؛ وفشل إعادة الحساب
+            // يوقف الطباعة، والنتيجة الفارغة يمسكها فحص الجدول الفارغ أدناه
+            DateTimeFrom = BuildDateTime(date1.DateTime, time1.Text, "00:00:00");
+            DateTimeTo   = BuildDateTime(date2.DateTime, time2.Text, "23:59:59");
+            bool calcOk = TabControl1.SelectedIndex == 0
+                ? CalcStock()
+                : ShowResults();
+            if (!calcOk) return;
+
             RptUrl     = MainClass.ReportsPath;
             defPrinter = MainClass.ReportsPrinter;
             RptName    = TabControl1.SelectedIndex == 0

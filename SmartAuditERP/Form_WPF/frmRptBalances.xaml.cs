@@ -236,12 +236,14 @@ namespace SmartAuditERP.Form_WPF
             catch { }
         }
 
-        private void ShowResult()
+        // P7-046 fix: النتيجة bool — اكتمل النشر الذري أم لا (بوابة الطباعة P7-045)
+        private bool ShowResult()
         {
             try
             {
-                _balancesSource.Clear();
-                txtIsBalanced.Text = "";
+                // P7-046 fix: التجميع في قائمة ومتغيرات محلية — لا نشر تدريجي؛
+                // فشل مصدر متأخر يترك نتيجة الشاشة السابقة كاملة متسقة
+                var rows = new List<BalanceRow_frmRptBalances>();
                 _parentCode = -1;
 
                 string branchCond = (chkAllBranch.IsChecked == true)
@@ -412,7 +414,7 @@ namespace SmartAuditERP.Form_WPF
                     sumDeptFinal   += finalDebt;
                     sumCreditFinal += finalCredit;
 
-                    _balancesSource.Add(new BalanceRow_frmRptBalances
+                    rows.Add(new BalanceRow_frmRptBalances
                     {
                         DgvAccount          = row[1].ToString(),
                         DgvAccName          = row[2].ToString(),
@@ -426,6 +428,11 @@ namespace SmartAuditERP.Form_WPF
                         DgvCreditFinal      = finalCredit
                     });
                 }
+
+                // ══ نقطة النشر الواحدة (P7-046) ══
+                _balancesSource.Clear();
+                foreach (var r in rows) _balancesSource.Add(r);
+                txtIsBalanced.Text = "";
 
                 // الرصيد
                 if (sumCreditFinal > sumDeptFinal)
@@ -443,10 +450,12 @@ namespace SmartAuditERP.Form_WPF
                     txtBalance.Text = "0";
                     lblStatus.Text  = "";
                 }
+                return true;
             }
             catch (Exception ex)
             {
                 DXMessageBox.Show(ex.Message);
+                return false;
             }
         }
 
@@ -559,6 +568,10 @@ namespace SmartAuditERP.Form_WPF
 
         private void PrintDevexpress(int printType)
         {
+            // P7-045 fix: إعادة الحساب بمعايير الواجهة الحالية قبل الربط —
+            // النتيجة الفارغة يمسكها فحص الجدول الفارغ أدناه
+            if (!ShowResult()) return;
+
             _rptUrl     = MainClass.ReportsPath;
             _rptName    = "rptAccountBalance.repx";
             _defPrinter = MainClass.ReportsPrinter;

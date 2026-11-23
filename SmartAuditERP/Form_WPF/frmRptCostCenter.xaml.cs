@@ -259,11 +259,13 @@ namespace SmartAuditERP.Form_WPF
 
         #region Detailed Results
 
-        private void DetailedResults()
+        // P7-046 fix: النتيجة bool — ويعالج في قائمة محلية ثم ينشر مرة واحدة
+        private bool DetailedResults()
         {
             try
             {
-                _dataSource.Clear();
+                // P7-046 fix: لا نشر تدريجي أثناء الاستعلامات
+                var rows = new List<CostCenterRow>();
                 ProgressBar1.Value = 0;
                 _parentCode = -1;
 
@@ -388,14 +390,20 @@ namespace SmartAuditERP.Form_WPF
                 foreach (DataRow row in tempTable.Rows)
                 {
                     ProgressBar1.Value++;
-                    ProcessAndAddRow(row, isDetailed: true);
+                    ProcessAndAddRow(row, isDetailed: true, rows);
                 }
 
+                // ══ نقطة النشر الواحدة (P7-046) ══
+                _dataSource.Clear();
+                foreach (var r in rows) _dataSource.Add(r);
+
                 lblCount.Text = _dataSource.Count.ToString();
+                return true;
             }
             catch (Exception ex)
             {
                 DXMessageBox.Show(ex.Message);
+                return false;
             }
         }
 
@@ -403,11 +411,14 @@ namespace SmartAuditERP.Form_WPF
 
         #region Show Result (Aggregated)
 
-        private void ShowResult()
+        // P7-046 fix: النتيجة bool — اكتمل النشر الذري أم لا (بوابة الطباعة P7-045)
+        private bool ShowResult()
         {
             try
             {
-                _dataSource.Clear();
+                // P7-046 fix: التجميع في قائمة محلية — لا نشر تدريجي؛ فشل مصدر
+                // متأخر يترك نتيجة الشاشة السابقة كاملة متسقة
+                var rows = new List<CostCenterRow>();
                 ProgressBar1.Value = 0;
                 _parentCode = -1;
 
@@ -534,7 +545,7 @@ namespace SmartAuditERP.Form_WPF
                     else
                     { finalDebt = 0; finalCredit = Math.Round(creditFinal - deptFinal, 2); }
 
-                    _dataSource.Add(new CostCenterRow
+                    rows.Add(new CostCenterRow
                     {
                         DgvAccount          = row["Code"].ToString(),
                         DgvCostCenter       = row["Name"].ToString(),
@@ -554,15 +565,22 @@ namespace SmartAuditERP.Form_WPF
                     });
                 }
 
+                // ══ نقطة النشر الواحدة (P7-046) ══
+                _dataSource.Clear();
+                foreach (var r in rows) _dataSource.Add(r);
+
                 lblCount.Text = _dataSource.Count.ToString();
+                return true;
             }
             catch (Exception ex)
             {
                 DXMessageBox.Show(ex.Message);
+                return false;
             }
         }
 
-        private void ProcessAndAddRow(DataRow row, bool isDetailed)
+        private void ProcessAndAddRow(DataRow row, bool isDetailed,
+            List<CostCenterRow> target)
         {
             try
             {
@@ -599,7 +617,7 @@ namespace SmartAuditERP.Form_WPF
                     try { globalId = row["EntryGlobalID"].ToString(); } catch { }
                 }
 
-                _dataSource.Add(new CostCenterRow
+                target.Add(new CostCenterRow
                 {
                     DgvAccount          = row["Code"].ToString(),
                     DgvCostCenter       = row["Name"].ToString(),
@@ -754,6 +772,15 @@ namespace SmartAuditERP.Form_WPF
 
         private void PrintDevexpress(int printType)
         {
+            // P7-045 fix: إعادة الحساب بمعايير الواجهة الحالية قبل الربط —
+            // بالمسار نفسه الذي يعرضه الزر (تفصيلي/تجميعي)؛ والنتيجة الفارغة
+            // يمسكها فحص الجدول الفارغ أدناه
+            if (btnDetails.IsChecked == true)
+            {
+                if (!DetailedResults()) return;
+            }
+            else if (!ShowResult()) return;
+
             _rptUrl = MainClass.ReportsPath;
             _rptName = (btnDetails.IsChecked == true)
                 ? "RptCostCenterDetails.repx"
