@@ -656,7 +656,14 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
-                var adp = new SqlDataAdapter("select CategoryId,name from ItemsCategory", conn);
+                // P7-080 fix: معيار المجموعة يقيّد تجميع المجموعات نفسه —
+                // كان يعرض كل الفئات حتى مع اختيار فئة واحدة
+                bool allGroupsCat = GetCheckState(chkAllGroups);
+                object groupCatVal = GetSelectedValue(cmbGroups);
+                string catSql = "select CategoryId,name from ItemsCategory";
+                if (!allGroupsCat && groupCatVal != null)
+                    catSql += $" where id={groupCatVal}";
+                var adp = new SqlDataAdapter(catSql, conn);
                 var dt = new DataTable();
                 adp.Fill(dt);
 
@@ -672,11 +679,15 @@ namespace SmartAuditERP.Form_WPF
                 bool allStock = GetCheckState(chkAllStock);
                 bool allCust = GetCheckState(chkAllCust);
                 bool allSales = GetCheckState(chkAllSales);
+                // P7-080 fix: مرشح المستخدم موجود في الواجهة ويتحقق منه
+                // الكشف لكنه لم يكن يدخل استعلامات التجميعات
+                bool allEmp = GetCheckState(chkAllEmp);
 
                 object safeVal = GetSelectedValue(cmbSafe);
                 object stockVal = GetSelectedValue(cmbStock);
                 object custVal = GetSelectedValue(cmbCust);
                 object salesVal = GetSelectedValue(cmbSales);
+                object empVal = GetSelectedValue(cmbEmp);
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
@@ -685,6 +696,8 @@ namespace SmartAuditERP.Form_WPF
                     if (!allStock) filter += $"[safe]={stockVal} and ";
                     if (!allCust) filter += $"cust_id={custVal} and ";
                     if (!allSales) filter += $"salesman={salesVal} and ";
+                    // P7-080 fix: مرشح المستخدم يدخل الاستعلام
+                    if (!allEmp) filter += $"sales_emp={empVal} and ";
                     filter += $"ItemsCategory.CategoryId={dt.Rows[i]["CategoryId"]} and ";
                     filter += " date>=@date1 and date<=@date2 and ";
 
@@ -703,8 +716,13 @@ namespace SmartAuditERP.Form_WPF
                     int invCount = dt2.Rows.Count;
 
                     // الإجمالي
+                    // P7-083 fix: الإجمالي بعد خصم السطر (inv_sub.discount)
+                    // وفق عقد CalcRows (ItemTotal = SumPrice − ItemDiscount)
+                    // والخصم الفعلي في عمود الخصم — كان المجموع قبل الخصم
+                    // والخصم صفرًا دائمًا
                     adp2 = new SqlDataAdapter(
-                        "select sum(inv_sub.val) as val, sum(val1*exchange_price) as sum " +
+                        "select sum((val1*exchange_price) - inv_sub.discount) as sum, " +
+                        "sum(inv_sub.discount) as disc " +
                         " from inv,inv_sub,Items,ItemsCategory where " + filter +
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
@@ -716,7 +734,7 @@ namespace SmartAuditERP.Form_WPF
                     if (dt2.Rows.Count > 0)
                     {
                         double.TryParse(dt2.Rows[0]["sum"].ToString(), out netTotal);
-                        netDiscount = 0;
+                        double.TryParse(dt2.Rows[0]["disc"].ToString(), out netDiscount);
                     }
 
                     // تفاصيل للتكلفة
@@ -802,12 +820,15 @@ namespace SmartAuditERP.Form_WPF
                 bool allCust = GetCheckState(chkAllCust);
                 bool allSales = GetCheckState(chkAllSales);
                 bool allGroups = GetCheckState(chkAllGroups);
+                // P7-080 fix: مرشح المستخدم يدخل استعلام التجميع
+                bool allEmp = GetCheckState(chkAllEmp);
 
                 object safeVal = GetSelectedValue(cmbSafe);
                 object stockVal = GetSelectedValue(cmbStock);
                 object custVal = GetSelectedValue(cmbCust);
                 object salesVal = GetSelectedValue(cmbSales);
                 object groupVal = GetSelectedValue(cmbGroups);
+                object empVal = GetSelectedValue(cmbEmp);
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
@@ -817,6 +838,8 @@ namespace SmartAuditERP.Form_WPF
                     if (!allCust) filter += $"cust_id={custVal} and ";
                     filter += $"inv_sub.ItemId={dt.Rows[i]["id"]} and ";
                     if (!allSales) filter += $"salesman={salesVal} and ";
+                    // P7-080 fix: مرشح المستخدم يدخل الاستعلام
+                    if (!allEmp) filter += $"sales_emp={empVal} and ";
                     if (!allGroups) filter += $"ItemsCategory.id={groupVal} and ";
                     filter += " date>=@date1 and date<=@date2 and ";
 
@@ -833,8 +856,11 @@ namespace SmartAuditERP.Form_WPF
                     int invCount = dt2.Rows.Count;
 
                     // الإجمالي
+                    // P7-083 fix: الإجمالي بعد خصم السطر والخصم الفعلي —
+                    // كان المجموع قبل الخصم والخصم صفرًا دائمًا
                     adp2 = new SqlDataAdapter(
-                        "select sum(inv_sub.val) as val, sum(val1*exchange_price) as sum " +
+                        "select sum((val1*exchange_price) - inv_sub.discount) as sum, " +
+                        "sum(inv_sub.discount) as disc " +
                         " from inv,inv_sub,Items,ItemsCategory where " + filter +
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
@@ -846,7 +872,10 @@ namespace SmartAuditERP.Form_WPF
 
                     double netTotal = 0, netDiscount = 0;
                     if (dt2.Rows.Count > 0)
+                    {
                         double.TryParse(dt2.Rows[0]["sum"].ToString(), out netTotal);
+                        double.TryParse(dt2.Rows[0]["disc"].ToString(), out netDiscount);
+                    }
 
                     // تفاصيل للتكلفة
                     adp2 = new SqlDataAdapter(
@@ -938,11 +967,14 @@ namespace SmartAuditERP.Form_WPF
                 bool allStock = GetCheckState(chkAllStock);
                 bool allSales = GetCheckState(chkAllSales);
                 bool allGroups = GetCheckState(chkAllGroups);
+                // P7-080 fix: مرشح المستخدم يدخل استعلام التجميع
+                bool allEmp = GetCheckState(chkAllEmp);
 
                 object safeVal = GetSelectedValue(cmbSafe);
                 object stockVal = GetSelectedValue(cmbStock);
                 object salesVal = GetSelectedValue(cmbSales);
                 object groupVal = GetSelectedValue(cmbGroups);
+                object empVal = GetSelectedValue(cmbEmp);
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
@@ -951,6 +983,8 @@ namespace SmartAuditERP.Form_WPF
                     if (!allStock) filter += $"[safe]={stockVal} and ";
                     filter += $"cust_id={dt.Rows[i]["id"]} and ";
                     if (!allSales) filter += $"salesman={salesVal} and ";
+                    // P7-080 fix: مرشح المستخدم يدخل الاستعلام
+                    if (!allEmp) filter += $"sales_emp={empVal} and ";
                     if (!allGroups) filter += $"ItemsCategory.id={groupVal} and ";
                     filter += " date>=@date1 and date<=@date2 and ";
 
@@ -965,13 +999,26 @@ namespace SmartAuditERP.Form_WPF
                     adp2.Fill(dt2);
                     int invCount = dt2.Rows.Count;
 
-                    adp2 = new SqlDataAdapter(
-                        "select sum(tot_net),sum(tot) from " +
-                        "(select min(tot_net) as tot_net,min(InvTotal) as tot " +
-                        " from inv,inv_sub,Items,ItemsCategory where " + filter +
-                        " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
-                        " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
-                        " and inv_sub.proc_type=2 and inv.is_deleted=0 group by inv.InvGlobalID) as tbl", conn);
+                    // P7-082 fix: عند تفعيل مرشح الفئة يبقى صافي الرأس
+                    // كامل الفاتورة مقابل تكلفة بنود الفئة فقط — الصافي
+                    // والخصم من بنود الفئة نفسها (شكل النتيجة نفسه:
+                    // [0]=الصافي [1]=الإجمالي فتبقى كتلة القراءة كما هي)
+                    if (!allGroups)
+                        adp2 = new SqlDataAdapter(
+                            "select sum((val1*exchange_price) - inv_sub.discount) as net, " +
+                            "sum(val1*exchange_price) as tot " +
+                            " from inv,inv_sub,Items,ItemsCategory where " + filter +
+                            " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
+                            " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
+                            " and inv_sub.proc_type=2 and inv.is_deleted=0", conn);
+                    else
+                        adp2 = new SqlDataAdapter(
+                            "select sum(tot_net),sum(tot) from " +
+                            "(select min(tot_net) as tot_net,min(InvTotal) as tot " +
+                            " from inv,inv_sub,Items,ItemsCategory where " + filter +
+                            " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
+                            " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
+                            " and inv_sub.proc_type=2 and inv.is_deleted=0 group by inv.InvGlobalID) as tbl", conn);
                     adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
                     dt2 = new DataTable();
@@ -1066,11 +1113,14 @@ namespace SmartAuditERP.Form_WPF
                 bool allStock = GetCheckState(chkAllStock);
                 bool allCust = GetCheckState(chkAllCust);
                 bool allGroups = GetCheckState(chkAllGroups);
+                // P7-080 fix: مرشح المستخدم يدخل استعلام التجميع
+                bool allEmp = GetCheckState(chkAllEmp);
 
                 object safeVal = GetSelectedValue(cmbSafe);
                 object stockVal = GetSelectedValue(cmbStock);
                 object custVal = GetSelectedValue(cmbCust);
                 object groupVal = GetSelectedValue(cmbGroups);
+                object empVal = GetSelectedValue(cmbEmp);
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
@@ -1079,6 +1129,8 @@ namespace SmartAuditERP.Form_WPF
                     if (!allStock) filter += $"[safe]={stockVal} and ";
                     if (!allCust) filter += $"cust_id={custVal} and ";
                     filter += $"salesman={dt.Rows[i]["id"]} and ";
+                    // P7-080 fix: مرشح المستخدم يدخل الاستعلام
+                    if (!allEmp) filter += $"sales_emp={empVal} and ";
                     if (!allGroups) filter += $"ItemsCategory.id={groupVal} and ";
                     filter += " date>=@date1 and date<=@date2 and ";
 
@@ -1093,13 +1145,26 @@ namespace SmartAuditERP.Form_WPF
                     adp2.Fill(dt2);
                     int invCount = dt2.Rows.Count;
 
-                    adp2 = new SqlDataAdapter(
-                        "select sum(tot_net),sum(tot) from " +
-                        "(select min(tot_net) as tot_net,min(InvTotal) as tot " +
-                        " from inv,inv_sub,Items,ItemsCategory where " + filter +
-                        " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
-                        " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
-                        " and inv_sub.proc_type=2 and inv.is_deleted=0 group by inv.InvGlobalID) as tbl", conn);
+                    // P7-082 fix: عند تفعيل مرشح الفئة يبقى صافي الرأس
+                    // كامل الفاتورة مقابل تكلفة بنود الفئة فقط — الصافي
+                    // والخصم من بنود الفئة نفسها (شكل النتيجة نفسه:
+                    // [0]=الصافي [1]=الإجمالي فتبقى كتلة القراءة كما هي)
+                    if (!allGroups)
+                        adp2 = new SqlDataAdapter(
+                            "select sum((val1*exchange_price) - inv_sub.discount) as net, " +
+                            "sum(val1*exchange_price) as tot " +
+                            " from inv,inv_sub,Items,ItemsCategory where " + filter +
+                            " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
+                            " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
+                            " and inv_sub.proc_type=2 and inv.is_deleted=0", conn);
+                    else
+                        adp2 = new SqlDataAdapter(
+                            "select sum(tot_net),sum(tot) from " +
+                            "(select min(tot_net) as tot_net,min(InvTotal) as tot " +
+                            " from inv,inv_sub,Items,ItemsCategory where " + filter +
+                            " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
+                            " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
+                            " and inv_sub.proc_type=2 and inv.is_deleted=0 group by inv.InvGlobalID) as tbl", conn);
                     adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
                     dt2 = new DataTable();
@@ -1195,12 +1260,15 @@ namespace SmartAuditERP.Form_WPF
                 bool allCust = GetCheckState(chkAllCust);
                 bool allSales = GetCheckState(chkAllSales);
                 bool allGroups = GetCheckState(chkAllGroups);
+                // P7-080 fix: مرشح المستخدم يدخل استعلام التجميع
+                bool allEmp = GetCheckState(chkAllEmp);
 
                 object safeVal = GetSelectedValue(cmbSafe);
                 object stockVal = GetSelectedValue(cmbStock);
                 object custVal = GetSelectedValue(cmbCust);
                 object salesVal = GetSelectedValue(cmbSales);
                 object groupVal = GetSelectedValue(cmbGroups);
+                object empVal = GetSelectedValue(cmbEmp);
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
@@ -1224,13 +1292,26 @@ namespace SmartAuditERP.Form_WPF
                     adp2.Fill(dt2);
                     int invCount = dt2.Rows.Count;
 
-                    adp2 = new SqlDataAdapter(
-                        "select sum(tot_net),sum(tot) from " +
-                        "(select min(tot_net) as tot_net,min(InvTotal) as tot " +
-                        " from inv,inv_sub,Items,ItemsCategory where " + filter +
-                        " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
-                        " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
-                        " and inv_sub.proc_type=2 and inv.is_deleted=0 group by inv.InvGlobalID) as tbl", conn);
+                    // P7-082 fix: عند تفعيل مرشح الفئة يبقى صافي الرأس
+                    // كامل الفاتورة مقابل تكلفة بنود الفئة فقط — الصافي
+                    // والخصم من بنود الفئة نفسها (شكل النتيجة نفسه:
+                    // [0]=الصافي [1]=الإجمالي فتبقى كتلة القراءة كما هي)
+                    if (!allGroups)
+                        adp2 = new SqlDataAdapter(
+                            "select sum((val1*exchange_price) - inv_sub.discount) as net, " +
+                            "sum(val1*exchange_price) as tot " +
+                            " from inv,inv_sub,Items,ItemsCategory where " + filter +
+                            " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
+                            " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
+                            " and inv_sub.proc_type=2 and inv.is_deleted=0", conn);
+                    else
+                        adp2 = new SqlDataAdapter(
+                            "select sum(tot_net),sum(tot) from " +
+                            "(select min(tot_net) as tot_net,min(InvTotal) as tot " +
+                            " from inv,inv_sub,Items,ItemsCategory where " + filter +
+                            " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
+                            " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
+                            " and inv_sub.proc_type=2 and inv.is_deleted=0 group by inv.InvGlobalID) as tbl", conn);
                     adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
                     dt2 = new DataTable();
@@ -1328,12 +1409,15 @@ namespace SmartAuditERP.Form_WPF
                 bool allCust = GetCheckState(chkAllCust);
                 bool allSales = GetCheckState(chkAllSales);
                 bool allGroups = GetCheckState(chkAllGroups);
+                // P7-080 fix: مرشح المستخدم يدخل استعلام التجميع
+                bool allEmp = GetCheckState(chkAllEmp);
 
                 object safeVal = GetSelectedValue(cmbSafe);
                 object stockVal = GetSelectedValue(cmbStock);
                 object custVal = GetSelectedValue(cmbCust);
                 object salesVal = GetSelectedValue(cmbSales);
                 object groupVal = GetSelectedValue(cmbGroups);
+                object empVal = GetSelectedValue(cmbEmp);
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
@@ -1342,6 +1426,8 @@ namespace SmartAuditERP.Form_WPF
                     if (!allStock) filter += $"[safe]={stockVal} and ";
                     if (!allCust) filter += $"cust_id={custVal} and ";
                     if (!allSales) filter += $"salesman={salesVal} and ";
+                    // P7-080 fix: مرشح المستخدم يدخل الاستعلام
+                    if (!allEmp) filter += $"sales_emp={empVal} and ";
                     if (!allGroups) filter += $"ItemsCategory.id={groupVal} and ";
                     filter += " date>=@date1 and date<=@date2 and ";
 
@@ -1350,26 +1436,48 @@ namespace SmartAuditERP.Form_WPF
                         monthStart.Year, monthStart.Month,
                         DateTime.DaysInMonth(monthStart.Year, monthStart.Month));
 
+                    // P7-079 fix: تقاطع حدود الشهر مع الفترة المطلوبة —
+                    // كان التجميع الشهري يوسع الفترة إلى حدود الشهر
+                    // الكاملة بلا تقاطع (تقرير 15 يناير–20 فبراير كان يدرج
+                    // فواتير 1–14 يناير و21–28 فبراير)؛ واليوم الأخير
+                    // كان يُقطع عند منتصف الليل (date<=آخر يوم 00:00)
+                    DateTime monthEndPlus = monthEnd.AddDays(1.0);
+                    DateTime effStart = monthStart < dateFrom ? dateFrom : monthStart;
+                    DateTime effEnd   = monthEndPlus > dateToPlus ? dateToPlus : monthEndPlus;
+
                     var adp2 = new SqlDataAdapter(
                         "select distinct inv.InvGlobalID from inv,inv_sub,Items,ItemsCategory where " + filter +
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
                         " and inv_sub.proc_type=2 and inv.is_deleted=0", conn);
-                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = monthStart;
-                    adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = monthEnd;
+                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = effStart;
+                    adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = effEnd;
                     var dt2 = new DataTable();
                     adp2.Fill(dt2);
                     int invCount = dt2.Rows.Count;
 
-                    adp2 = new SqlDataAdapter(
-                        "select sum(tot_net),sum(tot) from " +
-                        "(select min(tot_net) as tot_net,min(InvTotal) as tot " +
-                        " from inv,inv_sub,Items,ItemsCategory where " + filter +
-                        " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
-                        " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
-                        " and inv_sub.proc_type=2 and inv.is_deleted=0 group by inv.InvGlobalID) as tbl", conn);
-                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = monthStart;
-                    adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = monthEnd;
+                    // P7-082 fix: عند تفعيل مرشح الفئة يبقى صافي الرأس
+                    // كامل الفاتورة مقابل تكلفة بنود الفئة فقط — الصافي
+                    // والخصم من بنود الفئة نفسها (شكل النتيجة نفسه:
+                    // [0]=الصافي [1]=الإجمالي فتبقى كتلة القراءة كما هي)
+                    if (!allGroups)
+                        adp2 = new SqlDataAdapter(
+                            "select sum((val1*exchange_price) - inv_sub.discount) as net, " +
+                            "sum(val1*exchange_price) as tot " +
+                            " from inv,inv_sub,Items,ItemsCategory where " + filter +
+                            " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
+                            " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
+                            " and inv_sub.proc_type=2 and inv.is_deleted=0", conn);
+                    else
+                        adp2 = new SqlDataAdapter(
+                            "select sum(tot_net),sum(tot) from " +
+                            "(select min(tot_net) as tot_net,min(InvTotal) as tot " +
+                            " from inv,inv_sub,Items,ItemsCategory where " + filter +
+                            " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
+                            " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
+                            " and inv_sub.proc_type=2 and inv.is_deleted=0 group by inv.InvGlobalID) as tbl", conn);
+                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = effStart;
+                    adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = effEnd;
                     dt2 = new DataTable();
                     adp2.Fill(dt2);
 
@@ -1387,8 +1495,8 @@ namespace SmartAuditERP.Form_WPF
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
                         " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
                         " and inv_sub.proc_type=2 and inv.is_deleted=0 group by inv_sub.ItemId,inv.date", conn);
-                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = monthStart;
-                    adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = monthEnd;
+                    adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = effStart;
+                    adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = effEnd;
                     dt2 = new DataTable();
                     adp2.Fill(dt2);
 
@@ -1467,12 +1575,15 @@ namespace SmartAuditERP.Form_WPF
                 bool allCust = GetCheckState(chkAllCust);
                 bool allSales = GetCheckState(chkAllSales);
                 bool allGroups = GetCheckState(chkAllGroups);
+                // P7-080 fix: مرشح المستخدم يدخل استعلام التجميع
+                bool allEmp = GetCheckState(chkAllEmp);
 
                 object safeVal = GetSelectedValue(cmbSafe);
                 object stockVal = GetSelectedValue(cmbStock);
                 object custVal = GetSelectedValue(cmbCust);
                 object salesVal = GetSelectedValue(cmbSales);
                 object groupVal = GetSelectedValue(cmbGroups);
+                object empVal = GetSelectedValue(cmbEmp);
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
@@ -1481,6 +1592,8 @@ namespace SmartAuditERP.Form_WPF
                     if (!allStock) filter += $"[safe]={stockVal} and ";
                     if (!allCust) filter += $"cust_id={custVal} and ";
                     if (!allSales) filter += $"salesman={salesVal} and ";
+                    // P7-080 fix: مرشح المستخدم يدخل الاستعلام
+                    if (!allEmp) filter += $"sales_emp={empVal} and ";
                     if (!allGroups) filter += $"ItemsCategory.id={groupVal} and ";
                     filter += " date>=@date1 and date<=@date2 and ";
 
@@ -1498,13 +1611,26 @@ namespace SmartAuditERP.Form_WPF
                     adp2.Fill(dt2);
                     int invCount = dt2.Rows.Count;
 
-                    adp2 = new SqlDataAdapter(
-                        "select sum(tot_net),sum(tot) from " +
-                        "(select min(tot_net) as tot_net,min(InvTotal) as tot " +
-                        " from inv,inv_sub,Items,ItemsCategory where " + filter +
-                        " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
-                        " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
-                        " and inv_sub.proc_type=2 and inv.is_deleted=0 group by inv.InvGlobalID) as tbl", conn);
+                    // P7-082 fix: عند تفعيل مرشح الفئة يبقى صافي الرأس
+                    // كامل الفاتورة مقابل تكلفة بنود الفئة فقط — الصافي
+                    // والخصم من بنود الفئة نفسها (شكل النتيجة نفسه:
+                    // [0]=الصافي [1]=الإجمالي فتبقى كتلة القراءة كما هي)
+                    if (!allGroups)
+                        adp2 = new SqlDataAdapter(
+                            "select sum((val1*exchange_price) - inv_sub.discount) as net, " +
+                            "sum(val1*exchange_price) as tot " +
+                            " from inv,inv_sub,Items,ItemsCategory where " + filter +
+                            " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
+                            " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
+                            " and inv_sub.proc_type=2 and inv.is_deleted=0", conn);
+                    else
+                        adp2 = new SqlDataAdapter(
+                            "select sum(tot_net),sum(tot) from " +
+                            "(select min(tot_net) as tot_net,min(InvTotal) as tot " +
+                            " from inv,inv_sub,Items,ItemsCategory where " + filter +
+                            " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
+                            " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
+                            " and inv_sub.proc_type=2 and inv.is_deleted=0 group by inv.InvGlobalID) as tbl", conn);
                     adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dayStart;
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dayEnd;
                     dt2 = new DataTable();
@@ -1599,28 +1725,40 @@ namespace SmartAuditERP.Form_WPF
                 bool allCust = GetCheckState(chkAllCust);
                 bool allSales = GetCheckState(chkAllSales);
                 bool allGroups = GetCheckState(chkAllGroups);
+                // P7-080 fix: مرشح المستخدم يدخل استعلام التجميع
+                bool allEmp = GetCheckState(chkAllEmp);
 
                 object safeVal = GetSelectedValue(cmbSafe);
                 object custVal = GetSelectedValue(cmbCust);
                 object salesVal = GetSelectedValue(cmbSales);
                 object groupVal = GetSelectedValue(cmbGroups);
                 object stockSelVal = GetSelectedValue(cmbStock);
+                object empVal = GetSelectedValue(cmbEmp);
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     string filter = "";
-                    if (!allSafe) filter += $"[stock]={stockSelVal} and ";
+                    // P7-081 fix: مرشح الخزينة من قيمة الخزينة (safeVal —
+                    // عمود الخزينة inv.stock وفق اصطلاح الحفظ @stock=
+                    // Treasury) — كان يبني المرشح من قيمة المستودع
+                    // (stockSelVal) فيكتب هوية مستودع في عمود الخزينة
+                    if (!allSafe) filter += $"[stock]={safeVal} and ";
                     filter += $"[safe]={dt.Rows[i]["id"]} and ";
                     if (!allCust) filter += $"cust_id={custVal} and ";
                     if (!allSales) filter += $"salesman={salesVal} and ";
+                    // P7-080 fix: مرشح المستخدم يدخل الاستعلام
+                    if (!allEmp) filter += $"sales_emp={empVal} and ";
                     if (!allGroups) filter += $"ItemsCategory.id={groupVal} and ";
                     filter += " date>=@date1 and date<=@date2 and ";
 
                     // فواتير مبيعات
+                    // P7-084 fix: بيع POS العادي (inv_type=3) كان يسقط من
+                    // صافي المخزن — عقد InvTypes: بيع 2/3 برأس proc_type=1
+                    // وسطر proc_type=2
                     var adp2 = new SqlDataAdapter(
                         "select distinct inv.InvGlobalID from inv,inv_sub,Items,ItemsCategory where " + filter +
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
-                        " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.inv_type=2 " +
+                        " and inv.InvGlobalID=Inv_Sub.InvGlobalID and (inv.inv_type=2 or inv.inv_type=3) " +
                         " and inv.proc_type=1 and inv_sub.proc_type=2 and inv.is_deleted=0", conn);
                     adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
@@ -1629,11 +1767,15 @@ namespace SmartAuditERP.Form_WPF
                     int invCount = dt2.Rows.Count;
 
                     // فواتير مرتجعات
+                    // P7-084 fix: شرط المرتجع كان inv_type=3+proc_type=1+
+                    // sub=3 — لا يطابق شيئًا (بيع POS سطوره sub=2؛ لا سطر
+                    // sub=3 في العقد) فالمرتجع يسقط من الصافي كلياً؛ عقد
+                    // InvTypes: مرتجع 2/3 برأس proc_type=2 وسطر proc_type=1
                     adp2 = new SqlDataAdapter(
                         "select distinct inv.InvGlobalID from inv,inv_sub,Items,ItemsCategory where " + filter +
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
-                        " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.inv_type=3 " +
-                        " and inv.proc_type=1 and inv_sub.proc_type=3 and inv.is_deleted=0", conn);
+                        " and inv.InvGlobalID=Inv_Sub.InvGlobalID and (inv.inv_type=2 or inv.inv_type=3) " +
+                        " and inv.proc_type=2 and inv_sub.proc_type=1 and inv.is_deleted=0", conn);
                     adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
                     dt2 = new DataTable();
@@ -1641,14 +1783,28 @@ namespace SmartAuditERP.Form_WPF
                     invCount += dt2.Rows.Count;
 
                     // إجمالي المبيعات
-                    adp2 = new SqlDataAdapter(
-                        "select sum(tot_net),sum(tot) from " +
-                        "(select min(tot_net) as tot_net,min(InvTotal) as tot " +
-                        " from inv,inv_sub,Items,ItemsCategory where " + filter +
-                        " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
-                        " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
-                        " and inv.inv_type=2 and inv_sub.proc_type=2 and inv.is_deleted=0 " +
-                        " group by inv.InvGlobalID) as tbl", conn);
+                    // P7-082 fix: عند تفعيل مرشح الفئة يكون الصافي من
+                    // بنود الفئة نفسها لا صافي رأس الفاتورة كاملاً؛
+                    // P7-084: بيع POS يدخل صافي المخزن
+                    if (!allGroups)
+                        adp2 = new SqlDataAdapter(
+                            "select sum((val1*exchange_price) - inv_sub.discount) as net, " +
+                            "sum(val1*exchange_price) as tot " +
+                            " from inv,inv_sub,Items,ItemsCategory where " + filter +
+                            " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
+                            " and inv.InvGlobalID=Inv_Sub.InvGlobalID " +
+                            " and (inv.inv_type=2 or inv.inv_type=3) " +
+                            " and inv.proc_type=1 and inv_sub.proc_type=2 and inv.is_deleted=0", conn);
+                    else
+                        adp2 = new SqlDataAdapter(
+                            "select sum(tot_net),sum(tot) from " +
+                            "(select min(tot_net) as tot_net,min(InvTotal) as tot " +
+                            " from inv,inv_sub,Items,ItemsCategory where " + filter +
+                            " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
+                            " and inv.InvGlobalID=Inv_Sub.InvGlobalID " +
+                            " and (inv.inv_type=2 or inv.inv_type=3) " +
+                            " and inv.proc_type=1 and inv_sub.proc_type=2 and inv.is_deleted=0 " +
+                            " group by inv.InvGlobalID) as tbl", conn);
                     adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
                     dt2 = new DataTable();
@@ -1663,14 +1819,29 @@ namespace SmartAuditERP.Form_WPF
                     }
 
                     // إجمالي المرتجعات
-                    adp2 = new SqlDataAdapter(
-                        "select sum(tot_net),sum(tot) from " +
-                        "(select min(tot_net) as tot_net,min(InvTotal) as tot " +
-                        " from inv,inv_sub,Items,ItemsCategory where " + filter +
-                        " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
-                        " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
-                        " and inv.inv_type=3 and inv_sub.proc_type=3 and inv.is_deleted=0 " +
-                        " group by inv.InvGlobalID) as tbl", conn);
+                    // P7-084 fix: عقد InvTypes الصحيح (مرتجع 2/3، رأس
+                    // proc_type=2، سطر proc_type=1) + الصافي = المبيعات −
+                    // المرتجعات (كان المرتجع يُضاف إلى الصافي والمرشح
+                    // القديم لا يطابق شيئًا أصلًا)
+                    if (!allGroups)
+                        adp2 = new SqlDataAdapter(
+                            "select sum((val1*exchange_price) - inv_sub.discount) as net, " +
+                            "sum(val1*exchange_price) as tot " +
+                            " from inv,inv_sub,Items,ItemsCategory where " + filter +
+                            " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
+                            " and inv.InvGlobalID=Inv_Sub.InvGlobalID " +
+                            " and (inv.inv_type=2 or inv.inv_type=3) " +
+                            " and inv.proc_type=2 and inv_sub.proc_type=1 and inv.is_deleted=0", conn);
+                    else
+                        adp2 = new SqlDataAdapter(
+                            "select sum(tot_net),sum(tot) from " +
+                            "(select min(tot_net) as tot_net,min(InvTotal) as tot " +
+                            " from inv,inv_sub,Items,ItemsCategory where " + filter +
+                            " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
+                            " and inv.InvGlobalID=Inv_Sub.InvGlobalID " +
+                            " and (inv.inv_type=2 or inv.inv_type=3) " +
+                            " and inv.proc_type=2 and inv_sub.proc_type=1 and inv.is_deleted=0 " +
+                            " group by inv.InvGlobalID) as tbl", conn);
                     adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
                     dt2 = new DataTable();
@@ -1679,18 +1850,28 @@ namespace SmartAuditERP.Form_WPF
                     if (dt2.Rows.Count > 0)
                     {
                         double.TryParse(dt2.Rows[0][0].ToString(), out double retNetTotal);
-                        netTotal += retNetTotal;
+                        // P7-084 fix: المرتجع يُطرح من الصافي (عقد الشاشات
+                        // التوأم: الصافي = الإجمالي − المرتجعات)
+                        netTotal -= retNetTotal;
                         double.TryParse(dt2.Rows[0][1].ToString(), out double retGross);
-                        netDiscount += retGross - retNetTotal;
+                        netDiscount -= retGross - retNetTotal;
                     }
 
                     // تفاصيل للتكلفة
+                    // P7-084 fix: تكلفة المرتجع تدخل بإشارة سالبة (سطر
+                    // المرتجع proc_type=1 وفق عقد InvTypes) — الصافي يخصم
+                    // إيراد المرتجع فتخصم تكلفته المردودة أيضاً وإلا تضخم
+                    // الربح بمقدار المرتجع مرتين
                     adp2 = new SqlDataAdapter(
-                        "select inv_sub.ItemId,inv.date,sum(inv_sub.val) as val, sum(val1*exchange_price) as sum " +
+                        "select inv_sub.ItemId,inv.date, " +
+                        "sum(case when inv.proc_type=2 then -inv_sub.val else inv_sub.val end) as val, " +
+                        "sum(case when inv.proc_type=2 then -(val1*exchange_price) else (val1*exchange_price) end) as sum " +
                         " from inv,inv_sub,Items,ItemsCategory where " + filter +
                         " inv_sub.ItemId=Items.id and Items.group_id=ItemsCategory.id " +
-                        " and inv.InvGlobalID=Inv_Sub.InvGlobalID and inv.proc_type=1 " +
-                        " and inv_sub.proc_type=2 and inv.is_deleted=0 group by inv_sub.ItemId,inv.date", conn);
+                        " and inv.InvGlobalID=Inv_Sub.InvGlobalID " +
+                        " and ((inv.proc_type=1 and inv_sub.proc_type=2) " +
+                        "   or (inv.proc_type=2 and inv_sub.proc_type=1)) " +
+                        " and inv.is_deleted=0 group by inv_sub.ItemId,inv.date", conn);
                     adp2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = dateFrom.ToShortDateString();
                     adp2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = dateToPlus;
                     dt2 = new DataTable();
