@@ -50,7 +50,12 @@ namespace SmartAuditUpdater
                 {
                     rsa.FromXmlString(publicKeyXml ?? PublicKeyXml);
                     byte[] data = Encoding.UTF8.GetBytes(payload.ToString());
-                    bool sigOk = rsa.VerifyData(data, signature, CryptoConfig.MapNameToOID("SHA256"));
+                    // V-008 fix (مسحة التحقق): النداء القديم كان بترتيب وسائط التوافقية
+                    // (data, halg, signature) فيمرر التوقيع مكان الخوارزمية — خطأ ترجمة
+                    // على net8.0 كشفه ربط مشروع الاختبارات بأداة التحديث لأول مرة.
+                    // الـAPI الصريح لا لبس فيه.
+                    bool sigOk = rsa.VerifyData(
+                        data, signature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
                     if (!sigOk) return false; // مانيفست معدَّل — أوقف التثبيت فوراً
                 }
 

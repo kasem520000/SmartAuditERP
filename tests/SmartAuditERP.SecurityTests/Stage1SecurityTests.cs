@@ -206,7 +206,8 @@ namespace SmartAuditERP.SecurityTests
             {
                 rsa.FromXmlString(_privKey);
                 byte[] sign = rsa.SignData(
-                    Encoding.UTF8.GetBytes(payload), CryptoConfig.MapNameToOID("SHA256"));
+                    Encoding.UTF8.GetBytes(payload),
+                    HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
                 sig = "SIG " + Convert.ToBase64String(sign);
             }
             string manifest = Path.Combine(_root, "manifest.txt");
@@ -242,7 +243,8 @@ namespace SmartAuditERP.SecurityTests
             {
                 rsa.FromXmlString(_privKey);
                 sig = "SIG " + Convert.ToBase64String(rsa.SignData(
-                    Encoding.UTF8.GetBytes(payload), CryptoConfig.MapNameToOID("SHA256")));
+                    Encoding.UTF8.GetBytes(payload),
+                    HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1));
             }
             string m2 = Path.Combine(_root, "manifest-evil.txt");
             File.WriteAllText(m2, payload + sig, new UTF8Encoding(false));
