@@ -127,11 +127,14 @@ namespace SmartAuditERP.Form_WPF
 
         #region ShowResults
 
-        private void ShowResults()
+        // P7-046 fix: النتيجة bool — اكتمل النشر الذري أم لا (بوابة الطباعة P7-045)
+        private bool ShowResults()
         {
             try
             {
-                _gridData.Clear();
+                // P7-046 fix: التجميع في قائمة محلية — لا نشر تدريجي أثناء
+                // التعبئة؛ فشل متأخر يترك نتيجة الشاشة السابقة متسقة
+                var rows = new List<ItemExpirationRow>();
 
                 string whereClause = "";
 
@@ -151,52 +154,55 @@ namespace SmartAuditERP.Form_WPF
                 // استدعاء Inventory.ItemsExpirationStock من UtilitiesProj
                 DataTable dt = Inventory.ItemsExpirationStock(whereClause);
 
-                if (dt == null || dt.Rows.Count == 0)
+                if (dt != null && dt.Rows.Count > 0)
                 {
-                    UpdateSummary();
-                    return;
-                }
+                    ProgressBar1.Maximum = dt.Rows.Count;
+                    ProgressBar1.Value   = 0;
 
-                ProgressBar1.Maximum = dt.Rows.Count;
-                ProgressBar1.Value   = 0;
-
-                int rowNum = 1;
-                foreach (DataRow row in dt.Rows)
-                {
-                    ProgressBar1.Value = rowNum;
-
-                    DateTime? expireDate = null;
-                    if (row["ItemExpire"] != DBNull.Value)
+                    int rowNum = 1;
+                    foreach (DataRow row in dt.Rows)
                     {
-                        if (DateTime.TryParse(row["ItemExpire"].ToString(), out DateTime ed))
-                            expireDate = ed;
+                        ProgressBar1.Value = rowNum;
+
+                        DateTime? expireDate = null;
+                        if (row["ItemExpire"] != DBNull.Value)
+                        {
+                            if (DateTime.TryParse(row["ItemExpire"].ToString(), out DateTime ed))
+                                expireDate = ed;
+                        }
+
+                        double.TryParse(row["ItemStock"].ToString(),     out double stock);
+                        int.TryParse(row["RemaindeYear"].ToString(),     out int remainYear);
+                        int.TryParse(row["RemaindeMonths"].ToString(),   out int remainMonths);
+                        int.TryParse(row["RemaindeDays"].ToString(),     out int remainDays);
+
+                        rows.Add(new ItemExpirationRow
+                        {
+                            AutoIncrementID = rowNum++,
+                            ItemCode        = row["ItemCode"].ToString(),
+                            ItemName        = row["ItemName"].ToString(),
+                            StoreName       = row["StoreName"].ToString(),
+                            ItemStock       = stock,
+                            ItemExpire      = expireDate,
+                            RemaindeYear    = remainYear,
+                            RemaindeMonths  = remainMonths,
+                            RemaindeDays    = remainDays,
+                        });
                     }
-
-                    double.TryParse(row["ItemStock"].ToString(),     out double stock);
-                    int.TryParse(row["RemaindeYear"].ToString(),     out int remainYear);
-                    int.TryParse(row["RemaindeMonths"].ToString(),   out int remainMonths);
-                    int.TryParse(row["RemaindeDays"].ToString(),     out int remainDays);
-
-                    _gridData.Add(new ItemExpirationRow
-                    {
-                        AutoIncrementID = rowNum++,
-                        ItemCode        = row["ItemCode"].ToString(),
-                        ItemName        = row["ItemName"].ToString(),
-                        StoreName       = row["StoreName"].ToString(),
-                        ItemStock       = stock,
-                        ItemExpire      = expireDate,
-                        RemaindeYear    = remainYear,
-                        RemaindeMonths  = remainMonths,
-                        RemaindeDays    = remainDays,
-                    });
                 }
+
+                // ══ نقطة النشر الواحدة (P7-046) ══
+                _gridData.Clear();
+                foreach (var r in rows) _gridData.Add(r);
 
                 UpdateSummary();
                 ProgressBar1.Value = ProgressBar1.Maximum;
+                return true;
             }
             catch (Exception ex)
             {
                 DXMessageBox.Show("خطأ في عرض النتائج:\n" + ex.Message);
+                return false;
             }
         }
 
@@ -302,6 +308,10 @@ namespace SmartAuditERP.Form_WPF
 
         private void PrintDevexpress(int printMode)
         {
+            // P7-045 fix: إعادة الحساب بمعايير الواجهة الحالية قبل الربط —
+            // النتيجة الفارغة يمسكها فحص الجدول الفارغ أدناه
+            if (!ShowResults()) return;
+
             string reportsPath   = MainClass.ReportsPath;
             string reportsPrinter= MainClass.ReportsPrinter;
             string rptName       = "RptItemsExpiration.repx";

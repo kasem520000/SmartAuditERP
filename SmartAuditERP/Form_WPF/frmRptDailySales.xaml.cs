@@ -108,14 +108,16 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnShow_Click(object sender, RoutedEventArgs e) => ShowResult();
 
-        private void ShowResult()
+        // P7-046 fix: النتيجة bool — اكتمل النشر الذري أم لا (بوابة الطباعة P7-045)
+        private bool ShowResult()
         {
             try
             {
-                _dataSource.Clear();
-                _grandTotalBeforeTax = 0;
-                _grandTotalTax       = 0;
-                _grandTotal          = 0;
+                // P7-046 fix: التجميع في قائمة ومتغيرات محلية — لا نشر تدريجي؛
+                // النتيجة الفارغة تُنشر كاملة (شبكة فارغة ومجاميع صفر) والفشل
+                // المتأخر يترك نتيجة الشاشة السابقة متسقة لا مزيجاً
+                var rows = new List<DailySaleRow>();
+                double grandBeforeTax = 0, grandTax = 0, grand = 0;
 
                 int invType = (cmbInvType.SelectedIndex == 0) ? 2 : 3;
 
@@ -148,13 +150,6 @@ namespace SmartAuditERP.Form_WPF
                     var dt2 = new DataTable();
                     da.Fill(dt2);
 
-                    if (dt2.Rows.Count == 0)
-                    {
-                        DXMessageBox.Show("لا توجد بيانات، أدخل الفترة الزمنية الصحيحة",
-                            "", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        return;
-                    }
-
                     int rowNo = 1;
                     string langName = (MainClass.Language == "en-us") ? "en" : "ar";
 
@@ -169,7 +164,7 @@ namespace SmartAuditERP.Form_WPF
                         double total    = Convert.ToDouble(row["Total"]);
                         double totalTax = Convert.ToDouble(row["TotalTax"]);
 
-                        _dataSource.Add(new DailySaleRow
+                        rows.Add(new DailySaleRow
                         {
                             Dgnos    = rowNo++,
                             Ddates   = parsedDate,
@@ -179,19 +174,28 @@ namespace SmartAuditERP.Form_WPF
                             totsal   = saleNet
                         });
 
-                        _grandTotalBeforeTax += total;
-                        _grandTotalTax       += totalTax;
-                        _grandTotal          += saleNet;
+                        grandBeforeTax += total;
+                        grandTax       += totalTax;
+                        grand          += saleNet;
                     }
                 }
+
+                // ══ نقطة النشر الواحدة (P7-046) ══
+                _dataSource.Clear();
+                foreach (var r in rows) _dataSource.Add(r);
+                _grandTotalBeforeTax = grandBeforeTax;
+                _grandTotalTax       = grandTax;
+                _grandTotal          = grand;
 
                 lblTotalBeforeTax.Text = _grandTotalBeforeTax.ToString("N2");
                 lblTotalTax.Text       = _grandTotalTax.ToString("N2");
                 lblGrandTotal.Text     = _grandTotal.ToString("N2");
+                return true;
             }
             catch (Exception ex)
             {
                 DXMessageBox.Show(ex.Message);
+                return false;
             }
             finally { CloseConn(_conn); }
         }
@@ -289,6 +293,12 @@ namespace SmartAuditERP.Form_WPF
 
         private void PrintDevexpress(int printType)
         {
+            // P7-045 fix: إعادة الحساب بمعايير الواجهة الحالية قبل الربط —
+            // كان مصدر التقرير يقرأ التواريخ الحية فوق نتائج آخر استعلام؛
+            // وفشل إعادة الحساب يوقف الطباعة (النتيجة الفارغة يمسكها فحص
+            // الجدول الفارغ أدناه)
+            if (!ShowResult()) return;
+
             _rptName    = "daysalesPos.repx";
             _defPrinter = MainClass.ReportsPrinter;
             _rptUrl     = MainClass.ReportsPath;

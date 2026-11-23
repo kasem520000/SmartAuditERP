@@ -65,11 +65,14 @@ namespace SmartAuditERP.Form_WPF
         #endregion
 
         #region ShowResults
-        private void ShowResults()
+        // P7-046 fix: النتيجة bool — اكتمل النشر الذري أم لا (بوابة الطباعة P7-045)
+        private bool ShowResults()
         {
             try
             {
-                SerialList.Clear();
+                // P7-046 fix: التجميع في قائمة محلية — لا نشر تدريجي أثناء
+                // التعبئة؛ فشل متأخر يترك نتيجة الشاشة السابقة متسقة
+                var rows = new List<SerialNoRow>();
 
                 var cmd = new SqlCommand(
                     "SELECT * FROM funGetInvoiceItemDetails(" +
@@ -117,7 +120,7 @@ namespace SmartAuditERP.Form_WPF
                     string invoiceType = InvoiceOper.GetInvoiceType(
                                             invTypeNo, procTypeNo, 0, 1);
 
-                    SerialList.Add(new SerialNoRow
+                    rows.Add(new SerialNoRow
                     {
                         DgvNo        = i + 1,
                         ItemName     = row["ItemName"]?.ToString() ?? "",
@@ -132,11 +135,17 @@ namespace SmartAuditERP.Form_WPF
                         InvTypeNo    = Convert.ToInt32(row["inv_type"]),
                     });
                 }
+
+                // ══ نقطة النشر الواحدة (P7-046) ══
+                SerialList.Clear();
+                foreach (var r in rows) SerialList.Add(r);
+                return true;
             }
             catch (Exception ex)
             {
                 DXMessageBox.Show($"خطأ:\n{ex.Message}", "خطأ",
                                 MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
         }
         #endregion
@@ -403,6 +412,10 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
+                // P7-045 fix: إعادة الحساب بمعايير الواجهة الحالية قبل الربط —
+                // النتيجة الفارغة يمسكها فحص الجدول الفارغ أدناه
+                if (!ShowResults()) return;
+
                 if (SerialList == null || SerialList.Count == 0)
                 {
                     DXMessageBox.Show("لا توجد عمليات بالجدول.", "تنبيه",

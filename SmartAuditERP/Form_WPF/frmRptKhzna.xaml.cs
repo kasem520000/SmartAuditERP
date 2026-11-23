@@ -138,7 +138,8 @@ namespace SmartAuditERP.Form_WPF
         #region ShowResult
         // ══════════════════════════════════════════════
 
-        private void ShowResult()
+        // P7-046 fix: النتيجة bool — اكتمل النشر الذري أم لا (بوابة الطباعة P7-045)
+        private bool ShowResult()
         {
             try
             {
@@ -147,11 +148,15 @@ namespace SmartAuditERP.Form_WPF
                     DXMessageBox.Show("اختر صندوقاً.", "تنبيه",
                                     MessageBoxButton.OK, MessageBoxImage.Warning);
                     cmbSafe.Focus();
-                    return;
+                    return false;
                 }
 
-                KhznaList.Clear();
-                totAll = 0; totPeriod = 0;
+                // P7-046 fix: التجميع في قائمة محلية — لا نشر تدريجي للشبكة أثناء
+                // الاستعلامات؛ فشل مصدر متأخر يترك نتيجة الشاشة السابقة كاملة
+                // متسقة لا مزيجاً جديداً/قديماً قابلاً للطباعة
+                var rows = new List<KhznaRow>();
+                double runBalance  = 0;
+                double priorBalance = 0;
 
                 // جلب رقم الحساب المرتبط بالصندوق
                 int accNo = -1;
@@ -173,7 +178,7 @@ namespace SmartAuditERP.Form_WPF
                     DXMessageBox.Show("لم يتم العثور على حساب مرتبط بهذا الصندوق.",
                                     "تنبيه",
                                     MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
+                    return false;
                 }
 
                 string condDate = "";
@@ -194,8 +199,6 @@ namespace SmartAuditERP.Form_WPF
                 DateTime dt2 = dateTo.Date   + endTime;
 
                 double prevIncome  = 0, prevExpense = 0;
-                double runBalance  = 0;
-                double priorBalance = 0;
 
                 // ══ الرصيد السابق (فقط إذا فترة محددة) ══
                 if (chkAll.IsChecked != true)
@@ -223,10 +226,10 @@ namespace SmartAuditERP.Form_WPF
                         runBalance   = priorBalance;
                     }
 
-                    // إضافة سطر الرصيد السابق
-                    KhznaList.Add(new KhznaRow
+                    // سطر الرصيد السابق — إلى القائمة المحلية
+                    rows.Add(new KhznaRow
                     {
-                        RowNo       = KhznaList.Count + 1,
+                        RowNo       = rows.Count + 1,
                         ProcessType = "رصيد سابق",
                         ProcessNo   = "",
                         RestDate    = dateFrom.AddDays(-1).ToShortDateString(),
@@ -274,9 +277,9 @@ namespace SmartAuditERP.Form_WPF
 
                     runBalance += dept - credit;
 
-                    KhznaList.Add(new KhznaRow
+                    rows.Add(new KhznaRow
                     {
-                        RowNo       = KhznaList.Count + 1,
+                        RowNo       = rows.Count + 1,
                         ProcessType = Common.ResrirectionType(
                                           Convert.ToInt32(row["type"])),
                         ProcessNo   = row["GlobalID"]?.ToString() ?? "",
@@ -291,6 +294,10 @@ namespace SmartAuditERP.Form_WPF
                     ProgressBar1.Value = i + 1;
                 }
 
+                // ══ نقطة النشر الواحدة (P7-046) ══
+                KhznaList.Clear();
+                foreach (var r in rows) KhznaList.Add(r);
+
                 // حساب الأرصدة
                 totAll    = runBalance;
                 totPeriod = runBalance - priorBalance;
@@ -298,11 +305,13 @@ namespace SmartAuditERP.Form_WPF
                 // تحديث بطاقات الرصيد
                 txtTotAll.Text    = $"{totAll:#,##0.##}";
                 txtTotPeriod.Text = $"{totPeriod:#,##0.##}";
+                return true;
             }
             catch (Exception ex)
             {
                 DXMessageBox.Show($"خطأ في عرض البيانات:\n{ex.Message}",
                                 "خطأ", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
         }
 
@@ -486,6 +495,11 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
+                // P7-045 fix: إعادة الحساب بمعايير الواجهة الحالية قبل الربط —
+                // كانت المعاينة تربط معايير حية (الصندوق/الفترة) فوق نتائج
+                // آخر استعلام ناجح؛ وفشل إعادة الحساب يوقف الطباعة
+                if (!ShowResult()) return;
+
                 if (KhznaList == null || KhznaList.Count == 0)
                 {
                     DXMessageBox.Show("لا توجد عمليات بالجدول.", "تنبيه",
