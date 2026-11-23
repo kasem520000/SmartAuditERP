@@ -424,10 +424,29 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
-                if (string.IsNullOrWhiteSpace(txtCashpay.Text)) return;
+                // V-035 fix: الحقول الفارغة كانت تُمرَّر لـ Convert.ToDouble فيرمي
+                // FormatException (خاصة txtNetwork الفارغ عند الدفع نقدياً فقط)
+                // فيظهر «خطأ أثناء الدفع» وتبقى isDone=false فلا تُحفظ فاتورة
+                // نقطة البيع إطلاقاً. الفارغ = صفر، وغير الرقمي = رسالة واضحة.
+                if (string.IsNullOrWhiteSpace(txtCashpay.Text)) txtCashpay.Text = "0";
+                if (string.IsNullOrWhiteSpace(txtNetwork.Text)) txtNetwork.Text = "0";
 
-                resCash    = Convert.ToDouble(txtCashpay.Text);
-                resNetwork = Convert.ToDouble(txtNetwork.Text);
+                if (!double.TryParse(txtCashpay.Text, out double cashVal))
+                {
+                    DXMessageBox.Show("قيمة الدفع النقدي غير صحيحة",
+                        "", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    txtCashpay.Focus();
+                    return;
+                }
+                if (!double.TryParse(txtNetwork.Text, out double networkVal))
+                {
+                    DXMessageBox.Show("قيمة الدفع بالشبكة غير صحيحة",
+                        "", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    txtNetwork.Focus();
+                    return;
+                }
+                resCash    = cashVal;
+                resNetwork = networkVal;
 
                 resTotal = Math.Round(resNetwork + resCash, 3);
                 double.TryParse(lblNetVal.Text, out double netVal);
@@ -451,7 +470,12 @@ namespace SmartAuditERP.Form_WPF
                 }
 
                 if (resTotal < netVal - Invoic.Paid && Invoic.PaymentStatus == PaymentStatus.Paid)
+                {
+                    // V-035: كان رجوعاً صامتاً — الكبسة بلا أثر؛ رسالة توضح النقص.
+                    DXMessageBox.Show("القيمة المستلمة أقل من صافي الفاتورة",
+                        "", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
+                }
 
                 if (Invoic.PayType == 5)
                 {

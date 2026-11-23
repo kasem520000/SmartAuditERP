@@ -1615,23 +1615,34 @@ namespace SmartAuditERP.Form_WPF
 
         private async void SaveAndPrint()
         {
-            var invoiceOper = new InvoiceOper();
-            var inv = BindToInvoice();
-            var entry = (Paytype == 5 || Paytype == -1) ? invoiceOper.BindToEntry(inv) : null;
-
-            // P4-014: سياسة البيع بالسالب تمرر للحفظ (تحقق ذري عند منعها)
-            bool saved = invoiceOper.SaveInvoice(inv, entry, ISNew, InvObj.SaleByMinus);
-            Inventory.UpdateItemStock(inv);
-
-            if (saved && IsPrinted && print.PrintNo > 0)
-                RptPrint(inv, 1);
-
-            if (saved && Sync.ActiveSync && InvObj.SyncInv && Sync.SyncType > 0 && !holdbool)
+            // V-036 fix: async void بلا حماية — أي استثناء في مسار الحفظ كان
+            // يُسقط التطبيق بالكامل (UnobservedTaskException/Dispatcher crash)
+            // بدل رسالة خطأ؛ الحفظ الفاشل يترك الفاتورة كما هي مع إشعار واضح.
+            try
             {
-                if (!InvObj.SyncEntry) entry = null;
-                await invoiceOper.SyncInvoice(inv, entry, ISNew);
+                var invoiceOper = new InvoiceOper();
+                var inv = BindToInvoice();
+                var entry = (Paytype == 5 || Paytype == -1) ? invoiceOper.BindToEntry(inv) : null;
+
+                // P4-014: سياسة البيع بالسالب تمرر للحفظ (تحقق ذري عند منعها)
+                bool saved = invoiceOper.SaveInvoice(inv, entry, ISNew, InvObj.SaleByMinus);
+                Inventory.UpdateItemStock(inv);
+
+                if (saved && IsPrinted && print.PrintNo > 0)
+                    RptPrint(inv, 1);
+
+                if (saved && Sync.ActiveSync && InvObj.SyncInv && Sync.SyncType > 0 && !holdbool)
+                {
+                    if (!InvObj.SyncEntry) entry = null;
+                    await invoiceOper.SyncInvoice(inv, entry, ISNew);
+                }
+                CLR();
             }
-            CLR();
+            catch (Exception ex)
+            {
+                DXMessageBox.Show("خطأ أثناء حفظ الفاتورة\nتفاصيل الخطأ: " + ex.Message, "",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         #endregion
