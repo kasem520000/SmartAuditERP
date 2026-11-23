@@ -480,25 +480,24 @@ namespace SmartAuditERP.Form_WPF
 
         public void Navigate(string sqlStr)
         {
+            // P7-161 fix: القارئ أولاً ثم الالتزام — غياب هدف التنقل أو فشل
+            // قارئه كان يصفّر المحرر الحالي (CLR ثم قارئ لا يجد شيئاً =
+            // محرر فارغ بلا تمييز النتيجة للمستخدم)
+            var candidate = new InvoiceDGV();
+            InvoiceOper.BindingInvoice(ref candidate, sqlStr);
+            if (candidate == null) return;
+
             if (this.Invoic != null)
                 this.CLR();
 
-            InvoiceOper.BindingInvoice(ref this.Invoic, sqlStr);
+            this.Invoic = candidate;
 
-            if (this.Invoic != null)
-            {
-                this.txtNo.Background = new SolidColorBrush(Colors.WhiteSmoke);
-                this.txtNo.Foreground = new SolidColorBrush(Colors.Black);
-                this.BindingDGV();
-                this.BindingControls();
+            this.txtNo.Background = new SolidColorBrush(Colors.WhiteSmoke);
+            this.txtNo.Foreground = new SolidColorBrush(Colors.Black);
+            this.BindingDGV();
+            this.BindingControls();
 
-                this.ckZeroVAT.IsChecked = (this.Invoic.VAT == 0.0);
-            }
-            else
-            {
-                this.Invoic = new InvoiceDGV();
-                this.CLR();
-            }
+            this.ckZeroVAT.IsChecked = (this.Invoic.VAT == 0.0);
         }
 
         private void btnFirst_Click(object sender, RoutedEventArgs e)
@@ -2228,35 +2227,58 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnInsertLinkedInv_Click(object sender, RoutedEventArgs e)
         {
+            // P7-160 fix: لقطة الفاتورة الحالية — إلغاء اختيار المصدر يستعيدها
+            // كما كانت؛ كان الإلغاء يترك المحرر مصفّراً (btnNew/CLR قبل الحوار)
+            InvoiceDGV snapshot = this.Invoic;
+
             this.btnNew_Click(sender, e);
 
+            bool accepted;
             if (this.InvType == 1 && this.ProcType == 2)
             {
                 this.CLR();
-                InvoiceOper.InsertFromInv(ref this.Invoic, 1);
-                PrepareReturnInvoice(InvoiceType.Purchase, 2, 2);
+                accepted = InvoiceOper.InsertFromInv(ref this.Invoic, 1);
+                if (accepted)
+                    PrepareReturnInvoice(InvoiceType.Purchase, 2, 2);
             }
             else if (this.InvType == 1 && this.ProcType == 1)
             {
-                InvoiceOper.InsertFromInv(ref this.Invoic, 4);
-                this.Invoic.ISNew = true;
-                this.ProcType     = 1;
-                this.LoadInvNo();
-                ItemOper.CalcRows(ref this.Invoic);
-                this.BindingDGV();
-                this.BindingControls();
+                accepted = InvoiceOper.InsertFromInv(ref this.Invoic, 4);
+                if (accepted)
+                {
+                    this.Invoic.ISNew = true;
+                    this.ProcType     = 1;
+                    this.LoadInvNo();
+                    ItemOper.CalcRows(ref this.Invoic);
+                    this.BindingDGV();
+                    this.BindingControls();
+                }
             }
             else if (this.InvType == 22 && this.ProcType == 2)
             {
                 this.CLR();
-                InvoiceOper.InsertFromInv(ref this.Invoic, 1);
-                PrepareReturnInvoice(InvoiceType.ReturnSales, 2, 2);
+                accepted = InvoiceOper.InsertFromInv(ref this.Invoic, 1);
+                if (accepted)
+                    PrepareReturnInvoice(InvoiceType.ReturnSales, 2, 2);
             }
             else if (this.InvType == 22 && this.ProcType == 1)
             {
                 this.CLR();
-                InvoiceOper.InsertFromInv(ref this.Invoic, 1);
-                PrepareReturnInvoice(InvoiceType.ReturnSales, 1, 2);
+                accepted = InvoiceOper.InsertFromInv(ref this.Invoic, 1);
+                if (accepted)
+                    PrepareReturnInvoice(InvoiceType.ReturnSales, 1, 2);
+            }
+            else
+            {
+                accepted = true;
+            }
+
+            if (!accepted && snapshot != null)
+            {
+                // الإلغاء: الفاتورة الحالية كما كانت — لا محرر فارغ
+                this.Invoic = snapshot;
+                this.BindingDGV();
+                this.BindingControls();
             }
         }
 
@@ -2704,9 +2726,12 @@ namespace SmartAuditERP.Form_WPF
             frm.InvType  = this.InvType;
             frm.ShowDialog();
 
+            // P7-159 fix: حارس التنقل كأزرار التنقل — قبول نتيجة البحث كان
+            // يستبدل المسودة غير المحفوظة بلا تأكيد
             if (frm.ISDone &&
                 !string.Equals(frm.InvGlobalID, "-1",
-                    StringComparison.OrdinalIgnoreCase))
+                    StringComparison.OrdinalIgnoreCase) &&
+                !this.CheckBeforeClear())
             {
                 this.Navigate(
                     $"select * from Inv where branch={MainClass.BranchNo} " +

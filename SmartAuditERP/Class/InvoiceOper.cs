@@ -4282,7 +4282,7 @@ if (!MainSetting.ZatcaIntegerationActive || MainSetting.ZatcaSyncManual || Invoi
                         }
                 }
 
-                public static void InsertFromInv(ref InvoiceDGV Invo, int Ptype)
+                public static bool InsertFromInv(ref InvoiceDGV Invo, int Ptype)
                 {
                         try
                         {
@@ -4320,7 +4320,9 @@ if (!MainSetting.ZatcaIntegerationActive || MainSetting.ZatcaSyncManual || Invoi
                                 frmInvoiceSrch2.ShowDialog();
                                 if (!(frmInvoiceSrch2.ISDone & (Operators.CompareString(frmInvoiceSrch2.InvGlobalID, "-1", TextCompare: false) != 0)))
                                 {
-                                        return;
+                                        // P7-160 fix: نتيجة الإلغاء صريحة للمستدعي — كان void
+                                        // فلا يعرف أن الحوار أُلغي فيترك محرره مصفّراً
+                                        return false;
                                 }
                                 InvoiceOper.BindingInvoice(ref Invo, "select * from Inv where IS_Deleted=0 and InvGlobalID=N'" + frmInvoiceSrch2.InvGlobalID + "'");
                                 frmInvoiceItems frmInvoiceItems2;
@@ -4348,11 +4350,13 @@ if (!MainSetting.ZatcaIntegerationActive || MainSetting.ZatcaSyncManual || Invoi
                                 {
                                         Invo = frmInvoiceItems2.inv;
                                 }
+                                return true;
                         }
                         catch (Exception projectError)
                         {
                                 ProjectData.SetProjectError(projectError);
                                 ProjectData.ClearProjectError();
+                                return false;
                         }
                 }
 

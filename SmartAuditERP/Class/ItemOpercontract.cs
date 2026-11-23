@@ -1400,6 +1400,13 @@ namespace SmartAuditERP
                 case 6: NewItem.ItemPrice = SafeToDouble(dt2.Rows[0]["WholesalePrice"]); break;
                 case 7: NewItem.ItemPrice = SafeToDouble(dt2.Rows[0]["ConsumerPrice"]); break;
             }
+
+            // P7-142 fix: أسعار الصف محسوبة لوحدة الأساس — تُضرب بعامل
+            // الوحدة المختارة (UnitEquality=perc من LoadUnitInf) ليسعّر
+            // السطر بوحدته؛ كانت توضع كما هي فيسعّر الوحدة الأكبر بسعر
+            // الوحدة الأساس
+            if (NewItem.UnitEquality > 0 && NewItem.UnitEquality != 1)
+                NewItem.ItemPrice *= NewItem.UnitEquality;
         }
 
         public static void LoadItemDetails(InvoiceDGV Invo, ref InvoiceItem NewItem)

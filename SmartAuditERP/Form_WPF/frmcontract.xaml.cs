@@ -2523,19 +2523,37 @@ namespace SmartAuditERP.Form_WPF
                     SearchByCode(row["ItemCode"].ToString(),
                         Convert.ToInt32(row["unit"]));
 
+                    // P7-144 fix: نتيجة صريحة لكل صف — الهدف هو السطر الذي
+                    // حُلّ لهذا الصف (RowIndex==العدد، أول تطابق لا آخره)،
+                    // وعند دمج الحوار التكرارَ في بند قائم تُطبق قيم الصف
+                    // على بند الصنف نفسه بدل إسقاطها صامتة بلا إدراج ولا
+                    // إلغاء؛ وإلغاء المستخدم (عدم إدراج) يُحترم
+                    InvoiceItem target = null;
+                    InvoiceItem mergeMatch = null;
                     foreach (var invItem in Invoic.InvoiceItems)
                     {
                         if (invItem.ItemCode?.ToString() !=
-                                row["ItemCode"]?.ToString() ||
-                            invItem.ItemRowIndex !=
-                                Invoic.InvoiceItems.Count)
+                                row["ItemCode"]?.ToString())
                             continue;
 
-                        invItem.Description = row["description"].ToString();
-                        invItem.ItemQuantity =
+                        if (invItem.ItemRowIndex ==
+                            Invoic.InvoiceItems.Count)
+                        {
+                            target = invItem;
+                            break;
+                        }
+                        mergeMatch = invItem;
+                    }
+                    if (target == null)
+                        target = mergeMatch;
+
+                    if (target != null)
+                    {
+                        target.Description = row["description"].ToString();
+                        target.ItemQuantity =
                             Convert.ToDouble(row["quntity"]);
                         if (Convert.ToDouble(row["price"]) > 0.0)
-                            invItem.ItemPrice =
+                            target.ItemPrice =
                                 Convert.ToDouble(row["price"]);
 
                         ItemOpercontract.CalcRowscontratct(ref Invoic);

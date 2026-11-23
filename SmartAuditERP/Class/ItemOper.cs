@@ -1067,6 +1067,14 @@ namespace SmartAuditERP
                             newItem.ItemPrice = ToDouble(row["ConsumerPrice"]);
                             break;
                     }
+
+                    // P7-142 fix: أسعار الصف (ItemPrices/آخر شراء/التكلفة)
+                    // محسوبة لوحدة الأساس — تُضرب بعامل الوحدة المختارة
+                    // (UnitEquality=perc من LoadUnitInf) ليسعّر السطر
+                    // بوحدته؛ كانت توضع كما هي فيسعّر الكرتون/الوحدة الأكبر
+                    // بسعر الوحدة الأساس
+                    if (newItem.UnitEquality > 0 && newItem.UnitEquality != 1)
+                        newItem.ItemPrice *= newItem.UnitEquality;
                 }
             }
             catch { }

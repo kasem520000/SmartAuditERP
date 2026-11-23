@@ -41,6 +41,10 @@ namespace SmartAuditERP.Form_WPF
         private int                                  _rowIndex;
         private ObservableCollection<InvoiceSrchRow> _displayRows;
 
+        // P7-156 fix: شرط أهلية المتصل الأساسي — يُحفظ عند التحميل وتُبنى
+        // عليه كل إعادة بناء للشرط (تغيير التاريخ/المسح)
+        private string                               _baseCond = string.Empty;
+
         #endregion
 
         // ══════════════════════════════════════════════════════════
@@ -72,6 +76,10 @@ namespace SmartAuditERP.Form_WPF
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            // P7-156 fix: شرط أهلية المتصل يُحفظ أساساً — تغيير التاريخ
+            // والمسح كانا يستبدلانه بالكامل فتفقد النتائج أهليتها
+            _baseCond = Cond ?? string.Empty;
+
             txtFromDate.SelectedDate = DateTime.Today;
             txtToDate.SelectedDate   = DateTime.Today;
 
@@ -137,6 +145,17 @@ namespace SmartAuditERP.Form_WPF
 
         private void cmbProcType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            // P7-155 fix: اختيار نوع عملية آخر يعيد التحميل بنوعه — كان
+            // يرشح لقطة مقيدة مسبقاً بالنوع الأصلي (استعلام التحميل يدمج
+            // proc_type الأصلية) فلا يجد المستخدم شيئاً عند اختيار نوع آخر
+            int procIndex = cmbProcType.SelectedIndex;
+            if (procIndex > 0 && procIndex != ProcType)
+            {
+                ProcType = procIndex;
+                BuildLoadQuery();
+                LoadInvoices();
+                return;
+            }
             ApplyFilter();
         }
 
@@ -177,19 +196,23 @@ namespace SmartAuditERP.Form_WPF
 
         private void txtMaxPrice_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(txtMaxPrice.Text))
+            // P7-158 fix: مسح الحد الأعلى يرفع المرشح فوراً — كان ApplyFilter
+            // لا يستدعى عند الفراغ فيبقى المرشح السابق حتى تصفية أخرى
+            if (!string.IsNullOrWhiteSpace(txtMaxPrice.Text) &&
+                string.IsNullOrWhiteSpace(txtMinPrice.Text))
             {
-                if (string.IsNullOrWhiteSpace(txtMinPrice.Text))
-                    txtMinPrice.Text = "0";
-                ApplyFilter();
+                txtMinPrice.Text = "0";
             }
+            ApplyFilter();
         }
 
         private void txtFromDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
             if (txtFromDate.IsEnabled)
             {
-                Cond = " and inv.date >= @date1 and inv.date <= @date2 ";
+                // P7-156 fix: شرط المتصل يُحافَظ عليه — كان الاستبدال يسقط
+                // أهلية المستند الممررة من المتصل
+                Cond = _baseCond + " and inv.date >= @date1 and inv.date <= @date2 ";
                 _masterTable.Clear();
                 LoadInvoices();
             }
@@ -199,7 +222,8 @@ namespace SmartAuditERP.Form_WPF
         {
             if (txtToDate.IsEnabled)
             {
-                Cond = " and inv.date >= @date1 and inv.date <= @date2 ";
+                // P7-156 fix: نفس الحفاظ على شرط الأهلية عند تغيير نهاية الفترة
+                Cond = _baseCond + " and inv.date >= @date1 and inv.date <= @date2 ";
                 _masterTable.Clear();
                 LoadInvoices();
             }
@@ -244,7 +268,9 @@ namespace SmartAuditERP.Form_WPF
             txtTableNoSearch.Text    = "";
             TxtNotes.Text            = "";
             cmbUsers.SelectedIndex   = -1;
-            Cond                     = string.Empty;
+            // P7-156 fix: المسح يعيد شرط المتصل الأساسي لا الفراغ التام —
+            // كان يسقط أهلية المستند الممررة من المتصل
+            Cond                     = _baseCond;
 
             if (cmbProcType.Items.Count > 1)
                 cmbProcType.SelectedIndex = 1;
@@ -342,6 +368,11 @@ namespace SmartAuditERP.Form_WPF
 
             condClause += $" and inv.proc_type = {ProcType}";
 
+            // P7-157 fix: مستندات النوع 20 (مبيعات أندرويد) تُضم فقط لعائلة
+            // المبيعات — بحث المشتريات كان يضمها ويعيدها لقارئ المشتريات
+            // الذي لا يقيد النوع المطلوب
+
+
             if (btnPostPone.IsChecked == true)
                 condClause += " and inv.Pay_type = -1";
 
@@ -401,10 +432,17 @@ namespace SmartAuditERP.Form_WPF
                     LEFT JOIN Users     ON inv.sales_emp = Users.emp
                     LEFT JOIN Branches  ON inv.branch    = Branches.id
                     WHERE  inv.IS_Deleted = 0
-                      AND  (inv_type = 20 OR inv_type = {InvType})
+                      AND  {TypeClause()}
                       {condClause}
                     ORDER BY inv.id DESC";
             }
+        }
+
+        private string TypeClause()
+        {
+            if (InvType == 2 || InvType == 3 || InvType == 21)
+                return $"(inv_type = 20 OR inv_type = {InvType})";
+            return $"inv_type = {InvType}";
         }
 
         public void LoadUsers()

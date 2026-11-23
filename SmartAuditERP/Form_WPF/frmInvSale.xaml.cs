@@ -88,9 +88,9 @@ namespace SmartAuditERP.Form_WPF
             Timer1.Interval = TimeSpan.FromSeconds(1);
             Timer1.Tick += Timer1_Tick;
 
-            Loaded += Window_Loaded;
-            Closing += Window_Closing;
-            KeyDown += Window_KeyDown;
+            // P7-162 fix: الأحداث الثلاثة مربوطة في XAML بالفعل
+            // (Loaded/Closing/KeyDown) — الربط الثاني في المشيد كان يكرر
+            // تأكيد الإغلاق وطلب التحقق للحفظ مرتين لكل ضغطة
         }
 
         #endregion
@@ -1666,21 +1666,20 @@ namespace SmartAuditERP.Form_WPF
 
         public void Navigate(string sqlStr)
         {
+            // P7-161 fix: القارئ أولاً ثم الالتزام — غياب هدف التنقل كان
+            // يصفّر المحرر الحالي (CLR ثم قارئ لا يجد شيئاً = محرر فارغ)
+            var candidate = new InvoiceDGV();
+            InvoiceOper.BindingInvoice(ref candidate, sqlStr);
+            if (candidate == null) return;
+
             if (Invoic != null) CLR();
-            InvoiceOper.BindingInvoice(ref Invoic, sqlStr);
-            if (Invoic != null)
-            {
-                txtNo.Background =
-                    new SolidColorBrush(Color.FromRgb(245, 245, 245));
-                txtNo.Foreground = new SolidColorBrush(Colors.Black);
-                BindingDGV();
-                BindingControls();
-            }
-            else
-            {
-                Invoic = new InvoiceDGV();
-                CLR();
-            }
+            Invoic = candidate;
+
+            txtNo.Background =
+                new SolidColorBrush(Color.FromRgb(245, 245, 245));
+            txtNo.Foreground = new SolidColorBrush(Colors.Black);
+            BindingDGV();
+            BindingControls();
         }
 
         private bool CheckBeforeClear()
@@ -2675,8 +2674,11 @@ namespace SmartAuditERP.Form_WPF
             if (InvObj.PaymentStatus)
                 frm.ckUnPaid.Visibility    = Visibility.Visible;
             frm.ShowDialog();
+            // P7-159 fix: حارس التنقل كأزرار التنقل — قبول نتيجة البحث كان
+            // يستبدل المسودة غير المحفوظة بلا تأكيد
             if (frm.ISDone &&
-                !string.Equals(frm.InvGlobalID, "-1"))
+                !string.Equals(frm.InvGlobalID, "-1") &&
+                !CheckBeforeClear())
                 Navigate("select * from Inv where branch=" +
                     MainClass.BranchNo +
                     " and InvGlobalID=N'" + frm.InvGlobalID + "'");
@@ -2757,8 +2759,24 @@ namespace SmartAuditERP.Form_WPF
                 InsertLinkedCreditNote(1);
         }
 
+        /// <summary>
+        /// P7-160 fix: استعادة لقطة الفاتورة الحالية بعد إلغاء اختيار
+        /// المصدر في الإدراج المرتبط — المحرر يعود كما كان لا فارغاً
+        /// </summary>
+        private void RestoreSnapshot(InvoiceDGV snapshot)
+        {
+            if (snapshot == null) return;
+            Invoic = snapshot;
+            BindingDGV();
+            BindingControls();
+        }
+
         private void InsertLinkedReturn(int procType, int invertoryImpact)
         {
+            // P7-160 fix: لقطة الفاتورة الحالية تُستعاد عند إلغاء اختيار
+            // المصدر — كان CLR قبل الحوار يترك المحرر فارغاً عند الإلغاء
+            InvoiceDGV snapshot = Invoic;
+
             if (MainClass.ReturnYearPreviews)
             {
                 MainClass.originalConnStr = MainClass.connstr;
@@ -2770,7 +2788,11 @@ namespace SmartAuditERP.Form_WPF
                 conn = MainClass.ConnObj();
             }
             CLR();
-            InvoiceOper.InsertFromInv(ref Invoic, 1);
+            if (!InvoiceOper.InsertFromInv(ref Invoic, 1))
+            {
+                RestoreSnapshot(snapshot);
+                return;
+            }
             Invoic.ProcType = procType;
             Invoic.InvertoryImpact = invertoryImpact;
             Invoic.InvNote = "";
@@ -2795,6 +2817,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void InsertLinkedFromQuotation()
         {
+            // P7-160 fix: لقطة الفاتورة الحالية تُستعاد عند الإلغاء
+            InvoiceDGV snapshot = Invoic;
+
             if (MainClass.ReturnYearPreviews)
             {
                 MainClass.originalConnStr = MainClass.connstr;
@@ -2806,7 +2831,11 @@ namespace SmartAuditERP.Form_WPF
                 conn = MainClass.ConnObj();
             }
             CLR();
-            InvoiceOper.InsertFromInv(ref Invoic, 4);
+            if (!InvoiceOper.InsertFromInv(ref Invoic, 4))
+            {
+                RestoreSnapshot(snapshot);
+                return;
+            }
             Invoic.ProcType = 1;
             Invoic.InvertoryImpact = 2;
             Invoic.ReffNo = "";
@@ -2829,6 +2858,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void InsertLinkedCreditNote(int procType)
         {
+            // P7-160 fix: لقطة الفاتورة الحالية تُستعاد عند الإلغاء
+            InvoiceDGV snapshot = Invoic;
+
             if (MainClass.ReturnYearPreviews)
             {
                 MainClass.originalConnStr = MainClass.connstr;
@@ -2841,7 +2873,11 @@ namespace SmartAuditERP.Form_WPF
             }
             InvType_credit = 21;
             CLR();
-            InvoiceOper.InsertFromInv(ref Invoic, 1);
+            if (!InvoiceOper.InsertFromInv(ref Invoic, 1))
+            {
+                RestoreSnapshot(snapshot);
+                return;
+            }
             Invoic.InvoiceType = (InvoiceType)21;
             Invoic.ProcType = procType;
             Invoic.InvertoryImpact = 1;
