@@ -1293,12 +1293,13 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
-                // Search in ItemUnits
+                // Search in ItemUnits — P1-011 sweep: معلمة لمدخل الباركود
                 var adapter = new SqlDataAdapter(
                     "SELECT Items.id,ItemUnits.unit FROM Items,ItemUnits " +
                     "WHERE Items.IS_Deleted=0 " +
                     "AND ItemUnits.ItemId=items.id " +
-                    "AND ItemUnits.barcode=N'" + barcode + "'", conn1);
+                    "AND ItemUnits.barcode = @bc", conn1);
+                adapter.SelectCommand.Parameters.AddWithValue("@bc", barcode);
                 var dt = new DataTable();
                 adapter.Fill(dt);
 
@@ -1311,14 +1312,15 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
-                // Search in Itembarcodes
+                // Search in Itembarcodes — P1-011 sweep: معلمة لمدخل الباركود
                 var adapter2 = new SqlDataAdapter(
                     "SELECT items.unit,Itembarcodes.itemId " +
                     "FROM Items,Itembarcodes " +
                     "WHERE Items.IS_Deleted=0 " +
                     "AND Itembarcodes.ItemId=items.id " +
-                    "AND (Itembarcodes.barcode=N'" + barcode +
-                    "' OR Items.barcode=N'" + barcode + "')", conn1);
+                    "AND (Itembarcodes.barcode = @bc " +
+                    "OR Items.barcode = @bc)", conn1);
+                adapter2.SelectCommand.Parameters.AddWithValue("@bc", barcode);
                 var dt2 = new DataTable();
                 adapter2.Fill(dt2);
 

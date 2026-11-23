@@ -701,13 +701,16 @@ namespace SmartAuditERP.Form_WPF
                 string byCode = txtItemCode.Text?.Trim() ?? "";
                 string byName = txtItemName.Text?.Trim() ?? "";
 
-                string where = !string.IsNullOrWhiteSpace(byCode)
-                    ? $"Code=N'{byCode.Replace("'", "''")}'"
-                    : $"name=N'{byName.Replace("'", "''")}'";
+                // P1-011 completion: معلمة بدل تهريب النص يدويًا
+                // (المعامل يُكتب دون اقتباس — AddWithValue يمرره NVARCHAR)
+                var cmd = new SqlCommand(
+                    "SELECT name, id, Code FROM Items " +
+                    "WHERE IS_Deleted=0 AND " +
+                    (string.IsNullOrWhiteSpace(byCode) ? "name = @p" : "Code = @p"), conn);
+                cmd.Parameters.AddWithValue("@p",
+                    string.IsNullOrWhiteSpace(byCode) ? byName : byCode);
 
-                var adapter = new SqlDataAdapter(
-                    $"SELECT name, id, Code FROM Items " +
-                    $"WHERE IS_Deleted=0 AND {where}", conn);
+                var adapter = new SqlDataAdapter(cmd);
                 var dt = new DataTable();
                 adapter.Fill(dt);
 

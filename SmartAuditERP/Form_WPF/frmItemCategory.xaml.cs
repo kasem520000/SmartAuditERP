@@ -303,9 +303,12 @@ namespace SmartAuditERP.Form_WPF
                     }
                 }
 
-                // فحص تكرار الرمز
-                SqlDataAdapter codeCheck = new SqlDataAdapter(
-                    "select Id from itemsCategory where code=N'" + txtCode.Text.Trim() + "' and Id<>" + Code, conn);
+                // فحص تكرار الرمز — P1-011 sweep: معلمة لمدخل المستخدم
+                var codeCheckCmd = new SqlCommand(
+                    "select Id from itemsCategory where code = @code and Id <> @id", conn);
+                codeCheckCmd.Parameters.AddWithValue("@code", txtCode.Text.Trim());
+                codeCheckCmd.Parameters.AddWithValue("@id", Code);
+                SqlDataAdapter codeCheck = new SqlDataAdapter(codeCheckCmd);
                 DataTable codeCheckDt = new DataTable();
                 codeCheck.Fill(codeCheckDt);
 
@@ -364,9 +367,12 @@ namespace SmartAuditERP.Form_WPF
                     updateParent.ExecuteNonQuery();
                 }
 
-                // فحص تكرار الاسم
-                SqlDataAdapter nameCheck = new SqlDataAdapter(
-                    "select id from itemsCategory where name=N'" + txtName.Text + "' and id<>" + Code, conn);
+                // فحص تكرار الاسم — P1-011 sweep: معلمة لمدخل المستخدم
+                var nameCheckCmd = new SqlCommand(
+                    "select id from itemsCategory where name = @name and id <> @id", conn);
+                nameCheckCmd.Parameters.AddWithValue("@name", txtName.Text);
+                nameCheckCmd.Parameters.AddWithValue("@id", Code);
+                SqlDataAdapter nameCheck = new SqlDataAdapter(nameCheckCmd);
                 DataTable nameDt = new DataTable();
                 nameCheck.Fill(nameDt);
 
@@ -449,9 +455,14 @@ namespace SmartAuditERP.Form_WPF
                     updateCmd.ExecuteNonQuery();
                 }
 
-                // حذف وإعادة إدراج الملاحظات
+                // حذف وإعادة إدراج الملاحظات — P1-011 sweep: معلمة لمدخل المستخدم
                 if (Code != -1)
-                    new SqlCommand("delete from CategoryNotes where CatID=N'" + txtNo.Text + "'", conn).ExecuteNonQuery();
+                {
+                    var delNotesCmd = new SqlCommand(
+                        "delete from CategoryNotes where CatID = @cat", conn);
+                    delNotesCmd.Parameters.AddWithValue("@cat", txtNo.Text);
+                    delNotesCmd.ExecuteNonQuery();
+                }
 
                 if (conn1.State != System.Data.ConnectionState.Open)
                     conn1.Open();

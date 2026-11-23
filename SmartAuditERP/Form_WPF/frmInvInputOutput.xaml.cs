@@ -963,10 +963,13 @@ namespace SmartAuditERP.Form_WPF
             try
             {
                 int type = (InvType == 4 || InvType == 14) ? 2 : 1;
+                // P1-011 sweep: معلمة لمدخل المستخدم بدل الدمج النصي
                 using var adapter = new SqlDataAdapter(
                     "SELECT id,name FROM Customers WHERE IS_Deleted=0"
-                    + " AND name=N'" + cmbClient.Text + "'"
-                    + " AND (type=" + type + " OR type=3)", conn);
+                    + " AND name = @n"
+                    + " AND (type = @t OR type=3)", conn);
+                adapter.SelectCommand.Parameters.AddWithValue("@n", cmbClient.Text);
+                adapter.SelectCommand.Parameters.AddWithValue("@t", type);
                 var dt = new DataTable();
                 adapter.Fill(dt);
 
@@ -1549,15 +1552,16 @@ namespace SmartAuditERP.Form_WPF
                 string toDate = txtToDate.EditValue is DateTime td
                     ? td.ToString("yyyy-MM-dd") : DateTime.Now.ToString("yyyy-MM-dd");
 
-                string custCond = "";
-                if (!chkAll.IsChecked == true && cmbClientSrch.SelectedValue != null)
-                    custCond = " AND c.id=" + cmbClientSrch.SelectedValue;
-
+                // P1-011 sweep: الشروط بمدخلات المستخدم صارت معاملات (انظر أدناه)
                 string refCond = !string.IsNullOrWhiteSpace(txtSrchreffNo.Text)
-                    ? " AND i.ref_no=N'" + txtSrchreffNo.Text + "'" : "";
+                    ? " AND i.ref_no = @refno" : "";
 
                 string noCond = !string.IsNullOrWhiteSpace(txtSrchNo.Text)
-                    ? " AND i.id=" + txtSrchNo.Text : "";
+                    ? " AND i.id = @no" : "";
+
+                string custCond = "";
+                if (!chkAll.IsChecked == true && cmbClientSrch.SelectedValue != null)
+                    custCond = " AND c.id = @cust";
 
                 string sql =
                     "SELECT i.InvGlobalID, i.id AS InvoiceNo,"
@@ -1573,6 +1577,13 @@ namespace SmartAuditERP.Form_WPF
                     + " ORDER BY i.id DESC";
 
                 using var adapter = new SqlDataAdapter(sql, conn);
+                // P1-011 sweep: تمرير مدخلات المستخدم كمعاملات لا كنص مدموج
+                if (refCond.Length > 0)
+                    adapter.SelectCommand.Parameters.AddWithValue("@refno", txtSrchreffNo.Text);
+                if (noCond.Length > 0)
+                    adapter.SelectCommand.Parameters.AddWithValue("@no", txtSrchNo.Text);
+                if (custCond.Length > 0)
+                    adapter.SelectCommand.Parameters.AddWithValue("@cust", cmbClientSrch.SelectedValue);
                 var dt = new DataTable();
                 adapter.Fill(dt);
 

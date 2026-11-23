@@ -299,11 +299,14 @@ namespace SmartAuditERP.Form_WPF
                 if (string.IsNullOrWhiteSpace(txtCode.Text))
                     return;
 
-                SqlDataAdapter checkAdapter = new SqlDataAdapter(
+                // P1-011 sweep: معلمة لمدخل المستخدم بدل الدمج النصي
+                var checkCmd = new SqlCommand(
                     "select res_id, EntryGlobalID from Entry_sub " +
-                    "where acc_no=N'" + txtCode.Text + "' " +
+                    "where acc_no = @acc " +
                     "and EntryGlobalID not in " +
                     "(select GlobalId from Entry where IS_Deleted=1)", con);
+                checkCmd.Parameters.AddWithValue("@acc", txtCode.Text);
+                SqlDataAdapter checkAdapter = new SqlDataAdapter(checkCmd);
 
                 DataTable checkTable = new DataTable();
                 checkAdapter.Fill(checkTable);
@@ -320,7 +323,8 @@ namespace SmartAuditERP.Form_WPF
                 EnsureConnectionOpen();
 
                 SqlCommand deleteCommand = new SqlCommand(
-                    "delete from Accounts_Index where Code='" + txtCode.Text + "'", con);
+                    "delete from Accounts_Index where Code = @acc", con);
+                deleteCommand.Parameters.AddWithValue("@acc", txtCode.Text);
                 deleteCommand.ExecuteNonQuery();
 
                 string deleteMsg = string.Equals(MainClass.Language, "ar", StringComparison.OrdinalIgnoreCase)

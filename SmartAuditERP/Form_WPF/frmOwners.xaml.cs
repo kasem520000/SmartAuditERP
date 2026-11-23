@@ -544,8 +544,11 @@ namespace SmartAuditERP.Form_WPF
                 int natureValue = (debt.IsChecked == true) ? 1 : 2;
                 string parentCode = "2212";
 
-                using (var da = new SqlDataAdapter(
-                    $"SELECT * FROM Accounts_Index WHERE code=N'{txtAccCode.Text}'", _conn))
+                // P1-011 sweep: معلمة لمدخلات المستخدم (رمز واسم الحساب)
+                var accCheckCmd = new SqlCommand(
+                    "SELECT * FROM Accounts_Index WHERE code = @code", _conn);
+                accCheckCmd.Parameters.AddWithValue("@code", txtAccCode.Text);
+                using (var da = new SqlDataAdapter(accCheckCmd))
                 {
                     var accDt = new DataTable();
                     da.Fill(accDt);
@@ -556,10 +559,17 @@ namespace SmartAuditERP.Form_WPF
                     {
                         using (var insCmd = new SqlCommand(@"INSERT INTO Accounts_Index
                             (Code,AName,Type,ParentCode,FinalAcc,Acc_branch,Nature,IValue,UserName,date)
-                            VALUES (N'" + txtAccCode.Text + $@"',N'{txtName.Text}',
-                            2,N'{parentCode}',1,{MainClass.BranchNo},{natureValue},
-                            {iValueAmount},{MainClass.UserID},@date)", _conn))
+                            VALUES (@code,@aname,
+                            2,@parentCode,1,@branch,@nature,
+                            @ivalue,@userid,@date)", _conn))
                         {
+                            insCmd.Parameters.AddWithValue("@code", txtAccCode.Text);
+                            insCmd.Parameters.AddWithValue("@aname", txtName.Text);
+                            insCmd.Parameters.AddWithValue("@parentCode", parentCode);
+                            insCmd.Parameters.AddWithValue("@branch", MainClass.BranchNo);
+                            insCmd.Parameters.AddWithValue("@nature", natureValue);
+                            insCmd.Parameters.AddWithValue("@ivalue", iValueAmount);
+                            insCmd.Parameters.AddWithValue("@userid", MainClass.UserID);
                             insCmd.Parameters.Add("@date", SqlDbType.DateTime).Value = DateTime.Now;
                             insCmd.ExecuteNonQuery();
                         }
@@ -573,9 +583,13 @@ namespace SmartAuditERP.Form_WPF
                     else
                     {
                         using (var updCmd = new SqlCommand(
-                            $"UPDATE Accounts_Index SET AName=N'{txtName.Text}',Nature={natureValue},IValue={iValueAmount} WHERE code=N'{txtAccCode.Text}'",
+                            "UPDATE Accounts_Index SET AName = @aname,Nature = @nature,IValue = @ivalue WHERE code = @code",
                             _conn))
                         {
+                            updCmd.Parameters.AddWithValue("@aname", txtName.Text);
+                            updCmd.Parameters.AddWithValue("@nature", natureValue);
+                            updCmd.Parameters.AddWithValue("@ivalue", iValueAmount);
+                            updCmd.Parameters.AddWithValue("@code", txtAccCode.Text);
                             updCmd.ExecuteNonQuery();
                         }
                     }

@@ -618,9 +618,12 @@ namespace SmartAuditERP.Form_WPF
 
                 if (!string.IsNullOrEmpty(text))
                 {
-                    var da = new SqlDataAdapter(
+                    // P1-011 sweep: معلمة بدل الدمج النصي
+                    var cmd = new SqlCommand(
                         "select name,id from Items where IS_Deleted=0 " +
-                        "and name=N'" + text + "'", conn);
+                        "and name = @n", conn);
+                    cmd.Parameters.AddWithValue("@n", text);
+                    var da = new SqlDataAdapter(cmd);
                     var dt = new DataTable();
                     da.Fill(dt);
                     if (dt.Rows.Count > 0)
@@ -2281,11 +2284,13 @@ namespace SmartAuditERP.Form_WPF
             string searchText = LookUpEdit1.Text;
             if (string.IsNullOrEmpty(searchText)) { SrchByNameClint(); return; }
 
-            var da = new SqlDataAdapter(
+            // P1-011 sweep: معلمة لمدخل المستخدم (بحث بالاسم أو الجوال)
+            var cmd = new SqlCommand(
                 "select name,id from Customers where IS_Deleted=0 " +
                 "and (type=1 or type=3) " +
-                "and (name=N'" + searchText +
-                "' or mobile=N'" + searchText + "')", conn);
+                "and (name = @q or mobile = @q)", conn);
+            cmd.Parameters.AddWithValue("@q", searchText);
+            var da = new SqlDataAdapter(cmd);
             var dt = new DataTable();
             da.Fill(dt);
 
@@ -2327,10 +2332,13 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
-                var da = new SqlDataAdapter(
+                // P1-011 sweep: معلمة بدل الدمج النصي
+                var cmd = new SqlCommand(
                     "select id,name from Customers where IS_Deleted=0 " +
-                    "and name=N'" + LookUpEdit1.Text +
-                    "' and (type=1 or type=3)", conn);
+                    "and name = @n " +
+                    "and (type=1 or type=3)", conn);
+                cmd.Parameters.AddWithValue("@n", LookUpEdit1.Text);
+                var da = new SqlDataAdapter(cmd);
                 var dt = new DataTable();
                 da.Fill(dt);
                 if (dt.Rows.Count > 0)

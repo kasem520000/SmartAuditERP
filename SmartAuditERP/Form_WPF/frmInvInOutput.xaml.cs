@@ -626,9 +626,11 @@ namespace SmartAuditERP.Form_WPF
                 if (string.IsNullOrWhiteSpace(name))
                     return -1;
 
-                using (SqlDataAdapter adapter = new SqlDataAdapter(
-                    "select id from units where name=N'" + name.Replace("'", "''") + "'",
-                    conn1))
+                // P1-011 completion: معلمة بدل التهريب اليدوي (المعامل دون اقتباس)
+                var cmd = new SqlCommand(
+                    "select id from units where name = @n", conn1);
+                cmd.Parameters.AddWithValue("@n", name);
+                using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
                 {
                     DataTable dataTable = new DataTable();
                     adapter.Fill(dataTable);
@@ -778,42 +780,51 @@ namespace SmartAuditERP.Form_WPF
                 if (string.IsNullOrWhiteSpace(barcodeText))
                     return;
 
-                using (SqlDataAdapter adapter = new SqlDataAdapter(
-                    "select Items.id,ItemUnits.unit from Items,ItemUnits where Items.IS_Deleted=0 and ItemUnits.ItemId=items.id and (ItemUnits.barcode=N'" + barcodeText.Replace("'", "''") + "' or Items.barcode=N'" + barcodeText.Replace("'", "''") + "')",
+                // P1-011 completion: معلمة بدل التهريب اليدوي (المعاملات دون اقتباس)
+                using (var cmd = new SqlCommand(
+                    "select Items.id,ItemUnits.unit from Items,ItemUnits where Items.IS_Deleted=0 and ItemUnits.ItemId=items.id and (ItemUnits.barcode = @bc or Items.barcode = @bc)",
                     conn1))
                 {
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
-
-                    if (dataTable.Rows.Count > 0)
+                    cmd.Parameters.AddWithValue("@bc", barcodeText);
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
                     {
-                        SelectedId = ToInt(dataTable.Rows[0]["id"]);
-                        txtBarcode.Text = string.Empty;
-                        SearchByID(ToInt(dataTable.Rows[0]["unit"]));
-                        return;
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
+
+                        if (dataTable.Rows.Count > 0)
+                        {
+                            SelectedId = ToInt(dataTable.Rows[0]["id"]);
+                            txtBarcode.Text = string.Empty;
+                            SearchByID(ToInt(dataTable.Rows[0]["unit"]));
+                            return;
+                        }
                     }
                 }
 
-                using (SqlDataAdapter adapter = new SqlDataAdapter(
-                    "select items.unit ,Itembarcodes.itemId from Items,Itembarcodes where Items.IS_Deleted=0 and Itembarcodes.ItemId=items.id and (Itembarcodes.barcode=N'" + barcodeText.Replace("'", "''") + "' or Items.barcode=N'" + barcodeText.Replace("'", "''") + "')",
+                using (var cmd = new SqlCommand(
+                    "select items.unit ,Itembarcodes.itemId from Items,Itembarcodes where Items.IS_Deleted=0 and Itembarcodes.ItemId=items.id and (Itembarcodes.barcode = @bc or Items.barcode = @bc)",
                     conn1))
                 {
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
-
-                    if (dataTable.Rows.Count > 0)
+                    cmd.Parameters.AddWithValue("@bc", barcodeText);
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
                     {
-                        SelectedId = ToInt(dataTable.Rows[0]["itemId"]);
-                        SearchByID(ToInt(dataTable.Rows[0]["unit"]));
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
 
-                        InvoiceItemRowModel lastRow = invoiceItems.LastOrDefault();
-                        if (lastRow != null)
+                        if (dataTable.Rows.Count > 0)
                         {
-                            lastRow.Barcode = barcodeText;
-                        }
+                            SelectedId = ToInt(dataTable.Rows[0]["itemId"]);
+                            SearchByID(ToInt(dataTable.Rows[0]["unit"]));
 
-                        txtBarcode.Text = string.Empty;
-                        return;
+                            InvoiceItemRowModel lastRow = invoiceItems.LastOrDefault();
+                            if (lastRow != null)
+                            {
+                                lastRow.Barcode = barcodeText;
+                            }
+
+                            txtBarcode.Text = string.Empty;
+                            return;
+                        }
                     }
                 }
 
@@ -835,29 +846,33 @@ namespace SmartAuditERP.Form_WPF
                 if (string.IsNullOrWhiteSpace(itemName))
                     return;
 
-                using (SqlDataAdapter adapter = new SqlDataAdapter(
-                    "select name,id from Items where IS_Deleted=0 and name=N'" + itemName.Replace("'", "''") + "'",
-                    conn))
+                // P1-011 completion: معلمة بدل التهريب اليدوي
+                using (var cmd = new SqlCommand(
+                    "select name,id from Items where IS_Deleted=0 and name = @n", conn))
                 {
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
-
-                    if (dataTable.Rows.Count > 0)
+                    cmd.Parameters.AddWithValue("@n", itemName);
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
                     {
-                        SelectedId = ToInt(dataTable.Rows[0]["id"]);
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
 
-                        if (editingRow == null)
+                        if (dataTable.Rows.Count > 0)
                         {
-                            SearchByID(0);
+                            SelectedId = ToInt(dataTable.Rows[0]["id"]);
+
+                            if (editingRow == null)
+                            {
+                                SearchByID(0);
+                            }
+                            else
+                            {
+                                LoadSelectedItemIntoExistingRow(editingRow, 0);
+                            }
                         }
                         else
                         {
-                            LoadSelectedItemIntoExistingRow(editingRow, 0);
+                            addNewItem();
                         }
-                    }
-                    else
-                    {
-                        addNewItem();
                     }
                 }
             }
@@ -877,29 +892,33 @@ namespace SmartAuditERP.Form_WPF
 
                 SrchName = string.Empty;
 
-                using (SqlDataAdapter adapter = new SqlDataAdapter(
-                    "select name,id from Items where IS_Deleted=0 and Code=N'" + codeText.Replace("'", "''") + "'",
-                    conn))
+                // P1-011 completion: معلمة بدل التهريب اليدوي
+                using (var cmd = new SqlCommand(
+                    "select name,id from Items where IS_Deleted=0 and Code = @c", conn))
                 {
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
-
-                    if (dataTable.Rows.Count > 0)
+                    cmd.Parameters.AddWithValue("@c", codeText);
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
                     {
-                        SelectedId = ToInt(dataTable.Rows[0]["id"]);
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
 
-                        if (editingRow == null)
+                        if (dataTable.Rows.Count > 0)
                         {
-                            SearchByID(0);
+                            SelectedId = ToInt(dataTable.Rows[0]["id"]);
+
+                            if (editingRow == null)
+                            {
+                                SearchByID(0);
+                            }
+                            else
+                            {
+                                LoadSelectedItemIntoExistingRow(editingRow, 0);
+                            }
                         }
                         else
                         {
-                            LoadSelectedItemIntoExistingRow(editingRow, 0);
+                            addNewItem();
                         }
-                    }
-                    else
-                    {
-                        addNewItem();
                     }
                 }
             }
@@ -1906,10 +1925,21 @@ namespace SmartAuditERP.Form_WPF
 
         public void Navigate(string sqlstr)
         {
+            Navigate(sqlstr, null);
+        }
+
+        // P1-011 completion: حمولة معلمات — الاستدعاءات النصية تمر عبر هنا
+        public void Navigate(string sqlstr, params SqlParameter[] parameters)
+        {
             try
             {
                 using (SqlCommand command = new SqlCommand(sqlstr, conn))
                 {
+                    if (parameters != null)
+                    {
+                        foreach (var p in parameters)
+                            command.Parameters.Add(p);
+                    }
                     if (conn.State != ConnectionState.Open)
                     {
                         conn.Open();
@@ -1939,7 +1969,9 @@ namespace SmartAuditERP.Form_WPF
             if (string.IsNullOrWhiteSpace(invGlobalId))
                 return;
 
-            Navigate("select * from Inv where InvGlobalID=N'" + invGlobalId.Replace("'", "''") + "'");
+            // P1-011 completion: معلمة بدل التهريب اليدوي
+            Navigate("select * from Inv where InvGlobalID = @gid",
+                new SqlParameter("@gid", invGlobalId));
         }
 
         private void ReadData(SqlDataReader dr)
@@ -2011,9 +2043,11 @@ namespace SmartAuditERP.Form_WPF
 
                 dr.Close();
 
-                using (SqlDataAdapter adapter = new SqlDataAdapter(
-                    "select * from Inv_Sub where InvGlobalID=N'" + InvGlobalID.Replace("'", "''") + "'",
-                    conn))
+                // P1-011 completion: معلمة بدل التهريب اليدوي
+                var subCmd = new SqlCommand(
+                    "select * from Inv_Sub where InvGlobalID = @gid", conn);
+                subCmd.Parameters.AddWithValue("@gid", InvGlobalID);
+                using (SqlDataAdapter adapter = new SqlDataAdapter(subCmd))
                 {
                     DataTable dataTable = new DataTable();
                     adapter.Fill(dataTable);
@@ -2158,22 +2192,28 @@ namespace SmartAuditERP.Form_WPF
 
         private void btnFirst_Click(object sender, RoutedEventArgs e)
         {
-            Navigate("select top 1 * from Inv where inv_type=" + InvType + " and proc_type=" + ProcType + " and IS_Deleted=0 order by id asc");
+            Navigate("select top 1 * from Inv where inv_type=@t and proc_type=@pt and IS_Deleted=0 order by id asc",
+                new SqlParameter("@t", InvType), new SqlParameter("@pt", ProcType));
         }
 
         private void btnPrevious_Click(object sender, RoutedEventArgs e)
         {
-            Navigate("select top 1 * from Inv where inv_type=" + InvType + " and proc_type=" + ProcType + " and IS_Deleted=0 and id<" + ToInt(txtNo.Text) + " order by id desc");
+            Navigate("select top 1 * from Inv where inv_type=@t and proc_type=@pt and IS_Deleted=0 and id<@id order by id desc",
+                new SqlParameter("@t", InvType), new SqlParameter("@pt", ProcType),
+                new SqlParameter("@id", ToInt(txtNo.Text)));
         }
 
         private void btnNext_Click(object sender, RoutedEventArgs e)
         {
-            Navigate("select top 1 * from Inv where inv_type=" + InvType + " and proc_type=" + ProcType + " and IS_Deleted=0 and id>" + ToInt(txtNo.Text) + " order by id asc");
+            Navigate("select top 1 * from Inv where inv_type=@t and proc_type=@pt and IS_Deleted=0 and id>@id order by id asc",
+                new SqlParameter("@t", InvType), new SqlParameter("@pt", ProcType),
+                new SqlParameter("@id", ToInt(txtNo.Text)));
         }
 
         private void btnLast_Click(object sender, RoutedEventArgs e)
         {
-            Navigate("select top 1 * from Inv where inv_type=" + InvType + " and proc_type=" + ProcType + " and IS_Deleted=0 order by id desc");
+            Navigate("select top 1 * from Inv where inv_type=@t and proc_type=@pt and IS_Deleted=0 order by id desc",
+                new SqlParameter("@t", InvType), new SqlParameter("@pt", ProcType));
         }
 
         #endregion
@@ -2276,10 +2316,11 @@ namespace SmartAuditERP.Form_WPF
                     conn.Open();
                 }
 
+                // P1-011 completion: معلمة بدل التهريب اليدوي
                 using (SqlCommand command = new SqlCommand(
-                    "update Inv set IS_Deleted=1 where InvGlobalID=N'" + InvGlobalID.Replace("'", "''") + "'",
-                    conn))
+                    "update Inv set IS_Deleted=1 where InvGlobalID = @gid", conn))
                 {
+                    command.Parameters.AddWithValue("@gid", InvGlobalID);
                     command.ExecuteNonQuery();
                 }
 
@@ -2387,20 +2428,26 @@ namespace SmartAuditERP.Form_WPF
 
                 int customerType = InvType == 5 ? 1 : 2;
 
-                using (SqlDataAdapter adapter = new SqlDataAdapter(
-                    "select id,name from Customers where IS_Deleted=0 and name=N'" + clientName.Replace("'", "''") + "' and (type=" + customerType + " or type=3)",
+                // P1-011 completion: معلمة بدل التهريب اليدوي (النص والرقم معاً)
+                using (var cmd = new SqlCommand(
+                    "select id,name from Customers where IS_Deleted=0 and name = @n and (type = @t or type=3)",
                     conn))
                 {
-                    DataTable dataTable = new DataTable();
-                    adapter.Fill(dataTable);
+                    cmd.Parameters.AddWithValue("@n", clientName);
+                    cmd.Parameters.AddWithValue("@t", customerType);
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                    {
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
 
-                    if (dataTable.Rows.Count > 0)
-                    {
-                        cmbClient.SelectedValue = ToInt(dataTable.Rows[0]["id"]);
-                    }
-                    else
-                    {
-                        addNewClint();
+                        if (dataTable.Rows.Count > 0)
+                        {
+                            cmbClient.SelectedValue = ToInt(dataTable.Rows[0]["id"]);
+                        }
+                        else
+                        {
+                            addNewClint();
+                        }
                     }
                 }
             }
@@ -2450,12 +2497,17 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
-                using (SqlDataAdapter adapter = new SqlDataAdapter(
-                    "select Code from Accounts_Index where AName=N'" + cmbClient.Text.Replace("'", "''") + "' " + Accounting.BranchCondition,
+                // P1-011 completion: معلمة لقيمة النص؛ BranchCondition جزء داخلي
+                // مبني من رقم الفرع (موثوق — ليس إدخال مستخدم)
+                using (var accCmd = new SqlCommand(
+                    "select Code from Accounts_Index where AName = @n " + Accounting.BranchCondition,
                     conn1))
                 {
-                    DataTable accountTable = new DataTable();
-                    adapter.Fill(accountTable);
+                    accCmd.Parameters.AddWithValue("@n", cmbClient.Text);
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(accCmd))
+                    {
+                        DataTable accountTable = new DataTable();
+                        adapter.Fill(accountTable);
 
                     if (accountTable.Rows.Count == 0)
                     {
@@ -2503,6 +2555,7 @@ namespace SmartAuditERP.Form_WPF
                     else
                     {
                         txtBalance.Text = "0";
+                    }
                     }
                 }
             }
@@ -2683,9 +2736,12 @@ namespace SmartAuditERP.Form_WPF
             {
                 if (ProcCode != -1 && !string.IsNullOrWhiteSpace(InvGlobalID))
                 {
-                    using (SqlDataAdapter adapter = new SqlDataAdapter(
-                        "select users.username from Employees,Inv,users where users.emp=Employees.id and Employees.id=Inv.sales_emp and Inv.InvGlobalID=N'" + InvGlobalID.Replace("'", "''") + "'",
-                        conn1))
+                    // P1-011 completion: معلمة بدل التهريب اليدوي
+                    var cmd = new SqlCommand(
+                        "select users.username from Employees,Inv,users where users.emp=Employees.id and Employees.id=Inv.sales_emp and Inv.InvGlobalID = @gid",
+                        conn1);
+                    cmd.Parameters.AddWithValue("@gid", InvGlobalID);
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
                     {
                         DataTable dataTable = new DataTable();
                         adapter.Fill(dataTable);
