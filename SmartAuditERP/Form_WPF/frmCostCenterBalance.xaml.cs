@@ -214,7 +214,11 @@ namespace SmartAuditERP.Form_WPF
 
         #region ── Show Account Data ──
 
-        public void ShowAccount()
+        // P7-046 fix (دحرجة الدفعة الرابعة): النتيجة bool — التجميع في جدول
+        // محلي ثم نقطة نشر واحدة (الرؤية + الشبكة + المجاميع معاً)؛ فشل
+        // متأخر يترك نتيجة الشاشة السابقة كاملة متسقة (كانت المجاميع تُمسح
+        // قبل الاستعلام فتبقى الشبكة القديمة بمجاميع فارغة)
+        public bool ShowAccount()
         {
             try
             {
@@ -222,15 +226,12 @@ namespace SmartAuditERP.Form_WPF
                 {
                     ShowMsg("اختر مركز الكلفة", "", MessageBoxImage.Warning);
                     cmbCostCenter.Focus();
-                    return;
+                    return false;
                 }
 
                 var dataTable = BuildDataTable();
                 double totalDebit = 0.0;
                 double totalCredit = 0.0;
-
-                ApplyColumnVisibility();
-                ClearTotals();
 
                 string costCenterCode = cmbCostCenter.SelectedValue.ToString();
                 string accountType = costCenterCode.Substring(0, 1);
@@ -258,12 +259,13 @@ namespace SmartAuditERP.Form_WPF
 
                 double runningBalance = 0.0;
 
-                // === رصيد سابق ===
+                // === رصيد سابق === (P7-053: يطابق معايير الشاشة نفسها —
+                // الحساب المختار ونوع القيد مع المركز)
                 if (chkPrevbalance.IsChecked != true &&
                     ckTotalPeriod.IsChecked != true)
                 {
                     var prevRow = LoadPreviousBalance(
-                        branchFilter, costCenterCode,
+                        branchFilter, accFilter, typeFilter,
                         accountType, ref totalDebit, ref totalCredit,
                         ref runningBalance);
                     if (prevRow != null)
@@ -276,12 +278,16 @@ namespace SmartAuditERP.Form_WPF
                     accountType, ref totalDebit, ref totalCredit,
                     ref runningBalance);
 
+                // ══ نقطة النشر الواحدة (P7-046) ══
+                ApplyColumnVisibility();
                 GridControl1.ItemsSource = dataTable.DefaultView;
                 UpdateTotals(totalDebit, totalCredit);
+                return true;
             }
             catch (Exception ex)
             {
                 Logger.Error($"frmCostCenterBalance {ex.Message} {MainClass.UserName}");
+                return false;
             }
         }
 
@@ -336,14 +342,6 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
-        private void ClearTotals()
-        {
-            txtTotDept.Text = "";
-            txtTotCredit.Text = "";
-            txtBalance1.Text = "";
-            txtBalance2.Text = "";
-        }
-
         private string BuildDateFilter()
         {
             return (ckTotalPeriod.IsChecked != true)
@@ -378,8 +376,11 @@ namespace SmartAuditERP.Form_WPF
             return "";
         }
 
+        // P7-053 fix: الرصيد السابق يطابق معايير الشاشة نفسها — الحساب
+        // المختار ونوع القيد مع المركز (كان يطابق المركز وحده فيجمع رصيد
+        // كل الحسابات والأنواع فوق كشف مفلتر بحساب واحد)
         private object[] LoadPreviousBalance(
-            string branchFilter, string costCenterCode,
+            string branchFilter, string accFilter, string typeFilter,
             string accountType,
             ref double totalDebit, ref double totalCredit,
             ref double runningBalance)
@@ -394,7 +395,7 @@ namespace SmartAuditERP.Form_WPF
                     $"AND Entry.state=1 " +
                     $"AND Entry.date<@date1 " +
                     $"AND Entry.GlobalID=Entry_sub.EntryGlobalID " +
-                    $"AND Entry_sub.CCcode={costCenterCode}",
+                    $"{accFilter} {typeFilter}",
                     conn);
 
                 adapter.SelectCommand.Parameters.Add(
@@ -702,6 +703,11 @@ namespace SmartAuditERP.Form_WPF
 
         private void PrintDevexpress(int type)
         {
+            // P7-045 fix (دحرجة الدفعة الرابعة): إعادة الحساب بمعايير الواجهة
+            // الحالية قبل الربط — التقرير المطبوع دائماً بحساب معاييره
+            // الحالية المعروضة، وفشل إعادة الحساب يوقف الطباعة
+            if (!ShowAccount()) return;
+
             if (GetGridRowCount() == 0)
             {
                 ShowMsg("لا توجد عمليات بالجدول", "", MessageBoxImage.Warning);

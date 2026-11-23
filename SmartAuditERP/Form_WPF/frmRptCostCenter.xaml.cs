@@ -30,7 +30,6 @@ namespace SmartAuditERP.Form_WPF
         private string _rptName     = "";
         private string _rptUrl      = "";
 
-        private int _parentCode = -1;
         public  int _Type       = 1;
 
         private ObservableCollection<CostCenterRow> _dataSource
@@ -195,43 +194,78 @@ namespace SmartAuditERP.Form_WPF
 
         #endregion
 
-        #region GetParent
+        #region Cost Center Tree
 
-        private void GetParent(int code)
+        // P7-052 fix: إثبات عضوية الشجرة — المركز المختار مع كل أحفاده بكل
+        // المستويات؛ العضوية تُبنى مرة واحدة ثم تقيّد بها استعلامات المسارين
+        // (كانت قائمة مستوى الأبناء الواحد تسقط الأحفاد وتسقط حركات المركز
+        // نفسه متى كان له أبناء، وبوابة GetParent المعطوبة كانت تمر غير
+        // التابعين في المسار التجميعي)
+        private HashSet<int> GetCostCenterSubtree(int rootCode)
         {
+            var members = new HashSet<int> { rootCode };
+            var frontier = new List<int> { rootCode };
             try
             {
-                using (var da = new SqlDataAdapter(
-                    $"SELECT ParentCode FROM cost_center WHERE code={code}", _conn))
+                if (_conn.State != ConnectionState.Open) _conn.Open();
+                while (frontier.Count > 0)
                 {
-                    var dt = new DataTable();
-                    da.Fill(dt);
-
-                    if (dt.Rows.Count == 0)
+                    var next = new List<int>();
+                    foreach (int parentCode in frontier)
                     {
-                        _parentCode = -1;
-                        return;
+                        using (var cmd = new SqlCommand(
+                            "SELECT code FROM cost_center " +
+                            "WHERE ParentCode=@parent AND Is_Deleted=0 AND Code<>0", _conn))
+                        {
+                            cmd.Parameters.Add("@parent", SqlDbType.Int).Value = parentCode;
+                            using (var rdr = cmd.ExecuteReader())
+                            {
+                                while (rdr.Read())
+                                {
+                                    int code = Convert.ToInt32(rdr["code"]);
+                                    if (members.Add(code))
+                                        next.Add(code);
+                                }
+                            }
+                        }
                     }
-
-                    string parentStr = dt.Rows[0][0]?.ToString() ?? "";
-                    double parentVal = 0;
-                    double.TryParse(parentStr, out parentVal);
-
-                    if (cmbCostCenter.SelectedValue != null)
-                    {
-                        double selectedVal = 0;
-                        double.TryParse(cmbCostCenter.SelectedValue.ToString(), out selectedVal);
-
-                        if (parentVal != selectedVal)
-                            _parentCode = (int)parentVal;
-                        else if (string.IsNullOrEmpty(parentStr))
-                            _parentCode = -1;
-                        else
-                            GetParent((int)parentVal);
-                    }
+                    frontier = next;
                 }
             }
-            catch { _parentCode = -1; }
+            catch { }
+            return members;
+        }
+
+        // P7-052 fix: شرط IN معلم — أعضاء الشجرة يقيدون الاستعلام نفسه
+        private string BuildCcInClause(HashSet<int> members, out List<SqlParameter> ccParams)
+        {
+            ccParams = new List<SqlParameter>();
+            var names = new List<string>();
+            int i = 0;
+            foreach (int code in members)
+            {
+                string name = "@cc" + i;
+                ccParams.Add(new SqlParameter(name, SqlDbType.Int) { Value = code });
+                names.Add(name);
+                i++;
+            }
+            return string.Join(",", names);
+        }
+
+        // P7-053 fix: الافتتاحي مجمَّع لكل (مركز، حساب)
+        private class CcInit
+        {
+            public double Dept;
+            public double Credit;
+            public string CenterName = "";
+            public string AccName    = "";
+        }
+
+        private static double ParseD(object v)
+        {
+            double d;
+            double.TryParse(v?.ToString(), out d);
+            return d;
         }
 
         #endregion
@@ -267,34 +301,19 @@ namespace SmartAuditERP.Form_WPF
                 // P7-046 fix: لا نشر تدريجي أثناء الاستعلامات
                 var rows = new List<CostCenterRow>();
                 ProgressBar1.Value = 0;
-                _parentCode = -1;
 
                 string dateCond   = GetDateCondition();
                 string branchCond = GetBranchCondition();
                 string accCond    = GetAccountCondition();
 
-                // الحصول على قائمة مراكز التكلفة الفرعية
-                var costCenterList = new List<int>();
-                using (var da = new SqlDataAdapter(
-                    $"SELECT code FROM cost_center WHERE ParentCode={cmbCostCenter.SelectedValue}",
-                    _conn))
-                {
-                    var dt3 = new DataTable();
-                    da.Fill(dt3);
-                    if (dt3.Rows.Count > 0)
-                    {
-                        foreach (DataRow row in dt3.Rows)
-                            costCenterList.Add(Convert.ToInt32(row["code"]));
-                    }
-                    else
-                    {
-                        costCenterList.Add(Convert.ToInt32(cmbCostCenter.SelectedValue));
-                    }
-                }
+                // P7-052 fix: عضوية الشجرة كاملة (المركز المختار + كل أحفاده
+                // بكل المستويات) تقيّد الاستعلام مباشرة
+                int selectedCc = Convert.ToInt32(cmbCostCenter.SelectedValue);
+                var members = GetCostCenterSubtree(selectedCc);
+                string ccIn = BuildCcInClause(members, out var ccParams);
 
                 // بناء جدول مؤقت
                 var tempTable = new DataTable();
-                tempTable.Columns.Add("ParentCode");
                 tempTable.Columns.Add("Code");
                 tempTable.Columns.Add("Name");
                 tempTable.Columns.Add("DeptInit");
@@ -312,75 +331,113 @@ namespace SmartAuditERP.Form_WPF
                 DateTime toDt = DateTime.Parse(
                     txtDateTo.DateTime.ToShortDateString() + " " + (txtEndTime.Text ?? "23:59"));
 
-                foreach (int ccCode in costCenterList)
+                // حركات الفترة — عضوية الشجرة تقيّد الاستعلام نفسه (استعلام
+                // واحد بدل استعلام لكل مركز)، والحساب يُجلب للمطابقة (P7-053)
+                var dt4 = new DataTable();
+                using (var da = new SqlDataAdapter(
+                    $"SELECT Entry_sub.CCcode, cost_center.name, Entry_sub.acc_no, " +
+                    $"Entry_sub.dept, Entry_sub.credit, Entry.date, Entry_sub.EntryGlobalID, " +
+                    $"Accounts_Index.Aname AS AccName, Entry.type, Entry.doc_no " +
+                    $"FROM Entry, Entry_sub, cost_center, Accounts_Index " +
+                    $"WHERE {branchCond} Entry.IS_Deleted=0 AND {accCond} " +
+                    $"Entry.type<>0 AND Entry.state=1 {dateCond} " +
+                    $"AND Entry_sub.acc_no=Accounts_Index.Code " +
+                    $"AND Entry.GlobalID=Entry_sub.EntryGlobalID " +
+                    $"AND Entry_sub.CCcode=cost_center.code " +
+                    $"AND Entry_sub.CCcode IN ({ccIn})", _conn))
                 {
-                    var dt4 = new DataTable();
-                    using (var da = new SqlDataAdapter(
-                        $"SELECT Entry_sub.CCcode, cost_center.name, Entry_sub.dept, " +
-                        $"Entry_sub.credit, Entry.date, Entry_sub.EntryGlobalID, " +
-                        $"Accounts_Index.Aname AS AccName, Entry.type, Entry.doc_no " +
-                        $"FROM Entry, Entry_sub, cost_center, Accounts_Index " +
-                        $"WHERE {branchCond} Entry.IS_Deleted=0 AND {accCond} " +
-                        $"Entry.type<>0 AND Entry.state=1 {dateCond} " +
-                        $"AND Entry_sub.acc_no=Accounts_Index.Code " +
-                        $"AND Entry.GlobalID=Entry_sub.EntryGlobalID " +
-                        $"AND Entry_sub.CCcode=cost_center.code " +
-                        $"AND Entry_sub.CCcode={ccCode}", _conn))
+                    foreach (SqlParameter p in ccParams)
+                        da.SelectCommand.Parameters.Add(p);
+                    da.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = fromDt;
+                    da.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = toDt;
+                    da.Fill(dt4);
+                }
+
+                // الأرصدة الافتتاحية — بنفس عضوية الشجرة، مجمّعة لكل
+                // (مركز، حساب) لا سطراً سطراً (P7-053)
+                var dt5 = new DataTable();
+                using (var da2 = new SqlDataAdapter(
+                    $"SELECT Entry_sub.CCcode, cost_center.name, Entry_sub.acc_no, " +
+                    $"SUM(Entry_sub.dept) AS dept, SUM(Entry_sub.credit) AS credit, " +
+                    $"Accounts_Index.Aname AS AccName " +
+                    $"FROM Entry, Entry_sub, cost_center, Accounts_Index " +
+                    $"WHERE {branchCond} Entry.IS_Deleted=0 AND {accCond} " +
+                    $"Entry.type=0 AND Entry.state=1 {dateCond} " +
+                    $"AND Entry_sub.acc_no=Accounts_Index.Code " +
+                    $"AND Entry.GlobalID=Entry_sub.EntryGlobalID " +
+                    $"AND Entry_sub.CCcode=cost_center.code " +
+                    $"AND Entry_sub.CCcode IN ({ccIn}) " +
+                    $"GROUP BY Entry_sub.CCcode, Entry_sub.acc_no, " +
+                    $"Accounts_Index.Aname, cost_center.name", _conn))
+                {
+                    foreach (SqlParameter p in ccParams)
+                        da2.SelectCommand.Parameters.Add(p);
+                    da2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value
+                        = txtDateFrom.DateTime.ToShortDateString();
+                    da2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value
+                        = txtDateTo.DateTime.AddHours(24);
+                    da2.Fill(dt5);
+                }
+
+                // P7-053 fix: الافتتاحي يطابق المركز والحساب معاً (كان يطابق
+                // المركز وحده فيلتقط افتتاحي أول حساب ويكرره على صفوف حسابات
+                // المركز الأخرى)
+                var initMap = new Dictionary<string, CcInit>();
+                foreach (DataRow r in dt5.Rows)
+                {
+                    string key = r["CCcode"] + "|" + r["acc_no"];
+                    CcInit accInit;
+                    if (!initMap.TryGetValue(key, out accInit))
                     {
-                        da.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = fromDt;
-                        da.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = toDt;
-                        da.Fill(dt4);
-                    }
-
-                    var dt5 = new DataTable();
-                    using (var da2 = new SqlDataAdapter(
-                        $"SELECT Entry_sub.CCcode, cost_center.name, Entry_sub.dept, " +
-                        $"Entry_sub.credit, Entry.date, Entry_sub.EntryGlobalID, " +
-                        $"Accounts_Index.Aname AS AccName, Entry.type, Entry.doc_no " +
-                        $"FROM Entry, Entry_sub, cost_center, Accounts_Index " +
-                        $"WHERE {branchCond} Entry.IS_Deleted=0 AND {accCond} " +
-                        $"Entry.type=0 AND Entry.state=1 {dateCond} " +
-                        $"AND Entry_sub.acc_no=Accounts_Index.Code " +
-                        $"AND Entry.GlobalID=Entry_sub.EntryGlobalID " +
-                        $"AND Entry_sub.CCcode=cost_center.code " +
-                        $"AND Entry_sub.CCcode={ccCode}", _conn))
-                    {
-                        da2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value
-                            = txtDateFrom.DateTime.ToShortDateString();
-                        da2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value
-                            = txtDateTo.DateTime.AddHours(24);
-                        da2.Fill(dt5);
-                    }
-
-                    ProgressBar1.Maximum = dt4.Rows.Count > 0 ? dt4.Rows.Count : 1;
-
-                    foreach (DataRow row in dt4.Rows)
-                    {
-                        _parentCode = -1;
-                        GetParent(Convert.ToInt32(row["CCcode"]));
-
-                        if (_parentCode != -1)
+                        accInit = new CcInit
                         {
-                            double deptInit = 0, creditInit = 0;
-                            foreach (DataRow initRow in dt5.Rows)
-                            {
-                                if (initRow["CCcode"].ToString() == row["CCcode"].ToString())
-                                {
-                                    double.TryParse(initRow["dept"].ToString(),   out deptInit);
-                                    double.TryParse(initRow["credit"].ToString(), out creditInit);
-                                    break;
-                                }
-                            }
-
-                            tempTable.Rows.Add(
-                                _parentCode, row["CCcode"], row["name"],
-                                deptInit, creditInit, row["dept"], row["credit"],
-                                row["date"], row["doc_no"], row["AccName"],
-                                row["type"], row["EntryGlobalID"]);
-                        }
-
-                        ProgressBar1.Value++;
+                            CenterName = r["name"].ToString(),
+                            AccName    = r["AccName"].ToString()
+                        };
+                        initMap[key] = accInit;
                     }
+                    accInit.Dept   += ParseD(r["dept"]);
+                    accInit.Credit += ParseD(r["credit"]);
+                }
+
+                ProgressBar1.Maximum = dt4.Rows.Count > 0 ? dt4.Rows.Count : 1;
+
+                var seenKeys = new HashSet<string>();
+                foreach (DataRow row in dt4.Rows)
+                {
+                    string key = row["CCcode"] + "|" + row["acc_no"];
+                    seenKeys.Add(key);
+
+                    double deptInit = 0, creditInit = 0;
+                    CcInit accInit;
+                    if (initMap.TryGetValue(key, out accInit))
+                    {
+                        deptInit   = accInit.Dept;
+                        creditInit = accInit.Credit;
+                    }
+
+                    tempTable.Rows.Add(
+                        row["CCcode"], row["name"],
+                        deptInit, creditInit, row["dept"], row["credit"],
+                        row["date"], row["doc_no"], row["AccName"],
+                        row["type"], row["EntryGlobalID"]);
+
+                    ProgressBar1.Value++;
+                }
+
+                // P7-053 fix: الافتتاحي بلا حركة في الفترة ينشر صفوفه بحركة
+                // صفر (كان يسقط كلياً — مركز/حساب رصيده الافتتاحي وحده لا
+                // يظهر في التقرير أبداً)
+                foreach (var kv in initMap)
+                {
+                    if (seenKeys.Contains(kv.Key)) continue;
+
+                    string ccCode = kv.Key.Split('|')[0];
+                    tempTable.Rows.Add(
+                        ccCode, kv.Value.CenterName,
+                        kv.Value.Dept, kv.Value.Credit, 0, 0,
+                        DBNull.Value, DBNull.Value, kv.Value.AccName,
+                        DBNull.Value, DBNull.Value);
                 }
 
                 // بناء النتائج
@@ -420,42 +477,37 @@ namespace SmartAuditERP.Form_WPF
                 // متأخر يترك نتيجة الشاشة السابقة كاملة متسقة
                 var rows = new List<CostCenterRow>();
                 ProgressBar1.Value = 0;
-                _parentCode = -1;
 
                 string dateCond   = GetDateCondition();
                 string branchCond = GetBranchCondition();
                 string accCond    = GetAccountCondition();
 
-                // تحقق من نوع مركز التكلفة
-                int ccType = 0;
-                using (var da = new SqlDataAdapter(
-                    $"SELECT code, type FROM cost_center WHERE Is_Deleted=0 AND code={cmbCostCenter.SelectedValue}",
-                    _conn))
-                {
-                    var dt = new DataTable();
-                    da.Fill(dt);
-                    if (dt.Rows.Count > 0)
-                        int.TryParse(dt.Rows[0]["type"].ToString(), out ccType);
-                }
-
-                string typeFilter = "";
-                if (ccType == 2)
-                    typeFilter = $" AND Entry_sub.CCcode={cmbCostCenter.SelectedValue}";
+                // P7-052 fix: عضوية الشجرة تقيّد الاستعلام نفسه — كان المسار
+                // التجميعي بلا مرشح CCcode إطلاقاً لمراكز النوع 1 فيجمع كل
+                // مراكز القاعدة غير التابعة للمركز المختار، وبوابة GetParent
+                // المعطوبة كانت تمر الجميع
+                int selectedCc = Convert.ToInt32(cmbCostCenter.SelectedValue);
+                var members = GetCostCenterSubtree(selectedCc);
+                string ccIn = BuildCcInClause(members, out var ccParams);
 
                 var dt4 = new DataTable();
                 using (var da = new SqlDataAdapter(
-                    $"SELECT Entry_sub.CCcode, cost_center.name, " +
+                    $"SELECT Entry_sub.CCcode, cost_center.name, Entry_sub.acc_no, " +
                     $"SUM(Entry_sub.dept) AS dept, SUM(Entry_sub.credit) AS credit, " +
                     $"Accounts_Index.Aname AS AccName " +
                     $"FROM Entry, Entry_sub, cost_center, Accounts_Index " +
                     $"WHERE {branchCond} Entry.IS_Deleted=0 AND {accCond} " +
-                    $"Entry.type<>0 AND Entry.state=1 {dateCond} {typeFilter} " +
+                    $"Entry.type<>0 AND Entry.state=1 {dateCond} " +
+                    $"AND Entry_sub.CCcode IN ({ccIn}) " +
                     $"AND Entry_sub.acc_no=Accounts_Index.Code " +
                     $"AND Entry.GlobalID=Entry_sub.EntryGlobalID " +
                     $"AND Entry_sub.CCcode=cost_center.code " +
-                    $"GROUP BY Entry_sub.CCcode, Accounts_Index.Aname, cost_center.name",
+                    $"GROUP BY Entry_sub.CCcode, Entry_sub.acc_no, " +
+                    $"Accounts_Index.Aname, cost_center.name",
                     _conn))
                 {
+                    foreach (SqlParameter p in ccParams)
+                        da.SelectCommand.Parameters.Add(p);
                     da.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value
                         = txtDateFrom.DateTime.ToShortDateString();
                     da.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value
@@ -465,18 +517,22 @@ namespace SmartAuditERP.Form_WPF
 
                 var dt5 = new DataTable();
                 using (var da2 = new SqlDataAdapter(
-                    $"SELECT Entry_sub.CCcode, cost_center.name, " +
+                    $"SELECT Entry_sub.CCcode, cost_center.name, Entry_sub.acc_no, " +
                     $"SUM(Entry_sub.dept) AS dept, SUM(Entry_sub.credit) AS credit, " +
                     $"Accounts_Index.Aname AS AccName " +
                     $"FROM Entry, Entry_sub, cost_center, Accounts_Index " +
                     $"WHERE {branchCond} Entry.IS_Deleted=0 AND {accCond} " +
-                    $"Entry.type=0 AND Entry.state=1 {dateCond} {typeFilter} " +
+                    $"Entry.type=0 AND Entry.state=1 {dateCond} " +
+                    $"AND Entry_sub.CCcode IN ({ccIn}) " +
                     $"AND Entry_sub.acc_no=Accounts_Index.Code " +
                     $"AND Entry.GlobalID=Entry_sub.EntryGlobalID " +
                     $"AND Entry_sub.CCcode=cost_center.code " +
-                    $"GROUP BY Entry_sub.CCcode, Accounts_Index.Aname, cost_center.name",
+                    $"GROUP BY Entry_sub.CCcode, Entry_sub.acc_no, " +
+                    $"Accounts_Index.Aname, cost_center.name",
                     _conn))
                 {
+                    foreach (SqlParameter p in ccParams)
+                        da2.SelectCommand.Parameters.Add(p);
                     da2.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value
                         = txtDateFrom.DateTime.ToShortDateString();
                     da2.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value
@@ -484,8 +540,27 @@ namespace SmartAuditERP.Form_WPF
                     da2.Fill(dt5);
                 }
 
+                // P7-053 fix: الافتتاحي مجمّع لكل (مركز، حساب) — كان يطابق
+                // المركز وحده فيكرر افتتاحي أول حساب على كل حسابات المركز
+                var initMap = new Dictionary<string, CcInit>();
+                foreach (DataRow r in dt5.Rows)
+                {
+                    string key = r["CCcode"] + "|" + r["acc_no"];
+                    CcInit accInit;
+                    if (!initMap.TryGetValue(key, out accInit))
+                    {
+                        accInit = new CcInit
+                        {
+                            CenterName = r["name"].ToString(),
+                            AccName    = r["AccName"].ToString()
+                        };
+                        initMap[key] = accInit;
+                    }
+                    accInit.Dept   += ParseD(r["dept"]);
+                    accInit.Credit += ParseD(r["credit"]);
+                }
+
                 var tempTable = new DataTable();
-                tempTable.Columns.Add("ParentCode");
                 tempTable.Columns.Add("Code");
                 tempTable.Columns.Add("Name");
                 tempTable.Columns.Add("DeptInit");
@@ -496,26 +571,34 @@ namespace SmartAuditERP.Form_WPF
 
                 ProgressBar1.Maximum = dt4.Rows.Count > 0 ? dt4.Rows.Count : 1;
 
+                var seenKeys = new HashSet<string>();
                 foreach (DataRow row in dt4.Rows)
                 {
-                    _parentCode = -1;
-                    GetParent(Convert.ToInt32(row["CCcode"]));
-                    if (_parentCode == -1) { ProgressBar1.Value++; continue; }
+                    string key = row["CCcode"] + "|" + row["acc_no"];
+                    seenKeys.Add(key);
 
                     double deptInit = 0, creditInit = 0;
-                    foreach (DataRow initRow in dt5.Rows)
+                    CcInit accInit;
+                    if (initMap.TryGetValue(key, out accInit))
                     {
-                        if (initRow["CCcode"].ToString() == row["CCcode"].ToString())
-                        {
-                            double.TryParse(initRow["dept"].ToString(),   out deptInit);
-                            double.TryParse(initRow["credit"].ToString(), out creditInit);
-                            break;
-                        }
+                        deptInit   = accInit.Dept;
+                        creditInit = accInit.Credit;
                     }
 
-                    tempTable.Rows.Add(_parentCode, row["CCcode"], row["name"],
+                    tempTable.Rows.Add(row["CCcode"], row["name"],
                         deptInit, creditInit, row["dept"], row["credit"], row["AccName"]);
                     ProgressBar1.Value++;
+                }
+
+                // P7-053 fix: الافتتاحي بلا حركة في الفترة ينشر صفوفه بحركة
+                // صفر (كان يسقط كلياً)
+                foreach (var kv in initMap)
+                {
+                    if (seenKeys.Contains(kv.Key)) continue;
+
+                    string ccCode = kv.Key.Split('|')[0];
+                    tempTable.Rows.Add(ccCode, kv.Value.CenterName,
+                        kv.Value.Dept, kv.Value.Credit, 0, 0, kv.Value.AccName);
                 }
 
                 ProgressBar1.Maximum = tempTable.Rows.Count > 0 ? tempTable.Rows.Count : 1;
