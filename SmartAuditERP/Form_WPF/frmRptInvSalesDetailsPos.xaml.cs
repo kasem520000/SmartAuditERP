@@ -881,13 +881,17 @@ namespace SmartAuditERP.Form_WPF
                 tempView.PopulateColumns();
 
                 var report = new Report();
+                // P7-093 fix: المجاميع الموقعة (بيع − مرتجع — معادلات
+                // بطاقات الملخص نفسها) تُنقل إلى مصدر التقرير
+                var ds = report.BindToData(
+                    tempView,
+                    Title,
+                    txtFromDate.DateTime.ToShortDateString(),
+                    txtToDate.DateTime.ToShortDateString());
+                ApplySignedSummaries(ds);
                 report.Printing(
                     printType,
-                    report.BindToData(
-                        tempView,
-                        Title,
-                        txtFromDate.DateTime.ToShortDateString(),
-                        txtToDate.DateTime.ToShortDateString()),
+                    ds,
                     RptUrl, RptName, defPrinter, 1);
             }
             catch (Exception ex)
@@ -895,6 +899,41 @@ namespace SmartAuditERP.Form_WPF
                 DXMessageBox.Show($"خطأ في الطباعة:\n{ex.Message}", "خطأ",
                                 MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        // P7-093 fix: نقل المجاميع الموقعة (بيع − مرتجع) إلى مصدر التقرير —
+        // BindToData(GridView) يقرأ المجاميع من بنود أعمدة الشبكة، والجسر
+        // المؤقت بلا بنود يتركها فارغة؛ تُكتب من نفس معادلات بطاقات الملخص
+        private void ApplySignedSummaries(DataSet ds)
+        {
+            if (ds == null || ds.Tables.Count == 0 ||
+                InvoicesList == null || InvoicesList.Count == 0)
+                return;
+
+            var purchases = InvoicesList.Where(x => x.ProcType == 1).ToList();
+            var returns   = InvoicesList.Where(x => x.ProcType == 2).ToList();
+
+            double Calc(Func<InvoiceTxt, double> selector)
+                => purchases.Sum(selector) - returns.Sum(selector);
+
+            var table = ds.Tables[0];
+            void Set(string column, double value)
+            {
+                if (!table.Columns.Contains(column)) return;
+                var text = value.ToString("N2");
+                foreach (DataRow row in table.Rows)
+                    row[column] = text;
+            }
+
+            Set("Sum",              Calc(x => x.SumPrice));
+            Set("SumNetDiscount",   Calc(x => x.TotDiscount));
+            Set("Total1",           Calc(x => x.Total));
+            Set("SumTax",           Calc(x => x.VAT));
+            Set("NetTotal",         Calc(x => x.Net));
+            Set("SummaryExtraTax",  Calc(x => x.ExtraVAT));
+            Set("SummaryTotalTax",  Calc(x => x.TotalTax));
+            Set("SummaryPaid",      Calc(x => x.Paid));
+            Set("SummaryRemainder", Calc(x => x.Remainder));
         }
 
         #endregion

@@ -348,6 +348,12 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
+        // P7-098 fix: ترميز HTML لنصوص البيانات
+        private static string EscapeHtml(string value)
+            => (value ?? "").Replace("&", "&amp;")
+                             .Replace("<", "&lt;")
+                             .Replace(">", "&gt;");
+
         private void ExportToHtml(string fileName)
         {
             StringBuilder sb = new StringBuilder();
@@ -356,7 +362,7 @@ namespace SmartAuditERP.Form_WPF
             sb.AppendLine("th,td{border:1px solid #999;padding:4px;text-align:center;}");
             sb.AppendLine("th{background:#DDE7FF;font-weight:bold;}</style></head>");
             sb.AppendLine("<body dir='rtl'>");
-            sb.AppendLine($"<h2 style='text-align:center;'>{Title}</h2>");
+            sb.AppendLine($"<h2 style='text-align:center;'>{EscapeHtml(Title)}</h2>");
             sb.AppendLine("<table><tr>");
             sb.AppendLine("<th>رقم الصنف</th><th>الصنف</th>");
             sb.AppendLine("<th>الكمية (مشتريات)</th><th>الإجمالي (مشتريات)</th>");
@@ -366,13 +372,14 @@ namespace SmartAuditERP.Form_WPF
             foreach (SalePurchRow row in _rows)
             {
                 sb.AppendLine("<tr>");
-                sb.AppendLine($"<td>{row.Column1}</td><td>{row.Column2}</td>");
-                sb.AppendLine($"<td>{row.Column3}</td><td>{row.Column4}</td>");
-                sb.AppendLine($"<td>{row.Column6}</td><td>{row.Column5}</td>");
+                // P7-098 fix: ترميز HTML لنصوص البيانات
+                sb.AppendLine($"<td>{EscapeHtml(row.Column1)}</td><td>{EscapeHtml(row.Column2)}</td>");
+                sb.AppendLine($"<td>{EscapeHtml(row.Column3)}</td><td>{EscapeHtml(row.Column4)}</td>");
+                sb.AppendLine($"<td>{EscapeHtml(row.Column6)}</td><td>{EscapeHtml(row.Column5)}</td>");
                 sb.AppendLine("</tr>");
             }
 
-            sb.AppendLine($"<tr><td colspan='3'><b>إجمالي المشتريات</b></td><td>{txtSumPurch.Text}</td><td><b>إجمالي المبيعات</b></td><td>{txtSumSale.Text}</td></tr>");
+            sb.AppendLine($"<tr><td colspan='3'><b>إجمالي المشتريات</b></td><td>{EscapeHtml(txtSumPurch.Text)}</td><td><b>إجمالي المبيعات</b></td><td>{EscapeHtml(txtSumSale.Text)}</td></tr>");
             sb.AppendLine("</table></body></html>");
             File.WriteAllText(fileName, sb.ToString(), Encoding.UTF8);
         }
@@ -391,18 +398,9 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
-                if (string.IsNullOrWhiteSpace(RptUrl))
-                {
-                    DXMessageBox.Show("يجب تحديد مسار التقرير", "", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-
-                string fullPath = Path.Combine(RptUrl, RptName);
-                if (!Directory.Exists(RptUrl) || !File.Exists(fullPath))
-                {
-                    DXMessageBox.Show("المسار الحالي للتقارير غير موجود أو تم تعديله", "خطأ", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
+                // P7-097 fix: مسار الطباعة FlowDocument لا يحمّل ملف
+                // REPX أصلًا — فحص وجوده كان يحجب الطباعة/المعاينة
+                // على ملف لا يعتمد عليه المسار
 
                 FlowDocument document = BuildPrintDocument();
 

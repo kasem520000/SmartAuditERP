@@ -561,6 +561,12 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
+        // P7-098 fix: ترميز HTML لنصوص البيانات
+        private static string EscapeHtml(string value)
+            => (value ?? "").Replace("&", "&amp;")
+                             .Replace("<", "&lt;")
+                             .Replace(">", "&gt;");
+
         private void ExportToExcelHtml(string fileName)
         {
             StringBuilder sb = new StringBuilder();
@@ -569,17 +575,19 @@ namespace SmartAuditERP.Form_WPF
             sb.AppendLine("th,td{border:1px solid #999;padding:4px;text-align:center;}");
             sb.AppendLine("th{background:#DDE7FF;font-weight:bold;}</style></head>");
             sb.AppendLine("<body dir='rtl'>");
-            sb.AppendLine($"<h2 style='text-align:center;'>{Title}</h2>");
+            sb.AppendLine($"<h2 style='text-align:center;'>{EscapeHtml(Title)}</h2>");
             sb.AppendLine("<table><tr><th>الحساب</th><th>إسم الحساب</th><th>رصيد مدين</th><th>رصيد دائن</th></tr>");
 
             foreach (AccountBalanceRow row in _rows)
             {
                 sb.AppendLine("<tr>");
-                sb.AppendLine($"<td>{row.Column1}</td><td>{row.Column2}</td><td>{row.Column5}</td><td>{row.Column6}</td>");
+                // P7-098 fix: ترميز HTML لنصوص البيانات — الاسم بحروف
+                // < > & كان يكسر الجدول أو يحقن ترميزاً
+                sb.AppendLine($"<td>{EscapeHtml(row.Column1)}</td><td>{EscapeHtml(row.Column2)}</td><td>{EscapeHtml(row.Column5)}</td><td>{EscapeHtml(row.Column6)}</td>");
                 sb.AppendLine("</tr>");
             }
 
-            sb.AppendLine($"<tr><td colspan='2'><b>الإجمالي</b></td><td>{txtDeptDiff.Text}</td><td>{txtCreditDiff.Text}</td></tr>");
+            sb.AppendLine($"<tr><td colspan='2'><b>الإجمالي</b></td><td>{EscapeHtml(txtDeptDiff.Text)}</td><td>{EscapeHtml(txtCreditDiff.Text)}</td></tr>");
             sb.AppendLine("</table></body></html>");
 
             File.WriteAllText(fileName, sb.ToString(), Encoding.UTF8);
@@ -599,18 +607,9 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
-                if (string.IsNullOrWhiteSpace(RptUrl))
-                {
-                    DXMessageBox.Show("يجب تحديد مسار التقرير", "", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-
-                string fullPath = Path.Combine(RptUrl, RptName);
-                if (!Directory.Exists(RptUrl) || !File.Exists(fullPath))
-                {
-                    DXMessageBox.Show("المسار الحالي للتقارير غير موجود أو تم تعديله", "خطأ", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
+                // P7-097 fix: مسار الطباعة FlowDocument لا يحمّل ملف
+                // REPX أصلًا — فحص وجوده كان يحجب الطباعة/المعاينة
+                // على ملف لا يعتمد عليه المسار
 
                 FlowDocument document = BuildPrintDocument();
 

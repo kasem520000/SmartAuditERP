@@ -1011,7 +1011,12 @@ namespace SmartAuditERP.Form_WPF
                 int selectedIndex = cmbEntryType.SelectedIndex;
                 if (selectedIndex >= 0 && selectedIndex <= 13)
                     Restype = selectedIndex;
-                else if (selectedIndex >= 21 && selectedIndex <= 23)
+                // P7-099 fix: مرتجعات القائمة الثلاثة (فهارس 14-16) تقابل
+                // أنواع القيد 21-23 (عقد EntryTypes: 21=مرتجع مشتريات،
+                // 22=مرتجع مبيعات، 23=مرتجع تأجير) — الفرع القديم كان
+                // يبحث عنها في فهارس 21-23 لا وجود لها في قائمة الـ17
+                // بندًا فتبقى Restype على نوعها السابق ولا يُرشّح المرتجع
+                else if (selectedIndex >= 14 && selectedIndex <= 16)
                     Restype = selectedIndex + 7;
             }
             catch (Exception ex)

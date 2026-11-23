@@ -759,6 +759,12 @@ namespace SmartAuditERP.Form_WPF
             workbook.SaveAs(fileName);
         }
 
+        // P7-098 fix: ترميز HTML لنصوص البيانات
+        private static string EscapeHtml(string value)
+            => (value ?? "").Replace("&", "&amp;")
+                             .Replace("<", "&lt;")
+                             .Replace(">", "&gt;");
+
         private void ExportToExcelHtml(string fileName)
         {
             StringBuilder sb = new StringBuilder();
@@ -767,7 +773,7 @@ namespace SmartAuditERP.Form_WPF
             sb.AppendLine("th,td{border:1px solid #999;padding:4px;text-align:center;}");
             sb.AppendLine("th{background:#DDE7FF;font-weight:bold;}</style></head>");
             sb.AppendLine("<body dir='rtl'>");
-            sb.AppendLine($"<h2 style='text-align:center;'>{Title}</h2>");
+            sb.AppendLine($"<h2 style='text-align:center;'>{EscapeHtml(Title)}</h2>");
             sb.AppendLine("<table><tr>");
             sb.AppendLine("<th>الحساب</th><th>اسم الحساب</th>");
             sb.AppendLine("<th>افتتاحي مدين</th><th>افتتاحي دائن</th>");
@@ -780,7 +786,8 @@ namespace SmartAuditERP.Form_WPF
             foreach (AccountNode row in _displayRows)
             {
                 sb.AppendLine("<tr>");
-                sb.AppendLine($"<td>{row.TrAccount}</td><td>{row.TrAccName}</td>");
+                // P7-098 fix: ترميز HTML لنصوص البيانات
+                sb.AppendLine($"<td>{EscapeHtml(row.TrAccount)}</td><td>{EscapeHtml(row.TrAccName)}</td>");
                 sb.AppendLine($"<td>{row.TrDeptIntial:N2}</td><td>{row.TrCreditIntial:N2}</td>");
                 sb.AppendLine($"<td>{row.TrDeptPervious:N2}</td><td>{row.TrCreditPervious:N2}</td>");
                 sb.AppendLine($"<td>{row.TrDebtorMovement:N2}</td><td>{row.TrCreditorMovement:N2}</td>");
@@ -833,18 +840,9 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
-                if (string.IsNullOrWhiteSpace(RptUrl))
-                {
-                    DXMessageBox.Show("يجب تحديد مسار التقرير", "", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-
-                string fullPath = Path.Combine(RptUrl, RptName);
-                if (!Directory.Exists(RptUrl) || !File.Exists(fullPath))
-                {
-                    DXMessageBox.Show("المسار الحالي للتقارير غير موجود أو تم تعديله", "خطأ", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
+                // P7-097 fix: مسار الطباعة FlowDocument لا يحمّل ملف
+                // REPX أصلًا — فحص وجوده كان يحجب الطباعة/المعاينة
+                // على ملف لا يعتمد عليه المسار
 
                 FlowDocument document = BuildPrintDocument();
 

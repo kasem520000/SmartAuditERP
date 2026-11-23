@@ -181,7 +181,8 @@ namespace SmartAuditERP.Form_WPF
                            ISNULL(exchange_price,0) AS exchange_price,
                            ISNULL(discount,0) AS discount,
                            ((val1 * exchange_price) - discount) AS sum,
-                           sales_emp, cust_id, unit, taxval
+                           sales_emp, cust_id, unit, taxval,
+                           Inv.PriceIncVAT
                     FROM Inv
                     INNER JOIN Inv_Sub ON Inv.InvGlobalID = Inv_Sub.InvGlobalID
                     WHERE {branchFilter} Inv.inv_type=3 AND Inv_Sub.ItemId > 0 AND Inv.IS_Deleted=0
@@ -242,15 +243,25 @@ namespace SmartAuditERP.Form_WPF
 
                     double sumVal = Convert.ToDouble(row["sum"]);
                     double taxVal = Convert.ToDouble(row["taxval"]);
-                    double val1 = Math.Round(Convert.ToDouble(row["val1"]), 2);
+                    // P7-096 fix: الكمية الأصلية لضرب السعر — تقريبها قبل
+                    // الضرب كان يخالف قيمة السطر (عمود sum) المحسوبة من
+                    // الكمية الأصلية (كميات الميزان الثلاثية الخانات)
+                    double rawVal1 = Convert.ToDouble(row["val1"]);
+                    double val1 = Math.Round(rawVal1, 2);
                     double exchPrice = Convert.ToDouble(row["exchange_price"]);
                     double discount = Convert.ToDouble(row["discount"]);
 
-                    double totalBeforeTax = invoiceObj.PriceIncVAT
+                    // P7-095 fix: علم شمول السعر للضريبة من الفاتورة المحفوظ
+                    // (Inv.PriceIncVAT) — إعادة بناء InvoiceObj من إعدادات
+                    // النوع الحالية كان يعيد تفسير فواتير قديمة بالإعداد
+                    // الجديد فيظهر قبل/مع الضريبة مقلوبين
+                    bool rowPriceIncVAT = Convert.ToBoolean(row["PriceIncVAT"]);
+
+                    double totalBeforeTax = rowPriceIncVAT
                         ? sumVal - taxVal
                         : sumVal;
 
-                    double totalWithTax = invoiceObj.PriceIncVAT
+                    double totalWithTax = rowPriceIncVAT
                         ? sumVal
                         : sumVal + taxVal;
 
@@ -269,7 +280,8 @@ namespace SmartAuditERP.Form_WPF
                         DgvQty = val1,
                         DgvPrimaryQnty = Convert.ToDouble(row["val"]),
                         DgvPrice = exchPrice,
-                        DgvItemSum = Math.Round(val1 * exchPrice, 2),
+                        // P7-096 fix: المجموع من الكمية الأصلية
+                        DgvItemSum = Math.Round(rawVal1 * exchPrice, 2),
                         DgvItemDiscount = discount,
                         DgvTotalBeforeTax = totalBeforeTax,
                         DgvVAT = taxVal,
@@ -495,20 +507,9 @@ namespace SmartAuditERP.Form_WPF
                     return;
                 }
 
-                if (string.IsNullOrWhiteSpace(RptUrl))
-                {
-                    DXMessageBox.Show("يجب تحديد مسار التقرير", "",
-                        MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-
-                string fullPath = Path.Combine(RptUrl, RptName);
-                if (!Directory.Exists(RptUrl) || !File.Exists(fullPath))
-                {
-                    DXMessageBox.Show("المسار الحالي للتقارير غير موجود أو تم تعديله", "خطأ",
-                        MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
+                // P7-097 fix: مسار الطباعة FlowDocument لا يحمّل ملف REPX
+                // أصلًا — فحص وجوده كان يحجب الطباعة/المعاينة على ملف لا
+                // يعتمد عليه المسار
 
                 FlowDocument document = BuildPrintDocument();
 
@@ -792,6 +793,12 @@ namespace SmartAuditERP.Form_WPF
             workbook.SaveAs(fileName);
         }
 
+        // P7-098 fix: ترميز HTML لنصوص البيانات
+        private static string EscapeHtml(string value)
+            => (value ?? "").Replace("&", "&amp;")
+                             .Replace("<", "&lt;")
+                             .Replace(">", "&gt;");
+
         private void ExportToExcelHtml(string fileName)
         {
             StringBuilder sb = new StringBuilder();
@@ -800,7 +807,7 @@ namespace SmartAuditERP.Form_WPF
             sb.AppendLine("th,td{border:1px solid #999;padding:4px;text-align:center;}");
             sb.AppendLine("th{background:#DDE7FF;font-weight:bold;}</style></head>");
             sb.AppendLine("<body dir='rtl'>");
-            sb.AppendLine($"<h2 style='text-align:center;'>{Title}</h2>");
+            sb.AppendLine($"<h2 style='text-align:center;'>{EscapeHtml(Title)}</h2>");
             sb.AppendLine("<table><tr>");
             sb.AppendLine("<th>م</th><th>المستودع</th><th>نوع العملية</th><th>المورد</th><th>التاريخ</th>");
             sb.AppendLine("<th>الرقم</th><th>المادة</th><th>الوحدة</th><th>الكمية</th><th>السعر</th>");
@@ -810,14 +817,16 @@ namespace SmartAuditERP.Form_WPF
             foreach (SalesDetailRow item in _dataRows)
             {
                 sb.AppendLine("<tr>");
+                // P7-098 fix: ترميز HTML لنصوص البيانات — اسم/وحدة/مورد
+                // بحروف < > & كان يكسر الجدول أو يحقن ترميزاً
                 sb.AppendLine($"<td>{item.DgvNo}</td>");
-                sb.AppendLine($"<td>{item.DgvStore}</td>");
-                sb.AppendLine($"<td>{item.DgvInvType}</td>");
-                sb.AppendLine($"<td>{item.DgvClient}</td>");
-                sb.AppendLine($"<td>{item.DgvDate}</td>");
-                sb.AppendLine($"<td>{item.DgvInvNo}</td>");
-                sb.AppendLine($"<td>{item.DgvItem}</td>");
-                sb.AppendLine($"<td>{item.DgvUnit}</td>");
+                sb.AppendLine($"<td>{EscapeHtml(item.DgvStore)}</td>");
+                sb.AppendLine($"<td>{EscapeHtml(item.DgvInvType)}</td>");
+                sb.AppendLine($"<td>{EscapeHtml(item.DgvClient)}</td>");
+                sb.AppendLine($"<td>{EscapeHtml(item.DgvDate)}</td>");
+                sb.AppendLine($"<td>{EscapeHtml(item.DgvInvNo)}</td>");
+                sb.AppendLine($"<td>{EscapeHtml(item.DgvItem)}</td>");
+                sb.AppendLine($"<td>{EscapeHtml(item.DgvUnit)}</td>");
                 sb.AppendLine($"<td>{item.DgvQty:N2}</td>");
                 sb.AppendLine($"<td>{item.DgvPrice:N2}</td>");
                 sb.AppendLine($"<td>{item.DgvItemSum:N2}</td>");
@@ -825,7 +834,7 @@ namespace SmartAuditERP.Form_WPF
                 sb.AppendLine($"<td>{item.DgvTotalBeforeTax:N2}</td>");
                 sb.AppendLine($"<td>{item.DgvVAT:N2}</td>");
                 sb.AppendLine($"<td>{item.DgvTotal:N2}</td>");
-                sb.AppendLine($"<td>{item.DgvUser}</td>");
+                sb.AppendLine($"<td>{EscapeHtml(item.DgvUser)}</td>");
                 sb.AppendLine("</tr>");
             }
 
