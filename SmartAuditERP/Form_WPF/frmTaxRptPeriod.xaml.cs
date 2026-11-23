@@ -396,15 +396,34 @@ namespace SmartAuditERP.Form_WPF
                     }
                 }
 
+                // P7-043 fix: نصيب البنود المعفاة من الخصم العام = المتبقي بعد
+                // نصيب البنود الخاضعة — كانت المعفاة تتجاهل خصم الفاتورة العام
+                // كاملاً فيرتفع أساسها على حساب الخاضعة
+                double minusNoTax = 0.0;
+                if (filterVatMode == "NOTAX" && invMinus > 0.0)
+                {
+                    double taxedShare;
+                    if (priceIncVat && vatPercent > 0.0)
+                        taxedShare = invMinus / (1.0 + vatPercent / 100.0);
+                    else
+                        taxedShare = invMinus;
+                    minusNoTax = invMinus - taxedShare;
+                }
+
+                // P7-043 fix: خصم البنود المعفاة لا يُقسم بمعدل الرأس — المعفاة
+                // لا تحمل ضريبة أصلاً فالقسمة تستخرج ضريبة وهمية منها
                 double discountNet = itemsDiscount;
-                if (priceIncVat && itemsDiscount > 0.0 && vatPercent > 0.0)
+                if (filterVatMode == "TAXED" && priceIncVat && itemsDiscount > 0.0 && vatPercent > 0.0)
                     discountNet = itemsDiscount / (1.0 + vatPercent / 100.0);
 
-                if (priceIncVat && vatPercent > 0.0)
+                // P7-043 fix: القسمة بمعدل الرأس لأساس الخاضعة فقط — كانت
+                // مبيعات بلا ضريبة تُقسم بالمعدل فتنتقص ضريبة لم تحملها
+                if (filterVatMode == "TAXED" && priceIncVat && vatPercent > 0.0)
                     totalBase /= 1.0 + vatPercent / 100.0;
 
                 double baseNet = totalBase - discountNet;
                 if (filterVatMode == "TAXED") baseNet -= minusBase;
+                if (filterVatMode == "NOTAX") baseNet -= minusNoTax;
                 if (baseNet < 0.0) baseNet = 0.0;
 
                 double taxNet = filterVatMode == "TAXED" ? taxValSum - minusTax : 0.0;
@@ -554,8 +573,11 @@ namespace SmartAuditERP.Form_WPF
                 }
 
                 // ── Sales totals ────────────────────────────────────────────
+                // P7-044 fix: الإجمالي يضم صف المعفاة المعروض (المبيعات خارج
+                // الضريبة) — كان يُعرض ولا يُضم فلا يطابق الإجمالي مجموع صفوفه
                 double netSales = Math.Round(
-                    SafeDouble(txtNetSale.Text) + SafeDouble(txtReceipts.Text) + SafeDouble(txtIncomes.Text), 2);
+                    SafeDouble(txtNetSale.Text) + SafeDouble(txtSalesOutTax.Text) +
+                    SafeDouble(txtReceipts.Text) + SafeDouble(txtIncomes.Text), 2);
                 double netSalesTax = Math.Round(
                     SafeDouble(txtTaxNetSale.Text) + SafeDouble(txtReceiptsVAT.Text) + SafeDouble(txtIncomesVAT.Text), 2);
                 SetCellText(txtNetSales, netSales.ToString());
@@ -647,8 +669,9 @@ namespace SmartAuditERP.Form_WPF
                 SetCellText(txtExpenseVAT, expVAT.ToString(Common.DigitsNo));
 
                 // ── Purchase totals ─────────────────────────────────────────
+                // P7-044 fix: يضم صف معفى المشتريات المعروض كذلك
                 double netPurches = Math.Round(
-                    SafeDouble(txtNetPurch.Text) + expTotal, 2);
+                    SafeDouble(txtNetPurch.Text) + SafeDouble(txtPurchOutTax.Text) + expTotal, 2);
                 double netPurchesTax = Math.Round(
                     SafeDouble(txtTaxNetPurch.Text) + expVAT, 2);
                 SetCellText(txtNetPurches, netPurches.ToString());

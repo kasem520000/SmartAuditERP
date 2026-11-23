@@ -129,7 +129,9 @@ namespace SmartAuditERP.Form_WPF
                     retQty += q2;
                     retTot += t2;
 
-                    if (qty == 0.0) continue;
+                    // P7-040 fix: الصنف ذو مرتجع فقط داخل الفترة حركة حقيقية —
+                    // كان يُسقط (qty==0) فلا تظهر حركته السالبة أصلاً
+                    if (qty == 0.0 && retQty == 0.0) continue;
 
                     double netQty   = qty - retQty;
                     double netTotal = Math.Round(total - retTot, 2);
@@ -165,8 +167,11 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
+                // P7-041 fix: القيمة = كمية وحدة البيع (val1) × سعرها — كان
+                // يضرب كمية الأساس (val = الكمية×معادلة الوحدة) في سعر وحدة
+                // البيع فيضاعف قيمة العبوات (صندوق 12: 12×سعر الصندوق)
                 string sql =
-                    $"SELECT SUM(val), SUM(val * exchange_price) " +
+                    $"SELECT SUM(val), SUM(val1 * exchange_price) " +
                     $"FROM inv, inv_sub " +
                     $"WHERE {branchFilter} Inv_Sub.ItemId={itemId} " +
                     $"AND date>=@date1 AND date<=@date2 " +
@@ -345,7 +350,10 @@ namespace SmartAuditERP.Form_WPF
                     NetDiscount  = row.Minus.ToString("N2"),
                     NetTotal     = row.TotNet.ToString("N2"),
                     InventoryType= this.Title,
-                    SumSell      = txtSumSale.Text,
+                    // P7-042 fix: ملخص تبويب الفواتير يقرأ مجموعه هو (txtSumSale2)
+                    // — كان يقرأ مجموع تبويب المواد (txtSumSale) الذي تمسحه Clr()
+                    // قبل عرض الفواتير فيطبع الملخص فارغاً/بقيمة التبويب الآخر
+                    SumSell      = txtSumSale2.Text,
                     User         = Common.GetEmpName(MainClass.EmpNo),
                     PrintDate    = DateTime.Now.ToShortDateString(),
                 });

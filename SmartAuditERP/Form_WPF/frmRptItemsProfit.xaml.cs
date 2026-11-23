@@ -200,7 +200,9 @@ namespace SmartAuditERP.Form_WPF
                     var r3 = GetSaleData(itemId, 3, 1, branchFilter, fullFilter, dateFrom, dateTo);
                     salesQty       += r3.qty;
                     salesTotal     += r3.itemTotal;
-                    salesDiscount  += r3.discount * 2; // كما في الكود الأصلي
+                    // P7-038 fix: خصم صنف POS يُحسب مرة كبقية المسارات — كان
+                    // يضاعف (×2) فيخصم مرتين من صافي الربح
+                    salesDiscount  += r3.discount;
                     salesInvDisc   += r3.invDiscount;
                     salesAvgCost   += r3.avgCost;
                     salesTotalCost += r3.totalCost;
@@ -231,13 +233,20 @@ namespace SmartAuditERP.Form_WPF
                         profitRatio = ratio.ToString("N2") + "%";
                     }
 
+                    // P7-039 fix: عمود «متوسط التكلفة» يحمل متوسط تكلفة الوحدة
+                    // (إجمالي التكلفة ÷ الكمية الصافية) لا إجمالي تكلفة الكمية
+                    // — كان الإجمالي يصدر بالتسمية نفسها في الشاشة والتصدير
+                    double avgCostPerUnit = 0.0;
+                    if (Math.Abs(netQty) > 0.0001)
+                        avgCostPerUnit = Math.Round(salesTotalCost / netQty, 4);
+
                     _gridData.Add(new ItemProfitRow
                     {
                         DgvNo          = rowCounter++,
                         DgvItemCode    = itemRow["code"].ToString(),
                         DgvItem        = itemRow["name"].ToString(),
                         DgvQty         = netQty,
-                        DgvAvgCost     = salesTotalCost,
+                        DgvAvgCost     = avgCostPerUnit,
                         DgvNetSale     = netSale,
                         DgvProfit      = netProfit,
                         DgvProfitRatio = profitRatio,
