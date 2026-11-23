@@ -174,7 +174,10 @@ namespace SmartAuditERP.Form_WPF
                                        CAST(ReceiptDate AS DATE) AS OperDate,
                                        Payment,
                                        VAT,
-                                       (Payment + VAT) AS DgvNet,
+                                       /* P7-106 fix: NULL في أحد المبلغين كانت تصفّر
+                                          الصافي كله (NULL+قيمة=NULL) رغم عرض المبلغ
+                                          الآخر بقيمته — الآن NULL=صفر في الجمع فقط */
+                                       (ISNULL(Payment, 0) + ISNULL(VAT, 0)) AS DgvNet,
                                        Receipts.notes AS ReceiptNote,
                                        CASE
                                            WHEN receiptType=7 THEN N'سند قبض'

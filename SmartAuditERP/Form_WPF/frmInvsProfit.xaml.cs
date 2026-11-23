@@ -70,6 +70,12 @@ namespace SmartAuditERP.Form_WPF
         {
             InitializeComponent();
             _conn = MainClass.ConnObj();
+
+            // P7-101 fix: ربط الحاسبة اليدوية بخلايا الملخص — كانت
+            // الملخصات معرّفة Custom في XAML بلا حدث يزوّدها بالقيم
+            // فيبقى تذييل الجدول فارغاً دوماً
+            GridView1.CustomSummaryCalculate
+                += GridView1_CustomSummaryCalculate;
         }
 
         #endregion
@@ -406,6 +412,27 @@ namespace SmartAuditERP.Form_WPF
                         double totalDiscount =
                             Convert.ToDouble(invRow["minus"]) + _invDiscount;
                         double profit = invTotal - _invAvrgCost;
+
+                        // P7-100 fix: تصفية الأرباح على الربح المعروض
+                        // (المحسوب وفق أساس التكلفة المختار) — كانت تقارن
+                        // العمود المحفوظ inv.Invprofit في الشرط فيخالف
+                        // المعروض عند اختيار سعر الشراء/آخر شراء
+                        if (rbNegativeProfit.IsChecked == true && profit >= 0)
+                        {
+                            Dispatcher.Invoke(() => ProgressBar1.Value++);
+                            continue;
+                        }
+                        if (rbPositiveProfit.IsChecked == true && profit <= 0)
+                        {
+                            Dispatcher.Invoke(() => ProgressBar1.Value++);
+                            continue;
+                        }
+                        if (rbZeroProfit.IsChecked == true && profit != 0)
+                        {
+                            Dispatcher.Invoke(() => ProgressBar1.Value++);
+                            continue;
+                        }
+
                         string profitRatio = "0";
 
                         if (_invAvrgCost > 0)
@@ -484,8 +511,9 @@ namespace SmartAuditERP.Form_WPF
         #region Custom Summaries
 
         /// <summary>
-        /// يحسب الملخصات المخصصة يدوياً بدلاً من GridView1_CustomSummaryCalculate
-        /// لأن WPF DX يختلف في آلية الأحداث
+        /// يحسب الملخصات المخصصة يدوياً (بيع/مرتجع) وتسلّم قيمها الصافية
+        /// لتذييل الجدول عبر حدث CustomSummaryCalculate — P7-101 fix:
+        /// كانت القيم تُحسب ولا تصل خلايا التذييل أبداً (Custom بلا حدث)
         /// </summary>
         private void RecalculateCustomSummaries()
         {
@@ -526,8 +554,40 @@ namespace SmartAuditERP.Form_WPF
                 }
             }
 
-            // تحديث نص الملخصات في Footer ستعرضها DevExpress تلقائياً
-            // من خلال TotalSummary التي عرّفناها في XAML بـ Custom
+            // P7-101 fix: بعد تحديث القيم يُجبَر الجدول على إعادة إطلاق
+            // حساب الملخصات المخصصة فيتسلم التذييل القيم الجديدة
+            if (GridControl1 != null)
+                GridControl1.RefreshData();
+        }
+
+        /// <summary>
+        /// P7-101 fix: يزوّد كل بند ملخص Custom في التذييل بقيمته الصافية
+        /// (بيع − مرتجع) من الحاسبة اليدوية عند مرحلة الإنهاء
+        /// </summary>
+        private void GridView1_CustomSummaryCalculate(
+            object sender, CustomSummaryEventArgs e)
+        {
+            if (e.SummaryProcess != CustomSummaryProcess.Finalize)
+                return;
+
+            switch ((e.SummaryItem as GridSummaryItem)?.FieldName)
+            {
+                case "DgvTotal":
+                    e.TotalValue = Total - Total1;
+                    break;
+                case "DgvDiscount":
+                    e.TotalValue = Discount - Discount1;
+                    break;
+                case "DgvSum":
+                    e.TotalValue = sum - sum1;
+                    break;
+                case "DgvCost":
+                    e.TotalValue = Cost - Cost1;
+                    break;
+                case "DgvProfit":
+                    e.TotalValue = Profit - Profit1;
+                    break;
+            }
         }
 
         private static double GetDouble(object val)
@@ -757,13 +817,9 @@ namespace SmartAuditERP.Form_WPF
                     clause += "inv.pay_type>0 AND ";
             }
 
-            // الأرباح
-            if (rbNegativeProfit.IsChecked == true)
-                clause += "inv.Invprofit<0 AND ";
-            else if (rbPositiveProfit.IsChecked == true)
-                clause += "inv.Invprofit>0 AND ";
-            else if (rbZeroProfit.IsChecked == true)
-                clause += "inv.Invprofit=0 AND ";
+            // الأرباح: لا شرط SQL هنا — P7-100 fix: التصفية على الربح
+            // المعروض المحسوب في الحلقة وفق أساس التكلفة المختار (كانت
+            // تقارن العمود المحفوظ Invprofit المخالف للمعروض)
 
             // التاريخ
             if (ckTotalPeriod.IsChecked != true)

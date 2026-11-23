@@ -424,9 +424,12 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
+                // P7-105 fix: تبديل اللغة يغيّر الاسم المعروض فقط — كان
+                // الاستعلام الإنجليزي يسقط شرط الأهلية (type=2) فيتوسع
+                // نطاق المجموعات خلافاً للعربية
                 string sql = (MainClass.Language == "ar")
                     ? "select id,name from ItemsCategory where type=2 order by id"
-                    : "Select id, Case WHEN len(nameEn)=0 then [name] ELSE nameEn END AS name from ItemsCategory";
+                    : "Select id, Case WHEN len(nameEn)=0 then [name] ELSE nameEn END AS name from ItemsCategory where type=2 order by id";
 
                 var adapter = new SqlDataAdapter(sql, conn);
                 var dt = new DataTable();

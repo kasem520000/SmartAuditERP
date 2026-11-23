@@ -918,26 +918,30 @@ namespace SmartAuditERP.Form_WPF
                     Environment.GetFolderPath(Environment.SpecialFolder.Desktop),
                     $"حركة_صنف_{DateTime.Now:yyyyMMdd_HHmm}.csv");
 
-                using var writer = new System.IO.StreamWriter(
-                    outputPath, false, System.Text.Encoding.UTF8);
-
-                writer.WriteLine(
-                    "م,نوع الفاتورة,المستودع,رمز الصنف,الصنف," +
-                    "رقم الفاتورة,رقم المرجع,التاريخ,الحساب,الوحدة," +
-                    "الكمية في الفاتورة,السعر في الفاتورة,الإجمالي في الفاتورة," +
-                    "الكمية الداخلة,الكمية الخارجة,الرصيد,السعر,الإجمالي");
-
-                foreach (var item in ActivityList)
+                // P7-108 fix: الكاتب يُغلق قبل فتح الملف للتطبيق الخارجي —
+                // كان Process.Start داخل نطاق using var فيقرأ التطبيق ملفاً
+                // غير مكتمل (المخزن المؤقت لم يُفرّغ بعد)
+                using (var writer = new System.IO.StreamWriter(
+                    outputPath, false, System.Text.Encoding.UTF8))
                 {
                     writer.WriteLine(
-                        $"{item.DgvNo},{item.DgvInvType},{item.DgvStore}," +
-                        $"{item.DgvItemCode},{item.DgvItemName}," +
-                        $"{item.DgvInvNo},{item.DgvRefNo},{item.DgvDate}," +
-                        $"{item.DgvClient},{item.DgvUnit}," +
-                        $"{item.DgvQtyInv:N2},{item.DgvPriceInv:N2}," +
-                        $"{item.DgvTotInv:N2},{item.DgvIncomeQty:N2}," +
-                        $"{item.DgvOutcomeQty:N2},{item.DgvBlc:N2}," +
-                        $"{item.DgvPrice:N2},{item.DgvTot:N2}");
+                        "م,نوع الفاتورة,المستودع,رمز الصنف,الصنف," +
+                        "رقم الفاتورة,رقم المرجع,التاريخ,الحساب,الوحدة," +
+                        "الكمية في الفاتورة,السعر في الفاتورة,الإجمالي في الفاتورة," +
+                        "الكمية الداخلة,الكمية الخارجة,الرصيد,السعر,الإجمالي");
+
+                    foreach (var item in ActivityList)
+                    {
+                        writer.WriteLine(
+                            $"{item.DgvNo},{item.DgvInvType},{item.DgvStore}," +
+                            $"{item.DgvItemCode},{item.DgvItemName}," +
+                            $"{item.DgvInvNo},{item.DgvRefNo},{item.DgvDate}," +
+                            $"{item.DgvClient},{item.DgvUnit}," +
+                            $"{item.DgvQtyInv:N2},{item.DgvPriceInv:N2}," +
+                            $"{item.DgvTotInv:N2},{item.DgvIncomeQty:N2}," +
+                            $"{item.DgvOutcomeQty:N2},{item.DgvBlc:N2}," +
+                            $"{item.DgvPrice:N2},{item.DgvTot:N2}");
+                    }
                 }
 
                 Process.Start(new ProcessStartInfo(outputPath)

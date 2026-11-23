@@ -358,9 +358,18 @@ namespace SmartAuditERP.Form_WPF
         {
             try
             {
+                // P7-113 fix: الجدول هو CreditDeptNotes وفق الكاتب
+                // (frmDebtNote) والمخطط المرفق — الاستعلام كان يقرأ جدول
+                // Notes غير الموجود أصلاً فتفشل كل قراءة بصمت ولا تظهر
+                // إشعارات المدين في تقرير المندوبين أبداً؛ والمعامل معلّم
+                // والحذف المنطقي مفلتر
                 var adapter = new SqlDataAdapter(
-                    $"SELECT * FROM Notes WHERE Doc_Type=2 AND Inv_No={invoiceId}",
+                    "SELECT * FROM CreditDeptNotes " +
+                    "WHERE Doc_Type=2 AND Inv_No=@invNo AND IS_Deleted=0",
                     _conn);
+                adapter.SelectCommand.Parameters
+                    .Add("@invNo", SqlDbType.Int).Value = invoiceId;
+
                 var table = new DataTable();
                 adapter.Fill(table);
 
@@ -424,26 +433,39 @@ namespace SmartAuditERP.Form_WPF
                 object empSel  = Dispatcher.Invoke(() => cmbEmps.SelectedValue);
                 bool   allEmps = Dispatcher.Invoke(() => chkAll.IsChecked == true);
 
+                // P7-112 fix: خيار «كل الفترة» كان يوسع الفواتير وحدها
+                // ويبقي السندات مقيدة بالتاريخ — الآن السندات تحترم
+                // الخيار نفسه (بلا نطاق تاريخ عند تفعيله)
+                bool   allPeriod = Dispatcher.Invoke(
+                    () => chkAllPeriod.IsChecked == true);
+
                 if (!allEmps && empSel != null)
                     empFilter = $" AND SalesManID={empSel}";
 
-                DateTime fromDate = Dispatcher.Invoke(()
-                    => txtDateFrom.SelectedDate ?? DateTime.Today);
-                DateTime toDate = Dispatcher.Invoke(()
-                    => txtDateTo.SelectedDate ?? DateTime.Today).AddHours(24);
+                string dateFilter = allPeriod
+                    ? string.Empty
+                    : " AND ReceiptDate >= @date1 AND ReceiptDate <= @date2 ";
 
                 var adapter = new SqlDataAdapter($@"
                     SELECT * FROM Receipts
                     WHERE  SalesManID <> -1
-                      AND  ReceiptDate >= @date1
-                      AND  ReceiptDate <= @date2
                       AND  ISDeleted = 0
                       AND  ReceiptType = {receiptType}
-                           {empFilter}",
+                           {empFilter}{dateFilter}",
                     _conn);
 
-                adapter.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value = fromDate;
-                adapter.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value = toDate;
+                if (!allPeriod)
+                {
+                    DateTime fromDate = Dispatcher.Invoke(()
+                        => txtDateFrom.SelectedDate ?? DateTime.Today);
+                    DateTime toDate = Dispatcher.Invoke(()
+                        => txtDateTo.SelectedDate ?? DateTime.Today).AddHours(24);
+
+                    adapter.SelectCommand.Parameters
+                        .Add("@date1", SqlDbType.DateTime).Value = fromDate;
+                    adapter.SelectCommand.Parameters
+                        .Add("@date2", SqlDbType.DateTime).Value = toDate;
+                }
 
                 var table = new DataTable();
                 adapter.Fill(table);
@@ -498,7 +520,9 @@ namespace SmartAuditERP.Form_WPF
 
             foreach (var row in _itemsList)
             {
-                sumVal += row.Value;
+                // P7-111 fix: قيمة المرتجع/الإشعار تدخل الإجمالي بإشارتها —
+                // كانت كل القيم تُجمع موجبة خلافاً لسلوك العمولات نفسها
+                sumVal += row.IsPlus == 1 ? row.Value : -row.Value;
 
                 if (row.IsPlus == 1)
                 {
@@ -571,8 +595,10 @@ namespace SmartAuditERP.Form_WPF
                         {
                             var frm = new frmDebtNote();
                             frm.Show();
+                            // P7-113 fix: الجدول الصحيح CreditDeptNotes
+                            // (الجدول Notes غير موجود في المخطط)
                             frm.Navigate(
-                                $"SELECT * FROM Notes WHERE IS_Deleted=0 AND Doc_Type=2 AND Doc_No={row.InvoiceNo}");
+                                $"SELECT * FROM CreditDeptNotes WHERE IS_Deleted=0 AND Doc_Type=2 AND Doc_No={row.InvoiceNo}");
                             break;
                         }
                 }
@@ -793,8 +819,10 @@ namespace SmartAuditERP.Form_WPF
             worksheet.Cell(summaryRow, 5).Value = "الإجمالي";
             worksheet.Cell(summaryRow, 5).Style.Font.Bold = true;
 
+            // P7-111 fix: إجمالي القيمة بإشارة المرتجع/الإشعار — كان يجمع
+            // كل الصفوف موجبة خلافاً لإجماليات العمولات الموقعة
             worksheet.Cell(summaryRow, 6).Value =
-                items.Sum(x => x.Value);
+                items.Sum(x => x.IsPlus == 1 ? x.Value : -x.Value);
             worksheet.Cell(summaryRow, 7).Value =
                 items.Where(x => x.IsPlus == 1).Sum(x => x.SalesComm)
                 - items.Where(x => x.IsPlus == -1).Sum(x => x.SalesComm);

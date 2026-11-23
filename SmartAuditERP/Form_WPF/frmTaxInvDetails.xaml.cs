@@ -296,12 +296,16 @@ namespace SmartAuditERP.Form_WPF
                 // المصروفات (ReceiptType=9)
                 if ((Invtype == 1 && chkAll.IsChecked == true) ||
                     (Inv_Type == 1 && Proc_Type == 1))
-                    ProcessExpenseReceipts(fromDate, toDate);
+                    // P7-112 fix: الخيار «كل الفترة» كان يوسع الفواتير وحدها
+                    // ويبقي هذه السندات مقيدة بالتاريخ رغم تفعيله
+                    ProcessExpenseReceipts(fromDate, toDate,
+                        ckTotalPeriod.IsChecked != true);
 
                 // المقبوضات (ReceiptType=10)
                 if ((Invtype == 2 && chkAll.IsChecked == true) ||
                     (Inv_Type == 2 && Proc_Type == 1))
-                    ProcessIncomeReceipts(fromDate, toDate);
+                    ProcessIncomeReceipts(fromDate, toDate,
+                        ckTotalPeriod.IsChecked != true);
 
                 UpdateSummaryCards();
             }
@@ -518,19 +522,30 @@ namespace SmartAuditERP.Form_WPF
 
         #region Process Expense / Income Receipts
 
-        private void ProcessExpenseReceipts(DateTime fromDate, DateTime toDate)
+        private void ProcessExpenseReceipts(DateTime fromDate, DateTime toDate,
+                                           bool useDate)
         {
             try
             {
+                // P7-112: شرط التاريخ يُبنى وفق خيار «كل الفترة» لا دائماً
+                string dateCond = useDate
+                    ? " AND ReceiptDate>=@date1 AND ReceiptDate<@date2"
+                    : "";
+
                 var adapter = new SqlDataAdapter(
                     $"SELECT * FROM Receipts WHERE ReceiptType=9 " +
                     $"AND branchID={MainClass.BranchNo} " +
-                    $"AND ReceiptDate>=@date1 AND ReceiptDate<@date2 " +
+                    $"{dateCond} " +
                     $"AND Receipts.ISDeleted=0", conn);
-                adapter.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value =
-                    fromDate.ToShortDateString();
-                adapter.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value =
-                    toDate.AddHours(24).ToShortDateString();
+
+                if (useDate)
+                {
+                    adapter.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value =
+                        fromDate.ToShortDateString();
+                    adapter.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value =
+                        toDate.AddHours(24).ToShortDateString();
+                }
+
                 var table = new DataTable();
                 adapter.Fill(table);
 
@@ -565,19 +580,31 @@ namespace SmartAuditERP.Form_WPF
             catch { }
         }
 
-        private void ProcessIncomeReceipts(DateTime fromDate, DateTime toDate)
+        private void ProcessIncomeReceipts(DateTime fromDate, DateTime toDate,
+                                          bool useDate)
         {
             try
             {
+                // P7-112: شرط التاريخ يُبنى وفق خيار «كل الفترة» لا دائماً
+                string dateCond = useDate
+                    ? " AND ReceiptDate>=@date1 AND ReceiptDate<@date2"
+                    : "";
+
                 var adapter = new SqlDataAdapter(
                     $"SELECT * FROM Receipts WHERE ReceiptType=10 " +
                     $"AND branchID={MainClass.BranchNo} " +
-                    $"AND ReceiptDate>=@date1 AND Paymenttype=1 " +
-                    $"AND ReceiptDate<@date2 AND Receipts.ISDeleted=0", conn);
-                adapter.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value =
-                    fromDate.ToShortDateString();
-                adapter.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value =
-                    toDate.AddHours(24).ToShortDateString();
+                    $"AND Paymenttype=1 " +
+                    $"{dateCond} " +
+                    $"AND Receipts.ISDeleted=0", conn);
+
+                if (useDate)
+                {
+                    adapter.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value =
+                        fromDate.ToShortDateString();
+                    adapter.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value =
+                        toDate.AddHours(24).ToShortDateString();
+                }
+
                 var table = new DataTable();
                 adapter.Fill(table);
 

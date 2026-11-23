@@ -64,12 +64,20 @@ namespace SmartAuditERP.Form_WPF
 
                 if (ckWholePeriod.IsChecked != true)
                 {
-                    if (int.TryParse(txtYear.Text, out int yr) &&
-                        int.TryParse(txtMonth.Text, out int mo))
+                    // P7-109 fix: فشل تحويل الشهر/السنة كان يوسع الاستعلام
+                    // بصمت إلى كل الفترات — الآن رفض صريح لا عرض شامل
+                    if (!int.TryParse(txtYear.Text, out int yr) ||
+                        !int.TryParse(txtMonth.Text, out int mo))
                     {
-                        condWhere = $" AND SalaryPay.year=N'{yr}' " +
-                                    $"AND SalaryPay.month={mo}";
+                        DXMessageBox.Show(
+                            "أدخل سنة وشهراً صحيحين (أو فعّل «كل الفترة»)",
+                            "مدخلات غير صالحة",
+                            MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
                     }
+
+                    condWhere = " AND SalaryPay.year=@year " +
+                                "AND SalaryPay.month=@month";
                 }
 
                 // P2-010 fix: تقرير الراتب يحترم عزل الفروع — فرع الجلسة عند
@@ -91,6 +99,17 @@ namespace SmartAuditERP.Form_WPF
                     $"WHERE SalaryPay.IS_Deleted=0 {condWhere}";
 
                 var adapter = new SqlDataAdapter(sql, conn);
+
+                // P7-109: معاملا الشهر/السنة بدل دمج النص (كانت السنة
+                // تقارن كسلسلة N'...')
+                if (ckWholePeriod.IsChecked != true)
+                {
+                    adapter.SelectCommand.Parameters.AddWithValue(
+                        "@year", int.Parse(txtYear.Text));
+                    adapter.SelectCommand.Parameters.AddWithValue(
+                        "@month", int.Parse(txtMonth.Text));
+                }
+
                 var dt = new DataTable();
                 adapter.Fill(dt);
 

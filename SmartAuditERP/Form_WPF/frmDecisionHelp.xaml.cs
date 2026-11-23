@@ -109,9 +109,12 @@ namespace SmartAuditERP.Form_WPF
 
         public void LoadGroups()
         {
+            // P7-105 fix: تبديل اللغة يغيّر الاسم المعروض فقط — كان
+            // الاستعلام الإنجليزي يسقط شرط الأهلية (type=2) فيتوسع نطاق
+            // مجموعات دعم القرار خلافاً للعربية (كل الفئات بدل المؤهلة)
             string query = MainClass.Language == "ar"
                 ? "SELECT id, name FROM ItemsCategory WHERE type=2 ORDER BY id"
-                : "SELECT id, CASE WHEN LEN(nameEn)=0 THEN name ELSE nameEn END AS name FROM ItemsCategory";
+                : "SELECT id, CASE WHEN LEN(nameEn)=0 THEN name ELSE nameEn END AS name FROM ItemsCategory WHERE type=2 ORDER BY id";
 
             FillComboBox(cmbGroups, query, "name", "id");
         }

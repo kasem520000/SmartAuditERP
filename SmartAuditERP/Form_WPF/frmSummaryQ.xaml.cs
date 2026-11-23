@@ -246,7 +246,13 @@ namespace SmartAuditERP.Form_WPF
                                 FROM Receipts
                                 LEFT JOIN SalesMen  ON SalesMen.ID  = Receipts.SalesManID
                                 LEFT JOIN Customers ON Customers.ID  = Receipts.ClientID
-                                LEFT JOIN Users     ON Users.emp     = Receipts.EmpId
+                                /* P7-110 fix: الربط عبر الموظف كان يضاعف السند
+                                   ومبلغه عند تعدد صفوف المستخدمين لنفس الموظف —
+                                   تجميع صفاً واحداً لكل موظف يضمن سطراً واحداً
+                                   لكل سند مهما تعددت حسابات المستخدمين */
+                                LEFT JOIN (SELECT emp, MAX(username) AS username
+                                           FROM Users GROUP BY emp) Users
+                                       ON Users.emp = Receipts.EmpId
                                 {whereClause}
                                 ORDER BY Receipts.ReceiptNo";
 

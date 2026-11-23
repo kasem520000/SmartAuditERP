@@ -53,6 +53,13 @@ namespace SmartAuditERP.Form_WPF
                     ? $"inv.branch={MainClass.BranchNo} and "
                     : "";
 
+                // P7-102 fix: فلتر فرع التحويلات على جدولها الصحيح —
+                // كانت استعلامات التحويل تستعمل inv.branch ولا وجود
+                // لجدول inv فيها أصلاً فيفشل الاستعلام بصمت عند اختيار فرع
+                string transferBranchFilter = MainClass.BranchNo != -1
+                    ? $"SafesTransfer.branch={MainClass.BranchNo} and "
+                    : "";
+
                 string safeFilter = $" inv.safe={safeId} and ";
 
                 // proc_type=3 (تحويل)
@@ -81,13 +88,17 @@ namespace SmartAuditERP.Form_WPF
                     1);
 
                 // تحويلات مستودع - وارد
-                FillTransferData(balanceTable, branchFilter,
-                    $"select currency,sum(ReceivedValue) from SafesTransfer,SafesTransfer_Sub where {branchFilter} SafesTransfer.safe_to={safeId} and SafesTransfer.id=SafesTransfer_Sub.transfer_id and IS_Deleted=0 group by currency",
+                // P7-102 fix: عمود الصنف في SafesTransfer_Sub هو ItemId —
+                // كان الاستعلام يجمع على عمود currency غير الموجود أصلاً
+                // في السكربت المرفق فتفشل حركة التحويل كلها بصمت ولا تدخل
+                // في رصيد الصنف أبداً؛ والجدول/عمود الحذف صارا صريحين
+                FillTransferData(balanceTable, transferBranchFilter,
+                    $"select SafesTransfer_Sub.ItemId,sum(SafesTransfer_Sub.ReceivedValue) from SafesTransfer,SafesTransfer_Sub where {transferBranchFilter} SafesTransfer.safe_to={safeId} and SafesTransfer.id=SafesTransfer_Sub.transfer_id and SafesTransfer.IS_Deleted=0 group by SafesTransfer_Sub.ItemId",
                     1);
 
                 // تحويلات مستودع - صادر
-                FillTransferData(balanceTable, branchFilter,
-                    $"select currency,sum(value) from SafesTransfer,SafesTransfer_Sub where {branchFilter} SafesTransfer.safe_from={safeId} and SafesTransfer.id=SafesTransfer_Sub.transfer_id and IS_Deleted=0 group by currency",
+                FillTransferData(balanceTable, transferBranchFilter,
+                    $"select SafesTransfer_Sub.ItemId,sum(SafesTransfer_Sub.value) from SafesTransfer,SafesTransfer_Sub where {transferBranchFilter} SafesTransfer.safe_from={safeId} and SafesTransfer.id=SafesTransfer_Sub.transfer_id and SafesTransfer.IS_Deleted=0 group by SafesTransfer_Sub.ItemId",
                     2);
 
                 // دمج الصفوف بنفس الصنف
@@ -98,9 +109,10 @@ namespace SmartAuditERP.Form_WPF
                 {
                     try
                     {
-                        int currencyId = Convert.ToInt32(row[0]);
+                        // P7-102: المجمَّع عليه هو هوية الصنف (ItemId)
+                        int itemId = Convert.ToInt32(row[0]);
                         double balance = Convert.ToDouble(row[1]);
-                        string name = GetCurrencyName(currencyId);
+                        string name = GetItemName(itemId);
 
                         _balanceRows.Add(new BalanceRow
                         {
@@ -197,12 +209,12 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
-        private string GetCurrencyName(int currencyId)
+        private string GetItemName(int itemId)
         {
             try
             {
                 SqlDataAdapter adapter = new SqlDataAdapter(
-                    "select name from Items where id=" + currencyId, conn);
+                    "select name from Items where id=" + itemId, conn);
                 DataTable dt = new DataTable();
                 adapter.Fill(dt);
                 return dt.Rows.Count > 0 ? dt.Rows[0][0].ToString() : "";
