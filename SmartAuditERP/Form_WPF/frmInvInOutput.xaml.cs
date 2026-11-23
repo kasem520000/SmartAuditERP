@@ -2611,11 +2611,23 @@ namespace SmartAuditERP.Form_WPF
                 if (!(dgvItems.SelectedItem is InvoiceItemRowModel row))
                     return;
 
+                // P7-130 fix: أمر «آخر حركة للعميل» كان يمرر -1 (كل الأطراف)
+                // فيطلب حركة المادة لكل العملاء — الآن يمرر الطرف المختار
+                // فعلاً بنوعه (مورد للإدخال/عميل للإخراج) ويرفض بلا اختيار
+                if (cmbClient.SelectedIndex < 0 || cmbClient.SelectedValue == null)
+                {
+                    MessageBox.Show("اختر الطرف أولاً", "",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
                 frmRptItemsActivityDetailed reportWindow = new frmRptItemsActivityDetailed();
                 MainClass.ApplyPermissionToForm(reportWindow);
                 MainClass.DoApplyUserSett(reportWindow);
                 reportWindow.Show();
-                reportWindow.LastProcess(row.ItemId, row.StoreId, -1, 1);
+                reportWindow.LastProcess(row.ItemId, row.StoreId,
+                    Convert.ToInt32(cmbClient.SelectedValue),
+                    InvType == 5 ? 1 : 2);
             }
             catch
             {

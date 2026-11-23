@@ -997,8 +997,12 @@ namespace SmartAuditERP.Form_WPF
                         try
                         {
                             int itemId = Convert.ToInt32(row["ItemId"]);
-                            double qty = Math.Round(Convert.ToDouble(row["val1"]), 2);
-                            double price = Math.Round(Convert.ToDouble(row["exchange_price"]), 2);
+                            // P7-134 fix: القيم الخام بلا تقريب — كان
+                            // التقريب لخانتين قبل بناء نموذج التحرير يجعل
+                            // إعادة الحفظ تكتب قيماً مدوّرة (فساد كميات
+                            // الميزان الجزئية وسعرها)
+                            double qty = Convert.ToDouble(row["val1"]);
+                            double price = Convert.ToDouble(row["exchange_price"]);
                             double total = Math.Round(qty * price, 2);
                             int unitId = 0;
                             int storeId = 0;
@@ -1034,6 +1038,28 @@ namespace SmartAuditERP.Form_WPF
                         }
                         catch { }
                     }
+                }
+            }
+            catch { }
+
+            // P7-133 fix: استعادة BaseQty للمكونات — إعادة الفتح كانت
+            // تتركه صفراً (لا يُخزن) فيتوقف تحجيم المكونات عند تغيير كمية
+            // المنتج (شرط BaseQty>0) أو تصفر عند تغيير الوحدة
+            // (perc×0×qty). القاعدة المستعادة = الكمية المحفوظة ÷
+            // (عامل وحدة المنتج المحفوظة × كمية المنتج المحفوظة)
+            try
+            {
+                double prodQtyLoaded = 0;
+                double.TryParse(txtQty.Text, out prodQtyLoaded);
+                double loadedPerc = GetSelectedUnitPerc();
+
+                foreach (var row in _itemsSource)
+                {
+                    if (loadedPerc > 0 && prodQtyLoaded > 0)
+                        row.BaseQty = Math.Round(
+                            row.Qty / (loadedPerc * prodQtyLoaded), 6);
+                    else
+                        row.BaseQty = 1;
                 }
             }
             catch { }

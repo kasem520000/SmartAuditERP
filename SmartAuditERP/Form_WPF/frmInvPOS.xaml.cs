@@ -2102,6 +2102,10 @@ namespace SmartAuditERP.Form_WPF
                         Invoic.ISNew = false;
                         Invoic.ProcType = 1;
                         wasHold = true;
+                        // P7-135: تحرير المعلقة إصدار جديد — تاريخها ووقتها
+                        // وقت التحرير (كان يعتمد على استبدال تاريخ غير الجديد)
+                        Invoic.InvDate = DateTime.Now;
+                        Invoic.InvTime = DateTime.Now;
                         RestoreHoldLineImpact();
                         LoadInvNo();
                         Invoic.InvoiceNo = int.Parse(txtNo.Text);
@@ -2126,6 +2130,10 @@ namespace SmartAuditERP.Form_WPF
                     {
                         Invoic.ISNew = false;
                         Invoic.ProcType = 1;
+                        // P7-135: تحرير فاتورة الطاولة إصدار جديد — تاريخه
+                        // ووقته وقت التحرير
+                        Invoic.InvDate = DateTime.Now;
+                        Invoic.InvTime = DateTime.Now;
                         RestoreHoldLineImpact();
                         LoadInvNo();
                         Invoic.InvoiceNo = int.Parse(txtNo.Text);
@@ -2184,8 +2192,12 @@ namespace SmartAuditERP.Form_WPF
                 if (Invoic.ISNew)
                     invoice.InvDate = DateTime.Now;
 
-                if (!EnableE_Invoice && !Invoic.ISNew)
-                    invoice.InvDate = DateTime.Now;
+                // P7-135 fix: فاتورة POS محملة (غير إلكترونية) كانت تستبدل
+                // تاريخها بوقت الحفظ عند كل إعادة حفظ — التاريخ المحمل
+                // يُحافَظ عليه (المعلقة تحصل تاريخها الطازج من مسار
+                // تحريرها في PayBill)
+                // if (!EnableE_Invoice && !Invoic.ISNew)
+                //     invoice.InvDate = DateTime.Now;
 
                 // إنشاء القيد المحاسبي
                 Entry entry = null;

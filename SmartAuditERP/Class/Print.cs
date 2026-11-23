@@ -1101,6 +1101,10 @@ namespace SmartAuditERP
                                                 invoiceData2.VAT = num8.ToString(invoiceObj.DigitsNo);
                                                 invoiceData2.Net = Inv.Net.ToString(invoiceObj.DigitsNo);
                                                 invoiceData2.ArabicLetter = InvoiceOper.ToArabicLetter(Inv.Net, Inv.Currency);
+                                                // P7-140 fix: حقل العملة في بيانات الطباعة كان يترك فارغاً
+                                                // في هذا المسار رغم تمريرها إلى التفقيط — عمود «العملة»
+                                                // في التقرير يظهر خالياً (المسار الرئيس يعبئه)
+                                                invoiceData2.currency = Inv.Currency.ToString();
                                                 invoiceData2.ToEnWords = Conversions.ToString(invoiceOper2.SpellNumberEDP(Conversions.ToString(Inv.Net), Inv.Currency));
                                                 invoiceData2.Discount = Inv.TotDiscount.ToString(invoiceObj.DigitsNo);
                                                 invoiceData2.Additions = Inv.Additions.ToString(invoiceObj.DigitsNo);

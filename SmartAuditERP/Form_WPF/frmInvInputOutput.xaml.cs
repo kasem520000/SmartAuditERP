@@ -424,12 +424,13 @@ namespace SmartAuditERP.Form_WPF
             catch { }
         }
 
-        private void SearchByID(int itemId, int unitId, string itemBarcode)
+        private void SearchByID(int itemId, int unitId,
+            string itemBarcode, bool isScale = false)
         {
             try
             {
                 new ItemOper().GetItemByID(itemId, unitId,
-                    ref Invoic, false, itemBarcode, "");
+                    ref Invoic, isScale, itemBarcode, "");
                 ItemOper.CalcRows(ref Invoic);
                 RefreshGrid();
             }
@@ -449,10 +450,33 @@ namespace SmartAuditERP.Form_WPF
                     ref foundItemId, ref foundUnitId,
                     ref foundPrice, ref foundQty, isMultiText);
 
-                if (foundItemId > 0)
-                    SearchByID(foundItemId, foundUnitId, itemBarcode);
-                else
+                if (foundItemId <= 0)
+                {
                     AddNewItem();
+                    return;
+                }
+
+                // P7-136 fix: كمية وسعر باركود الميزان يطبقان على السطر
+                // بعد الإضافة — كانت تفك ثم تهمل (عقد شاشة POS التوأم)
+                bool isScale = foundQty > 0 || foundPrice > 0;
+                SearchByID(foundItemId, foundUnitId, itemBarcode, isScale);
+
+                foreach (var invItem in Invoic.InvoiceItems)
+                {
+                    if (invItem.ItemId == foundItemId &&
+                        invItem.UnitID == foundUnitId &&
+                        invItem.ItemRowIndex == Invoic.InvoiceItems.Count)
+                    {
+                        if (foundPrice > 0)
+                            invItem.ItemPrice = Convert.ToDouble(foundPrice);
+                        if (foundQty > 0)
+                            invItem.ItemQuantity = Convert.ToDouble(foundQty);
+
+                        ItemOper.CalcRows(ref Invoic);
+                        RefreshGrid();
+                        break;
+                    }
+                }
             }
             catch { }
         }

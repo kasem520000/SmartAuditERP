@@ -2048,7 +2048,8 @@ namespace SmartAuditERP
                             "Select Items.id, Items.group_id," +
                             " ItemUnits.sale as SalePrice," +
                             " ItemUnits.unit, Items.tax," +
-                            " Items.tax_group, Items.Wscale" +
+                            " Items.tax_group, Items.Wscale," +
+                            " ItemUnits.barcode as UnitBarcode" +
                             " from Items, ItemUnits" +
                             " where Items.IS_Deleted=0" +
                             " and ItemUnits.ItemId=items.id" +
@@ -2060,10 +2061,50 @@ namespace SmartAuditERP
 
                             if (dt.Rows.Count > 0)
                             {
-                                if (dt.Rows[0]["Wscale"] != DBNull.Value)
+                                // P7-137 fix: تقييد صف الوحدة — كان يأخذ
+                                // أول صف من كل وحدات الصنف بينما بادئة
+                                // الميزان معرّفة على وحدة بعينها
+                                DataRow scaleRow = dt.Rows[0];
+                                foreach (DataRow r in dt.Rows)
+                                {
+                                    if (ToStr(r["UnitBarcode"]) == shortBarcode)
+                                    {
+                                        scaleRow = r;
+                                        break;
+                                    }
+                                }
+
+                                // P7-138 fix: حمولة الميزان يجب أن تكون
+                                // أرقاماً — فشل التحويل كان يسقط إلى صفر
+                                // مع هوية صنف ناجحة فتقبل الشاشات قيماً
+                                // بديلة (كمية/سعر صفر)؛ الرمز غير الرقمي
+                                // مرفوض صريحاً
+                                string payload = barcode.Substring(7);
+                                bool payloadOk = payload.Length == 6;
+                                if (payloadOk)
+                                {
+                                    foreach (char c in payload)
+                                    {
+                                        if (!char.IsDigit(c))
+                                        {
+                                            payloadOk = false;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                if (!payloadOk)
+                                {
+                                    if (!isMultiText)
+                                        ShowAttentionMsg(
+                                            "حمولة باركود الميزان غير رقمية");
+                                    return;
+                                }
+
+                                if (scaleRow["Wscale"] != DBNull.Value)
                                 {
                                     double wscale =
-                                        ToDouble(dt.Rows[0]["Wscale"]);
+                                        ToDouble(scaleRow["Wscale"]);
 
                                     if (wscale == 1)
                                     {
@@ -2077,8 +2118,8 @@ namespace SmartAuditERP
                                                     barcode.Substring(9, 3))) /
                                             1000.0;
 
-                                        itemId = ToInt(dt.Rows[0]["id"]);
-                                        unitId = ToInt(dt.Rows[0]["unit"]);
+                                        itemId = ToInt(scaleRow["id"]);
+                                        unitId = ToInt(scaleRow["unit"]);
                                         itemPrice = default;
                                         itemQuantity = new decimal(weightVal);
                                     }
@@ -2094,8 +2135,8 @@ namespace SmartAuditERP
                                                     barcode.Substring(10, 2))) /
                                             100.0;
 
-                                        itemId = ToInt(dt.Rows[0]["id"]);
-                                        unitId = ToInt(dt.Rows[0]["unit"]);
+                                        itemId = ToInt(scaleRow["id"]);
+                                        unitId = ToInt(scaleRow["unit"]);
                                         itemPrice = new decimal(priceVal);
                                         itemQuantity = default;
                                     }
@@ -2111,15 +2152,15 @@ namespace SmartAuditERP
                                                     barcode.Substring(10, 2))) /
                                             100.0;
 
-                                        itemId = ToInt(dt.Rows[0]["id"]);
-                                        unitId = ToInt(dt.Rows[0]["unit"]);
+                                        itemId = ToInt(scaleRow["id"]);
+                                        unitId = ToInt(scaleRow["unit"]);
                                         itemPrice =
                                             new decimal(Math.Round(priceVal, 2));
 
                                         decimal salePrice = 0;
-                                        if (dt.Rows[0]["SalePrice"] != DBNull.Value)
+                                        if (scaleRow["SalePrice"] != DBNull.Value)
                                             salePrice = new decimal(
-                                                ToDouble(dt.Rows[0]["SalePrice"]));
+                                                ToDouble(scaleRow["SalePrice"]));
 
                                         itemQuantity = salePrice > 0
                                             ? Math.Round(

@@ -678,9 +678,14 @@ namespace SmartAuditERP.Form_WPF
         {
             var frm = new frmSafeAdjust();
             frm.Show();
+            // P7-131 fix: قارئ محرر التسوية يقرأ جدول SafesAdjust
+            // (id/date/safe/branch/Is_Approved) وبنوده SafesAdjust_Sub —
+            // كان يُمرر له رأس Inv (بلا عمود Is_Approved أصلاً) فتفشل
+            // القراءة استثناءً؛ معرف التسوية هو نفسه Inv.id الذي كتبه
+            // محرر التسوية عند الحفظ (inv_type=7)
             frm.Navigate(
-                $"SELECT * FROM Inv WHERE IS_Deleted=0 AND inv_type=7 " +
-                $"AND proc_type={procType} AND InvGlobalID=N'{globalId}'");
+                $"SELECT * FROM SafesAdjust WHERE IS_Deleted=0 AND id=" +
+                $"(SELECT id FROM Inv WHERE inv_type=7 AND InvGlobalID=N'{globalId}')");
             frm.Activate();
         }
 

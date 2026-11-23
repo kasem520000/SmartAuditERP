@@ -575,6 +575,14 @@ namespace SmartAuditERP
 
                 public static string SFormatNumber(double X)
                 {
+                        // P7-139 fix: حارس المقادير الأوسع — التنسيق 12 خانة
+                        // ثابتة ومواضع Mid مطلقة؛ مبلغ ≥ تريليون يزيح الخانات
+                        // فيخرج التفقيط خاطئاً (المليارات آخر حد مدعوم:
+                        // مجموعات 1-3 مليارات/4-6 ملايين/7-9 آلاف/10-12 وحدة)
+                        if (Math.Abs(X) >= 1.0E+12)
+                        {
+                                return "مبلغ يتجاوز حد التفقيط";
+                        }
                         string str;
                         str = Strings.Format(Math.Floor(X), "000000000000");
                         double num;

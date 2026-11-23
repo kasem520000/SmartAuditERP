@@ -663,12 +663,12 @@ namespace SmartAuditERP.Form_WPF
         }
 
         private void SearchByID(int itemId, int unitId,
-            string itemBarcode, string serialNo)
+            string itemBarcode, string serialNo, bool isScale = false)
         {
             try
             {
                 new ItemOper().GetItemByID(itemId, unitId, ref Invoic,
-                    false, itemBarcode, serialNo);
+                    isScale, itemBarcode, serialNo);
                 if (!InvObj.SaleByMinus)
                     ItemOper.ISvalidQuantity(ref Invoic, itemId,
                         Invoic.InvoiceItems.Count, InvObj.SaleByMinus);
@@ -708,10 +708,34 @@ namespace SmartAuditERP.Form_WPF
                 ItemOper.SearchForBarcode(itemBarcode.Trim(),
                     ref itemID, ref unitId,
                     ref itemPrice, ref itemQuantity, isMultiText);
-                if (itemID > 0)
-                    SearchByID(itemID, unitId, itemBarcode.Trim(), "");
-                else
+                if (itemID <= 0)
+                {
                     addNewItem();
+                    return;
+                }
+
+                // P7-136 fix: كمية وسعر باركود الميزان يطبقان على السطر
+                // بعد الإضافة — كانت تفك ثم تهمل فتجعل السطر 1×السعر
+                // الافتراضي (عقد شاشة POS التوأم نفسها)
+                bool isScale = itemQuantity > 0 || itemPrice > 0;
+                SearchByID(itemID, unitId, itemBarcode.Trim(), "", isScale);
+
+                foreach (var invItem in Invoic.InvoiceItems)
+                {
+                    if (invItem.ItemId == itemID &&
+                        invItem.UnitID == unitId &&
+                        invItem.ItemRowIndex == Invoic.InvoiceItems.Count)
+                    {
+                        if (itemPrice > 0)
+                            invItem.ItemPrice = Convert.ToDouble(itemPrice);
+                        if (itemQuantity > 0)
+                            invItem.ItemQuantity = Convert.ToDouble(itemQuantity);
+
+                        ItemOper.CalcRows(ref Invoic);
+                        BindingDGV();
+                        break;
+                    }
+                }
             }
             catch (Exception ex)
             {

@@ -242,11 +242,16 @@ namespace SmartAuditERP.Form_WPF
 
             if (clientId > 0)
             {
+                // P7-129 fix: تحميل قائمة النوع المختار مباشرة — معالجات
+                // مربعَي النوع محروسة بـIsLoaded وهو لم يصبح true بعد
+                // (LastProcess يُستدعى قبل اكتمال عرض النافذة) فلا تُعبأ
+                // القائمة ولا يُثبَّت الطرف الممرر ولا نوعه
                 if (clientType == 1)
                     chkClients.IsChecked = true;
                 else
                     chkSuplier.IsChecked = true;
 
+                loadclients(clientType == 1 ? (short)1 : (short)2);
                 cmbClients.SelectedValue = clientId;
             }
 
@@ -1141,9 +1146,9 @@ namespace SmartAuditERP.Form_WPF
                         f.InvType  = 1;
                         f.ProcType = item.DgvProcHeader;
                         if (item.DgvProcHeader == 2) f.Title = "مرتجع مشتريات";
-                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND InvGlobalID=N'{gid}'");
-                    });
+                    },
+                    f => f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
+                                    $"AND InvGlobalID=N'{gid}'"));
                     break;
 
                 case 2: // مبيعات / مرتجعها
@@ -1152,9 +1157,9 @@ namespace SmartAuditERP.Form_WPF
                         f.InvType  = 2;
                         f.ProcType = item.DgvProcHeader;
                         if (item.DgvProcHeader == 2) f.Title = "مرتجع مبيعات";
-                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND InvGlobalID=N'{gid}'");
-                    });
+                    },
+                    f => f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
+                                    $"AND InvGlobalID=N'{gid}'"));
                     break;
 
                 case 3: // نقطة البيع / مرتجعها
@@ -1163,9 +1168,9 @@ namespace SmartAuditERP.Form_WPF
                         f.ProcType = item.DgvProcHeader;
                         f.InvType  = 3;
                         if (item.DgvProcHeader == 2) f.Title = "مرتجع";
-                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND InvGlobalID=N'{gid}'");
-                    });
+                    },
+                    f => f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
+                                    $"AND InvGlobalID=N'{gid}'"));
                     break;
 
                 case 9: // بضاعة أول المدة
@@ -1174,9 +1179,9 @@ namespace SmartAuditERP.Form_WPF
                         f.Title    = "بضاعة أول المدة";
                         f.InvType  = 9;
                         f.ProcType = 1;
-                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND InvGlobalID=N'{gid}'");
-                    });
+                    },
+                    f => f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
+                                    $"AND InvGlobalID=N'{gid}'"));
                     break;
 
                 case 4: // فاتورة إدخال
@@ -1184,9 +1189,9 @@ namespace SmartAuditERP.Form_WPF
                     {
                         f.InvType  = 4;
                         f.ProcType = 1;
-                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND InvGlobalID=N'{gid}'");
-                    });
+                    },
+                    f => f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
+                                    $"AND InvGlobalID=N'{gid}'"));
                     break;
 
                 case 5: // فاتورة إخراج
@@ -1195,17 +1200,15 @@ namespace SmartAuditERP.Form_WPF
                         f.Title    = "فاتورة إخراج";
                         f.InvType  = 5;
                         f.ProcType = 1;
-                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND InvGlobalID=N'{gid}'");
-                    });
+                    },
+                    f => f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
+                                    $"AND InvGlobalID=N'{gid}'"));
                     break;
 
                 case 6: // أمر إنتاج — المنتج والمكونات في الفاتورة نفسها
-                    OpenWindow<frmProductionOrder>(f =>
-                    {
-                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND InvGlobalID=N'{gid}'");
-                    });
+                    OpenWindow<frmProductionOrder>(_ => { },
+                    f => f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
+                                    $"AND InvGlobalID=N'{gid}'"));
                     break;
 
                 case 8: // مناقلة — الاتجاه على الرأس (2 مرسلة / 1 مستلمة)
@@ -1222,35 +1225,37 @@ namespace SmartAuditERP.Form_WPF
                         }
                         f.ProcType = item.DgvProcHeader;
                         f.InvType  = 8;
-                        f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
-                                   $"AND InvGlobalID=N'{gid}'");
-                    });
+                    },
+                    f => f.Navigate($"SELECT * FROM Inv WHERE IS_Deleted=0 " +
+                                    $"AND InvGlobalID=N'{gid}'"));
                     break;
 
                 case 7: // تسوية جردية — عقد الحفظ: Inv.id = SafesAdjust.id
-                    OpenForm<frmSafeAdjust>(f =>
-                    {
-                        f.Navigate(
-                            "SELECT * FROM SafesAdjust WHERE id=" +
-                            $"(SELECT id FROM Inv WHERE InvGlobalID=N'{gid}')");
-                    });
+                    OpenForm<frmSafeAdjust>(_ => { },
+                    f => f.Navigate(
+                        "SELECT * FROM SafesAdjust WHERE id=" +
+                        $"(SELECT id FROM Inv WHERE InvGlobalID=N'{gid}')"));
                     break;
             }
         }
 
 
         /// <summary>Helper لفتح نموذج WinForms بشكل موحد</summary>
-        private static void OpenForm<T>(Action<T> configure)
+        private static void OpenForm<T>(Action<T> configure, Action<T> navigate = null)
             where T : System.Windows.Window, new()
         {
             var form = new T();
             configure(form);
             form.WindowState = WindowState.Maximized;
+            // P7-132 fix: تحميل المستند بعد Show — كانت Navigate تُنفذ
+            // قبل العرض فيعيد معالج Loaded حالة الجديد فوق المستند
+            // المحمل (تاريخ الآن/القوائم الافتراضية تمسح البيانات)
             form.Show();
+            navigate?.Invoke(form);
             form.Activate();
         }
 
-        private static void OpenWindow<T>(Action<T> configure)
+        private static void OpenWindow<T>(Action<T> configure, Action<T> navigate = null)
     where T : System.Windows.Window, new()
         {
             // إنشاء نسخة من النافذة (WPF Window)
@@ -1263,7 +1268,10 @@ namespace SmartAuditERP.Form_WPF
             window.WindowState = System.Windows.WindowState.Maximized;
             window.WindowStartupLocation = System.Windows.WindowStartupLocation.CenterScreen;
 
+            // P7-132 fix: تحميل المستند بعد Show — معالج Loaded يعيد حالة
+            // الجديد فوق أي مستند حُمّل قبل العرض
             window.Show();
+            navigate?.Invoke(window);
             window.Activate();
         }
 

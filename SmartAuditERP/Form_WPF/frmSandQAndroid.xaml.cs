@@ -1036,6 +1036,15 @@ namespace SmartAuditERP.Form_WPF
                 return;
             }
 
+            // P7-141 fix: قيمة غير رقمية كانت تطبع بنصها الأصلي في خانة
+            // المبلغ بينما يتفقط التفقيط صفراً (فشل القراءة سقط إلى 0)
+            if (!double.TryParse(txtVal.Text.Trim(), out _))
+            {
+                DXMessageBox.Show("قيمة السند غير رقمية.", "تنبيه",
+                                MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             if (string.IsNullOrEmpty(print.RptUrl))
             {
                 DXMessageBox.Show("يجب تحديد مسار التقرير.", "تنبيه",

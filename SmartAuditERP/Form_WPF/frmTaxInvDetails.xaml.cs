@@ -466,6 +466,11 @@ namespace SmartAuditERP.Form_WPF
                     var invObj2 = new InvoiceObj(ToInt(dr["inv_type"]), ToInt(dr["proc_type"]));
                     InvSum = InvDiscount = InvVAT = InvAvrgCost = 0;
 
+                    // P7-128 fix: العلم يُعاد لكل فاتورة — كان يُورَث من
+                    // الفاتورة السابقة بلا بنود فتسقط صفوف خاضعة تحت مرشح
+                    // «مع الضريبة» (أو تعرض صفوف خاضعة تحت «بدون»)
+                    IsVAT = true;
+
                     double tax   = ToDouble(dr["tax"]);
                     double total = ToDouble(dr["InvTotal"]);
                     double minus = ToDouble(dr["minus"]);
