@@ -369,8 +369,10 @@
                               AlternatingRowBackground="#F8F9FD">
                         <DataGrid.Columns>
 
+                            <!-- P7-063 fix: الرقم الفعلي للفاتورة (InvoiceNo المعبأ
+                                 من Inv.id) — كان الربط InvNo غير المعبأ أبداً -->
                             <DataGridTextColumn Header="رقم الفاتورة"
-                                                Binding="{Binding InvNo}"
+                                                Binding="{Binding InvoiceNo}"
                                                 Width="100">
                                 <DataGridTextColumn.ElementStyle>
                                     <Style TargetType="TextBlock" BasedOn="{StaticResource CenterCell}"/>

@@ -213,28 +213,64 @@ namespace SmartAuditERP.Form_WPF
             ProgressBar1.Value = 0;
             ProgressBar1.Maximum = 100;
 
-            await Task.Run(() => ShowResult());
+            // P7-054 fix: لقطة المعايير من خيط الواجهة قبل النزول إلى
+            // الخلفية — عناصر WPF لا تُقرأ من Task.Run (كانت ShowResult
+            // ومساراتها تقرأ الصناديق والفروع والتواريخ من الخلفية)
+            var c = new DailyCriteria
+            {
+                HasSafe   = (chkAllSafe.IsChecked != true && cmbSafe.SelectedValue != null),
+                HasBranch = (chkAllBranches.IsChecked != true && cmbBranches.SelectedValue != null),
+                HasUser   = (ckAllUsers.IsChecked != true && cmbusers.SelectedValue != null),
+                TotalPeriod = (ckTotalPeriod.IsChecked == true),
+                FromDt = DateTime.Parse(
+                    txtDateFrom.DateTime.ToShortDateString() + " " + (txtStartTime.Text ?? "00:00")),
+                ToDt = DateTime.Parse(
+                    txtDateTo.DateTime.ToShortDateString() + " " + (txtEndTime.Text ?? "23:59")),
+                FromDay = txtDateFrom.DateTime,
+                ToDay   = txtDateTo.DateTime.AddHours(24)
+            };
+            if (c.HasSafe)   c.Safe   = Convert.ToInt32(cmbSafe.SelectedValue);
+            if (c.HasBranch) c.Branch = Convert.ToInt32(cmbBranches.SelectedValue);
+            if (c.HasUser)   c.User   = Convert.ToInt32(cmbusers.SelectedValue);
+
+            await Task.Run(() => ShowResult(c));
 
             btnShow.IsEnabled = true;
         }
 
-        private void ShowResult()
+        // P7-054 fix: حاوية اللقطة — تُملأ على خيط الواجهة وتُقرأ في الخلفية
+        private class DailyCriteria
+        {
+            public bool   HasSafe;
+            public int    Safe;
+            public bool   HasBranch;
+            public int    Branch;
+            public bool   HasUser;
+            public int    User;
+            public bool   TotalPeriod;
+            public DateTime FromDt;
+            public DateTime ToDt;
+            public DateTime FromDay;
+            public DateTime ToDay;
+        }
+
+        private void ShowResult(DailyCriteria c)
         {
             try
             {
                 Dispatcher.Invoke(() => _dataSource.Clear());
 
-                DoProcess("مبيعات", 2, 1);
-                DoProcess("مرتجع مبيعات", 2, 2);
-                DoProcess("نقطة البيع", 3, 1);
-                DoProcess("مرتجع نقطة البيع", 3, 2);
-                DoProcess("مشتريات", 1, 1);
-                DoProcess("مرتجع مشتريات", 1, 2);
-                DoProcess2(5);
-                DoProcess2(6);
-                DoProcess2(7);
-                DoProcess2(8);
-                DoProcess2(9);
+                DoProcess("مبيعات", 2, 1, c);
+                DoProcess("مرتجع مبيعات", 2, 2, c);
+                DoProcess("نقطة البيع", 3, 1, c);
+                DoProcess("مرتجع نقطة البيع", 3, 2, c);
+                DoProcess("مشتريات", 1, 1, c);
+                DoProcess("مرتجع مشتريات", 1, 2, c);
+                DoProcess2(5, c);
+                DoProcess2(6, c);
+                DoProcess2(7, c);
+                DoProcess2(8, c);
+                DoProcess2(9, c);
 
                 Dispatcher.Invoke(() => ProgressBar1.Value = 100);
             }
@@ -245,16 +281,14 @@ namespace SmartAuditERP.Form_WPF
             }
         }
 
-        private void DoProcess(string name, int type1, int type2)
+        private void DoProcess(string name, int type1, int type2, DailyCriteria c)
         {
             try
             {
-                string cond = BuildCondition(isInv: true);
+                string cond = BuildCondition(c, isInv: true);
 
-                DateTime fromDt = DateTime.Parse(
-                    txtDateFrom.DateTime.ToShortDateString() + " " + (txtStartTime.Text ?? "00:00"));
-                DateTime toDt = DateTime.Parse(
-                    txtDateTo.DateTime.ToShortDateString() + " " + (txtEndTime.Text ?? "23:59"));
+                DateTime fromDt = c.FromDt;
+                DateTime toDt   = c.ToDt;
 
                 int    count = 0;
                 double total = 0, cash = 0, stall = 0;
@@ -335,13 +369,13 @@ namespace SmartAuditERP.Form_WPF
             catch { }
         }
 
-        private void DoProcess2(int receiptType)
+        private void DoProcess2(int receiptType, DailyCriteria c)
         {
             try
             {
-                string cond = BuildSafeCondition();
+                string cond = BuildSafeCondition(c);
                 string typeName = Common.ResrirectionType(receiptType);
-                DateTime toDate = txtDateTo.DateTime.AddHours(24);
+                DateTime toDate = c.ToDay;
 
                 using (var da = new SqlDataAdapter(
                     $"SELECT COUNT(*) AS RowCounts, SUM(NetVal) AS Payments " +
@@ -349,10 +383,10 @@ namespace SmartAuditERP.Form_WPF
                     $"WHERE ReceiptType={receiptType} AND {cond} ISdeleted=0",
                     _conn))
                 {
-                    if (ckTotalPeriod.IsChecked != true)
+                    if (!c.TotalPeriod)
                     {
                         da.SelectCommand.Parameters.Add("@date1", SqlDbType.DateTime).Value
-                            = txtDateFrom.DateTime.ToShortDateString();
+                            = c.FromDay;
                         da.SelectCommand.Parameters.Add("@date2", SqlDbType.DateTime).Value
                             = toDate;
                     }
@@ -379,33 +413,33 @@ namespace SmartAuditERP.Form_WPF
             catch { }
         }
 
-        private string BuildCondition(bool isInv = false)
+        private string BuildCondition(DailyCriteria c, bool isInv = false)
         {
             string cond = "";
 
-            if (chkAllSafe.IsChecked != true && cmbSafe.SelectedValue != null)
-                cond += $"[stock]={cmbSafe.SelectedValue} AND ";
+            if (c.HasSafe)
+                cond += $"[stock]={c.Safe} AND ";
 
-            if (ckTotalPeriod.IsChecked != true)
+            if (!c.TotalPeriod)
                 cond += " date>=@date1 AND date<=@date2 AND ";
 
-            if (chkAllBranches.IsChecked != true && cmbBranches.SelectedValue != null)
-                cond += $"[branch]={cmbBranches.SelectedValue} AND ";
+            if (c.HasBranch)
+                cond += $"[branch]={c.Branch} AND ";
 
-            if (ckAllUsers.IsChecked != true && cmbusers.SelectedValue != null)
-                cond += $"[sales_emp]={cmbusers.SelectedValue} AND ";
+            if (c.HasUser)
+                cond += $"[sales_emp]={c.User} AND ";
 
             return cond;
         }
 
-        private string BuildSafeCondition()
+        private string BuildSafeCondition(DailyCriteria c)
         {
             string cond = "";
 
-            if (chkAllSafe.IsChecked != true && cmbSafe.SelectedValue != null)
-                cond += $"TreasuryID={cmbSafe.SelectedValue} AND ";
+            if (c.HasSafe)
+                cond += $"TreasuryID={c.Safe} AND ";
 
-            if (ckTotalPeriod.IsChecked != true)
+            if (!c.TotalPeriod)
                 cond += " ReceiptDate>=@date1 AND ReceiptDate<@date2 AND ";
 
             return cond;

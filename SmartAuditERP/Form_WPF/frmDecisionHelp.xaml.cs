@@ -171,7 +171,9 @@ namespace SmartAuditERP.Form_WPF
 
         #region Calc Stock
 
-        public void CalcStock()
+        // P7-054 fix: الفلاتر تُبنى على خيط الواجهة وتمر معلمات — الخلفية
+        // لا تلمس عناصر WPF إطلاقاً
+        public void CalcStock(string itemCond, string safeFilter)
         {
             try
             {
@@ -179,23 +181,12 @@ namespace SmartAuditERP.Form_WPF
 
                 // بناء فلتر الأصناف
                 string itemFilter = "SELECT id, name, code FROM Items WHERE IS_Deleted=0 ";
-
-                if (chkAllItems.IsChecked != true && txtItemName.EditValue != null)
-                    itemFilter += $" AND id={txtItemName.EditValue}";
-
-                if (chkAllGroups.IsChecked != true && cmbGroups.EditValue != null)
-                    itemFilter += $" AND Grpcode={cmbGroups.EditValue}";
-
+                itemFilter += itemCond;
                 itemFilter += " ORDER BY id";
 
                 var itemAdapter = new SqlDataAdapter(itemFilter, _conn);
                 var itemsTable = new DataTable();
                 itemAdapter.Fill(itemsTable);
-
-                // فلتر المستودع
-                string safeFilter = string.Empty;
-                if (chkAllSafes.IsChecked != true && cmbSafes.EditValue != null)
-                    safeFilter = $" AND inv_sub.store={cmbSafes.EditValue}";
 
                 int totalRows = itemsTable.Rows.Count;
 
@@ -442,7 +433,21 @@ namespace SmartAuditERP.Form_WPF
             }
 
             GridControl1.ItemsSource = null;
-            new Thread(CalcStock) { IsBackground = true }.Start();
+
+            // P7-054 fix: لقطة الفلاتر من خيط الواجهة قبل النزول إلى
+            // الخلفية — عناصر WPF لا تُقرأ من خيط Thread (كانت CalcStock
+            // تقرأ الصنف والمجموعة والمخزن من الخلفية)
+            string itemCond = "";
+            if (chkAllItems.IsChecked != true && txtItemName.EditValue != null)
+                itemCond += $" AND id={txtItemName.EditValue}";
+            if (chkAllGroups.IsChecked != true && cmbGroups.EditValue != null)
+                itemCond += $" AND Grpcode={cmbGroups.EditValue}";
+
+            string safeFilter = string.Empty;
+            if (chkAllSafes.IsChecked != true && cmbSafes.EditValue != null)
+                safeFilter = $" AND inv_sub.store={cmbSafes.EditValue}";
+
+            new Thread(() => CalcStock(itemCond, safeFilter)) { IsBackground = true }.Start();
         }
 
         private void BtnExport_Click(object sender, RoutedEventArgs e)

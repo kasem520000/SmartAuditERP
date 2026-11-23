@@ -262,8 +262,21 @@ namespace SmartAuditERP.Form_WPF
 
         private void ShowResult()
         {
-            // التحقق من الاختيارات
-            if (!(chkAllStock.IsChecked == true) && cmbStock.SelectedValue == null)
+            // P7-054 fix: التحقق من الاختيارات بلقطة من خيط الواجهة — كانت
+            // شروط التحقق تقرأ عناصر WPF مباشرة من خيط الخلفية
+            bool noStock = false, noSafe = false, noCust = false,
+                 noEmp = false, noGroups = false, noSales = false;
+            Dispatcher.Invoke(() =>
+            {
+                noStock  = !(chkAllStock.IsChecked == true)  && cmbStock.SelectedValue == null;
+                noSafe   = !(chkAllSafe.IsChecked == true)   && cmbSafe.SelectedValue == null;
+                noCust   = !(chkAllCust.IsChecked == true)   && cmbCust.SelectedValue == null;
+                noEmp    = !(chkAllEmp.IsChecked == true)    && cmbEmp.SelectedValue == null;
+                noGroups = !(chkAllGroups.IsChecked == true) && cmbGroups.SelectedValue == null;
+                noSales  = !(chkAllSales.IsChecked == true)  && cmbSales.SelectedValue == null;
+            });
+
+            if (noStock)
             {
                 Dispatcher.Invoke(() =>
                 {
@@ -272,7 +285,7 @@ namespace SmartAuditERP.Form_WPF
                 });
                 return;
             }
-            if (!(chkAllSafe.IsChecked == true) && cmbSafe.SelectedValue == null)
+            if (noSafe)
             {
                 Dispatcher.Invoke(() =>
                 {
@@ -281,7 +294,7 @@ namespace SmartAuditERP.Form_WPF
                 });
                 return;
             }
-            if (!(chkAllCust.IsChecked == true) && cmbCust.SelectedValue == null)
+            if (noCust)
             {
                 Dispatcher.Invoke(() =>
                 {
@@ -290,7 +303,7 @@ namespace SmartAuditERP.Form_WPF
                 });
                 return;
             }
-            if (!(chkAllEmp.IsChecked == true) && cmbEmp.SelectedValue == null)
+            if (noEmp)
             {
                 Dispatcher.Invoke(() =>
                 {
@@ -299,7 +312,7 @@ namespace SmartAuditERP.Form_WPF
                 });
                 return;
             }
-            if (!(chkAllGroups.IsChecked == true) && cmbGroups.SelectedValue == null)
+            if (noGroups)
             {
                 Dispatcher.Invoke(() =>
                 {
@@ -308,7 +321,7 @@ namespace SmartAuditERP.Form_WPF
                 });
                 return;
             }
-            if (!(chkAllSales.IsChecked == true) && cmbSales.SelectedValue == null)
+            if (noSales)
             {
                 Dispatcher.Invoke(() =>
                 {

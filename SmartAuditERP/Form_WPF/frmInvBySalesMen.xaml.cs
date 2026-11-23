@@ -183,10 +183,16 @@ namespace SmartAuditERP.Form_WPF
                 string periodFilter = string.Empty;
                 string branchFilter = string.Empty;
 
-                if (chkAll.IsChecked != true && cmbEmps.SelectedValue != null)
-                    empFilter = $" AND Inv.salesman = {cmbEmps.SelectedValue}";
+                // P7-054 fix: قراءة اختيار المندوب والفترة من خيط الواجهة —
+                // كانت تُقرأ مباشرة من خيط الخلفية
+                object empSel   = Dispatcher.Invoke(() => cmbEmps.SelectedValue);
+                bool   allEmps  = Dispatcher.Invoke(() => chkAll.IsChecked == true);
+                bool   allPer   = Dispatcher.Invoke(() => chkAllPeriod.IsChecked != true);
 
-                if (chkAllPeriod.IsChecked != true)
+                if (!allEmps && empSel != null)
+                    empFilter = $" AND Inv.salesman = {empSel}";
+
+                if (allPer)
                     periodFilter = " AND date>=@date1 AND date<=@date2 ";
 
                 if (MainClass.BranchNo != -1)
@@ -227,7 +233,7 @@ namespace SmartAuditERP.Form_WPF
                     ProgressBar1.Value = 0;
                 });
 
-                _empName = chkAll.IsChecked == true
+                _empName = allEmps
                     ? "الكل"
                     : Dispatcher.Invoke(() => cmbEmps.Text);
 
@@ -414,8 +420,12 @@ namespace SmartAuditERP.Form_WPF
             {
                 string empFilter = string.Empty;
 
-                if (chkAll.IsChecked != true && cmbEmps.SelectedValue != null)
-                    empFilter = $" AND SalesManID={cmbEmps.SelectedValue}";
+                // P7-054 fix: قراءة اختيار المندوب من خيط الواجهة
+                object empSel  = Dispatcher.Invoke(() => cmbEmps.SelectedValue);
+                bool   allEmps = Dispatcher.Invoke(() => chkAll.IsChecked == true);
+
+                if (!allEmps && empSel != null)
+                    empFilter = $" AND SalesManID={empSel}";
 
                 DateTime fromDate = Dispatcher.Invoke(()
                     => txtDateFrom.SelectedDate ?? DateTime.Today);

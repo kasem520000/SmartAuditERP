@@ -757,6 +757,52 @@ namespace SmartAuditERP.Form_WPF
 
         #region Print
 
+        // P7-055 fix: مصدر التقرير من القائمة نفسها — أعمدة عقد جسر
+        // DataTable الجاهز في Report.BindToData
+        private DataTable BuildReportTable(List<InvoiceTxt> invoices)
+        {
+            var dt = new DataTable();
+            dt.Columns.Add("InvoiceTypeTxt");
+            dt.Columns.Add("InvoiceNo");
+            dt.Columns.Add("ReffNo");
+            dt.Columns.Add("InvDate");
+            dt.Columns.Add("InvoiceTime");
+            dt.Columns.Add("ClientTxt");
+            dt.Columns.Add("SumPrice");
+            dt.Columns.Add("TotDiscount");
+            dt.Columns.Add("Total");
+            dt.Columns.Add("VAT");
+            dt.Columns.Add("Paid");
+            dt.Columns.Add("Remainder");
+            dt.Columns.Add("Net");
+            dt.Columns.Add("InvertoryName");
+            dt.Columns.Add("UserTxt");
+            dt.Columns.Add("BranchTxt");
+            dt.Columns.Add("PaymentTxt");
+            dt.Columns.Add("Paycash");
+            dt.Columns.Add("PayATM");
+            dt.Columns.Add("ExtraVAT");
+            dt.Columns.Add("TotalTax");
+
+            foreach (var inv in invoices)
+            {
+                dt.Rows.Add(
+                    inv.InvoiceTypeTxt ?? "", inv.InvoiceNo.ToString(),
+                    inv.ReffNo ?? "",
+                    inv.InvDate.ToString("d"), inv.InvoiceTime ?? "",
+                    inv.ClientTxt ?? "",
+                    inv.SumPrice.ToString("N2"), inv.TotDiscount.ToString("N2"),
+                    inv.Total.ToString("N2"), inv.VAT.ToString("N2"),
+                    inv.Paid.ToString("N2"), inv.Remainder.ToString("N2"),
+                    inv.Net.ToString("N2"),
+                    inv.InvertoryName ?? "", inv.UserTxt ?? "",
+                    inv.BranchTxt ?? "", inv.PaymentTxt ?? "",
+                    inv.Paycash.ToString("N2"), inv.PayATM.ToString("N2"),
+                    inv.ExtraVAT.ToString("N2"), inv.TotalTax.ToString("N2"));
+            }
+            return dt;
+        }
+
         private void PrintDevexpress(int printType)
         {
             _rptUrl     = MainClass.ReportsPath;
@@ -794,14 +840,27 @@ namespace SmartAuditERP.Form_WPF
 
             try
             {
+                // P7-055 fix: جدول الصفوف يُبنى من القائمة المعروضة نفسها —
+                // كان يمرر null لجسر البيانات (جسر GridView من WinForms لا
+                // نظير له في WPF هنا) فتبتلع طريقة الجسر الاستثناء وترجع
+                // DataSet فارغاً فيطبع تقريراً فارغاً بصمت
                 var report = new Report();
                 report.Printing(
                     printType,
                     report.BindToData(
-                        null,
+                        BuildReportTable(_invoicesList),
                         "",
                         txtFromDate.DateTime.ToString(),
-                        txtToDate.DateTime.ToString()),
+                        txtToDate.DateTime.ToString(),
+                        _sumSumPrice.ToString("N2"),
+                        _sumDiscount.ToString("N2"),
+                        _sumTotal.ToString("N2"),
+                        _sumVAT.ToString("N2"),
+                        _sumNet.ToString("N2"),
+                        _sumExtraVAT.ToString("N2"),
+                        _sumTotalTax.ToString("N2"),
+                        _sumPaycash.ToString("N2"),
+                        _sumPayATM.ToString("N2")),
                     _rptUrl,
                     _rptName,
                     _defPrinter,

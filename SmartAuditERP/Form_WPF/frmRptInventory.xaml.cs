@@ -328,61 +328,106 @@ namespace SmartAuditERP.Form_WPF
                 return;
             }
 
+            // P7-054 fix: لقطة المعايير من خيط الواجهة قبل النزول إلى
+            // الخلفية — عناصر WPF لا تُقرأ من Task.Run
+            var criteria = SnapshotCriteria();
+
             btnView.IsEnabled = false;
             ProgressBar1.Value = 0;
 
-            await Task.Run(() => ShowInvoice());
-
-            CalculateSummaries();
-            btnView.IsEnabled = true;
-            ProgressBar1.Value = 100;
-        }
-
-        private void ShowInvoice()
-        {
+            List<InvoiceTxt> result = null;
             try
             {
-                Dispatcher.Invoke(() => GridControl2.ItemsSource = null);
+                await Task.Run(() => { result = LoadInvoices(criteria); });
+            }
+            catch (Exception ex)
+            {
+                // P7-046 fix: فشل التحميل يترك نتيجة الشاشة السابقة كاملة
+                // متسقة (كانت الشبكة تُفرغ قبل الاستعلام فيظهر فراغ)
+                DXMessageBox.Show("خطأ في تحميل البيانات: " + ex.Message,
+                    "", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                btnView.IsEnabled = true;
+                ProgressBar1.Value = 100;
+            }
 
-                if (_invoicesList != null)
-                    _invoicesList.Clear();
+            if (result != null)
+            {
+                // ══ نقطة النشر الواحدة (P7-046) ══
+                _invoicesList = result;
+                GridControl2.ItemsSource = _invoicesList;
+                CalculateSummaries();
+            }
+        }
 
-                // ═══ بناء شروط SQL ═══
-                string cond = $"inv.Inv_type={Invtype} AND inv.proc_type={_procType} AND ";
+        // P7-054 fix: لقطة معايير الواجهة من خيط الواجهة — الخلفية لا تلمس
+        // عناصر WPF إطلاقاً (كانت ShowInvoice تقرأ عشرة عناصر من Task.Run)
+        private InventoryCriteria SnapshotCriteria()
+        {
+            var c = new InventoryCriteria();
+            c.InvType  = Invtype;
+            c.ProcType = _procType;
 
-                // الفرع
-                if (chkAllBranches.IsChecked != true
-                    && cmbBranches.SelectedIndex > -1
-                    && cmbBranches.SelectedValue != null)
-                    cond += $"inv.branch={cmbBranches.SelectedValue} AND ";
+            c.HasBranch = (chkAllBranches.IsChecked != true
+                && cmbBranches.SelectedIndex > -1
+                && cmbBranches.SelectedValue != null);
+            if (c.HasBranch) c.Branch = Convert.ToInt32(cmbBranches.SelectedValue);
 
-                // المورد/العميل
-                if (ckAllClients.IsChecked != true
-                    && cmbClients.SelectedIndex > -1
-                    && cmbClients.SelectedValue != null)
-                    cond += $" cust_id={cmbClients.SelectedValue} AND ";
+            c.HasClient = (ckAllClients.IsChecked != true
+                && cmbClients.SelectedIndex > -1
+                && cmbClients.SelectedValue != null);
+            if (c.HasClient) c.Client = Convert.ToInt32(cmbClients.SelectedValue);
 
-                // المستخدم
-                if (ckAllUsers.IsChecked != true
-                    && cmbusers.SelectedIndex > -1
-                    && cmbusers.SelectedValue != null)
-                    cond += $" sales_emp={cmbusers.SelectedValue} AND ";
+            c.HasUser = (ckAllUsers.IsChecked != true
+                && cmbusers.SelectedIndex > -1
+                && cmbusers.SelectedValue != null);
+            if (c.HasUser) c.User = Convert.ToInt32(cmbusers.SelectedValue);
 
-                // المستودع
-                if (ckAllStore.IsChecked != true
-                    && cmbStore.SelectedValue != null)
-                    cond += $" inv.safe={cmbStore.SelectedValue} AND ";
+            c.HasStore = (ckAllStore.IsChecked != true
+                && cmbStore.SelectedValue != null);
+            if (c.HasStore) c.Store = Convert.ToInt32(cmbStore.SelectedValue);
 
-                // التواريخ
-                DateTime fromDate = DateTime.Parse(
-                    txtFromDate.DateTime.ToShortDateString() + " " +
-                    (txtStartTime.Text ?? "00:00"));
-                DateTime toDate = DateTime.Parse(
-                    txtToDate.DateTime.ToShortDateString() + " " +
-                    (txtEndTime.Text ?? "23:59"));
+            c.TotalPeriod = (ckTotalPeriod.IsChecked == true);
 
-                if (ckTotalPeriod.IsChecked != true)
-                    cond += " date BETWEEN @date1 AND @date2 AND ";
+            c.FromDate = DateTime.Parse(
+                txtFromDate.DateTime.ToShortDateString() + " " +
+                (txtStartTime.Text ?? "00:00"));
+            c.ToDate = DateTime.Parse(
+                txtToDate.DateTime.ToShortDateString() + " " +
+                (txtEndTime.Text ?? "23:59"));
+            return c;
+        }
+
+        // P7-054 fix: التحميل خلفي خالص — بناء SQL والوصول للقاعدة فقط
+        private List<InvoiceTxt> LoadInvoices(InventoryCriteria c)
+        {
+            // ═══ بناء شروط SQL ═══
+            string cond = $"inv.Inv_type={c.InvType} AND inv.proc_type={c.ProcType} AND ";
+
+            // الفرع
+            if (c.HasBranch)
+                cond += $"inv.branch={c.Branch} AND ";
+
+            // المورد/العميل
+            if (c.HasClient)
+                cond += $" cust_id={c.Client} AND ";
+
+            // المستخدم
+            if (c.HasUser)
+                cond += $" sales_emp={c.User} AND ";
+
+            // المستودع
+            if (c.HasStore)
+                cond += $" inv.safe={c.Store} AND ";
+
+            // التواريخ
+            DateTime fromDate = c.FromDate;
+            DateTime toDate   = c.ToDate;
+
+            if (!c.TotalPeriod)
+                cond += " date BETWEEN @date1 AND @date2 AND ";
 
                 // ═══ بناء الاستعلام الكامل ═══
                 string sqlstr =
@@ -403,21 +448,26 @@ namespace SmartAuditERP.Form_WPF
                     $"WHERE {cond} Inv.IS_Deleted=0 ORDER BY date DESC";
 
                 // ═══ استدعاء InvoiceOper لجلب البيانات ═══
-                _invoicesList = new InvoiceOper().BindingListOfInvoices1(
+                return new InvoiceOper().BindingListOfInvoices1(
                     sqlstr, withItems: false, fromDate, toDate);
+        }
 
-                // ═══ ربط البيانات بالـ DataGrid ═══
-                Dispatcher.Invoke(() =>
-                {
-                    GridControl2.ItemsSource = _invoicesList;
-                });
-            }
-            catch (Exception ex)
-            {
-                Dispatcher.Invoke(() =>
-                    DXMessageBox.Show("خطأ في تحميل البيانات: " + ex.Message,
-                        "", MessageBoxButton.OK, MessageBoxImage.Error));
-            }
+        // P7-054 fix: حاوية اللقطة — تُملأ على خيط الواجهة وتُقرأ في الخلفية
+        private class InventoryCriteria
+        {
+            public int      InvType;
+            public int      ProcType;
+            public bool     HasBranch;
+            public int      Branch;
+            public bool     HasClient;
+            public int      Client;
+            public bool     HasUser;
+            public int      User;
+            public bool     HasStore;
+            public int      Store;
+            public bool     TotalPeriod;
+            public DateTime FromDate;
+            public DateTime ToDate;
         }
 
         #endregion
@@ -667,7 +717,8 @@ namespace SmartAuditERP.Form_WPF
                 };
                 inventoryRows.InsertRange(0, _invoicesList.Select(inv => new[]
                 {
-                    inv.InvNote, inv.InvDate.ToString("d"), inv.Customer.ToString(),
+                    // P7-063 fix: رقم الفاتورة لا ملاحظاتها في عمود «رقم الفاتورة»
+                    inv.InvoiceNo.ToString(), inv.InvDate.ToString("d"), inv.Customer.ToString(),
                     inv.User.ToString(), inv.Branch.ToString(),
                     inv.SumPrice.ToString("N2"), inv.TotDiscount.ToString("N2"),
                     inv.Total.ToString("N2"), inv.VAT.ToString("N2"),
@@ -694,11 +745,32 @@ namespace SmartAuditERP.Form_WPF
 
         #region Print
 
-        private void PrintDevexpress(int printType)
+        // P7-045 fix: إعادة الحساب بمعايير الواجهة الحالية قبل الربط —
+        // التقرير المطبوع دائماً بحساب معاييره الحالية، وفشل إعادة الحساب
+        // يوقف الطباعة (لا لقطة قديمة بمعايير جديدة)
+        private async void PrintDevexpress(int printType)
         {
             _rptUrl = MainClass.ReportsPath;
             _defPrinter = MainClass.ReportsPrinter;
             _rptName = "rptInventoryReport.repx";
+
+            var criteria = SnapshotCriteria();
+            List<InvoiceTxt> result = null;
+            try
+            {
+                await Task.Run(() => { result = LoadInvoices(criteria); });
+            }
+            catch (Exception ex)
+            {
+                DXMessageBox.Show($"خطأ في تحميل البيانات\nتفاصيل الخطأ: {ex.Message}",
+                    "", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // ══ نشر واحد قبل الطباعة (نفس نقطة العرض) ══
+            _invoicesList = result;
+            GridControl2.ItemsSource = _invoicesList;
+            CalculateSummaries();
 
             if (_invoicesList == null || _invoicesList.Count == 0)
             {
@@ -731,15 +803,23 @@ namespace SmartAuditERP.Form_WPF
 
             try
             {
-                // ═══ استخدام كلاس Report الموجود في المشروع ═══
+                // P7-055 fix: جدول الصفوف يُبنى من القائمة المعروضة نفسها —
+                // كان يمرر null لجسر البيانات (جسر GridView من WinForms لا
+                // نظير له في WPF هنا) فتبتلع طريقة الجسر الاستثناء وترجع
+                // DataSet فارغاً فيطبع تقريراً فارغاً بصمت
                 var report = new Report();
                 report.Printing(
                     printType,
                     report.BindToData(
-                        null, // GridView2 غير مستخدم في WPF
+                        BuildReportTable(_invoicesList),
                         cmbType.Text,
                         txtFromDate.DateTime.ToString(),
-                        txtToDate.DateTime.ToString()),
+                        txtToDate.DateTime.ToString(),
+                        _sum.ToString("N2"),
+                        _discount.ToString("N2"),
+                        _nTotal.ToString("N2"),
+                        _nVAT.ToString("N2"),
+                        _nNet.ToString("N2")),
                     _rptUrl,
                     _rptName,
                     _defPrinter,
@@ -755,6 +835,46 @@ namespace SmartAuditERP.Form_WPF
         #endregion
 
         #region Helpers
+
+        // P7-055 fix: مصدر التقرير من القائمة نفسها — أعمدة عقد جسر
+        // DataTable الجاهز في Report.BindToData
+        private DataTable BuildReportTable(List<InvoiceTxt> invoices)
+        {
+            var dt = new DataTable();
+            dt.Columns.Add("InvoiceTypeTxt");
+            dt.Columns.Add("InvoiceNo");
+            dt.Columns.Add("ReffNo");
+            dt.Columns.Add("InvDate");
+            dt.Columns.Add("InvoiceTime");
+            dt.Columns.Add("ClientTxt");
+            dt.Columns.Add("SumPrice");
+            dt.Columns.Add("TotDiscount");
+            dt.Columns.Add("Total");
+            dt.Columns.Add("VAT");
+            dt.Columns.Add("Paid");
+            dt.Columns.Add("Remainder");
+            dt.Columns.Add("Net");
+            dt.Columns.Add("InvertoryName");
+            dt.Columns.Add("UserTxt");
+            dt.Columns.Add("BranchTxt");
+            dt.Columns.Add("PaymentTxt");
+
+            foreach (var inv in invoices)
+            {
+                dt.Rows.Add(
+                    inv.InvoiceTypeTxt ?? "", inv.InvoiceNo.ToString(),
+                    inv.ReffNo ?? "",
+                    inv.InvDate.ToString("d"), inv.InvoiceTime ?? "",
+                    inv.ClientTxt ?? "",
+                    inv.SumPrice.ToString("N2"), inv.TotDiscount.ToString("N2"),
+                    inv.Total.ToString("N2"), inv.VAT.ToString("N2"),
+                    inv.Paid.ToString("N2"), inv.Remainder.ToString("N2"),
+                    inv.Net.ToString("N2"),
+                    inv.InvertoryName ?? "", inv.UserTxt ?? "",
+                    inv.BranchTxt ?? "", inv.PaymentTxt ?? "");
+            }
+            return dt;
+        }
 
         private void EnsureOpen(SqlConnection conn)
         {
