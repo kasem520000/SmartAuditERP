@@ -133,6 +133,55 @@ namespace SmartAuditERP
                         return Convert.ToBase64String(sHA.ComputeHash(Encoding.UTF8.GetBytes(input)));
                 }
 
+                // V-037: فحص صامت لصلاحية الترخيص المحلي (بلا أي رسائل) —
+                // يُستخدم لقرار محاولة التفعيل الفوري عند غياب/فساد/انتهاء
+                // الملف المحلي بدل انتظار دورة الثلاثين يومًا؛ الملف القديم
+                // الفاسد كان يبقى حتى دورة التجديد القادمة فيظهر «ترخيص جهاز
+                // آخر» لأسابيع رغم توفر إصلاح التفعيل.
+                public static bool HasValidLocalLicense()
+                {
+                        try
+                        {
+                                if (!File.Exists(DeviceLicenseManager.LicenseFilePath))
+                                {
+                                        return false;
+                                }
+                                string value;
+                                value = DeviceLicenseManager.Decrypt(File.ReadAllBytes(DeviceLicenseManager.LicenseFilePath));
+                                if (string.IsNullOrWhiteSpace(value))
+                                {
+                                        return false;
+                                }
+                                DeviceLicenseDto deviceLicenseDto;
+                                deviceLicenseDto = JsonConvert.DeserializeObject<DeviceLicenseDto>(value);
+                                if (deviceLicenseDto == null)
+                                {
+                                        return false;
+                                }
+                                if (Operators.CompareString(Right: DeviceLicenseManager.GenerateHash(deviceLicenseDto.CompanyName + deviceLicenseDto.DeviceId + deviceLicenseDto.Email + deviceLicenseDto.ExpireDate.ToString("yyyyMMdd") + deviceLicenseDto.Features), Left: deviceLicenseDto.Signature, TextCompare: false) != 0)
+                                {
+                                        return false;
+                                }
+                                string text;
+                                text = HardwareInfo.GenerateUID("SmartAuditERP", IncMac: true);
+                                if (Operators.CompareString(text, deviceLicenseDto.DeviceId, TextCompare: false) != 0)
+                                {
+                                        return false;
+                                }
+                                // أرضية رتيبة للزمن (كما في ShowtrialOfflin) — لا نداء شبكة هنا
+                                DateTime localNow = DateTime.Now;
+                                DateTime? lastVerified = DeviceLicenseManager.LoadLastVerifiedTime();
+                                DateTime nowTime = (lastVerified.HasValue && DateTime.Compare(lastVerified.Value, localNow) > 0)
+                                        ? lastVerified.Value
+                                        : localNow;
+                                return DateTime.Compare(deviceLicenseDto.ExpireDate.Date, nowTime) >= 0;
+                        }
+                        catch
+                        {
+                                return false;
+                        }
+                }
+
                 // V-029: تحقق استجابة السيرفر قبل اعتمادها كملف ترخيص — نفس عقد
                 // LoadAndValidateLicense (بنية JSON + توقيع داخلي) مضافًا إليه مطابقة
                 // DeviceId مع UID هذا الجهاز؛ رسائل الخطأ هنا صامتة (Debug) لأن
