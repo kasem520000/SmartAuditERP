@@ -2792,7 +2792,8 @@ namespace SmartAuditERP
             Dispatcher.Invoke(() =>
             {
                 ProgressBarC.Visibility = Visibility.Visible;
-                ProgressBarC.Maximum = sqlScripts.Length;
+                // (V-024: sqlScripts قائمة List<string> — عددها Count لا Length)
+                ProgressBarC.Maximum = sqlScripts.Count;
                 ProgressBarC.Minimum = 0;
                 ProgressBarC.Value = 0;
             });

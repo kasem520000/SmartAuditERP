@@ -39,17 +39,19 @@ namespace SmartAuditERP
                                         invoiceLine.itemType = invoiceItem.EgyCodeType;
                                         invoiceLine.itemCode = invoiceItem.EgyItemCode;
                                         invoiceLine.unitType = invoiceItem.UnitCode;
-                                        // P6-013 fix: الكمية العشرية تُرسل كما هي (توأم الإيصال
-                                        // pos_liens.quantity عشري في المكتبة نفسها) — كان التقريب
-                                        // لعدد صحيح يجعل كل قيم البند (المبيع/الصافي) محسوبة من
-                                        // كمية أصلية غير المرسلة فيُرفض المستند لعدم التطابق.
-                                        invoiceLine.quantity = new decimal(invoiceItem.ItemQuantity);
+                                        // P6-013 fix (مُنقَّح V-011): هذه النسخة من مكتبة ETA
+                                        // تقبل كمية عدد صحيح فقط (InvoiceLine.quantity من نوع
+                                        // Int32) — تُقرَّب الكمية مرة واحدة ثم تُحسب كل قيم
+                                        // البند (المبيع/الصافي) من الكمية المُرسَلة نفسها
+                                        // فيبقى المستند متسقاً رياضياً مع ما يُقدَّم.
+                                        int submittedQty = (int)Math.Round(invoiceItem.ItemQuantity);
+                                        invoiceLine.quantity = submittedQty;
                                         invoiceLine.internalCode = invoiceItem.ItemCode;
-                                        invoiceLine.salesTotal = Conversions.ToDouble((invoiceItem.ItemPriceWithoutVAT * invoiceItem.ItemQuantity).ToString(Common.DigitsNo));
+                                        invoiceLine.salesTotal = Conversions.ToDouble((invoiceItem.ItemPriceWithoutVAT * submittedQty).ToString(Common.DigitsNo));
                                         invoiceLine.total = Math.Round(invoiceItem.ItemTotalPrice - invoiceItem.ItemDiscount + invoiceItem.ItemVat - (invoiceItem.ItemTotalPrice - invoiceItem.ItemDiscount) * invoiceItem.WithholdingTaxPerc / 100.0, 5);
                                         invoiceLine.valueDifference = 0.0;
                                         invoiceLine.totalTaxableFees = 0.0;
-                                        invoiceLine.netTotal = Conversions.ToDouble((invoiceItem.ItemPriceWithoutVAT * invoiceItem.ItemQuantity - invoiceItem.ItemDiscount).ToString(Common.DigitsNo));
+                                        invoiceLine.netTotal = Conversions.ToDouble((invoiceItem.ItemPriceWithoutVAT * submittedQty - invoiceItem.ItemDiscount).ToString(Common.DigitsNo));
                                         invoiceLine.itemsDiscount = invoiceItem.ItemDiscount;
                                         InvoiceLine invoiceLine2;
                                         invoiceLine2 = invoiceLine;
@@ -63,9 +65,10 @@ namespace SmartAuditERP
                                         invoiceLine2.discount = new Discount
                                         {
                                                 amount = Conversions.ToDouble(invoiceItem.ItemDiscount.ToString(Common.DigitsNo)),
-                                                // P6-013 fix: نسبة الخصم العشرية كما هي — كان التقريب
-                                                // الصحيح يفقد كسور النسبة (خصم %2.5 يرسل 3/2).
-                                                rate = new decimal(invoiceItem.ItemDiscountPerc)
+                                                // P6-013 fix (مُنقَّح V-011): Discount.rate في هذه
+                                                // النسخة Int32 — نسبة الخصم تُقرَّب لعدد صحيح
+                                                // (المبلغ الفعلي amount يبقى عشرياً بالكامل)
+                                                rate = (int)Math.Round(invoiceItem.ItemDiscountPerc)
                                         };
                                         invoiceLine2.taxableItems = new List<TaxableItem>();
                                         invoiceLine2.taxableItems.Add(new TaxableItem

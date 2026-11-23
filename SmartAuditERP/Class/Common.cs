@@ -5,7 +5,6 @@ using log4net;
 using log4net.Appender;
 using log4net.Config;
 using log4net.Repository.Hierarchy;
-using Nancy.Json;
 using Newtonsoft.Json;
 using QLicense;
 using SmartAuditERP.Form_WPF;

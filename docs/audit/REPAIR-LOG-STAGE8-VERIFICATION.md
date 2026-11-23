@@ -90,3 +90,59 @@
 ## ما يُمنع (مستمر)
 - لا يُغلق صف في `findings.csv` بدون diff + دليل + commit.
 - لا تعديل خارج نطاق النتيجة المعلنة.
+
+---
+
+## الشريحة 4: أول بناء كامل حقيقي للمشروع الرئيسي (V-010..V-027)
+
+### السياق
+المالك زوّد مجلد المكتبات الخارجية الفعلي (المكاتب/) بعد أن كانت جزئية P1-001 تعطل أي
+بناء كامل. أُسكن المجلد في `/home/z/المكاتب` (المسار الافتراضي لـ`ExternalLibsDir` —
+`..\..\المكاتب` نسبةً إلى المشروع) وثُبّت .NET 8 SDK على محطة الفحص، فأُطلق **أول
+`dotnet build` كامل حقيقي للمشروع الرئيسي في تاريخ التدقيق** (عبر `-p:EnableWindowsTargeting=true`
+على لينكس — البناء وليس التشغيل). النتيجة: **38 خطأ ترجمة كامنة في 22 ملفاً مصدرياً** —
+أي أن عدداً من إصلاحات المراحل 1–7 المعلنة «مكتملة» كانت **غير قابلة للبناء أصلاً** وبقيت
+غير منفَّذة فعلياً؛ مهمة full-build في CI كانت تتعثر عند غياب المكتبات (P1-001) فيبتلع الفشل
+ويُخفي كل هذه الأخطاء، ومسحة V-008 كشفت سابقاً نموذجاً واحداً من العائلة نفسها فقط.
+
+كل الأخطاء أُصلحت في هذا الالتزام، والبناء الآن **أخضر بصفر أخطاء** على مستوى المحلول كاملاً
+(المشروع الرئيسي + أداة التحديث)، وتحذير تعارض Newtonsoft (MSB3277) أُزيل من جذوره.
+
+### جدول الأخطاء المكتشفة والمصلحة (38 خطأ ترجمة + خطأ ربط وقت تشغيل)
+
+| # | المصدر | الخطأ الكامن | الإصلاح |
+|---|---|---|---|
+| V-010 | إصلاح P7-101 | `frmInvsProfit`: الاشتراك في حدث **WinForms** `TableView.CustomSummaryCalculate` بوسائط `CustomSummaryEventArgs` — لا وجود لهما في DevExpress **WPF** v25.2 | الـAPI الصحيح: الحدث `CustomSummary` على **GridControl نفسه** بوسائط `DevExpress.Data.CustomSummaryEventArgs`، والبند عبر `e.Item` (لا `e.SummaryItem`) — تم التحقق من التوقيعات بالانعكاس على التجميعات الفعلية |
+| V-011 | إصلاح P6-013 | `EtaService`: `invoiceLine.quantity = new decimal(qty)` — مكتبة ETA هذه النسخة حقلاها `InvoiceLine.quantity` و`Discount.rate` من نوع **Int32**؛ الكمية العشرية مستحيلة التمثيل، والقيم كانت تُحسب من كمية كسرية غير المرسلة (تناقض P6-013 الأصلي نفسه) | تُقرَّب الكمية **مرة واحدة** (`submittedQty`) ثم تُحسب منها `salesTotal` و`netTotal` فيتسق المستند مع ما يُقدَّم فعلاً؛ و`rate` تقرب لعدد صحيح (المبلغ `amount` يبقى عشرياً بالكامل) |
+| V-012 | إصلاح P5-025 | `Inventory.PostStocks`: استخدام `unitLookup` **غير معرف في هذه الدالة** — القاموس بُني في `ItemsStocks` المجاورة فقط | بناء القاموس نفسه داخل `PostStocks` قبل حلقة الرفع |
+| V-013 | إصلاحا P3-003 + P6-008 | `InvoiceOper.SaveInvoice` و`InvoiceOperContract.SaveInvoice`: `SaveEnty(Entr, sqlConnection, …)` — الاسم `sqlConnection` من **نطاق آخر**؛ الاتصال الفعلي للمعاملة `sqlConnection2` (الأولى) و`sqlConnection3` (الثانية). كذلك استدعاء `this.InsertZatcaEncodedInvoice` على دالة صارت `static` بإصلاح P6-008 (موضعان) | تصحيح أسماء الاتصال لكل دالة + الاستدعاء الساكن `InvoiceOper.InsertZatcaEncodedInvoice` في الموضعين |
+| V-014 | إصلاح P5-016 | `ReceiptOper`: `Receipt.ReceiptNo.HasValue` — الخاصية في مكتبة AuditorAPI **int غير قابل للإبطال** (خلافاً لـBranchID/ClientID القابلتين) | تمرير `Receipt.ReceiptNo` مباشرة كمعلمة |
+| V-015 | إصلاح P5-008 | `ReceivedData`: مصفوفة إلغاء الاشتراك معلنة `[54]` وعدد عناصرها الفعلي **48** | ترك الحجم للمترجم (`new string[]`) — لا انحراف صامت عند تعديل القائمة مستقبلاً |
+| V-016 | إصلاح P5-001 | `SendData`: وصول إلى `ConnectBroker.clientId` الخاص (private) من نوع آخر | صار `public static` (نفس هوية الجلسة لإعادة التوصيل) |
+| V-017 | إصلاح P6-033 | `WhatsAppSender`: إعادة تعريف المحلي `t` في نطاق الدالة الواحدة | إعادة تسمية النسخة الثانية `attachDeadline` |
+| V-018 | إصلاح P1-015 | خصائص `BackupFtp*` الأربع معرفة في `Settings.settings` **دون** `Settings.Designer.cs` المولد — CS1061 في frmBackupRstore | توليد الخصائص الأربع في ملف Designer بالقيم الافتراضية نفسها (نطاق مستخدم) |
+| V-019 | إصلاح P7-098 | `frmMezanMorg3a`: `EscapeHtml(row.TrAccount)` — `TrAccount` من نوع `int` | `EscapeHtml(row.TrAccount.ToString())` |
+| V-020 | إصلاح P4-025 | `frmHoldM.SaveInvoiceLink`: التوقيع حُوِّل إلى `bool` **بلا أي return** — لا مسار يعيد قيمة | `return true` بعد الالتزام/`return false` في الالتقاط — نية P4-025 تتحقق فعلياً |
+| V-021 | إصلاح P7-037 | `frmPrintBarcode`: `conn` غير معرف — الحقل في الشاشة اسمه `_conn` (3 مواضع) | التصحيح إلى `_conn` |
+| V-022 | إصلاحا P7-079/080 | `frmRptInvAnalysis`: `allEmp` معرف مرتين في `ShowResultEmp`؛ و`dateToPlus` مستخدم في `ShowResultMonth` بلا تعريف (كان معرفاً في التوأم فقط) | حذف التكرار + تعريف `dateToPlus` في `ShowResultMonth` كما في التوأم |
+| V-023 | إصلاح P5-030 | `frmmanagementSync`: نداء `DXMessageBox.Show` بلا معامل التسمية (التوقيع يطلب caption قبل الأزرار) | إضافة `""` |
+| V-024 | مسحة Stage1 (شاشة التحديث في Home) | `Home.xaml.cs`: `sqlScripts.Length` على `List<string>` | `sqlScripts.Count` |
+| V-025 | شاشة P2-001 | `frmUsersPermissions.xaml`: مساحة `local` تشير إلى `SmartAuditERP` بينما `PermissionTreeNode` معرف في `SmartAuditERP.Form_WPF` — MC3050 | تصحيح مساحة `local` |
+| V-026 | **خطر ربط وقت تشغيل** | حزمة `Nancy 2.0` غير مستخدمة كلياً (using ميت واحد في Common.cs) تسحب transitively `Newtonsoft.Json 9.0.1` عبر `Microsoft.Extensions.DependencyModel 2.0.4` — التحذير MSB3277 كان يوحّد إلى 9.0.1 فيفشل ربط كل من Ws_Auditor/AuditorAPI/ETA_Invoice/Twilio (المجمعة ضد 13.0.0.0) **وقت التشغيل** | إزالة حزمة Nancy والـusing الميت — بقي Newtonsoft الوحيد من المكتبات الخارجية 13.0.1 والتحذير اختفى كلياً |
+| V-027 | مجموعة نواقص using/تكرارات أصغر | `Customer.cs` بلا `using System` (DBNull من P3-008)؛ `frmAddUsers` (P2-001) و`frmReceiptsSyncStatus` بلا `System.Linq`؛ `frmRptCategorySaleByDay` (P7-046) بلا `System.Collections.Generic`؛ و`InventoryData`: P7-071 أعاد تعريف `CategoryName/CategoryCode` الموجودين أصلاً في الملف نفسه (CS0102 ×2) | إضافة الـusings الثلاثة + حذف التكرار وإبقاء حقل `SumQty` الجديد وحده مع توثيق |
+| — | نظافة مستودع | 62 ملفاً تحت `SmartAuditUpdater/bin|obj` **متتبعة في git رغم قواعد .gitignore** (أُدخلت قبل P1-006) وتحمل مسارات Windows مطلقة (`C:\Program Files\DevExpress…`) تكسر أي بناء خارج جهازها الأصلي | `git rm -r --cached` — القواعد القائمة تكفي، ملفات العمل حذفت محلياً |
+
+### الدليل
+- `dotnet build SmartAuditERP.sln -c Release` → **Build succeeded. 0 Error(s)** (مع اختفاء MSB3277).
+- مشروع اختبارات Stage1 يُبنى ويجتاز الترجمة على المحلول (تشغيل الاختبارات نفسها يتطلب windows-latest كما في CI — وهو أخضر هناك منذ V-009).
+- توقيعات DevExpress للـV-010 تحققت بالانعكاس على التجميعات الفعلية (MetadataLoadContext) لا بالتخمين؛ وأنواع ETA (V-011) وReceipt (V-014) تحققت بالطريقة نفسها على مكتبات المالك.
+
+### قرار منهجي موثق (الشريحة 4)
+- **الدرس المركزي:** كل «إصلاح» في هذه القاعدة يجب أن يمر لاحقاً ببناء كامل ناجح ليُعد منفذاً —
+  غياب البناء (بسبب P1-001) جعل أخطاء ترجمة إصلاحات المراحل 3–7 **غير مرئية** لخمس مراحل كاملة.
+  CI أعادت `security-tests` تعمل (V-009) لكنها لا تبني المشروع الرئيسي — البناء المحلي الكامل
+  هو الحارس الوحيد حالياً، ويبقى كذلك إلى أن يقرر المالك مصير ثنائيات libs/ (P1-001).
+- جزئية **P1-001 تقدمت اليوم فعلياً**: المسار قابل للتهيئة (`ExternalLibsDir`) والمكتبات الفعلية
+  أثبتت البناء، لكن الصف يبقى جزئياً لأن المستودع ذاته ما زال بلا ثنائيات (قرار ملك لا يُستبق).
+- لم تُغلق أي صفوف findings.csv في هذه الشريحة (الأخطاء كانت في تنفيذ إصلاحات مكتملة الصفوف أصلاً —
+  الإصلاح يعيدها من «مزعزعة البناء» إلى «منفذة» كما وُصفت).

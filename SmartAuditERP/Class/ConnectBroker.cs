@@ -28,7 +28,9 @@ namespace SmartAuditERP
 
                 private static System.Windows.Forms.Timer sendTimer;
 
-                private static string clientId = "xxxx";
+                // P5-001 (مكمل V-016): صار عاماً — إعادة التوصيل في SendData تحتاج
+                // نفس هوية الجلسة (كانت private فيمنع الوصول CS0122)
+                public static string clientId = "xxxx";
 
                 public static string _IpServer = "";
 

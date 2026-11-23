@@ -152,11 +152,12 @@ namespace SmartAuditERP
 				}
 				// P6-033 fix: التأكد من توفر زر الإرفاق قبل إرسال النص — إن تعذر
 				// الإرفاق (زر غير موجود) نُوقف قبل النص فلا يصل العميل نص بلا مستند.
+				// (V-017: إعادة تسمية t — كانت معرفة أعلاه في نفس الدالة CS0128)
 				IWebElement attachButton;
 				attachButton = null;
-				DateTime t;
-				t = DateTime.Now.AddSeconds(15.0);
-				while (DateTime.Compare(DateTime.Now, t) < 0)
+				DateTime attachDeadline;
+				attachDeadline = DateTime.Now.AddSeconds(15.0);
+				while (DateTime.Compare(DateTime.Now, attachDeadline) < 0)
 				{
 					try
 					{

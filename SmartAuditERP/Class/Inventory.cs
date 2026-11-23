@@ -646,6 +646,21 @@ namespace SmartAuditERP
                     if (sqlConnection.State != ConnectionState.Open)
                         sqlConnection.Open();
 
+                    // P5-025 fix (مكمل V-012): بناء قاموس وحدات الأصناف هنا أيضاً —
+                    // كان القاموس يُبنى في ItemsStocks فقط بينما الاستخدام في PostStocks
+                    // فيجد المترجم unitLookup غير معرّف (CS0103).
+                    var unitLookup = new Dictionary<int, int>();
+                    using (var unitCmd = new SqlCommand(
+                        "SELECT id, unit FROM Items", sqlConnection))
+                        using (var unitReader = unitCmd.ExecuteReader())
+                        {
+                            while (unitReader.Read())
+                            {
+                                unitLookup[Convert.ToInt32(unitReader["id"])] =
+                                    Convert.ToInt32(unitReader["unit"]);
+                            }
+                        }
+
                     const string sql =
                         "SELECT * FROM [dbo].[ItemsStockByBranch]()";
 

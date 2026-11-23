@@ -652,12 +652,13 @@ namespace SmartAuditERP
                                                 // السند (الرقم المحلي قد يتكرر بين الفروع فكان الاستيراد يربط بقيد
                                                 // فرع آخر) وبمعاملات.
                                                 SqlCommand entryCountCmd = new SqlCommand("Select COUNT(*) from Entry where type=5 and doc_no=@doc_no and branch=@branch", sqlConnection, sqlTransaction);
-                                                entryCountCmd.Parameters.Add("@doc_no", SqlDbType.Int).Value = (Receipt.ReceiptNo.HasValue ? ((object)Receipt.ReceiptNo.GetValueOrDefault()) : DBNull.Value);
+                                                // (V-014: ReceiptNo في مكتبة AuditorAPI عدد صحيح غير قابل للإبطال — يُمرّر مباشرة)
+                                                entryCountCmd.Parameters.Add("@doc_no", SqlDbType.Int).Value = Receipt.ReceiptNo;
                                                 entryCountCmd.Parameters.Add("@branch", SqlDbType.Int).Value = (Receipt.BranchID.HasValue ? ((object)Receipt.BranchID.GetValueOrDefault()) : DBNull.Value);
                                                 if (Convert.ToDouble(Operators.ConcatenateObject("", entryCountCmd.ExecuteScalar())) > 0.0)
                                                 {
                                                         SqlCommand entryReadCmd = new SqlCommand("Select GlobalID from Entry where type=5 and doc_no=@doc_no and branch=@branch", sqlConnection, sqlTransaction);
-                                                        entryReadCmd.Parameters.Add("@doc_no", SqlDbType.Int).Value = (Receipt.ReceiptNo.HasValue ? ((object)Receipt.ReceiptNo.GetValueOrDefault()) : DBNull.Value);
+                                                        entryReadCmd.Parameters.Add("@doc_no", SqlDbType.Int).Value = Receipt.ReceiptNo;
                                                         entryReadCmd.Parameters.Add("@branch", SqlDbType.Int).Value = (Receipt.BranchID.HasValue ? ((object)Receipt.BranchID.GetValueOrDefault()) : DBNull.Value);
                                                         SqlDataReader sqlDataReader = entryReadCmd.ExecuteReader();
                                                         sqlDataReader.Read();

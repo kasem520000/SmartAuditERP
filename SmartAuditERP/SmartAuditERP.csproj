@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
@@ -24,7 +24,10 @@
     <PackageReference Include="DevExpress.Wpf.ExpressionEditor" Version="25.2.3" />
     <PackageReference Include="DevExpress.Wpf.Grid.Core" Version="25.2.3" />
     <PackageReference Include="DevExpress.Wpf.ThemesLW" Version="25.2.3" />
-    <PackageReference Include="Nancy" Version="2.0.0" />
+    <!-- V-026: حزمة Nancy أزيلت — كانت مستورة فقط (using ميت في Common.cs)
+         وتسحب transitively Newtonsoft.Json 9.0.1 الذي يتعارض مع نسخة المكتبات
+         الخارجية 13.0.1 (كان التحذير MSB3277 يوحّد إلى 9.0.1 فيفشل ربط
+         Ws_Auditor/AuditorAPI/ETA_Invoice وقت التشغيل). -->
     <PackageReference Include="System.Management" Version="10.0.7" />
     <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
     <!-- P1-001 fix: كان مرجعاً مطلقاً لمسار مستخدم محلي — الآن حزمة معلنة -->

@@ -118,7 +118,8 @@ namespace SmartAuditERP
 				// الأشكال القديمة والمواضيع التعريفية والعروض والخزائن) حتى لا تبقى
 				// اشتراكات حية بعد تغيير الإعدادات — كانت تُلغي 20 موضوعًا فقط فتبقى
 				// تعريفات/عروض تعمل بلا معالج أو بمعالج معطل.
-				string[] source = new string[54]
+				// (V-015: الحجم المعلن 54 لم يطابق عدد العناصر الفعلي 48 — ترك الحجم للمترجم)
+				string[] source = new string[]
 				{
 				"Items", "ItemsUnit", "ItemPrices", "ItemComponents", "ItemSerialNo", "ItemBarcode", "ItemsCategory", "Units", "Customers", "AccountCust",
 				"AccountIndex", "CasherClosed", "CasherClosed_Sub", "Inv", "InvSub", "entry", "entryDetails", "Receipts",

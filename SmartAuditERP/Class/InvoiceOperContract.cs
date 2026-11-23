@@ -1346,7 +1346,9 @@ namespace SmartAuditERP
                                         }
                                         // P3-003 fix: القيد يُحفظ داخل معاملة عقد الفاتورة نفسها (معاملة
                                         // واحدة لا تقبل الافتراق) ونية المستدعي الصريحة IsNew
-                                        if (new EntryOper().SaveEnty(Entr, sqlConnection, sqlTransaction, IsNew))
+                                        // (V-013: اتصال هذه المعاملة هو sqlConnection3 — الاسم
+                                        // sqlConnection كان متغيراً من نطاق آخر فيكسر البناء CS0103)
+                                        if (new EntryOper().SaveEnty(Entr, sqlConnection3, sqlTransaction, IsNew))
                                         {
                                                 sqlTransaction.Commit();
                                                 goto IL_291b;

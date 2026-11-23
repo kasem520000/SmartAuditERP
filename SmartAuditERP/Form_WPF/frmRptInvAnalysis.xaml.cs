@@ -1261,7 +1261,7 @@ namespace SmartAuditERP.Form_WPF
                 bool allSales = GetCheckState(chkAllSales);
                 bool allGroups = GetCheckState(chkAllGroups);
                 // P7-080 fix: مرشح المستخدم يدخل استعلام التجميع
-                bool allEmp = GetCheckState(chkAllEmp);
+                // (V-022: allEmp معرف أعلاه في هذه الدالة — التكرار كان يكسر البناء CS0128)
 
                 object safeVal = GetSelectedValue(cmbSafe);
                 object stockVal = GetSelectedValue(cmbStock);
@@ -1388,6 +1388,9 @@ namespace SmartAuditERP.Form_WPF
             {
                 DateTime dateFrom = GetDateFrom();
                 DateTime dateTo = GetDateTo();
+                // (V-022: dateToPlus كان يستخدم أدناه في تقاطع حدود الشهر P7-079
+                // دون تعريفه في هذه الدالة — يعرف هنا كما في التوأم ShowResultEmp)
+                DateTime dateToPlus = dateTo.AddHours(24.0);
 
                 var adp = new SqlDataAdapter(
                     "select distinct date=DATEADD(MONTH, DATEDIFF(MONTH, 0, date), 0) " +

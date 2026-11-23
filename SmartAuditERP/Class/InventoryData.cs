@@ -111,13 +111,9 @@ namespace SmartAuditERP
         [DisplayName("إنتاج (مستهلك)")]
         public string ProdOut { get; set; } = string.Empty;
 
-        // P7-071 fix: حقولا المجموعة ومجموع الكميات لمصدر طباعة تقرير الفئات
-        [DisplayName("اسم المجموعة")]
-        public string CategoryName { get; set; } = string.Empty;
-
-        [DisplayName("رمز المجموعة")]
-        public string CategoryCode { get; set; } = string.Empty;
-
+        // P7-071 fix: حقل مجموع الكميات لمصدر طباعة تقرير الفئات
+        // (CategoryName/CategoryCode معرّفان أدناه في هذا الصنف أصلاً —
+        //  إضافتهما هنا ثانية كانت تكسر البناء بخطأ CS0102)
         [DisplayName("مجموع الكميات")]
         public string SumQty { get; set; } = string.Empty;
         public string OperDate { get; set; } = string.Empty;

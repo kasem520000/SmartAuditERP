@@ -232,11 +232,12 @@ namespace SmartAuditERP.Form_WPF
                     double resolvedUnitPrice = 0;
                     try
                     {
-                        if (conn.State != ConnectionState.Open)
-                            conn.Open();
+                        // (V-021: حقل الاتصال في هذه الشاشة _conn — الاسم conn كان غير معرف CS0103)
+                        if (_conn.State != ConnectionState.Open)
+                            _conn.Open();
                         using (var priceCmd = new SqlCommand(
                             "SELECT ISNULL(IU.sale,0) FROM ItemUnits IU " +
-                            "WHERE IU.ItemId=@ItemId AND IU.unit=@Unit", conn))
+                            "WHERE IU.ItemId=@ItemId AND IU.unit=@Unit", _conn))
                         {
                             priceCmd.Parameters.AddWithValue("@ItemId", itemId);
                             priceCmd.Parameters.AddWithValue("@Unit", unitId);

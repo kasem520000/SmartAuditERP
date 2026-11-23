@@ -369,7 +369,9 @@ namespace SmartAuditERP.Form_WPF
             if (ckitems.IsChecked == true)    itemOper.ReadProductsOnline();
 
             // P5-030 fix: مؤشر النجاح يعكس نتائج الحفظ الفعلية
+            // (V-023: تكميلة التسمية "" — التوقيع يتطلب caption قبل الأزرار)
             DXMessageBox.Show(allApplied ? "تم تحميل البيانات بنجاح" : "تعذّر تحميل بعض البيانات — أعد المحاولة",
+                "",
                 MessageBoxButton.OK,
                 allApplied ? MessageBoxImage.Information : MessageBoxImage.Warning);
 

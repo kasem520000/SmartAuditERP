@@ -799,7 +799,8 @@ namespace SmartAuditERP.Form_WPF
             {
                 sb.AppendLine("<tr>");
                 // P7-098 fix: ترميز HTML لنصوص البيانات
-                sb.AppendLine($"<td>{EscapeHtml(row.TrAccount)}</td><td>{EscapeHtml(row.TrAccName)}</td>");
+                // (V-019: TrAccount رقم حساب صحيح — يُحوَّل لنص قبل الترميز)
+                sb.AppendLine($"<td>{EscapeHtml(row.TrAccount.ToString())}</td><td>{EscapeHtml(row.TrAccName)}</td>");
                 sb.AppendLine($"<td>{row.TrDeptIntial:N2}</td><td>{row.TrCreditIntial:N2}</td>");
                 sb.AppendLine($"<td>{row.TrDeptPervious:N2}</td><td>{row.TrCreditPervious:N2}</td>");
                 sb.AppendLine($"<td>{row.TrDebtorMovement:N2}</td><td>{row.TrCreditorMovement:N2}</td>");

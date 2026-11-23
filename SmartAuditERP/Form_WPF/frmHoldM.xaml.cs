@@ -408,6 +408,9 @@ namespace SmartAuditERP.Form_WPF
                 // تسجيل خروج المركب في سجلات الحضور
                 if (marineId != 0)
                     RecordMarineExit(marineId);
+
+                // P4-025 (مكمل V-020): الالتزام تم والوصول هنا بلا استثناء = نجاح فعلي
+                return true;
             }
             catch (Exception ex)
             {
@@ -418,6 +421,9 @@ namespace SmartAuditERP.Form_WPF
                     : $"خطأ أثناء الحفظ\nتفاصيل الخطأ: {ex.Message}";
 
                 DXMessageBox.Show(errorMessage, "", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                // P4-025 (مكمل V-020): الاستثناء التُقط = فشل فعلي يُعاد للمستدعي
+                return false;
             }
             finally
             {

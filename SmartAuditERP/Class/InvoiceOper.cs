@@ -2092,7 +2092,8 @@ namespace SmartAuditERP
                                         }
                                         if (!string.IsNullOrEmpty(inv.EncodedInvoice))
                                         {
-                                                this.InsertZatcaEncodedInvoice(inv);
+                                                // P6-008 جعل الدالة ساكنة — الاستدعاء باسم النوع لا this
+                                                InvoiceOper.InsertZatcaEncodedInvoice(inv);
                                         }
                                         if (InvoiceOper.filePathDocument != null)
                                         {
@@ -2111,7 +2112,9 @@ namespace SmartAuditERP
                                         }
                                         // P3-003 fix: القيد يُحفظ داخل معاملة الفاتورة نفسها (معاملة
                                         // واحدة للفاتورة وقيدها) ونية المستدعي الصريحة IsNew
-                                        if (new EntryOper().SaveEnty(Entr, sqlConnection, sqlTransaction, IsNew))
+                                        // (V-013: اتصال هذه المعاملة هو sqlConnection2 — الاسم
+                                        // sqlConnection كان متغيراً من نطاق آخر فيكسر البناء CS0103)
+                                        if (new EntryOper().SaveEnty(Entr, sqlConnection2, sqlTransaction, IsNew))
                                         {
                                                 sqlTransaction.Commit();
                                                 goto IL_23e6;
@@ -2438,7 +2441,8 @@ if (MainSetting.ZatcaIntegerationActive && !MainSetting.ZatcaSyncManual && !Invo
                                 }
                                 if (!string.IsNullOrEmpty(inv.EncodedInvoice))
                                 {
-                                        this.InsertZatcaEncodedInvoice(inv);
+                                        // P6-008 جعل الدالة ساكنة — الاستدعاء باسم النوع لا this
+                                        InvoiceOper.InsertZatcaEncodedInvoice(inv);
                                 }
                                 if (string.IsNullOrEmpty(inv.EntryGlobalID) && inv.InvoiceType == (InvoiceType)20 && ((inv.ProcType == 1) | (inv.ProcType == 2)))
                                 {

@@ -159,5 +159,55 @@ namespace SmartAuditERP.Properties {
                 this["QTY"] = value;
             }
         }
+
+        // P1-015 (مكمل V-018): خصائص FTP الاحتياطي كانت معرفة في Settings.settings
+        // دون ملف Designer المولد — كان البناء يفشل CS1061 في frmBackupRstore.
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BackupFtpHost {
+            get {
+                return ((string)(this["BackupFtpHost"]));
+            }
+            set {
+                this["BackupFtpHost"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BackupFtpUser {
+            get {
+                return ((string)(this["BackupFtpUser"]));
+            }
+            set {
+                this["BackupFtpUser"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BackupFtpPassEnc {
+            get {
+                return ((string)(this["BackupFtpPassEnc"]));
+            }
+            set {
+                this["BackupFtpPassEnc"] = value;
+            }
+        }
+
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool BackupFtpUseTls {
+            get {
+                return ((bool)(this["BackupFtpUseTls"]));
+            }
+            set {
+                this["BackupFtpUseTls"] = value;
+            }
+        }
     }
 }

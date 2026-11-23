@@ -74,8 +74,11 @@ namespace SmartAuditERP.Form_WPF
             // P7-101 fix: ربط الحاسبة اليدوية بخلايا الملخص — كانت
             // الملخصات معرّفة Custom في XAML بلا حدث يزوّدها بالقيم
             // فيبقى تذييل الجدول فارغاً دوماً
-            GridView1.CustomSummaryCalculate
-                += GridView1_CustomSummaryCalculate;
+            // (V-010: في DevExpress WPF الحدث CustomSummary على GridControl
+            //  نفسه بوسائط DevExpress.Data.CustomSummaryEventArgs — الاسم
+            //  CustomSummaryCalculate على TableView هو API وينفورمز)
+            GridControl1.CustomSummary
+                += GridControl1_CustomSummary;
         }
 
         #endregion
@@ -563,14 +566,16 @@ namespace SmartAuditERP.Form_WPF
         /// <summary>
         /// P7-101 fix: يزوّد كل بند ملخص Custom في التذييل بقيمته الصافية
         /// (بيع − مرتجع) من الحاسبة اليدوية عند مرحلة الإنهاء
+        /// V-010: التصحيح إلى واجهة WPF — الحدث CustomSummary على GridControl
+        /// بوسائط DevExpress.Data.CustomSummaryEventArgs والبند عبر e.Item
         /// </summary>
-        private void GridView1_CustomSummaryCalculate(
-            object sender, CustomSummaryEventArgs e)
+        private void GridControl1_CustomSummary(
+            object sender, DevExpress.Data.CustomSummaryEventArgs e)
         {
-            if (e.SummaryProcess != CustomSummaryProcess.Finalize)
+            if (e.SummaryProcess != DevExpress.Data.CustomSummaryProcess.Finalize)
                 return;
 
-            switch ((e.SummaryItem as GridSummaryItem)?.FieldName)
+            switch ((e.Item as GridSummaryItem)?.FieldName)
             {
                 case "DgvTotal":
                     e.TotalValue = Total - Total1;
