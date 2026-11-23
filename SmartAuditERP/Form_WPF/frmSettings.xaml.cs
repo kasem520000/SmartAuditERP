@@ -3884,51 +3884,56 @@ namespace SmartAuditERP.Form_WPF
             {
                 EnsureConnectionOpen(conn);
 
-                using (var checkCommand = new SqlCommand("select * from Settingmqtt where DB=@DB", conn))
+                // P7-165 fix: الحذف والإدراج داخل معاملة واحدة، والحذف بنطاق
+                // (القاعدة + الفرع) — كان يحذف كل صفوف القاعدة (فروع أخرى)
+                // بلا معاملة: فشل الإدراج بعد حذف ناجح يفقد الإعدادات كلها
+                using (var mqttTx = conn.BeginTransaction())
                 {
-                    checkCommand.Parameters.AddWithValue("@DB", CmbTxtDataBase.Text.Trim());
+                    object branchVal = CmbBranchMqtt.SelectedValue ?? 0;
 
-                    using var adapter = new SqlDataAdapter(checkCommand);
-                    var existingTable = new DataTable();
-                    adapter.Fill(existingTable);
-
-                    if (existingTable.Rows.Count > 0)
+                    using (var deleteCommand = new SqlCommand(
+                        "delete from [dbo].[Settingmqtt] where DB=@DB and BranchId=@BranchId",
+                        conn, mqttTx))
                     {
-                        using var deleteCommand = new SqlCommand("delete from [dbo].[Settingmqtt] where DB=@DB", conn);
                         deleteCommand.Parameters.AddWithValue("@DB", CmbTxtDataBase.Text.Trim());
+                        deleteCommand.Parameters.AddWithValue("@BranchId", branchVal);
                         deleteCommand.ExecuteNonQuery();
                     }
-                }
 
-                using var insertCommand = new SqlCommand(
-                    @"INSERT INTO [dbo].[Settingmqtt]
+                    using (var insertCommand = new SqlCommand(
+                        @"INSERT INTO [dbo].[Settingmqtt]
                       ([clientid],[nodeid],[frequency],[sale],[receipt],[income],[finance],[passcode],[servername],[usrname],[pwd],[DB],[publickey],[privatekey],[IS_Play],[inventory],is_active,BranchId,IpServer,syncItems,syncOper,syncDefinitions)
                       VALUES
-                      (@clientid,@nodeid,@frequency,@sale,@receipt,@income,@finance,@passcode,@servername,@usrname,@pwd,@DB,@publickey,@privatekey,@IS_Play,@inventory,@is_active,@BranchId,@IpServer,@syncItems,@syncOper,@syncDefinitions)", conn);
+                      (@clientid,@nodeid,@frequency,@sale,@receipt,@income,@finance,@passcode,@servername,@usrname,@pwd,@DB,@publickey,@privatekey,@IS_Play,@inventory,@is_active,@BranchId,@IpServer,@syncItems,@syncOper,@syncDefinitions)",
+                        conn, mqttTx))
+                    {
+                        insertCommand.Parameters.AddWithValue("@clientid", txtclientid.Text?.Trim() ?? string.Empty);
+                        insertCommand.Parameters.AddWithValue("@nodeid", txtnodeid.Text?.Trim() ?? string.Empty);
+                        insertCommand.Parameters.AddWithValue("@frequency", txtfrequency.Text?.Trim() ?? string.Empty);
+                        insertCommand.Parameters.AddWithValue("@sale", txtsale.Text?.Trim() ?? string.Empty);
+                        insertCommand.Parameters.AddWithValue("@receipt", txtreceipt.Text?.Trim() ?? string.Empty);
+                        insertCommand.Parameters.AddWithValue("@income", txtincome.Text?.Trim() ?? string.Empty);
+                        insertCommand.Parameters.AddWithValue("@finance", txtfinance.Text?.Trim() ?? string.Empty);
+                        insertCommand.Parameters.AddWithValue("@passcode", txtpasscode.Text?.Trim() ?? string.Empty);
+                        insertCommand.Parameters.AddWithValue("@servername", Cmbservername.Text?.Trim() ?? string.Empty);
+                        insertCommand.Parameters.AddWithValue("@usrname", usrname.Text ?? string.Empty);
+                        insertCommand.Parameters.AddWithValue("@pwd", pwdtxt.Text ?? string.Empty);
+                        insertCommand.Parameters.AddWithValue("@DB", CmbTxtDataBase.Text?.Trim() ?? string.Empty);
+                        insertCommand.Parameters.AddWithValue("@publickey", txtpublickey.Text ?? string.Empty);
+                        insertCommand.Parameters.AddWithValue("@privatekey", txtprivatekey.Text ?? string.Empty);
+                        insertCommand.Parameters.AddWithValue("@IS_Play", IsChecked(ChkIs_Play));
+                        insertCommand.Parameters.AddWithValue("@inventory", txtitem.Text ?? string.Empty);
+                        insertCommand.Parameters.AddWithValue("@is_active", IsChecked(chkis_active));
+                        insertCommand.Parameters.AddWithValue("@BranchId", branchVal);
+                        insertCommand.Parameters.AddWithValue("@IpServer", TxtIpserver.Text?.Trim() ?? string.Empty);
+                        insertCommand.Parameters.AddWithValue("@syncItems", IsChecked(chsyncItems));
+                        insertCommand.Parameters.AddWithValue("@syncOper", IsChecked(ChksyncOper));
+                        insertCommand.Parameters.AddWithValue("@syncDefinitions", IsChecked(ChksyncDefinitions));
+                        insertCommand.ExecuteNonQuery();
+                    }
 
-                insertCommand.Parameters.AddWithValue("@clientid", txtclientid.Text?.Trim() ?? string.Empty);
-                insertCommand.Parameters.AddWithValue("@nodeid", txtnodeid.Text?.Trim() ?? string.Empty);
-                insertCommand.Parameters.AddWithValue("@frequency", txtfrequency.Text?.Trim() ?? string.Empty);
-                insertCommand.Parameters.AddWithValue("@sale", txtsale.Text?.Trim() ?? string.Empty);
-                insertCommand.Parameters.AddWithValue("@receipt", txtreceipt.Text?.Trim() ?? string.Empty);
-                insertCommand.Parameters.AddWithValue("@income", txtincome.Text?.Trim() ?? string.Empty);
-                insertCommand.Parameters.AddWithValue("@finance", txtfinance.Text?.Trim() ?? string.Empty);
-                insertCommand.Parameters.AddWithValue("@passcode", txtpasscode.Text?.Trim() ?? string.Empty);
-                insertCommand.Parameters.AddWithValue("@servername", Cmbservername.Text?.Trim() ?? string.Empty);
-                insertCommand.Parameters.AddWithValue("@usrname", usrname.Text ?? string.Empty);
-                insertCommand.Parameters.AddWithValue("@pwd", pwdtxt.Text ?? string.Empty);
-                insertCommand.Parameters.AddWithValue("@DB", CmbTxtDataBase.Text?.Trim() ?? string.Empty);
-                insertCommand.Parameters.AddWithValue("@publickey", txtpublickey.Text ?? string.Empty);
-                insertCommand.Parameters.AddWithValue("@privatekey", txtprivatekey.Text ?? string.Empty);
-                insertCommand.Parameters.AddWithValue("@IS_Play", IsChecked(ChkIs_Play));
-                insertCommand.Parameters.AddWithValue("@inventory", txtitem.Text ?? string.Empty);
-                insertCommand.Parameters.AddWithValue("@is_active", IsChecked(chkis_active));
-                insertCommand.Parameters.AddWithValue("@BranchId", CmbBranchMqtt.SelectedValue ?? 0);
-                insertCommand.Parameters.AddWithValue("@IpServer", TxtIpserver.Text?.Trim() ?? string.Empty);
-                insertCommand.Parameters.AddWithValue("@syncItems", IsChecked(chsyncItems));
-                insertCommand.Parameters.AddWithValue("@syncOper", IsChecked(ChksyncOper));
-                insertCommand.Parameters.AddWithValue("@syncDefinitions", IsChecked(ChksyncDefinitions));
-                insertCommand.ExecuteNonQuery();
+                    mqttTx.Commit();
+                }
 
                 Panelnot1.IsEnabled = false;
                 panelnot2.IsEnabled = false;

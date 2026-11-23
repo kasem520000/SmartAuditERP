@@ -346,6 +346,12 @@ namespace SmartAuditERP
                                 sqlCommand.Parameters.Add("@Reffdate", SqlDbType.DateTime).Value = Receipt.Reffdate;
                                 sqlCommand.Parameters.Add("@Sync", SqlDbType.Bit).Value = Receipt.Sync;
                                 sqlCommand.Parameters.Add("@ISDeleted", SqlDbType.Bit).Value = Receipt.ISDeleted;
+                                // P7-164 fix: معامل @Recipient مطلوب في الاستعلام المشترك
+                                // InsertReceipt — إسقاطه كان يفشل كل تنفيذ بالاستثناء
+                                // «يجب تعريف المتغير @Recipient» فيتراجع كل شيء ويمنع
+                                // الحذف المشروط للصف القديم في مسار الاستعادة القديم
+                                sqlCommand.Parameters.Add("@Recipient", SqlDbType.NVarChar).Value =
+                                        (object)Receipt.Recipient ?? DBNull.Value;
                                 sqlCommand.ExecuteNonQuery();
                                 sqlTransaction.Commit();
                                 result = true;

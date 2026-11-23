@@ -1111,7 +1111,16 @@ namespace SmartAuditERP.Form_WPF
             try
             {
                 var Home = new Home();
-                SqlCommand cmd = new SqlCommand("select * from Settingmqtt", conn);
+                // P7-165 fix: القارئ كان يأخذ أول صف بلا مرشح فرع — عند تعدد
+                // صفوف القاعدة (فرع لكل صف) يقرأ إعدادات فرع آخر؛ صف فرع
+                // الجلسة هو المرجح عند معرفته
+                string mqttQuery = "select top 1 * from Settingmqtt";
+                if (MainClass.BranchNo > 0)
+                    mqttQuery += " where (BranchId=@BranchId or BranchId is null or BranchId=0)" +
+                                 " order by case when BranchId=@BranchId then 0 else 1 end";
+                SqlCommand cmd = new SqlCommand(mqttQuery, conn);
+                if (MainClass.BranchNo > 0)
+                    cmd.Parameters.AddWithValue("@BranchId", MainClass.BranchNo);
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 DataTable dt = new DataTable();
                 da.Fill(dt);
