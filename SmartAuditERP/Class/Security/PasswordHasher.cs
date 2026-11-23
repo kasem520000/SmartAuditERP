@@ -39,6 +39,7 @@ namespace SmartAuditERP.Class.Security
 
         /// <summary>
         /// تحقق fail-closed: أي غياب/تلف/صيغة غير معروفة في المخزن = رفض الدخول.
+        /// يشمل ذلك (منذ مسحة التحقق) التجزئة الفارغة/القصيرة والتكرارات المرضية.
         /// </summary>
         public static bool Verify(string password, string stored)
         {
@@ -49,7 +50,10 @@ namespace SmartAuditERP.Class.Security
             if (parts.Length != 4 || parts[0] != "PBKDF2") return false;
 
             int iterations;
-            if (!int.TryParse(parts[1], out iterations) || iterations < 1) return false;
+            // سقف التكرارات يمنع قيمًا مرضية (مثل 999,999,999) من تعليق الدخول —
+            // القيم المشروعة يولدها Hash() عند 100,000 والسقف يترك 50× رأس ترقية.
+            if (!int.TryParse(parts[1], out iterations) || iterations < 1 || iterations > 5_000_000)
+                return false;
 
             byte[] salt, expected;
             try
@@ -58,6 +62,11 @@ namespace SmartAuditERP.Class.Security
                 expected = Convert.FromBase64String(parts[3]);
             }
             catch (FormatException) { return false; }
+
+            // تحصين مسحة التحقق (verification sweep): تجزئة فارغة/قصيرة كانت تقبل
+            // أي كلمة مرور — GetBytes(0) يعيد مصفوفة فارغة وFixedTimeEquals(فارغ,فارغ)=true.
+            // أي قيمة مخزنة أقصر من 128-بت مرفوضة مهما كان باقي الصيغة سليمًا.
+            if (expected.Length < 16) return false;
 
             using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterations, HashAlgorithmName.SHA256))
             {

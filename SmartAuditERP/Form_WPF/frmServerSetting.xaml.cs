@@ -559,8 +559,10 @@ namespace SmartAuditERP.Form_WPF
                 string connStr2 = BuildConnStr(autoName.Trim());
                 using var conn2 = MainClass.CreateSqlConnection(connStr2);
 
-                var sqlParts = Properties.Resources.CrystalLiteDB.Split(
-                    new[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
+                // P1-029 regression fix (verification sweep): كان هذا الموقع يعود
+                // للـ Split("GO") النصي بعد أن كان مُصلَحاً — يُقسم على سطور GO حقيقية فقط.
+                var sqlParts = Class.Security.SqlBatchSplitter.Split(
+                    Properties.Resources.CrystalLiteDB);
 
                 if (conn2.State == ConnectionState.Closed) conn2.Open();
 
@@ -714,8 +716,10 @@ namespace SmartAuditERP.Form_WPF
                 try
                 {
                     using var localConn = MainClass.CreateSqlConnection(BuildConnStr(item.AutoName));
-                    var parts = Properties.Resources.AlterDb.Split(
-                        new[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
+                    // P1-029 regression fix (verification sweep): نفس المقسم الواعي
+                    // بسطر GO الحقيقي لسكربتات الترقية — لا Split نصي.
+                    var parts = Class.Security.SqlBatchSplitter.Split(
+                        Properties.Resources.AlterDb);
                     localConn.Open();
                     foreach (var p in parts)
                         new SqlCommand(p, localConn).ExecuteNonQuery();

@@ -26,8 +26,9 @@ namespace SmartAuditUpdater
 
         /// <param name="manifestPath">مسار ملف المانيفست المنزَّل مع الحزمة.</param>
         /// <param name="packageRoot">مجلد الحزمة المنزولة (كل المسارات النسبية تُحل داخله).</param>
+        /// <param name="publicKeyXml">مفتاح عام بديل (لاختبارات الوحدة)؛ null = المفتاح المضمّن.</param>
         /// <returns>true فقط إذا نجح توقيع المانيفست وتطابقت تجزئة كل ملف مدرج.</returns>
-        public static bool VerifyManifest(string manifestPath, string packageRoot)
+        public static bool VerifyManifest(string manifestPath, string packageRoot, string? publicKeyXml = null)
         {
             try
             {
@@ -47,7 +48,7 @@ namespace SmartAuditUpdater
 
                 using (var rsa = new RSACryptoServiceProvider())
                 {
-                    rsa.FromXmlString(PublicKeyXml);
+                    rsa.FromXmlString(publicKeyXml ?? PublicKeyXml);
                     byte[] data = Encoding.UTF8.GetBytes(payload.ToString());
                     bool sigOk = rsa.VerifyData(data, signature, CryptoConfig.MapNameToOID("SHA256"));
                     if (!sigOk) return false; // مانيفست معدَّل — أوقف التثبيت فوراً
@@ -55,17 +56,24 @@ namespace SmartAuditUpdater
 
                 // التوقيع سليم → تحقق من تجزئة كل ملف قبل نسخ أي شيء.
                 string rootFull = Path.GetFullPath(packageRoot);
+                // تحصين مسحة التحقق: المقارنة بالبادئة وحدها كانت تمرر مجلداً شقيقاً
+                // يشترك في البادئة (جذر C:\pkg يمرر C:\pkg-evil\...) — تُقارن البادئة
+                // مع فاصل الدليل بعد الجذر فلا يمر إلا ما هو داخل الجذر نفسه.
+                string rootPrefix = rootFull
+                    .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
+                    + Path.DirectorySeparatorChar;
                 foreach (string line in lines)
                 {
                     if (line == null || line.Length == 0) continue;
                     if (line.StartsWith("SIG ", StringComparison.Ordinal)) continue;
 
-                    string[] parts = line.Split(' ');
+                    // Split بعدّ 3: المسار النسبي قد يحوي فراغات — الباقي كله مسار.
+                    string[] parts = line.Split(new[] { ' ' }, 3);
                     if (parts.Length != 3 || parts[0] != "SHA256") return false;
 
                     // حارس اجتياز المسار: المسار النسبي لا يخرج من جذر الحزمة.
                     string full = Path.GetFullPath(Path.Combine(rootFull, parts[2]));
-                    if (!full.StartsWith(rootFull, StringComparison.OrdinalIgnoreCase)) return false;
+                    if (!full.StartsWith(rootPrefix, StringComparison.OrdinalIgnoreCase)) return false;
                     if (!File.Exists(full)) return false;
 
                     using (var sha = SHA256.Create())

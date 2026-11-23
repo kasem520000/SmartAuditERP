@@ -18,6 +18,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\SmartAuditERP\SmartAuditERP.csproj" />
+    <!-- مسحة التحقق: مرجع أداة التحديث لاختبار ManifestSignatureVerifier (تحصين P1-020) -->
+    <ProjectReference Include="..\..\SmartAuditUpdater\SmartAuditUpdater.csproj" />
   </ItemGroup>
 
 </Project>

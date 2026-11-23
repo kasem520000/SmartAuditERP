@@ -227,8 +227,10 @@ namespace SmartAuditERP.Form_WPF
                         $"server={MainClass.Server};database={autoDbName.Trim()};trusted_connection=true"))
                     {
                         await newConn.OpenAsync();
-                        string[] scripts = Properties.Resources.CrystalLiteDB.Split(
-                            new string[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
+                        // P1-029 fix (verification sweep — موقع فات المسحة الأصلية):
+                        // تقسيم على سطور GO حقيقية لا كل ظهور نصي للسلسلة.
+                        var scripts = Class.Security.SqlBatchSplitter.Split(
+                            Properties.Resources.CrystalLiteDB);
 
                         foreach (var script in scripts)
                         {

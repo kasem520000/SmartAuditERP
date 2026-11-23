@@ -199,8 +199,10 @@ namespace SmartAuditERP.Form_WPF
                     newConn.Open();
 
                 // تشغيل سكريبت الجداول
-                string[] scripts = Properties.Resources.CrystalLiteDB
-                    .Split(new[] { "GO" }, StringSplitOptions.RemoveEmptyEntries);
+                // P1-029 fix (verification sweep — موقع فات المسحة الأصلية):
+                // تقسيم على سطور GO حقيقية لا كل ظهور نصي للسلسلة.
+                var scripts = Class.Security.SqlBatchSplitter.Split(
+                    Properties.Resources.CrystalLiteDB);
 
                 foreach (string script in scripts)
                 {
