@@ -109,9 +109,26 @@ namespace SmartAuditERP.Form_WPF
             // عند الضغط على زر البحث 🔍 داخل خلية الصنف
             addNewItem();
 
+            // V-042 fix: بعد إغلاق نافذة البحث كان زر 🔍 المضغوط — وهو في صف
+            // الإضافة (placeholder) إذا كانت الفاتورة فارغة — يبقى موضع
+            // الخلية/التحديد الحالي للشبكة، فيفتح MoveFocusToColumn أدناه
+            // تحريرًا على صف الإضافة نفسه (BeginEdit) فيظهر سجل أصفار معلق
+            // (ItemId=0/ItemRowIndex=0) كصف ثانٍ في الشبكة بعد الصنف المختار،
+            // وقد يلتزم ضمن البنود لاحقًا عند تحرك التركيز. يُلغى أي تحرير
+            // معلق ثم يُستهدف آخر صف بيانات حقيقي في نقل التركيز.
+            GridControl1.CancelEdit(DataGridEditingUnit.Row);
+
             // بعد اختيار الصنف، نقل التركيز إلى عمود الكمية
             Dispatcher.BeginInvoke(new Action(() =>
             {
+                var lastReal = Invoic.InvoiceItems != null
+                    ? Invoic.InvoiceItems.LastOrDefault(x =>
+                          x != null && x.ItemId > 0)
+                    : null;
+                if (lastReal == null) return;
+
+                GridControl1.SelectedItem = lastReal;
+                GridControl1.ScrollIntoView(lastReal);
                 MoveFocusToColumn("ItemQuantity");
             }), System.Windows.Threading.DispatcherPriority.Background);
         }
