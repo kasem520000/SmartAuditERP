@@ -246,6 +246,16 @@ namespace SmartAuditERP.Form_WPF
 
         private void ckTotalPeriod_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-040 fix: XAML يضع IsChecked="True" على الخيار فينطلق
+            // Checked أثناء InitializeComponent() — لكن مربعي التاريخ
+            // (txtFromDate/txtToDate) معرّفان بعده في XAML فلم يُنشآ بعد،
+            // وكان الوصول إلى txtFromDate.IsEnabled يرمي
+            // NullReferenceException (تتبع المالك: السطر 250) فيُفشل بناء
+            // نافذة البحث كاملة عند فتحها من زر البحث الأسفل في فاتورة
+            // المبيعات. النداء المبكر يُتجاهل بأمان: XAML يضع أصلًا
+            // IsEnabled="False" على المربعين بما يطابق «كل الفترة».
+            if (txtFromDate == null || txtToDate == null) return;
+
             bool isAllPeriod       = ckTotalPeriod.IsChecked ?? true;
             txtFromDate.IsEnabled  = !isAllPeriod;
             txtToDate.IsEnabled    = !isAllPeriod;
