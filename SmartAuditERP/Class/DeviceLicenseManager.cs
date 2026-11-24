@@ -98,21 +98,24 @@ namespace SmartAuditERP
                                                 }
                                                 else
                                                 {
-                                                        // P6-026 fix: ربط الحمولة بالجهاز الحالي — التوقيع الداخلي
-                                                        // متسق لكن DeviceId يجب أن يطابق UID هذا الجهاز
-                                                        // (الترخيص المنسوخ من جهاز آخر كان يُقبل كما هو
-                                                        // لأن الحقل جزء من الحمولة الموقعة ذاتها فقط).
+                                                        // V-043 (تعديل P6-026 بطلب المالك الصريح): التوقيع
+                                                        // الداخلي هو مرساة الثقة — فحص مطابقة DeviceId مع
+                                                        // UID هذا الجهاز أصبح تتبعًا تشخيصيًا لا رفضًا.
+                                                        // المالك يشغّل برنامجين على خادم ترخيص واحد مشترك
+                                                        // والسيرفر يُصدر تراخيص بمعرّف جهاز لا يطابق بالضرورة
+                                                        // GenerateUID("SmartAuditERP") — الرفض الصارم كان يقفل
+                                                        // البرنامج برسالة «ترخيص جهاز آخر» رغم صلاحية التوقيع
+                                                        // والاشتراك. التجديد الدوري عبر CheckAndValidateLicense
+                                                        // يظل يمر عبر السيرفر وهو صاحب القرار،
+                                                        // وHasValidLocalLicense تحتفظ بالفحص الصارم لقرار محاولة
+                                                        // التفعيل فقط (كما في نسخة المالك العاملة).
                                                         string text2;
                                                         text2 = HardwareInfo.GenerateUID("SmartAuditERP", IncMac: true);
                                                         if (Operators.CompareString(text2, deviceLicenseDto.DeviceId, TextCompare: false) != 0)
                                                         {
-                                                                Interaction.MsgBox("❌ هذا ترخيص جهاز آخر — غير صالح لهذا الجهاز");
-                                                                result = null;
+                                                                System.Diagnostics.Debug.WriteLine("license-local: DeviceId mismatch (accepted per owner's shared-license-server policy)");
                                                         }
-                                                        else
-                                                        {
-                                                                result = deviceLicenseDto;
-                                                        }
+                                                        result = deviceLicenseDto;
                                                 }
                                         }
                                 }
@@ -183,9 +186,8 @@ namespace SmartAuditERP
                 }
 
                 // V-029: تحقق استجابة السيرفر قبل اعتمادها كملف ترخيص — نفس عقد
-                // LoadAndValidateLicense (بنية JSON + توقيع داخلي) مضافًا إليه مطابقة
-                // DeviceId مع UID هذا الجهاز؛ رسائل الخطأ هنا صامتة (Debug) لأن
-                // المسار يُستدعى دوريًا في الخلفية.
+                // LoadAndValidateLicense (بنية JSON + توقيع داخلي)؛ رسائل الخطأ
+                // هنا صامتة (Debug) لأن المسار يُستدعى دوريًا في الخلفية.
                 private static bool ValidateLicenseResponse(string body, string localUid)
                 {
                         try
@@ -207,10 +209,14 @@ namespace SmartAuditERP
                                         System.Diagnostics.Debug.WriteLine("license-response: signature mismatch");
                                         return false;
                                 }
+                                // V-043: عدم مطابقة DeviceId في استجابة السيرفر لم تعد
+                                // رفضًا — السيرفر المشترك يُصدر تراخيص لبرنامجين
+                                // بمعرّفات مختلفة والرد الموقّع منه هو المرجع؛
+                                // التتبع يبقى للتشخيص (البنية والتوقيع لا يزالان
+                                // شرطي قبول صارمين).
                                 if (Operators.CompareString(localUid, dto.DeviceId, TextCompare: false) != 0)
                                 {
-                                        System.Diagnostics.Debug.WriteLine("license-response: DeviceId mismatch (server returned a license for another device)");
-                                        return false;
+                                        System.Diagnostics.Debug.WriteLine("license-response: DeviceId differs from local UID (accepted per owner's shared-license-server policy)");
                                 }
                                 return true;
                         }
