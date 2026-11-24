@@ -977,6 +977,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void txtCashpay_TextChanged(object sender, TextChangedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر/حقول معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (Invoic == null || txtNetwork == null || txtInvSum == null) return;
             if (!string.IsNullOrEmpty(txtCashpay.Text))
             {
                 double.TryParse(txtCashpay.Text, out _cash);
@@ -1001,6 +1004,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void txtNetwork_TextChanged(object sender, TextChangedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر/حقول معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (Invoic == null || txtInvSum == null) return;
             if (!string.IsNullOrEmpty(txtNetwork.Text))
             {
                 double.TryParse(txtNetwork.Text, out _network);
@@ -1014,6 +1020,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void txtDiscount_TextChanged(object sender, TextChangedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (txtTotDiscounts == null) return;
             if (!string.IsNullOrWhiteSpace(txtInvDiscount.Text))
             {
                 // 1. استخدام متغير محلي للـ out

@@ -102,6 +102,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void chkAllBranches_Changed(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbBranches == null) return;
             if (!IsLoaded) return;
             cmbBranches.IsEnabled = (chkAllBranches.IsChecked != true);
             if (chkAllBranches.IsChecked == true)
@@ -118,6 +121,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void CheckBoxgroup_Changed(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbCategry == null) return;
             if (!IsLoaded) return;
             cmbCategry.IsEnabled = (CheckBoxgroup.IsChecked != true);
             if (CheckBoxgroup.IsChecked == true)

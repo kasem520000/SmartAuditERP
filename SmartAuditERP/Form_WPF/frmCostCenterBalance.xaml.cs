@@ -978,6 +978,9 @@ namespace SmartAuditERP.Form_WPF
         private void ckTotalPeriod_CheckedChanged(object sender,
             RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (txtDateFrom == null || txtDateTo == null) return;
             if (!IsLoaded) return;
             bool isFullPeriod = ckTotalPeriod.IsChecked == true;
             txtDateFrom.IsEnabled = !isFullPeriod;
@@ -993,12 +996,18 @@ namespace SmartAuditERP.Form_WPF
         private void chkEntryType_CheckedChanged(object sender,
             RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbEntryType == null) return;
             if (!IsLoaded) return;
             cmbEntryType.IsEnabled = chkEntryType.IsChecked != true;
         }
 
         private void chkAll_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbAccounts == null) return;
             if (!IsLoaded) return;
             cmbAccounts.IsEnabled = chkAll.IsChecked != true;
         }

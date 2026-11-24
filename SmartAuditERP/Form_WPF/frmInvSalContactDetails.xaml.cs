@@ -1489,11 +1489,17 @@ namespace SmartAuditERP.Form_WPF
 
         private void ckAllType_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbType == null) return;
             if (!IsLoaded) return;
             cmbType.IsEnabled = ckAllType.IsChecked != true;
         }
         private void cbAllSalesmen_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbSaleman == null) return;
             if (!IsLoaded) return;
             cmbSaleman.IsEnabled = cbAllSalesmen.IsChecked != true;
         }
@@ -1505,18 +1511,27 @@ namespace SmartAuditERP.Form_WPF
 
         private void ckAllClients_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbClients == null) return;
             if (!IsLoaded) return;
             cmbClients.IsEnabled = ckAllClients.IsChecked != true;
         }
 
         private void chkAllBranches_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbBranches == null) return;
             if (!IsLoaded) return;
             cmbBranches.IsEnabled = chkAllBranches.IsChecked != true;
         }
 
         private void ckTotalPeriod_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (txtEndTime == null || txtFromDate == null || txtStartTime == null || txtToDate == null) return;
             if (!IsLoaded) return;
             bool allPeriod = ckTotalPeriod.IsChecked == true;
             txtFromDate.IsEnabled = !allPeriod;

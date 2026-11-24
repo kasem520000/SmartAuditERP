@@ -648,6 +648,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void ckAllInvs_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbInvType == null) return;
             if (!IsLoaded) return;
             cmbInvType.IsEnabled = ckAllInvs.IsChecked != true;
             if (ckAllInvs.IsChecked == true)
@@ -656,6 +659,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void ckAllType_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbType == null) return;
             if (!IsLoaded) return;
             cmbType.IsEnabled = ckAllType.IsChecked != true;
             if (ckAllType.IsChecked == true)
@@ -664,6 +670,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void ckAllStore_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbStore == null) return;
             if (!IsLoaded) return;
             cmbStore.IsEnabled = ckAllStore.IsChecked != true;
             if (ckAllStore.IsChecked == true)
@@ -672,6 +681,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void ckAllUsers_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbusers == null) return;
             if (!IsLoaded) return;
             cmbusers.IsEnabled = ckAllUsers.IsChecked != true;
             if (ckAllUsers.IsChecked == true)
@@ -680,6 +692,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void cbAllSalesmen_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbSaleman == null) return;
             if (!IsLoaded) return;
             cmbSaleman.IsEnabled = cbAllSalesmen.IsChecked != true;
             if (cbAllSalesmen.IsChecked == true)
@@ -688,6 +703,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void ckAllClients_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbClients == null) return;
             if (!IsLoaded) return;
             cmbClients.IsEnabled = ckAllClients.IsChecked != true;
             if (ckAllClients.IsChecked == true)
@@ -696,12 +714,18 @@ namespace SmartAuditERP.Form_WPF
 
         private void chkAllBranches_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbBranches == null) return;
             if (!IsLoaded) return;
             cmbBranches.IsEnabled = chkAllBranches.IsChecked != true;
         }
 
         private void ckTotalPeriod_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (txtEndTime == null || txtFromDate == null || txtStartTime == null || txtToDate == null) return;
             if (!IsLoaded) return;
             bool isAll = ckTotalPeriod.IsChecked == true;
             txtFromDate.IsEnabled  = !isAll;

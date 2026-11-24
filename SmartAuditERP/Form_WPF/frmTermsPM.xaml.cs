@@ -396,6 +396,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void main_Checked(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (txtAprxPeriod == null || txtLastPrice == null || txtprice == null) return;
             if (GBbranchAcc != null)
                 GBbranchAcc.Visibility = Visibility.Collapsed;
 

@@ -832,12 +832,18 @@ namespace SmartAuditERP.Form_WPF
 
         private void chkAllBranches_Toggle(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbBranches == null) return;
             if (!IsLoaded) return;
             cmbBranches.IsEnabled = chkAllBranches.IsChecked == false;
         }
 
         private void ckTotalPeriod_Toggle(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (txtDateFrom == null || txtDateTo == null) return;
             if (!IsLoaded) return;
             bool isEnabled = ckTotalPeriod.IsChecked == false;
             txtDateFrom.IsEnabled = isEnabled;

@@ -719,6 +719,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void chkAll_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbSafes == null) return;
             if (!IsLoaded) return;
             cmbSafes.IsEnabled = chkAll.IsChecked != true;
             if (chkAll.IsChecked == true)
@@ -733,6 +736,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void chkAllProcType_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbProcType == null || pnlInvType == null) return;
             if (!IsLoaded) return;
             cmbProcType.IsEnabled    = chkAllProcType.IsChecked != true;
             pnlInvType.Visibility    = Visibility.Collapsed;
@@ -745,6 +751,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void chkAllClients_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbClients == null) return;
             if (!IsLoaded) return;
             cmbClients.IsEnabled = false;
         }
@@ -785,6 +794,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void ckTotalPeriod_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cbLastProcess == null || txtDateFrom == null || txtDateTo == null) return;
             if (!IsLoaded) return;
             if (ckTotalPeriod.IsChecked == true)
             {

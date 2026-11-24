@@ -771,6 +771,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void rdCash_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر/حقول معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (panelCheckDetails == null || cmbEda3 == null || conn1 == null) return;
             if (rdCash?.IsChecked == true)
             {
                 panelCheckDetails.Visibility = Visibility.Collapsed;

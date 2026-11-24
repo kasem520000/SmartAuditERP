@@ -291,6 +291,9 @@ namespace SmartAuditERP.Form_WPF
         #region CheckBox Events
         private void chkAllBranch_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbBranches == null) return;
             if (!IsLoaded) return;
             cmbBranches.IsEnabled = chkAllBranch.IsChecked != true;
             if (chkAllBranch.IsChecked == true)
@@ -299,6 +302,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void ckAllItems_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (btnSearch == null || txtItemCode == null || txtItemName == null) return;
             if (!IsLoaded) return;
             bool isAll = ckAllItems.IsChecked == true;
             txtItemCode.IsEnabled = !isAll;
@@ -317,6 +323,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void chkAllSeialNo_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (txtSeialNo == null) return;
             if (!IsLoaded) return;
             txtSeialNo.IsEnabled = chkAllSeialNo.IsChecked != true;
             if (chkAllSeialNo.IsChecked == true)

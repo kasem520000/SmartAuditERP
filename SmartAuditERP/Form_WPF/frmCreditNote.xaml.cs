@@ -1116,6 +1116,9 @@ namespace SmartAuditERP.Form_WPF
         private void rdMainNote_CheckedChanged(object sender,
             RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbSupplies == null || lblInvVal == null || pnlInvNo == null || rdMainNote == null || txtInvVal == null || txtTax == null) return;
             CLR();
             cmbSupplies.SelectedIndex = -1;
             txtInvVal.Text = "";

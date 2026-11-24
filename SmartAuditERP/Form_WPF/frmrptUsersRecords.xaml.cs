@@ -137,6 +137,9 @@ namespace SmartAuditERP.Form_WPF
         #region CheckBox Events
         private void chkAll_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbUsers == null) return;
             cmbUsers.IsEnabled = chkAll.IsChecked != true;
             if (chkAll.IsChecked == true)
                 cmbUsers.SelectedIndex = -1;

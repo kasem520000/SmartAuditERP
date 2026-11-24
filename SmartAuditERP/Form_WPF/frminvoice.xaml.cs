@@ -2765,6 +2765,9 @@ namespace SmartAuditERP.Form_WPF
         private void txtMinusVal_TextChanged(object sender,
             System.Windows.Controls.TextChangedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (txtMinusPerc == null) return;
             if (!this.dochange) return;
             try
             {

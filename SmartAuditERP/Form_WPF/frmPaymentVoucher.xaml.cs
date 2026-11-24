@@ -654,6 +654,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void rdPayType_Changed(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (Panel1 == null) return;
             bool isCash = (rdCash.IsChecked == true);
             Panel1.Visibility = isCash ? Visibility.Collapsed : Visibility.Visible;
             LoadPaymentSource(isCash);

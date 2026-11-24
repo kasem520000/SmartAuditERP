@@ -207,7 +207,10 @@ namespace SmartAuditERP.Form_WPF
 
         private void rdCheck_CheckedChanged(object sender, RoutedEventArgs e)
         {
-            if (rdCash == null) return;
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (IsChecked="True" في XAML)
+            // قبل إنشاء عناصر/حقول معرفة بعده — الحارس القديم كان يفحص rdCash فقط
+            // (المطلق للحدث نفسه) بينما Panel1/cmbToAcc/conn1 لم تُنشأ بعد.
+            if (rdCash == null || Panel1 == null || cmbToAcc == null || conn1 == null) return;
 
             if (rdCash.IsChecked == true)
             {
@@ -245,6 +248,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void rbMsarif_Checked(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbPay == null) return;
             cmbPay.ItemsSource   = null;
             cmbPay.Items.Clear();
             LoadAccounts();

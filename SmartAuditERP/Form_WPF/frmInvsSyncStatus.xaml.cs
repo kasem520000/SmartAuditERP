@@ -682,6 +682,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void ckAllType_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbType == null) return;
             bool allChecked = ckAllType.IsChecked == true;
             cmbType.IsEnabled = !allChecked;
             if (allChecked) cmbType.SelectedIndex = -1;
@@ -689,6 +692,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void ckAllInvs_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbInvType == null) return;
             bool allChecked = ckAllInvs.IsChecked == true;
             cmbInvType.IsEnabled = !allChecked;
             if (allChecked) cmbInvType.SelectedIndex = -1;
@@ -696,6 +702,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void ckAllStore_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbStore == null) return;
             bool allChecked = ckAllStore.IsChecked == true;
             cmbStore.IsEnabled = !allChecked;
             if (allChecked) cmbStore.SelectedIndex = -1;
@@ -703,6 +712,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void ckAllClients_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbClients == null) return;
             bool allChecked = ckAllClients.IsChecked == true;
             cmbClients.IsEnabled = !allChecked;
             if (allChecked) cmbClients.SelectedIndex = -1;
@@ -710,6 +722,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void ckBranches_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbBranches == null) return;
             bool allChecked = ckBranches.IsChecked == true;
             cmbBranches.IsEnabled = !allChecked;
             if (allChecked) cmbBranches.SelectedIndex = -1;
@@ -717,6 +732,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void ckTotalPeriod_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (txtFromDate == null || txtToDate == null) return;
             bool allPeriod = ckTotalPeriod.IsChecked == true;
             txtFromDate.IsEnabled = !allPeriod;
             txtToDate.IsEnabled = !allPeriod;

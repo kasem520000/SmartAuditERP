@@ -604,12 +604,18 @@ namespace SmartAuditERP.Form_WPF
 
         private void chkAllSafes_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbSafes == null) return;
             if (!IsLoaded) return;
             cmbSafes.IsEnabled = chkAllSafes.IsChecked != true;
         }
 
         private void chkAll_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (txtItemCode == null || txtItemName == null) return;
             if (!IsLoaded) return;
             bool isAll = chkAll.IsChecked == true;
             txtItemName.IsEnabled = !isAll;
@@ -618,12 +624,18 @@ namespace SmartAuditERP.Form_WPF
 
         private void chkAllBranches_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (cmbBranches == null) return;
             if (!IsLoaded) return;
             cmbBranches.IsEnabled = chkAllBranches.IsChecked != true;
         }
 
         private void ckTotalPeriod_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (txtDateFrom == null || txtDateTo == null || txtEndTime == null || txtStartTime == null) return;
             if (!IsLoaded) return;
             bool isAll = ckTotalPeriod.IsChecked == true;
             txtDateFrom.IsEnabled = !isAll;
@@ -634,6 +646,9 @@ namespace SmartAuditERP.Form_WPF
 
         private void ChkAllGroup_CheckedChanged(object sender, RoutedEventArgs e)
         {
+            // V-044 fix: الحدث ينطلق أثناء InitializeComponent (قيمة ابتدائية في XAML)
+            // قبل إنشاء عناصر معرفة بعده — النداء المبكر كان يرمي NRE ويُفشل فتح النافذة
+            if (CmbGroup == null) return;
             if (!IsLoaded) return;
             CmbGroup.IsEnabled = ChkAllGroup.IsChecked != true;
         }
