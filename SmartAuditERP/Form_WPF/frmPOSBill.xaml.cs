@@ -1158,6 +1158,14 @@ namespace SmartAuditERP.Form_WPF
 
         private void txtCashpay_TextChanged(object sender, TextChangedEventArgs e)
         {
+            // V-039 fix: XAML يضع Text="0" في مربع النقد فينطلق TextChanged
+            // أثناء InitializeComponent() قبل أن ينشئ المشيد _payment/Invoic
+            // (سطرا إنشائهما بعد InitializeComponent) — كان الوصول إلى
+            // _payment.CashPayment يرمي NullReferenceException فيُفشل بناء
+            // نافذة الدفع بالكامل، فلا تُحفظ فاتورة نقطة البيع ولا فاتورة
+            // المبيعات (كلاهما يفتح هذه النافذة عبر InvoiceOper).
+            if (_payment == null || Invoic == null) return;
+
             if (!string.IsNullOrEmpty(txtCashpay.Text))
             {
                 double.TryParse(txtCashpay.Text, out double cashVal);
@@ -1182,6 +1190,10 @@ namespace SmartAuditERP.Form_WPF
 
         private void txtNetwork_TextChanged(object sender, TextChangedEventArgs e)
         {
+            // V-039 fix: نفس النداء المبكر — Text="0" في XAML لمربع الشبكة
+            // يطلق الحدث أثناء InitializeComponent قبل إنشاء _payment.
+            if (_payment == null || Invoic == null) return;
+
             if (!string.IsNullOrEmpty(txtNetwork.Text))
             {
                 double.TryParse(txtNetwork.Text, out double netPay);
