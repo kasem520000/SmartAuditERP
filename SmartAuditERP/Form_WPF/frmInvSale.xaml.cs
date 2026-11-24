@@ -99,28 +99,29 @@ namespace SmartAuditERP.Form_WPF
 
         private void ItemSearchButton_Click(object sender, RoutedEventArgs e)
         {
-            // V-031 fix: فتح نافذة البحث النمطية كان يلتزم صف الإضافة الجديد
-            // (CanUserAddRows) داخل الشبكة فيُدرَج سطر InvoiceItem بأصفار ضمن
-            // بنود الفاتورة بجوار الصنف المختار — يُلغى أي تعديل/التزام معلق
-            // قبل الفتح وتُنظَّف الأسطر الفارغة الملتزمة سابقًا.
-            GridControl1.CancelEdit(DataGridEditingUnit.Row);
+            // V-031/V-043 fix: فتح نافذة البحث النمطية كان يلتزم صف الإضافة
+            // الجديد (CanUserAddRows) داخل الشبكة فيُدرَج سطر InvoiceItem
+            // بأصفار ضمن بنود الفاتورة بجوار الصنف المختار. يُلغى أي تعديل
+            // أو إضافة معلقة قبل الفتح (CancelEdit وحده لا يلغي AddNew —
+            // انظر CancelPendingNewRow) وتُنظَّف الأسطر الفارغة الملتزمة سابقًا.
             RemoveEmptyItemRows();
 
             // عند الضغط على زر البحث 🔍 داخل خلية الصنف
             addNewItem();
 
-            // V-042 fix: بعد إغلاق نافذة البحث كان زر 🔍 المضغوط — وهو في صف
-            // الإضافة (placeholder) إذا كانت الفاتورة فارغة — يبقى موضع
-            // الخلية/التحديد الحالي للشبكة، فيفتح MoveFocusToColumn أدناه
-            // تحريرًا على صف الإضافة نفسه (BeginEdit) فيظهر سجل أصفار معلق
-            // (ItemId=0/ItemRowIndex=0) كصف ثانٍ في الشبكة بعد الصنف المختار،
-            // وقد يلتزم ضمن البنود لاحقًا عند تحرك التركيز. يُلغى أي تحرير
-            // معلق ثم يُستهدف آخر صف بيانات حقيقي في نقل التركيز.
-            GridControl1.CancelEdit(DataGridEditingUnit.Row);
-
-            // بعد اختيار الصنف، نقل التركيز إلى عمود الكمية
+            // V-042/V-043 fix: بعد إغلاق نافذة البحث يبقى زر 🔍 المضغوط — وهو
+            // في صف الإضافة (placeholder) إذا كانت الفاتورة فارغة — هو موضع
+            // الخلية/التحديد الحالي للشبكة، و MoveFocusToColumn يفتح BeginEdit()
+            // على صف الخلية الحالية (CurrentCell) لا على SelectedItem، فيستدعي
+            // AddNew() فيُنشئ سجل أصفار معلق (ItemId=0/ItemRowIndex=0) كصف ثانٍ
+            // في الشبكة بعد الصنف المختار، وقد يلتزم ضمن البنود لاحقًا عند
+            // تحرك التركيز. لذلك: نلغي أي إضافة معلقة، ننظّف الأسطر الفارغة،
+            // ثم يُستهدف آخر صف بيانات حقيقي وتُثبَّت CurrentCell عليه صراحة
+            // (داخل MoveFocusToColumn) قبل فتح تحرير الكمية.
             Dispatcher.BeginInvoke(new Action(() =>
             {
+                RemoveEmptyItemRows();
+
                 var lastReal = Invoic.InvoiceItems != null
                     ? Invoic.InvoiceItems.LastOrDefault(x =>
                           x != null && x.ItemId > 0)
@@ -137,6 +138,10 @@ namespace SmartAuditERP.Form_WPF
         // في الشبكة (أو أي مسار آخر) مع إعادة ترقيم الأسطر المتبقية.
         private void RemoveEmptyItemRows()
         {
+            // V-043: صف الإضافة المعلّق (AddNew) يوجد في عرض الشبكة فقط وليس
+            // في Invoic.InvoiceItems حتى لحظة الالتزام (CommitNew)، فنظّفه أولًا.
+            CancelPendingNewRow();
+
             bool changed = false;
             for (int i = Invoic.InvoiceItems.Count - 1; i >= 0; i--)
             {
@@ -154,6 +159,24 @@ namespace SmartAuditERP.Form_WPF
                 ItemOper.CalcRows(ref Invoic);
                 BindingDGV();
             }
+        }
+
+        // V-043: إلغاء صف الإضافة المعلّق في الشبكة (CanUserAddRows).
+        // CancelEdit(DataGridEditingUnit.Row) وحده لا يُلغي عملية AddNew
+        // (سلوك معروف في WPF)، والسطر الناتج غير موجود في Invoic.InvoiceItems
+        // حتى لحظة الالتزام (CommitNew) فلا تراه RemoveEmptyItemRows، فيظهر
+        // كصف أصفار ويُدرَج ضمن البنود عند تحرك التركيز. نلغيه صراحة هنا.
+        private void CancelPendingNewRow()
+        {
+            GridControl1.CancelEdit(DataGridEditingUnit.Row);
+
+            object itemsView = GridControl1.ItemsSource != null
+                ? (object)System.Windows.Data.CollectionViewSource
+                      .GetDefaultView(GridControl1.ItemsSource)
+                : (object)GridControl1.Items;
+            var iev = itemsView as System.ComponentModel.IEditableCollectionView;
+            if (iev != null && iev.IsAddingNew)
+                iev.CancelNew();
         }
 
         #endregion
@@ -733,9 +756,10 @@ namespace SmartAuditERP.Form_WPF
 
         private void addNewItem()
         {
-            // V-031 fix: إلغاء أي التزام معلق لصف الإضافة قبل فتح النافذة
-            // النمطية (فقدان التركيز عند ShowDialog كان يلتزم صف أصفار).
-            GridControl1.CancelEdit(DataGridEditingUnit.Row);
+            // V-031/V-043 fix: إلغاء أي تعديل/إضافة معلقة لصف الإضافة قبل
+            // فتح النافذة النمطية (فقدان التركيز عند ShowDialog كان يلتزم
+            // صف أصفار) — CancelEdit وحده لا يلغي AddNew.
+            CancelPendingNewRow();
 
             var frm = new frmItemsSrch();
             MainClass.ApplyPermissionToForm(frm);
@@ -3793,15 +3817,38 @@ namespace SmartAuditERP.Form_WPF
 
         private void MoveFocusToColumn(string fieldName)
         {
+            DataGridColumn targetCol = null;
             foreach (DataGridColumn col in GridControl1.Columns)
             {
                 if (col.SortMemberPath == fieldName)
                 {
-                    GridControl1.CurrentColumn = col;
-                    GridControl1.BeginEdit();
+                    targetCol = col;
                     break;
                 }
             }
+            if (targetCol == null) return;
+
+            // V-043 fix: BeginEdit() يفتح التحرير على صف الخلية الحالية
+            // (CurrentCell) لا على SelectedItem — إسناد SelectedItem وحده لا
+            // ينقل الخلية الحالية بشكل موثوق. عند وجود صف بيانات حقيقي نثبّت
+            // CurrentCell عليه صراحة، وإلا لذهب التحرير إلى صف الإضافة
+            // (CanUserAddRows) فيستدعي AddNew() فيُنشئ سطر أصفارًا يظهر كصف
+            // إضافي بعد الصنف ويلتزم لاحقًا ضمن البنود.
+            var realRow = GridControl1.SelectedItem as InvoiceItem;
+            if (realRow != null && realRow.ItemId > 0)
+            {
+                GridControl1.CurrentCell =
+                    new DataGridCellInfo(realRow, targetCol);
+                GridControl1.UpdateLayout();
+            }
+            else
+            {
+                // عنصر غير معروف أو صف الإضافة (الكتابة السريعة لاسم صنف في
+                // صف جديد): نكتفي بتغيير العمود ونترك الصف الحالي كما هو.
+                GridControl1.CurrentColumn = targetCol;
+            }
+
+            GridControl1.BeginEdit();
         }
 
         private void MoveFocusToNextRow(string fieldName)
