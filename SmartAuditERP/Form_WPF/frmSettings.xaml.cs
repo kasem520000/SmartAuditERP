@@ -2162,9 +2162,16 @@ namespace SmartAuditERP.Form_WPF
                     insertCommand.Parameters.AddWithValue("@note", note);
                     insertCommand.Parameters.AddWithValue("@PrintTotGroup", IsChecked(ckPrintGroups));
                     insertCommand.Parameters.AddWithValue("@PrintStamp", IsChecked(ckPrintStamp));
-                    insertCommand.Parameters.AddWithValue("@HeaderImage", (object)headerImageBytes ?? DBNull.Value);
-                    insertCommand.Parameters.AddWithValue("@FooterImage", (object)footerImageBytes ?? DBNull.Value);
-                    insertCommand.Parameters.AddWithValue("@StampImage", (object)stampImageBytes ?? DBNull.Value);
+                    // V-041 fix: أعمدة الصور في SettingPrint نوعها image في
+                    // قاعدة البيانات — AddWithValue مع DBNull.Value يستنتج
+                    // nvarchar فيرمي SqlServer
+                    // «Operand type clash: nvarchar is incompatible with image»
+                    // عند الحفظ بنوع الكاشير (بلا صور). النوع يُحدد صراحةً
+                    // SqlDbType.Image (نفس عقد EntityOperations لبقية أعمدة
+                    // الصور) فيقبل byte[] و DBNull معًا.
+                    insertCommand.Parameters.Add("@HeaderImage", SqlDbType.Image).Value = (object)headerImageBytes ?? DBNull.Value;
+                    insertCommand.Parameters.Add("@FooterImage", SqlDbType.Image).Value = (object)footerImageBytes ?? DBNull.Value;
+                    insertCommand.Parameters.Add("@StampImage", SqlDbType.Image).Value = (object)stampImageBytes ?? DBNull.Value;
                     insertCommand.Parameters.AddWithValue("@PrintItemType", printItemType);
                     insertCommand.Parameters.AddWithValue("@PrintComponentsItemsIndividually", IsChecked(chkPrintComponentsItemsIndividually));
                     insertCommand.Parameters.AddWithValue("@printmakpay", IsChecked(printmakpay));
